@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0B7480</color>
+    <color name="colorPrimaryDark">#0B7480</color>
+    <color name="colorAccent">#e99e3b</color>
+    <color name="colorAccent_light">#e99e3b</color>
+    <color name="greydark">#383838</color>
+    <color name="rightclickOrange">#DB6721</color>
+    <color name="rightclicklast">#EB7933</color>
+    <color name="rightclickmiddle">#E16935</color>
+    <color name="rightclickGreen">#0B7480</color>
+    <color name="black">#000000</color>
+    <color name="darkgrey">#777777</color>
+    <color name="lightgrey">#c8c0c0</color>
+    <color name="view_line">#dbd7d7</color>
+    <color name="red">#cf1d1d</color>
+    <color name="white">#ffffff</color>
+    <color name="white2">#f7f7f7</color>
+    <color name="onClick">#ede8e8</color>
+    <color name="layout_background">#f1f1f1</color>
+
+    <color name="gray">#808080</color>
+    <color name="dark_gray">#A9A9A9</color>
+    <color name="light_gray">#d3d3d3</color>
+    <color name="orange">#FFA500</color>
+    <color name="green">#008000</color>
+    <color name="dark_blue">#0000FF</color>
+    <color name="light_blue">#6655cc</color>
+    <color name="lime">#00FF00</color>
+    <color name="magenta">#dd3388</color>
+    <color name="brown">#800000</color>
+    <color name="olive">#808000</color>
+    <color name="bean_red">#F75D59</color>
+
+    <color name="progress_dialog_background">#203f54</color>
+    <color name="alert_dialog_background">#203f54</color>
+    <color name="alert_dialog_color_accent">#FFC107</color>
+</resources>
