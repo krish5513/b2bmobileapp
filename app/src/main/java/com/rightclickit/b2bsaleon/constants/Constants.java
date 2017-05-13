@@ -35,7 +35,7 @@ public class Constants {
     /* All Application Service URL's Listed Below */
 
     //Production
-    public static final String MAIN_URL = "https://test.unycare.com:8443";
+    public static final String MAIN_URL = "http://52.10.51.54:3003";
 
     public static final String APP_TYPE = "A";
 
@@ -45,5 +45,5 @@ public class Constants {
     public static final int ERROR = 400; // Bad Request. Error occurred while processing the request.
 
     //Log In
-    public static final String LOGIN_SERVICE = "/unycare/api/user/auth";
+    public static final String LOGIN_SERVICE = "/user/login";
 }
