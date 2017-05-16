@@ -1,14 +1,22 @@
 package com.rightclickit.b2bsaleon.models;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
+import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.OnAsyncRequestCompleteListener;
 import com.rightclickit.b2bsaleon.util.AsyncRequest;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONObject;
+
+import static com.rightclickit.b2bsaleon.util.NetworkConnectionDetector.displayNoNetworkError;
 
 /**
  * Created by venkat on 02/07/16.
@@ -18,10 +26,14 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
 
     private Context context;
     private LoginActivity activity;
+    private MMSharedPreferences mPreferences;
+    private DBHelper mDBHelper;
 
     public LogInModel(Context context, LoginActivity activity) {
         this.context = context;
         this.activity = activity;
+        this.mPreferences = new MMSharedPreferences(context);
+        this.mDBHelper = new DBHelper(context);
     }
 
     public void validateUserLogin(final String email, final String pwd) {
@@ -29,8 +41,8 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String logInURL = String.format("%s%s", Constants.MAIN_URL, Constants.LOGIN_SERVICE);
                 JSONObject params = new JSONObject();
-                params.put("userName", email);
-                params.put("password", pwd);
+                params.put("email", email.trim());
+                params.put("password", Utility.getMd5String(pwd.trim()));
 
                 AsyncRequest loginRequest = new AsyncRequest(context, this, logInURL, AsyncRequest.MethodType.POST, params);
                 loginRequest.execute();
@@ -45,14 +57,67 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
         try {
             System.out.println("========= response = " + response);
+            String id = "",userCode="",userName="",email="",phone="",
+                    profilePic="",stakeHolderId="",address="",deviceSync="",accessDevice="",backUp="";
             JSONObject logInResponse = new JSONObject(response);
-            if (logInResponse.getInt("status") == 200) {
-                activity.logInSuccess();
+            if (logInResponse.getInt("result_status") == 1) {
+                if(logInResponse.has("token")){
+                    mPreferences.putString("token",logInResponse.getString("token"));
+                }
+                if(logInResponse.has("_id")){
+                    id = logInResponse.getString("_id");
+                }
+                if(logInResponse.has("code")){
+                    userCode = logInResponse.getString("code");
+                }
+                if(logInResponse.has("first_name") || logInResponse.has("last_name")){
+                    userName = logInResponse.getString("first_name") + logInResponse.getString("last_name");
+                }
+                if(logInResponse.has("email")){
+                    email = logInResponse.getString("email");
+                }
+                if(logInResponse.has("phone")){
+                    phone = logInResponse.getString("phone");
+                }
+                if(logInResponse.has("avatar")){
+                    profilePic = logInResponse.getString("avatar");
+                }
+                if(logInResponse.has("stakeholder_id")){
+                    stakeHolderId = logInResponse.getString("stakeholder_id");
+                }
+                if(logInResponse.has("address")){
+                    address = logInResponse.getString("address");
+                }
+                if(logInResponse.has("device_sync")){
+                    deviceSync = logInResponse.getString("device_sync");
+                }
+                if(logInResponse.has("access_device")){
+                    accessDevice = logInResponse.getString("access_device");
+                }
+                if(logInResponse.has("back_up")){
+                    backUp = logInResponse.getString("back_up");
+                }
+
+                if(accessDevice.equals("YES")) {
+
+                    mDBHelper.insertUserDetails(id, userCode, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp);
+                    activity.logInSuccess();
+                }
             } else {
-                activity.logInError();
+                displayNoNetworkError(context);
+              //  activity.logInError();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+
+
+    }
+    public static void displayNoNetworkError(Context context) {
+        if (CustomProgressDialog.isProgressDialogShown)
+            CustomProgressDialog.hideProgressDialog();
+        CustomAlertDialog.showAlertDialog(context, "Access Denied", "Please Contact Administrater.");
     }
 }

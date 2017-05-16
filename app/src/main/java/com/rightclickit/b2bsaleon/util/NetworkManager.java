@@ -53,8 +53,8 @@ public class NetworkManager {
 
             // add reuqest header
             con.setRequestMethod("POST");
-            con.setRequestProperty("User-Agent", USER_AGENT);
-            con.setRequestProperty("Accept-Language", ACCEPT_LANGUAGE);
+            //con.setRequestProperty("User-Agent", USER_AGENT);
+            // con.setRequestProperty("Accept-Language", ACCEPT_LANGUAGE);
             con.setRequestProperty("Content-Type", CONTENT_TYPE);
 
             // Send post request

@@ -5,6 +5,8 @@ import android.content.res.Configuration;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -109,5 +111,35 @@ public class Utility {
             sb.setLength(sb.length() - 1);
 
         return sb.toString();
+    }
+
+    /**
+     *  Method to get md5 hash from the given string.
+     * @param s
+     * @return md5 hash string
+     */
+
+    public static String getMd5String(String s) {
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = null;
+            try {
+                digest = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i=0; i<messageDigest.length; i++)
+                hexString.append(Integer.toHexString(0xFF & messageDigest[i]));
+            return hexString.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
