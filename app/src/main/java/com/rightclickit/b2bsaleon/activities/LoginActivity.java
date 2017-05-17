@@ -86,6 +86,10 @@ public class LoginActivity extends Activity {
                 }
             });
 
+            if(sharedPreferences.getString("isLogin").equals("true")){
+                loadDashboard();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,7 +165,7 @@ public class LoginActivity extends Activity {
                 sharedPreferences.putString("emailId", emailId);
                 sharedPreferences.putString("password", password);
             }
-
+            sharedPreferences.putString("isLogin","true");
             loadDashboard();
 
         } catch (Exception e) {

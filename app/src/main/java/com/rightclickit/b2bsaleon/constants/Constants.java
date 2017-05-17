@@ -34,8 +34,18 @@ public class Constants {
 
     /* All Application Service URL's Listed Below */
 
+    /**
+     * Port number
+     */
+    public static final String PORT1 = "3003";
+
+    /**
+     * Port number 1
+     */
+    public static final String PORT2 = "3001";
+
     //Production
-    public static final String MAIN_URL = "http://52.10.51.54:3003";
+    public static final String MAIN_URL = "http://52.10.51.54:";
 
     public static final String APP_TYPE = "A";
 
@@ -47,5 +57,6 @@ public class Constants {
     //Log In
     public static final String LOGIN_SERVICE = "/user/login";
     public static final String ROUTEID_SERVICE = "/route/list";
+    public static final String GET_USER_PREVILEGES_SERVICE = "usergroup/form_list?";
 
 }
