@@ -32,7 +32,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             };
 
             if (new NetworkConnectionDetector(SplashScreenActivity.this).isNetworkConnected()) {
-                mHandler.postDelayed(mRunnable, 2000);
+                mHandler.postDelayed(mRunnable, 4000);
             }
 
         } catch (Exception e) {

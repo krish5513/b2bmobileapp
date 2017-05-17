@@ -24,14 +24,14 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+    //Volley Library
+    //Gson Library
+    // For Edit text's
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    testCompile 'junit:junit:4.12'
-    //Volley Library
     compile 'com.android.volley:volley:1.0.0'
-    //Gson Library
     compile 'com.google.code.gson:gson:2.7'
-    // For Edit text's
     compile 'com.github.scottyab:showhidepasswordedittext:0.6'
+    testCompile 'junit:junit:4.12'
 }
