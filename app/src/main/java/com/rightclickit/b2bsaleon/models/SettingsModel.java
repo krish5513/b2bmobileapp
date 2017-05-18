@@ -39,7 +39,7 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String settingsURL = String.format("%s%s%s", Constants.PORT1,Constants.MAIN_URL, Constants.ROUTEID_SERVICE);
                 JSONObject params = new JSONObject();
-                params.put("routeid", routeid.trim());
+              //  params.put("routeid", routeid.trim());
 
 
                 AsyncRequest routeidRequest = new AsyncRequest(context, this, settingsURL, AsyncRequest.MethodType.GET, params);
