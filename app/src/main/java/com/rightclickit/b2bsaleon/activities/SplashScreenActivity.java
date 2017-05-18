@@ -24,7 +24,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 public void run() {
                     mHandler.removeCallbacks(mRunnable);
 
-                    Intent logInPage = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                    Intent logInPage = new Intent(SplashScreenActivity.this, DashboardActivity.class);
                     logInPage.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(logInPage);
                     finish();
@@ -32,7 +32,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             };
 
             if (new NetworkConnectionDetector(SplashScreenActivity.this).isNetworkConnected()) {
-                mHandler.postDelayed(mRunnable, 4000);
+                mHandler.postDelayed(mRunnable, 2000);
             }
 
         } catch (Exception e) {

@@ -24,9 +24,10 @@
         <activity
             android:name=".activities.LoginActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activitygit
+        <activity
             android:name=".activities.DashboardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity android:name=".activities.SettingsActivity"></activity>
     </application>
 
 </manifest>

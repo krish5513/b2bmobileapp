@@ -171,11 +171,11 @@ public class LoginActivity extends Activity {
 
     public void loadDashboard() {
         Intent mainActivityIntent = new Intent(LoginActivity.this, DashboardActivity.class);
-        mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+       // mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         //mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // if you keep these flags white screen is coming on Intent navigation
         startActivity(mainActivityIntent);
-        //finish();
-        overridePendingTransition(0, R.anim.bottom_out);
+        finish();
+        //overridePendingTransition(0, R.anim.bottom_out);
     }
 }
 
