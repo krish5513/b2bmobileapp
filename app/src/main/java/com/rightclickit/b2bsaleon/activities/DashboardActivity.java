@@ -44,6 +44,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.notifications) {
+            loadNotifications();
             Toast.makeText(this, "Clicked on Notifications...", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -56,6 +57,28 @@ public class DashboardActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void loadNotifications() {
+        Intent navigationIntent = new Intent(DashboardActivity.this, NotificationsActivity.class);
+        // mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        //mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // if you keep these flags white screen is coming on Intent navigation
+        startActivity(navigationIntent);
+        finish();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+
+        menu.findItem(R.id.notifications).setVisible(true);
+        menu.findItem(R.id.settings).setVisible(true);
+        menu.findItem(R.id.logout).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
+
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
 
     private void loadSettings() {
         Intent settingsIntent = new Intent(DashboardActivity.this, SettingsActivity.class);

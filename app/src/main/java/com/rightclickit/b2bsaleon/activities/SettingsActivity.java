@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
@@ -89,6 +92,12 @@ public class SettingsActivity extends AppCompatActivity {
             this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
+            final ActionBar actionBar = getSupportActionBar();
+            assert actionBar != null;
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
+
             companyName = (EditText) findViewById(R.id.tv_companyName);
 
             region = (EditText) findViewById(R.id.tv_region);
@@ -106,6 +115,8 @@ public class SettingsActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     saveValidation();
                 }
+
+
 
                 private void saveValidation() {
 
@@ -218,6 +229,75 @@ public class SettingsActivity extends AppCompatActivity {
             e.printStackTrace();
 
         }
+
+
+
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.notifications) {
+            loadNotifications();
+            Toast.makeText(this, "Clicked on Notifications...", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if (id == R.id.logout) {
+
+            loadLogout();
+            Toast.makeText(this, "Clicked on Settings...", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return true;
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, DashboardActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+
+
+    private void loadLogout() {
+        Intent loginIntent=new Intent(SettingsActivity.this,LoginActivity.class);
+        startActivity(loginIntent);
+        finish();
+    }
+
+    private void loadNotifications() {
+        Intent notificationsIntent=new Intent(SettingsActivity.this,NotificationsActivity.class);
+        startActivity(notificationsIntent);
+        finish();
+    }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+
+        menu.findItem(R.id.notifications).setVisible(true);
+        menu.findItem(R.id.settings).setVisible(false);
+        menu.findItem(R.id.logout).setVisible(true);
+        menu.findItem(R.id.action_search).setVisible(false);
+
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     public void authenticateUser(String routeid) {
@@ -225,4 +305,6 @@ public class SettingsActivity extends AppCompatActivity {
         settingsmodel.validateSettings(routeid);
 
     }
+
+
 }

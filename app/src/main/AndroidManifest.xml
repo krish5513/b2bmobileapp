@@ -27,7 +27,8 @@
         <activity
             android:name=".activities.DashboardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name=".activities.SettingsActivity"></activity>
+        <activity android:name=".activities.SettingsActivity" />
+        <activity android:name=".activities.NotificationsActivity"></activity>
     </application>
 
 </manifest>
