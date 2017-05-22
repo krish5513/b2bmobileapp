@@ -24,7 +24,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 public void run() {
                     mHandler.removeCallbacks(mRunnable);
 
-                    Intent logInPage = new Intent(SplashScreenActivity.this, DashboardActivity.class);
+                    Intent logInPage = new Intent(SplashScreenActivity.this, LoginActivity.class);
                     logInPage.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(logInPage);
                     finish();

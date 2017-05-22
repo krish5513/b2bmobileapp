@@ -12,6 +12,7 @@
     <string name="password_field_required">Please enter password.</string>
     <string name="error_invalid_email">Please enter valid email address.</string>
     <string name="login_response_invalid_login">Invalid login credentials.</string>
+    <string name="login_response_contact_admin_login">Please contact administrator.</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

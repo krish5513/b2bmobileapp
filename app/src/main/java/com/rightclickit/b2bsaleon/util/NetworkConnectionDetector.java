@@ -50,9 +50,9 @@ public class NetworkConnectionDetector {
                     }
         }
 
-        if (!status) {
-            displayNoNetworkError(_context);
-        }
+//        if (!status) {
+//            displayNoNetworkError(_context);
+//        }
         return status;
     }
 

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -23,10 +24,16 @@ public class DBHelper extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "B2BSaleOn";
 
-    // DeviceDetails Table - This table contains all device specific details
+    // UserDetails Table - This table contains all user specific details
     private final String TABLE_USERDETAILS = "userdetails";
 
-    // Column names
+    // Routes Details Table - This table contains all Routes details
+    private final String TABLE_ROUTESDETAILS = "routesdetails";
+
+    // User previleges - User Activity table
+    private final String TABLE_PREVILEGES_USER_ACTIVITY = "user_activity";
+
+    // Column names for User Table
     private final String KEY_USER_ID = "user_id";
     private final String KEY_USER_CODE = "user_code";
     private final String KEY_NAME = "name";
@@ -38,6 +45,20 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_DEVICE_SYNC = "device_sync";
     private final String KEY_ACCESS_DEVICE = "access_device";
     private final String KEY_BACKUP = "backup";
+    private final String KEY_ROUTEIDS = "route_ids";
+
+    // Column names for Routes  Table
+    private final String KEY_ROUTE_ID = "route_id";
+    private final String KEY_ROUTE_NAME = "route_name";
+    private final String KEY_REGION_NAME = "region_name";
+    private final String KEY_OFFICE_NAME = "office_name";
+
+    // Column names for User activity  Table
+    private final String KEY_USER_ACTIVITY_ID = "user_activity_id";
+    private final String KEY_USER_ACTIVITY_USER_ID = "user_activity_id";
+    private final String KEY_USER_ACTIVITY_TAG = "user_activity_tag";
+    private final String KEY_USER_ACTIVITY_STATUS = "user_activity_status";
+
 
     // Userdetails Table Create Statements
     private final String CREATE_TABLE_USERDETAILS = "CREATE TABLE IF NOT EXISTS "
@@ -46,107 +67,18 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_PHONE_NUMBER + " VARCHAR," + KEY_AVATAR + " VARCHAR,"
             + KEY_STAKEHOLDER_ID + " VARCHAR," + KEY_ADRESS + " VARCHAR," + KEY_DEVICE_SYNC
             + " VARCHAR, " + KEY_ACCESS_DEVICE
-            + " VARCHAR, " + KEY_BACKUP + " VARCHAR)";
+            + " VARCHAR, " + KEY_BACKUP
+            + " VARCHAR, " + KEY_ROUTEIDS + " VARCHAR)";
 
-    // DeviceTracking Table - This table contains all location data which we captured on time intervals and before start a trip
-    private final String TABLE_DEVICE_TRACKING_DETAILS = "devicetrackingdetails";
+    // Routes Table Create Statements
+    private final String CREATE_TABLE_ROUTES = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_ROUTESDETAILS + "(" + KEY_ROUTE_ID + " VARCHAR," + KEY_ROUTE_NAME + " VARCHAR,"
+            + KEY_REGION_NAME + " VARCHAR," + KEY_OFFICE_NAME + " VARCHAR)";
 
-    private final String C_DEVICE_TRACKING_ID = "id";
-    private final String C_DEVICE_TRACKING_LAT = "lattitude";
-    private final String C_DEVICE_TRACKING_LONG = "longitude";
-    private final String C_DEVICE_TRACKING_ALTITUDE = "altitude";
-    private final String C_DEVICE_TRACKING_SPEED = "speed";
-    private final String C_DEVICE_TRACKING_ADDRESS = "address";
-    private final String C_DEVICE_TRACKING_TIME = "time";
-
-    private final String CREATE_TABLE_DEVICE_TRACKING = "CREATE TABLE IF NOT EXISTS " + TABLE_DEVICE_TRACKING_DETAILS +
-            "(" + C_DEVICE_TRACKING_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + C_DEVICE_TRACKING_LAT + " TEXT, " + C_DEVICE_TRACKING_LONG + " TEXT, " +
-            C_DEVICE_TRACKING_ALTITUDE + " TEXT, "+ C_DEVICE_TRACKING_SPEED + " TEXT, " + C_DEVICE_TRACKING_ADDRESS + " TEXT, " + C_DEVICE_TRACKING_TIME + " TEXT)";
-
-    // Trips Table - This table contains all trips
-    private final String TABLE_TRIPS = "trips";
-
-    private final String C_TRIP_ID = "id";
-    private final String C_TRIP_SOURCE = "source";
-    private final String C_TRIP_DESTINATION = "destination";
-    private final String C_TRIP_ST_TIME = "sttime";
-    private final String C_TRIP_END_TIME = "endtime";
-    private final String C_TRIP_SOURCE_LAT = "sourcelat";
-    private final String C_TRIP_SOURCE_LONG = "sourcelong";
-    private final String C_TRIP_DEST_LAT = "destlat";
-    private final String C_TRIP_DEST_LONG = "destlong";
-    private final String C_TRIP_DISTANCE = "distance";
-    private final String C_TRIP_DURATION = "duration"; // in minutes
-    private final String C_TRIP_TOTAL_FARE = "totalfare";
-    private final String C_TRIP_DESTINATION_IMAGE = "destinationimage";
-    private final String C_TRIP_SENSOR_IMAGE = "sensorimage";
-    private final String C_TRIP_STATUS = "status"; // in order to maintain trip status i.e. completed or on trip and default value 0
-    private final String C_TRIP_HAS_UPLOADED_TO_SERVER = "uploaded"; // in order to check weather this trip has uploaded to server or not
-    private final String C_TRIP_BASEFARE = "basefare";
-    private final String C_TRIP_PROGRESSIVEFARE = "progressivefare";
-    private final String C_TRIP_AFTER_DISTANCE = "afterdistance";
-    private final String C_TRIP_MEASUREMENT = "measurement"; // in order to get trip measurement in future also. bcoz there may be a chance to change that by admin.
-    private final String C_TRIP_IS_DESTINATION_IMAGE_UPLOADED = "isDestinationImageUploaded";
-    private final String C_TRIP_IS_SENSOR_IMAGE_UPLOADED = "isSensorImageUploaded";
-    private final String C_TRIP_EDEST_NAME = "edestname";
-    private final String C_TRIP_EDEST_ADDRESS = "edestaddress";
-    private final String C_TRIP_EDEST_LAT = "edestlat";
-    private final String C_TRIP_EDEST_LONG = "edestlong";
-    private final String C_TRIP_EDISTANCE = "edistance";
-    private final String C_TRIP_EFARE = "efare";
-
-    private final String CREATE_TABLE_TRIPS = "CREATE TABLE IF NOT EXISTS " + TABLE_TRIPS +
-            "(" + C_TRIP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + C_TRIP_SOURCE + " TEXT, " +
-            C_TRIP_DESTINATION + " TEXT, " + C_TRIP_ST_TIME + " TEXT, "+ C_TRIP_END_TIME + " TEXT, " +
-            C_TRIP_SOURCE_LAT + " TEXT, " + C_TRIP_SOURCE_LONG + " TEXT, "+ C_TRIP_DEST_LAT + " TEXT, " + C_TRIP_DEST_LONG + " TEXT, " +
-            C_TRIP_DISTANCE + " TEXT, " + C_TRIP_DURATION + " TEXT, " + C_TRIP_TOTAL_FARE + " TEXT, " + C_TRIP_DESTINATION_IMAGE + " TEXT, " +
-            C_TRIP_SENSOR_IMAGE + " TEXT, " + C_TRIP_STATUS + " INTEGER DEFAULT 0, " + C_TRIP_HAS_UPLOADED_TO_SERVER + " INTEGER DEFAULT 0, " +
-            C_TRIP_BASEFARE + " TEXT, " + C_TRIP_PROGRESSIVEFARE + " TEXT, " + C_TRIP_AFTER_DISTANCE + " TEXT, " + C_TRIP_MEASUREMENT + " TEXT, " +
-            C_TRIP_IS_DESTINATION_IMAGE_UPLOADED + " INTEGER DEFAULT 0, " + C_TRIP_IS_SENSOR_IMAGE_UPLOADED + " INTEGER DEFAULT 0, " +
-            C_TRIP_EDEST_NAME + " TEXT, " + C_TRIP_EDEST_ADDRESS + " TEXT, "+ C_TRIP_EDEST_LAT + " TEXT, " + C_TRIP_EDEST_LONG + " TEXT, " +
-            C_TRIP_EDISTANCE + " TEXT, " + C_TRIP_EFARE + " TEXT)";
-
-    //Trip Details Table - This table contains all location data which we captured on time interval once trip started i.e. after starting a trip
-    private final String TABLE_TRIP_DETAILS = "tripdetails";
-
-    private final String C_TRIP_DETAILS_ID = "id";
-    private final String C_TRIP_DETAILS_TRIP_ID = "tripid";
-    private final String C_TRIP_DETAILS_LAT = "lattitude";
-    private final String C_TRIP_DETAILS_LONG = "longitude";
-    private final String C_TRIP_DETAILS_ALTITUDE = "altitude";
-    private final String C_TRIP_DETAILS_SPEED = "speed";
-    private final String C_TRIP_DETAILS_ADDRESS = "address";
-    private final String C_TRIP_DETAILS_TIME = "time";
-
-    private final String CREATE_TABLE_TRIP_DETAILS = "CREATE TABLE IF NOT EXISTS " + TABLE_TRIP_DETAILS + "(" + C_TRIP_DETAILS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            C_TRIP_DETAILS_TRIP_ID + " INTEGER, " + C_TRIP_DETAILS_LAT + " TEXT, " + C_TRIP_DETAILS_LONG + " TEXT, " + C_TRIP_DETAILS_ALTITUDE + " TEXT, " +
-            C_TRIP_DETAILS_SPEED + " TEXT, " + C_TRIP_DETAILS_ADDRESS + " TEXT, " + C_TRIP_DETAILS_TIME + " TEXT)";
-
-    //Trip Distance Table - This table contains distance b/w 2 consecutive latitude longitude after trip started
-    private final String TABLE_DISTANCES = "tripdistances";
-
-    private final String C_DISTANCES_ID = "id";
-    private final String C_DISTANCES_TRIP_ID = "tripid";
-    private final String C_DISTANCES_LAT = "lattitude";
-    private final String C_DISTANCES_LONG = "longitude";
-    private final String C_DISTANCE = "distance";
-    private final String C_DISTANCES_CREATEDTIME = "createdtime";
-
-    private final String CREATE_TABLE_DISTANCES = "CREATE TABLE IF NOT EXISTS " + TABLE_DISTANCES + "(" + C_DISTANCES_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            C_DISTANCES_TRIP_ID + " INTEGER, " + C_DISTANCES_LAT + " TEXT, " + C_DISTANCES_LONG + " TEXT, " + C_DISTANCE + " FLOAT, "+ C_DISTANCES_CREATEDTIME + " TEXT)";
-
-    //Panic Data Table - This table contains all auto captured images & recorded voices when we click on panic button
-    private final String TABLE_PANIC_DATA = "panicdata";
-
-    private final String C_PANIC_DATA_ID = "id";
-    private final String C_PANIC_DATA_TRIP_ID = "tripid"; //any active trip id when we click on panic button o/w this value is 0
-    private final String C_PANIC_DATA_FILENAME = "filename";
-    private final String C_PANIC_DATA_FILETYPE = "filetype"; //image or audio
-    private final String C_PANIC_DATA_HAS_UPLOADED = "uploaded"; // in order to check weather this file has uploaded to server or not
-    private final String C_PANIC_DATA_TIMESTAMP = "createdtime";
-
-    private final String CREATE_TABLE_PANIC_DATA = "CREATE TABLE IF NOT EXISTS " + TABLE_PANIC_DATA + "(" + C_PANIC_DATA_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            C_PANIC_DATA_TRIP_ID + " INTEGER DEFAULT 0, " + C_PANIC_DATA_FILENAME + " TEXT, " + C_PANIC_DATA_FILETYPE + " TEXT, " + C_PANIC_DATA_TIMESTAMP + " TEXT, " + C_PANIC_DATA_HAS_UPLOADED + " INTEGER DEFAULT 0)";
+    // User activity Table Create Statements
+    private final String CREATE_TABLE_USER_ACTIVITY = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_PREVILEGES_USER_ACTIVITY + "(" + KEY_USER_ACTIVITY_ID + " VARCHAR," + KEY_USER_ACTIVITY_USER_ID + " VARCHAR,"
+            + KEY_USER_ACTIVITY_TAG + " VARCHAR," + KEY_USER_ACTIVITY_STATUS + " VARCHAR)";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -156,11 +88,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         try {
             db.execSQL(CREATE_TABLE_USERDETAILS);
-            db.execSQL(CREATE_TABLE_DEVICE_TRACKING);
-            db.execSQL(CREATE_TABLE_TRIPS);
-            db.execSQL(CREATE_TABLE_TRIP_DETAILS);
-            db.execSQL(CREATE_TABLE_DISTANCES);
-            db.execSQL(CREATE_TABLE_PANIC_DATA);
+            db.execSQL(CREATE_TABLE_ROUTES);
+         //   db.execSQL(CREATE_TABLE_USER_ACTIVITY);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -169,15 +98,12 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try {
-            /*db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_DEVICEDETAILS);
-            db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_DEVICE_TRACKING);
-            db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_TRIPS);
-            db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_TRIP_DETAILS);
-            db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_DISTANCES);
-            db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_PANIC_DATA);
+            db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USERDETAILS);
+            db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_ROUTES);
+          //  db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USER_ACTIVITY);
 
             // create new tables
-            onCreate(db); */
+            onCreate(db);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -198,7 +124,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param accessDevice
      * @param backUp
      */
-    public void insertUserDetails(String id, String userCode, String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp) {
+    public void insertUserDetails(String id, String userCode, String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp,String routeArrayListString) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
@@ -213,6 +139,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_DEVICE_SYNC, deviceSync);
             values.put(KEY_ACCESS_DEVICE, accessDevice);
             values.put(KEY_BACKUP, backUp);
+            values.put(KEY_ROUTEIDS,routeArrayListString);
 
             // insert row
             db.insert(TABLE_USERDETAILS, null, values);
@@ -225,34 +152,46 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Method to get device unique id
-     *
-     * @return uniqueid
+     * Method to get the users data
+     * @return user data in list form.
      */
-    public String getDeviceUniqueId() {
-        String uniqueId = "";
+    public HashMap<String,String> getUsersData(){
+        HashMap<String,String> userData = new HashMap<String,String>();
         try {
-            String query = "SELECT  * FROM " + TABLE_USERDETAILS;
+            String selectQuery = "SELECT  * FROM " + TABLE_USERDETAILS;
 
-            SQLiteDatabase db = this.getWritableDatabase();
-            Cursor cursor = db.rawQuery(query, null);
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
 
-            if (cursor.moveToFirst()) {
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
                 do {
-                    uniqueId = cursor.getString(0);
-                } while (cursor.moveToNext());
+                    userData.put(KEY_USER_ID,(c.getString(c.getColumnIndex(KEY_USER_ID))));
+                    userData.put(KEY_NAME,(c.getString(c.getColumnIndex(KEY_NAME))));
+                    userData.put(KEY_EMAIL,(c.getString(c.getColumnIndex(KEY_EMAIL))));
+                    userData.put(KEY_PHONE_NUMBER,(c.getString(c.getColumnIndex(KEY_PHONE_NUMBER))));
+                    userData.put(KEY_ADRESS,(c.getString(c.getColumnIndex(KEY_ADRESS))));
+                    userData.put(KEY_ACCESS_DEVICE,(c.getString(c.getColumnIndex(KEY_ACCESS_DEVICE))));
+                    userData.put(KEY_DEVICE_SYNC,(c.getString(c.getColumnIndex(KEY_DEVICE_SYNC))));
+                    userData.put(KEY_BACKUP,(c.getString(c.getColumnIndex(KEY_BACKUP))));
+                    userData.put(KEY_ROUTEIDS,(c.getString(c.getColumnIndex(KEY_ROUTEIDS))));
+
+                } while (c.moveToNext());
             }
+
+            c.close();
+            db.close();
         } catch (Exception e){
             e.printStackTrace();
         }
 
-        return uniqueId;
+        return userData;
     }
 
     /**
-     * Method to get count of the device details table
+     * Method to get count of the user details table
      */
-    public int getDeviceDetailsTableCount() {
+    public int getUserDetailsTableCount() {
         int noOfEvents = 0;
         try {
             String countQuery = "SELECT * FROM " + TABLE_USERDETAILS;
@@ -270,17 +209,224 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Method to clear values in device details table
+     * Method to get the user id
+     * @return route id
      */
-    public void deleteValuesFromDeviceDetailsTable() {
+    public int getUserId(String emailId){
+        int routeId = 0;
+        try {
+            String query = "SELECT  * FROM " + TABLE_USERDETAILS+ " WHERE "+ KEY_EMAIL +" = " + "'"+emailId+"'";
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    routeId = Integer.parseInt(cursor.getString(0));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return routeId;
+    }
+
+    /**
+     * Method to clear values in user details table
+     */
+    public void deleteValuesFromUserDetailsTable() {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             db.delete(TABLE_USERDETAILS, null, null);
-            db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE name='" + TABLE_USERDETAILS + "'");
+            // db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE name='" + TABLE_USERDETAILS + "'");
             db.close();
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Method to insert user details
+     *
+     * @param routeId
+     * @param routeName
+     */
+    public void insertRoutesDetails(String routeId, String routeName,String regionName,String officeName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_ROUTE_ID, routeId);
+            values.put(KEY_ROUTE_NAME, routeName);
+            values.put(KEY_REGION_NAME, regionName);
+            values.put(KEY_OFFICE_NAME, officeName);
+
+            // insert row
+            db.insert(TABLE_ROUTESDETAILS, null, values);
+            System.out.println("F*********** INSERTED***************88");
+            values.clear();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    /**
+     * Method to get the routes data
+     * @return list of routes data
+     */
+    public List<String> getRoutesMasterData(){
+        List<String> routesMasterData = new ArrayList<String>();
+        String dbValue = "";
+        System.out.println("Routes Data Size::: "+routesMasterData.size());
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_ROUTESDETAILS;
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ====");
+                    System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ===="+c.getString(0));
+                    System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ===="+c.getString(1));
+                    System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ===="+c.getString(2));
+                    System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ===="+c.getString(3));
+                    routesMasterData.add((c.getString(c.getColumnIndex(KEY_ROUTE_ID))));
+                    routesMasterData.add((c.getString(c.getColumnIndex(KEY_ROUTE_NAME))));
+                    routesMasterData.add((c.getString(c.getColumnIndex(KEY_REGION_NAME))));
+                    routesMasterData.add((c.getString(c.getColumnIndex(KEY_OFFICE_NAME))));
+
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("Routes Data Final Size::: "+routesMasterData.size());
+        return routesMasterData;
+    }
+
+    /**
+     * Method to get the route id
+     * @return route id
+     */
+    public String getRouteId(){
+        String routeId = "";
+        try {
+            String query = "SELECT  * FROM " + TABLE_ROUTESDETAILS;
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    routeId = cursor.getString(0);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return routeId;
+    }
+
+    /**
+     * Method to clear values in routes table
+     */
+    public void deleteValuesFromRoutesTable() {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_ROUTESDETAILS, null, null);
+           // db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE name='" + TABLE_ROUTESDETAILS + "'");
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+        /**
+     * Method to fetch trip by id
+     */
+    public List<String> getRouteDataByRouteId(String routeId){
+        List<String> routeDetailsById = new ArrayList<String>();
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_ROUTESDETAILS + " WHERE "+ KEY_ROUTE_ID +" = " + "'"+routeId+"'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+             if (c.moveToFirst()) {
+                do {
+                    routeDetailsById.add((c.getString(c.getColumnIndex(KEY_ROUTE_ID))));
+                    routeDetailsById.add((c.getString(c.getColumnIndex(KEY_ROUTE_NAME))));
+                    routeDetailsById.add((c.getString(c.getColumnIndex(KEY_REGION_NAME))));
+                    routeDetailsById.add((c.getString(c.getColumnIndex(KEY_OFFICE_NAME))));
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("ASDDDDDDDDAD"+routeDetailsById.size());
+        return routeDetailsById;
+    }
+
+    /**
+     * Method to insert the user activity data.
+     * @param userActId
+     * @param userId
+     * @param usetActTag
+     * @param userActStatus
+     */
+    public void insertUserActivityDetails(String userActId, String userId,String usetActTag,String userActStatus) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_USER_ACTIVITY_ID, userActId);
+            values.put(KEY_USER_ACTIVITY_USER_ID, userId);
+            values.put(KEY_USER_ACTIVITY_TAG, usetActTag);
+            values.put(KEY_USER_ACTIVITY_STATUS, userActStatus);
+
+            // insert row
+            db.insert(TABLE_PREVILEGES_USER_ACTIVITY, null, values);
+            System.out.println("F*********** INSERTED***************88");
+            values.clear();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    /**
+     * Method to fetch user activity by user id
+     */
+    public String getUserActivityDetailsByUserId(String userId){
+        String userActivitySetupStatus="";
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_PREVILEGES_USER_ACTIVITY + " WHERE "+ KEY_USER_ACTIVITY_USER_ID +" = " + "'"+userId+"'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    userActivitySetupStatus = c.getString(c.getColumnIndex(KEY_USER_ACTIVITY_STATUS));
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return userActivitySetupStatus;
     }
 
     /**

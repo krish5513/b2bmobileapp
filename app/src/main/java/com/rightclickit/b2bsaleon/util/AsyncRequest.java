@@ -8,8 +8,11 @@ import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.interfaces.OnAsyncRequestCompleteListener;
+import com.rightclickit.b2bsaleon.models.PrevilegesModel;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 /**
  * Created by venkat on 21/06/16.
@@ -20,8 +23,11 @@ public class AsyncRequest extends AsyncTask<Void, Void, String> {
     Context context;
     String requestURL = null;
     JSONObject parameters = null;
+    HashMap<String,String> parameteres1=null;
     MethodType methodType = MethodType.GET;
     Constants.RequestCode requestCode = null;
+    boolean isUrlEncode = false;
+
 
     public enum MethodType {
         GET,
@@ -64,7 +70,20 @@ public class AsyncRequest extends AsyncTask<Void, Void, String> {
         this.methodType = method;
         this.parameters = params;
         this.requestCode = reqCode;
+        isUrlEncode = false;
     }
+
+    public AsyncRequest(Context context, OnAsyncRequestCompleteListener listener, String url, MethodType method, HashMap<String,String> params) {
+        this.listener = listener;
+        this.context = context;
+        this.requestURL = url;
+        this.methodType = method;
+        this.parameteres1 = params;
+        isUrlEncode = true;
+    }
+
+//    public AsyncRequest(Context context, PrevilegesModel previlegesModel, String settingsURL, MethodType post, HashMap<String, String> params) {
+//    }
 
     public void setListener(OnAsyncRequestCompleteListener listener) {
         this.listener = listener;
@@ -72,9 +91,9 @@ public class AsyncRequest extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPreExecute() {
-        /*if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-            //CustomProgressDialog.showProgressDialog(context, context.getResources().getString(R.string.loading_message));
-        }*/
+        if (new NetworkConnectionDetector(context).isNetworkConnected()) {
+            CustomProgressDialog.showProgressDialog(context, context.getResources().getString(R.string.loading_message));
+        }
     }
 
     @Override
@@ -82,7 +101,11 @@ public class AsyncRequest extends AsyncTask<Void, Void, String> {
         String response = null;
         try {
             if (methodType == MethodType.POST) {
-                response = new NetworkManager().makeHttpPostConnection(requestURL, parameters);
+                if(isUrlEncode){
+                    response = new NetworkManager().makeHttpPostConnectionWithUrlEncoeContentType(requestURL, parameteres1);
+                }else {
+                    response = new NetworkManager().makeHttpPostConnection(requestURL, parameters);
+                }
             } else {
                 response = new NetworkManager().makeHttpGetConnection(requestURL);
             }

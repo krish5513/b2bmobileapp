@@ -13,8 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.SplashScreenActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden">
+            android:name="com.rightclickit.b2bsaleon.activities.SplashScreenActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,13 +23,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LoginActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden" />
+            android:name="com.rightclickit.b2bsaleon.activities.LoginActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".activities.DashboardActivity"
+            android:name="com.rightclickit.b2bsaleon.activities.DashboardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name=".activities.SettingsActivity" />
-        <activity android:name=".activities.NotificationsActivity"></activity>
+        <activity android:name="com.rightclickit.b2bsaleon.activities.SettingsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.rightclickit.b2bsaleon.activities.NotificationsActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <!-- Routes data sync service -->
+        <service
+            android:name="com.rightclickit.b2bsaleon.services.SyncRoutesMasterDetailsService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

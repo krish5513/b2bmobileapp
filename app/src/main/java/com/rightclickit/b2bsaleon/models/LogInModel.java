@@ -14,6 +14,7 @@ import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import static com.rightclickit.b2bsaleon.util.NetworkConnectionDetector.displayNoNetworkError;
@@ -39,7 +40,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
     public void validateUserLogin(final String email, final String pwd) {
         try {
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-                String logInURL = String.format("%s%s%s", Constants.PORT1,Constants.MAIN_URL, Constants.LOGIN_SERVICE);
+                String logInURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_LOGIN, Constants.LOGIN_SERVICE);
                 JSONObject params = new JSONObject();
                 params.put("email", email.trim());
                 params.put("password", Utility.getMd5String(pwd.trim()));
@@ -58,13 +59,14 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
         try {
             System.out.println("========= response = " + response);
             String id = "",userCode="",userName="",email="",phone="",
-                    profilePic="",stakeHolderId="",address="",deviceSync="",accessDevice="",backUp="";
+                    profilePic="",stakeHolderId="",address="",deviceSync="",accessDevice="",backUp="",routeArrayListString="";
             JSONObject logInResponse = new JSONObject(response);
             if (logInResponse.getInt("result_status") == 1) {
                 if(logInResponse.has("token")){
                     mPreferences.putString("token",logInResponse.getString("token"));
                 }
                 if(logInResponse.has("_id")){
+                    mPreferences.putString("userId",logInResponse.getString("_id"));
                     id = logInResponse.getString("_id");
                 }
                 if(logInResponse.has("code")){
@@ -97,11 +99,22 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                 if(logInResponse.has("back_up")){
                     backUp = logInResponse.getString("back_up");
                 }
+                if (logInResponse.has("route_id")){
+                    JSONArray routesArray = logInResponse.getJSONArray("route_id");
+                    JSONObject json = new JSONObject();
+                    json.put("routeArray", routesArray);
+                    routeArrayListString = json.toString();
+                   // System.out.println("Routes Array List Is:: "+ routeArrayList);
+                }
 
                 if(accessDevice.equals("YES")) {
-
-                    mDBHelper.insertUserDetails(id, userCode, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp);
+                    if(mDBHelper.getUserDetailsTableCount()>0) {
+                        mDBHelper.deleteValuesFromUserDetailsTable();
+                    }
+                    mDBHelper.insertUserDetails(id, userCode, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp,routeArrayListString);
                     activity.logInSuccess();
+                }else {
+                    displayNoNetworkError(context);
                 }
             } else {
                 displayNoNetworkError(context);

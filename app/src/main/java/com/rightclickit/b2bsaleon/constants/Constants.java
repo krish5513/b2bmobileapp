@@ -37,12 +37,17 @@ public class Constants {
     /**
      * Port number
      */
-    public static final String PORT1 = "3003";
+    public static final String PORT_LOGIN = "3003";
 
     /**
      * Port number 1
      */
-    public static final String PORT2 = "3001";
+    public static final String PORT_ROUTES_MASTER_DATA = "3000";
+
+    /**
+     * Port for user previleges.
+     */
+    public static final String PORT_USER_PREVILEGES = "3001";
 
     //Production
     public static final String MAIN_URL = "http://52.10.51.54:";
@@ -56,7 +61,9 @@ public class Constants {
 
     //Log In
     public static final String LOGIN_SERVICE = "/user/login";
+    // Routes List master
     public static final String ROUTEID_SERVICE = "/route/list";
-    public static final String GET_USER_PREVILEGES_SERVICE = "usergroup/form_list?";
+    // User previleges
+    public static final String GET_USER_PREVILEGES_SERVICE = "/usergroup/form_list?";
 
 }

@@ -17,8 +17,11 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.LogInModel;
+import com.rightclickit.b2bsaleon.models.PrevilegesModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 /**
@@ -37,7 +40,10 @@ public class LoginActivity extends Activity {
     private String emailId, password;
     private boolean isAutoLogIn = false;
 
+    private DBHelper mDBHelper;
+
     LogInModel logInModel;
+    PrevilegesModel previlegesModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +51,14 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
         try {
+            mDBHelper = new DBHelper(LoginActivity.this);
             applicationContext = getApplicationContext();
             activityContext = LoginActivity.this;
 
             sharedPreferences = new MMSharedPreferences(applicationContext);
 
             logInModel = new LogInModel(activityContext, this);
+            previlegesModel = new PrevilegesModel(activityContext,this);
 
             mEmailView = (EditText) findViewById(R.id.user_name);
             mEmailView.requestFocus();
@@ -143,7 +151,22 @@ public class LoginActivity extends Activity {
             // There was an error; don't attempt login and focus the first form field with an error.
             focusView.requestFocus();
         } else {
-            authenticateUser(emailId, password);
+            if (new NetworkConnectionDetector(LoginActivity.this).isNetworkConnected()) {
+                authenticateUser(emailId, password);
+            }else if (mDBHelper.getUserDetailsTableCount()>0){
+                // Data is there and do actions..
+                int userId = mDBHelper.getUserId(emailId);
+                if(userId>0){
+                    // User exists and do actions..
+                    logInSuccess();
+                }
+                else {
+                    // The entered user is different...
+                    LogInModel.displayNoNetworkError(LoginActivity.this);
+                }
+            }else {
+                LogInModel.displayNoNetworkError(LoginActivity.this);
+            }
         }
     }
 
@@ -166,7 +189,11 @@ public class LoginActivity extends Activity {
                 sharedPreferences.putString("password", password);
             }
             sharedPreferences.putString("isLogin","true");
-            loadDashboard();
+
+            // Call Previleges API
+            previlegesModel.getUserPrevileges();
+
+           // loadDashboard();
 
         } catch (Exception e) {
             e.printStackTrace();

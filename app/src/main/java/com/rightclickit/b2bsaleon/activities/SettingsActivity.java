@@ -1,10 +1,13 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,10 +25,18 @@ import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.LogInModel;
 import com.rightclickit.b2bsaleon.models.SettingsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class SettingsActivity extends AppCompatActivity {
     EditText userName;
@@ -53,6 +64,10 @@ public class SettingsActivity extends AppCompatActivity {
     Button saveInfo;
     public static Toolbar toolbar;
     String str_companyName, str_userName, str_mobileNo, str_region, str_salesOffice, str_routeNo, str_vehicleNo, str_transporter, str_devicesync, str_accessdevice, str_backup;
+
+    private DBHelper mDBHelper;
+
+    private String mRouteName = "",mRegionName = "",mOfficeName="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,20 +98,16 @@ public class SettingsActivity extends AppCompatActivity {
 
             this.getSupportActionBar().setTitle("SETTINGS");
             this.getSupportActionBar().setSubtitle(null);
-
-
             this.getSupportActionBar().setLogo(R.drawable.ic_settings_white_24dp);
-
+            this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
             this.getSupportActionBar().setDisplayUseLogoEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
-            final ActionBar actionBar = getSupportActionBar();
-            assert actionBar != null;
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-
+//            final ActionBar actionBar = getSupportActionBar();
+//            assert actionBar != null;
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
             companyName = (EditText) findViewById(R.id.tv_companyName);
 
@@ -225,6 +236,69 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
 
+            mDBHelper = new DBHelper(SettingsActivity.this);
+
+            HashMap<String,String> userMapData = mDBHelper.getUsersData();
+            System.out.println("The User Data NAME Is:: "+userMapData.get("name"));
+            System.out.println("The User Data PHONE Is:: "+userMapData.get("phone"));
+            System.out.println("The User Data DEVICE SYNC Is:: "+userMapData.get("device_sync"));
+            System.out.println("The User Data BACKUP Is:: "+userMapData.get("backup"));
+            System.out.println("The User Data ACCESS DEVICE Is:: "+userMapData.get("access_device"));
+            System.out.println("The User Data ROUTE IDS Is:: "+userMapData.get("route_ids"));
+
+            JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
+            JSONArray routesArray = routesJob.getJSONArray("routeArray");
+            for (int l = 0;l<routesArray.length();l++){
+                System.out.println("The Route Id IS::: "+ routesArray.get(l).toString());
+                List<String> routesDataList = mDBHelper.getRouteDataByRouteId(routesArray.get(l).toString());
+                for (int k = 0;k<routesDataList.size();k++){
+                    System.out.println(" LOOPPPPPPPPPPPPPP "+k);
+                    if(routesDataList.get(k)!=null) {
+                        switch (k){
+                            case 1:
+                                mRouteName =  routesDataList.get(1);
+                                break;
+                            case 2:
+                                mRegionName =  routesDataList.get(2);
+                                break;
+                            case 3:
+                                mOfficeName =  routesDataList.get(3);
+                                break;
+                        }
+                    }
+                }
+            }
+            System.out.println("ROUTE NAME IS:::: "+ mRouteName);
+            System.out.println("REGION NAME IS:::: "+ mRegionName);
+            System.out.println("OFFICE NAME IS:::: "+ mOfficeName);
+//            List<String> routesDataList = mDBHelper.getRoutesMasterData();
+//            System.out.println("The Data Is SIZE ======= ::: "+ routesDataList.size());
+//            for (int i=0;i<routesDataList.size();i++){
+//                System.out.println("The Data Is::: "+ routesDataList.get(0).toString());
+//            }
+
+            // Append all the db data to lables.
+            companyName.setText("");
+            if(userMapData.get("name")!=null) {
+                userName.setText(userMapData.get("name").toString());
+            }
+            if(userMapData.get("phone")!=null) {
+                mobile.setText(userMapData.get("phone").toString());
+            }
+            region.setText(mRegionName);
+            salesOffice.setText(mOfficeName);
+            routeNo.setText(mRouteName);
+            vehicleNo.setText("");
+            transporterName.setText("");
+            if(userMapData.get("access_device")!=null) {
+                accessDevice.setText(userMapData.get("access_device").toString());
+            }
+            if(userMapData.get("device_sync")!=null) {
+                deviceSync.setText(userMapData.get("device_sync").toString());
+            }
+            if(userMapData.get("backup")!=null) {
+                backup.setText(userMapData.get("backup").toString());
+            }
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -250,9 +324,7 @@ public class SettingsActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.logout) {
-
-            loadLogout();
-            Toast.makeText(this, "Clicked on Settings...", Toast.LENGTH_SHORT).show();
+            showAlertDialogWithCancelButton(SettingsActivity.this,"User Action!","Are you sure, you want to Log Out?");
             return true;
         }
 
@@ -275,6 +347,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void loadLogout() {
+        sharedPreferences.putString("isLogin","false");
         Intent loginIntent=new Intent(SettingsActivity.this,LoginActivity.class);
         startActivity(loginIntent);
         finish();
@@ -306,5 +379,39 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    private void showAlertDialogWithCancelButton(Context context, String title, String message) {
+        try {
+            AlertDialog alertDialog = null;
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
 
+            alertDialogBuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    loadLogout();
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+
+            Button cancelButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            if (cancelButton != null)
+                cancelButton.setTextColor(ContextCompat.getColor(context, R.color.gray));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
