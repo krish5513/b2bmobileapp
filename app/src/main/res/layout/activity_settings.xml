@@ -65,6 +65,7 @@
                         android:hint="User Name"
                         android:longClickable="false"
                         android:padding="10dp"
+                        android:editable="false"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -102,6 +103,7 @@
                         android:hint="Region "
                         android:longClickable="false"
                         android:padding="10dp"
+                        android:editable="false"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -120,6 +122,7 @@
                         android:hint="Sales Office"
                         android:longClickable="false"
                         android:padding="10dp"
+                        android:editable="false"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -138,6 +141,7 @@
                         android:hint="Route No"
                         android:longClickable="false"
                         android:padding="10dp"
+                        android:editable="false"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -191,6 +195,7 @@
                         android:hint="Device Sync"
                         android:longClickable="false"
                         android:padding="10dp"
+                        android:editable="false"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -208,6 +213,7 @@
                         android:hint="AccessDevice"
                         android:longClickable="false"
                         android:padding="10dp"
+                        android:editable="false"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -225,6 +231,7 @@
                         android:hint="Backup"
                         android:longClickable="false"
                         android:padding="10dp"
+                        android:editable="false"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -501,6 +508,119 @@
 
              </LinearLayout>-->
 
+    <LinearLayout
+        android:id="@+id/BottomOptionsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="vertical">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/colorPrimary"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/DashboardLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/tv_dashboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableTop="@drawable/dashboard_icon_white"
+                android:text="@string/dashboard_btm"
+                android:textColor="@color/colorAccent"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/TripSheetsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_routes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableTop="@drawable/route_green"
+                android:gravity="center"
+                android:text="@string/myroutes_btm"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/CustomersLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/tvrouts_customerN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableTop="@drawable/customers_grey"
+                android:text="@string/customers_btm"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ProductsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/tv_products"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableTop="@drawable/ic_shopping_cart_black_24dp"
+                android:gravity="center"
+                android:text="@string/products_btm"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/TDCLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/tv_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableTop="@drawable/sales_green"
+                android:gravity="center"
+                android:text="@string/sales_btm"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    </LinearLayout>
 
 
 </FrameLayout>

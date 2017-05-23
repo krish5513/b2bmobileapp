@@ -1,35 +1,30 @@
 package com.rightclickit.b2bsaleon.activities;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.models.PrevilegesModel;
 import com.rightclickit.b2bsaleon.services.SyncRoutesMasterDetailsService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
-import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 public class DashboardActivity extends AppCompatActivity {
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
     private String userActSetupStatus = "";
-    private RelativeLayout mDashBoardLayout;
-    private RelativeLayout mTripsheetsLayout;
-    private RelativeLayout mCustomersLayout;
-    private RelativeLayout mProductsLayout;
-    private RelativeLayout mTDCLayout;
+    private LinearLayout mDashBoardLayout;
+    private LinearLayout mTripsheetsLayout;
+    private LinearLayout mCustomersLayout;
+    private LinearLayout mProductsLayout;
+    private LinearLayout mTDCLayout;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,35 +41,43 @@ public class DashboardActivity extends AppCompatActivity {
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        mDashBoardLayout = (RelativeLayout) findViewById(R.id.DashboardLayout);
+
+
+
+
+
+        mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
         mDashBoardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(DashboardActivity.this, "Clicked on Dashboard", Toast.LENGTH_SHORT).show();
             }
         });
-        mTripsheetsLayout = (RelativeLayout) findViewById(R.id.TripSheetsLayout);
+        mTripsheetsLayout = (LinearLayout) findViewById(R.id.TripSheetsLayout);
         mTripsheetsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(DashboardActivity.this, "Clicked on Tripsheets", Toast.LENGTH_SHORT).show();
             }
         });
-        mCustomersLayout = (RelativeLayout) findViewById(R.id.CustomersLayout);
+        mCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
         mCustomersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(DashboardActivity.this, "Clicked on Customers", Toast.LENGTH_SHORT).show();
             }
         });
-        mProductsLayout = (RelativeLayout) findViewById(R.id.ProductsLayout);
+        mProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
         mProductsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(DashboardActivity.this, "Clicked on Products", Toast.LENGTH_SHORT).show();
+                Intent i =new Intent(DashboardActivity.this,Products_Activity.class);
+                startActivity(i);
+                finish();
             }
         });
-        mTDCLayout = (RelativeLayout) findViewById(R.id.TDCLayout);
+        mTDCLayout = (LinearLayout) findViewById(R.id.TDCLayout);
         mTDCLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

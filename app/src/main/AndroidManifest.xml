@@ -4,7 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/favicon"
@@ -13,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.rightclickit.b2bsaleon.activities.SplashScreenActivity"
+            android:name=".activities.SplashScreenActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -23,22 +26,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.rightclickit.b2bsaleon.activities.LoginActivity"
+            android:name=".activities.LoginActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
-            android:name="com.rightclickit.b2bsaleon.activities.DashboardActivity"
+            android:name=".activities.DashboardActivity"
             android:configChanges="orientation|screenSize|keyboardHidden" />
-        <activity android:name="com.rightclickit.b2bsaleon.activities.SettingsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.rightclickit.b2bsaleon.activities.NotificationsActivity"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.NotificationsActivity"
+            android:screenOrientation="portrait" />
 
         <!-- Routes data sync service -->
         <service
-            android:name="com.rightclickit.b2bsaleon.services.SyncRoutesMasterDetailsService"
+            android:name=".services.SyncRoutesMasterDetailsService"
             android:enabled="true"
             android:exported="true" />
+
+        <activity android:name=".activities.Products_Activity" />
+        <activity android:name=".activities.Product_Add_Activity"></activity>
     </application>
 
 </manifest>
