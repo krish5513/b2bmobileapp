@@ -5,6 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -20,6 +27,8 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,10 +40,16 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.LogInModel;
 import com.rightclickit.b2bsaleon.models.SettingsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,6 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
     EditText vehicleNo;
     EditText salesOffice;
     EditText transporterName, deviceSync, accessDevice, backup;
+    EditText oldPassword, newPassword, confirmNewPassword;
 
 
     public static final String TAG = LoginActivity.class.getSimpleName();
@@ -62,12 +78,19 @@ public class SettingsActivity extends AppCompatActivity {
     SettingsModel settingsmodel;
 
     Button saveInfo;
+    Button changePasswordBtn;
     public static Toolbar toolbar;
     String str_companyName, str_userName, str_mobileNo, str_region, str_salesOffice, str_routeNo, str_vehicleNo, str_transporter, str_devicesync, str_accessdevice, str_backup;
 
     private DBHelper mDBHelper;
 
     private String mRouteName = "",mRegionName = "",mOfficeName="";
+
+    private ImageView mPicImage;
+    private LinearLayout mPicLayout;
+
+    private static final int ACTION_TAKE_PHOTO_A = 1;
+    private static final int ACTION_TAKE_GALLERY_PIC_A = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +103,7 @@ public class SettingsActivity extends AppCompatActivity {
             sharedPreferences = new MMSharedPreferences(applicationContext);
 
             settingsmodel = new SettingsModel(activityContext, this);
-
+            mDBHelper = new DBHelper(SettingsActivity.this);
             routeNo = (EditText) findViewById(R.id.tv_routeNo);
             routeNo.requestFocus();
             routeNo.setCursorVisible(true);
@@ -104,10 +127,10 @@ public class SettingsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-//            final ActionBar actionBar = getSupportActionBar();
-//            assert actionBar != null;
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            final ActionBar actionBar = getSupportActionBar();
+            assert actionBar != null;
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
             companyName = (EditText) findViewById(R.id.tv_companyName);
 
@@ -121,6 +144,15 @@ public class SettingsActivity extends AppCompatActivity {
             deviceSync = (EditText) findViewById(R.id.tv_devicesync);
             accessDevice = (EditText) findViewById(R.id.tv_accessdevice);
             backup = (EditText) findViewById(R.id.tv_backup);
+            mPicImage = (ImageView) findViewById(R.id.imageView3);
+            mPicLayout = (LinearLayout) findViewById(R.id.PicLayout);
+            mPicLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectImage();
+                }
+            });
+
             saveInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -236,11 +268,36 @@ public class SettingsActivity extends AppCompatActivity {
             });
 
 
-            mDBHelper = new DBHelper(SettingsActivity.this);
+            oldPassword = (EditText) findViewById(R.id.OldPassword);
+            newPassword = (EditText) findViewById(R.id.NewPassword);
+            confirmNewPassword = (EditText) findViewById(R.id.ConfirmeNewPassword);
+
+            changePasswordBtn = (Button) findViewById(R.id.ChangePasswordButton);
+            changePasswordBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (oldPassword.getText().toString().trim().length() == 0) {
+                        oldPassword.setError("Please enter your old password");
+                        Toast.makeText(getApplicationContext(), "Please enter your old password", Toast.LENGTH_SHORT).show();
+                    }else if (newPassword.getText().toString().trim().length() == 0) {
+                        newPassword.setError("Please enter new password");
+                        Toast.makeText(getApplicationContext(), "Please enter new password", Toast.LENGTH_SHORT).show();
+                    }else if (confirmNewPassword.getText().toString().trim().length() == 0) {
+                        confirmNewPassword.setError("Please enter confirm password");
+                        Toast.makeText(getApplicationContext(), "Please enter confirm password", Toast.LENGTH_SHORT).show();
+                    }else if (!newPassword.getText().toString().trim().equals(confirmNewPassword.getText().toString().trim())) {
+                        confirmNewPassword.setError("New password and  confirm password are not match");
+                        Toast.makeText(getApplicationContext(), "New password and  confirm password are not match", Toast.LENGTH_SHORT).show();
+                    }else {
+                        settingsmodel.changePassword(sharedPreferences.getString("userId"), Utility.getMd5String(newPassword.getText().toString().trim()));
+                    }
+                }
+            });
+
 
             HashMap<String,String> userMapData = mDBHelper.getUsersData();
             System.out.println("The User Data NAME Is:: "+userMapData.get("name"));
-            System.out.println("The User Data PHONE Is:: "+userMapData.get("phone"));
+            System.out.println("The User Data PHONE Is:: "+userMapData.get("phone_number"));
             System.out.println("The User Data DEVICE SYNC Is:: "+userMapData.get("device_sync"));
             System.out.println("The User Data BACKUP Is:: "+userMapData.get("backup"));
             System.out.println("The User Data ACCESS DEVICE Is:: "+userMapData.get("access_device"));
@@ -282,8 +339,8 @@ public class SettingsActivity extends AppCompatActivity {
             if(userMapData.get("name")!=null) {
                 userName.setText(userMapData.get("name").toString());
             }
-            if(userMapData.get("phone")!=null) {
-                mobile.setText(userMapData.get("phone").toString());
+            if(userMapData.get("phone_number")!=null) {
+                mobile.setText(userMapData.get("phone_number").toString());
             }
             region.setText(mRegionName);
             salesOffice.setText(mOfficeName);
@@ -413,5 +470,109 @@ public class SettingsActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /***
+     * Method to select the image from camera or gallery..
+     */
+    private void selectImage() {
+
+        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (options[item].equals("Take Photo"))
+                {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                    startActivityForResult(intent, ACTION_TAKE_PHOTO_A);
+                }
+                else if (options[item].equals("Choose from Gallery"))
+                {
+                    Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, ACTION_TAKE_GALLERY_PIC_A);
+
+                }
+                else if (options[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ACTION_TAKE_PHOTO_A) {
+                File f = new File(Environment.getExternalStorageDirectory().toString());
+                for (File temp : f.listFiles()) {
+                    if (temp.getName().equals("temp.jpg")) {
+                        f = temp;
+                        break;
+                    }
+                }
+                try {
+                    Bitmap bitmap;
+                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+
+                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
+                            bitmapOptions);
+
+                    BitmapDrawable d = new BitmapDrawable(this.getResources(), bitmap);
+                    mPicImage.setBackgroundDrawable(null);
+                    mPicImage.setBackgroundDrawable(d);
+
+                    //  mPicImage.setImageBitmap(bitmap);
+
+                    String path = android.os.Environment
+                            .getExternalStorageDirectory()
+                            + File.separator
+                            + File.separator + "default";
+                    f.delete();
+                    OutputStream outFile = null;
+                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
+                    try {
+                        outFile = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
+                        outFile.flush();
+                        outFile.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else if (requestCode == ACTION_TAKE_GALLERY_PIC_A) {
+
+                Uri selectedImage = data.getData();
+                String[] filePath = { MediaStore.Images.Media.DATA };
+                Cursor c = getContentResolver().query(selectedImage,filePath, null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
+                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                System.out.println("path of image from gallery......******************........."+ picturePath+"");
+                BitmapDrawable d = new BitmapDrawable(this.getResources(), thumbnail);
+                mPicImage.setBackgroundDrawable(null);
+                mPicImage.setBackgroundDrawable(d);
+                //mPicImage.setImageBitmap(thumbnail);
+            }
+        }
+    }
+    public void goBackToDashboard(){
+        Intent i = new Intent(SettingsActivity.this,DashboardActivity.class);
+        startActivity(i);
+        finish();
     }
 }

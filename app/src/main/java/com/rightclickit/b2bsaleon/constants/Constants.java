@@ -65,5 +65,7 @@ public class Constants {
     public static final String ROUTEID_SERVICE = "/route/list";
     // User previleges
     public static final String GET_USER_PREVILEGES_SERVICE = "/usergroup/form_list?";
+    // Chnage Password {pass user id parameter in url}
+    public static final String CHANGE_PASSWORD_SERVICE = "/user/edit/";
 
 }

@@ -8,6 +8,9 @@
         android:required="true" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <user-permission android:name="com.rightclickit.b2bsaleon.permisssion.MAPS_RECEIVE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/favicon"
@@ -46,6 +49,7 @@
             android:exported="true" />
 
         <activity android:name=".activities.Products_Activity" />
+
         <activity android:name=".activities.Product_Add_Activity"></activity>
     </application>
 

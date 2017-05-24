@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginTop="8dp"
+            android:layout_weight="0.7"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/materialCode"
+                android:text="10052"
+                android:textColor="@color/greydark"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/materialImage"
+                android:src="@drawable/milk_converted" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/material_Unit"
+                android:gravity="center"
+                android:text="50 ltrs"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Instock"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:id="@+id/viewline1"
+                android:layout_width="1dp"
+                android:layout_height="8dp"
+                android:layout_marginLeft="7dp"
+                android:background="#dbd7d7" />
+
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@drawable/ic_circle_orange"
+                android:src="@drawable/ic_arrow_downward_white_24dp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:background="#dbd7d7" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.25"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/materialDisc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Toned milk Thirumala special 500ml"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_mobile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:paddingLeft="3dp"
+                            android:text="MOQ: "
+                            android:textColor="@color/greydark"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/materialMOQ"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:paddingLeft="3dp"
+                            android:text="20 Ltrs"
+                            android:textColor="@color/greydark"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/materialReturnable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="3dp"
+                        android:text="Returnable "
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="3dp"
+                        android:text="MRP:"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/materialMRP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="3dp"
+                        android:text="Rs. 50.00"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="horizontal">
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="3dp"
+                        android:text="SP:"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/materialSP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="3dp"
+                        android:text="46.00"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="5dp">
+
+                <Button
+                    android:id="@+id/btnView"
+                    android:layout_width="70dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/border_btn"
+                    android:drawableLeft="@drawable/ic_remove_red_eye_black_24dp"
+                    android:padding="5dp"
+                    android:text="View"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="10sp" />
+                <Button
+                    android:id="@+id/btnEdit"
+                    android:layout_width="70dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/border_btn"
+                    android:drawableLeft="@drawable/ic_create_primary_10dp"
+                    android:padding="5dp"
+                    android:layout_marginLeft="20dp"
+                    android:text="Edit"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="10sp" />
+                <Button
+                    android:id="@+id/btnStock"
+                    android:layout_width="70dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/border_btn"
+                    android:drawableLeft="@drawable/ic_remove_red_eye_black_24dp"
+                    android:padding="5dp"
+                    android:text="Stock"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0.7"
+            android:background="#ffffff" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="-5dp"
+            android:layout_weight="0.25"
+            android:background="#dbd7d7" />
+    </LinearLayout>
+
+</LinearLayout>

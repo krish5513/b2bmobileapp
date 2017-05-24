@@ -32,6 +32,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.beanclass.ProductsObj;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -56,6 +58,8 @@ public class Product_Add_Activity extends AppCompatActivity {
 
     double mrp_double,sp_double;
     Bitmap bitmapLogo;
+
+    DBHelper dbHelper;
 
     TextView save;
     EditText materialCode;
@@ -181,7 +185,6 @@ public class Product_Add_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product__add_);
 
-
         this.getSupportActionBar().setTitle("ADD PRODUCT");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.ic_shopping_cart_white_24dp);
@@ -214,6 +217,8 @@ public class Product_Add_Activity extends AppCompatActivity {
         materialValidFrom = (EditText) findViewById(R.id.validFrom);
         materialValidTo = (EditText) findViewById(R.id.validTo);
         save = (TextView) findViewById(R.id.tv_save);
+
+        dbHelper=new DBHelper(getApplicationContext());
 
 
         materialValidFrom.setOnClickListener(new View.OnClickListener() {
@@ -420,9 +425,9 @@ public class Product_Add_Activity extends AppCompatActivity {
             materialValidTo.setError("Please select To Date");
 
         }
-       /* else {
+        else {
             materialValidTo.setError(null);
-            new AlertDialog.Builder(getContext())
+            new AlertDialog.Builder(getApplicationContext())
                     .setMessage("Do you want to save the data? Please confirm.")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(final DialogInterface dialog, int which) {
@@ -435,16 +440,19 @@ public class Product_Add_Activity extends AppCompatActivity {
                             if(materialTAX.getText().toString().equals("")||materialTAX.getText().toString().equals(null))
                                 materialTAX.setText("0");
                             if(bundle ==null &&productId ==null)
-                                db.addProducts(new ProductsObj(materialCode.getText().toString(), materialDisc.getText().toString(),prodImage, materialMRP.getText().toString(),materialSP.getText().toString(),"1", materialUnit.getSelectedItem().toString(), materialValidFrom.getText().toString(), materialValidTo.getText().toString(), produtRetunable,materialMOQ.getText().toString(),materialTAX.getText().toString(),taxType.getSelectedItem().toString()));
+                                dbHelper.addProducts(new ProductsObj(materialCode.getText().toString(), materialDisc.getText().toString(),prodImage, materialMRP.getText().toString(),materialSP.getText().toString(),"1", materialUnit.getSelectedItem().toString(), materialValidFrom.getText().toString(), materialValidTo.getText().toString(), produtRetunable,materialMOQ.getText().toString(),materialTAX.getText().toString(),taxType.getSelectedItem().toString()));
                             else
-                                db.updateProduct(new ProductsObj(materialCode.getText().toString(), materialDisc.getText().toString(),prodImage, materialMRP.getText().toString(),materialSP.getText().toString(),"1", materialUnit.getSelectedItem().toString(), materialValidFrom.getText().toString(), materialValidTo.getText().toString(), produtRetunable,materialMOQ.getText().toString(),materialTAX.getText().toString(),taxType.getSelectedItem().toString()),productId);
+                                dbHelper.updateProduct(new ProductsObj(materialCode.getText().toString(), materialDisc.getText().toString(),prodImage, materialMRP.getText().toString(),materialSP.getText().toString(),"1", materialUnit.getSelectedItem().toString(), materialValidFrom.getText().toString(), materialValidTo.getText().toString(), produtRetunable,materialMOQ.getText().toString(),materialTAX.getText().toString(),taxType.getSelectedItem().toString()),productId);
                             Log.e("completed", "dssdf");
                             dialog.dismiss();
-                            Products_Fragment fragment = new Products_Fragment();
+                            /*Products_Fragment fragment = new Products_Fragment();
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction.replace(R.id.flContent, fragment);
                             getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                            fragmentTransaction.commit();
+                            fragmentTransaction.commit();*/
+                            Intent productsactivity=new Intent(Product_Add_Activity.this,Products_Activity.class);
+                            startActivity(productsactivity);
+                            finish();
 
                         }
                     })
@@ -457,7 +465,7 @@ public class Product_Add_Activity extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
-             */  /* View selectedView = productReturn.getSelectedView();
+               /* View selectedView = productReturn.getSelectedView();
                 if (selectedView != null && selectedView instanceof TextView) {
                     TextView selectedTextView = (TextView) selectedView;
                     if (!valid) {

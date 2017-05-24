@@ -5,6 +5,8 @@ import android.content.Context;
 import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
+import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.OnAsyncRequestCompleteListener;
 import com.rightclickit.b2bsaleon.util.AsyncRequest;
@@ -39,7 +41,7 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String settingsURL = String.format("%s%s%s", Constants.PORT_ROUTES_MASTER_DATA,Constants.MAIN_URL, Constants.ROUTEID_SERVICE);
                 JSONObject params = new JSONObject();
-              //  params.put("routeid", routeid.trim());
+                //  params.put("routeid", routeid.trim());
 
 
                 AsyncRequest routeidRequest = new AsyncRequest(context, this, settingsURL, AsyncRequest.MethodType.GET, params);
@@ -50,8 +52,37 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
             e.printStackTrace();
         }
     }
+
+    public void changePassword( String userId,String password) {
+        try {
+            if (new NetworkConnectionDetector(context).isNetworkConnected()) {
+                String settingsURL = String.format("%s%s%s%s",Constants.MAIN_URL,Constants.PORT_USER_PREVILEGES, Constants.CHANGE_PASSWORD_SERVICE,userId);
+                JSONObject params = new JSONObject();
+                params.put("password", password.trim());
+
+
+                AsyncRequest routeidRequest = new AsyncRequest(context, this, settingsURL, AsyncRequest.MethodType.POST, params);
+                routeidRequest.execute();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
+        try {
+            CustomProgressDialog.hideProgressDialog();
+            System.out.println("========= response = " + response);
+            JSONObject logInResponse = new JSONObject(response);
+            if (logInResponse.getInt("result_status") == 1) {
+                activity.goBackToDashboard();
+            }else {
 
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

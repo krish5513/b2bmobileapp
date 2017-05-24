@@ -3,9 +3,13 @@ package com.rightclickit.b2bsaleon.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+
+import com.rightclickit.b2bsaleon.beanclass.ProductsObj;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +37,9 @@ public class DBHelper extends SQLiteOpenHelper {
     // User previleges - User Activity table
     private final String TABLE_PREVILEGES_USER_ACTIVITY = "user_activity";
 
+    //Products Table -This table contains all products details
+    public static final String TABLE_PRODUCTS = "products";
+
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
     private final String KEY_USER_CODE = "user_code";
@@ -59,6 +66,23 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_USER_ACTIVITY_TAG = "user_activity_tag";
     private final String KEY_USER_ACTIVITY_STATUS = "user_activity_status";
 
+    //Column names for Produts activity Table
+    public static String KEY_ID = "id";
+    public static String KEY_SYNC_STATUS = "syncStatus";
+    public static String KEY_MATERIAL_CODE = "materialCode";
+    public static String KEY_MATERIAL_DISC = "materialDisc";
+    public static String KEY_MATERIAL_UNIT_DISC = "materialUnitDisc";
+    public static String KEY_MATERIAL_MRP = "materialUnitMRP";
+    public static String KEY_MATERIAL_MOQ = "materialMOQ";
+    public static String KEY_MATERIAL_TAX = "materialTAX";
+    public static String KEY_MATERIAL_TAXType = "materialTAXType";
+    public static String KEY_MATERIAL_SP = "materialUnitSP";
+    public static String KEY_MATERIAL_VALIDFROM = "materialValidFrom";
+    public static String KEY_MATERIAL_VALIDTO = "materialValidTo";
+    public static String KEY_MATERIAL_IMAGE = "materialImage";
+    public static String KEY_MATERIAL_STATUS = "materialStatus";
+    public static String KEY_MATERIAL_RETURNABLE = "materialReturnable";
+
 
     // Userdetails Table Create Statements
     private final String CREATE_TABLE_USERDETAILS = "CREATE TABLE IF NOT EXISTS "
@@ -79,6 +103,12 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String CREATE_TABLE_USER_ACTIVITY = "CREATE TABLE IF NOT EXISTS "
             + TABLE_PREVILEGES_USER_ACTIVITY + "(" + KEY_USER_ACTIVITY_ID + " VARCHAR," + KEY_USER_ACTIVITY_USER_ID + " VARCHAR,"
             + KEY_USER_ACTIVITY_TAG + " VARCHAR," + KEY_USER_ACTIVITY_STATUS + " VARCHAR)";
+    //Products Table Create Statements
+    String CREATE_PRODUCTS_TABLE = "CREATE TABLE " + TABLE_PRODUCTS + "("
+            + KEY_ID + " INTEGER PRIMARY KEY," + KEY_MATERIAL_CODE + " TEXT,"
+            + KEY_MATERIAL_DISC + " TEXT," + KEY_MATERIAL_UNIT_DISC + " TEXT," + KEY_MATERIAL_RETURNABLE + " TEXT," +
+            KEY_MATERIAL_MOQ + " TEXT," + KEY_MATERIAL_TAX + " TEXT," + KEY_MATERIAL_TAXType + " TEXT," + KEY_MATERIAL_MRP + " TEXT," + KEY_MATERIAL_SP + " TEXT," +
+            KEY_MATERIAL_VALIDFROM + " TEXT," + KEY_MATERIAL_VALIDTO + " TEXT," + KEY_MATERIAL_IMAGE + " TEXT," + KEY_MATERIAL_STATUS + " TEXT" +  "," + KEY_SYNC_STATUS + " INTEGER"+")";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -89,6 +119,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             db.execSQL(CREATE_TABLE_USERDETAILS);
             db.execSQL(CREATE_TABLE_ROUTES);
+            db.execSQL(CREATE_PRODUCTS_TABLE);
          //   db.execSQL(CREATE_TABLE_USER_ACTIVITY);
         } catch (Exception e){
             e.printStackTrace();
@@ -100,6 +131,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USERDETAILS);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_ROUTES);
+            db.execSQL("DROP TABLE IF EXISTS"  +CREATE_PRODUCTS_TABLE);
           //  db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USER_ACTIVITY);
 
             // create new tables
@@ -427,6 +459,66 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
         return userActivitySetupStatus;
+    }
+
+    public void addProducts(ProductsObj productsObj) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.e("in prod insert", productsObj.getMaterialDisc());
+        ContentValues values = new ContentValues();
+        values.put(KEY_MATERIAL_CODE, productsObj.getMaterialCode());
+        values.put(KEY_MATERIAL_DISC, productsObj.getMaterialDisc());
+        values.put(KEY_MATERIAL_UNIT_DISC, productsObj.getMaterialUnit());
+        values.put(KEY_MATERIAL_MOQ, productsObj.getMaterialMOQ());
+        values.put(KEY_MATERIAL_TAX, productsObj.getMaterialTAX());
+        values.put(KEY_MATERIAL_TAXType, productsObj.getMaterialTAXType());
+        values.put(KEY_MATERIAL_MRP, productsObj.getMaterialMRP());
+        values.put(KEY_MATERIAL_SP, productsObj.getMaterialSP());
+        values.put(KEY_MATERIAL_VALIDFROM, productsObj.getMaterialValidFrom());
+        values.put(KEY_MATERIAL_VALIDTO, productsObj.getMaterialValidTo());
+        values.put(KEY_MATERIAL_IMAGE, productsObj.getMaterialImage());
+        values.put(KEY_MATERIAL_RETURNABLE, productsObj.getIsReturnAble());
+        values.put(KEY_SYNC_STATUS, 0);
+        // Inserting Row
+
+        try {
+            db.insertOrThrow(TABLE_PRODUCTS, null, values);
+        } catch (SQLiteConstraintException e) {
+            Log.d(TAG, "failure to insert word,", e);
+        }
+    }
+
+    public void updateProduct(ProductsObj productsObj, String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.e("in prod update", productsObj.getMaterialDisc());
+        ContentValues values = new ContentValues();
+        values.put(KEY_MATERIAL_CODE, productsObj.getMaterialCode());
+        values.put(KEY_MATERIAL_DISC, productsObj.getMaterialDisc());
+        values.put(KEY_MATERIAL_UNIT_DISC, productsObj.getMaterialUnit());
+        values.put(KEY_MATERIAL_MOQ, productsObj.getMaterialMOQ());
+        values.put(KEY_MATERIAL_TAX, productsObj.getMaterialTAX());
+        values.put(KEY_MATERIAL_TAXType, productsObj.getMaterialTAXType());
+        values.put(KEY_MATERIAL_MRP, productsObj.getMaterialMRP());
+        values.put(KEY_MATERIAL_SP, productsObj.getMaterialSP());
+        values.put(KEY_MATERIAL_VALIDFROM, productsObj.getMaterialValidFrom());
+        values.put(KEY_MATERIAL_VALIDTO, productsObj.getMaterialValidTo());
+        values.put(KEY_MATERIAL_IMAGE, productsObj.getMaterialImage());
+        values.put(KEY_MATERIAL_RETURNABLE, productsObj.getIsReturnAble());
+        // Inserting Row
+        Log.e("code", productsObj.getMaterialCode());
+        Log.e("id", String.valueOf(productsObj.getId()));
+        try {
+//            String query =
+//                    "UPDATE "+ TABLE_PRODUCTS + " SET "   + KEY_MATERIAL_DISC + " = \""+productsObj.getMaterialDisc()+"\" WHERE id=\""+productsObj.getId()+"\"";
+//            Log.i(TAG, query);
+//            db.execSQL(query);
+            Log.e("que", KEY_ID + "= '" + productsObj.getId() + "'");
+            db.update(TABLE_PRODUCTS, values, KEY_ID + " = '" + id + "'", null);
+//            db.update(TABLE_PRODUCTS, values, KEY_ID+" = "+productsObj.getId(),null);
+        } catch (Exception e) {
+            Log.e("exception", e.toString());
+
+        }
+
     }
 
     /**

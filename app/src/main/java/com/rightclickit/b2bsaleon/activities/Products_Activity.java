@@ -1,22 +1,64 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.ProductAdapter;
+import com.rightclickit.b2bsaleon.database.DBHelper;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static android.content.ContentValues.TAG;
+import static com.rightclickit.b2bsaleon.R.string.email;
+import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_ID;
+import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_CODE;
+import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_DISC;
+import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_IMAGE;
+import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_MOQ;
+import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_MRP;
+import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_RETURNABLE;
+import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_SP;
+import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_TAX;
+import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_TAXType;
+import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_UNIT_DISC;
+import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_VALIDFROM;
+import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_VALIDTO;
+import static com.rightclickit.b2bsaleon.database.DBHelper.TABLE_PRODUCTS;
 
 public class Products_Activity extends AppCompatActivity {
 
      FloatingActionButton fab;
-
+    RecyclerView recyclerView;
+    public ScrollView scrollView;
+    Products_Activity c;
+    ProductAdapter adapter;
+    DBHelper dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +72,8 @@ public class Products_Activity extends AppCompatActivity {
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        dbHelper=new DBHelper(getApplicationContext());
 
 
         final ActionBar actionBar = getSupportActionBar();
@@ -51,6 +95,112 @@ public class Products_Activity extends AppCompatActivity {
             }
         });
 
+        recyclerView = (RecyclerView) findViewById(R.id.cardList);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(c);
+        recyclerView.setLayoutManager(layoutManager);
+        c = this;
+        scrollView = (ScrollView) findViewById(R.id.scrollViewSearch);
+        scrollView.setSmoothScrollingEnabled(true);
+//        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+//
+//            @Override
+//            public void onScrollChanged() {
+//                int scrollY = scrollView.getScrollY();
+//                if (scrollY == 0) mSwipeRefreshLayout.setEnabled(true);
+//                else mSwipeRefreshLayout.setEnabled(false);
+//
+//            }
+//        });
+//        mSwipeRefreshLayout.setEnabled(false);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                //   MainActivity.showProgres(getContext(),true,fm);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter = new ProductAdapter(createList(), c);
+                        c.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                recyclerView.setAdapter(adapter);
+                                //   MainActivity.stopProgres(getContext());
+                            }
+                        });
+                    }
+                }).start();
+            }
+        });
+
+
+
+
+
+    }
+
+    public void gotoView(ProductAdapter.ProductInfo pi){
+        Map<String, String> product = new HashMap<String,String>();
+        product.put("materialCode",pi.materialCode);
+        product.put("materialDisc",pi.materialDisc);
+        product.put("materialUnit",pi.materialUnit);
+        product.put("materialMRP",pi.materialMRP);
+        product.put("materialMOQ",pi.materialMOQ);
+        product.put("materialSP",pi.materialSP);
+        product.put("materialReturnable",pi.materialReturnable);
+        product.put("materialImage",pi.materialImage);
+        product.put("id",pi.id);
+        Bundle extras = new Bundle();
+        extras.putSerializable("product", (Serializable) product);
+       /* Products_View fragment = new Products_View();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                bundle.putString("productData",pi);
+        fragment.setArguments(extras);
+        fragmentTransaction.replace(R.id.flContent, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();*/
+
+    }
+
+
+
+
+
+
+
+
+    public List<ProductAdapter.ProductInfo> createList() {
+        final List<ProductAdapter.ProductInfo> result = new ArrayList<ProductAdapter.ProductInfo>();
+        String USER_DETAIL_SELECT_QUERY = "SELECT * FROM " + TABLE_PRODUCTS;
+
+        SQLiteDatabase sqldb = dbHelper.getReadableDatabase();
+        Cursor cursor = sqldb.rawQuery(USER_DETAIL_SELECT_QUERY, null);
+
+        try {
+            while (cursor.moveToNext()) {
+                ProductAdapter.ProductInfo pi = new ProductAdapter.ProductInfo();
+                //ci.id = cursor.getString(cursor.getColumnIndex(KEY_ID));
+//                Log.e("image cust",cursor.getString(cursor.getColumnIndex(KEY_IMAGE)));
+                pi.id=cursor.getString(cursor.getColumnIndex(KEY_ID));
+                pi.materialCode=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_CODE));
+                pi.materialDisc=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_DISC));
+                pi.materialUnit=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_UNIT_DISC));
+                pi.materialMRP=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_MRP));
+                pi.materialMOQ=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_MOQ));
+                pi.materialSP=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_SP));
+                pi.materialReturnable=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_RETURNABLE));
+                pi.materialImage=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_IMAGE));
+                pi.materialTAX=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_TAX));
+                pi.materialTAXType=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_TAXType));
+                pi.materialValidFrom=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_VALIDFROM));
+                pi.materialValidTo=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_VALIDTO));
+                Log.e("while ci.com", String.valueOf(pi.materialImage));
+                result.add(pi);
+            }
+
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to get posts from database");
+        }
+        return result;
     }
 
 

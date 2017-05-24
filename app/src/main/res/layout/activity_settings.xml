@@ -82,9 +82,10 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:hint="Mobile No."
-                        android:inputType="number"
+
                         android:longClickable="false"
                         android:padding="10dp"
+                        android:editable="false"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
@@ -276,7 +277,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:background="@color/white"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:id="@+id/PicLayout">
 
                             <ImageView
                                 android:id="@+id/imageView3"
@@ -338,6 +340,7 @@
                 android:orientation="vertical">
 
                 <EditText
+                    android:id="@+id/OldPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -350,6 +353,7 @@
                     android:textSize="14sp" />
 
                 <EditText
+                    android:id="@+id/NewPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -361,12 +365,13 @@
                     android:textSize="14sp" />
 
                 <EditText
+                    android:id="@+id/ConfirmeNewPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:background="@drawable/border_btn"
                     android:hint="Retype Password"
-                    android:inputType="number"
+
                     android:longClickable="false"
                     android:padding="10dp"
                     android:textColor="@color/greydark"
@@ -375,6 +380,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/ChangePasswordButton"
                 android:layout_width="200dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center"
@@ -522,7 +528,7 @@
         android:background="@color/colorPrimary"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:orientation="horizontal">
         <LinearLayout
             android:id="@+id/DashboardLayout"

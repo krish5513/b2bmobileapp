@@ -34,4 +34,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.scottyab:showhidepasswordedittext:0.6'
     testCompile 'junit:junit:4.12'
+    // Glide
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 }
