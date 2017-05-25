@@ -1,22 +1,17 @@
 package com.rightclickit.b2bsaleon.activities;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.ContentValues.TAG;
-import static com.rightclickit.b2bsaleon.R.string.email;
 import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_ID;
 import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_CODE;
 import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_DISC;
@@ -95,6 +89,8 @@ public class Products_Activity extends AppCompatActivity {
             }
         });
 
+
+
         recyclerView = (RecyclerView) findViewById(R.id.cardList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(c);
         recyclerView.setLayoutManager(layoutManager);
@@ -131,9 +127,6 @@ public class Products_Activity extends AppCompatActivity {
                 }).start();
             }
         });
-
-
-
 
 
     }
@@ -202,6 +195,10 @@ public class Products_Activity extends AppCompatActivity {
         }
         return result;
     }
+
+
+
+
 
 
     @Override

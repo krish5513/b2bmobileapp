@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.ProductsObj;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -47,6 +48,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static com.rightclickit.b2bsaleon.R.id.mrp;
 
@@ -210,8 +212,11 @@ public class Product_Add_Activity extends AppCompatActivity {
         taxType = (Spinner) findViewById(R.id.tax_type);
 
         materialMRP = (EditText) findViewById(mrp);
+
         materialMOQ = (EditText) findViewById(R.id.moq);
+
         materialTAX = (EditText) findViewById(R.id.taxInput);
+
         materialSP = (EditText) findViewById(R.id.sp);
 
         materialValidFrom = (EditText) findViewById(R.id.validFrom);
@@ -331,12 +336,40 @@ public class Product_Add_Activity extends AppCompatActivity {
                 validateProductDetails(bundle);
             }
         });
+
+
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectImage();
             }
         });
+
+        if (bundle!=null) {
+            Map<String, String> product =  (Map<String,String>) bundle.getSerializable("product");
+            save.setText("Update");
+            this.getSupportActionBar().setTitle(" UPDATE PRODUCT");
+            materialCode.setText(product.get("materialCode"));
+            materialDisc.setText(product.get("materialDisc"));
+            materialMOQ.setText(product.get("materialMOQ"));
+            materialMRP.setText(product.get("materialMRP"));
+            materialSP.setText(product.get("materialSP"));
+            materialValidFrom.setText(product.get("materialValidFrom"));
+            materialValidTo.setText(product.get("materialValidTo"));
+            materialTAX.setText(product.get("materialTAX"));
+            productId=product.get("id");
+            Glide.with(getApplicationContext()).load(product.get("materialImage")).into(imageview);
+            Log.e("prod material",product.get("materialReturnable"));
+            if (product.get("materialReturnable").equals("1")){
+                productReturn.setSelection(categories1.indexOf("YES"));
+            }
+            else
+                productReturn.setSelection(categories1.indexOf("NO"));
+
+            materialUnit.setSelection(categories.indexOf(product.get("materialUnit")));
+            //    productReturn.setSelected(Boolean.parseBoolean(product.get("materialReturnable")));
+            taxType.setSelection(categories3.indexOf(product.get("materialTAXType")));
+        }
 
 
     }
@@ -601,12 +634,17 @@ public class Product_Add_Activity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_CAMERA);
     }
 
+
+
     private void galleryIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
     }
+
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -623,6 +661,8 @@ public class Product_Add_Activity extends AppCompatActivity {
                 break;
         }
     }
+
+
 
 
     @Override

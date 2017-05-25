@@ -311,13 +311,21 @@
                         android:layout_height="wrap_content"
                         android:background="@color/white">
 
-                        <LinearLayout
+                       <!-- <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="100dp"
                             android:layout_margin="10dp"
                             android:background="@drawable/mapscreen">
 
-                        </LinearLayout>
+                        </LinearLayout>-->
+
+                        <fragment
+                            android:id="@+id/mapFrag"
+                            android:layout_margin="10dp"
+                            android:name="com.google.android.gms.maps.SupportMapFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp" />
+
                     </LinearLayout>
 
                 </LinearLayout>

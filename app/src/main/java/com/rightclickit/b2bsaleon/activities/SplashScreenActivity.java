@@ -1,14 +1,14 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
-public class SplashScreenActivity extends AppCompatActivity {
+public class SplashScreenActivity extends Activity {
 
     private Runnable mRunnable;
     private Handler mHandler = new Handler();

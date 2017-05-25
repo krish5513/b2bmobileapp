@@ -461,6 +461,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return userActivitySetupStatus;
     }
 
+
+
+
+
+
+
+
+
+
     public void addProducts(ProductsObj productsObj) {
         SQLiteDatabase db = this.getWritableDatabase();
         Log.e("in prod insert", productsObj.getMaterialDisc());
@@ -486,6 +495,48 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.d(TAG, "failure to insert word,", e);
         }
     }
+
+
+    public List<ProductsObj> getAllProducts() {
+        List<ProductsObj> productsObjs = new ArrayList<ProductsObj>();
+        // Select All Query
+
+        String selectQuery = "SELECT  * FROM " + TABLE_PRODUCTS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Log.e("material name", cursor.getString(2));
+                ProductsObj productsObj = new ProductsObj();
+                productsObj.setMaterialCode(cursor.getString(1));
+                productsObj.setMaterialDisc(cursor.getString(2));
+                productsObj.setMaterialUnit(cursor.getString(3));
+                productsObj.setMaterialMOQ(cursor.getString(5));
+                productsObj.setMaterialTAX(cursor.getString(6));
+                productsObj.setMaterialTAXType(cursor.getString(7));
+                productsObj.setMaterialMRP(cursor.getString(8));
+                productsObj.setMaterialSP(cursor.getString(9));
+                productsObj.setMaterialValidFrom(cursor.getString(10));
+                productsObj.setMaterialValidTo(cursor.getString(11));
+                productsObj.setMaterialImage(cursor.getString(12));
+                // Adding customer to list
+                productsObjs.add(productsObj);
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return productsObjs;
+    }
+
+
+
+
+
+
+
 
     public void updateProduct(ProductsObj productsObj, String id) {
         SQLiteDatabase db = this.getWritableDatabase();

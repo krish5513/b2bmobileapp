@@ -9,13 +9,15 @@
     </style>
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:background">@color/alert_dialog_background</item>
+        <item name="android:background">@color/white</item>
         <item name="colorAccent">@color/alert_dialog_color_accent</item>
         <item name="android:textColor">@color/alert_dialog_color_accent</item> <!-- Title Color-->
         <item name="android:textSize">18sp</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
-        <item name="android:textColorPrimary">@color/white</item><!-- Text Colour-->
+        <item name="android:textColorPrimary">@color/black</item><!-- Text Colour-->
     </style>
+
+
 
     <style name="CustomAlertDialogStyle">
         <item name="android:bottomBright">@color/progress_dialog_background</item>

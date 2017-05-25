@@ -1,23 +1,27 @@
 package com.rightclickit.b2bsaleon.activities;
 
-import android.app.AlertDialog;
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -32,12 +36,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.constants.Constants;
-import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.models.LogInModel;
 import com.rightclickit.b2bsaleon.models.SettingsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -53,7 +64,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements LocationListener,OnMapReadyCallback {
     EditText userName;
     EditText mobile;
     EditText region;
@@ -64,6 +75,7 @@ public class SettingsActivity extends AppCompatActivity {
     EditText transporterName, deviceSync, accessDevice, backup;
     EditText oldPassword, newPassword, confirmNewPassword;
 
+    GoogleMap googleMap;
 
     public static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -95,6 +107,9 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!isGooglePlayServicesAvailable()) {
+            finish();
+        }
         setContentView(R.layout.activity_settings);
         try {
             applicationContext = getApplicationContext();
@@ -360,10 +375,42 @@ public class SettingsActivity extends AppCompatActivity {
             e.printStackTrace();
 
         }
-
+        SupportMapFragment supportMapFragment =
+                (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFrag);
+       googleMap=supportMapFragment.getMap();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        googleMap.setMyLocationEnabled(true);
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(bestProvider);
+        if (location != null) {
+            onLocationChanged(location);
+        }
+        locationManager.requestLocationUpdates(bestProvider, 20000, 0, (android.location.LocationListener) this);
 
 
     }
+
+    private boolean isGooglePlayServicesAvailable() {
+        int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (ConnectionResult.SUCCESS == status) {
+            return true;
+        } else {
+            GooglePlayServicesUtil.getErrorDialog(status, this, 0).show();
+            return false;
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
@@ -444,6 +491,8 @@ public class SettingsActivity extends AppCompatActivity {
             alertDialogBuilder.setMessage(message);
             alertDialogBuilder.setCancelable(false);
 
+
+
             alertDialogBuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -465,9 +514,13 @@ public class SettingsActivity extends AppCompatActivity {
 
             Button cancelButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
             if (cancelButton != null)
-                cancelButton.setTextColor(ContextCompat.getColor(context, R.color.gray));
+                cancelButton.setTextColor(ContextCompat.getColor(context, R.color.alert_dialog_color_accent));
 
-        } catch (Exception e) {
+
+        }
+
+
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -574,5 +627,22 @@ public class SettingsActivity extends AppCompatActivity {
         Intent i = new Intent(SettingsActivity.this,DashboardActivity.class);
         startActivity(i);
         finish();
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        LatLng latLng = new LatLng(latitude, longitude);
+        googleMap.addMarker(new MarkerOptions().position(latLng));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(100));
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 }
