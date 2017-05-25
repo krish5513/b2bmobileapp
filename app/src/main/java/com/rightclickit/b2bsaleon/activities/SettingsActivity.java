@@ -64,7 +64,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 
-public class SettingsActivity extends AppCompatActivity implements LocationListener,OnMapReadyCallback {
+public class SettingsActivity extends AppCompatActivity implements OnMapReadyCallback {
     EditText userName;
     EditText mobile;
     EditText region;
@@ -75,7 +75,7 @@ public class SettingsActivity extends AppCompatActivity implements LocationListe
     EditText transporterName, deviceSync, accessDevice, backup;
     EditText oldPassword, newPassword, confirmNewPassword;
 
-    GoogleMap googleMap;
+    private GoogleMap mMap;
 
     public static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -377,8 +377,8 @@ public class SettingsActivity extends AppCompatActivity implements LocationListe
         }
         SupportMapFragment supportMapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFrag);
-       googleMap=supportMapFragment.getMap();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+       supportMapFragment.getMapAsync(this);
+       /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -397,7 +397,7 @@ public class SettingsActivity extends AppCompatActivity implements LocationListe
             onLocationChanged(location);
         }
         locationManager.requestLocationUpdates(bestProvider, 20000, 0, (android.location.LocationListener) this);
-
+*/
 
     }
 
@@ -629,20 +629,29 @@ public class SettingsActivity extends AppCompatActivity implements LocationListe
         finish();
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
 
-        double latitude = location.getLatitude();
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+/*
+        double latitude = mMap.getLatitude();
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
         googleMap.addMarker(new MarkerOptions().position(latLng));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(100));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(100));*/
+
+        LatLng sydney = new LatLng(17.3850, 78.4867);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Hyderabad, Telangana"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+    }
+
 
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-
-    }
-}

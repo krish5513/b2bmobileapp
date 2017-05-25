@@ -53,6 +53,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_ACCESS_DEVICE = "access_device";
     private final String KEY_BACKUP = "backup";
     private final String KEY_ROUTEIDS = "route_ids";
+    private final String KEY_DEVICE_UDID = "device_udid";
+    private final String KEY_VEHICLE_NUMBER = "vehicle_number";
+    private final String KEY_TRANSPORTER_NAME = "transporter_name";
+    private final String KEY_LATITUDE = "latitude";
+    private final String KEY_LONGITUDE = "longitude";
 
     // Column names for Routes  Table
     private final String KEY_ROUTE_ID = "route_id";
@@ -91,8 +96,9 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_PHONE_NUMBER + " VARCHAR," + KEY_AVATAR + " VARCHAR,"
             + KEY_STAKEHOLDER_ID + " VARCHAR," + KEY_ADRESS + " VARCHAR," + KEY_DEVICE_SYNC
             + " VARCHAR, " + KEY_ACCESS_DEVICE
-            + " VARCHAR, " + KEY_BACKUP
-            + " VARCHAR, " + KEY_ROUTEIDS + " VARCHAR)";
+            + " VARCHAR, " + KEY_BACKUP + " VARCHAR, " + KEY_ROUTEIDS + " VARCHAR, " + KEY_DEVICE_UDID
+            + " VARCHAR, " + KEY_VEHICLE_NUMBER  + " VARCHAR, " + KEY_TRANSPORTER_NAME  + " VARCHAR, " + KEY_LATITUDE
+            + " VARCHAR, " + KEY_LONGITUDE + " VARCHAR)";
 
     // Routes Table Create Statements
     private final String CREATE_TABLE_ROUTES = "CREATE TABLE IF NOT EXISTS "
@@ -120,7 +126,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_USERDETAILS);
             db.execSQL(CREATE_TABLE_ROUTES);
             db.execSQL(CREATE_PRODUCTS_TABLE);
-         //   db.execSQL(CREATE_TABLE_USER_ACTIVITY);
+            //   db.execSQL(CREATE_TABLE_USER_ACTIVITY);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -132,7 +138,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USERDETAILS);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_ROUTES);
             db.execSQL("DROP TABLE IF EXISTS"  +CREATE_PRODUCTS_TABLE);
-          //  db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USER_ACTIVITY);
+            //  db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USER_ACTIVITY);
 
             // create new tables
             onCreate(db);
@@ -156,7 +162,8 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param accessDevice
      * @param backUp
      */
-    public void insertUserDetails(String id, String userCode, String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp,String routeArrayListString) {
+    public void insertUserDetails(String id, String userCode, String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp,String routeArrayListString,
+                                  String deviceId,String transporterName,String vehicleNumber,String latitude,String longitude) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
@@ -172,6 +179,11 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_ACCESS_DEVICE, accessDevice);
             values.put(KEY_BACKUP, backUp);
             values.put(KEY_ROUTEIDS,routeArrayListString);
+            values.put(KEY_DEVICE_UDID,deviceId);
+            values.put(KEY_TRANSPORTER_NAME,transporterName);
+            values.put(KEY_VEHICLE_NUMBER,vehicleNumber);
+            values.put(KEY_LATITUDE,latitude);
+            values.put(KEY_LONGITUDE,longitude);
 
             // insert row
             db.insert(TABLE_USERDETAILS, null, values);
@@ -207,6 +219,11 @@ public class DBHelper extends SQLiteOpenHelper {
                     userData.put(KEY_DEVICE_SYNC,(c.getString(c.getColumnIndex(KEY_DEVICE_SYNC))));
                     userData.put(KEY_BACKUP,(c.getString(c.getColumnIndex(KEY_BACKUP))));
                     userData.put(KEY_ROUTEIDS,(c.getString(c.getColumnIndex(KEY_ROUTEIDS))));
+                    userData.put(KEY_DEVICE_UDID,(c.getString(c.getColumnIndex(KEY_DEVICE_UDID))));
+                    userData.put(KEY_TRANSPORTER_NAME,(c.getString(c.getColumnIndex(KEY_TRANSPORTER_NAME))));
+                    userData.put(KEY_VEHICLE_NUMBER,(c.getString(c.getColumnIndex(KEY_VEHICLE_NUMBER))));
+                    userData.put(KEY_LATITUDE,(c.getString(c.getColumnIndex(KEY_LATITUDE))));
+                    userData.put(KEY_LONGITUDE,(c.getString(c.getColumnIndex(KEY_LONGITUDE))));
 
                 } while (c.moveToNext());
             }
@@ -262,6 +279,30 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return routeId;
+    }
+
+    /**
+     * Method to get the user device id
+     * @return route id
+     */
+    public String getUserDeviceId(String emailId){
+        String deviceId = "";
+        try {
+            String query = "SELECT  * FROM " + TABLE_USERDETAILS+ " WHERE "+ KEY_EMAIL +" = " + "'"+emailId+"'";
+
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(query, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    deviceId = cursor.getString(cursor.getColumnIndex(KEY_DEVICE_UDID));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return deviceId;
     }
 
     /**
@@ -373,14 +414,14 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             db.delete(TABLE_ROUTESDETAILS, null, null);
-           // db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE name='" + TABLE_ROUTESDETAILS + "'");
+            // db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE name='" + TABLE_ROUTESDETAILS + "'");
             db.close();
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
-        /**
+    /**
      * Method to fetch trip by id
      */
     public List<String> getRouteDataByRouteId(String routeId){
@@ -391,7 +432,7 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
 
-             if (c.moveToFirst()) {
+            if (c.moveToFirst()) {
                 do {
                     routeDetailsById.add((c.getString(c.getColumnIndex(KEY_ROUTE_ID))));
                     routeDetailsById.add((c.getString(c.getColumnIndex(KEY_ROUTE_NAME))));

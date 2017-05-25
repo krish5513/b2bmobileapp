@@ -59,7 +59,8 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
         try {
             System.out.println("========= response = " + response);
             String id = "",userCode="",userName="",email="",phone="",
-                    profilePic="",stakeHolderId="",address="",deviceSync="",accessDevice="",backUp="",routeArrayListString="";
+                    profilePic="",stakeHolderId="",address="",deviceSync="",accessDevice="",backUp="",routeArrayListString=""
+                    , latitude="",longitude="";
             JSONObject logInResponse = new JSONObject(response);
             if (logInResponse.getInt("result_status") == 1) {
                 if(logInResponse.has("token")){
@@ -104,21 +105,28 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                     JSONObject json = new JSONObject();
                     json.put("routeArray", routesArray);
                     routeArrayListString = json.toString();
-                   // System.out.println("Routes Array List Is:: "+ routeArrayList);
+                    // System.out.println("Routes Array List Is:: "+ routeArrayList);
+                }
+                if(logInResponse.has("latitude")){
+                    latitude = logInResponse.getString("latitude");
+                }
+                if(logInResponse.has("longitude")){
+                    longitude = logInResponse.getString("longitude");
                 }
 
                 if(accessDevice.equals("YES")) {
                     if(mDBHelper.getUserDetailsTableCount()>0) {
                         mDBHelper.deleteValuesFromUserDetailsTable();
                     }
-                    mDBHelper.insertUserDetails(id, userCode, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp,routeArrayListString);
+                    mDBHelper.insertUserDetails(id, userCode, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp,routeArrayListString,
+                            "","","",latitude,longitude);
                     activity.logInSuccess();
                 }else {
                     displayNoNetworkError(context);
                 }
             } else {
                 displayNoNetworkError(context);
-              //  activity.logInError();
+                //  activity.logInError();
             }
         } catch (Exception e) {
             e.printStackTrace();
