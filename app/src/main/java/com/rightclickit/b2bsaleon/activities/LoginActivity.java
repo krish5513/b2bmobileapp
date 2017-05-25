@@ -21,6 +21,7 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.LogInModel;
 import com.rightclickit.b2bsaleon.models.PrevilegesModel;
 import com.rightclickit.b2bsaleon.services.SyncRoutesMasterDetailsService;
+import com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -192,9 +193,10 @@ public class LoginActivity extends Activity {
             sharedPreferences.putString("isLogin","true");
 
             // Call Previleges API
-            previlegesModel.getUserPrevileges();
+           // previlegesModel.getUserPrevileges();
+            startService(new Intent(LoginActivity.this, SyncUserPrivilegesService.class));
 
-            // loadDashboard();
+             loadDashboard();
 
         } catch (Exception e) {
             e.printStackTrace();

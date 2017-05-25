@@ -119,9 +119,9 @@ public class DashboardActivity extends AppCompatActivity {
             mTDCLayout.setVisibility(View.GONE);
         }
 
-        if (mDBHelper.getRouteId().length()==0) {
-            startService(new Intent(DashboardActivity.this, SyncRoutesMasterDetailsService.class));
-        }
+//        if (mDBHelper.getRouteId().length()==0) {
+//            startService(new Intent(DashboardActivity.this, SyncRoutesMasterDetailsService.class));
+//        }
 
     }
 

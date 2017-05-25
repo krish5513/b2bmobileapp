@@ -60,6 +60,12 @@
             android:enabled="true"
             android:exported="true" />
 
+        <!-- User privileges data sync service -->
+        <service
+            android:name=".services.SyncUserPrivilegesService"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity android:name=".activities.Products_Activity" />
 
         <activity android:name=".activities.Product_Add_Activity"></activity>

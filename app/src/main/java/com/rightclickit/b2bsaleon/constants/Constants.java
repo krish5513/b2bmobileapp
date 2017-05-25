@@ -37,20 +37,20 @@ public class Constants {
     /**
      * Port number
      */
-    public static final String PORT_LOGIN = "3003";
+    public static final String PORT_LOGIN = ":3003";
 
     /**
      * Port number 1
      */
-    public static final String PORT_ROUTES_MASTER_DATA = "3000";
+    public static final String PORT_ROUTES_MASTER_DATA = ":3000";
 
     /**
      * Port for user previleges.
      */
-    public static final String PORT_USER_PREVILEGES = "3001";
+    public static final String PORT_USER_PREVILEGES = ":3001";
 
     //Production
-    public static final String MAIN_URL = "http://52.10.51.54:";
+    public static final String MAIN_URL = "http://52.10.51.54";
 
     public static final String APP_TYPE = "A";
 
@@ -59,12 +59,15 @@ public class Constants {
     public static final int FAILURE = 401; // Operation Successful. Please use the response object.
     public static final int ERROR = 400; // Bad Request. Error occurred while processing the request.
 
+    // Privilege static code
+    public static final String PRIVILEGE_CODE = "&code=590b0e02a9fc1b13fcf967cf";
+
     //Log In
     public static final String LOGIN_SERVICE = "/user/login";
     // Routes List master
     public static final String ROUTEID_SERVICE = "/route/list";
-    // User previleges
-    public static final String GET_USER_PREVILEGES_SERVICE = "/usergroup/form_list?";
+    // User previleges 4&\n
+    public static final String GET_USER_PREVILEGES_SERVICE = "/b2b/common/getactions_mobile?stake_id=";
     // Chnage Password {pass user id parameter in url}
     public static final String CHANGE_PASSWORD_SERVICE = "/user/edit/";
 

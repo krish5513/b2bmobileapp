@@ -86,6 +86,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                     profilePic = logInResponse.getString("avatar");
                 }
                 if(logInResponse.has("stakeholder_id")){
+                    mPreferences.putString("stakeId",logInResponse.getString("stakeholder_id"));
                     stakeHolderId = logInResponse.getString("stakeholder_id");
                 }
                 if(logInResponse.has("address")){
