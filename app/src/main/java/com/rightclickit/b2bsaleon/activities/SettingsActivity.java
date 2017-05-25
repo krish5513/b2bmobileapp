@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -49,6 +50,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.models.SettingsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -104,6 +106,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private static final int ACTION_TAKE_PHOTO_A = 1;
     private static final int ACTION_TAKE_GALLERY_PIC_A = 2;
 
+    private String mLatitude="",mLongitude="",mDeviceId="",mProfilePic="";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +121,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             activityContext = SettingsActivity.this;
 
             sharedPreferences = new MMSharedPreferences(applicationContext);
-
+            ImageLoader imageLoader = new ImageLoader(SettingsActivity.this);
             settingsmodel = new SettingsModel(activityContext, this);
             mDBHelper = new DBHelper(SettingsActivity.this);
             routeNo = (EditText) findViewById(R.id.tv_routeNo);
@@ -190,36 +195,37 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     str_accessdevice = accessDevice.getText().toString();
                     str_backup = backup.getText().toString();
 
-                    if (str_companyName.length() == 0 || str_companyName.length() == ' ') {
-                        companyName.setError("Please enter CompanyName");
-                        Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH_SHORT).show();
-                        //
-                    } else if (str_userName.length() == 0 || str_userName.length() == ' ') {
-                        companyName.setError(null);
-                        userName.setError("Please enter Username");
-                        Toast.makeText(getApplicationContext(), "Please enter Username", Toast.LENGTH_SHORT).show();
-
-                    } else if (str_mobileNo.length() == 0 || str_mobileNo.length() == ' ' || str_mobileNo.length() != 10) {
-                        userName.setError(null);
-                        mobile.setError("Please enter 10 digit Mobilenumber");
-                        Toast.makeText(getApplicationContext(), "Please enter 10 digit Mobilenumber", Toast.LENGTH_SHORT).show();
-
-                    } else if (str_region.length() == 0 || str_region.length() == ' ') {
-                        mobile.setError(null);
-                        region.setError("Please enter Region");
-                        Toast.makeText(getApplicationContext(), "Please enter Region", Toast.LENGTH_SHORT).show();
-
-                    } else if (str_salesOffice.length() == 0 || str_salesOffice.length() == ' ') {
-                        region.setError(null);
-                        salesOffice.setError("Please enter Salesoffice");
-                        Toast.makeText(getApplicationContext(), "Please enter Salesoffice", Toast.LENGTH_SHORT).show();
-
-                    } else if (str_routeNo.length() == 0 || str_routeNo.length() == ' ') {
-                        salesOffice.setError(null);
-                        routeNo.setError("Please enter Routeno");
-                        Toast.makeText(getApplicationContext(), "Please enter Routeno", Toast.LENGTH_SHORT).show();
-
-                    } else if (str_vehicleNo.length() == 0 || str_vehicleNo.length() == ' ') {
+//                    if (str_companyName.length() == 0 || str_companyName.length() == ' ') {
+//                        companyName.setError("Please enter CompanyName");
+//                        Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH_SHORT).show();
+//                        //
+//                    } else if (str_userName.length() == 0 || str_userName.length() == ' ') {
+//                        companyName.setError(null);
+//                        userName.setError("Please enter Username");
+//                        Toast.makeText(getApplicationContext(), "Please enter Username", Toast.LENGTH_SHORT).show();
+//
+//                    } else if (str_mobileNo.length() == 0 || str_mobileNo.length() == ' ' || str_mobileNo.length() != 10) {
+//                        userName.setError(null);
+//                        mobile.setError("Please enter 10 digit Mobilenumber");
+//                        Toast.makeText(getApplicationContext(), "Please enter 10 digit Mobilenumber", Toast.LENGTH_SHORT).show();
+//
+//                    } else if (str_region.length() == 0 || str_region.length() == ' ') {
+//                        mobile.setError(null);
+//                        region.setError("Please enter Region");
+//                        Toast.makeText(getApplicationContext(), "Please enter Region", Toast.LENGTH_SHORT).show();
+//
+//                    } else if (str_salesOffice.length() == 0 || str_salesOffice.length() == ' ') {
+//                        region.setError(null);
+//                        salesOffice.setError("Please enter Salesoffice");
+//                        Toast.makeText(getApplicationContext(), "Please enter Salesoffice", Toast.LENGTH_SHORT).show();
+//
+//                    } else if (str_routeNo.length() == 0 || str_routeNo.length() == ' ') {
+//                        salesOffice.setError(null);
+//                        routeNo.setError("Please enter Routeno");
+//                        Toast.makeText(getApplicationContext(), "Please enter Routeno", Toast.LENGTH_SHORT).show();
+//
+//                    }
+                     if (str_vehicleNo.length() == 0 || str_vehicleNo.length() == ' ') {
                         routeNo.setError(null);
                         vehicleNo.setError("Please enter Vehicleno");
                         Toast.makeText(getApplicationContext(), "Please enter Vehicleno", Toast.LENGTH_SHORT).show();
@@ -229,22 +235,24 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                         transporterName.setError("Please enter Transporter Name");
                         Toast.makeText(getApplicationContext(), "Please enter Transporter Name", Toast.LENGTH_SHORT).show();
 
-                    } else if (str_devicesync.length() == 0 || str_devicesync.length() == ' ') {
-                        transporterName.setError(null);
-                        deviceSync.setError("Please enter deviceSync time");
-                        Toast.makeText(getApplicationContext(), "Please enter deviceSync time", Toast.LENGTH_SHORT).show();
-
-                    } else if (str_accessdevice.length() == 0 || str_accessdevice.length() == ' ') {
-                        deviceSync.setError(null);
-                        accessDevice.setError("Please enter accessDevice");
-                        Toast.makeText(getApplicationContext(), "Please enter accessDevice", Toast.LENGTH_SHORT).show();
-
-                    } else if (str_backup.length() == 0 || str_backup.length() == ' ') {
-                        accessDevice.setError(null);
-                        backup.setError("Please enter backup days");
-                        Toast.makeText(getApplicationContext(), "Please enter backup days", Toast.LENGTH_SHORT).show();
-
-                    } else {
+                    }
+//                    else if (str_devicesync.length() == 0 || str_devicesync.length() == ' ') {
+//                        transporterName.setError(null);
+//                        deviceSync.setError("Please enter deviceSync time");
+//                        Toast.makeText(getApplicationContext(), "Please enter deviceSync time", Toast.LENGTH_SHORT).show();
+//
+//                    } else if (str_accessdevice.length() == 0 || str_accessdevice.length() == ' ') {
+//                        deviceSync.setError(null);
+//                        accessDevice.setError("Please enter accessDevice");
+//                        Toast.makeText(getApplicationContext(), "Please enter accessDevice", Toast.LENGTH_SHORT).show();
+//
+//                    } else if (str_backup.length() == 0 || str_backup.length() == ' ') {
+//                        accessDevice.setError(null);
+//                        backup.setError("Please enter backup days");
+//                        Toast.makeText(getApplicationContext(), "Please enter backup days", Toast.LENGTH_SHORT).show();
+//
+//                    }
+                    else {
                         companyName.setError(null);
                         userName.setError(null);
                         mobile.setError(null);
@@ -256,17 +264,22 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                         deviceSync.setError(null);
                         accessDevice.setError(null);
                         backup.setError(null);
-                        SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("routeDetails", MODE_PRIVATE).edit();
-                        editor.putString("companyName", companyName.getText().toString());
-                        editor.putString("routeName", routeNo.getText().toString());
-                        editor.putString("region", region.getText().toString());
-                        editor.putString("userName", userName.getText().toString());
-                        editor.putString("mobile", mobile.getText().toString());
-                        editor.putString("salesOffice", salesOffice.getText().toString());
-                        editor.putString("vehicleNo", vehicleNo.getText().toString());
-                        editor.putString("transporterName", transporterName.getText().toString());
-                        Log.e("save on click", routeNo.getText().toString());
-                        editor.commit();
+//                        SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("routeDetails", MODE_PRIVATE).edit();
+//                        editor.putString("companyName", companyName.getText().toString());
+//                        editor.putString("routeName", routeNo.getText().toString());
+//                        editor.putString("region", region.getText().toString());
+//                        editor.putString("userName", userName.getText().toString());
+//                        editor.putString("mobile", mobile.getText().toString());
+//                        editor.putString("salesOffice", salesOffice.getText().toString());
+//                        editor.putString("vehicleNo", vehicleNo.getText().toString());
+//                        editor.putString("transporterName", transporterName.getText().toString());
+//                        Log.e("save on click", routeNo.getText().toString());
+//                        editor.commit();
+
+                         String dId  = getDeviceId();
+                         long f = mDBHelper.updateUserDetails(sharedPreferences.getString("userId"),"",userName.getText().toString(),
+                                 "",mobile.getText().toString(),"","","","","","","",dId,transporterName.getText().toString(),
+                                 vehicleNo.getText().toString(),"","");
 
                         companyName.setCursorVisible(false);
                         routeNo.setCursorVisible(false);
@@ -317,6 +330,11 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             System.out.println("The User Data BACKUP Is:: "+userMapData.get("backup"));
             System.out.println("The User Data ACCESS DEVICE Is:: "+userMapData.get("access_device"));
             System.out.println("The User Data ROUTE IDS Is:: "+userMapData.get("route_ids"));
+            mLatitude = userMapData.get("latitude");
+            mLongitude = userMapData.get("longitude");
+            mDeviceId = userMapData.get("device_udid");
+            mProfilePic = userMapData.get("profile_pic");
+
 
             JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
             JSONArray routesArray = routesJob.getJSONArray("routeArray");
@@ -370,6 +388,15 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             }
             if(userMapData.get("backup")!=null) {
                 backup.setText(userMapData.get("backup").toString());
+            }
+            if(userMapData.get("vehicle_number")!=null) {
+                vehicleNo.setText(userMapData.get("vehicle_number").toString());
+            }
+            if(userMapData.get("transporter_name")!=null) {
+                transporterName.setText(userMapData.get("transporter_name").toString());
+            }
+            if(!mProfilePic.equals("")){
+                imageLoader.DisplayImage(mProfilePic,mPicImage,null,"");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -642,7 +669,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(100));*/
 
-        LatLng sydney = new LatLng(17.3850, 78.4867);
+        LatLng sydney = new LatLng(Double.parseDouble(mLatitude), Double.parseDouble(mLongitude));
         mMap.addMarker(new MarkerOptions().position(sydney).title("Hyderabad, Telangana"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -652,6 +679,10 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         mMap.setMyLocationEnabled(true);
     }
 
-
+    private String getDeviceId(){
+        String android_id = Settings.Secure.getString(SettingsActivity.this.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        return android_id;
+    }
     }
 

@@ -196,6 +196,56 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Method to update user details
+     *
+     * @param id
+     * @param userCode
+     * @param userName
+     * @param email
+     * @param phone
+     * @param profilrPic
+     * @param stakeHolder
+     * @param address
+     * @param deviceSync
+     * @param accessDevice
+     * @param backUp
+     */
+    public long updateUserDetails(String id, String userCode, String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp,String routeArrayListString,
+                                  String deviceId,String transporterName,String vehicleNumber,String latitude,String longitude) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long effectedRows = 0;
+        try {
+            ContentValues values = new ContentValues();
+            //values.put(KEY_USER_ID, id);
+            //values.put(KEY_USER_CODE, userCode);
+            values.put(KEY_NAME, userName);
+            //values.put(KEY_EMAIL, email);
+            values.put(KEY_PHONE_NUMBER, phone);
+            // values.put(KEY_AVATAR, profilrPic);
+            // values.put(KEY_STAKEHOLDER_ID, stakeHolder);
+            // values.put(KEY_ADRESS, address);
+            // values.put(KEY_DEVICE_SYNC, deviceSync);
+            // values.put(KEY_ACCESS_DEVICE, accessDevice);
+            // values.put(KEY_BACKUP, backUp);
+            // values.put(KEY_ROUTEIDS,routeArrayListString);
+            values.put(KEY_DEVICE_UDID,deviceId);
+            values.put(KEY_TRANSPORTER_NAME,transporterName);
+            values.put(KEY_VEHICLE_NUMBER,vehicleNumber);
+            //values.put(KEY_LATITUDE,latitude);
+            // values.put(KEY_LONGITUDE,longitude);
+
+            // update row
+            effectedRows = db.update(TABLE_USERDETAILS, values, KEY_USER_ID + " = ?", new String[]{String.valueOf(id)});
+            values.clear();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        db.close();
+        return effectedRows;
+    }
+
+    /**
      * Method to get the users data
      * @return user data in list form.
      */
@@ -214,6 +264,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     userData.put(KEY_NAME,(c.getString(c.getColumnIndex(KEY_NAME))));
                     userData.put(KEY_EMAIL,(c.getString(c.getColumnIndex(KEY_EMAIL))));
                     userData.put(KEY_PHONE_NUMBER,(c.getString(c.getColumnIndex(KEY_PHONE_NUMBER))));
+                    userData.put(KEY_AVATAR,(c.getString(c.getColumnIndex(KEY_AVATAR))));
                     userData.put(KEY_ADRESS,(c.getString(c.getColumnIndex(KEY_ADRESS))));
                     userData.put(KEY_ACCESS_DEVICE,(c.getString(c.getColumnIndex(KEY_ACCESS_DEVICE))));
                     userData.put(KEY_DEVICE_SYNC,(c.getString(c.getColumnIndex(KEY_DEVICE_SYNC))));

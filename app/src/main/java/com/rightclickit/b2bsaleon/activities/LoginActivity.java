@@ -20,6 +20,7 @@ import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.LogInModel;
 import com.rightclickit.b2bsaleon.models.PrevilegesModel;
+import com.rightclickit.b2bsaleon.services.SyncRoutesMasterDetailsService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -202,6 +203,9 @@ public class LoginActivity extends Activity {
 
     public void loadDashboard() {
         if(mDBHelper.getUserDeviceId(emailId).equals("")){
+            if (mDBHelper.getRouteId().length()==0) {
+                startService(new Intent(LoginActivity.this, SyncRoutesMasterDetailsService.class));
+            }
             Intent mainActivityIntent = new Intent(LoginActivity.this, SettingsActivity.class);
             startActivity(mainActivityIntent);
             finish();
