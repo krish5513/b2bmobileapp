@@ -2,6 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_weight="0.7"
+            android:background="#ffffff" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="-5dp"
+            android:layout_weight="0.25"
+            android:background="#dbd7d7" />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,27 +37,29 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/materialCode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:id="@+id/materialCode"
                 android:text="10052"
                 android:textColor="@color/greydark"
                 android:textSize="14sp" />
 
             <ImageView
+                android:id="@+id/materialImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:id="@+id/materialImage"
                 android:src="@drawable/milk_converted" />
+
             <TextView
+                android:id="@+id/material_Unit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/material_Unit"
                 android:gravity="center"
                 android:text="50 ltrs"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -151,6 +172,7 @@
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -164,7 +186,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_address"
+                        android:id="@+id/materialMRP"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -172,8 +194,9 @@
                         android:text="MRP:"
                         android:textColor="@color/greydark"
                         android:textSize="12sp" />
+
                     <TextView
-                        android:id="@+id/materialMRP"
+                        android:id="@+id/materialMRPUnit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -191,7 +214,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-
+                        android:id="@+id/materialSP"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -199,8 +222,9 @@
                         android:text="SP:"
                         android:textColor="@color/greydark"
                         android:textSize="12sp" />
+
                     <TextView
-                        android:id="@+id/materialSP"
+                        android:id="@+id/materialSPUnit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -212,13 +236,14 @@
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="horizontal"
                 android:layout_marginBottom="8dp"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:layout_weight="0.3"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/btnView"
@@ -230,49 +255,38 @@
                     android:text="View"
                     android:textColor="@color/colorPrimary"
                     android:textSize="10sp" />
+
                 <Button
                     android:id="@+id/btnEdit"
                     android:layout_width="70dp"
                     android:layout_height="25dp"
+                    android:layout_marginLeft="20dp"
                     android:background="@drawable/border_btn"
                     android:drawableLeft="@drawable/ic_create_primary_10dp"
                     android:padding="5dp"
-                    android:layout_marginLeft="20dp"
                     android:text="Edit"
                     android:textColor="@color/colorPrimary"
                     android:textSize="10sp" />
+
                 <Button
                     android:id="@+id/btnStock"
                     android:layout_width="70dp"
                     android:layout_height="25dp"
+                    android:layout_marginLeft="20dp"
                     android:background="@drawable/border_btn"
                     android:drawableLeft="@drawable/ic_remove_red_eye_black_24dp"
                     android:padding="5dp"
                     android:text="Stock"
-                    android:layout_marginLeft="20dp"
                     android:textColor="@color/colorPrimary"
                     android:textSize="10sp" />
             </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
 
+                android:background="#dbd7d7" />
         </LinearLayout>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_weight="0.7"
-            android:background="#ffffff" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="-5dp"
-            android:layout_weight="0.25"
-            android:background="#dbd7d7" />
     </LinearLayout>
 
 </LinearLayout>

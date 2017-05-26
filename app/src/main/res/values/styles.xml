@@ -20,23 +20,23 @@
 
 
     <style name="CustomAlertDialogStyle">
-        <item name="android:bottomBright">@color/progress_dialog_background</item>
-        <item name="android:bottomDark">@color/progress_dialog_background</item>
-        <item name="android:bottomMedium">@color/progress_dialog_background</item>
-        <item name="android:centerBright">@color/progress_dialog_background</item>
-        <item name="android:centerDark">@color/progress_dialog_background</item>
-        <item name="android:centerMedium">@color/progress_dialog_background</item>
-        <item name="android:fullBright">@color/progress_dialog_background</item>
-        <item name="android:fullDark">@color/progress_dialog_background</item>
-        <item name="android:topBright">@color/progress_dialog_background</item>
-        <item name="android:topDark">@color/progress_dialog_background</item>
+        <item name="android:bottomBright">@color/white</item>
+        <item name="android:bottomDark">@color/white</item>
+        <item name="android:bottomMedium">@color/white</item>
+        <item name="android:centerBright">@color/white</item>
+        <item name="android:centerDark">@color/white</item>
+        <item name="android:centerMedium">@color/white</item>
+        <item name="android:fullBright">@color/white</item>
+        <item name="android:fullDark">@color/white</item>
+        <item name="android:topBright">@color/white</item>
+        <item name="android:topDark">@color/white</item>
     </style>
 
     <style name="ProgressDialogTheme" parent="@android:style/Theme.Panel">
         <item name="android:alertDialogStyle">@style/CustomAlertDialogStyle</item>
-        <item name="android:windowBackground">@color/progress_dialog_background</item>
+       <!-- <item name="android:windowBackground">@color/progress_dialog_background</item>-->
         <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textColorSecondary">@color/alert_dialog_color_accent</item>
         <item name="android:textSize">18sp</item>
     </style>
 

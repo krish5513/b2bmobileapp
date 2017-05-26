@@ -511,7 +511,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
 
-    public void addProducts(ProductsObj productsObj) {
+   /* public void addProducts(ProductsObj productsObj) {
         SQLiteDatabase db = this.getWritableDatabase();
         Log.e("in prod insert", productsObj.getMaterialDisc());
         ContentValues values = new ContentValues();
@@ -611,7 +611,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         }
 
-    }
+    }*/
 
     /**
      * Method to update the device details

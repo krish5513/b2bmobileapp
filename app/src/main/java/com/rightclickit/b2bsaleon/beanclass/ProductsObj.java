@@ -8,22 +8,15 @@ import java.io.Serializable;
  * Created by murali on 11/2/17.
  */
 
-public class ProductsObj implements Serializable{
+public class ProductsObj {
     @Expose private int id;
-    @Expose private String materialCode;
-    @Expose private String materialDisc;
-    @Expose private String materialUnit;
+    @Expose private String materialName;
+    @Expose private String materialLiters;
+    @Expose private String materialMRPRS;
     @Expose private String materialMRP;
     @Expose private String materialSP;
-    @Expose private String materialValidFrom;
-    @Expose private String materialValidTo;
-    @Expose private String materialImage;
-    @Expose private String materialStatus;
-    @Expose private String materialMOQ;
-    @Expose private String materialTAX;
-    @Expose private String materialTAXType;
-    @Expose private String fromDate;
-    @Expose private String toDate;
+    @Expose private String materialSPRS;
+
     public int getId() {
         return id;
     }
@@ -32,69 +25,28 @@ public class ProductsObj implements Serializable{
         this.id = id;
     }
 
-    public String getMaterialCode() {
-        return materialCode;
+    public String getMaterialName() {
+        return materialName;
     }
 
-    public void setMaterialCode(String materialCode) {
-        this.materialCode = materialCode;
+    public void setMaterialName(String materialName) {
+        this.materialName = materialName;
     }
 
-    public ProductsObj(String materialCode, String materialDisc, String materialImage, String materialMRP, String materialSP, String materialStatus, String materialUnit, String materialValidFrom, String materialValidTo, String isReturnAble, String materialMOQ, String materialTAX, String materialTAXType) {
-        this.materialCode = materialCode;
-        this.materialDisc = materialDisc;
-        this.materialImage = materialImage;
-        this.materialMRP = materialMRP;
-        this.materialSP = materialSP;
-        this.materialStatus = materialStatus;
-        this.materialUnit = materialUnit;
-        this.materialValidFrom = materialValidFrom;
-        this.materialValidTo = materialValidTo;
-        this.isReturnAble = isReturnAble;
-        this.materialMOQ = materialMOQ;
-        this.materialTAX = materialTAX;
-        this.materialTAXType = materialTAXType;
-    }
-    public ProductsObj(String materialCode, String materialDisc, String materialImage, String materialMRP, String materialSP, String materialStatus, String materialUnit, String materialValidFrom, String materialValidTo, String isReturnAble, String materialMOQ, String materialTAX, String materialTAXType, String fromDate, String toDate) {
-        this.materialCode = materialCode;
-        this.materialDisc = materialDisc;
-        this.materialImage = materialImage;
-        this.materialMRP = materialMRP;
-        this.materialSP = materialSP;
-        this.materialStatus = materialStatus;
-        this.materialUnit = materialUnit;
-        this.materialValidFrom = materialValidFrom;
-        this.materialValidTo = materialValidTo;
-        this.isReturnAble = isReturnAble;
-        this.materialMOQ = materialMOQ;
-        this.materialTAX = materialTAX;
-        this.materialTAXType = materialTAXType;
-        this.fromDate = fromDate;
-        this.toDate = toDate;
+    public String getMaterialLiters() {
+        return materialLiters;
     }
 
-    public String getMaterialDisc() {
-        return materialDisc;
+    public void setMaterialLiters(String materialLiters) {
+        this.materialLiters = materialLiters;
     }
 
-    public void setMaterialDisc(String materialDisc) {
-        this.materialDisc = materialDisc;
+    public String getMaterialMRPRS() {
+        return materialMRPRS;
     }
 
-    public String getMaterialImage() {
-        return materialImage;
-    }
-
-    public void setMaterialImage(String materialImage) {
-        this.materialImage = materialImage;
-    }
-
-    public String getMaterialSP() {
-        return materialSP;
-    }
-
-    public void setMaterialSP(String materialSP) {
-        this.materialSP = materialSP;
+    public void setMaterialMRPRS(String materialMRPRS) {
+        this.materialMRPRS = materialMRPRS;
     }
 
     public String getMaterialMRP() {
@@ -105,54 +57,45 @@ public class ProductsObj implements Serializable{
         this.materialMRP = materialMRP;
     }
 
-    public String getMaterialStatus() {
-        return materialStatus;
+    public String getMaterialSP() {
+        return materialSP;
     }
 
-    public void setMaterialStatus(String materialStatus) {
-        this.materialStatus = materialStatus;
+    public void setMaterialSP(String materialSP) {
+        this.materialSP = materialSP;
     }
 
-    public String getMaterialUnit() {
-        return materialUnit;
+    public String getMaterialSPRS() {
+        return materialSPRS;
     }
 
-    public void setMaterialUnit(String materialUnit) {
-        this.materialUnit = materialUnit;
+    public void setMaterialSPRS(String materialSPRS) {
+        this.materialSPRS = materialSPRS;
     }
 
-    public String getMaterialValidFrom() {
-        return materialValidFrom;
+    public String getMaterialidLiteres() {
+        return materialidLiteres;
     }
 
-    public void setMaterialValidFrom(String materialValidFrom) {
-        this.materialValidFrom = materialValidFrom;
+    public void setMaterialidLiteres(String materialidLiteres) {
+        this.materialidLiteres = materialidLiteres;
     }
 
-    public String getMaterialValidTo() {
-        return materialValidTo;
+    public int getMaterialImage() {
+        return materialImage;
     }
 
-    public void setMaterialValidTo(String materialValidTo) {
-        this.materialValidTo = materialValidTo;
+    public void setMaterialImage(int materialImage) {
+        this.materialImage = materialImage;
     }
 
-    public String getMaterialTAX() {
-        return materialTAX;
+    public String getMaterialReturnable() {
+        return materialReturnable;
     }
 
-    public void setMaterialTAX(String materialTAX) {
-        this.materialTAX = materialTAX;
+    public void setMaterialReturnable(String materialReturnable) {
+        this.materialReturnable = materialReturnable;
     }
-
-    public String getMaterialTAXType() {
-        return materialTAXType;
-    }
-
-    public void setMaterialTAXType(String materialTAXType) {
-        this.materialTAXType = materialTAXType;
-    }
-
 
     public String getMaterialMOQ() {
         return materialMOQ;
@@ -162,18 +105,47 @@ public class ProductsObj implements Serializable{
         this.materialMOQ = materialMOQ;
     }
 
-
-    public String getIsReturnAble() {
-        return isReturnAble;
+    public String getMaterialStatus() {
+        return materialStatus;
     }
 
-    public void setIsReturnAble(String isReturnAble) {
-        this.isReturnAble = isReturnAble;
+    public void setMaterialStatus(String materialStatus) {
+        this.materialStatus = materialStatus;
     }
 
-    String isReturnAble;
-    // Empty constructor
-    public ProductsObj() {
-
+    public ProductsObj(int id, String materialName, String materialLiters, String materialMRPRS, String materialMRP, String materialSP, String materialSPRS, String materialidLiteres, Integer materialImage, String materialReturnable, String materialMOQ, String materialStatus,int downarrowImage) {
+        this.id = id;
+        this.materialName = materialName;
+        this.materialLiters = materialLiters;
+        this.materialMRPRS = materialMRPRS;
+        this.materialMRP = materialMRP;
+        this.materialSP = materialSP;
+        this.materialSPRS = materialSPRS;
+        this.materialidLiteres = materialidLiteres;
+        this.materialImage = materialImage;
+        this.materialReturnable = materialReturnable;
+        this.materialMOQ = materialMOQ;
+        this.materialStatus = materialStatus;
+        this.downarrowImage = downarrowImage;
     }
+
+    @Expose private String materialidLiteres;
+    @Expose private int  materialImage;
+
+
+
+    public int getDownarrowImage() {
+        return downarrowImage;
+    }
+
+    public void setDownarrowImage(int downarrowImage) {
+        this.downarrowImage = downarrowImage;
+    }
+
+    @Expose private int  downarrowImage;
+    @Expose private String materialReturnable;
+    @Expose private String materialMOQ;
+    @Expose private String materialStatus;
+
+
 }

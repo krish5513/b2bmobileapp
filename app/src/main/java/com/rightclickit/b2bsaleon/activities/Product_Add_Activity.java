@@ -1,3 +1,4 @@
+/*
 package com.rightclickit.b2bsaleon.activities;
 
 import android.annotation.TargetApi;
@@ -150,9 +151,11 @@ public class Product_Add_Activity extends AppCompatActivity {
             showAlert("Please select ValidFrom date");
         }
 
-      /*  if(saveBool){
+      */
+/*  if(saveBool){
             validateProductDetails();
-        }*/
+        }*//*
+
 
     }
 
@@ -383,10 +386,12 @@ public class Product_Add_Activity extends AppCompatActivity {
         if (materialSP.getText().toString().length() > 0) {
             sp_double = Double.valueOf((materialSP.getText().toString().trim()));
         }
-        /*else if (materialSP.getText().toString().length()>mrp_double) {
+        */
+/*else if (materialSP.getText().toString().length()>mrp_double) {
            sp_double = Double.parseDouble((materialSP.getText().toString().trim()));
            Log.i("sp",sp_double+"");
-       }*/
+       }*//*
+
         String str_materialCode = materialCode.getText().toString();
         String str_materialDes = materialDisc.getText().toString();
         String str_tax = taxTextField.getText().toString();
@@ -478,11 +483,13 @@ public class Product_Add_Activity extends AppCompatActivity {
                                 dbHelper.updateProduct(new ProductsObj(materialCode.getText().toString(), materialDisc.getText().toString(),prodImage, materialMRP.getText().toString(),materialSP.getText().toString(),"1", materialUnit.getSelectedItem().toString(), materialValidFrom.getText().toString(), materialValidTo.getText().toString(), produtRetunable,materialMOQ.getText().toString(),materialTAX.getText().toString(),taxType.getSelectedItem().toString()),productId);
                             Log.e("completed", "dssdf");
                             dialog.dismiss();
-                            /*Products_Fragment fragment = new Products_Fragment();
+                            */
+/*Products_Fragment fragment = new Products_Fragment();
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction.replace(R.id.flContent, fragment);
                             getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                            fragmentTransaction.commit();*/
+                            fragmentTransaction.commit();*//*
+
                             Intent productsactivity=new Intent(Product_Add_Activity.this,Products_Activity.class);
                             startActivity(productsactivity);
                             finish();
@@ -498,7 +505,8 @@ public class Product_Add_Activity extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
-               /* View selectedView = productReturn.getSelectedView();
+               */
+/* View selectedView = productReturn.getSelectedView();
                 if (selectedView != null && selectedView instanceof TextView) {
                     TextView selectedTextView = (TextView) selectedView;
                     if (!valid) {
@@ -508,7 +516,8 @@ public class Product_Add_Activity extends AppCompatActivity {
                     else {
                         selectedTextView.setError(null);
                     }
-                }*/
+                }*//*
+
 
     }
 
@@ -638,7 +647,8 @@ public class Product_Add_Activity extends AppCompatActivity {
 
     private void galleryIntent() {
         Intent intent = new Intent();
-        intent.setType("image/*");
+        intent.setType("image*/
+/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
     }
@@ -687,11 +697,13 @@ public class Product_Add_Activity extends AppCompatActivity {
 
     }
 
-    /**
+    */
+/**
      * if choosen select from gallery option
      *
      * @param data
-     */
+     *//*
+
     private void onSelectFromGalleryResult(Intent data) {
         Bitmap bm = null;
         if (data != null) {
@@ -722,11 +734,13 @@ public class Product_Add_Activity extends AppCompatActivity {
         imageview.setImageBitmap(bitmapLogo);
     }
 
-    /**
+    */
+/**
      * if choosen open camera option this method is called
      *
      * @param data
-     */
+     *//*
+
     private void onCaptureImageResult(Intent data) {
         Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
 //        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -757,3 +771,4 @@ public class Product_Add_Activity extends AppCompatActivity {
 
 
 }
+*/

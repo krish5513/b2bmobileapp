@@ -16,11 +16,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.NotificationAdapter;
 import com.rightclickit.b2bsaleon.adapters.ProductAdapter;
+import com.rightclickit.b2bsaleon.adapters.ProductsAdapter;
+import com.rightclickit.b2bsaleon.beanclass.NotificationItem;
+import com.rightclickit.b2bsaleon.beanclass.ProductsObj;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 
 import java.io.Serializable;
@@ -46,8 +51,29 @@ import static com.rightclickit.b2bsaleon.database.DBHelper.KEY_MATERIAL_VALIDTO;
 import static com.rightclickit.b2bsaleon.database.DBHelper.TABLE_PRODUCTS;
 
 public class Products_Activity extends AppCompatActivity {
+    public static final Integer[] id= new Integer[] {10052};
+    public static final Integer[] images = { R.drawable.milk_converted};
+    public static final Integer[] downarrow = { R.drawable.ic_circle_orange};
 
-     FloatingActionButton fab;
+    public static final String[] name= new String[] {"Toned milk Thirumala special 500ml"};
+
+    public static final String[] moq = new String[] {
+            "MOQ"};
+
+    public static final String[] liters = new String[] {"20 Ltrs"};
+    public static final String[] returnable = new String[] {"Returnable"};
+    public static final String[] mrp = new String[] {"MRP"};
+    public static final String[] mrprs = new String[] {"Rs. 50.00"};
+    public static final String[] sp = new String[] {"SP"};
+    public static final String[] sprs = new String[] {"46.00"};
+    public static final String[] idliters = new String[] {"50 Ltrs"};
+    public static final String[] status = new String[] {"Instock"};
+
+
+    ListView listView;
+    List<ProductsObj> rowItems;
+
+     //FloatingActionButton fab;
     RecyclerView recyclerView;
     public ScrollView scrollView;
     Products_Activity c;
@@ -75,8 +101,22 @@ public class Products_Activity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.VISIBLE);
+
+
+
+        rowItems = new ArrayList<ProductsObj>();
+        for (int i = 0; i < name.length; i++) {
+            ProductsObj item = new ProductsObj( id[i],name[i],liters[i],mrprs[i],mrp[i],sp[i],sprs[i],idliters[i],images[i],returnable[i], moq[i],status[i],downarrow[i]);
+            rowItems.add(item);
+        }
+
+        listView = (ListView) findViewById(R.id.list);
+        ProductsAdapter adapter = new ProductsAdapter(this,
+                R.layout.products_adapter, rowItems);
+        listView.setAdapter(adapter);
+
+       // fab = (FloatingActionButton) findViewById(R.id.fab);
+       /* fab.setVisibility(View.GONE);
         fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_shopping_cart_white_24dp));
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -88,9 +128,9 @@ public class Products_Activity extends AppCompatActivity {
                 finish();
             }
         });
+*/
 
-
-
+/*
         recyclerView = (RecyclerView) findViewById(R.id.cardList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(c);
         recyclerView.setLayoutManager(layoutManager);
@@ -126,7 +166,7 @@ public class Products_Activity extends AppCompatActivity {
                     }
                 }).start();
             }
-        });
+        });*/
 
 
     }
@@ -160,41 +200,6 @@ public class Products_Activity extends AppCompatActivity {
 
 
 
-
-    public List<ProductAdapter.ProductInfo> createList() {
-        final List<ProductAdapter.ProductInfo> result = new ArrayList<ProductAdapter.ProductInfo>();
-        String USER_DETAIL_SELECT_QUERY = "SELECT * FROM " + TABLE_PRODUCTS;
-
-        SQLiteDatabase sqldb = dbHelper.getReadableDatabase();
-        Cursor cursor = sqldb.rawQuery(USER_DETAIL_SELECT_QUERY, null);
-
-        try {
-            while (cursor.moveToNext()) {
-                ProductAdapter.ProductInfo pi = new ProductAdapter.ProductInfo();
-                //ci.id = cursor.getString(cursor.getColumnIndex(KEY_ID));
-//                Log.e("image cust",cursor.getString(cursor.getColumnIndex(KEY_IMAGE)));
-                pi.id=cursor.getString(cursor.getColumnIndex(KEY_ID));
-                pi.materialCode=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_CODE));
-                pi.materialDisc=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_DISC));
-                pi.materialUnit=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_UNIT_DISC));
-                pi.materialMRP=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_MRP));
-                pi.materialMOQ=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_MOQ));
-                pi.materialSP=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_SP));
-                pi.materialReturnable=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_RETURNABLE));
-                pi.materialImage=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_IMAGE));
-                pi.materialTAX=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_TAX));
-                pi.materialTAXType=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_TAXType));
-                pi.materialValidFrom=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_VALIDFROM));
-                pi.materialValidTo=cursor.getString(cursor.getColumnIndex(KEY_MATERIAL_VALIDTO));
-                Log.e("while ci.com", String.valueOf(pi.materialImage));
-                result.add(pi);
-            }
-
-        } catch (Exception e) {
-            Log.d(TAG, "Error while trying to get posts from database");
-        }
-        return result;
-    }
 
 
 
