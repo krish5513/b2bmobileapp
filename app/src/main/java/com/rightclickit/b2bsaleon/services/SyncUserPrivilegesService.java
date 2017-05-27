@@ -31,6 +31,7 @@ public class SyncUserPrivilegesService extends Service {
         super.onCreate();
         handler = new Handler();
         mDBHelper = new DBHelper(this);
+        mSessionManagement = new MMSharedPreferences(this);
     }
 
     @Override
@@ -92,7 +93,7 @@ public class SyncUserPrivilegesService extends Service {
                                                     JSONObject actObj = userActionsArray.getJSONObject(j);
                                                     if (actObj.has("tag")){
                                                         if (actObj.getString("tag").equals("setup")){
-                                                                mSessionManagement.putString("isSetup","visible");
+                                                            mSessionManagement.putString("isSetup","visible");
                                                         }
                                                     }
                                                 }

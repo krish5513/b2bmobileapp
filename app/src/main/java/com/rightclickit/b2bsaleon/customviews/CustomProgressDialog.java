@@ -22,7 +22,7 @@ public class CustomProgressDialog {
             progressDialog = new ProgressDialog(ctx, R.style.ProgressDialogTheme);
             progressDialog.setMessage(msg);
             progressDialog.setIndeterminate(true);
-            progressDialog.setCancelable(false);
+            progressDialog.setCancelable(true);
             progressDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
             progressDialog.show();
             isProgressDialogShown = true;

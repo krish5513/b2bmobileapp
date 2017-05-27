@@ -1,4 +1,3 @@
-/*
 package com.rightclickit.b2bsaleon.activities;
 
 import android.annotation.TargetApi;
@@ -55,11 +54,11 @@ import static com.rightclickit.b2bsaleon.R.id.mrp;
 
 public class Product_Add_Activity extends AppCompatActivity {
 
-    public  int year,month,day,hour,minute;
+    public int year, month, day, hour, minute;
     // declare  the variables to Show/Set the date and time when Time and  Date Picker Dialog first appears
-    private int mYear, mMonth, mDay,mHour,mMinute;
+    private int mYear, mMonth, mDay, mHour, mMinute;
 
-    double mrp_double,sp_double;
+    double mrp_double, sp_double;
     Bitmap bitmapLogo;
 
     DBHelper dbHelper;
@@ -86,11 +85,10 @@ public class Product_Add_Activity extends AppCompatActivity {
     boolean validFrom;
     boolean validTo;
     boolean saveBool = false;
-    String produtRetunable="0";
+    String produtRetunable = "0";
     String imagePath;
     FragmentManager fragmentManager;
-    String productId=null;
-
+    String productId = null;
 
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -98,9 +96,9 @@ public class Product_Add_Activity extends AppCompatActivity {
         @SuppressWarnings("deprecation")
         public void onDateSet(DatePicker view, int yearSelected, int monthOfYear, int dayOfMonth) {
             year = yearSelected;
-            month = monthOfYear+1;
+            month = monthOfYear + 1;
             day = dayOfMonth;
-            String selectedDate = String.format("%02d",day)+"-"+String.format("%02d",month)+"-"+year;
+            String selectedDate = String.format("%02d", day) + "-" + String.format("%02d", month) + "-" + year;
             validation(selectedDate);
             // Toast.makeText(getApplicationContext(), "day "+day+" month  "+month+" year  "+year, Toast.LENGTH_LONG).show();
         }
@@ -112,49 +110,48 @@ public class Product_Add_Activity extends AppCompatActivity {
         //SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy-hh-mm");
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date pickerdate = null;
-        Date systemdate  = null;
+        Date systemdate = null;
         String str = "";
         try {
             pickerdate = formatter.parse(userdate);
-            if(validFrom)
-                str = mDay+"-"+(mMonth+1)+"-"+mYear;
-            else if(validTo)
+            if (validFrom)
+                str = mDay + "-" + (mMonth + 1) + "-" + mYear;
+            else if (validTo)
                 str = materialValidFrom.getText().toString().trim();
-            Log.i("String",str);
+            Log.i("String", str);
             systemdate = formatter.parse(str);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        Log.i("valid From : "+validFrom,"Valid To :"+validTo);
-        Log.i("pickerdate",pickerdate+"");
-        Log.i("systemdate",systemdate+"");
+        Log.i("valid From : " + validFrom, "Valid To :" + validTo);
+        Log.i("pickerdate", pickerdate + "");
+        Log.i("systemdate", systemdate + "");
 
-        if(systemdate!=null){
-            if(pickerdate.after(systemdate)){
+        if (systemdate != null) {
+            if (pickerdate.after(systemdate)) {
                 if (validFrom)
                     materialValidFrom.setText(formatter.format(pickerdate));
                 else if (validTo)
                     materialValidTo.setText(formatter.format(pickerdate));
-            } else if(pickerdate.before(systemdate)){
-                if(validFrom) {
+            } else if (pickerdate.before(systemdate)) {
+                if (validFrom) {
                     showAlert("ValidFrom date should be greater than Current date");
-                } else if(validTo){
+                } else if (validTo) {
                     showAlert("ValidTo date should be greater or equal to ValidFrom date");
                 }
-            } else if(pickerdate.equals(systemdate)){
+            } else if (pickerdate.equals(systemdate)) {
                 if (validFrom)
                     materialValidFrom.setText(formatter.format(pickerdate));
                 else if (validTo)
                     materialValidTo.setText(formatter.format(pickerdate));
             }
-        }else{
+        } else {
             showAlert("Please select ValidFrom date");
         }
 
-      */
-/*  if(saveBool){
-            validateProductDetails();
-        }*//*
+        if (saveBool) {
+            // validateProductDetails();
+        }
 
 
     }
@@ -168,7 +165,7 @@ public class Product_Add_Activity extends AppCompatActivity {
         mMinute = c.get(Calendar.MINUTE);
     }
 
-    private void showAlert(String message){
+    private void showAlert(String message) {
         new AlertDialog.Builder(getApplication())
                 .setTitle("Alert!")
                 .setMessage(message)
@@ -184,13 +181,12 @@ public class Product_Add_Activity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product__add_);
 
-        this.getSupportActionBar().setTitle("ADD PRODUCT");
+       /* this.getSupportActionBar().setTitle("ADD PRODUCT");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.ic_shopping_cart_white_24dp);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
@@ -386,11 +382,10 @@ public class Product_Add_Activity extends AppCompatActivity {
         if (materialSP.getText().toString().length() > 0) {
             sp_double = Double.valueOf((materialSP.getText().toString().trim()));
         }
-        */
-/*else if (materialSP.getText().toString().length()>mrp_double) {
+else if (materialSP.getText().toString().length()>mrp_double) {
            sp_double = Double.parseDouble((materialSP.getText().toString().trim()));
            Log.i("sp",sp_double+"");
-       }*//*
+       }
 
         String str_materialCode = materialCode.getText().toString();
         String str_materialDes = materialDisc.getText().toString();
@@ -483,12 +478,11 @@ public class Product_Add_Activity extends AppCompatActivity {
                                 dbHelper.updateProduct(new ProductsObj(materialCode.getText().toString(), materialDisc.getText().toString(),prodImage, materialMRP.getText().toString(),materialSP.getText().toString(),"1", materialUnit.getSelectedItem().toString(), materialValidFrom.getText().toString(), materialValidTo.getText().toString(), produtRetunable,materialMOQ.getText().toString(),materialTAX.getText().toString(),taxType.getSelectedItem().toString()),productId);
                             Log.e("completed", "dssdf");
                             dialog.dismiss();
-                            */
-/*Products_Fragment fragment = new Products_Fragment();
+Products_Fragment fragment = new Products_Fragment();
                             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                             fragmentTransaction.replace(R.id.flContent, fragment);
                             getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                            fragmentTransaction.commit();*//*
+                            fragmentTransaction.commit();
 
                             Intent productsactivity=new Intent(Product_Add_Activity.this,Products_Activity.class);
                             startActivity(productsactivity);
@@ -505,8 +499,7 @@ public class Product_Add_Activity extends AppCompatActivity {
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
-               */
-/* View selectedView = productReturn.getSelectedView();
+ View selectedView = productReturn.getSelectedView();
                 if (selectedView != null && selectedView instanceof TextView) {
                     TextView selectedTextView = (TextView) selectedView;
                     if (!valid) {
@@ -516,7 +509,7 @@ public class Product_Add_Activity extends AppCompatActivity {
                     else {
                         selectedTextView.setError(null);
                     }
-                }*//*
+                }
 
 
     }
@@ -647,8 +640,8 @@ public class Product_Add_Activity extends AppCompatActivity {
 
     private void galleryIntent() {
         Intent intent = new Intent();
-        intent.setType("image*/
-/*");
+        intent.setType("image
+");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
     }
@@ -697,12 +690,11 @@ public class Product_Add_Activity extends AppCompatActivity {
 
     }
 
-    */
-/**
+*
      * if choosen select from gallery option
      *
      * @param data
-     *//*
+
 
     private void onSelectFromGalleryResult(Intent data) {
         Bitmap bm = null;
@@ -734,12 +726,11 @@ public class Product_Add_Activity extends AppCompatActivity {
         imageview.setImageBitmap(bitmapLogo);
     }
 
-    */
-/**
+*
      * if choosen open camera option this method is called
      *
      * @param data
-     *//*
+
 
     private void onCaptureImageResult(Intent data) {
         Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
@@ -769,6 +760,6 @@ public class Product_Add_Activity extends AppCompatActivity {
         imageview.setImageBitmap(bitmapLogo);
     }
 
-
-}
 */
+    }
+}

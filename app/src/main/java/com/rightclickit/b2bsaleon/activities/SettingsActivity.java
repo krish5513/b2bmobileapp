@@ -225,7 +225,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 //                        Toast.makeText(getApplicationContext(), "Please enter Routeno", Toast.LENGTH_SHORT).show();
 //
 //                    }
-                     if (str_vehicleNo.length() == 0 || str_vehicleNo.length() == ' ') {
+                    if (str_vehicleNo.length() == 0 || str_vehicleNo.length() == ' ') {
                         routeNo.setError(null);
                         vehicleNo.setError("Please enter Vehicleno");
                         Toast.makeText(getApplicationContext(), "Please enter Vehicleno", Toast.LENGTH_SHORT).show();
@@ -276,10 +276,12 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 //                        Log.e("save on click", routeNo.getText().toString());
 //                        editor.commit();
 
-                         String dId  = getDeviceId();
-                         long f = mDBHelper.updateUserDetails(sharedPreferences.getString("userId"),"",userName.getText().toString(),
-                                 "",mobile.getText().toString(),"","","","","","","",dId,transporterName.getText().toString(),
-                                 vehicleNo.getText().toString(),"","");
+
+                        String dId  = getDeviceId();
+                        settingsmodel.saveDeviceDetails(dId,vehicleNo.getText().toString(),transporterName.getText().toString());
+//                         long f = mDBHelper.updateUserDetails(sharedPreferences.getString("userId"),"",userName.getText().toString(),
+//                                 "",mobile.getText().toString(),"","","","","","","",dId,transporterName.getText().toString(),
+//                                 vehicleNo.getText().toString(),"","");
 
                         companyName.setCursorVisible(false);
                         routeNo.setCursorVisible(false);
@@ -308,15 +310,19 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                         oldPassword.setError("Please enter your old password");
                         Toast.makeText(getApplicationContext(), "Please enter your old password", Toast.LENGTH_SHORT).show();
                     }else if (newPassword.getText().toString().trim().length() == 0) {
+                        oldPassword.setError(null);
                         newPassword.setError("Please enter new password");
                         Toast.makeText(getApplicationContext(), "Please enter new password", Toast.LENGTH_SHORT).show();
                     }else if (confirmNewPassword.getText().toString().trim().length() == 0) {
+                        newPassword.setError(null);
                         confirmNewPassword.setError("Please enter confirm password");
                         Toast.makeText(getApplicationContext(), "Please enter confirm password", Toast.LENGTH_SHORT).show();
                     }else if (!newPassword.getText().toString().trim().equals(confirmNewPassword.getText().toString().trim())) {
+
                         confirmNewPassword.setError("New password and  confirm password are not match");
                         Toast.makeText(getApplicationContext(), "New password and  confirm password are not match", Toast.LENGTH_SHORT).show();
                     }else {
+                        confirmNewPassword.setError(null);
                         settingsmodel.changePassword(sharedPreferences.getString("userId"), Utility.getMd5String(newPassword.getText().toString().trim()));
                     }
                 }
@@ -396,7 +402,8 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 transporterName.setText(userMapData.get("transporter_name").toString());
             }
             if(!mProfilePic.equals("")){
-                imageLoader.DisplayImage(mProfilePic,mPicImage,null,"");
+                String URL = Constants.MAIN_URL+"/b2b/"+mProfilePic;
+                imageLoader.DisplayImage(URL,mPicImage,null,"");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -404,7 +411,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         }
         SupportMapFragment supportMapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFrag);
-       supportMapFragment.getMapAsync(this);
+        supportMapFragment.getMapAsync(this);
        /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -668,8 +675,13 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         googleMap.addMarker(new MarkerOptions().position(latLng));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(100));*/
-
-        LatLng sydney = new LatLng(Double.parseDouble(mLatitude), Double.parseDouble(mLongitude));
+        LatLng sydney;
+        if(!mLatitude.equals("") && !mLongitude.equals("")){
+            sydney = new LatLng(Double.parseDouble(mLatitude), Double.parseDouble(mLongitude));
+        }else {
+            // Pass current location lat and long
+            sydney = new LatLng(17.3850440, 78.4866710);
+        }
         mMap.addMarker(new MarkerOptions().position(sydney).title("Hyderabad, Telangana"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -677,6 +689,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             return;
         }
         mMap.setMyLocationEnabled(true);
+
     }
 
     private String getDeviceId(){
@@ -684,5 +697,5 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 Settings.Secure.ANDROID_ID);
         return android_id;
     }
-    }
+}
 

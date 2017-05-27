@@ -16,6 +16,8 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 /**
  * Created by PPS on 5/17/2017.
  */
@@ -28,6 +30,8 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
     private SettingsActivity activity;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
+    private boolean isSaveDeviceDetails;
+    private String did="",transporterName="",vehicleNumber="";
 
     public SettingsModel(Context context, SettingsActivity activity) {
         this.context = context;
@@ -55,10 +59,37 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
 
     public void changePassword( String userId,String password) {
         try {
+            isSaveDeviceDetails = false;
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String settingsURL = String.format("%s%s%s%s",Constants.MAIN_URL,Constants.PORT_USER_PREVILEGES, Constants.CHANGE_PASSWORD_SERVICE,userId);
                 JSONObject params = new JSONObject();
                 params.put("password", password.trim());
+
+
+                AsyncRequest routeidRequest = new AsyncRequest(context, this, settingsURL, AsyncRequest.MethodType.POST, params);
+                routeidRequest.execute();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveDeviceDetails(String deviceId,String vechicleNumber,String transporterName) {
+        try {
+            isSaveDeviceDetails = true;
+            this.did = deviceId;
+            this.vehicleNumber = vechicleNumber;
+            this.transporterName = transporterName;
+            if (new NetworkConnectionDetector(context).isNetworkConnected()) {
+                String deviceName = mPreferences.getString("name")+deviceId.substring(deviceId.length()-3);
+                String settingsURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_ADD,Constants.PORT_LOGIN, Constants.SAVE_DEVICE_DETAILS);
+                HashMap<String,String> params = new HashMap<String, String>();
+                params.put("device_id", deviceId);
+                params.put("user_id", mPreferences.getString("userId"));
+                params.put("device_name", deviceName);
+                params.put("vehicle_no", vechicleNumber);
+                params.put("transporter_name", transporterName);
 
 
                 AsyncRequest routeidRequest = new AsyncRequest(context, this, settingsURL, AsyncRequest.MethodType.POST, params);
@@ -76,11 +107,18 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
             CustomProgressDialog.hideProgressDialog();
             System.out.println("========= response = " + response);
             JSONObject logInResponse = new JSONObject(response);
-            if (logInResponse.getInt("result_status") == 1) {
-                activity.goBackToDashboard();
+            if (isSaveDeviceDetails){
+                long f = mDBHelper.updateUserDetails(mPreferences.getString("userId"),"","",
+                        "","","","","","","","","",did,transporterName,
+                        vehicleNumber,"","");
             }else {
+                if (logInResponse.getInt("result_status") == 1) {
+                    activity.goBackToDashboard();
+                }else {
 
+                }
             }
+
         }catch (Exception e){
             e.printStackTrace();
         }

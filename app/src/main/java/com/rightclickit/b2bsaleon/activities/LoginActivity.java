@@ -193,10 +193,16 @@ public class LoginActivity extends Activity {
             sharedPreferences.putString("isLogin","true");
 
             // Call Previleges API
-           // previlegesModel.getUserPrevileges();
-            startService(new Intent(LoginActivity.this, SyncUserPrivilegesService.class));
+            // previlegesModel.getUserPrevileges();
+            synchronized (this){
+                System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+                startService(new Intent(LoginActivity.this, SyncUserPrivilegesService.class));
+            }
+            synchronized (this){
+                System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+                loadDashboard();
+            }
 
-             loadDashboard();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -205,9 +211,13 @@ public class LoginActivity extends Activity {
 
     public void loadDashboard() {
         if(mDBHelper.getUserDeviceId(emailId).equals("")){
-            if (mDBHelper.getRouteId().length()==0) {
-                startService(new Intent(LoginActivity.this, SyncRoutesMasterDetailsService.class));
+            synchronized (this){
+                System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
+                if (mDBHelper.getRouteId().length()==0) {
+                    startService(new Intent(LoginActivity.this, SyncRoutesMasterDetailsService.class));
+                }
             }
+            System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDD");
             Intent mainActivityIntent = new Intent(LoginActivity.this, SettingsActivity.class);
             startActivity(mainActivityIntent);
             finish();

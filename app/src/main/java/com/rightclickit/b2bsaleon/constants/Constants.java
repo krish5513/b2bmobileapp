@@ -38,6 +38,7 @@ public class Constants {
      * Port number
      */
     public static final String PORT_LOGIN = ":3003";
+    public static final String PORT_ADD = ":3007";
 
     /**
      * Port number 1
@@ -70,5 +71,6 @@ public class Constants {
     public static final String GET_USER_PREVILEGES_SERVICE = "/b2b/common/getactions_mobile?stake_id=";
     // Chnage Password {pass user id parameter in url}
     public static final String CHANGE_PASSWORD_SERVICE = "/user/edit/";
+    public static final String SAVE_DEVICE_DETAILS = "/device/add";
 
 }

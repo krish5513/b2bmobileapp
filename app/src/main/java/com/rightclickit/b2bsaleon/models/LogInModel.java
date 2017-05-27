@@ -138,8 +138,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
 
     }
     public static void displayNoNetworkError(Context context) {
-        if (CustomProgressDialog.isProgressDialogShown)
-            CustomProgressDialog.hideProgressDialog();
+        CustomProgressDialog.hideProgressDialog();
         CustomAlertDialog.showAlertDialog(context, "Access Denied", "Please Contact Administrater.");
     }
 }
