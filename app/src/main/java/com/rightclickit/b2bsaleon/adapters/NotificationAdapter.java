@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.beanclass.NotificationItem;
+import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
 
 import java.util.List;
 
@@ -17,12 +17,12 @@ import java.util.List;
  * Created by PPS on 5/18/2017.
  */
 
-public class NotificationAdapter extends ArrayAdapter<NotificationItem> {
+public class NotificationAdapter extends ArrayAdapter<NotificationBean> {
 
     Context context;
 
     public NotificationAdapter(Context context, int resourceId,
-                                 List<NotificationItem> items) {
+                                 List<NotificationBean> items) {
         super(context, resourceId, items);
         this.context = context;
     }
@@ -36,7 +36,7 @@ public class NotificationAdapter extends ArrayAdapter<NotificationItem> {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
-        NotificationItem rowItem = getItem(position);
+        NotificationBean rowItem = getItem(position);
 
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);

@@ -1,22 +1,18 @@
 package com.rightclickit.b2bsaleon.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.beanclass.NotificationItem;
-import com.rightclickit.b2bsaleon.beanclass.ProductsObj;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by PPS on 5/25/2017.
@@ -24,12 +20,12 @@ import java.util.List;
 
 public class ProductsAdapter extends BaseAdapter {
 
-    ArrayList<ProductsObj> myList = new ArrayList<ProductsObj>();
+    ArrayList<ProductsBean> myList = new ArrayList<ProductsBean>();
     LayoutInflater inflater;
     Context context;
 
 
-    public ProductsAdapter(Context context, ArrayList<ProductsObj> myList) {
+    public ProductsAdapter(Context context, ArrayList<ProductsBean> myList) {
         this.myList = myList;
         this.context = context;
         inflater = LayoutInflater.from(this.context);
@@ -42,7 +38,7 @@ public class ProductsAdapter extends BaseAdapter {
     }
 
     @Override
-    public ProductsObj getItem(int position)
+    public ProductsBean getItem(int position)
     {
         return myList.get(position);
     }
@@ -65,7 +61,7 @@ public class ProductsAdapter extends BaseAdapter {
             holder = (MyViewHolder) convertView.getTag();
         }
 
-        ProductsObj rowItem = getItem(position);
+        ProductsBean rowItem = getItem(position);
 
         holder.materialCode.setText(rowItem.getCode());
         holder.materialMOQUnit.setText(rowItem.getMaterialMOQUnit());

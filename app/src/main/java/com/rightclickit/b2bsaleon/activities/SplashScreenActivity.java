@@ -31,9 +31,7 @@ public class SplashScreenActivity extends Activity {
                 }
             };
 
-            if (new NetworkConnectionDetector(SplashScreenActivity.this).isNetworkConnected()) {
-                mHandler.postDelayed(mRunnable, 2000);
-            }
+            mHandler.postDelayed(mRunnable, 2000);
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -49,9 +49,12 @@ public class Constants {
      * Port for user previleges.
      */
     public static final String PORT_USER_PREVILEGES = ":3001";
+
     /**
-     * Port for products list
+     * Port for agents list.
      */
+    public static final String PORT_AGENTS_LIST = ":3004";
+
     public static final String PORT_PRODUCTSLIST = ":3006";
 
     //Production
@@ -75,10 +78,13 @@ public class Constants {
     public static final String GET_USER_PREVILEGES_SERVICE = "/b2b/common/getactions_mobile?stake_id=";
     // Chnage Password {pass user id parameter in url}
     public static final String CHANGE_PASSWORD_SERVICE = "/user/edit/";
-    //vehicle and trasporter
+    //Get routeid and transporter
     public static final String SAVE_DEVICE_DETAILS = "/device/add";
-    //products list
-    public static final String PRODUCTSLIST_SERVICE= "/product/document_region";
-
+    // Get Stake holders ids list Url
+    public static final String GET_STAKE_HOLDERS_LIST = "/usergroup/stakeholder_list";
+    // Get Customers list Url
+    public static final String GET_CUSTOMERS_LIST = "/customer/list";
+    // Products api url
+    public static final String PRODUCTSLIST_SERVICE = "/product/document_region";
 
 }

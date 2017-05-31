@@ -13,7 +13,7 @@ import android.widget.ScrollView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.ProductsAdapter;
-import com.rightclickit.b2bsaleon.beanclass.ProductsObj;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -24,13 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static com.rightclickit.b2bsaleon.R.id.img;
 
 public class Products_Activity extends AppCompatActivity {
     public static final String[] code= new String[] {"M5G"};
@@ -54,9 +50,9 @@ public class Products_Activity extends AppCompatActivity {
 
 
     ListView listView;
-    ArrayList<ProductsObj> myList ;
+    ArrayList<ProductsBean> myList ;
     Context context = Products_Activity.this;
-    ProductsObj data;
+    ProductsBean data;
     ProductsModel productsmodel;
 
 
@@ -64,7 +60,7 @@ public class Products_Activity extends AppCompatActivity {
     private MMSharedPreferences sharedPreferences;
     private Context applicationContext, activityContext;
 
-    // List<ProductsObj> rowItems;
+    // List<ProductsBean> rowItems;
 
      //FloatingActionButton fab;
     RecyclerView recyclerView;
@@ -97,7 +93,7 @@ public class Products_Activity extends AppCompatActivity {
         listView = (ListView) findViewById(R.id.list);
 
 
-        myList = new ArrayList<ProductsObj>();
+        myList = new ArrayList<ProductsBean>();
 
         getDataInList();
         listView.setAdapter(new ProductsAdapter(context, myList));
@@ -146,7 +142,7 @@ public class Products_Activity extends AppCompatActivity {
 
         for (int i = 0; i < title.length; i++) {
             // Create a new object for each list item
-             data = new ProductsObj();
+             data = new ProductsBean();
             data.setCode(code[i]);
             data.setMaterialTitle(title[i]);
             data.setMaterialReturnable(returnable[i]);
@@ -158,7 +154,7 @@ public class Products_Activity extends AppCompatActivity {
             data.setMaterialRetailer(retailer[i]);
             data.setMaterialRetailerUnit(retailerUnit[i]);
             data.setMaterialImage(images[i]);
-            data.setDownarrowImage(downarrow[i]);
+
             data.setMaterialConsumer(consumer[i]);
             data.setMaterialConsumerUnit(consumerUnit[i]);
 

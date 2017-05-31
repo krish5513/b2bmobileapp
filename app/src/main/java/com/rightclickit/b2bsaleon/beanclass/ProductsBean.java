@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by murali on 11/2/17.
  */
 
-public class ProductsObj {
+public class ProductsBean {
     @Expose private String code;
     @Expose private String materialTitle;
     @Expose private String materialReturnable;
@@ -95,21 +95,15 @@ public class ProductsObj {
         this.materialRetailerUnit = materialRetailerUnit;
     }
 
-    public int getMaterialImage() {
+    public String getMaterialImage() {
         return materialImage;
     }
 
-    public void setMaterialImage(int materialImage) {
+    public void setMaterialImage(String materialImage) {
         this.materialImage = materialImage;
     }
 
-    public int getDownarrowImage() {
-        return downarrowImage;
-    }
 
-    public void setDownarrowImage(int downarrowImage) {
-        this.downarrowImage = downarrowImage;
-    }
 
     public String getMaterialConsumer() {
         return materialConsumer;
@@ -127,7 +121,7 @@ public class ProductsObj {
         this.materialConsumerUnit = materialConsumerUnit;
     }
 
-    public ProductsObj() {
+    public ProductsBean() {
         this.code = code;
         this.materialTitle = materialTitle;
         this.materialReturnable = materialReturnable;
@@ -139,7 +133,7 @@ public class ProductsObj {
         this.materialRetailer = materialRetailer;
         this.materialRetailerUnit = materialRetailerUnit;
         this.materialImage = materialImage;
-        this.downarrowImage = downarrowImage;
+
         this.materialConsumer = materialConsumer;
         this.materialConsumerUnit = materialConsumerUnit;
     }
@@ -149,8 +143,8 @@ public class ProductsObj {
     @Expose private String materialAgentunit;
     @Expose private String materialRetailer;
     @Expose private String materialRetailerUnit;
-    @Expose private int  materialImage;
-    @Expose private int  downarrowImage;
+    @Expose private String  materialImage;
+
     @Expose private String materialConsumer;
     @Expose private String materialConsumerUnit;
 

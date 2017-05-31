@@ -4,8 +4,8 @@ package com.rightclickit.b2bsaleon.beanclass;
  * Created by PPS on 5/18/2017.
  */
 
-public class NotificationItem {
-    public NotificationItem(String name, String description, String date) {
+public class NotificationBean {
+    public NotificationBean(String name, String description, String date) {
         this.name = name;
         this.description = description;
         this.date = date;

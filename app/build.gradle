@@ -27,17 +27,17 @@ dependencies {
     //Volley Library
     //Gson Library
     // For Edit text's
+    // Glide
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.scottyab:showhidepasswordedittext:0.6'
-    testCompile 'junit:junit:4.12'
-    // Glide
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.google.android.gms:play-services-maps:10.2.0'
     compile 'com.google.android.gms:play-services-places:10.2.0'
     compile 'com.google.android.gms:play-services-location:10.2.0'
     compile 'com.yayandroid:LocationManager:2.0.1'
+    testCompile 'junit:junit:4.12'
 }

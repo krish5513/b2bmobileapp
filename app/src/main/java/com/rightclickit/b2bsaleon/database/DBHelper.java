@@ -3,13 +3,11 @@ package com.rightclickit.b2bsaleon.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 
-import com.rightclickit.b2bsaleon.beanclass.ProductsObj;
+import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +41,9 @@ public class DBHelper extends SQLiteOpenHelper {
     //User Privilege Actions Table -This table contains all user privilege actions details
     public static final String TABLE_USER_PRIVILEGE_DETAILS = "products";
 
+    //Agents table
+    public static final String TABLE_AGENTS = "agents";
+
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
     private final String KEY_USER_CODE = "user_code";
@@ -75,6 +76,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_USER_ACTIVITY_TAG = "user_activity_tag";
     private final String KEY_USER_ACTIVITY_STATUS = "user_activity_status";
 
+
     //Column names for Produts activity Table
   /* public static String KEY_CODE = "id";
    public static String KEY_SYNC_STATUS = "syncStatus";*/
@@ -89,11 +91,31 @@ public class DBHelper extends SQLiteOpenHelper {
     public static String KEY_MATERIAL_RETAILER= "materialRetailer";
     public static String KEY_MATERIAL_RETAILER_UNIT = "materialRetailerUnit";
     public static String KEY_MATERIAL_IMAGE = "materialImage";
-
-
     public static String KEY_MATERIAL_CONSUMER= "materialConsumer";
     public static String KEY_MATERIAL_CONSUMER_UNIT= "materialConsumerUnit";
 
+
+    // Column names for Agents Table
+    private final String KEY_AGENT_ID = "agent_id";
+    private final String KEY_AGENT_NAME = "agent_name";
+    private final String KEY_OB_AMOUNT = "ob_value";
+    private final String KEY_ORDER_VALUE = "order_value";
+    private final String KEY_TOTAL_AMOUNT = "total_amount";
+    private final String KEY_DUE_AMOUNT = "due_amount";
+    private final String KEY_AGENT_PIC = "agent_pic_url";
+    private final String KEY_AGENT_STATUS = "agent_status";
+    private final String KEY_AGENT_LATITUDE = "latitude";
+    private final String KEY_AGENT_LONGITUDE = "longitude";
+    private final String KEY_AGENT_CODE = "code";
+
+    // Userdetails Table Create Statements
+    private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_AGENTS + "(" + KEY_AGENT_ID + " VARCHAR,"
+            + KEY_AGENT_NAME + " VARCHAR," + KEY_OB_AMOUNT + " VARCHAR," + KEY_ORDER_VALUE + " VARCHAR,"
+            + KEY_TOTAL_AMOUNT + " VARCHAR," + KEY_DUE_AMOUNT + " VARCHAR,"  + KEY_AGENT_PIC + " VARCHAR,"
+            + KEY_AGENT_STATUS + " VARCHAR,"
+            + KEY_AGENT_LATITUDE + " VARCHAR," + KEY_AGENT_LONGITUDE + " VARCHAR,"
+            + KEY_AGENT_CODE + " VARCHAR)";
 
 
     // Userdetails Table Create Statements
@@ -135,6 +157,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_ROUTES);
             db.execSQL(CREATE_PRODUCTS_TABLE);
             db.execSQL(CREATE_USER_ACTIVITY_TABLE);
+            db.execSQL(CREATE_TABLE_AGENTS);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -147,12 +170,88 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_ROUTES);
             db.execSQL("DROP TABLE IF EXISTS"  +CREATE_PRODUCTS_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_USER_ACTIVITY_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_AGENTS);
 
             // create new tables
             onCreate(db);
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Method to insert user details
+     *
+     * @param mAgentsBeansList
+     */
+    public void insertAgentDetails(ArrayList<AgentsBean> mAgentsBeansList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0;i<mAgentsBeansList.size();i++){
+                ContentValues values = new ContentValues();
+                values.put(KEY_AGENT_ID, mAgentsBeansList.get(i).getmAgentId());
+                values.put(KEY_AGENT_NAME, mAgentsBeansList.get(i).getmAgentName());
+                values.put(KEY_OB_AMOUNT, mAgentsBeansList.get(i).getmObAmount());
+                values.put(KEY_ORDER_VALUE, mAgentsBeansList.get(i).getmOrderValue());
+                values.put(KEY_TOTAL_AMOUNT, mAgentsBeansList.get(i).getmTotalAmount());
+                values.put(KEY_DUE_AMOUNT, mAgentsBeansList.get(i).getmDueAmount());
+                values.put(KEY_AGENT_PIC, mAgentsBeansList.get(i).getmAgentPic());
+                values.put(KEY_AGENT_STATUS, mAgentsBeansList.get(i).getmStatus());
+                values.put(KEY_AGENT_LATITUDE, mAgentsBeansList.get(i).getmLatitude());
+                values.put(KEY_AGENT_LONGITUDE, mAgentsBeansList.get(i).getmLongitude());
+                values.put(KEY_AGENT_CODE, mAgentsBeansList.get(i).getmAgentCode());
+
+                // insert row
+                db.insert(TABLE_AGENTS, null, values);
+                System.out.println("F*********** INSERTED***************88");
+                values.clear();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    /**
+     * Method to fetch all records from agents table
+     */
+    public ArrayList<AgentsBean> fetchAllRecordsFromAgentsTable(){
+        ArrayList<AgentsBean> allDeviceTrackRecords = new ArrayList<AgentsBean>();
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_AGENTS;
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    AgentsBean agentsBean = new AgentsBean();
+
+                    agentsBean.setmAgentId((c.getString(c.getColumnIndex(KEY_AGENT_ID))));
+                    agentsBean.setmLatitude((c.getString(c.getColumnIndex(KEY_AGENT_LATITUDE))));
+                    agentsBean.setmLongitude((c.getString(c.getColumnIndex(KEY_AGENT_LONGITUDE))));
+                    agentsBean.setmAgentName((c.getString(c.getColumnIndex(KEY_AGENT_NAME))));
+                    agentsBean.setmObAmount((c.getString(c.getColumnIndex(KEY_OB_AMOUNT))));
+                    agentsBean.setmOrderValue((c.getString(c.getColumnIndex(KEY_ORDER_VALUE))));
+                    agentsBean.setmTotalAmount((c.getString(c.getColumnIndex(KEY_TOTAL_AMOUNT))));
+                    agentsBean.setmDueAmount((c.getString(c.getColumnIndex(KEY_DUE_AMOUNT))));
+                    agentsBean.setmAgentCode((c.getString(c.getColumnIndex(KEY_AGENT_CODE))));
+                    agentsBean.setmAgentPic((c.getString(c.getColumnIndex(KEY_AGENT_PIC))));
+                    agentsBean.setmStatus((c.getString(c.getColumnIndex(KEY_AGENT_STATUS))));
+
+                    allDeviceTrackRecords.add(agentsBean);
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return allDeviceTrackRecords;
     }
 
     /**
@@ -322,8 +421,9 @@ public class DBHelper extends SQLiteOpenHelper {
      * Method to get the user id
      * @return route id
      */
-    public int getUserId(String emailId,String password){
+    public String getUserId(String emailId,String password){
         int routeId = 0;
+        String s="";
         try {
             String query = "SELECT  * FROM " + TABLE_USERDETAILS+ " WHERE "+ KEY_EMAIL +" = " + "'"+emailId+"'" + " AND "+ KEY_PASSWORD +" = " + "'"+password+"'";
 
@@ -332,14 +432,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
             if (cursor.moveToFirst()) {
                 do {
-                    routeId = Integer.parseInt(cursor.getString(0));
+                    s = cursor.getString(0);
                 } while (cursor.moveToNext());
             }
         } catch (Exception e){
             e.printStackTrace();
         }
-
-        return routeId;
+        System.out.println("F:::" +s);
+        return s;
     }
 
     /**
@@ -600,9 +700,10 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+     * Method to insert product details
 
-
-
+     */
 
 
     public void insertProductDetails(String code, String title, String returnable, String unit,String moq,String moqunit, String agent, String agentunit, String retailer, String retailerunit, int image, int downarrowimage, String consumer,String consumerunit) {
@@ -633,6 +734,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+    /**
+     * Method to get product details
+
+     */
 
     public HashMap<String,String> getProductsData(){
         HashMap<String,String> productsData = new HashMap<String,String>();

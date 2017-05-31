@@ -161,8 +161,8 @@ public class LoginActivity extends Activity {
                 authenticateUser(emailId, password);
             }else if (mDBHelper.getUserDetailsTableCount()>0){
                 // Data is there and do actions..
-                int userId = mDBHelper.getUserId(emailId,Utility.getMd5String(password.trim()));
-                if(userId>0){
+                String userId = mDBHelper.getUserId(emailId,Utility.getMd5String(password.trim()));
+                if(!userId.equals("")){
                     // User exists and do actions..
                     logInSuccess();
                 }
@@ -200,7 +200,9 @@ public class LoginActivity extends Activity {
             // previlegesModel.getUserPrevileges();
             synchronized (this){
                 System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-                startService(new Intent(LoginActivity.this, SyncUserPrivilegesService.class));
+                if (new NetworkConnectionDetector(LoginActivity.this).isNetworkConnected()) {
+                    startService(new Intent(LoginActivity.this, SyncUserPrivilegesService.class));
+                }
             }
 
             ru = new Runnable() {
@@ -224,7 +226,9 @@ public class LoginActivity extends Activity {
             synchronized (this){
                 System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
                 if (mDBHelper.getRouteId().length()==0) {
-                    startService(new Intent(LoginActivity.this, SyncRoutesMasterDetailsService.class));
+                    if (new NetworkConnectionDetector(LoginActivity.this).isNetworkConnected()) {
+                        startService(new Intent(LoginActivity.this, SyncRoutesMasterDetailsService.class));
+                    }
                 }
             }
             synchronized (this) {

@@ -7,11 +7,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.NotificationAdapter;
-import com.rightclickit.b2bsaleon.beanclass.NotificationItem;
+import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ public class NotificationsActivity extends AppCompatActivity {
     public static final String[] date = new String[] {"12/2/2017"};
 
     ListView listView;
-    List<NotificationItem> rowItems;
+    List<NotificationBean> rowItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +48,9 @@ public class NotificationsActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
 
-        rowItems = new ArrayList<NotificationItem>();
+        rowItems = new ArrayList<NotificationBean>();
         for (int i = 0; i < name.length; i++) {
-            NotificationItem item = new NotificationItem(name[i], description[i], date[i]);
+            NotificationBean item = new NotificationBean(name[i], description[i], date[i]);
             rowItems.add(item);
         }
 
