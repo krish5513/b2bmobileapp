@@ -60,7 +60,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
             System.out.println("========= response = " + response);
             String id = "",userCode="",userName="",email="",phone="",
                     profilePic="",stakeHolderId="",address="",deviceSync="",accessDevice="",backUp="",routeArrayListString=""
-                    , latitude="",longitude="";
+                    , latitude="",longitude="",password="";
             JSONObject logInResponse = new JSONObject(response);
             if (logInResponse.getInt("result_status") == 1) {
                 if(logInResponse.has("token")){
@@ -78,6 +78,9 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                 }
                 if(logInResponse.has("email")){
                     email = logInResponse.getString("email");
+                }
+                if(logInResponse.has("password")){
+                    password = logInResponse.getString("password");
                 }
                 if(logInResponse.has("phone")){
                     phone = logInResponse.getString("phone");
@@ -120,7 +123,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                         mDBHelper.deleteValuesFromUserDetailsTable();
                     }
                     mDBHelper.insertUserDetails(id, userCode, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp,routeArrayListString,
-                            "","","",latitude,longitude);
+                            "","","",latitude,longitude,password);
                     activity.logInSuccess();
                 }else {
                     displayNoNetworkError(context);

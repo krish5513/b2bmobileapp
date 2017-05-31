@@ -62,8 +62,10 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
             isSaveDeviceDetails = false;
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String settingsURL = String.format("%s%s%s%s",Constants.MAIN_URL,Constants.PORT_USER_PREVILEGES, Constants.CHANGE_PASSWORD_SERVICE,userId);
+                System.out.println("The URL IS==== "+settingsURL);
                 JSONObject params = new JSONObject();
                 params.put("password", password.trim());
+                System.out.println("The PARAMS ARE==== "+params.toString());
 
 
                 AsyncRequest routeidRequest = new AsyncRequest(context, this, settingsURL, AsyncRequest.MethodType.POST, params);
@@ -83,14 +85,15 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
             this.transporterName = transporterName;
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String deviceName = mPreferences.getString("name")+deviceId.substring(deviceId.length()-3);
-                String settingsURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_ADD,Constants.PORT_LOGIN, Constants.SAVE_DEVICE_DETAILS);
+                String settingsURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_ADD, Constants.SAVE_DEVICE_DETAILS);
+               // System.out.println("The URL IS==== "+settingsURL);
                 HashMap<String,String> params = new HashMap<String, String>();
                 params.put("device_id", deviceId);
                 params.put("user_id", mPreferences.getString("userId"));
                 params.put("device_name", deviceName);
                 params.put("vehicle_no", vechicleNumber);
                 params.put("transporter_name", transporterName);
-
+                //System.out.println("The PARAMS ARE==== "+params.toString());
 
                 AsyncRequest routeidRequest = new AsyncRequest(context, this, settingsURL, AsyncRequest.MethodType.POST, params);
                 routeidRequest.execute();

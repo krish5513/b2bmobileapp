@@ -9,84 +9,26 @@ import java.io.Serializable;
  */
 
 public class ProductsObj {
-    @Expose private int id;
-    @Expose private String materialName;
-    @Expose private String materialLiters;
-    @Expose private String materialMRPRS;
-    @Expose private String materialMRP;
-    @Expose private String materialSP;
-    @Expose private String materialSPRS;
+    @Expose private String code;
+    @Expose private String materialTitle;
+    @Expose private String materialReturnable;
+    @Expose private String materialUnit;
+    @Expose private String materialMOQ;
 
-    public int getId() {
-        return id;
+    public String getCode() {
+        return code;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getMaterialName() {
-        return materialName;
+    public String getMaterialTitle() {
+        return materialTitle;
     }
 
-    public void setMaterialName(String materialName) {
-        this.materialName = materialName;
-    }
-
-    public String getMaterialLiters() {
-        return materialLiters;
-    }
-
-    public void setMaterialLiters(String materialLiters) {
-        this.materialLiters = materialLiters;
-    }
-
-    public String getMaterialMRPRS() {
-        return materialMRPRS;
-    }
-
-    public void setMaterialMRPRS(String materialMRPRS) {
-        this.materialMRPRS = materialMRPRS;
-    }
-
-    public String getMaterialMRP() {
-        return materialMRP;
-    }
-
-    public void setMaterialMRP(String materialMRP) {
-        this.materialMRP = materialMRP;
-    }
-
-    public String getMaterialSP() {
-        return materialSP;
-    }
-
-    public void setMaterialSP(String materialSP) {
-        this.materialSP = materialSP;
-    }
-
-    public String getMaterialSPRS() {
-        return materialSPRS;
-    }
-
-    public void setMaterialSPRS(String materialSPRS) {
-        this.materialSPRS = materialSPRS;
-    }
-
-    public String getMaterialidLiteres() {
-        return materialidLiteres;
-    }
-
-    public void setMaterialidLiteres(String materialidLiteres) {
-        this.materialidLiteres = materialidLiteres;
-    }
-
-    public int getMaterialImage() {
-        return materialImage;
-    }
-
-    public void setMaterialImage(int materialImage) {
-        this.materialImage = materialImage;
+    public void setMaterialTitle(String materialTitle) {
+        this.materialTitle = materialTitle;
     }
 
     public String getMaterialReturnable() {
@@ -97,6 +39,14 @@ public class ProductsObj {
         this.materialReturnable = materialReturnable;
     }
 
+    public String getMaterialUnit() {
+        return materialUnit;
+    }
+
+    public void setMaterialUnit(String materialUnit) {
+        this.materialUnit = materialUnit;
+    }
+
     public String getMaterialMOQ() {
         return materialMOQ;
     }
@@ -105,34 +55,53 @@ public class ProductsObj {
         this.materialMOQ = materialMOQ;
     }
 
-    public String getMaterialStatus() {
-        return materialStatus;
+    public String getMaterialMOQUnit() {
+        return materialMOQUnit;
     }
 
-    public void setMaterialStatus(String materialStatus) {
-        this.materialStatus = materialStatus;
+    public void setMaterialMOQUnit(String materialMOQUnit) {
+        this.materialMOQUnit = materialMOQUnit;
     }
 
-    public ProductsObj(int id, String materialName, String materialLiters, String materialMRPRS, String materialMRP, String materialSP, String materialSPRS, String materialidLiteres, Integer materialImage, String materialReturnable, String materialMOQ, String materialStatus,int downarrowImage) {
-        this.id = id;
-        this.materialName = materialName;
-        this.materialLiters = materialLiters;
-        this.materialMRPRS = materialMRPRS;
-        this.materialMRP = materialMRP;
-        this.materialSP = materialSP;
-        this.materialSPRS = materialSPRS;
-        this.materialidLiteres = materialidLiteres;
+    public String getMaterialAgent() {
+        return materialAgent;
+    }
+
+    public void setMaterialAgent(String materialAgent) {
+        this.materialAgent = materialAgent;
+    }
+
+    public String getMaterialAgentunit() {
+        return materialAgentunit;
+    }
+
+    public void setMaterialAgentunit(String materialAgentunit) {
+        this.materialAgentunit = materialAgentunit;
+    }
+
+    public String getMaterialRetailer() {
+        return materialRetailer;
+    }
+
+    public void setMaterialRetailer(String materialRetailer) {
+        this.materialRetailer = materialRetailer;
+    }
+
+    public String getMaterialRetailerUnit() {
+        return materialRetailerUnit;
+    }
+
+    public void setMaterialRetailerUnit(String materialRetailerUnit) {
+        this.materialRetailerUnit = materialRetailerUnit;
+    }
+
+    public int getMaterialImage() {
+        return materialImage;
+    }
+
+    public void setMaterialImage(int materialImage) {
         this.materialImage = materialImage;
-        this.materialReturnable = materialReturnable;
-        this.materialMOQ = materialMOQ;
-        this.materialStatus = materialStatus;
-        this.downarrowImage = downarrowImage;
     }
-
-    @Expose private String materialidLiteres;
-    @Expose private int  materialImage;
-
-
 
     public int getDownarrowImage() {
         return downarrowImage;
@@ -142,10 +111,51 @@ public class ProductsObj {
         this.downarrowImage = downarrowImage;
     }
 
+    public String getMaterialConsumer() {
+        return materialConsumer;
+    }
+
+    public void setMaterialConsumer(String materialConsumer) {
+        this.materialConsumer = materialConsumer;
+    }
+
+    public String getMaterialConsumerUnit() {
+        return materialConsumerUnit;
+    }
+
+    public void setMaterialConsumerUnit(String materialConsumerUnit) {
+        this.materialConsumerUnit = materialConsumerUnit;
+    }
+
+    public ProductsObj() {
+        this.code = code;
+        this.materialTitle = materialTitle;
+        this.materialReturnable = materialReturnable;
+        this.materialUnit = materialUnit;
+        this.materialMOQ = materialMOQ;
+        this.materialMOQUnit = materialMOQUnit;
+        this.materialAgent = materialAgent;
+        this.materialAgentunit = materialAgentunit;
+        this.materialRetailer = materialRetailer;
+        this.materialRetailerUnit = materialRetailerUnit;
+        this.materialImage = materialImage;
+        this.downarrowImage = downarrowImage;
+        this.materialConsumer = materialConsumer;
+        this.materialConsumerUnit = materialConsumerUnit;
+    }
+
+    @Expose private String materialMOQUnit;
+    @Expose private String materialAgent;
+    @Expose private String materialAgentunit;
+    @Expose private String materialRetailer;
+    @Expose private String materialRetailerUnit;
+    @Expose private int  materialImage;
     @Expose private int  downarrowImage;
-    @Expose private String materialReturnable;
-    @Expose private String materialMOQ;
-    @Expose private String materialStatus;
+    @Expose private String materialConsumer;
+    @Expose private String materialConsumerUnit;
+
+
+
 
 
 }

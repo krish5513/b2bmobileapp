@@ -68,7 +68,6 @@
 
         <activity android:name=".activities.Products_Activity" />
 
-        <activity android:name=".activities.Product_Add_Activity"></activity>
     </application>
 
 </manifest>

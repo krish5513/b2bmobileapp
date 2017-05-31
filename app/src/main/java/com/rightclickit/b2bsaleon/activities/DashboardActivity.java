@@ -14,6 +14,8 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.services.SyncRoutesMasterDetailsService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
+import java.util.ArrayList;
+
 public class DashboardActivity extends AppCompatActivity {
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
@@ -33,7 +35,7 @@ public class DashboardActivity extends AppCompatActivity {
         mDBHelper = new DBHelper(DashboardActivity.this);
         mPreferences = new MMSharedPreferences(DashboardActivity.this);
 //       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-  //      setSupportActionBar(toolbar);
+        //      setSupportActionBar(toolbar);
 
 
         this.getSupportActionBar().setLogo(R.drawable.dashboard_icon_white_24);
@@ -47,6 +49,7 @@ public class DashboardActivity extends AppCompatActivity {
 
 
         mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
+        mDashBoardLayout.setVisibility(View.GONE);
         mDashBoardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,6 +57,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
         mTripsheetsLayout = (LinearLayout) findViewById(R.id.TripSheetsLayout);
+        mTripsheetsLayout.setVisibility(View.GONE);
         mTripsheetsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +65,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
         mCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
+        mCustomersLayout.setVisibility(View.GONE);
         mCustomersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +73,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
         mProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
+        mProductsLayout.setVisibility(View.GONE);
         mProductsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +84,7 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
         mTDCLayout = (LinearLayout) findViewById(R.id.TDCLayout);
+        mTDCLayout.setVisibility(View.GONE);
         mTDCLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,38 +92,24 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
-       // userActSetupStatus = mDBHelper.getUserActivityDetailsByUserId(mPreferences.getString("userId"));
+        // userActSetupStatus = mDBHelper.getUserActivityDetailsByUserId(mPreferences.getString("userId"));
         userActSetupStatus = mPreferences.getString("isSetup");
+        System.out.println("F 11111 ***DASHBBBBB === "+ userActSetupStatus);
 
-
-         if(mPreferences.getString("isDashboard").equals("visible")){
-            mDashBoardLayout.setVisibility(View.VISIBLE);
-         }else {
-             mDashBoardLayout.setVisibility(View.GONE);
-         }
-
-        if(mPreferences.getString("isTripsheets").equals("visible")){
-            mTripsheetsLayout.setVisibility(View.VISIBLE);
-        }else {
-            mTripsheetsLayout.setVisibility(View.GONE);
-        }
-
-        if(mPreferences.getString("isCustomers").equals("visible")){
-            mCustomersLayout.setVisibility(View.VISIBLE);
-        }else {
-            mCustomersLayout.setVisibility(View.GONE);
-        }
-
-        if(mPreferences.getString("isProducts").equals("visible")){
-            mProductsLayout.setVisibility(View.VISIBLE);
-        }else {
-            mProductsLayout.setVisibility(View.GONE);
-        }
-
-        if(mPreferences.getString("isTdc").equals("visible")){
-            mTDCLayout.setVisibility(View.VISIBLE);
-        }else {
-            mTDCLayout.setVisibility(View.GONE);
+        ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(mPreferences.getString("userId"));
+        System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
+        for (int k = 0; k<privilegesData.size();k++){
+            if (privilegesData.get(k).toString().equals("Dashboard")){
+                mDashBoardLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("TripSheets")){
+                mTripsheetsLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("Customers")){
+                mCustomersLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("Products")){
+                mProductsLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("TDC")){
+                mTDCLayout.setVisibility(View.VISIBLE);
+            }
         }
 
 //        if (mDBHelper.getRouteId().length()==0) {
@@ -132,10 +125,8 @@ public class DashboardActivity extends AppCompatActivity {
         MenuItem settings = menu.findItem(R.id.settings);
         if (userActSetupStatus.equals("visible")){
             settings.setVisible(true);
-        }else {
-            settings.setVisible(false);
         }
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override

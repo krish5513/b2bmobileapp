@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,78 +15,108 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.NotificationItem;
 import com.rightclickit.b2bsaleon.beanclass.ProductsObj;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by PPS on 5/25/2017.
  */
 
-public class ProductsAdapter extends ArrayAdapter<ProductsObj> {
+public class ProductsAdapter extends BaseAdapter {
 
-        Context context;
+    ArrayList<ProductsObj> myList = new ArrayList<ProductsObj>();
+    LayoutInflater inflater;
+    Context context;
 
-public ProductsAdapter(Context context, int resourceId,
-        List<ProductsObj> items) {
-        super(context, resourceId, items);
+
+    public ProductsAdapter(Context context, ArrayList<ProductsObj> myList) {
+        this.myList = myList;
         this.context = context;
+        inflater = LayoutInflater.from(this.context);
+    }
+
+    @Override
+    public int getCount() {
+
+        return myList.size();
+    }
+
+    @Override
+    public ProductsObj getItem(int position)
+    {
+        return myList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position)
+    {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        MyViewHolder holder;
+
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.products_adapter, parent, false);
+            holder = new MyViewHolder(convertView);
+            convertView.setTag(holder);
+        } else {
+            holder = (MyViewHolder) convertView.getTag();
         }
 
-/*private view holder class*/
-private class ViewHolder {
-    public TextView materialCode;
-    public ImageView materialImage;
-    public ImageView downarrowImage;
-    public TextView material_Unit;
-    public TextView materialDisc;
-    public TextView materialMRP,materialMRPUnit;
-    public TextView materialMOQ,materialMOQUnit;
-    public TextView materialSP,materialSPUnit;
-    public TextView materialReturnS;
-    public Button viewbtn;
-    public Button editbtn;
-    public Button stockbtn;
-}
-
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ProductsAdapter.ViewHolder holder = null;
         ProductsObj rowItem = getItem(position);
 
-        LayoutInflater mInflater = (LayoutInflater) context
-                .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.products_adapter, null);
-            holder = new ViewHolder();
-            holder.materialCode = (TextView)convertView. findViewById(R.id.materialCode);
-            holder.material_Unit = (TextView) convertView.findViewById(R.id.material_Unit);
-            holder.materialDisc = (TextView) convertView.findViewById(R.id.materialDisc);
-            holder.materialMRP = (TextView) convertView.findViewById(R.id.materialMRP);
-            holder.materialMRPUnit = (TextView) convertView.findViewById(R.id.materialMRPUnit);
-            holder.materialMOQ = (TextView) convertView.findViewById(R.id.materialMOQ);
-            holder.materialMOQUnit = (TextView) convertView.findViewById(R.id.materialMOQUnit);
-            holder.materialSP = (TextView) convertView.findViewById(R.id.materialSP);
-            holder.materialSPUnit = (TextView) convertView.findViewById(R.id.materialSPUnit);
-            holder.materialReturnS = (TextView) convertView.findViewById(R.id.materialReturnable);
-            holder.materialImage = (ImageView) convertView.findViewById(R.id.materialImage);
-            holder.downarrowImage=(ImageView) convertView.findViewById(R.id.img);
-            holder.viewbtn=(Button) convertView.findViewById(R.id.btnView);
-            holder.editbtn=(Button) convertView.findViewById(R.id.btnEdit);
-            holder.stockbtn=(Button) convertView.findViewById(R.id.btnStock);
-            convertView.setTag(holder);
-        } else
-            holder = (ProductsAdapter.ViewHolder) convertView.getTag();
-
-        holder.materialMOQUnit.setText(rowItem.getMaterialLiters());
-        holder.material_Unit.setText(rowItem.getMaterialidLiteres());
-        holder.materialDisc.setText(rowItem.getMaterialName());
-        holder.materialMRP.setText(rowItem.getMaterialMRP());
-        holder.materialMRPUnit.setText(rowItem.getMaterialSPRS());
+        holder.materialCode.setText(rowItem.getCode());
+        holder.materialMOQUnit.setText(rowItem.getMaterialMOQUnit());
+        holder.material_Unit.setText(rowItem.getMaterialUnit());
+        holder.materialTitle.setText(rowItem.getMaterialTitle());
+        holder.materialRetailer.setText(rowItem.getMaterialRetailer());
+        holder.materialRetailerUnit.setText(rowItem.getMaterialRetailerUnit());
         holder.materialMOQ.setText(rowItem.getMaterialMOQ());
-        holder.materialSP.setText(rowItem.getMaterialSP());
-        holder.materialSPUnit.setText(rowItem.getMaterialSPRS());
-        holder.materialReturnS.setText(rowItem.getMaterialReturnable());
+        holder.materialConsumer.setText(rowItem.getMaterialConsumer());
+        holder.materialConsumerUnit.setText(rowItem.getMaterialConsumerUnit());
+        holder.materialReturnable.setText(rowItem.getMaterialReturnable());
         holder.materialImage.setImageResource((rowItem.getMaterialImage()));
         holder.downarrowImage.setImageResource(rowItem.getDownarrowImage());
+        holder.materialAgent.setText(rowItem.getMaterialAgent());
+        holder.materialAgentUnit.setText(rowItem.getMaterialAgentunit());
 
         return convertView;
+    }
+
+    private class MyViewHolder {
+        public TextView materialCode;
+        public ImageView materialImage;
+        public ImageView downarrowImage;
+        public TextView material_Unit;
+        public TextView materialTitle;
+        public TextView materialAgent,materialAgentUnit;
+        public TextView materialRetailer,materialRetailerUnit;
+        public TextView materialMOQ,materialMOQUnit;
+        public TextView materialConsumer,materialConsumerUnit;
+        public TextView materialReturnable;
+        public Button viewbtn;
+
+        public Button stockbtn;
+
+        public MyViewHolder(View convertView) {
+            materialCode = (TextView)convertView. findViewById(R.id.materialCode);
+            material_Unit = (TextView) convertView.findViewById(R.id.material_Unit);
+            materialTitle = (TextView) convertView.findViewById(R.id.materialTitle);
+            materialRetailer = (TextView) convertView.findViewById(R.id.tv_Retailer);
+            materialRetailerUnit = (TextView) convertView.findViewById(R.id.materialMRPUnit);
+            materialMOQ = (TextView) convertView.findViewById(R.id.tv_moq);
+            materialMOQUnit = (TextView) convertView.findViewById(R.id.materialMOQUnit);
+            materialConsumer = (TextView) convertView.findViewById(R.id.tv_Consumer);
+            materialConsumerUnit= (TextView) convertView.findViewById(R.id.materialSPUnit);
+            materialReturnable= (TextView) convertView.findViewById(R.id.material_Returnable);
+            materialImage = (ImageView) convertView.findViewById(R.id.materialImage);
+            downarrowImage=(ImageView) convertView.findViewById(R.id.img);
+            viewbtn=(Button) convertView.findViewById(R.id.btnView);
+            materialAgent=(TextView)convertView.findViewById(R.id.materialAgent);
+            materialAgentUnit=(TextView)convertView.findViewById(R.id.agentUnit);
+            stockbtn=(Button) convertView.findViewById(R.id.btnStock);
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -46,6 +47,9 @@ public class LoginActivity extends Activity {
 
     LogInModel logInModel;
     PrevilegesModel previlegesModel;
+
+    private Runnable ru;
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +161,7 @@ public class LoginActivity extends Activity {
                 authenticateUser(emailId, password);
             }else if (mDBHelper.getUserDetailsTableCount()>0){
                 // Data is there and do actions..
-                int userId = mDBHelper.getUserId(emailId);
+                int userId = mDBHelper.getUserId(emailId,Utility.getMd5String(password.trim()));
                 if(userId>0){
                     // User exists and do actions..
                     logInSuccess();
@@ -198,11 +202,17 @@ public class LoginActivity extends Activity {
                 System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 startService(new Intent(LoginActivity.this, SyncUserPrivilegesService.class));
             }
-            synchronized (this){
-                System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-                loadDashboard();
-            }
 
+            ru = new Runnable() {
+                @Override
+                public void run() {
+                    synchronized (this){
+                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+                        mHandler.removeCallbacks(ru);
+                        loadDashboard();
+                    }
+                }
+            }; mHandler.postDelayed(ru,2000);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -217,10 +227,12 @@ public class LoginActivity extends Activity {
                     startService(new Intent(LoginActivity.this, SyncRoutesMasterDetailsService.class));
                 }
             }
-            System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDD");
-            Intent mainActivityIntent = new Intent(LoginActivity.this, SettingsActivity.class);
-            startActivity(mainActivityIntent);
-            finish();
+            synchronized (this) {
+                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDD");
+                Intent mainActivityIntent = new Intent(LoginActivity.this, SettingsActivity.class);
+                startActivity(mainActivityIntent);
+                finish();
+            }
         }else {
             Intent mainActivityIntent = new Intent(LoginActivity.this, DashboardActivity.class);
             startActivity(mainActivityIntent);

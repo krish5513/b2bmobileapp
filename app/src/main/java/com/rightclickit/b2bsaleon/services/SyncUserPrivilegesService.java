@@ -15,6 +15,8 @@ import com.rightclickit.b2bsaleon.util.NetworkManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by Sekhar Kuppa on 19-05-2017.
  */
@@ -63,7 +65,9 @@ public class SyncUserPrivilegesService extends Service {
      * Class to perform background operations.
      */
     private class FetchAndSyncUserPrivilegesDataAsyncTask extends AsyncTask<Void, Void, Void> {
-        private String routeId="",routeName = "",regionId = "",regionName="",officeId="",officeName="";
+        private String userId="",userPrivilegeName = "",userPrivilegeId = "",userPrivilegeStatus="";
+        private ArrayList<String> IDSLIST = new ArrayList<String>();
+        private ArrayList<String> NAMESLIST = new ArrayList<String>();
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -72,6 +76,7 @@ public class SyncUserPrivilegesService extends Service {
 //                    // Clear the db first and then insert..
 //                    mDBHelper.deleteValuesFromRoutesTable();
 //                }
+                userId = mSessionManagement.getString("userId");
                 String URL = String.format("%s%s%s%s", Constants.MAIN_URL,Constants.GET_USER_PREVILEGES_SERVICE,mSessionManagement.getString("stakeId"), Constants.PRIVILEGE_CODE);
 
                 mJsonObj = new NetworkManager().makeHttpGetConnection(URL);
@@ -86,6 +91,8 @@ public class SyncUserPrivilegesService extends Service {
                                 if(obj.has("name") && !obj.getString("name").equals("")){
                                     // Start Of User Activity
                                     if(obj.getString("name").equals("UserActivity")){
+                                        IDSLIST.add(obj.getString("id"));
+                                        NAMESLIST.add(obj.getString("name"));
                                         if (obj.has("actions")) {
                                             JSONArray userActionsArray = obj.getJSONArray("actions");
                                             if (userActionsArray.length()>0){
@@ -104,6 +111,8 @@ public class SyncUserPrivilegesService extends Service {
                                     // Start Of User Dashboard
                                     if(obj.getString("name").equals("Dashboard")){
                                         mSessionManagement.putString("isDashboard","visible");
+                                        IDSLIST.add(obj.getString("id"));
+                                        NAMESLIST.add(obj.getString("name"));
 //                                        if (obj.has("actions")) {
 //                                            JSONArray userActionsArray = obj.getJSONArray("actions");
 //                                            if (userActionsArray.length()>0){
@@ -122,6 +131,8 @@ public class SyncUserPrivilegesService extends Service {
                                     // Start Of User Dashboard
                                     if(obj.getString("name").equals("TripSheets")){
                                         mSessionManagement.putString("isTripsheets","visible");
+                                        IDSLIST.add(obj.getString("id"));
+                                        NAMESLIST.add(obj.getString("name"));
 //                                        if (obj.has("actions")) {
 //                                            JSONArray userActionsArray = obj.getJSONArray("actions");
 //                                            if (userActionsArray.length()>0){
@@ -140,6 +151,8 @@ public class SyncUserPrivilegesService extends Service {
                                     // Start Of User Dashboard
                                     if(obj.getString("name").equals("Customers")){
                                         mSessionManagement.putString("isCustomers","visible");
+                                        IDSLIST.add(obj.getString("id"));
+                                        NAMESLIST.add(obj.getString("name"));
 //                                        if (obj.has("actions")) {
 //                                            JSONArray userActionsArray = obj.getJSONArray("actions");
 //                                            if (userActionsArray.length()>0){
@@ -158,6 +171,8 @@ public class SyncUserPrivilegesService extends Service {
                                     // Start Of User Dashboard
                                     if(obj.getString("name").equals("Products")){
                                         mSessionManagement.putString("isProducts","visible");
+                                        IDSLIST.add(obj.getString("id"));
+                                        NAMESLIST.add(obj.getString("name"));
 //                                        if (obj.has("actions")) {
 //                                            JSONArray userActionsArray = obj.getJSONArray("actions");
 //                                            if (userActionsArray.length()>0){
@@ -176,6 +191,8 @@ public class SyncUserPrivilegesService extends Service {
                                     // Start Of User Dashboard
                                     if(obj.getString("name").equals("TDC")){
                                         mSessionManagement.putString("isTdc","visible");
+                                        IDSLIST.add(obj.getString("id"));
+                                        NAMESLIST.add(obj.getString("name"));
 //                                        if (obj.has("actions")) {
 //                                            JSONArray userActionsArray = obj.getJSONArray("actions");
 //                                            if (userActionsArray.length()>0){
@@ -194,6 +211,12 @@ public class SyncUserPrivilegesService extends Service {
 
                                 }
                             }
+                        }
+                        synchronized (this) {
+                            if(mDBHelper.getUserPrivilegesTableCount()>0){
+                                mDBHelper.deleteValuesFromUserActivityTable();
+                            }
+                            mDBHelper.insertUserActivityDetails(userId, "A", IDSLIST, NAMESLIST);
                         }
                     }
                 }

@@ -63,6 +63,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -107,6 +108,8 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private static final int ACTION_TAKE_GALLERY_PIC_A = 2;
 
     private String mLatitude="",mLongitude="",mDeviceId="",mProfilePic="";
+
+    private LinearLayout mDashboardLayout,mTripSheetsLayout,mCustomersLayout,mProductsLayout,mTDCLayout;
 
 
     @Override
@@ -172,6 +175,17 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     selectImage();
                 }
             });
+
+            mDashboardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
+            mDashboardLayout.setVisibility(View.GONE);
+            mTripSheetsLayout = (LinearLayout) findViewById(R.id.TripSheetsLayout);
+            mTripSheetsLayout.setVisibility(View.GONE);
+            mCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
+            mCustomersLayout.setVisibility(View.GONE);
+            mProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
+            mProductsLayout.setVisibility(View.GONE);
+            mTDCLayout = (LinearLayout) findViewById(R.id.TDCLayout);
+            mTDCLayout.setVisibility(View.GONE);
 
             saveInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -404,6 +418,23 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             if(!mProfilePic.equals("")){
                 String URL = Constants.MAIN_URL+"/b2b/"+mProfilePic;
                 imageLoader.DisplayImage(URL,mPicImage,null,"");
+            }
+
+            ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(sharedPreferences.getString("userId"));
+            System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
+            for (int k = 0; k<privilegesData.size();k++){
+                System.out.println("F 11111 ***COUNT 4444 === "+ privilegesData.get(k).toString());
+                if (privilegesData.get(k).toString().equals("Dashboard")){
+                    mDashboardLayout.setVisibility(View.VISIBLE);
+                }else if (privilegesData.get(k).toString().equals("TripSheets")){
+                    mTripSheetsLayout.setVisibility(View.VISIBLE);
+                }else if (privilegesData.get(k).toString().equals("Customers")){
+                    mCustomersLayout.setVisibility(View.VISIBLE);
+                }else if (privilegesData.get(k).toString().equals("Products")){
+                    mProductsLayout.setVisibility(View.VISIBLE);
+                }else if (privilegesData.get(k).toString().equals("TDC")){
+                    mTDCLayout.setVisibility(View.VISIBLE);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

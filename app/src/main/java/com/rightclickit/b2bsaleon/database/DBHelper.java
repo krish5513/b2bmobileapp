@@ -40,6 +40,9 @@ public class DBHelper extends SQLiteOpenHelper {
     //Products Table -This table contains all products details
     public static final String TABLE_PRODUCTS = "products";
 
+    //User Privilege Actions Table -This table contains all user privilege actions details
+    public static final String TABLE_USER_PRIVILEGE_DETAILS = "products";
+
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
     private final String KEY_USER_CODE = "user_code";
@@ -58,6 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRANSPORTER_NAME = "transporter_name";
     private final String KEY_LATITUDE = "latitude";
     private final String KEY_LONGITUDE = "longitude";
+    private final String KEY_PASSWORD = "password";
 
     // Column names for Routes  Table
     private final String KEY_ROUTE_ID = "route_id";
@@ -67,26 +71,29 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Column names for User activity  Table
     private final String KEY_USER_ACTIVITY_ID = "user_activity_id";
-    private final String KEY_USER_ACTIVITY_USER_ID = "user_activity_id";
+    private final String KEY_USER_ACTIVITY_USER_ID = "user_activity_user_id";
     private final String KEY_USER_ACTIVITY_TAG = "user_activity_tag";
     private final String KEY_USER_ACTIVITY_STATUS = "user_activity_status";
 
     //Column names for Produts activity Table
-    public static String KEY_ID = "id";
-    public static String KEY_SYNC_STATUS = "syncStatus";
+  /* public static String KEY_CODE = "id";
+   public static String KEY_SYNC_STATUS = "syncStatus";*/
     public static String KEY_MATERIAL_CODE = "materialCode";
-    public static String KEY_MATERIAL_DISC = "materialDisc";
-    public static String KEY_MATERIAL_UNIT_DISC = "materialUnitDisc";
-    public static String KEY_MATERIAL_MRP = "materialUnitMRP";
-    public static String KEY_MATERIAL_MOQ = "materialMOQ";
-    public static String KEY_MATERIAL_TAX = "materialTAX";
-    public static String KEY_MATERIAL_TAXType = "materialTAXType";
-    public static String KEY_MATERIAL_SP = "materialUnitSP";
-    public static String KEY_MATERIAL_VALIDFROM = "materialValidFrom";
-    public static String KEY_MATERIAL_VALIDTO = "materialValidTo";
-    public static String KEY_MATERIAL_IMAGE = "materialImage";
-    public static String KEY_MATERIAL_STATUS = "materialStatus";
+    public static String KEY_MATERIAL_TITLE = "materialTitle";
     public static String KEY_MATERIAL_RETURNABLE = "materialReturnable";
+    public static String KEY_MATERIAL_UNIT= "materialUnit";
+    public static String KEY_MATERIAL_MOQ = "materialMOQ";
+    public static String KEY_MATERIAL_MOQ_UNIT = "materialMOQUnit";
+    public static String KEY_MATERIAL_AGENT= "materialAgent";
+    public static String KEY_MATERIAL_AGENT_UNIT = "materialAgentUnit";
+    public static String KEY_MATERIAL_RETAILER= "materialRetailer";
+    public static String KEY_MATERIAL_RETAILER_UNIT = "materialRetailerUnit";
+    public static String KEY_MATERIAL_IMAGE = "materialImage";
+
+
+    public static String KEY_MATERIAL_CONSUMER= "materialConsumer";
+    public static String KEY_MATERIAL_CONSUMER_UNIT= "materialConsumerUnit";
+
 
 
     // Userdetails Table Create Statements
@@ -98,7 +105,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + " VARCHAR, " + KEY_ACCESS_DEVICE
             + " VARCHAR, " + KEY_BACKUP + " VARCHAR, " + KEY_ROUTEIDS + " VARCHAR, " + KEY_DEVICE_UDID
             + " VARCHAR, " + KEY_VEHICLE_NUMBER  + " VARCHAR, " + KEY_TRANSPORTER_NAME  + " VARCHAR, " + KEY_LATITUDE
-            + " VARCHAR, " + KEY_LONGITUDE + " VARCHAR)";
+            + " VARCHAR, " + KEY_LONGITUDE
+            + " VARCHAR, " + KEY_PASSWORD + " VARCHAR)";
 
     // Routes Table Create Statements
     private final String CREATE_TABLE_ROUTES = "CREATE TABLE IF NOT EXISTS "
@@ -106,15 +114,15 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_REGION_NAME + " VARCHAR," + KEY_OFFICE_NAME + " VARCHAR)";
 
     // User activity Table Create Statements
-    private final String CREATE_TABLE_USER_ACTIVITY = "CREATE TABLE IF NOT EXISTS "
+    private final String CREATE_USER_ACTIVITY_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_PREVILEGES_USER_ACTIVITY + "(" + KEY_USER_ACTIVITY_ID + " VARCHAR," + KEY_USER_ACTIVITY_USER_ID + " VARCHAR,"
             + KEY_USER_ACTIVITY_TAG + " VARCHAR," + KEY_USER_ACTIVITY_STATUS + " VARCHAR)";
     //Products Table Create Statements
     String CREATE_PRODUCTS_TABLE = "CREATE TABLE " + TABLE_PRODUCTS + "("
-            + KEY_ID + " INTEGER PRIMARY KEY," + KEY_MATERIAL_CODE + " TEXT,"
-            + KEY_MATERIAL_DISC + " TEXT," + KEY_MATERIAL_UNIT_DISC + " TEXT," + KEY_MATERIAL_RETURNABLE + " TEXT," +
-            KEY_MATERIAL_MOQ + " TEXT," + KEY_MATERIAL_TAX + " TEXT," + KEY_MATERIAL_TAXType + " TEXT," + KEY_MATERIAL_MRP + " TEXT," + KEY_MATERIAL_SP + " TEXT," +
-            KEY_MATERIAL_VALIDFROM + " TEXT," + KEY_MATERIAL_VALIDTO + " TEXT," + KEY_MATERIAL_IMAGE + " TEXT," + KEY_MATERIAL_STATUS + " TEXT" +  "," + KEY_SYNC_STATUS + " INTEGER"+")";
+            + KEY_MATERIAL_CODE + " TEXT," + KEY_MATERIAL_TITLE + " TEXT,"
+            + KEY_MATERIAL_RETURNABLE + " TEXT," + KEY_MATERIAL_UNIT + " TEXT," + KEY_MATERIAL_MOQ + " TEXT," +
+            KEY_MATERIAL_MOQ_UNIT + " TEXT," + KEY_MATERIAL_AGENT + " TEXT," + KEY_MATERIAL_AGENT_UNIT + " TEXT," + KEY_MATERIAL_RETAILER+ " TEXT," + KEY_MATERIAL_RETAILER_UNIT + " TEXT," +
+            KEY_MATERIAL_IMAGE + " TEXT,"  + KEY_MATERIAL_CONSUMER + " TEXT," + KEY_MATERIAL_CONSUMER_UNIT+ " TEXT" +  ")";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -126,7 +134,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_USERDETAILS);
             db.execSQL(CREATE_TABLE_ROUTES);
             db.execSQL(CREATE_PRODUCTS_TABLE);
-            //   db.execSQL(CREATE_TABLE_USER_ACTIVITY);
+            db.execSQL(CREATE_USER_ACTIVITY_TABLE);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -138,7 +146,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USERDETAILS);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_ROUTES);
             db.execSQL("DROP TABLE IF EXISTS"  +CREATE_PRODUCTS_TABLE);
-            //  db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USER_ACTIVITY);
+            db.execSQL("DROP TABLE IF EXISTS " + CREATE_USER_ACTIVITY_TABLE);
 
             // create new tables
             onCreate(db);
@@ -163,7 +171,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param backUp
      */
     public void insertUserDetails(String id, String userCode, String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp,String routeArrayListString,
-                                  String deviceId,String transporterName,String vehicleNumber,String latitude,String longitude) {
+                                  String deviceId,String transporterName,String vehicleNumber,String latitude,String longitude,String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
@@ -184,6 +192,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_VEHICLE_NUMBER,vehicleNumber);
             values.put(KEY_LATITUDE,latitude);
             values.put(KEY_LONGITUDE,longitude);
+            values.put(KEY_PASSWORD,password);
 
             // insert row
             db.insert(TABLE_USERDETAILS, null, values);
@@ -218,9 +227,9 @@ public class DBHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             //values.put(KEY_USER_ID, id);
             //values.put(KEY_USER_CODE, userCode);
-            values.put(KEY_NAME, userName);
+            // values.put(KEY_NAME, userName);
             //values.put(KEY_EMAIL, email);
-            values.put(KEY_PHONE_NUMBER, phone);
+            // values.put(KEY_PHONE_NUMBER, phone);
             // values.put(KEY_AVATAR, profilrPic);
             // values.put(KEY_STAKEHOLDER_ID, stakeHolder);
             // values.put(KEY_ADRESS, address);
@@ -275,6 +284,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     userData.put(KEY_VEHICLE_NUMBER,(c.getString(c.getColumnIndex(KEY_VEHICLE_NUMBER))));
                     userData.put(KEY_LATITUDE,(c.getString(c.getColumnIndex(KEY_LATITUDE))));
                     userData.put(KEY_LONGITUDE,(c.getString(c.getColumnIndex(KEY_LONGITUDE))));
+                    userData.put(KEY_PASSWORD,(c.getString(c.getColumnIndex(KEY_PASSWORD))));
 
                 } while (c.moveToNext());
             }
@@ -312,10 +322,10 @@ public class DBHelper extends SQLiteOpenHelper {
      * Method to get the user id
      * @return route id
      */
-    public int getUserId(String emailId){
+    public int getUserId(String emailId,String password){
         int routeId = 0;
         try {
-            String query = "SELECT  * FROM " + TABLE_USERDETAILS+ " WHERE "+ KEY_EMAIL +" = " + "'"+emailId+"'";
+            String query = "SELECT  * FROM " + TABLE_USERDETAILS+ " WHERE "+ KEY_EMAIL +" = " + "'"+emailId+"'" + " AND "+ KEY_PASSWORD +" = " + "'"+password+"'";
 
             SQLiteDatabase db = this.getWritableDatabase();
             Cursor cursor = db.rawQuery(query, null);
@@ -504,24 +514,26 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to insert the user activity data.
-     * @param userActId
      * @param userId
-     * @param usetActTag
-     * @param userActStatus
+     * @param status
+     * @param idsList
+     * @param nameslist
      */
-    public void insertUserActivityDetails(String userActId, String userId,String usetActTag,String userActStatus) {
+    public void insertUserActivityDetails(String userId, String status,ArrayList<String> idsList,ArrayList<String> nameslist) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            ContentValues values = new ContentValues();
-            values.put(KEY_USER_ACTIVITY_ID, userActId);
-            values.put(KEY_USER_ACTIVITY_USER_ID, userId);
-            values.put(KEY_USER_ACTIVITY_TAG, usetActTag);
-            values.put(KEY_USER_ACTIVITY_STATUS, userActStatus);
+            for (int i = 0;i<idsList.size();i++){
+                ContentValues values = new ContentValues();
+                values.put(KEY_USER_ACTIVITY_ID, idsList.get(i).toString());
+                values.put(KEY_USER_ACTIVITY_USER_ID, userId);
+                values.put(KEY_USER_ACTIVITY_TAG, nameslist.get(i).toString());
+                values.put(KEY_USER_ACTIVITY_STATUS, status);
 
-            // insert row
-            db.insert(TABLE_PREVILEGES_USER_ACTIVITY, null, values);
-            System.out.println("F*********** INSERTED***************88");
-            values.clear();
+                // insert row
+                db.insert(TABLE_PREVILEGES_USER_ACTIVITY, null, values);
+                System.out.println("F*********** INSERTED***************88");
+                values.clear();
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -532,8 +544,9 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch user activity by user id
      */
-    public String getUserActivityDetailsByUserId(String userId){
+    public ArrayList<String> getUserActivityDetailsByUserId(String userId){
         String userActivitySetupStatus="";
+        ArrayList<String> userPrivileges = new ArrayList<String>();
         try {
             String selectQuery = "SELECT  * FROM " + TABLE_PREVILEGES_USER_ACTIVITY + " WHERE "+ KEY_USER_ACTIVITY_USER_ID +" = " + "'"+userId+"'";
 
@@ -542,7 +555,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             if (c.moveToFirst()) {
                 do {
-                    userActivitySetupStatus = c.getString(c.getColumnIndex(KEY_USER_ACTIVITY_STATUS));
+                    userPrivileges.add(c.getString(c.getColumnIndex(KEY_USER_ACTIVITY_TAG)));
                 } while (c.moveToNext());
             }
             c.close();
@@ -550,119 +563,114 @@ public class DBHelper extends SQLiteOpenHelper {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return userActivitySetupStatus;
+        System.out.println("F***COUNT === "+ userPrivileges.size());
+        return userPrivileges;
     }
 
 
-
-
-
-
-
-
-
-
-   /* public void addProducts(ProductsObj productsObj) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Log.e("in prod insert", productsObj.getMaterialDisc());
-        ContentValues values = new ContentValues();
-        values.put(KEY_MATERIAL_CODE, productsObj.getMaterialCode());
-        values.put(KEY_MATERIAL_DISC, productsObj.getMaterialDisc());
-        values.put(KEY_MATERIAL_UNIT_DISC, productsObj.getMaterialUnit());
-        values.put(KEY_MATERIAL_MOQ, productsObj.getMaterialMOQ());
-        values.put(KEY_MATERIAL_TAX, productsObj.getMaterialTAX());
-        values.put(KEY_MATERIAL_TAXType, productsObj.getMaterialTAXType());
-        values.put(KEY_MATERIAL_MRP, productsObj.getMaterialMRP());
-        values.put(KEY_MATERIAL_SP, productsObj.getMaterialSP());
-        values.put(KEY_MATERIAL_VALIDFROM, productsObj.getMaterialValidFrom());
-        values.put(KEY_MATERIAL_VALIDTO, productsObj.getMaterialValidTo());
-        values.put(KEY_MATERIAL_IMAGE, productsObj.getMaterialImage());
-        values.put(KEY_MATERIAL_RETURNABLE, productsObj.getIsReturnAble());
-        values.put(KEY_SYNC_STATUS, 0);
-        // Inserting Row
-
+    /**
+     * Method to get count of the user privileges details table
+     */
+    public int getUserPrivilegesTableCount() {
+        int noOfEvents = 0;
         try {
-            db.insertOrThrow(TABLE_PRODUCTS, null, values);
-        } catch (SQLiteConstraintException e) {
-            Log.d(TAG, "failure to insert word,", e);
+            String countQuery = "SELECT * FROM " + TABLE_PREVILEGES_USER_ACTIVITY;
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfEvents = cursor.getCount();
+                cursor.close();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
+        return noOfEvents;
     }
-
-
-    public List<ProductsObj> getAllProducts() {
-        List<ProductsObj> productsObjs = new ArrayList<ProductsObj>();
-        // Select All Query
-
-        String selectQuery = "SELECT  * FROM " + TABLE_PRODUCTS;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                Log.e("material name", cursor.getString(2));
-                ProductsObj productsObj = new ProductsObj();
-                productsObj.setMaterialCode(cursor.getString(1));
-                productsObj.setMaterialDisc(cursor.getString(2));
-                productsObj.setMaterialUnit(cursor.getString(3));
-                productsObj.setMaterialMOQ(cursor.getString(5));
-                productsObj.setMaterialTAX(cursor.getString(6));
-                productsObj.setMaterialTAXType(cursor.getString(7));
-                productsObj.setMaterialMRP(cursor.getString(8));
-                productsObj.setMaterialSP(cursor.getString(9));
-                productsObj.setMaterialValidFrom(cursor.getString(10));
-                productsObj.setMaterialValidTo(cursor.getString(11));
-                productsObj.setMaterialImage(cursor.getString(12));
-                // Adding customer to list
-                productsObjs.add(productsObj);
-            } while (cursor.moveToNext());
-        }
-
-        // return contact list
-        return productsObjs;
-    }
-
-
-
-
-
-
-
-
-    public void updateProduct(ProductsObj productsObj, String id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Log.e("in prod update", productsObj.getMaterialDisc());
-        ContentValues values = new ContentValues();
-        values.put(KEY_MATERIAL_CODE, productsObj.getMaterialCode());
-        values.put(KEY_MATERIAL_DISC, productsObj.getMaterialDisc());
-        values.put(KEY_MATERIAL_UNIT_DISC, productsObj.getMaterialUnit());
-        values.put(KEY_MATERIAL_MOQ, productsObj.getMaterialMOQ());
-        values.put(KEY_MATERIAL_TAX, productsObj.getMaterialTAX());
-        values.put(KEY_MATERIAL_TAXType, productsObj.getMaterialTAXType());
-        values.put(KEY_MATERIAL_MRP, productsObj.getMaterialMRP());
-        values.put(KEY_MATERIAL_SP, productsObj.getMaterialSP());
-        values.put(KEY_MATERIAL_VALIDFROM, productsObj.getMaterialValidFrom());
-        values.put(KEY_MATERIAL_VALIDTO, productsObj.getMaterialValidTo());
-        values.put(KEY_MATERIAL_IMAGE, productsObj.getMaterialImage());
-        values.put(KEY_MATERIAL_RETURNABLE, productsObj.getIsReturnAble());
-        // Inserting Row
-        Log.e("code", productsObj.getMaterialCode());
-        Log.e("id", String.valueOf(productsObj.getId()));
+    /**
+     * Method to clear values in user activity table
+     */
+    public void deleteValuesFromUserActivityTable() {
         try {
-//            String query =
-//                    "UPDATE "+ TABLE_PRODUCTS + " SET "   + KEY_MATERIAL_DISC + " = \""+productsObj.getMaterialDisc()+"\" WHERE id=\""+productsObj.getId()+"\"";
-//            Log.i(TAG, query);
-//            db.execSQL(query);
-            Log.e("que", KEY_ID + "= '" + productsObj.getId() + "'");
-            db.update(TABLE_PRODUCTS, values, KEY_ID + " = '" + id + "'", null);
-//            db.update(TABLE_PRODUCTS, values, KEY_ID+" = "+productsObj.getId(),null);
-        } catch (Exception e) {
-            Log.e("exception", e.toString());
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_PREVILEGES_USER_ACTIVITY, null, null);
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
+
+
+
+
+
+    public void insertProductDetails(String code, String title, String returnable, String unit,String moq,String moqunit, String agent, String agentunit, String retailer, String retailerunit, int image, int downarrowimage, String consumer,String consumerunit) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_MATERIAL_CODE,code );
+            values.put(KEY_MATERIAL_TITLE, title);
+            values.put(KEY_MATERIAL_RETURNABLE, returnable);
+            values.put(KEY_MATERIAL_UNIT, unit);
+            values.put(KEY_MATERIAL_MOQ, moq);
+            values.put(KEY_MATERIAL_MOQ_UNIT, moqunit);
+            values.put(KEY_MATERIAL_AGENT, agent);
+            values.put(KEY_MATERIAL_AGENT_UNIT, agentunit);
+            values.put(KEY_MATERIAL_RETAILER, retailer);
+            values.put(KEY_MATERIAL_RETAILER_UNIT, retailerunit);
+            values.put(KEY_MATERIAL_IMAGE, image);
+
+            values.put(KEY_MATERIAL_CONSUMER,consumer);
+            values.put(KEY_MATERIAL_CONSUMER_UNIT,consumerunit);
+
+            // insert row
+            db.insert(TABLE_PRODUCTS, null, values);
+            values.clear();
+        } catch (Exception e){
+            e.printStackTrace();
         }
 
-    }*/
+        db.close();
+    }
+
+    public HashMap<String,String> getProductsData(){
+        HashMap<String,String> productsData = new HashMap<String,String>();
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_PRODUCTS;
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    productsData.put(KEY_MATERIAL_CODE,(c.getString(c.getColumnIndex(KEY_MATERIAL_CODE))));
+                    productsData.put(KEY_MATERIAL_TITLE,(c.getString(c.getColumnIndex(KEY_MATERIAL_TITLE))));
+                    productsData.put(KEY_MATERIAL_RETURNABLE,(c.getString(c.getColumnIndex(KEY_MATERIAL_RETURNABLE))));
+                    productsData.put(KEY_MATERIAL_UNIT,(c.getString(c.getColumnIndex(KEY_MATERIAL_UNIT))));
+                    productsData.put(KEY_MATERIAL_MOQ,(c.getString(c.getColumnIndex(KEY_MATERIAL_MOQ))));
+                    productsData.put(KEY_MATERIAL_MOQ_UNIT,(c.getString(c.getColumnIndex(KEY_MATERIAL_MOQ_UNIT))));
+                    productsData.put(KEY_MATERIAL_AGENT,(c.getString(c.getColumnIndex(KEY_MATERIAL_AGENT))));
+                    productsData.put(KEY_MATERIAL_AGENT,(c.getString(c.getColumnIndex(KEY_MATERIAL_AGENT))));
+                    productsData.put(KEY_MATERIAL_AGENT_UNIT,(c.getString(c.getColumnIndex(KEY_MATERIAL_AGENT_UNIT))));
+                    productsData.put(KEY_MATERIAL_RETAILER,(c.getString(c.getColumnIndex(KEY_MATERIAL_RETAILER_UNIT))));
+                    productsData.put(KEY_MATERIAL_IMAGE,(c.getString(c.getColumnIndex(KEY_MATERIAL_IMAGE))));
+
+                    productsData.put(KEY_MATERIAL_CONSUMER,(c.getString(c.getColumnIndex(KEY_MATERIAL_CONSUMER))));
+                    productsData.put(KEY_MATERIAL_CONSUMER_UNIT,(c.getString(c.getColumnIndex(KEY_MATERIAL_CONSUMER_UNIT))));
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return productsData;
+    }
 
     /**
      * Method to update the device details
