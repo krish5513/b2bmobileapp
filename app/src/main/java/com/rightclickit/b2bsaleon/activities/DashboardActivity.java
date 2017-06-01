@@ -70,6 +70,9 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(DashboardActivity.this, "Clicked on Customers", Toast.LENGTH_SHORT).show();
+                Intent i =new Intent(DashboardActivity.this,AgentsActivity.class);
+                startActivity(i);
+                finish();
             }
         });
         mProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);

@@ -12,13 +12,17 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.adapters.ProductsAdapter;
+import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.models.AgentsModel;
 import com.rightclickit.b2bsaleon.models.ProductsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,24 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Products_Activity extends AppCompatActivity {
-    public static final String[] code= new String[] {"M5G"};
-    public static final Integer[] images = { R.drawable.milk_converted};
-    public static final Integer[] downarrow = { R.drawable.ic_circle_orange};
-
-    public static final String[] title= new String[] {"Milk 500G"};
-
-    public static final String[] moq = new String[] {
-            "MOQ:"};
-
-    public static final String[] returnUnit = new String[] {"YES"};
-    public static final String[] returnable = new String[] {"Returnable"};
-    public static final String[] retailer = new String[] {"Retailer:"};
-    public static final String[] retailerUnit = new String[] {"Rs. 000.00"};
-    public static final String[] consumer = new String[] {"Consumer:"};
-    public static final String[] consumerUnit = new String[] {"46.00"};
-    public static final String[] moqUnit = new String[] {"50 Ltrs"};
-    public static final String[] agent = new String[] {"Agent:"};
-    public static final String[] agentUnit = new String[] {"000.00"};
 
 
     ListView listView;
@@ -54,19 +40,14 @@ public class Products_Activity extends AppCompatActivity {
     Context context = Products_Activity.this;
     ProductsBean data;
     ProductsModel productsmodel;
-
-
-
     private MMSharedPreferences sharedPreferences;
     private Context applicationContext, activityContext;
+    private  ProductsAdapter pAdapter;
 
-    // List<ProductsBean> rowItems;
-
-     //FloatingActionButton fab;
     RecyclerView recyclerView;
     public ScrollView scrollView;
     Products_Activity c;
-   // ProductAdapter adapter;
+
     private DBHelper dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +64,7 @@ public class Products_Activity extends AppCompatActivity {
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         dbHelper = new DBHelper(getApplicationContext());
+        myList=new ArrayList<ProductsBean>();
 
 
         final ActionBar actionBar = getSupportActionBar();
@@ -90,55 +72,43 @@ public class Products_Activity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+        applicationContext = getApplicationContext();
+        activityContext = Products_Activity.this;
+        dbHelper = new DBHelper(Products_Activity.this);
+        sharedPreferences = new MMSharedPreferences(Products_Activity.this);
+        productsmodel = new ProductsModel(activityContext,this);
+
         listView = (ListView) findViewById(R.id.list);
+        myList= dbHelper.fetchAllRecordsFromProductsTable();
+        System.out.println("ELSE::: "+myList.size());
+        if (new NetworkConnectionDetector(Products_Activity.this).isNetworkConnected()) {
+            productsmodel.getProductsList("productsList");
+        }else {
+            System.out.println("ELSE::: ");
+            myList = dbHelper.fetchAllRecordsFromProductsTable();
+            loadProductsList(myList);
+        }
+
+
+
 
 
         myList = new ArrayList<ProductsBean>();
 
-        getDataInList();
-        listView.setAdapter(new ProductsAdapter(context, myList));
+        //getDataInList();
 
-        HashMap<String,String> userMapData = dbHelper.getUsersData();
-        JSONObject routesJob = null;
-        try {
-            routesJob = new JSONObject(userMapData.get("route_ids").toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JSONArray routesArray = null;
-        try {
-            routesArray = routesJob.getJSONArray("routeArray");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        for (int l = 0;l<routesArray.length();l++){
-            try {
-                System.out.println("The Route Id IS::: "+ routesArray.get(l).toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            List<String> routesDataList = null;
-            try {
-                routesDataList = dbHelper.getRouteDataByRouteId(routesArray.get(l).toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            for (int k = 0;k<routesDataList.size();k++){
-                System.out.println(" LOOPPPPPPPPPPPPPP "+k);
-                if(routesDataList.get(k)!=null) {
-                    switch (k){
-                        
-                    }
-                }
-            }
-        }
 
     }
 
+    public void loadProductsList(ArrayList<ProductsBean> mProductsBeansList){
+        if(pAdapter!=null){
+            pAdapter = null;
+        }
+        pAdapter = new ProductsAdapter(Products_Activity.this,mProductsBeansList);
+        listView.setAdapter(pAdapter);
+    }
 
-    private void getDataInList() {
+   /* private void getDataInList() {
 
         for (int i = 0; i < title.length; i++) {
             // Create a new object for each list item
@@ -162,7 +132,7 @@ public class Products_Activity extends AppCompatActivity {
             myList.add(data);
         }
 
-    }
+    }*/
 
 
 
@@ -236,11 +206,7 @@ public class Products_Activity extends AppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    public void authenticateUser(String routeid) {
-        CustomProgressDialog.showProgressDialog(activityContext, Constants.LOADING_MESSAGE);
-        productsmodel.validateProducts(routeid);
 
-    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -4,7 +4,10 @@ import android.content.Context;
 
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
+import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.OnAsyncRequestCompleteListener;
 import com.rightclickit.b2bsaleon.util.AsyncRequest;
@@ -13,6 +16,8 @@ import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by PPS on 5/29/2017.
@@ -26,6 +31,10 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
     private Products_Activity activity;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
+    private String type="";
+    private ArrayList<String> regionIdsList = new ArrayList<String>();
+    private JSONArray routesArray;
+    private ArrayList<ProductsBean> mProductsBeansList = new ArrayList<ProductsBean>();
 
     public ProductsModel(Context context, Products_Activity activity) {
         this.context = context;
@@ -34,7 +43,7 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
         this.mDBHelper = new DBHelper(context);
     }
 
-    public void validateProducts(final String routeid) {
+    public void getProductsList(String s) {
         try {
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String productsURL = String.format("%s%s%s", Constants.PORT_PRODUCTSLIST, Constants.MAIN_URL, Constants.PRODUCTSLIST_SERVICE);
@@ -53,7 +62,6 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
 
     @Override
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
-
 
     }
 }

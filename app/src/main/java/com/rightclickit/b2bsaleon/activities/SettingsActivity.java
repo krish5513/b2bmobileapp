@@ -178,14 +178,54 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
             mDashboardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
             mDashboardLayout.setVisibility(View.GONE);
+            mDashboardLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(SettingsActivity.this,DashboardActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
             mTripSheetsLayout = (LinearLayout) findViewById(R.id.TripSheetsLayout);
             mTripSheetsLayout.setVisibility(View.GONE);
+            mTripSheetsLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(applicationContext, "Clicked on TRIPSHEETS", Toast.LENGTH_SHORT).show();
+                }
+            });
+
             mCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
             mCustomersLayout.setVisibility(View.GONE);
+            mCustomersLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(SettingsActivity.this,AgentsActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
+
             mProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
             mProductsLayout.setVisibility(View.GONE);
+            mProductsLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(applicationContext, "Clicked on Products", Toast.LENGTH_SHORT).show();
+                    Intent i =new Intent(SettingsActivity.this,Products_Activity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
+
             mTDCLayout = (LinearLayout) findViewById(R.id.TDCLayout);
             mTDCLayout.setVisibility(View.GONE);
+            mTDCLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(applicationContext, "Clicked on TDC", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             saveInfo.setOnClickListener(new View.OnClickListener() {
                 @Override

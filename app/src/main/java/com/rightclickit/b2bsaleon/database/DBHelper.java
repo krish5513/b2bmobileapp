@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,21 +79,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     //Column names for Produts activity Table
-  /* public static String KEY_CODE = "id";
-   public static String KEY_SYNC_STATUS = "syncStatus";*/
-    public static String KEY_MATERIAL_CODE = "materialCode";
-    public static String KEY_MATERIAL_TITLE = "materialTitle";
-    public static String KEY_MATERIAL_RETURNABLE = "materialReturnable";
-    public static String KEY_MATERIAL_UNIT= "materialUnit";
-    public static String KEY_MATERIAL_MOQ = "materialMOQ";
-    public static String KEY_MATERIAL_MOQ_UNIT = "materialMOQUnit";
-    public static String KEY_MATERIAL_AGENT= "materialAgent";
-    public static String KEY_MATERIAL_AGENT_UNIT = "materialAgentUnit";
-    public static String KEY_MATERIAL_RETAILER= "materialRetailer";
-    public static String KEY_MATERIAL_RETAILER_UNIT = "materialRetailerUnit";
-    public static String KEY_MATERIAL_IMAGE = "materialImage";
-    public static String KEY_MATERIAL_CONSUMER= "materialConsumer";
-    public static String KEY_MATERIAL_CONSUMER_UNIT= "materialConsumerUnit";
+    public static String KEY_PRODUCT_ID = "product_id";
+    public static String KEY_PRODUCT_CODE = "materialCode";
+    public static String KEY_PRODUCT_TITLE = "materialTitle";
+    public static String KEY_PRODUCT_UNIT= "materialUnit";
+    public static String KEY_PRODUCT_MOQ_UNIT = "materialMOQUnit";
+    public static String KEY_PRODUCT_AGENT_UNIT = "materialAgentUnit";
+    public static String KEY_PRODUCT_RETAILER_UNIT = "materialRetailerUnit";
+    public static String KEY_PRODUCT_IMAGE = "materialImage";
+    public static String KEY_PRODUCT_CONSUMER_UNIT= "materialConsumerUnit";
 
 
     // Column names for Agents Table
@@ -140,11 +135,11 @@ public class DBHelper extends SQLiteOpenHelper {
             + TABLE_PREVILEGES_USER_ACTIVITY + "(" + KEY_USER_ACTIVITY_ID + " VARCHAR," + KEY_USER_ACTIVITY_USER_ID + " VARCHAR,"
             + KEY_USER_ACTIVITY_TAG + " VARCHAR," + KEY_USER_ACTIVITY_STATUS + " VARCHAR)";
     //Products Table Create Statements
-    String CREATE_PRODUCTS_TABLE = "CREATE TABLE " + TABLE_PRODUCTS + "("
-            + KEY_MATERIAL_CODE + " TEXT," + KEY_MATERIAL_TITLE + " TEXT,"
-            + KEY_MATERIAL_RETURNABLE + " TEXT," + KEY_MATERIAL_UNIT + " TEXT," + KEY_MATERIAL_MOQ + " TEXT," +
-            KEY_MATERIAL_MOQ_UNIT + " TEXT," + KEY_MATERIAL_AGENT + " TEXT," + KEY_MATERIAL_AGENT_UNIT + " TEXT," + KEY_MATERIAL_RETAILER+ " TEXT," + KEY_MATERIAL_RETAILER_UNIT + " TEXT," +
-            KEY_MATERIAL_IMAGE + " TEXT,"  + KEY_MATERIAL_CONSUMER + " TEXT," + KEY_MATERIAL_CONSUMER_UNIT+ " TEXT" +  ")";
+    private final String CREATE_PRODUCTS_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_PRODUCTS + "("+KEY_PRODUCT_ID + "VARCHAR,"
+            + KEY_PRODUCT_CODE + " VARCHAR," + KEY_PRODUCT_TITLE + " VARCHAR,"
+            + KEY_PRODUCT_UNIT + " VARCHAR," + KEY_PRODUCT_MOQ_UNIT + " VARCHAR," + KEY_PRODUCT_AGENT_UNIT + " VARCHAR," +
+            KEY_PRODUCT_RETAILER_UNIT + " VARCHAR," + KEY_PRODUCT_IMAGE + " VARCHAR," + KEY_PRODUCT_CONSUMER_UNIT + " VARCHAR)";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -705,42 +700,38 @@ public class DBHelper extends SQLiteOpenHelper {
 
      */
 
-
-    public void insertProductDetails(String code, String title, String returnable, String unit,String moq,String moqunit, String agent, String agentunit, String retailer, String retailerunit, int image, int downarrowimage, String consumer,String consumerunit) {
+    public void insertProductDetails(ArrayList<ProductsBean> mProductsBeansList) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            ContentValues values = new ContentValues();
-            values.put(KEY_MATERIAL_CODE,code );
-            values.put(KEY_MATERIAL_TITLE, title);
-            values.put(KEY_MATERIAL_RETURNABLE, returnable);
-            values.put(KEY_MATERIAL_UNIT, unit);
-            values.put(KEY_MATERIAL_MOQ, moq);
-            values.put(KEY_MATERIAL_MOQ_UNIT, moqunit);
-            values.put(KEY_MATERIAL_AGENT, agent);
-            values.put(KEY_MATERIAL_AGENT_UNIT, agentunit);
-            values.put(KEY_MATERIAL_RETAILER, retailer);
-            values.put(KEY_MATERIAL_RETAILER_UNIT, retailerunit);
-            values.put(KEY_MATERIAL_IMAGE, image);
+            for (int i = 0;i<mProductsBeansList.size();i++){
+                ContentValues values = new ContentValues();
+                values.put(KEY_PRODUCT_ID, mProductsBeansList.get(i).getProductId());
+                values.put(KEY_PRODUCT_CODE, mProductsBeansList.get(i).getProductCode());
+                values.put(KEY_PRODUCT_TITLE, mProductsBeansList.get(i).getProductTitle());
+                values.put(KEY_PRODUCT_UNIT, mProductsBeansList.get(i).getProductReturnUnit());
+                values.put(KEY_PRODUCT_MOQ_UNIT, mProductsBeansList.get(i).getProductMOQUnit());
+                values.put(KEY_PRODUCT_AGENT_UNIT, mProductsBeansList.get(i).getProductAgentunit());
+                values.put(KEY_PRODUCT_RETAILER_UNIT, mProductsBeansList.get(i).getProductRetailerUnit());
+                values.put(KEY_PRODUCT_IMAGE, mProductsBeansList.get(i).getProductImage());
+                values.put(KEY_PRODUCT_CONSUMER_UNIT, mProductsBeansList.get(i).getProductConsumerUnit());
 
-            values.put(KEY_MATERIAL_CONSUMER,consumer);
-            values.put(KEY_MATERIAL_CONSUMER_UNIT,consumerunit);
-
-            // insert row
-            db.insert(TABLE_PRODUCTS, null, values);
-            values.clear();
+                // insert row
+                db.insert(TABLE_PRODUCTS, null, values);
+                System.out.println("F*********** INSERTED***************88");
+                values.clear();
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
 
         db.close();
     }
+
     /**
-     * Method to get product details
-
+     * Method to fetch all records from products table
      */
-
-    public HashMap<String,String> getProductsData(){
-        HashMap<String,String> productsData = new HashMap<String,String>();
+    public ArrayList<ProductsBean> fetchAllRecordsFromProductsTable(){
+        ArrayList<ProductsBean> allProductTrackRecords = new ArrayList<ProductsBean>();
         try {
             String selectQuery = "SELECT  * FROM " + TABLE_PRODUCTS;
 
@@ -750,21 +741,20 @@ public class DBHelper extends SQLiteOpenHelper {
             // looping through all rows and adding to list
             if (c.moveToFirst()) {
                 do {
-                    productsData.put(KEY_MATERIAL_CODE,(c.getString(c.getColumnIndex(KEY_MATERIAL_CODE))));
-                    productsData.put(KEY_MATERIAL_TITLE,(c.getString(c.getColumnIndex(KEY_MATERIAL_TITLE))));
-                    productsData.put(KEY_MATERIAL_RETURNABLE,(c.getString(c.getColumnIndex(KEY_MATERIAL_RETURNABLE))));
-                    productsData.put(KEY_MATERIAL_UNIT,(c.getString(c.getColumnIndex(KEY_MATERIAL_UNIT))));
-                    productsData.put(KEY_MATERIAL_MOQ,(c.getString(c.getColumnIndex(KEY_MATERIAL_MOQ))));
-                    productsData.put(KEY_MATERIAL_MOQ_UNIT,(c.getString(c.getColumnIndex(KEY_MATERIAL_MOQ_UNIT))));
-                    productsData.put(KEY_MATERIAL_AGENT,(c.getString(c.getColumnIndex(KEY_MATERIAL_AGENT))));
-                    productsData.put(KEY_MATERIAL_AGENT,(c.getString(c.getColumnIndex(KEY_MATERIAL_AGENT))));
-                    productsData.put(KEY_MATERIAL_AGENT_UNIT,(c.getString(c.getColumnIndex(KEY_MATERIAL_AGENT_UNIT))));
-                    productsData.put(KEY_MATERIAL_RETAILER,(c.getString(c.getColumnIndex(KEY_MATERIAL_RETAILER_UNIT))));
-                    productsData.put(KEY_MATERIAL_IMAGE,(c.getString(c.getColumnIndex(KEY_MATERIAL_IMAGE))));
+                    ProductsBean productsBean = new ProductsBean();
 
-                    productsData.put(KEY_MATERIAL_CONSUMER,(c.getString(c.getColumnIndex(KEY_MATERIAL_CONSUMER))));
-                    productsData.put(KEY_MATERIAL_CONSUMER_UNIT,(c.getString(c.getColumnIndex(KEY_MATERIAL_CONSUMER_UNIT))));
+                    productsBean.setProductId((c.getString(c.getColumnIndex(KEY_PRODUCT_ID))));
+                    productsBean.setProductCode((c.getString(c.getColumnIndex(KEY_PRODUCT_CODE))));
+                    productsBean.setProductTitle((c.getString(c.getColumnIndex(KEY_PRODUCT_TITLE))));
+                    productsBean.setProductReturnUnit((c.getString(c.getColumnIndex(KEY_PRODUCT_UNIT))));
+                    productsBean.setProductMOQUnit((c.getString(c.getColumnIndex(KEY_PRODUCT_MOQ_UNIT))));
+                    productsBean.setProductAgentunit((c.getString(c.getColumnIndex(KEY_PRODUCT_AGENT_UNIT))));
+                    productsBean.setProductRetailerUnit((c.getString(c.getColumnIndex(KEY_PRODUCT_RETAILER_UNIT))));
+                    productsBean.setProductImage((c.getString(c.getColumnIndex(KEY_PRODUCT_IMAGE))));
+                    productsBean.setProductConsumerUnit((c.getString(c.getColumnIndex(KEY_PRODUCT_CONSUMER_UNIT))));
 
+
+                    allProductTrackRecords.add(productsBean);
                 } while (c.moveToNext());
             }
 
@@ -774,7 +764,7 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
 
-        return productsData;
+        return allProductTrackRecords;
     }
 
     /**

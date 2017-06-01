@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -150,9 +152,43 @@ public class AgentsActivity extends AppCompatActivity {
         mAgentsAdapter = new AgentsAdapter(AgentsActivity.this,mAgentsBeansList);
         mAgentsList.setAdapter(mAgentsAdapter);
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_search) {
+
+            return true;
+        }
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return true;
+        }
+    }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+
+        menu.findItem(R.id.notifications).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(false);
+        menu.findItem(R.id.logout).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(true);
+
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+    @Override
     public void onBackPressed() {
+        super.onBackPressed();
         Intent i = new Intent(AgentsActivity.this,DashboardActivity.class);
         startActivity(i);
         finish();
