@@ -84,17 +84,24 @@ public class ProductsAdapter extends BaseAdapter {
         } else {
             holder = (MyViewHolder) convertView.getTag();
         }
-        System.out.println("URL===== "+mProductsBeansList1.get(position).getProductImage());
-        if (!mProductsBeansList1.get(position).getProductImage().equals("")){
-            mImageLoader.DisplayImage(mProductsBeansList1.get(position).getProductImage(),holder.productImage,null,"");
+
+        holder.productCode.setText(mProductsBeansList1.get(position).getProductCode());
+        if(mProductsBeansList1.get(position).getProductReturnable().equals("N")){
+            holder.product_Unit.setText("NO");
+        }else if(mProductsBeansList1.get(position).getProductReturnable().equals("Y")){
+            holder.product_Unit.setText("YES");
         }
         holder.productTitle.setText(mProductsBeansList1.get(position).getProductTitle());
-        if (mProductsBeansList1.get(position).getProductReturnUnit().equals("Y")){
-            holder.product_Unit.setText("YES");
-        }else {
-            holder.product_Unit.setText("NO");
+        holder.materialMOQUnit.setText(mProductsBeansList1.get(position).getProductMOQ());
+        holder.materialAgentUnit.setText(mProductsBeansList1.get(position).getProductAgentPrice());
+        holder.materialRetailerUnit.setText(mProductsBeansList1.get(position).getProductRetailerPrice());
+        holder.materialConsumerUnit.setText(mProductsBeansList1.get(position).getProductConsumerPrice());
+        //System.out.println("URL===== "+mProductsBeansList1.get(position).getProductImageUrl());
+        if(mProductsBeansList1.get(position).getProductImageUrl()!=null) {
+            if (!mProductsBeansList1.get(position).getProductImageUrl().equals("")) {
+                mImageLoader.DisplayImage(mProductsBeansList1.get(position).getProductImageUrl(), holder.productImage, null, "");
+            }
         }
-
 
         return convertView;
     }

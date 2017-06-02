@@ -9,12 +9,16 @@ import java.io.Serializable;
  */
 
 public class ProductsBean {
-    @Expose private String productId;
-    @Expose private String productCode;
-    @Expose private String  productTitle;
-    @Expose private String  productReturnUnit;
-    @Expose private String productMOQUnit;
-    @Expose private String productAgentunit;
+    private String productId;
+    private String productCode;
+    private String  productTitle;
+    private String productDescription;
+    private String productImageUrl;
+    private String productReturnable;
+    private String productMOQ;
+    private String productAgentPrice;
+    private String productConsumerPrice;
+    private String productRetailerPrice;
 
     public String getProductId() {
         return productId;
@@ -40,57 +44,60 @@ public class ProductsBean {
         this.productTitle = productTitle;
     }
 
-    public String getProductReturnUnit() {
-        return productReturnUnit;
+
+    public String getProductDescription() {
+        return productDescription;
     }
 
-    public void setProductReturnUnit(String productReturnUnit) {
-        this.productReturnUnit = productReturnUnit;
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
     }
 
-    public String getProductMOQUnit() {
-        return productMOQUnit;
+    public String getProductImageUrl() {
+        return productImageUrl;
     }
 
-    public void setProductMOQUnit(String productMOQUnit) {
-        this.productMOQUnit = productMOQUnit;
+    public void setProductImageUrl(String productImageUrl) {
+        this.productImageUrl = productImageUrl;
     }
 
-    public String getProductAgentunit() {
-        return productAgentunit;
+    public String getProductReturnable() {
+        return productReturnable;
     }
 
-    public void setProductAgentunit(String productAgentunit) {
-        this.productAgentunit = productAgentunit;
+    public void setProductReturnable(String productReturnable) {
+        this.productReturnable = productReturnable;
     }
 
-    public String getProductRetailerUnit() {
-        return productRetailerUnit;
+    public String getProductMOQ() {
+        return productMOQ;
     }
 
-    public void setProductRetailerUnit(String productRetailerUnit) {
-        this.productRetailerUnit = productRetailerUnit;
+    public void setProductMOQ(String productMOQ) {
+        this.productMOQ = productMOQ;
     }
 
-    public String getProductImage() {
-        return productImage;
+    public String getProductAgentPrice() {
+        return productAgentPrice;
     }
 
-    public void setProductImage(String productImage) {
-        this.productImage = productImage;
+    public void setProductAgentPrice(String productAgentPrice) {
+        this.productAgentPrice = productAgentPrice;
     }
 
-    public String getProductConsumerUnit() {
-        return productConsumerUnit;
+    public String getProductConsumerPrice() {
+        return productConsumerPrice;
     }
 
-    public void setProductConsumerUnit(String productConsumerUnit) {
-        this.productConsumerUnit = productConsumerUnit;
+    public void setProductConsumerPrice(String productConsumerPrice) {
+        this.productConsumerPrice = productConsumerPrice;
     }
 
-    @Expose private String productRetailerUnit;
-    @Expose private String   productImage;
-    @Expose private String  productConsumerUnit;
+    public String getProductRetailerPrice() {
+        return productRetailerPrice;
+    }
 
-
+    public void setProductRetailerPrice(String productRetailerPrice) {
+        this.productRetailerPrice = productRetailerPrice;
+    }
 }

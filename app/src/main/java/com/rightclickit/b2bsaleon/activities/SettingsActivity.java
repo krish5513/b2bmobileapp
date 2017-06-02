@@ -29,6 +29,8 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -181,6 +183,8 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             mDashboardLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                    mDashboardLayout.startAnimation(animation1);
                     Intent i = new Intent(SettingsActivity.this,DashboardActivity.class);
                     startActivity(i);
                     finish();
@@ -192,6 +196,8 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(applicationContext, "Clicked on TRIPSHEETS", Toast.LENGTH_SHORT).show();
+                    Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                    mTripSheetsLayout.startAnimation(animation1);
                 }
             });
 
@@ -200,6 +206,8 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             mCustomersLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                    mCustomersLayout.startAnimation(animation1);
                     Intent i = new Intent(SettingsActivity.this,AgentsActivity.class);
                     startActivity(i);
                     finish();
@@ -212,6 +220,8 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(applicationContext, "Clicked on Products", Toast.LENGTH_SHORT).show();
+                    Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                    mProductsLayout.startAnimation(animation1);
                     Intent i =new Intent(SettingsActivity.this,Products_Activity.class);
                     startActivity(i);
                     finish();
@@ -224,6 +234,8 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(applicationContext, "Clicked on TDC", Toast.LENGTH_SHORT).show();
+                    Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                    mTDCLayout.startAnimation(animation1);
                 }
             });
 
@@ -377,7 +389,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                         Toast.makeText(getApplicationContext(), "New password and  confirm password are not match", Toast.LENGTH_SHORT).show();
                     }else {
                         confirmNewPassword.setError(null);
-                        settingsmodel.changePassword(sharedPreferences.getString("userId"), Utility.getMd5String(newPassword.getText().toString().trim()));
+                        settingsmodel.changePassword(sharedPreferences.getString("userId"), Utility.getMd5String(newPassword.getText().toString().trim()),sharedPreferences.getString("reset_password"));
                     }
                 }
             });

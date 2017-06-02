@@ -77,17 +77,17 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_USER_ACTIVITY_TAG = "user_activity_tag";
     private final String KEY_USER_ACTIVITY_STATUS = "user_activity_status";
 
-
     //Column names for Produts activity Table
-    public static String KEY_PRODUCT_ID = "product_id";
-    public static String KEY_PRODUCT_CODE = "materialCode";
-    public static String KEY_PRODUCT_TITLE = "materialTitle";
-    public static String KEY_PRODUCT_UNIT= "materialUnit";
-    public static String KEY_PRODUCT_MOQ_UNIT = "materialMOQUnit";
-    public static String KEY_PRODUCT_AGENT_UNIT = "materialAgentUnit";
-    public static String KEY_PRODUCT_RETAILER_UNIT = "materialRetailerUnit";
-    public static String KEY_PRODUCT_IMAGE = "materialImage";
-    public static String KEY_PRODUCT_CONSUMER_UNIT= "materialConsumerUnit";
+    public final String KEY_PRODUCT_ID = "product_id";
+    public final String KEY_PRODUCT_CODE = "product_code";
+    public final String KEY_PRODUCT_TITLE = "product_title";
+    public final String KEY_PRODUCT_DESCRIPTION= "product_description";
+    public final String KEY_PRODUCT_IMAGE_URL = "product_image_url";
+    public final String KEY_PRODUCT_RETURNABLE = "product_returnable";
+    public final String KEY_PRODUCT_MOQ = "product_moq";
+    public final String KEY_PRODUCT_AGENT_PRICE = "product_agent_price";
+    public final String KEY_PRODUCT_CONSUMER_PRICE= "product_consumer_price";
+    public final String KEY_PRODUCT_RETAILER_PRICE= "product_retailer_price";
 
 
     // Column names for Agents Table
@@ -136,10 +136,11 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_USER_ACTIVITY_TAG + " VARCHAR," + KEY_USER_ACTIVITY_STATUS + " VARCHAR)";
     //Products Table Create Statements
     private final String CREATE_PRODUCTS_TABLE = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_PRODUCTS + "("+KEY_PRODUCT_ID + "VARCHAR,"
+            + TABLE_PRODUCTS + "("+KEY_PRODUCT_ID + " VARCHAR,"
             + KEY_PRODUCT_CODE + " VARCHAR," + KEY_PRODUCT_TITLE + " VARCHAR,"
-            + KEY_PRODUCT_UNIT + " VARCHAR," + KEY_PRODUCT_MOQ_UNIT + " VARCHAR," + KEY_PRODUCT_AGENT_UNIT + " VARCHAR," +
-            KEY_PRODUCT_RETAILER_UNIT + " VARCHAR," + KEY_PRODUCT_IMAGE + " VARCHAR," + KEY_PRODUCT_CONSUMER_UNIT + " VARCHAR)";
+            + KEY_PRODUCT_DESCRIPTION + " VARCHAR," + KEY_PRODUCT_IMAGE_URL + " VARCHAR," + KEY_PRODUCT_RETURNABLE + " VARCHAR," +
+              KEY_PRODUCT_MOQ + " VARCHAR," + KEY_PRODUCT_AGENT_PRICE + " VARCHAR,"+ KEY_PRODUCT_CONSUMER_PRICE + " VARCHAR,"
+            + KEY_PRODUCT_RETAILER_PRICE + " VARCHAR)";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -697,7 +698,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to insert product details
-
      */
 
     public void insertProductDetails(ArrayList<ProductsBean> mProductsBeansList) {
@@ -708,12 +708,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_PRODUCT_ID, mProductsBeansList.get(i).getProductId());
                 values.put(KEY_PRODUCT_CODE, mProductsBeansList.get(i).getProductCode());
                 values.put(KEY_PRODUCT_TITLE, mProductsBeansList.get(i).getProductTitle());
-                values.put(KEY_PRODUCT_UNIT, mProductsBeansList.get(i).getProductReturnUnit());
-                values.put(KEY_PRODUCT_MOQ_UNIT, mProductsBeansList.get(i).getProductMOQUnit());
-                values.put(KEY_PRODUCT_AGENT_UNIT, mProductsBeansList.get(i).getProductAgentunit());
-                values.put(KEY_PRODUCT_RETAILER_UNIT, mProductsBeansList.get(i).getProductRetailerUnit());
-                values.put(KEY_PRODUCT_IMAGE, mProductsBeansList.get(i).getProductImage());
-                values.put(KEY_PRODUCT_CONSUMER_UNIT, mProductsBeansList.get(i).getProductConsumerUnit());
+                values.put(KEY_PRODUCT_DESCRIPTION, mProductsBeansList.get(i).getProductDescription());
+                values.put(KEY_PRODUCT_IMAGE_URL, mProductsBeansList.get(i).getProductImageUrl());
+                values.put(KEY_PRODUCT_RETURNABLE, mProductsBeansList.get(i).getProductReturnable());
+                values.put(KEY_PRODUCT_MOQ, mProductsBeansList.get(i).getProductMOQ());
+                values.put(KEY_PRODUCT_AGENT_PRICE, mProductsBeansList.get(i).getProductAgentPrice());
+                values.put(KEY_PRODUCT_CONSUMER_PRICE, mProductsBeansList.get(i).getProductConsumerPrice());
+                values.put(KEY_PRODUCT_RETAILER_PRICE, mProductsBeansList.get(i).getProductRetailerPrice());
 
                 // insert row
                 db.insert(TABLE_PRODUCTS, null, values);
@@ -746,12 +747,13 @@ public class DBHelper extends SQLiteOpenHelper {
                     productsBean.setProductId((c.getString(c.getColumnIndex(KEY_PRODUCT_ID))));
                     productsBean.setProductCode((c.getString(c.getColumnIndex(KEY_PRODUCT_CODE))));
                     productsBean.setProductTitle((c.getString(c.getColumnIndex(KEY_PRODUCT_TITLE))));
-                    productsBean.setProductReturnUnit((c.getString(c.getColumnIndex(KEY_PRODUCT_UNIT))));
-                    productsBean.setProductMOQUnit((c.getString(c.getColumnIndex(KEY_PRODUCT_MOQ_UNIT))));
-                    productsBean.setProductAgentunit((c.getString(c.getColumnIndex(KEY_PRODUCT_AGENT_UNIT))));
-                    productsBean.setProductRetailerUnit((c.getString(c.getColumnIndex(KEY_PRODUCT_RETAILER_UNIT))));
-                    productsBean.setProductImage((c.getString(c.getColumnIndex(KEY_PRODUCT_IMAGE))));
-                    productsBean.setProductConsumerUnit((c.getString(c.getColumnIndex(KEY_PRODUCT_CONSUMER_UNIT))));
+                    productsBean.setProductDescription((c.getString(c.getColumnIndex(KEY_PRODUCT_DESCRIPTION))));
+                    productsBean.setProductImageUrl((c.getString(c.getColumnIndex(KEY_PRODUCT_IMAGE_URL))));
+                    productsBean.setProductReturnable((c.getString(c.getColumnIndex(KEY_PRODUCT_RETURNABLE))));
+                    productsBean.setProductMOQ((c.getString(c.getColumnIndex(KEY_PRODUCT_MOQ))));
+                    productsBean.setProductAgentPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_AGENT_PRICE))));
+                    productsBean.setProductConsumerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_CONSUMER_PRICE))));
+                    productsBean.setProductRetailerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_RETAILER_PRICE))));
 
 
                     allProductTrackRecords.add(productsBean);

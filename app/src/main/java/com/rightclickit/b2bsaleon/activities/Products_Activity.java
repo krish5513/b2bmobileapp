@@ -8,8 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
@@ -49,6 +54,8 @@ public class Products_Activity extends AppCompatActivity {
     Products_Activity c;
 
     private DBHelper dbHelper;
+    private LinearLayout mDashboardLayout,mTripSheetsLayout,mCustomersLayout,mProductsLayout,mTDCLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +102,80 @@ public class Products_Activity extends AppCompatActivity {
 
         myList = new ArrayList<ProductsBean>();
 
+
+        mDashboardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
+        mDashboardLayout.setVisibility(View.GONE);
+        mDashboardLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mDashboardLayout.startAnimation(animation1);
+                Intent i = new Intent(Products_Activity.this,DashboardActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        mTripSheetsLayout = (LinearLayout) findViewById(R.id.TripSheetsLayout);
+        mTripSheetsLayout.setVisibility(View.GONE);
+        mTripSheetsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(applicationContext, "Clicked on TRIPSHEETS", Toast.LENGTH_SHORT).show();
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mTripSheetsLayout.startAnimation(animation1);
+            }
+        });
+
+        mCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
+        mCustomersLayout.setVisibility(View.GONE);
+        mCustomersLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mCustomersLayout.startAnimation(animation1);
+                Intent i = new Intent(Products_Activity.this,AgentsActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        mProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
+        mProductsLayout.setVisibility(View.GONE);
+        mProductsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(applicationContext, "Clicked on Products", Toast.LENGTH_SHORT).show();
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mProductsLayout.startAnimation(animation1);
+            }
+        });
+
+        mTDCLayout = (LinearLayout) findViewById(R.id.TDCLayout);
+        mTDCLayout.setVisibility(View.GONE);
+        mTDCLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(applicationContext, "Clicked on TDC", Toast.LENGTH_SHORT).show();
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mTDCLayout.startAnimation(animation1);
+            }
+        });
+
+        ArrayList<String> privilegesData = dbHelper.getUserActivityDetailsByUserId(sharedPreferences.getString("userId"));
+        System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
+        for (int k = 0; k<privilegesData.size();k++){
+            if (privilegesData.get(k).toString().equals("Dashboard")){
+                mDashboardLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("TripSheets")){
+                mTripSheetsLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("Customers")){
+                mCustomersLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("Products")){
+                mProductsLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("TDC")){
+                mTDCLayout.setVisibility(View.VISIBLE);
+            }
+        }
         //getDataInList();
 
 

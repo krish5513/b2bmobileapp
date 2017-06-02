@@ -31,6 +31,7 @@ public class SyncRoutesMasterDetailsService extends Service {
         super.onCreate();
         handler = new Handler();
         mDBHelper = new DBHelper(this);
+        mSessionManagement = new MMSharedPreferences(this);
     }
 
     @Override
@@ -91,6 +92,7 @@ public class SyncRoutesMasterDetailsService extends Service {
                                         for (int j = 0;j<regionsArray.length();j++){
                                             JSONObject regionObj = regionsArray.getJSONObject(j);
                                             if(regionId.equals(regionObj.getString("_id"))){
+                                                mSessionManagement.putString("RegionId",regionId);
                                                 regionName = regionObj.getString("name");
                                             }
                                         }
@@ -113,7 +115,7 @@ public class SyncRoutesMasterDetailsService extends Service {
                                 System.out.println("The ROUTE NAME IS:: "+ obj.getString("name"));
                                 routeName = obj.getString("name");
                             }
-                             mDBHelper.insertRoutesDetails(routeId,routeName,regionName,officeName);
+                            mDBHelper.insertRoutesDetails(routeId,routeName,regionName,officeName);
                         }
                     }
                 }
