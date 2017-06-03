@@ -161,7 +161,7 @@ public class AgentsActivity extends AppCompatActivity {
         if(mAgentsAdapter!=null){
             mAgentsAdapter = null;
         }
-        mAgentsAdapter = new AgentsAdapter(AgentsActivity.this,mAgentsBeansList);
+        mAgentsAdapter = new AgentsAdapter(this,AgentsActivity.this,mAgentsBeansList);
         mAgentsList.setAdapter(mAgentsAdapter);
     }
     @Override

@@ -70,7 +70,8 @@
             android:exported="true" />
 
         <activity android:name=".activities.Products_Activity" />
-        <activity android:name=".activities.AgentsActivity"></activity>
+        <activity android:name=".activities.AgentsActivity" />
+        <activity android:name=".activities.AgentsInfoActivity"></activity>
     </application>
 
 </manifest>

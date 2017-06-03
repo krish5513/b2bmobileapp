@@ -49,8 +49,8 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
                 String productsURL = String.format("%s%s%s",  Constants.MAIN_URL, Constants.PORT_PRODUCTSLIST,Constants.PRODUCTSLIST_SERVICE);
                 JSONObject params = new JSONObject();
                 JSONArray array = new JSONArray();
-                //array.put(mPreferences.getString("RegionId"));
-                array.put("591d7844dd3960135dbf02cd"); // Temoparary hard coded this region id...
+                array.put(mPreferences.getString("RegionId"));
+              //  array.put("591d7844dd3960135dbf02cd"); // Temoparary hard coded this region id...
                 params.put("region_ids", array);
                 System.out.println("PRO URL::: "+ productsURL);
                 System.out.println("PRO DATA::: "+ params.toString());

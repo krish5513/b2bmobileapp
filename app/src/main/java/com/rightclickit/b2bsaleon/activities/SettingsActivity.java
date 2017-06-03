@@ -389,7 +389,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                         Toast.makeText(getApplicationContext(), "New password and  confirm password are not match", Toast.LENGTH_SHORT).show();
                     }else {
                         confirmNewPassword.setError(null);
-                        settingsmodel.changePassword(sharedPreferences.getString("userId"), Utility.getMd5String(newPassword.getText().toString().trim()),sharedPreferences.getString("reset_password"));
+                        settingsmodel.changePassword(sharedPreferences.getString("userId"), Utility.getMd5String(newPassword.getText().toString().trim()));
                     }
                 }
             });
