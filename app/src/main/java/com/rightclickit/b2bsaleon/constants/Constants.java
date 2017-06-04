@@ -57,6 +57,8 @@ public class Constants {
 
     public static final String PORT_PRODUCTSLIST = ":3006";
 
+    public static final String SYNC_TAKE_ORDERS_PORT = ":3008";
+
     //Production
     public static final String MAIN_URL = "http://52.10.51.54";
 
@@ -86,5 +88,7 @@ public class Constants {
     public static final String GET_CUSTOMERS_LIST = "/customer/list";
     // Products api url
     public static final String PRODUCTSLIST_SERVICE = "/product/document_region";
+    // Sync take orders data url
+    public static final String SYNC_TAKE_ORDERS_SERVICE = "/pending_order/add?token=";
 
 }

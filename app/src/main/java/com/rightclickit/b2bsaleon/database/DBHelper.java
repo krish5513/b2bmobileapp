@@ -199,6 +199,38 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Method to get count of the agents table
+     */
+    public int getAgentsTableCount() {
+        int noOfEvents = 0;
+        try {
+            String countQuery = "SELECT * FROM " + TABLE_AGENTS;
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfEvents = cursor.getCount();
+                cursor.close();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return noOfEvents;
+    }
+    /**
+     * Method to clear values in agents table
+     */
+    public void deleteValuesFromAgentsTable() {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_AGENTS, null, null);
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Method to insert user details
      *
      * @param mAgentsBeansList
@@ -403,6 +435,36 @@ public class DBHelper extends SQLiteOpenHelper {
                     userData.put(KEY_LATITUDE,(c.getString(c.getColumnIndex(KEY_LATITUDE))));
                     userData.put(KEY_LONGITUDE,(c.getString(c.getColumnIndex(KEY_LONGITUDE))));
                     userData.put(KEY_PASSWORD,(c.getString(c.getColumnIndex(KEY_PASSWORD))));
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return userData;
+    }
+
+    /**
+     * Method to get the users route ids data
+     * @return user data in list form.
+     */
+    public HashMap<String,String> getUserRouteIds(){
+        HashMap<String,String> userData = new HashMap<String,String>();
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_USERDETAILS;
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    userData.put(KEY_USER_ID,(c.getString(c.getColumnIndex(KEY_USER_ID))));
+                    userData.put(KEY_ROUTEIDS,(c.getString(c.getColumnIndex(KEY_ROUTEIDS))));
 
                 } while (c.moveToNext());
             }
@@ -717,6 +779,26 @@ public class DBHelper extends SQLiteOpenHelper {
         } catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Method to get count of the user privileges details table
+     */
+    public int getProductsTableCount() {
+        int noOfEvents = 0;
+        try {
+            String countQuery = "SELECT * FROM " + TABLE_PRODUCTS;
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfEvents = cursor.getCount();
+                cursor.close();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return noOfEvents;
     }
 
     /**

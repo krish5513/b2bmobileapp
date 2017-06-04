@@ -89,7 +89,12 @@ public class Products_Activity extends AppCompatActivity {
         myList= dbHelper.fetchAllRecordsFromProductsTable();
         System.out.println("ELSE::: "+myList.size());
         if (new NetworkConnectionDetector(Products_Activity.this).isNetworkConnected()) {
-            productsmodel.getProductsList("productsList");
+            if (dbHelper.getProductsTableCount()>0){
+                myList = dbHelper.fetchAllRecordsFromProductsTable();
+                loadProductsList(myList);
+            }else {
+                productsmodel.getProductsList("productsList");
+            }
         }else {
             System.out.println("ELSE::: ");
             myList = dbHelper.fetchAllRecordsFromProductsTable();

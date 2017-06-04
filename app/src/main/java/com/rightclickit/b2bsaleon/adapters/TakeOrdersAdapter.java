@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,18 +21,23 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.activities.TakeOrderScreen;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
+import com.rightclickit.b2bsaleon.services.SyncTakeOrdersService;
+import com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import org.w3c.dom.Text;
 
@@ -60,13 +66,15 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     List<String> list1 = new ArrayList<String>();
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
+    private ListView mList;
 
-    public TakeOrdersAdapter(TakeOrderScreen productsActivity, ArrayList<TakeOrderBean> mTakeOrderBeansList) {
+    public TakeOrdersAdapter(TakeOrderScreen productsActivity, ArrayList<TakeOrderBean> mTakeOrderBeansList, ListView mTakeOrderListView) {
         this.activity = productsActivity;
         this.mTakeOrderBeansList1 = mTakeOrderBeansList;
         this.mInflater = LayoutInflater.from(activity);
         this.mDBHelper = new DBHelper(activity);
         this.mPreferences = new MMSharedPreferences(activity);
+        this.mList = mTakeOrderListView;
         try {
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -98,7 +106,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
 
@@ -143,7 +151,9 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         holder.fromDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                et = holder.fromDate;
+                View childView = mList.getChildAt(position);
+                EditText fromDate = (EditText) childView.findViewById(R.id.from_date);
+                et = fromDate;
                 fromStr = "from";
                 datePickerMethod();
             }
@@ -152,50 +162,24 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         holder.toDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                et = holder.toDate;
+                View childView = mList.getChildAt(position);
+                EditText toDate = (EditText) childView.findViewById(R.id.to_date);
+                et = toDate;
                 fromStr = "to";
                 datePickerMethod();
             }
         });
 
-//        holder.productQuantity.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if(s.equals("")||s.equals("0")||s.equals("0.0")||s.equals("0.00")||s.equals("0.000")){
-//
-//                }
-//                else{
-//                    try{
-//                        //String presentValStr = holder.productQuantity.getText().toString();
-//                        Double presentIntVal = Double.parseDouble(s.toString());
-//                        holder.productQuantity.setText(String.format("%.3f",presentIntVal));
-//                    }
-//                    catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        });
-
-
         holder.productQuantityIncrement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    String presentValStr = holder.productQuantity.getText().toString();
+                    View childView = mList.getChildAt(position);
+                    EditText quanity11 = (EditText) childView.findViewById(R.id.productQt);
+                    String presentValStr = quanity11.getText().toString();
                     Double presentIntVal = Double.parseDouble(presentValStr);
                     presentIntVal++;
-                    holder.productQuantity.setText(String.format("%.3f",presentIntVal));
+                    quanity11.setText(String.format("%.3f",presentIntVal));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -206,11 +190,13 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             @Override
             public void onClick(View v) {
                 try {
-                    String presentValStr = holder.productQuantity.getText().toString();
+                    View childView = mList.getChildAt(position);
+                    EditText quanity11 = (EditText) childView.findViewById(R.id.productQt);
+                    String presentValStr = quanity11.getText().toString();
                     Double presentIntVal = Double.parseDouble(presentValStr);
                     if(presentIntVal>0){
                         presentIntVal--;
-                        holder.productQuantity.setText(String.format("%.3f",presentIntVal));
+                        quanity11.setText(String.format("%.3f",presentIntVal));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -233,32 +219,58 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         });
 
 
-        TakeOrderScreen.mPaymentsLayout.setOnClickListener(new View.OnClickListener() {
+        TakeOrderScreen.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(temptoList.size()>0){
                     temptoList.clear();
                 }
+                System.out.println("LIST COUNT::: "+ mList.getCount());
                 for (int d = 0; d<mTakeOrderBeansList1.size();d++){
-                    System.out.println(" FUCK :::: "+ mTakeOrderBeansList1.get(d).getmProductTitle());
-                    System.out.println(" FUCK 1:::: "+ holder.fromDate.getText().toString().trim());
-                    System.out.println(" FUCK 2:::: "+ holder.toDate.getText().toString().trim());
-                    System.out.println(" FUCK 3:::: "+ holder.orderTypeSpinner.getSelectedItem().toString());
-                    System.out.println(" FUCK 4:::: "+ holder.productQuantity.getText().toString().trim());
+                    View childView = mList.getChildAt(d);
+                    TextView tv = (TextView) childView.findViewById(R.id.productName);
+                    EditText fromDate = (EditText) childView.findViewById(R.id.from_date);
+                    EditText toDate = (EditText) childView.findViewById(R.id.to_date);
+                    Spinner sp = (Spinner) childView.findViewById(R.id.spinner1);
+                    EditText quanity = (EditText) childView.findViewById(R.id.productQt);
+                    System.out.println("TITLE IS ::: "+ tv.getText().toString().trim());
+                    System.out.println("FROM IS ::: "+ fromDate.getText().toString().trim());
+                    System.out.println("TO IS ::: "+ toDate.getText().toString().trim());
+                    System.out.println("SPINNER IS ::: "+ sp.getSelectedItem().toString());
+                    System.out.println("QUANTITY IS ::: "+ quanity.getText().toString().trim());
 
                     TakeOrderBean tb = new TakeOrderBean();
 
                     tb.setmRouteId(mPreferences.getString("routeId"));
-                    tb.setmProductTitle(mTakeOrderBeansList1.get(d).getmProductTitle());
-                    tb.setmProductFromDate(holder.fromDate.getText().toString().trim());
-                    tb.setmProductToDate(holder.toDate.getText().toString().trim());
-                    tb.setmProductOrderType(holder.orderTypeSpinner.getSelectedItem().toString());
-                    tb.setmProductQuantity(holder.productQuantity.getText().toString().trim());
+                    tb.setmProductTitle(tv.getText().toString().trim());
+                    tb.setmProductFromDate(fromDate.getText().toString().trim());
+                    tb.setmProductToDate(toDate.getText().toString().trim());
+                    if(sp.getSelectedItem().toString().equals("One Time")){
+                        tb.setmProductOrderType("1");
+                    }else if(sp.getSelectedItem().toString().equals("Daily")){
+                        tb.setmProductOrderType("2");
+                    }else if(sp.getSelectedItem().toString().equals("Weekly")){
+                        tb.setmProductOrderType("3");
+                    }else if(sp.getSelectedItem().toString().equals("Monthly")){
+                        tb.setmProductOrderType("4");
+                    }else {
+                        tb.setmProductOrderType("1");
+                    }
+                    tb.setmProductQuantity(quanity.getText().toString().trim());
 
                     temptoList.add(tb);
                 }
-                if(temptoList.size()>0){
-                    mDBHelper.updateTakeOrderDetails(temptoList);
+                synchronized (this) {
+                    if (temptoList.size() > 0) {
+                        mDBHelper.updateTakeOrderDetails(temptoList);
+                    }
+                }
+
+                // Temporary call api from here....
+                synchronized (this) {
+                    if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
+                        activity.startService(new Intent(activity, SyncTakeOrdersService.class));
+                    }
                 }
             }
         });

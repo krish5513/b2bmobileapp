@@ -100,6 +100,15 @@ public class AgentsAdapter extends BaseAdapter {
             }
         });
 
+        mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPreferences.putString("agentName",mAgentsBeansList1.get(i).getmAgentName());
+                activity.startActivity(new Intent(activity,ViewAgent.class));
+                activity.finish();
+            }
+        });
+
         mHolder.infobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

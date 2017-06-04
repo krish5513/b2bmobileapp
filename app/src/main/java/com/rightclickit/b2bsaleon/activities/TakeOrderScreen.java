@@ -2,6 +2,8 @@ package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -27,6 +29,7 @@ public class TakeOrderScreen extends AppCompatActivity {
     private DBHelper mDBHelper;
 
     public static LinearLayout mPaymentsLayout;
+    public static FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +54,15 @@ public class TakeOrderScreen extends AppCompatActivity {
 
         mTakeOrderListView = (ListView) findViewById(R.id.TakeOrdersList);
         if(mTakeOrderBeansList.size()>0){
-            mTakeOrderAdapter = new TakeOrdersAdapter(this,mTakeOrderBeansList);
+            mTakeOrderAdapter = new TakeOrdersAdapter(this,mTakeOrderBeansList,mTakeOrderListView);
             mTakeOrderListView.setAdapter(mTakeOrderAdapter);
         }
 
         mPaymentsLayout = (LinearLayout) findViewById(R.id.PaymentsLayout);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
+       // fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.save_icon_green));
 
     }
 

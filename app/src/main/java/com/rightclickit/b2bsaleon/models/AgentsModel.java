@@ -190,8 +190,18 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
                     mAgentsBeansList.add(agentsBean);
                 }
-                mDBHelper.insertAgentDetails(mAgentsBeansList);
-                activity.loadAgentsList(mAgentsBeansList);
+                if(mDBHelper.getAgentsTableCount()>0){
+                    mDBHelper.deleteValuesFromAgentsTable();
+                }
+                synchronized (this){
+                    if(mDBHelper.getAgentsTableCount()>0){
+                        mDBHelper.deleteValuesFromAgentsTable();
+                    }
+                    mDBHelper.insertAgentDetails(mAgentsBeansList);
+                }
+                synchronized (this) {
+                    activity.loadAgentsList(mAgentsBeansList);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -214,7 +214,7 @@ public class LoginActivity extends Activity {
                         loadDashboard();
                     }
                 }
-            }; mHandler.postDelayed(ru,2000);
+            }; mHandler.postDelayed(ru,3000);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -224,12 +224,12 @@ public class LoginActivity extends Activity {
     public void loadDashboard() {
         if(mDBHelper.getUserDeviceId(emailId).equals("")){
             synchronized (this){
-                System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
-                if (mDBHelper.getRouteId().length()==0) {
+                System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"+mDBHelper.getRouteId());
+                //if (mDBHelper.getRouteId().length()==0) {
                     if (new NetworkConnectionDetector(LoginActivity.this).isNetworkConnected()) {
                         startService(new Intent(LoginActivity.this, SyncRoutesMasterDetailsService.class));
                     }
-                }
+               // }
             }
             synchronized (this) {
                 System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDD");

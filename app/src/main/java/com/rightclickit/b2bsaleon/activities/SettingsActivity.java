@@ -570,6 +570,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
     private void loadLogout() {
         sharedPreferences.putString("isLogin","false");
+        sharedPreferences.clear();
         Intent loginIntent=new Intent(SettingsActivity.this,LoginActivity.class);
         startActivity(loginIntent);
         finish();

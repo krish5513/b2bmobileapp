@@ -89,7 +89,12 @@ public class AgentsActivity extends AppCompatActivity {
         ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
         System.out.println("ELSE::: "+a.size());
         if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
-            agentsModel.getStakeHoldersList("stakesList");
+            if(mDBHelper.getAgentsTableCount()>0){
+                ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();
+                loadAgentsList(agentsBeanArrayList);
+            }else {
+                agentsModel.getStakeHoldersList("stakesList");
+            }
         }else {
             System.out.println("ELSE::: ");
             ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();

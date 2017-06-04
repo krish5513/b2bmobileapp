@@ -15,6 +15,8 @@ import com.rightclickit.b2bsaleon.util.NetworkManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 /**
  * Created by Sekhar Kuppa on 19-05-2017.
  */
@@ -25,6 +27,7 @@ public class SyncRoutesMasterDetailsService extends Service {
     private DBHelper mDBHelper;
     private String mJsonObj;
     private MMSharedPreferences mSessionManagement;
+    private String mRouteIdIs;
 
     @Override
     public void onCreate() {
@@ -52,74 +55,80 @@ public class SyncRoutesMasterDetailsService extends Service {
         return null;
     }
 
-    private void fetchAndSyncRoutesMasterData(){
+    private void fetchAndSyncRoutesMasterData() {
         try {
             new FetchAndSyncRoutesMasterDetailsAsyncTask().execute();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     /**
      * Class to perform background operations.
      */
     private class FetchAndSyncRoutesMasterDetailsAsyncTask extends AsyncTask<Void, Void, Void> {
-        private String routeId="",routeName = "",regionId = "",regionName="",officeId="",officeName="";
+        private String routeId = "", routeName = "", regionId = "", regionName = "", officeId = "", officeName = "";
 
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                if (mDBHelper.getRouteId().length()>0){
+                if (mDBHelper.getRouteId().length() > 0) {
                     // Clear the db first and then insert..
                     mDBHelper.deleteValuesFromRoutesTable();
                 }
-                String URL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_ROUTES_MASTER_DATA, Constants.ROUTEID_SERVICE);
+                String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_ROUTES_MASTER_DATA, Constants.ROUTEID_SERVICE);
 
                 mJsonObj = new NetworkManager().makeHttpGetConnection(URL);
 
                 JSONArray resultArray = new JSONArray(mJsonObj);
-                System.out.println("The LENGTH IS:: "+ resultArray.length());
-                if (resultArray!=null) {
-                    if(resultArray.length()>0){
-                        for (int i = 0; i<resultArray.length();i++){
+                System.out.println("The LENGTH IS:: " + resultArray.length());
+                if (resultArray != null) {
+                    if (resultArray.length() > 0) {
+                        for (int i = 0; i < resultArray.length(); i++) {
                             JSONObject obj = resultArray.getJSONObject(i);
-                            if(obj.has("_id")){
-                                System.out.println("The ROUTE ID IS:: "+ obj.getString("_id"));
+                            if (obj.has("_id")) {
+                                System.out.println("The ROUTE ID IS:: " + obj.getString("_id"));
+                                System.out.println("The STORED ROUTE ID IS:: " + mSessionManagement.getString("routeId"));
                                 routeId = obj.getString("_id");
-                                if(obj.has("region_id")){
-                                    regionId = obj.getString("region_id");
-                                    if(obj.has("regions")){
-                                        JSONArray regionsArray = obj.getJSONArray("regions");
-                                        for (int j = 0;j<regionsArray.length();j++){
-                                            JSONObject regionObj = regionsArray.getJSONObject(j);
-                                            if(regionId.equals(regionObj.getString("_id"))){
-                                                mSessionManagement.putString("RegionId",regionId);
-                                                regionName = regionObj.getString("name");
+                                if (mDBHelper.getRouteId().equals(routeId)) {
+                                    if (obj.has("region_id")) {
+                                        regionId = obj.getString("region_id");
+                                        if (obj.has("regions")) {
+                                            JSONArray regionsArray = obj.getJSONArray("regions");
+                                            for (int j = 0; j < regionsArray.length(); j++) {
+                                                JSONObject regionObj = regionsArray.getJSONObject(j);
+                                                if (regionId.equals(regionObj.getString("_id"))) {
+                                                    mSessionManagement.putString("RegionId", regionId);
+                                                    regionName = regionObj.getString("name");
+                                                }
                                             }
                                         }
                                     }
-                                }
-                            }
-                            if(obj.has("office_id")){
-                                officeId = obj.getString("office_id");
-                                if(obj.has("offices")){
-                                    JSONArray officesArray = obj.getJSONArray("offices");
-                                    for (int k = 0;k<officesArray.length();k++){
-                                        JSONObject officeObj = officesArray.getJSONObject(k);
-                                        if(officeId.equals(officeObj.getString("_id"))){
-                                            officeName = officeObj.getString("name");
+                                    if (obj.has("office_id")) {
+                                        officeId = obj.getString("office_id");
+                                        if (obj.has("offices")) {
+                                            JSONArray officesArray = obj.getJSONArray("offices");
+                                            for (int k = 0; k < officesArray.length(); k++) {
+                                                JSONObject officeObj = officesArray.getJSONObject(k);
+                                                if (officeId.equals(officeObj.getString("_id"))) {
+                                                    officeName = officeObj.getString("name");
+                                                }
+                                            }
                                         }
+                                    }
+                                    if (obj.has("name")) {
+                                        System.out.println("The ROUTE NAME IS:: " + obj.getString("name"));
+                                        routeName = obj.getString("name");
+                                    }
+                                    synchronized (this) {
+                                        mDBHelper.insertRoutesDetails(routeId, routeName, regionName, officeName);
                                     }
                                 }
                             }
-                            if(obj.has("name")){
-                                System.out.println("The ROUTE NAME IS:: "+ obj.getString("name"));
-                                routeName = obj.getString("name");
-                            }
-                            mDBHelper.insertRoutesDetails(routeId,routeName,regionName,officeName);
                         }
                     }
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

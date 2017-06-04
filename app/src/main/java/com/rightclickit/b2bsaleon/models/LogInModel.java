@@ -117,6 +117,18 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                 if(logInResponse.has("longitude")){
                     longitude = logInResponse.getString("longitude");
                 }
+                if (logInResponse.has("created_by")){
+                    mPreferences.putString("createdBy",logInResponse.getString("created_by"));
+                }
+                if (logInResponse.has("created_on")){
+                    mPreferences.putString("createdOn",logInResponse.getString("created_on"));
+                }
+                if (logInResponse.has("updated_on")){
+                    mPreferences.putString("updatedOn",logInResponse.getString("updated_on"));
+                }
+                if (logInResponse.has("updated_by")){
+                    mPreferences.putString("updatedBy",logInResponse.getString("updated_by"));
+                }
 
                 if(accessDevice.equals("YES")) {
                     if(mDBHelper.getUserDetailsTableCount()>0) {
