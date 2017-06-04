@@ -1,54 +1,62 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
+import com.rightclickit.b2bsaleon.adapters.TakeOrdersAdapter;
+import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
+import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
-public class AgentsInfoActivity extends AppCompatActivity {
-    EditText firstname,lastname,mobile,address;
+import java.util.ArrayList;
+
+public class TakeOrderScreen extends AppCompatActivity {
+    private MMSharedPreferences mPreference;
+    private ListView mTakeOrderListView;
+    private TakeOrdersAdapter mTakeOrderAdapter;
+    private ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
+    private DBHelper mDBHelper;
+
+    public static LinearLayout mPaymentsLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agents_info);
+        setContentView(R.layout.agents_take_order);
+        mPreference = new MMSharedPreferences(this);
+        mDBHelper = new DBHelper(this);
 
-        this.getSupportActionBar().setTitle("customerName");
-        this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
-        // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        this.getSupportActionBar().setTitle(mPreference.getString("agentName"));
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
-
 
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        firstname=(EditText)findViewById(R.id.first_name);
-        lastname=(EditText)findViewById(R.id.last_name) ;
-        mobile=(EditText)findViewById(R.id.phoneNo);
-        address=(EditText)findViewById(R.id.address);
-        Bundle bundle = getIntent().getExtras();
+        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable();
+        System.out.println("The TO LIST IS::: "+ mTakeOrderBeansList.size());
 
-        //Extract the data…
-        String str_fName = bundle.getString("FIRSTNAME");
-        String str_lName = bundle.getString("LASTNAME");
-        String str_mobile = bundle.getString("MOBILE");
-        String str_address = bundle.getString("ADDRESS");
+        mTakeOrderListView = (ListView) findViewById(R.id.TakeOrdersList);
+        if(mTakeOrderBeansList.size()>0){
+            mTakeOrderAdapter = new TakeOrdersAdapter(this,mTakeOrderBeansList);
+            mTakeOrderListView.setAdapter(mTakeOrderAdapter);
+        }
 
+        mPaymentsLayout = (LinearLayout) findViewById(R.id.PaymentsLayout);
 
-        firstname.setText(str_fName);
-        lastname.setText(str_lName);
-        mobile.setText(str_mobile);
-        address.setText(str_address);
     }
 
     @Override
@@ -88,10 +96,15 @@ public class AgentsInfoActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, AgentsActivity.class);
+        Intent intent = new Intent(this, DashboardActivity.class);
         startActivity(intent);
         finish();
     }
-}
 
+
+
+
+
+
+}
 

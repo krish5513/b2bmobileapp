@@ -93,9 +93,36 @@ public class ProductsAdapter extends BaseAdapter {
         }
         holder.productTitle.setText(mProductsBeansList1.get(position).getProductTitle());
         holder.materialMOQUnit.setText(mProductsBeansList1.get(position).getProductMOQ());
-        holder.materialAgentUnit.setText(mProductsBeansList1.get(position).getProductAgentPrice());
-        holder.materialRetailerUnit.setText(mProductsBeansList1.get(position).getProductRetailerPrice());
-        holder.materialConsumerUnit.setText(mProductsBeansList1.get(position).getProductConsumerPrice());
+
+        if(mProductsBeansList1.get(position).getProductAgentPrice()!=null) {
+            if (mProductsBeansList1.get(position).getProductAgentPrice().length() == 0) {
+                holder.materialAgentUnit.setText("-");
+            } else {
+                holder.materialAgentUnit.setText(mProductsBeansList1.get(position).getProductAgentPrice());
+            }
+        }else {
+            holder.materialAgentUnit.setText("-");
+        }
+
+        if(mProductsBeansList1.get(position).getProductRetailerPrice()!=null) {
+            if (mProductsBeansList1.get(position).getProductRetailerPrice().length() == 0) {
+                holder.materialRetailerUnit.setText("-");
+            } else {
+                holder.materialRetailerUnit.setText(mProductsBeansList1.get(position).getProductRetailerPrice());
+            }
+        }else {
+            holder.materialRetailerUnit.setText("-");
+        }
+
+        if(mProductsBeansList1.get(position).getProductConsumerPrice()!=null) {
+            if (mProductsBeansList1.get(position).getProductConsumerPrice().length() == 0) {
+                holder.materialConsumerUnit.setText("-");
+            } else {
+                holder.materialConsumerUnit.setText(mProductsBeansList1.get(position).getProductConsumerPrice());
+            }
+        }else {
+            holder.materialConsumerUnit.setText("-");
+        }
         //System.out.println("URL===== "+mProductsBeansList1.get(position).getProductImageUrl());
         if(mProductsBeansList1.get(position).getProductImageUrl()!=null) {
             if (!mProductsBeansList1.get(position).getProductImageUrl().equals("")) {

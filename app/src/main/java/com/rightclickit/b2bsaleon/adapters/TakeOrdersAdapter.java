@@ -1,0 +1,360 @@
+package com.rightclickit.b2bsaleon.adapters;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.activities.Products_Activity;
+import com.rightclickit.b2bsaleon.activities.TakeOrderScreen;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
+import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+
+import org.w3c.dom.Text;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Created by Sekhar Kuppa
+ */
+
+public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.OnDateSetListener {
+
+    LayoutInflater mInflater;
+    private Activity activity;
+    ArrayList<TakeOrderBean> mTakeOrderBeansList1;
+    ArrayList<TakeOrderBean> temptoList = new ArrayList<TakeOrderBean>();
+    private String currentDate;
+    private String fromStr;
+    private String fromDStr;
+    private EditText et;
+    private MyViewHolder holder;
+    List<String> list1 = new ArrayList<String>();
+    private DBHelper mDBHelper;
+    private MMSharedPreferences mPreferences;
+
+    public TakeOrdersAdapter(TakeOrderScreen productsActivity, ArrayList<TakeOrderBean> mTakeOrderBeansList) {
+        this.activity = productsActivity;
+        this.mTakeOrderBeansList1 = mTakeOrderBeansList;
+        this.mInflater = LayoutInflater.from(activity);
+        this.mDBHelper = new DBHelper(activity);
+        this.mPreferences = new MMSharedPreferences(activity);
+        try {
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            currentDate = df.format(cal.getTime());
+            fromDStr = currentDate;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        list1.add("One Time");
+        list1.add("Daily");
+        list1.add("Weekly");
+        list1.add("Monthly");
+    }
+
+
+    @Override
+    public int getCount() {
+        return mTakeOrderBeansList1.size();
+    }
+
+    @Override
+    public Object getItem(int i) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        if (convertView == null) {
+
+            holder = new MyViewHolder();
+            convertView = mInflater.inflate(R.layout.customer_take_order_customlayout, null);
+
+            holder.productName = (TextView) convertView.findViewById(R.id.productName);
+            holder.fromDate = (EditText) convertView.findViewById(R.id.from_date);
+            holder.toDate = (EditText) convertView.findViewById(R.id.to_date);
+            holder.orderTypeSpinner = (Spinner) convertView.findViewById(R.id.spinner1);
+            holder.productQuantity = (EditText) convertView.findViewById(R.id.productQt);
+            holder.productQuantityIncrement = (ImageButton) convertView.findViewById(R.id.productQtInc);
+            holder.productQuantityDecrement = (ImageButton) convertView.findViewById(R.id.productQtDec);
+
+            convertView.setTag(holder);
+        } else {
+            holder = (MyViewHolder) convertView.getTag();
+        }
+
+        holder.productName.setText(mTakeOrderBeansList1.get(position).getmProductTitle());
+
+        if(mTakeOrderBeansList1.get(position).getmProductFromDate()!=null){
+            if(mTakeOrderBeansList1.get(position).getmProductFromDate().length()>0){
+                holder.fromDate.setText(mTakeOrderBeansList1.get(position).getmProductFromDate());
+            }else {
+                holder.fromDate.setText(currentDate);
+            }
+        }else {
+            holder.fromDate.setText(currentDate);
+        }
+
+        if(mTakeOrderBeansList1.get(position).getmProductToDate()!=null){
+            if(mTakeOrderBeansList1.get(position).getmProductToDate().length()>0){
+                holder.toDate.setText(mTakeOrderBeansList1.get(position).getmProductToDate());
+            }else {
+                holder.toDate.setText(currentDate);
+            }
+        }else {
+            holder.toDate.setText(currentDate);
+        }
+
+        holder.fromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et = holder.fromDate;
+                fromStr = "from";
+                datePickerMethod();
+            }
+        });
+
+        holder.toDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et = holder.toDate;
+                fromStr = "to";
+                datePickerMethod();
+            }
+        });
+
+//        holder.productQuantity.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if(s.equals("")||s.equals("0")||s.equals("0.0")||s.equals("0.00")||s.equals("0.000")){
+//
+//                }
+//                else{
+//                    try{
+//                        //String presentValStr = holder.productQuantity.getText().toString();
+//                        Double presentIntVal = Double.parseDouble(s.toString());
+//                        holder.productQuantity.setText(String.format("%.3f",presentIntVal));
+//                    }
+//                    catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        });
+
+
+        holder.productQuantityIncrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String presentValStr = holder.productQuantity.getText().toString();
+                    Double presentIntVal = Double.parseDouble(presentValStr);
+                    presentIntVal++;
+                    holder.productQuantity.setText(String.format("%.3f",presentIntVal));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        holder.productQuantityDecrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String presentValStr = holder.productQuantity.getText().toString();
+                    Double presentIntVal = Double.parseDouble(presentValStr);
+                    if(presentIntVal>0){
+                        presentIntVal--;
+                        holder.productQuantity.setText(String.format("%.3f",presentIntVal));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        ArrayAdapter<String> dataAdapter =new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item,list1);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        holder.orderTypeSpinner.setAdapter(dataAdapter);
+        holder.orderTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                String materialOrderType = holder.orderTypeSpinner.getSelectedItem().toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+
+
+        TakeOrderScreen.mPaymentsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(temptoList.size()>0){
+                    temptoList.clear();
+                }
+                for (int d = 0; d<mTakeOrderBeansList1.size();d++){
+                    System.out.println(" FUCK :::: "+ mTakeOrderBeansList1.get(d).getmProductTitle());
+                    System.out.println(" FUCK 1:::: "+ holder.fromDate.getText().toString().trim());
+                    System.out.println(" FUCK 2:::: "+ holder.toDate.getText().toString().trim());
+                    System.out.println(" FUCK 3:::: "+ holder.orderTypeSpinner.getSelectedItem().toString());
+                    System.out.println(" FUCK 4:::: "+ holder.productQuantity.getText().toString().trim());
+
+                    TakeOrderBean tb = new TakeOrderBean();
+
+                    tb.setmRouteId(mPreferences.getString("routeId"));
+                    tb.setmProductTitle(mTakeOrderBeansList1.get(d).getmProductTitle());
+                    tb.setmProductFromDate(holder.fromDate.getText().toString().trim());
+                    tb.setmProductToDate(holder.toDate.getText().toString().trim());
+                    tb.setmProductOrderType(holder.orderTypeSpinner.getSelectedItem().toString());
+                    tb.setmProductQuantity(holder.productQuantity.getText().toString().trim());
+
+                    temptoList.add(tb);
+                }
+                if(temptoList.size()>0){
+                    mDBHelper.updateTakeOrderDetails(temptoList);
+                }
+            }
+        });
+
+        return convertView;
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String date = changeDateToString(year, month + 1, dayOfMonth);
+        //   textview.setError(null);
+        Log.e("date dfd",date);
+        if(fromStr.equals("from")){
+            fromDStr = date;
+            et.setText(date);
+        }
+        else if(fromStr.equals("to")){
+            et.setText(date);
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Date pickerdate = null;
+            Date systemdate  = null;
+            try{
+                pickerdate = formatter.parse(et.getText().toString().trim());
+                Log.e("pick",pickerdate+"");
+                systemdate = formatter.parse(fromDStr);
+            }catch (ParseException e){
+                e.printStackTrace();
+            }
+            if(pickerdate.after(systemdate)){  //greater 0
+
+            }else if(pickerdate.before(systemdate)){
+                new AlertDialog.Builder(activity)
+                        .setTitle("Alert!")
+                        .setMessage("To date should be greater than From date")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // continue with delete
+                                dialog.dismiss();
+                                //showDialog(DATE_DIALOG_ID);
+
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();//less0
+                //  Toast.makeText(context,"T must be greater than from",Toast.LENGTH_LONG).show();
+                //alert less date
+            }else if(systemdate.equals(pickerdate)){ //equal
+
+            }
+        }
+    }
+
+    private class MyViewHolder {
+        public TextView productName;
+        public EditText fromDate;
+        public EditText toDate;
+        public Spinner orderTypeSpinner;
+        public EditText productQuantity;
+        public ImageButton productQuantityIncrement;
+        public ImageButton productQuantityDecrement;
+    }
+
+    private void datePickerMethod(){
+        Calendar now = Calendar.getInstance();
+        DatePickerDialog dpd = new DatePickerDialog(
+                activity,this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH)
+        );
+        dpd.getDatePicker().setMinDate(now.getTimeInMillis());
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 365);
+//        int yellow = Color.parseColor("#dfba69");
+//        dpd.getDatePicker().setAccentColor(yellow);
+        dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        dpd.show();
+    }
+
+    public String changeDateToString(int year, int month, int day) {
+        String fullDate;
+        String newMonth;
+        String newDay;
+        if (day < 10) {
+            newDay = "0" + day;
+        } else {
+            newDay = String.valueOf(day);
+        }
+        if (month < 10) {
+            newMonth = "0" + month;
+        } else {
+            newMonth = String.valueOf(month);
+        }
+        fullDate = newDay + "/" + newMonth + "/" + year;
+
+        return fullDate;
+    }
+}

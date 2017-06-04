@@ -328,7 +328,7 @@
                     android:layout_marginTop="10dp">
 
                     <EditText
-                        android:id="@+id/business_name"
+                        android:id="@+id/first_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.20"
@@ -348,7 +348,7 @@
                     android:layout_marginTop="10dp">
 
                     <EditText
-                        android:id="@+id/business_name"
+                        android:id="@+id/last_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.20"
@@ -368,7 +368,7 @@
                     android:layout_marginTop="10dp">
 
                     <EditText
-                        android:id="@+id/business_name"
+                        android:id="@+id/phoneNo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.20"
@@ -388,7 +388,7 @@
                     android:layout_marginTop="10dp">
 
                     <EditText
-                        android:id="@+id/business_name"
+                        android:id="@+id/address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.20"

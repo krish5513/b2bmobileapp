@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -41,7 +43,7 @@ public class AgentsActivity extends AppCompatActivity {
     private LinearLayout mCustomersLayout;
     private LinearLayout mProductsLayout;
     private LinearLayout mTDCLayout;
-
+    FloatingActionButton fab;
     private ListView mAgentsList;
     private AgentsAdapter mAgentsAdapter;
 
@@ -62,6 +64,19 @@ public class AgentsActivity extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
+        fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.customer60));
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getApplicationContext(),"Clicked Customers Add",Toast.LENGTH_SHORT).show();
+                Intent i =new Intent(AgentsActivity.this,Agents_AddActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
 
         applicationContext = getApplicationContext();

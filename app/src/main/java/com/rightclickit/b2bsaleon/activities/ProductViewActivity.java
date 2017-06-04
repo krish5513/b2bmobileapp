@@ -6,21 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 
-public class AgentsInfoActivity extends AppCompatActivity {
-    EditText firstname,lastname,mobile,address;
+public class ProductViewActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agents_info);
+        setContentView(R.layout.activity_product_view);
 
-        this.getSupportActionBar().setTitle("customerName");
+        this.getSupportActionBar().setTitle("PRODUCTS VIEW");
         this.getSupportActionBar().setSubtitle(null);
-        this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
+        this.getSupportActionBar().setLogo(R.drawable.ic_shopping_cart_white_24dp);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -32,24 +30,11 @@ public class AgentsInfoActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        firstname=(EditText)findViewById(R.id.first_name);
-        lastname=(EditText)findViewById(R.id.last_name) ;
-        mobile=(EditText)findViewById(R.id.phoneNo);
-        address=(EditText)findViewById(R.id.address);
-        Bundle bundle = getIntent().getExtras();
-
-        //Extract the data…
-        String str_fName = bundle.getString("FIRSTNAME");
-        String str_lName = bundle.getString("LASTNAME");
-        String str_mobile = bundle.getString("MOBILE");
-        String str_address = bundle.getString("ADDRESS");
 
 
-        firstname.setText(str_fName);
-        lastname.setText(str_lName);
-        mobile.setText(str_mobile);
-        address.setText(str_address);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -80,7 +65,7 @@ public class AgentsInfoActivity extends AppCompatActivity {
         menu.findItem(R.id.notifications).setVisible(false);
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.action_search).setVisible(false);
 
 
         return super.onPrepareOptionsMenu(menu);
@@ -88,10 +73,9 @@ public class AgentsInfoActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, AgentsActivity.class);
+        Intent intent = new Intent(this, Products_Activity.class);
         startActivity(intent);
         finish();
     }
-}
-
+    }
 

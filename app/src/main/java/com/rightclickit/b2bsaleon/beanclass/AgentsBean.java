@@ -10,6 +10,25 @@ public class AgentsBean {
     private String mLatitude;
     private String mLongitude;
     private String mAgentName;
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    private String firstname;
+    private String lastname;
     private String mObAmount;
     private String mOrderValue;
     private String mTotalAmount;
@@ -17,6 +36,25 @@ public class AgentsBean {
     private String mAgentPic;
     private String mAgentCode;
     private String mStatus;
+
+    public String getMphoneNO() {
+        return mphoneNO;
+    }
+
+    public void setMphoneNO(String mphoneNO) {
+        this.mphoneNO = mphoneNO;
+    }
+
+    public String getMaddress() {
+        return maddress;
+    }
+
+    public void setMaddress(String maddress) {
+        this.maddress = maddress;
+    }
+
+    private String mphoneNO;
+    private String maddress;
 
     public String getmAgentId() {
         return mAgentId;

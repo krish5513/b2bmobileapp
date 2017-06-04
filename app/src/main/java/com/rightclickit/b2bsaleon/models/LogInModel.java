@@ -122,9 +122,13 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                     if(mDBHelper.getUserDetailsTableCount()>0) {
                         mDBHelper.deleteValuesFromUserDetailsTable();
                     }
-                    mDBHelper.insertUserDetails(id, userCode, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp,routeArrayListString,
-                            "","","",latitude,longitude,password);
-                    activity.logInSuccess();
+                    synchronized (this) {
+                        mDBHelper.insertUserDetails(id, userCode, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp, routeArrayListString,
+                                "", "", "", latitude, longitude, password);
+                    }
+                    synchronized (this) {
+                        activity.logInSuccess();
+                    }
                 }else {
                     displayNoNetworkError(context);
                 }

@@ -6,6 +6,7 @@ import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -35,6 +36,7 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
     private ArrayList<String> regionIdsList = new ArrayList<String>();
     private JSONArray routesArray;
     private ArrayList<ProductsBean> mProductsBeansList = new ArrayList<ProductsBean>();
+    private ArrayList<TakeOrderBean> mTakeOrderProductsBeansList = new ArrayList<TakeOrderBean>();
 
     public ProductsModel(Context context, Products_Activity activity) {
         this.context = context;
@@ -45,12 +47,18 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
 
     public void getProductsList(String s) {
         try {
+            if(mProductsBeansList.size()>0){
+                mProductsBeansList.clear();
+            }
+            if (mTakeOrderProductsBeansList.size()>0){
+                mTakeOrderProductsBeansList.clear();
+            }
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String productsURL = String.format("%s%s%s",  Constants.MAIN_URL, Constants.PORT_PRODUCTSLIST,Constants.PRODUCTSLIST_SERVICE);
                 JSONObject params = new JSONObject();
                 JSONArray array = new JSONArray();
                 array.put(mPreferences.getString("RegionId"));
-              //  array.put("591d7844dd3960135dbf02cd"); // Temoparary hard coded this region id...
+                //  array.put("591d7844dd3960135dbf02cd"); // Temoparary hard coded this region id...
                 params.put("region_ids", array);
                 System.out.println("PRO URL::: "+ productsURL);
                 System.out.println("PRO DATA::: "+ params.toString());
@@ -75,11 +83,15 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
                     JSONObject resObj = respArray.getJSONObject(j);
 
                     ProductsBean productsBean = new ProductsBean();
+                    TakeOrderBean takeOrderBean = new TakeOrderBean();
+                    takeOrderBean.setmRouteId(mPreferences.getString("routeId"));
                     if(resObj.has("_id")){
                         productsBean.setProductId(resObj.getString("_id"));
+                        takeOrderBean.setmProductId(resObj.getString("_id"));
                     }
                     if(resObj.has("name")){
                         productsBean.setProductTitle(resObj.getString("name"));
+                        takeOrderBean.setmProductTitle(resObj.getString("name"));
                     }
                     if(resObj.has("code")){
                         productsBean.setProductCode(resObj.getString("code"));
@@ -131,10 +143,18 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
                     }
 
                     mProductsBeansList.add(productsBean);
+                    mTakeOrderProductsBeansList.add(takeOrderBean);
                 }
             }
-            mDBHelper.insertProductDetails(mProductsBeansList);
-            activity.loadProductsList(mProductsBeansList);
+            synchronized (this){
+                mDBHelper.insertProductDetails(mProductsBeansList);
+            }
+            synchronized (this){
+                mDBHelper.insertTakeOrderProductDetails(mTakeOrderProductsBeansList);
+            }
+            synchronized (this){
+                activity.loadProductsList(mProductsBeansList);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }

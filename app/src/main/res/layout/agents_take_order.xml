@@ -1,0 +1,27 @@
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent">
+     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_gravity="end|bottom" android:background="@color/layout_background" android:id="@+id/BottomOptionsLayout" android:layout_alignParentBottom="true">
+    <View android:layout_width="match_parent" android:layout_height="0.1dp" android:background="@color/colorPrimary" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom" android:background="@color/white" android:gravity="end|center" android:orientation="horizontal">
+    <HorizontalScrollView android:id="@+id/hsv" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_weight="0" android:fillViewport="true" android:measureAllChildren="false" android:scrollbars="none">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="60dp" android:orientation="horizontal">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="50dp" android:layout_weight="0.25" android:layout_gravity="center" android:gravity="center">
+    <TextView android:id="@+id/tv_sales" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:drawableTop="@drawable/sales_list_green" android:text="@string/tpcorders_btm" android:textColor="@color/colorPrimary" android:textSize="12sp" />
+</LinearLayout>
+    - <LinearLayout android:layout_width="match_parent" android:layout_height="50dp" android:layout_weight="0.25" android:layout_gravity="center" android:gravity="center">
+    <TextView android:id="@+id/tv_deliveries" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:drawableTop="@drawable/delivery_green" android:text="Deliveries" android:textColor="@color/colorPrimary" android:textSize="12sp" />
+</LinearLayout>
+    - <LinearLayout android:layout_width="match_parent" android:layout_height="50dp" android:layout_weight="0.25" android:layout_gravity="center" android:gravity="center">
+    <TextView android:id="@+id/tv_returns" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:drawableTop="@drawable/ic_reply_green_24" android:text="Returns" android:textColor="@color/colorPrimary" android:textSize="12sp" />
+</LinearLayout>
+    - <LinearLayout android:id="@+id/PaymentsLayout" android:layout_width="match_parent" android:layout_height="50dp" android:layout_weight="0.25" android:layout_gravity="center" android:gravity="center">
+    <TextView android:id="@+id/tv_payments" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:drawableTop="@drawable/payments_green" android:text="Payments" android:textColor="@color/colorPrimary" android:textSize="12sp" />
+</LinearLayout>
+    - <LinearLayout android:layout_width="match_parent" android:layout_height="50dp" android:layout_weight="0.25" android:layout_gravity="center" android:gravity="center">
+    <TextView android:id="@+id/tv_orders" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:drawableTop="@drawable/pr_icon_orange" android:text="@string/orders_btm" android:textColor="@color/colorAccent" android:textSize="12sp" />
+</LinearLayout>
+</LinearLayout>
+</HorizontalScrollView>
+</LinearLayout>
+</LinearLayout>
+    <ListView android:id="@+id/TakeOrdersList" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_above="@id/BottomOptionsLayout" />
+</RelativeLayout>

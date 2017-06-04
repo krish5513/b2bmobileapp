@@ -3,6 +3,7 @@ package com.rightclickit.b2bsaleon.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
+import com.rightclickit.b2bsaleon.activities.ViewAgent;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
 
@@ -30,6 +33,7 @@ public class AgentsAdapter extends BaseAdapter {
     Context ctxt;
     ArrayList<AgentsBean> mAgentsBeansList1;
     private ImageLoader mImageLoader;
+    private MMSharedPreferences mPreferences;
 
     public AgentsAdapter(Context ctxt,AgentsActivity agentsActivity, ArrayList<AgentsBean> mAgentsBeansList) {
         this.ctxt=ctxt;
@@ -37,6 +41,7 @@ public class AgentsAdapter extends BaseAdapter {
         this.mAgentsBeansList1 = mAgentsBeansList;
         this.mImageLoader = new ImageLoader(agentsActivity);
         this.mInflater = LayoutInflater.from(activity);
+        this.mPreferences = new MMSharedPreferences(activity);
     }
 
     @Override
@@ -55,7 +60,7 @@ public class AgentsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         ViewHolder mHolder = null;
         if(view == null){
             mHolder = new ViewHolder();
@@ -90,9 +95,28 @@ public class AgentsAdapter extends BaseAdapter {
         mHolder.infobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ctxt.startActivity(new Intent(ctxt,AgentsInfoActivity.class));
+                activity.startActivity(new Intent(activity,AgentsInfoActivity.class));
+                activity.finish();
             }
         });
+
+        mHolder.infobtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(ctxt,AgentsInfoActivity.class);
+                Bundle bundle = new Bundle();
+                //Add your data from getFactualResults method to bundle
+                bundle.putString("FIRSTNAME", mAgentsBeansList1.get(i).getFirstname());
+                bundle.putString("LASTNAME", mAgentsBeansList1.get(i).getLastname());
+                bundle.putString("MOBILE", mAgentsBeansList1.get(i).getMphoneNO());
+                bundle.putString("ADDRESS", mAgentsBeansList1.get(i).getMaddress());
+                //Add the bundle to the intent
+                intent.putExtras(bundle);
+
+                ctxt.startActivity(intent);
+            }
+        });
+
 
         return view;
     }

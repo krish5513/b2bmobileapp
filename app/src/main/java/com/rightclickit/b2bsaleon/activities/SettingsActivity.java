@@ -410,6 +410,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
             JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
             JSONArray routesArray = routesJob.getJSONArray("routeArray");
+            sharedPreferences.putString("routeId",routesArray.get(0).toString());
             for (int l = 0;l<routesArray.length();l++){
                 System.out.println("The Route Id IS::: "+ routesArray.get(l).toString());
                 List<String> routesDataList = mDBHelper.getRouteDataByRouteId(routesArray.get(l).toString());

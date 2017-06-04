@@ -1,6 +1,7 @@
 package com.rightclickit.b2bsaleon.models;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.LoginActivity;
@@ -117,6 +118,8 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                     if(jsonObject.has("_id")) {
                         stakeIdsList.add(jsonObject.getString("_id"));
                     }
+
+
                 }
                 //JSONObject logInResponse = new JSONObject(response);
                 getAgentsList("agents");
@@ -145,6 +148,31 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                     }
                     if (jo.has("first_name") || jo.has("last_name")){
                         agentsBean.setmAgentName(jo.getString("first_name") + jo.getString("last_name"));
+                    }
+                    if (jo.has("first_name") ){
+                        agentsBean.setFirstname(jo.getString("first_name") );
+                    }
+                    if (jo.has("last_name")){
+                        agentsBean.setLastname( jo.getString("last_name"));
+                    }
+                    if (jo.has("phone")){
+                        agentsBean.setMphoneNO( jo.getString("phone"));
+                    }
+                    if (jo.has("shop_address")){
+                        agentsBean.setMaddress( jo.getString("shop_address"));
+                    }
+                    if(jo.has("shopdata")){
+                        JSONArray priceJsonArray = jo.getJSONArray("shopdata");
+                        int length= priceJsonArray.length();
+                        if (length>0){
+                            for (int s = 0;s<length;s++){
+                                JSONObject priceObj = priceJsonArray.getJSONObject(s);
+                                if(priceObj.has("shop_address")){
+                                    // Agent price
+                                   agentsBean.setMaddress(priceObj.getString("shop_address"));
+                                }
+                            }
+                        }
                     }
                     agentsBean.setmObAmount("");
                     agentsBean.setmOrderValue("");
