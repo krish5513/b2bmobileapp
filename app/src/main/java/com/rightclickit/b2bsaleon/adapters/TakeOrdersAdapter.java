@@ -148,6 +148,50 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             holder.toDate.setText(currentDate);
         }
 
+        if(mTakeOrderBeansList1.get(position).getmProductQuantity()!=null){
+            if(mTakeOrderBeansList1.get(position).getmProductQuantity().length()>0){
+                holder.productQuantity.setText(mTakeOrderBeansList1.get(position).getmProductQuantity());
+            }else {
+                holder.productQuantity.setText("0000.000");
+            }
+        }else {
+            holder.productQuantity.setText("0000.000");
+        }
+
+        ArrayAdapter<String> dataAdapter =new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item,list1);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        holder.orderTypeSpinner.setAdapter(dataAdapter);
+        holder.orderTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                String materialOrderType = holder.orderTypeSpinner.getSelectedItem().toString();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        });
+
+        if(mTakeOrderBeansList1.get(position).getmProductOrderType()!=null){
+            if(mTakeOrderBeansList1.get(position).getmProductOrderType().length()>0){
+                if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("1")){
+                    holder.orderTypeSpinner.setSelection(0);
+                }else if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("2")){
+                    holder.orderTypeSpinner.setSelection(1);
+                }else if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("3")){
+                    holder.orderTypeSpinner.setSelection(2);
+                }else if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("4")){
+                    holder.orderTypeSpinner.setSelection(3);
+                }else {
+                    holder.orderTypeSpinner.setSelection(0);
+                }
+            }else {
+                holder.orderTypeSpinner.setSelection(0);
+            }
+        }else {
+            holder.orderTypeSpinner.setSelection(0);
+        }
+
         holder.fromDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,20 +248,6 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             }
         });
 
-        ArrayAdapter<String> dataAdapter =new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item,list1);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        holder.orderTypeSpinner.setAdapter(dataAdapter);
-        holder.orderTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                String materialOrderType = holder.orderTypeSpinner.getSelectedItem().toString();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-
-            }
-        });
-
 
         TakeOrderScreen.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,7 +257,9 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     temptoList.clear();
                 }
                 System.out.println("LIST COUNT::: "+ mList.getCount());
-                for (int d = 0; d< mList.getCount();d++){
+                System.out.println("LIST COUNT::: "+ mList.getLastVisiblePosition());
+                for (int d = 0; d< mList.getLastVisiblePosition();d++){
+                    try {
                     View childView = mList.getChildAt(d);
                     TextView tv = (TextView) childView.findViewById(R.id.productName);
                     EditText fromDate = (EditText) childView.findViewById(R.id.from_date);
@@ -239,10 +271,12 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     System.out.println("TO IS ::: "+ toDate.getText().toString().trim());
                     System.out.println("SPINNER IS ::: "+ sp.getSelectedItem().toString());
                     System.out.println("QUANTITY IS ::: "+ quanity.getText().toString().trim());
+                    System.out.println("PROD ID IS ::: "+ mTakeOrderBeansList1.get(d).getmProductId());
 
                     TakeOrderBean tb = new TakeOrderBean();
 
                     tb.setmRouteId(mPreferences.getString("routeId"));
+                    tb.setmProductId(mTakeOrderBeansList1.get(d).getmProductId());
                     tb.setmProductTitle(tv.getText().toString().trim());
                     tb.setmProductFromDate(fromDate.getText().toString().trim());
                     tb.setmProductToDate(toDate.getText().toString().trim());
@@ -260,15 +294,21 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     tb.setmProductQuantity(quanity.getText().toString().trim());
 
                     temptoList.add(tb);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
+
                 synchronized (this) {
                     if (temptoList.size() > 0) {
+                        System.out.println("DB called");
                         mDBHelper.updateTakeOrderDetails(temptoList);
                     }
                 }
 
                 // Temporary call api from here....
                 synchronized (this) {
+                    System.out.println("SERVICE called");
                     if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
                         activity.startService(new Intent(activity, SyncTakeOrdersService.class));
                     }

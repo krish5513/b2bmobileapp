@@ -56,6 +56,11 @@ public class TakeOrderScreen extends AppCompatActivity {
 
         mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable();
         System.out.println("The TO LIST IS::: "+ mTakeOrderBeansList.size());
+        for (int k = 0; k<mTakeOrderBeansList.size();k++){
+            System.out.println("AAAA:: "+mTakeOrderBeansList.get(k).getmProductFromDate());
+            System.out.println("BBBBB:: "+mTakeOrderBeansList.get(k).getmProductQuantity());
+            System.out.println("CCCC:: "+mTakeOrderBeansList.get(k).getmProductOrderType());
+        }
 
         mTakeOrderListView = (ListView) findViewById(R.id.TakeOrdersList);
         if(mTakeOrderBeansList.size()>0){

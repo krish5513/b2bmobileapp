@@ -963,6 +963,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 // update row
                 effectedRows = db.update(TABLE_TO_PRODUCTS, values, KEY_TO_PRODUCT_ID + " = ?", new String[]{String.valueOf(takeOrderBeanArrayList.get(b).getmProductId())});
                 values.clear();
+                System.out.println("Updated!!!!!!");
             }
         } catch (Exception e){
             e.printStackTrace();
