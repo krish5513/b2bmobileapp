@@ -6,10 +6,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 import com.rightclickit.b2bsaleon.R;
 
 public class ProductViewActivity extends AppCompatActivity {
+    EditText code;
+    EditText description;
+    EditText returnable;
+    EditText moq;
+    EditText agent;
+    EditText retailer;
+    EditText consumer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +39,33 @@ public class ProductViewActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+        code=(EditText)findViewById(R.id.material_code) ;
+        description=(EditText)findViewById(R.id.material_disc) ;
+        returnable=(EditText)findViewById(R.id.Returnable) ;
+        moq=(EditText)findViewById(R.id.MOQ) ;
+        agent=(EditText)findViewById(R.id.agent) ;
+        retailer=(EditText)findViewById(R.id.retailer) ;
+        consumer=(EditText)findViewById(R.id.Consumer) ;
 
+        Bundle bundle = getIntent().getExtras();
+
+        //Extract the data…
+       /* String str_code= bundle.getString("CODE");
+        String str_des = bundle.getString("DESCRIPTION");
+        String str_returnable = bundle.getString("RETURNABLE");
+        String str_moq = bundle.getString("MOQ");
+        String str_agent = bundle.getString("AGENT");
+        String str_retailer = bundle.getString("RETAILER");
+        String str_consumer = bundle.getString("CONSUMER");
+
+
+        code.setText(str_code);
+        description.setText(str_des);
+        returnable.setText(str_returnable);
+        moq.setText(str_moq);
+        agent.setText(str_agent);
+        retailer.setText(str_retailer);
+        consumer.setText(str_consumer);*/
 
     }
 

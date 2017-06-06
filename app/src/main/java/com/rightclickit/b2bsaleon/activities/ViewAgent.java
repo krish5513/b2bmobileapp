@@ -20,6 +20,10 @@ import java.util.ArrayList;
 public class ViewAgent extends AppCompatActivity {
     private MMSharedPreferences mPreference;
     private LinearLayout mTakeOrdersLayout;
+    private LinearLayout mDeliveriesLayout;
+    private LinearLayout mReturnsLayout;
+    private LinearLayout mPaymentsLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,35 @@ public class ViewAgent extends AppCompatActivity {
             }
         });
 
+        mDeliveriesLayout = (LinearLayout) findViewById(R.id.DeliveriesLayout);
+        mDeliveriesLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Clicked on deliveries",Toast.LENGTH_SHORT).show();
+               /* startActivity(new Intent(ViewAgent.this,TakeOrderScreen.class));
+                finish();*/
+            }
+        });
+        mReturnsLayout = (LinearLayout) findViewById(R.id.ReturnsLayout);
+        mReturnsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Clicked on Returns",Toast.LENGTH_SHORT).show();
+               /* mPreference.putString("agentName",mPreference.getString("agentName"));
+                startActivity(new Intent(ViewAgent.this,TakeOrderScreen.class));
+                finish();*/
+            }
+        });
+        mPaymentsLayout = (LinearLayout) findViewById(R.id.PaymentsLayout);
+        mPaymentsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Clicked on Payments",Toast.LENGTH_SHORT).show();
+                /*mPreference.putString("agentName",mPreference.getString("agentName"));
+                startActivity(new Intent(ViewAgent.this,TakeOrderScreen.class));
+                finish();*/
+            }
+        });
 
 
     }
@@ -89,7 +122,7 @@ public class ViewAgent extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, AgentsActivity.class);
         startActivity(intent);
         finish();
     }

@@ -337,7 +337,7 @@ public class Agents_AddActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, AgentsActivity.class);
         startActivity(intent);
         finish();
     }

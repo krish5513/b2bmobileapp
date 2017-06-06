@@ -165,8 +165,8 @@ public class Products_Activity extends AppCompatActivity {
                 mTDCLayout.startAnimation(animation1);
             }
         });
-
-        ArrayList<String> privilegesData = dbHelper.getUserActivityDetailsByUserId(sharedPreferences.getString("userId"));
+        HashMap<String,String> userMapData = dbHelper.getUsersData();
+        ArrayList<String> privilegesData = dbHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
         System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
         for (int k = 0; k<privilegesData.size();k++){
             if (privilegesData.get(k).toString().equals("Dashboard")){
@@ -190,7 +190,7 @@ public class Products_Activity extends AppCompatActivity {
         if(pAdapter!=null){
             pAdapter = null;
         }
-        pAdapter = new ProductsAdapter(Products_Activity.this,mProductsBeansList);
+        pAdapter = new ProductsAdapter(this,Products_Activity.this,mProductsBeansList);
         listView.setAdapter(pAdapter);
     }
 

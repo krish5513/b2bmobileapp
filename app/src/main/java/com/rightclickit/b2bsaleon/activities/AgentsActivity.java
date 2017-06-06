@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Sekhar Kuppa
@@ -46,6 +48,7 @@ public class AgentsActivity extends AppCompatActivity {
     FloatingActionButton fab;
     private ListView mAgentsList;
     private AgentsAdapter mAgentsAdapter;
+    EditText editsearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,8 @@ public class AgentsActivity extends AppCompatActivity {
         agentsModel = new AgentsModel(activityContext,this);
 
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
+        editsearch = (EditText) findViewById(R.id.action_search);
+
         ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
         System.out.println("ELSE::: "+a.size());
         if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
@@ -160,8 +165,8 @@ public class AgentsActivity extends AppCompatActivity {
                 mTDCLayout.startAnimation(animation1);
             }
         });
-
-        ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(mPreferences.getString("userId"));
+        HashMap<String,String> userMapData = mDBHelper.getUsersData();
+        ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
         for (int k = 0; k<privilegesData.size();k++){
             if (privilegesData.get(k).toString().equals("Dashboard")){
                 mDashBoardLayout.setVisibility(View.VISIBLE);

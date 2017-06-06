@@ -40,7 +40,7 @@
     <string name="more_btn">More...</string>
 
     <string name="myroutes_btm">Trip Sheets</string>
-    <string name="customers_btm">Customers</string>
+    <string name="customers_btm">Agents</string>
     <string name="products_btm">Products</string>
     <string name="settings_btm">Settings</string>
     <string name="sales_btm">TDC Sales</string>

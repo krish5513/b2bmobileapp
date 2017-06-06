@@ -222,11 +222,12 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         TakeOrderScreen.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(temptoList.size()>0){
                     temptoList.clear();
                 }
                 System.out.println("LIST COUNT::: "+ mList.getCount());
-                for (int d = 0; d<mTakeOrderBeansList1.size();d++){
+                for (int d = 0; d< mList.getCount();d++){
                     View childView = mList.getChildAt(d);
                     TextView tv = (TextView) childView.findViewById(R.id.productName);
                     EditText fromDate = (EditText) childView.findViewById(R.id.from_date);

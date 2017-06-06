@@ -90,7 +90,7 @@ public class SyncRoutesMasterDetailsService extends Service {
                                 System.out.println("The ROUTE ID IS:: " + obj.getString("_id"));
                                 System.out.println("The STORED ROUTE ID IS:: " + mSessionManagement.getString("routeId"));
                                 routeId = obj.getString("_id");
-                                if (mDBHelper.getRouteId().equals(routeId)) {
+                                if (mSessionManagement.getString("routeId").equals(routeId)) {
                                     if (obj.has("region_id")) {
                                         regionId = obj.getString("region_id");
                                         if (obj.has("regions")) {

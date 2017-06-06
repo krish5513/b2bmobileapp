@@ -17,6 +17,7 @@ import com.rightclickit.b2bsaleon.services.SyncRoutesMasterDetailsService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DashboardActivity extends AppCompatActivity {
     private DBHelper mDBHelper;
@@ -112,7 +113,8 @@ public class DashboardActivity extends AppCompatActivity {
         userActSetupStatus = mPreferences.getString("isSetup");
         System.out.println("F 11111 ***DASHBBBBB === "+ userActSetupStatus);
 
-        ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(mPreferences.getString("userId"));
+        HashMap<String,String> userMapData = mDBHelper.getUsersData();
+        ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
         System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
         for (int k = 0; k<privilegesData.size();k++){
             if (privilegesData.get(k).toString().equals("Dashboard")){

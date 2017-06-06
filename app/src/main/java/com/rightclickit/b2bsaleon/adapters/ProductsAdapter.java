@@ -2,6 +2,8 @@ package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
+import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
+import com.rightclickit.b2bsaleon.activities.ProductViewActivity;
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
@@ -31,7 +35,8 @@ public class ProductsAdapter extends BaseAdapter {
     ArrayList<ProductsBean> mProductsBeansList1;
     private ImageLoader mImageLoader;
 
-    public ProductsAdapter(Products_Activity productsActivity, ArrayList<ProductsBean> mProductsBeansList1) {
+    public ProductsAdapter(Context ctxt,Products_Activity productsActivity, ArrayList<ProductsBean> mProductsBeansList1) {
+        this.ctxt=ctxt;
         this.activity = productsActivity;
         this.mProductsBeansList1 = mProductsBeansList1;
         this.mImageLoader = new ImageLoader(productsActivity);
@@ -55,7 +60,7 @@ public class ProductsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         MyViewHolder holder;
 
         if (convertView == null) {
@@ -129,6 +134,22 @@ public class ProductsAdapter extends BaseAdapter {
                 mImageLoader.DisplayImage(mProductsBeansList1.get(position).getProductImageUrl(), holder.productImage, null, "");
             }
         }
+
+        holder.viewbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(ctxt,ProductViewActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("CODE", mProductsBeansList1.get(position).getProductCode());
+                bundle.putString("DESCRIPTION", mProductsBeansList1.get(position).getProductDescription());
+                bundle.putString("RETURNABLE", mProductsBeansList1.get(position).getProductReturnable());
+                bundle.putString("MOQ", mProductsBeansList1.get(position).getProductMOQ());
+                bundle.putString("AGENT", mProductsBeansList1.get(position).getProductAgentPrice());
+                bundle.putString("RETAILER", mProductsBeansList1.get(position).getProductRetailerPrice());
+                bundle.putString("CONSUMER", mProductsBeansList1.get(position).getProductConsumerPrice());
+                ctxt.startActivity(intent);
+            }
+        });
 
         return convertView;
     }

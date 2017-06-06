@@ -28,6 +28,11 @@ public class TakeOrderScreen extends AppCompatActivity {
     private ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
     private DBHelper mDBHelper;
 
+    private LinearLayout mTakeOrdersLayout;
+    private LinearLayout mDeliveriesLayout;
+    private LinearLayout mReturnsLayout;
+    private LinearLayout mTDCorderLayout;
+
     public static LinearLayout mPaymentsLayout;
     public static FloatingActionButton fab;
 
@@ -60,9 +65,53 @@ public class TakeOrderScreen extends AppCompatActivity {
 
         mPaymentsLayout = (LinearLayout) findViewById(R.id.PaymentsLayout);
 
+        mTDCorderLayout = (LinearLayout) findViewById(R.id.TPCLayout);
+        mTDCorderLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Clicked on TPCorders",Toast.LENGTH_SHORT).show();
+                /*mPreference.putString("agentName",mPreference.getString("agentName"));
+                startActivity(new Intent(ViewAgent.this,TakeOrderScreen.class));
+                finish();*/
+
+            }
+        });
+
+        mDeliveriesLayout = (LinearLayout) findViewById(R.id.DeliveriesTakeOrder);
+        mDeliveriesLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Clicked on deliveries",Toast.LENGTH_SHORT).show();
+               /* startActivity(new Intent(ViewAgent.this,TakeOrderScreen.class));
+                finish();*/
+            }
+        });
+        mReturnsLayout = (LinearLayout) findViewById(R.id.ReturnsTakeOrder);
+        mReturnsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Clicked on Returns",Toast.LENGTH_SHORT).show();
+               /* mPreference.putString("agentName",mPreference.getString("agentName"));
+                startActivity(new Intent(ViewAgent.this,TakeOrderScreen.class));
+                finish();*/
+            }
+        });
+        mPaymentsLayout = (LinearLayout) findViewById(R.id.PaymentsTakeOrder);
+        mPaymentsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(),"Clicked on Payments",Toast.LENGTH_SHORT).show();
+                /*mPreference.putString("agentName",mPreference.getString("agentName"));
+                startActivity(new Intent(ViewAgent.this,TakeOrderScreen.class));
+                finish();*/
+            }
+        });
+
+
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
-       // fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.save_icon_green));
+        fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_eye_white_24dp));
 
     }
 
@@ -103,7 +152,7 @@ public class TakeOrderScreen extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, ViewAgent.class);
         startActivity(intent);
         finish();
     }

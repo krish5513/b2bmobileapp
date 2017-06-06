@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class ProductsBean {
     private String productId;
     private String productCode;
-    private String  productTitle;
+    private String productTitle;
     private String productDescription;
     private String productImageUrl;
     private String productReturnable;

@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
@@ -116,6 +117,7 @@ public class AgentsAdapter extends BaseAdapter {
                 Bundle bundle = new Bundle();
                 //Add your data from getFactualResults method to bundle
                 bundle.putString("FIRSTNAME", mAgentsBeansList1.get(i).getFirstname());
+                Toast.makeText(ctxt,"firstname"+mAgentsBeansList1.get(i).getFirstname(),Toast.LENGTH_SHORT).show();
                 bundle.putString("LASTNAME", mAgentsBeansList1.get(i).getLastname());
                 bundle.putString("MOBILE", mAgentsBeansList1.get(i).getMphoneNO());
                 bundle.putString("ADDRESS", mAgentsBeansList1.get(i).getMaddress());

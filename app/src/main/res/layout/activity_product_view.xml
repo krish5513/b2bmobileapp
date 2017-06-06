@@ -76,7 +76,7 @@
                     android:layout_marginTop="10dp">
 
                     <EditText
-                        android:id="@+id/MOQ"
+                        android:id="@+id/Returnable"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.20"

@@ -397,6 +397,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
             HashMap<String,String> userMapData = mDBHelper.getUsersData();
             System.out.println("The User Data NAME Is:: "+userMapData.get("name"));
+            System.out.println("The User Data ID Is:: "+userMapData.get("user_id"));
             System.out.println("The User Data PHONE Is:: "+userMapData.get("phone_number"));
             System.out.println("The User Data DEVICE SYNC Is:: "+userMapData.get("device_sync"));
             System.out.println("The User Data BACKUP Is:: "+userMapData.get("backup"));
@@ -473,7 +474,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 imageLoader.DisplayImage(URL,mPicImage,null,"");
             }
 
-            ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(sharedPreferences.getString("userId"));
+            ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
             System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
             for (int k = 0; k<privilegesData.size();k++){
                 System.out.println("F 11111 ***COUNT 4444 === "+ privilegesData.get(k).toString());
@@ -570,7 +571,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
     private void loadLogout() {
         sharedPreferences.putString("isLogin","false");
-        sharedPreferences.clear();
+        //sharedPreferences.clear();
         Intent loginIntent=new Intent(SettingsActivity.this,LoginActivity.class);
         startActivity(loginIntent);
         finish();

@@ -41,6 +41,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/TPCLayout"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -60,6 +61,7 @@
                     -
 
                     <LinearLayout
+                        android:id="@+id/DeliveriesTakeOrder"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -79,6 +81,7 @@
                     -
 
                     <LinearLayout
+                        android:id="@+id/ReturnsTakeOrder"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
@@ -98,7 +101,7 @@
                     -
 
                     <LinearLayout
-                        android:id="@+id/PaymentsLayout"
+                        android:id="@+id/PaymentsTakeOrder"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
