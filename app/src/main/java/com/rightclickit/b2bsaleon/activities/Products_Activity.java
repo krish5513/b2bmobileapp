@@ -48,7 +48,6 @@ public class Products_Activity extends AppCompatActivity {
     Context context = Products_Activity.this;
     ProductsBean data;
     ProductsModel productsmodel;
-    private MMSharedPreferences sharedPreferences;
     private Context applicationContext, activityContext;
     private  ProductsAdapter pAdapter;
 
@@ -57,7 +56,8 @@ public class Products_Activity extends AppCompatActivity {
     Products_Activity c;
     private SearchView search;
 
-    private DBHelper dbHelper;
+    private DBHelper mDBHelper;
+    private MMSharedPreferences mPreferences;
     private LinearLayout mDashboardLayout,mTripSheetsLayout,mCustomersLayout,mProductsLayout,mTDCLayout;
 
     @Override
@@ -74,7 +74,8 @@ public class Products_Activity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        dbHelper = new DBHelper(getApplicationContext());
+        mDBHelper = new DBHelper(Products_Activity.this);
+        mPreferences = new MMSharedPreferences(Products_Activity.this);
         myList=new ArrayList<ProductsBean>();
 
 
@@ -85,23 +86,23 @@ public class Products_Activity extends AppCompatActivity {
 
         applicationContext = getApplicationContext();
         activityContext = Products_Activity.this;
-        dbHelper = new DBHelper(Products_Activity.this);
-        sharedPreferences = new MMSharedPreferences(Products_Activity.this);
+        mDBHelper = new DBHelper(Products_Activity.this);
+        mPreferences = new MMSharedPreferences(Products_Activity.this);
         productsmodel = new ProductsModel(activityContext,this);
 
         listView = (ListView) findViewById(R.id.list);
-        myList= dbHelper.fetchAllRecordsFromProductsTable();
+        myList= mDBHelper.fetchAllRecordsFromProductsTable();
         System.out.println("ELSE::: "+myList.size());
         if (new NetworkConnectionDetector(Products_Activity.this).isNetworkConnected()) {
-            if (dbHelper.getProductsTableCount()>0){
-                myList = dbHelper.fetchAllRecordsFromProductsTable();
+            if (mDBHelper.getProductsTableCount()>0){
+                myList = mDBHelper.fetchAllRecordsFromProductsTable();
                 loadProductsList(myList);
             }else {
                 productsmodel.getProductsList("productsList");
             }
         }else {
             System.out.println("ELSE::: ");
-            myList = dbHelper.fetchAllRecordsFromProductsTable();
+            myList = mDBHelper.fetchAllRecordsFromProductsTable();
             loadProductsList(myList);
         }
 
@@ -132,6 +133,9 @@ public class Products_Activity extends AppCompatActivity {
                 Toast.makeText(applicationContext, "Clicked on TRIPSHEETS", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTripSheetsLayout.startAnimation(animation1);
+                Intent i =new Intent(Products_Activity.this,TripSheetsActivity.class);
+                startActivity(i);
+                finish();
             }
         });
 
@@ -164,13 +168,16 @@ public class Products_Activity extends AppCompatActivity {
         mTDCLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(applicationContext, "Clicked on TDC", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(applicationContext, "Clicked on TDC", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTDCLayout.startAnimation(animation1);
+                Intent i =new Intent(Products_Activity.this,SalesActivity.class);
+                startActivity(i);
+                finish();
             }
         });
-        HashMap<String,String> userMapData = dbHelper.getUsersData();
-        ArrayList<String> privilegesData = dbHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
+        HashMap<String,String> userMapData = mDBHelper.getUsersData();
+        ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
         System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
         for (int k = 0; k<privilegesData.size();k++){
             if (privilegesData.get(k).toString().equals("Dashboard")){
@@ -184,6 +191,12 @@ public class Products_Activity extends AppCompatActivity {
             }else if (privilegesData.get(k).toString().equals("TDC")){
                 mTDCLayout.setVisibility(View.VISIBLE);
             }
+        }
+
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Dashboard"));
+        System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
+        for (int z = 0;z<privilegeActionsData.size();z++){
+            System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
         }
         //getDataInList();
 

@@ -164,7 +164,7 @@ public class LoginActivity extends Activity {
                 String userId = mDBHelper.getUserId(emailId,Utility.getMd5String(password.trim()));
                 if(!userId.equals("")){
                     // User exists and do actions..
-                    logInSuccess();
+                    loadDashboard();
                 }
                 else {
                     // The entered user is different...
@@ -205,16 +205,16 @@ public class LoginActivity extends Activity {
                 }
             }
 
-            ru = new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (this){
-                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
-                        mHandler.removeCallbacks(ru);
-                        loadDashboard();
-                    }
-                }
-            }; mHandler.postDelayed(ru,3000);
+//            ru = new Runnable() {
+//                @Override
+//                public void run() {
+//                    synchronized (this){
+//                        System.out.println("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+//                        mHandler.removeCallbacks(ru);
+//                        loadDashboard();
+//                    }
+//                }
+//            }; mHandler.postDelayed(ru,3000);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -223,26 +223,29 @@ public class LoginActivity extends Activity {
 
     public void loadDashboard() {
         if(mDBHelper.getUserDeviceId(emailId).equals("")){
-            synchronized (this){
-                System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"+mDBHelper.getRouteId());
-                //if (mDBHelper.getRouteId().length()==0) {
-                    if (new NetworkConnectionDetector(LoginActivity.this).isNetworkConnected()) {
-                        startService(new Intent(LoginActivity.this, SyncRoutesMasterDetailsService.class));
-                    }
-               // }
-            }
-            synchronized (this) {
-                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDD");
-                Intent mainActivityIntent = new Intent(LoginActivity.this, SettingsActivity.class);
-                startActivity(mainActivityIntent);
-                finish();
-            }
+//            synchronized (this){
+//                System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"+mDBHelper.getRouteId());
+//                //if (mDBHelper.getRouteId().length()==0) {
+//                    if (new NetworkConnectionDetector(LoginActivity.this).isNetworkConnected()) {
+//                        startService(new Intent(LoginActivity.this, SyncRoutesMasterDetailsService.class));
+//                    }
+//               // }
+//            }
+//            synchronized (this) {
+//                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDD");
+            loadSettings();
+            //           }
         }else {
             Intent mainActivityIntent = new Intent(LoginActivity.this, DashboardActivity.class);
             startActivity(mainActivityIntent);
             finish();
         }
+    }
 
+    public void loadSettings(){
+        Intent mainActivityIntent = new Intent(LoginActivity.this, SettingsActivity.class);
+        startActivity(mainActivityIntent);
+        finish();
     }
 }
 

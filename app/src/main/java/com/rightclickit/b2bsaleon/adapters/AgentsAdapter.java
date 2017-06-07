@@ -70,7 +70,7 @@ public class AgentsAdapter extends BaseAdapter {
         if(view == null){
             mHolder = new ViewHolder();
             view = mInflater.inflate(R.layout.agents_list_custom,null);
-
+            mHolder.id=(TextView)view.findViewById(R.id.tv_uidNo) ;
             mHolder.mPicImage = (ImageView) view.findViewById(R.id.personImage);
             mHolder.mStatus = (TextView) view.findViewById(R.id.StatusText);
             mHolder.mTitle = (TextView) view.findViewById(R.id.tv_companyName);
@@ -91,6 +91,7 @@ public class AgentsAdapter extends BaseAdapter {
             mImageLoader.DisplayImage(mAgentsBeansList1.get(position).getmAgentPic(),mHolder.mPicImage,null,"");
         }
         mHolder.mTitle.setText(mAgentsBeansList1.get(position).getmAgentName());
+        mHolder.id.setText(mAgentsBeansList1.get(position).getmAgentCode());
         if (mAgentsBeansList1.get(position).getmStatus().equals("A")){
             mHolder.mStatus.setText("Active");
         }else {
@@ -133,6 +134,7 @@ public class AgentsAdapter extends BaseAdapter {
     }
 
     public class ViewHolder{
+        TextView id;
         TextView mTitle;
         TextView mObAmount;
         TextView mOrderValue;

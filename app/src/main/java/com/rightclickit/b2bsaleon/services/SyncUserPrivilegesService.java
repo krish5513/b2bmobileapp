@@ -7,15 +7,18 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.NetworkManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Sekhar Kuppa on 19-05-2017.
@@ -68,6 +71,7 @@ public class SyncUserPrivilegesService extends Service {
         private String userId="",userPrivilegeName = "",userPrivilegeId = "",userPrivilegeStatus="";
         private ArrayList<String> IDSLIST = new ArrayList<String>();
         private ArrayList<String> NAMESLIST = new ArrayList<String>();
+        private HashMap<String,Object> ACTIONSLIST = new HashMap<String,Object>();
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -111,101 +115,61 @@ public class SyncUserPrivilegesService extends Service {
                                     // Start Of User Dashboard
                                     if(obj.getString("name").equals("Dashboard")){
                                         mSessionManagement.putString("isDashboard","visible");
+                                        mSessionManagement.putString("Dashboard",obj.getString("id"));
                                         IDSLIST.add(obj.getString("id"));
                                         NAMESLIST.add(obj.getString("name"));
-//                                        if (obj.has("actions")) {
-//                                            JSONArray userActionsArray = obj.getJSONArray("actions");
-//                                            if (userActionsArray.length()>0){
-//                                                for (int j = 0; j<userActionsArray.length();j++){
-//                                                    JSONObject actObj = userActionsArray.getJSONObject(j);
-//                                                    if (actObj.has("tag")){
-//                                                        if (actObj.getString("tag").equals("setup")){
-//                                                            mSessionManagement.putString("isSetup","visible");
-//                                                        }
-//                                                    }
-//                                                }
-//                                            }
-//                                        }
+                                        if (obj.has("actions")) {
+                                            JSONArray userActionsArray = obj.getJSONArray("actions");
+                                            ACTIONSLIST.put(obj.getString("id"),userActionsArray);
+                                        }
                                     } // End of User Dashboard
 
                                     // Start Of User Dashboard
                                     if(obj.getString("name").equals("TripSheets")){
                                         mSessionManagement.putString("isTripsheets","visible");
+                                        mSessionManagement.putString("TripSheets",obj.getString("id"));
                                         IDSLIST.add(obj.getString("id"));
                                         NAMESLIST.add(obj.getString("name"));
-//                                        if (obj.has("actions")) {
-//                                            JSONArray userActionsArray = obj.getJSONArray("actions");
-//                                            if (userActionsArray.length()>0){
-//                                                for (int j = 0; j<userActionsArray.length();j++){
-//                                                    JSONObject actObj = userActionsArray.getJSONObject(j);
-//                                                    if (actObj.has("tag")){
-//                                                        if (actObj.getString("tag").equals("setup")){
-//                                                            mSessionManagement.putString("isSetup","visible");
-//                                                        }
-//                                                    }
-//                                                }
-//                                            }
-//                                        }
+                                        if (obj.has("actions")) {
+                                            JSONArray userActionsArray = obj.getJSONArray("actions");
+                                            ACTIONSLIST.put(obj.getString("id"),userActionsArray);
+                                        }
                                     } // End of User Dashboard
 
                                     // Start Of User Dashboard
                                     if(obj.getString("name").equals("Customers")){
                                         mSessionManagement.putString("isCustomers","visible");
+                                        mSessionManagement.putString("Customers",obj.getString("id"));
                                         IDSLIST.add(obj.getString("id"));
                                         NAMESLIST.add(obj.getString("name"));
-//                                        if (obj.has("actions")) {
-//                                            JSONArray userActionsArray = obj.getJSONArray("actions");
-//                                            if (userActionsArray.length()>0){
-//                                                for (int j = 0; j<userActionsArray.length();j++){
-//                                                    JSONObject actObj = userActionsArray.getJSONObject(j);
-//                                                    if (actObj.has("tag")){
-//                                                        if (actObj.getString("tag").equals("setup")){
-//                                                            mSessionManagement.putString("isSetup","visible");
-//                                                        }
-//                                                    }
-//                                                }
-//                                            }
-//                                        }
+                                        if (obj.has("actions")) {
+                                            JSONArray userActionsArray = obj.getJSONArray("actions");
+                                            ACTIONSLIST.put(obj.getString("id"),userActionsArray);
+                                        }
                                     } // End of User Dashboard
 
                                     // Start Of User Dashboard
                                     if(obj.getString("name").equals("Products")){
                                         mSessionManagement.putString("isProducts","visible");
+                                        mSessionManagement.putString("Products",obj.getString("id"));
                                         IDSLIST.add(obj.getString("id"));
                                         NAMESLIST.add(obj.getString("name"));
-//                                        if (obj.has("actions")) {
-//                                            JSONArray userActionsArray = obj.getJSONArray("actions");
-//                                            if (userActionsArray.length()>0){
-//                                                for (int j = 0; j<userActionsArray.length();j++){
-//                                                    JSONObject actObj = userActionsArray.getJSONObject(j);
-//                                                    if (actObj.has("tag")){
-//                                                        if (actObj.getString("tag").equals("setup")){
-//                                                            mSessionManagement.putString("isSetup","visible");
-//                                                        }
-//                                                    }
-//                                                }
-//                                            }
-//                                        }
+                                        if (obj.has("actions")) {
+                                            JSONArray userActionsArray = obj.getJSONArray("actions");
+                                            ACTIONSLIST.put(obj.getString("id"),userActionsArray);
+                                        }
                                     } // End of User Dashboard
 
                                     // Start Of User Dashboard
                                     if(obj.getString("name").equals("TDC")){
                                         mSessionManagement.putString("isTdc","visible");
+                                        mSessionManagement.putString("Tdc",obj.getString("id"));
                                         IDSLIST.add(obj.getString("id"));
                                         NAMESLIST.add(obj.getString("name"));
-//                                        if (obj.has("actions")) {
-//                                            JSONArray userActionsArray = obj.getJSONArray("actions");
-//                                            if (userActionsArray.length()>0){
-//                                                for (int j = 0; j<userActionsArray.length();j++){
-//                                                    JSONObject actObj = userActionsArray.getJSONObject(j);
-//                                                    if (actObj.has("tag")){
-//                                                        if (actObj.getString("tag").equals("setup")){
-//                                                            mSessionManagement.putString("isSetup","visible");
-//                                                        }
-//                                                    }
-//                                                }
-//                                            }
-//                                        }
+                                        if (obj.has("actions")) {
+                                            JSONArray userActionsArray = obj.getJSONArray("actions");
+                                            ACTIONSLIST.put(obj.getString("id"),userActionsArray);
+                                        }
                                     } // End of User Dashboard
 
 
@@ -217,6 +181,12 @@ public class SyncUserPrivilegesService extends Service {
                                 mDBHelper.deleteValuesFromUserActivityTable();
                             }
                             mDBHelper.insertUserActivityDetails(userId, "A", IDSLIST, NAMESLIST);
+                        }
+                        synchronized (this){
+                            if(mDBHelper.getUserPrivilegesActionsTableCount()>0){
+                                mDBHelper.deleteValuesFromUserActivityActionsTable();
+                            }
+                            mDBHelper.insertUserActivityActionsDetails(IDSLIST, ACTIONSLIST);
                         }
                     }
                 }
@@ -230,6 +200,9 @@ public class SyncUserPrivilegesService extends Service {
         @Override
         protected void onPostExecute(Void aVoid) {
             stopSelf();
+            if (new NetworkConnectionDetector(getApplicationContext()).isNetworkConnected()) {
+                startService(new Intent(getApplicationContext(), SyncRoutesMasterDetailsService.class));
+            }
             System.out.println("Service Stopped Automatically....");
         }
     }

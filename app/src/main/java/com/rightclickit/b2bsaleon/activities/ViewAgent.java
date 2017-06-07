@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -46,8 +48,10 @@ public class ViewAgent extends AppCompatActivity {
         mTakeOrdersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPreference.putString("agentName",mPreference.getString("agentName"));
-                startActivity(new Intent(ViewAgent.this,TakeOrderScreen.class));
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mTakeOrdersLayout.startAnimation(animation1);
+                Intent i =new Intent(ViewAgent.this,TakeOrderScreen.class);
+                startActivity(i);
                 finish();
             }
         });
@@ -56,29 +60,33 @@ public class ViewAgent extends AppCompatActivity {
         mDeliveriesLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Clicked on deliveries",Toast.LENGTH_SHORT).show();
-               /* startActivity(new Intent(ViewAgent.this,TakeOrderScreen.class));
-                finish();*/
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mDeliveriesLayout.startAnimation(animation1);
+                Intent i =new Intent(ViewAgent.this,AgentDeliveries.class);
+                startActivity(i);
+                finish();
             }
         });
         mReturnsLayout = (LinearLayout) findViewById(R.id.ReturnsLayout);
         mReturnsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Clicked on Returns",Toast.LENGTH_SHORT).show();
-               /* mPreference.putString("agentName",mPreference.getString("agentName"));
-                startActivity(new Intent(ViewAgent.this,TakeOrderScreen.class));
-                finish();*/
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mReturnsLayout.startAnimation(animation1);
+                Intent i =new Intent(ViewAgent.this,AgentReturns.class);
+                startActivity(i);
+                finish();
             }
         });
         mPaymentsLayout = (LinearLayout) findViewById(R.id.PaymentsLayout);
         mPaymentsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"Clicked on Payments",Toast.LENGTH_SHORT).show();
-                /*mPreference.putString("agentName",mPreference.getString("agentName"));
-                startActivity(new Intent(ViewAgent.this,TakeOrderScreen.class));
-                finish();*/
+                Animation  animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mPaymentsLayout.startAnimation(animation1);
+                Intent i =new Intent(ViewAgent.this,AgentPayments.class);
+                startActivity(i);
+                finish();
             }
         });
 

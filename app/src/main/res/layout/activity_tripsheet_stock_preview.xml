@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.rightclickit.b2bsaleon.activities.TripsheetStockPreview">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="60dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:background="@color/layout_background"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_companyName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="thirumala milk products pvt ltd"
+                android:gravity="left"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/greydark"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="TIN No"
+                    android:gravity="left"
+                    android:paddingTop="5dp"
+                    android:textAllCaps="true"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/greydark"
+                    android:id="@+id/tv_tinNo" />
+
+                <TextView
+                    android:id="@+id/tv_salesOfc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Sales Office"
+                    android:gravity="left"
+                    android:paddingTop="5dp"
+                    android:textAllCaps="true"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/greydark"
+                    />
+                <TextView
+                    android:id="@+id/tv_routeNo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Route"
+                    android:gravity="left"
+                    android:paddingTop="5dp"
+                    android:textAllCaps="true"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/greydark"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="TripSheet stock info"
+                android:gravity="left"
+                android:textAllCaps="true"
+                android:padding="10dp"
+                android:textColor="@color/greydark"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="908915"
+                    android:gravity="left"
+                    android:textAllCaps="true"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/greydark"
+                    />
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Date"
+                    android:gravity="left"
+                    android:textAllCaps="true"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/greydark"
+                    />
+                <TextView
+                    android:id="@+id/user_Name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Raj Kumar "
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/greydark"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/layout_background"
+            android:padding="5dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.17"
+                android:text="Product"
+                android:textSize="14sp"
+                android:textColor="@color/greydark"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.22"
+                android:text="Order"
+                android:layout_gravity="center|end"
+                android:gravity="center|end"
+                android:textSize="14sp"
+                android:textColor="@color/greydark"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.17"
+                android:text="Dispatch"
+                android:layout_gravity="center|end"
+                android:gravity="center|end"
+                android:textSize="14sp"
+                android:textColor="@color/greydark"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.17"
+                android:text="verify"
+                android:layout_marginRight="7dp"
+                android:layout_gravity="center|end"
+                android:gravity="center|end"
+                android:textSize="14sp"
+                android:textColor="@color/greydark"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/view_line"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/scrollViewSearch"
+                android:scrollbars="none">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/cardList"
+                    android:scrollbars="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:gravity="end|center"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/colorPrimary"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="0.25"
+                android:layout_gravity="center"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tv_print"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableTop="@drawable/print_green"
+                    android:text="Print"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

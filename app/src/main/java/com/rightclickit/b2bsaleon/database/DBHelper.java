@@ -5,12 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +51,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Take Order Products Table
     public static final String TABLE_TO_PRODUCTS = "take_order_products";
+
+    // User previleges actions - User Activity table
+    private final String TABLE_PREVILEGE_ACTIONS = "user_privilege_actions";
 
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
@@ -98,7 +103,6 @@ public class DBHelper extends SQLiteOpenHelper {
     // Column names for Agents Table
     private final String KEY_AGENT_ID = "agent_id";
     private final String KEY_AGENT_NAME = "agent_name";
-
     private final String KEY_OB_AMOUNT = "ob_value";
     private final String KEY_ORDER_VALUE = "order_value";
     private final String KEY_TOTAL_AMOUNT = "total_amount";
@@ -117,6 +121,12 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TO_TO_DATE = "to_to_date";
     private final String KEY_TO_ORDER_TYPE = "to_order_type";
     private final String KEY_TO_QUANTITY = "to_quantity";
+
+    // Column names for User privilege actions  Table
+    private final String KEY_USER_PRIVILEGE_ID = "user_privilege_id";
+    private final String KEY_USER_PRIVILEGE_ACTION_ID = "user_privilege_action_id";
+    private final String KEY_USER_PRIVILEGE_ACTION_NAME = "user_privilege_action_name";
+    private final String KEY_USER_PRIVILEGE_ACTION_STATUS = "user_privilege_action_status";
 
     // Userdetails Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
@@ -165,6 +175,11 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TO_FROM_DATE + " VARCHAR," + KEY_TO_TO_DATE + " VARCHAR," + KEY_TO_ORDER_TYPE + " VARCHAR,"
             + KEY_TO_QUANTITY + " VARCHAR)";
 
+    // User privilege actions Table Create Statements
+    private final String CREATE_USER_PRIVILEGE_ACTIONS_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_PREVILEGE_ACTIONS + "(" + KEY_USER_PRIVILEGE_ACTION_ID + " VARCHAR," + KEY_USER_PRIVILEGE_ID + " VARCHAR,"
+            + KEY_USER_PRIVILEGE_ACTION_NAME + " VARCHAR," + KEY_USER_PRIVILEGE_ACTION_STATUS + " VARCHAR)";
+
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -178,6 +193,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_USER_ACTIVITY_TABLE);
             db.execSQL(CREATE_TABLE_AGENTS);
             db.execSQL(CREATE_PRODUCTS_TABLE_TO);
+            db.execSQL(CREATE_USER_PRIVILEGE_ACTIONS_TABLE);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -188,10 +204,11 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USERDETAILS);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_ROUTES);
-            db.execSQL("DROP TABLE IF EXISTS"  +CREATE_PRODUCTS_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS"  + CREATE_PRODUCTS_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_USER_ACTIVITY_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_AGENTS);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_PRODUCTS_TABLE_TO);
+            db.execSQL("DROP TABLE IF EXISTS " + CREATE_USER_PRIVILEGE_ACTIONS_TABLE);
 
             // create new tables
             onCreate(db);
@@ -257,7 +274,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 // insert row
                 db.insert(TABLE_AGENTS, null, values);
                 System.out.println("F*********** INSERTED***************88");
-
                 values.clear();
             }
         } catch (Exception e){
@@ -350,6 +366,7 @@ public class DBHelper extends SQLiteOpenHelper {
             // insert row
             db.insert(TABLE_USERDETAILS, null, values);
             values.clear();
+            System.out.println("USER DATA INSERTED.....");
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -747,7 +764,7 @@ public class DBHelper extends SQLiteOpenHelper {
         } catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println("F***COUNT === "+ userPrivileges.size());
+        System.out.println("***COUNT === "+ userPrivileges.size());
         return userPrivileges;
     }
 
@@ -778,6 +795,107 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             db.delete(TABLE_PREVILEGES_USER_ACTIVITY, null, null);
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Method to insert the user activity actions data.
+     * @param idsList
+     * @param actionslist
+     */
+    public void insertUserActivityActionsDetails(ArrayList<String> idsList,HashMap<String,Object> actionslist) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0;i<idsList.size();i++){
+                if(idsList.get(0).toString()!=null) {
+                    JSONArray ja = (JSONArray) actionslist.get(idsList.get(0).toString());
+                    for (int g = 0; g<ja.length();g++){
+                        JSONObject j = ja.getJSONObject(g);
+                        ContentValues values = new ContentValues();
+                        values.put(KEY_USER_PRIVILEGE_ID, idsList.get(i).toString());
+                        if(j.has("_id")){
+                            values.put(KEY_USER_PRIVILEGE_ACTION_ID, j.getString("_id"));
+                        }else {
+                            values.put(KEY_USER_PRIVILEGE_ACTION_ID, "");
+                        }
+                        if(j.has("tag")){
+                            values.put(KEY_USER_PRIVILEGE_ACTION_NAME, j.getString("tag"));
+                        }else {
+                            values.put(KEY_USER_PRIVILEGE_ACTION_NAME, "");
+                        }
+                        values.put(KEY_USER_PRIVILEGE_ACTION_STATUS, "A");
+
+                        // insert row
+                        db.insert(TABLE_PREVILEGE_ACTIONS, null, values);
+                        System.out.println("F*********** ACTIONS INSERTED***************88");
+                        values.clear();
+                    }
+                }
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    /**
+     * Method to fetch user activity by user id
+     */
+    public ArrayList<String> getUserActivityActionsDetailsByPrivilegeId(String privilegeId){
+        String userActivitySetupStatus="";
+        ArrayList<String> userPrivileges = new ArrayList<String>();
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_PREVILEGE_ACTIONS + " WHERE "+ KEY_USER_PRIVILEGE_ID +" = " + "'"+privilegeId+"'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    userPrivileges.add(c.getString(c.getColumnIndex(KEY_USER_PRIVILEGE_ACTION_NAME)));
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("***COUNT === "+ userPrivileges.size());
+        return userPrivileges;
+    }
+
+
+    /**
+     * Method to get count of the user privileges details table
+     */
+    public int getUserPrivilegesActionsTableCount() {
+        int noOfEvents = 0;
+        try {
+            String countQuery = "SELECT * FROM " + TABLE_PREVILEGE_ACTIONS;
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfEvents = cursor.getCount();
+                cursor.close();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return noOfEvents;
+    }
+    /**
+     * Method to clear values in user activity table
+     */
+    public void deleteValuesFromUserActivityActionsTable() {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_PREVILEGE_ACTIONS, null, null);
             db.close();
         } catch (Exception e){
             e.printStackTrace();
@@ -966,7 +1084,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 // update row
                 effectedRows = db.update(TABLE_TO_PRODUCTS, values, KEY_TO_PRODUCT_ID + " = ?", new String[]{String.valueOf(takeOrderBeanArrayList.get(b).getmProductId())});
                 values.clear();
-                System.out.println("Updated!!!!!!");
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -974,6 +1091,35 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
         return effectedRows;
+    }
+
+    /**
+     * Method to insert the user activity privileges data.
+     * @param userId
+     * @param status
+     * @param idsList
+     * @param nameslist
+     */
+    public void insertUserActivityPrivileges(String userId, String status,ArrayList<String> idsList,ArrayList<String> nameslist) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0;i<idsList.size();i++){
+                ContentValues values = new ContentValues();
+                values.put(KEY_USER_ACTIVITY_ID, idsList.get(i).toString());
+                values.put(KEY_USER_ACTIVITY_USER_ID, userId);
+                values.put(KEY_USER_ACTIVITY_TAG, nameslist.get(i).toString());
+                values.put(KEY_USER_ACTIVITY_STATUS, status);
+
+                // insert row
+                db.insert(TABLE_PREVILEGES_USER_ACTIVITY, null, values);
+                System.out.println("F*********** INSERTED***************88");
+                values.clear();
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        db.close();
     }
 
     /**

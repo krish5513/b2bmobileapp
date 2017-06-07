@@ -70,6 +70,9 @@ public class DashboardActivity extends AppCompatActivity {
                 Toast.makeText(DashboardActivity.this, "Clicked on Tripsheets", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTripsheetsLayout.startAnimation(animation1);
+                Intent i =new Intent(DashboardActivity.this,TripSheetsActivity.class);
+                startActivity(i);
+                finish();
             }
         });
         mCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
@@ -106,6 +109,9 @@ public class DashboardActivity extends AppCompatActivity {
                 Toast.makeText(DashboardActivity.this, "Clicked on TDC", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTDCLayout.startAnimation(animation1);
+                Intent i =new Intent(DashboardActivity.this,SalesActivity.class);
+                startActivity(i);
+                finish();
             }
         });
 
@@ -128,6 +134,12 @@ public class DashboardActivity extends AppCompatActivity {
             }else if (privilegesData.get(k).toString().equals("TDC")){
                 mTDCLayout.setVisibility(View.VISIBLE);
             }
+        }
+
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Dashboard"));
+        System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
+        for (int z = 0;z<privilegeActionsData.size();z++){
+            System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
         }
 
 //        if (mDBHelper.getRouteId().length()==0) {

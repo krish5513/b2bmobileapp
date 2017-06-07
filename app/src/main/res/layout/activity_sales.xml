@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.rightclickit.b2bsaleon.activities.SalesActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:id="@+id/scrollViewSearch"
+            android:layout_marginBottom="60dp">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/cardList"
+                android:scrollbars="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </ScrollView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end|center"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:layout_marginBottom="60dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/colorPrimary"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.17"
+                    android:text="Sub Total"
+                    android:textSize="14sp"
+                    android:layout_marginRight="7dp"
+                    android:textColor="@color/greydark"
+                    android:id="@+id/textView3" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:layout_weight="0.17"
+                    android:id="@+id/totalQty"
+                    android:layout_gravity="center|end"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:textColor="@color/greydark"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="0.00"
+                    android:layout_weight="0.2"
+                    android:layout_gravity="center|end"
+                    android:gravity="center|end"
+                    android:textSize="14sp"
+                    android:id="@+id/totalTaxAmount"
+                    android:textColor="@color/greydark"/>
+
+                <TextView
+                    android:id="@+id/subTotalAmount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:textSize="14sp"
+                    android:layout_weight="0.16"
+                    android:textColor="@color/black"
+                    android:text="Rs. 0.00"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:padding="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total Value"
+                    android:textSize="14sp"
+                    android:textColor="@color/greydark"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:gravity="end"
+                    android:textSize="14sp"
+                    android:id="@+id/totalAmount"
+                    android:textColor="@color/black"
+                    android:text="Rs. 0.00"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:gravity="end|center"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/colorPrimary"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:layout_gravity="center"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tv_sales_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:drawableTop="@drawable/sales_list_green"
+                    android:text="Sales List"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:layout_gravity="center"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tv_preview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:drawableTop="@drawable/ic_eye_green_24dp"
+                    android:text="Preview"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+            <!-- <LinearLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_weight="0.2"
+                 android:orientation="vertical"
+                 android:gravity="center"
+                 android:layout_marginRight="10dp"
+                 android:layout_marginLeft="20dp"
+                 android:layout_gravity="right|center">
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Sales Amount:"
+                     android:textSize="14sp"
+                     android:textColor="@color/colorPrimary"/>
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:id="@+id/totalValue"
+                     android:text="Rs. 0.00"
+                     android:textSize="18sp"
+                     android:textColor="@color/red"/>
+
+             </LinearLayout>-->
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</FrameLayout>

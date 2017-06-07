@@ -112,6 +112,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private String mLatitude="",mLongitude="",mDeviceId="",mProfilePic="";
 
     private LinearLayout mDashboardLayout,mTripSheetsLayout,mCustomersLayout,mProductsLayout,mTDCLayout;
+    private MMSharedPreferences mPreferences;
 
 
     @Override
@@ -120,6 +121,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         if (!isGooglePlayServicesAvailable()) {
             finish();
         }
+        CustomProgressDialog.hideProgressDialog();
         setContentView(R.layout.activity_settings);
         try {
             applicationContext = getApplicationContext();
@@ -132,6 +134,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             routeNo = (EditText) findViewById(R.id.tv_routeNo);
             routeNo.requestFocus();
             routeNo.setCursorVisible(true);
+            mPreferences = new MMSharedPreferences(SettingsActivity.this);
             routeNo.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -198,6 +201,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     Toast.makeText(applicationContext, "Clicked on TRIPSHEETS", Toast.LENGTH_SHORT).show();
                     Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                     mTripSheetsLayout.startAnimation(animation1);
+                    Intent i = new Intent(SettingsActivity.this,TripSheetsActivity.class);
+                    startActivity(i);
+                    finish();
                 }
             });
 
@@ -219,7 +225,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             mProductsLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(applicationContext, "Clicked on Products", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(applicationContext, "Clicked on Products", Toast.LENGTH_SHORT).show();
                     Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                     mProductsLayout.startAnimation(animation1);
                     Intent i =new Intent(SettingsActivity.this,Products_Activity.class);
@@ -236,6 +242,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     Toast.makeText(applicationContext, "Clicked on TDC", Toast.LENGTH_SHORT).show();
                     Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                     mTDCLayout.startAnimation(animation1);
+                    Intent i = new Intent(SettingsActivity.this,SalesActivity.class);
+                    startActivity(i);
+                    finish();
                 }
             });
 
@@ -489,6 +498,13 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 }else if (privilegesData.get(k).toString().equals("TDC")){
                     mTDCLayout.setVisibility(View.VISIBLE);
                 }
+            }
+
+
+            ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Dashboard"));
+            System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
+            for (int z = 0;z<privilegeActionsData.size();z++){
+                System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
             }
         } catch (Exception e) {
             e.printStackTrace();

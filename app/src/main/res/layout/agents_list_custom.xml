@@ -30,13 +30,14 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/personImage"
+        android:layout_marginTop="3dp"
          />
     <TextView
         android:id="@+id/StatusText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="In Active"
+        android:layout_marginTop="10dp"
         android:textColor="@color/red"
         android:textSize="14sp" />
 </LinearLayout>

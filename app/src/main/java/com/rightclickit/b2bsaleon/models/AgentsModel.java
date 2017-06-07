@@ -146,6 +146,9 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                     if (jo.has("longitude")){
                         agentsBean.setmLongitude(jo.getString("longitude"));
                     }
+                    if (jo.has("code")){
+                        agentsBean.setmAgentCode(jo.getString("code"));
+                    }
 
                     if (jo.has("first_name")){
                         agentsBean.setmFirstname(jo.getString("first_name"));

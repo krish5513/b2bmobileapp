@@ -7,6 +7,9 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.rightclickit.b2bsaleon.activities.DashboardActivity;
+import com.rightclickit.b2bsaleon.activities.LoginActivity;
+import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -67,11 +70,21 @@ public class SyncRoutesMasterDetailsService extends Service {
      * Class to perform background operations.
      */
     private class FetchAndSyncRoutesMasterDetailsAsyncTask extends AsyncTask<Void, Void, Void> {
-        private String routeId = "", routeName = "", regionId = "", regionName = "", officeId = "", officeName = "";
+        private String routeId = "", routeName = "", regionId = "", regionName = "", officeId = "", officeName = "",mStoredRouteIds="";
+        private HashMap<String,String> routeIdsMap = new HashMap<String,String>();
+
 
         @Override
         protected Void doInBackground(Void... params) {
             try {
+                // System.out.println("USER DEF ROUTE IDSSSS::: "+ mSessionManagement.getString("userId"));
+                routeIdsMap = mDBHelper.getUserRouteIds();
+                mStoredRouteIds = routeIdsMap.get("route_ids").toString();
+                // System.out.println("S ROUTE IDSSSS::: "+ routeIdsMap.get("route_ids").toString());
+                if(mStoredRouteIds==null){
+                    mStoredRouteIds = "";
+                }
+
                 if (mDBHelper.getRouteId().length() > 0) {
                     // Clear the db first and then insert..
                     mDBHelper.deleteValuesFromRoutesTable();
@@ -81,47 +94,64 @@ public class SyncRoutesMasterDetailsService extends Service {
                 mJsonObj = new NetworkManager().makeHttpGetConnection(URL);
 
                 JSONArray resultArray = new JSONArray(mJsonObj);
-                System.out.println("The LENGTH IS:: " + resultArray.length());
+                //  System.out.println("The LENGTH IS:: " + resultArray.length());
                 if (resultArray != null) {
                     if (resultArray.length() > 0) {
-                        for (int i = 0; i < resultArray.length(); i++) {
-                            JSONObject obj = resultArray.getJSONObject(i);
-                            if (obj.has("_id")) {
-                                System.out.println("The ROUTE ID IS:: " + obj.getString("_id"));
-                                System.out.println("The STORED ROUTE ID IS:: " + mSessionManagement.getString("routeId"));
-                                routeId = obj.getString("_id");
-                                if (mSessionManagement.getString("routeId").equals(routeId)) {
-                                    if (obj.has("region_id")) {
-                                        regionId = obj.getString("region_id");
-                                        if (obj.has("regions")) {
-                                            JSONArray regionsArray = obj.getJSONArray("regions");
-                                            for (int j = 0; j < regionsArray.length(); j++) {
-                                                JSONObject regionObj = regionsArray.getJSONObject(j);
-                                                if (regionId.equals(regionObj.getString("_id"))) {
-                                                    mSessionManagement.putString("RegionId", regionId);
-                                                    regionName = regionObj.getString("name");
+                        if(mStoredRouteIds.length()>0){
+                            JSONObject routesJob = new JSONObject(mStoredRouteIds);
+                            JSONArray routesArray = routesJob.getJSONArray("routeArray");
+                            for (int s = 0;s<routesArray.length();s++) {
+                                for (int i = 0; i < resultArray.length(); i++) {
+                                    JSONObject obj = resultArray.getJSONObject(i);
+                                    if (obj.has("_id")) {
+                                        //  System.out.println("The ROUTE ID IS:: " + obj.getString("_id"));
+                                        //  System.out.println("The STORED ROUTE ID IS:: " + mSessionManagement.getString("routeId"));
+                                        routeId = obj.getString("_id");
+                                        if (routesArray.get(s).toString().equals(routeId)) {
+                                            if (obj.has("region_id")) {
+                                                regionId = obj.getString("region_id");
+                                                if (obj.has("regions")) {
+                                                    JSONArray regionsArray = obj.getJSONArray("regions");
+                                                    for (int j = 0; j < regionsArray.length(); j++) {
+                                                        JSONObject regionObj = regionsArray.getJSONObject(j);
+                                                        if (regionId.equals(regionObj.getString("_id"))) {
+                                                            mSessionManagement.putString("RegionId", regionId);
+                                                            if (regionName.equals("")) {
+                                                                regionName = regionObj.getString("name");
+                                                            } else {
+                                                                regionName = regionName + "," + regionObj.getString("name");
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
-                                        }
-                                    }
-                                    if (obj.has("office_id")) {
-                                        officeId = obj.getString("office_id");
-                                        if (obj.has("offices")) {
-                                            JSONArray officesArray = obj.getJSONArray("offices");
-                                            for (int k = 0; k < officesArray.length(); k++) {
-                                                JSONObject officeObj = officesArray.getJSONObject(k);
-                                                if (officeId.equals(officeObj.getString("_id"))) {
-                                                    officeName = officeObj.getString("name");
+                                            if (obj.has("office_id")) {
+                                                officeId = obj.getString("office_id");
+                                                if (obj.has("offices")) {
+                                                    JSONArray officesArray = obj.getJSONArray("offices");
+                                                    for (int k = 0; k < officesArray.length(); k++) {
+                                                        JSONObject officeObj = officesArray.getJSONObject(k);
+                                                        if (officeId.equals(officeObj.getString("_id"))) {
+                                                            if (officeName.equals("")) {
+                                                                officeName = officeObj.getString("name");
+                                                            } else {
+                                                                officeName = officeName + "," + officeObj.getString("name");
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
+                                            if (obj.has("name")) {
+                                                //System.out.println("The ROUTE NAME IS:: " + obj.getString("name"));
+                                                routeName = obj.getString("name");
+                                            }
+                                            //  System.out.println("ROUTE NAME IS:: " + routeName);
+                                            //  System.out.println("REGION NAME IS:: " + regionName);
+                                            //  System.out.println("OFFICE NAME IS:: " + officeName);
+                                            synchronized (this) {
+                                                mDBHelper.insertRoutesDetails(routeId, routeName, regionName, officeName);
+                                            }
                                         }
-                                    }
-                                    if (obj.has("name")) {
-                                        System.out.println("The ROUTE NAME IS:: " + obj.getString("name"));
-                                        routeName = obj.getString("name");
-                                    }
-                                    synchronized (this) {
-                                        mDBHelper.insertRoutesDetails(routeId, routeName, regionName, officeName);
                                     }
                                 }
                             }
@@ -138,6 +168,10 @@ public class SyncRoutesMasterDetailsService extends Service {
         @Override
         protected void onPostExecute(Void aVoid) {
             stopSelf();
+            Intent mainActivityIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(mainActivityIntent);
             System.out.println("Service Stopped Automatically....");
         }
     }

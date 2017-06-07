@@ -9,9 +9,7 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <user-permission android:name="com.rightclickit.b2bsaleon.permisssion.MAPS_RECEIVE" />
@@ -36,8 +34,8 @@
         <activity
             android:name=".activities.SplashScreenActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,22 +44,21 @@
         </activity>
         <activity
             android:name=".activities.LoginActivity"
-            android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.DashboardActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:configChanges="orientation|screenSize|keyboardHidden" />
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.SettingsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.NotificationsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:windowSoftInputMode="adjustPan" />
 
         <!-- Routes data sync service -->
         <service
@@ -75,27 +72,46 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".activities.Products_Activity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.AgentsActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.AgentsInfoActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ProductViewActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.Agents_AddActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.TakeOrderScreen"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ViewAgent"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.Products_Activity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.AgentsActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.AgentsInfoActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.ProductViewActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.Agents_AddActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.TakeOrderScreen"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.ViewAgent"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".activities.SalesActivity" />
+        <activity android:name=".activities.AgentsTakeOrderPreview" />
+        <activity android:name=".activities.TripSheetsActivity" />
+        <activity android:name=".activities.TripSheetView" />
+        <activity android:name=".activities.TripSheetStock" />
+        <activity android:name=".activities.TripSheetViewPreview" />
+        <activity android:name=".activities.TripsheetStockPreview" />
+        <activity android:name=".activities.AgentDeliveries" />
+        <activity android:name=".activities.AgentTDC_Order" />
+        <activity android:name=".activities.AgentPayments" />
+        <activity android:name=".activities.AgentReturns" />
+        <activity android:name=".activities.AgentDeliveriesView"></activity>
     </application>
 
 </manifest>

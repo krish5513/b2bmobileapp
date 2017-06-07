@@ -127,6 +127,9 @@ public class AgentsActivity extends AppCompatActivity {
                 Toast.makeText(AgentsActivity.this, "Clicked on Tripsheets", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTripsheetsLayout.startAnimation(animation1);
+                Intent i =new Intent(AgentsActivity.this,TripSheetsActivity.class);
+                startActivity(i);
+                finish();
             }
         });
         mCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
@@ -160,13 +163,17 @@ public class AgentsActivity extends AppCompatActivity {
         mTDCLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AgentsActivity.this, "Clicked on TDC", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AgentsActivity.this, "Clicked on TDC", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTDCLayout.startAnimation(animation1);
+                Intent i =new Intent(AgentsActivity.this,SalesActivity.class);
+                startActivity(i);
+                finish();
             }
         });
         HashMap<String,String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
+        System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
         for (int k = 0; k<privilegesData.size();k++){
             if (privilegesData.get(k).toString().equals("Dashboard")){
                 mDashBoardLayout.setVisibility(View.VISIBLE);
@@ -179,6 +186,12 @@ public class AgentsActivity extends AppCompatActivity {
             }else if (privilegesData.get(k).toString().equals("TDC")){
                 mTDCLayout.setVisibility(View.VISIBLE);
             }
+        }
+
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Dashboard"));
+        System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
+        for (int z = 0;z<privilegeActionsData.size();z++){
+            System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
         }
     }
 
