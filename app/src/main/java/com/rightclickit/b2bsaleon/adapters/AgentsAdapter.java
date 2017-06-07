@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
@@ -22,6 +22,7 @@ import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Sekhar Kuppa
@@ -35,6 +36,7 @@ public class AgentsAdapter extends BaseAdapter {
     ArrayList<AgentsBean> mAgentsBeansList1;
     private ImageLoader mImageLoader;
     private MMSharedPreferences mPreferences;
+    private ArrayList<AgentsBean> arraylist;
 
     public AgentsAdapter(Context ctxt,AgentsActivity agentsActivity, ArrayList<AgentsBean> mAgentsBeansList) {
         this.ctxt=ctxt;
@@ -43,6 +45,8 @@ public class AgentsAdapter extends BaseAdapter {
         this.mImageLoader = new ImageLoader(agentsActivity);
         this.mInflater = LayoutInflater.from(activity);
         this.mPreferences = new MMSharedPreferences(activity);
+        this.arraylist = new ArrayList<AgentsBean>();
+        this.arraylist.addAll(mAgentsBeansList1);
     }
 
     @Override
@@ -61,7 +65,7 @@ public class AgentsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int i, View view, ViewGroup viewGroup) {
+    public View getView(final int position, View view, ViewGroup viewGroup) {
         ViewHolder mHolder = null;
         if(view == null){
             mHolder = new ViewHolder();
@@ -82,29 +86,22 @@ public class AgentsAdapter extends BaseAdapter {
             mHolder = (ViewHolder) view.getTag();
         }
 
-        System.out.println("URL===== "+mAgentsBeansList1.get(i).getmAgentPic());
-        if (!mAgentsBeansList1.get(i).getmAgentPic().equals("")){
-            mImageLoader.DisplayImage(mAgentsBeansList1.get(i).getmAgentPic(),mHolder.mPicImage,null,"");
+        System.out.println("URL===== "+mAgentsBeansList1.get(position).getmAgentPic());
+        if (!mAgentsBeansList1.get(position).getmAgentPic().equals("")){
+            mImageLoader.DisplayImage(mAgentsBeansList1.get(position).getmAgentPic(),mHolder.mPicImage,null,"");
         }
-        mHolder.mTitle.setText(mAgentsBeansList1.get(i).getmAgentName());
-        if (mAgentsBeansList1.get(i).getmStatus().equals("A")){
+        mHolder.mTitle.setText(mAgentsBeansList1.get(position).getmAgentName());
+        if (mAgentsBeansList1.get(position).getmStatus().equals("A")){
             mHolder.mStatus.setText("Active");
         }else {
             mHolder.mStatus.setText("InActive");
         }
 
-        mHolder.infobtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.startActivity(new Intent(activity,AgentsInfoActivity.class));
-                activity.finish();
-            }
-        });
 
         mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPreferences.putString("agentName",mAgentsBeansList1.get(i).getmAgentName());
+                mPreferences.putString("agentName",mAgentsBeansList1.get(position).getmAgentName());
                 activity.startActivity(new Intent(activity,ViewAgent.class));
                 activity.finish();
             }
@@ -113,18 +110,21 @@ public class AgentsAdapter extends BaseAdapter {
         mHolder.infobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ctxt,AgentsInfoActivity.class);
-                Bundle bundle = new Bundle();
+                //Intent intent=new Intent(ctxt,AgentsInfoActivity.class);
+               // Bundle bundle = new Bundle();
                 //Add your data from getFactualResults method to bundle
-                bundle.putString("FIRSTNAME", mAgentsBeansList1.get(i).getFirstname());
-                Toast.makeText(ctxt,"firstname"+mAgentsBeansList1.get(i).getFirstname(),Toast.LENGTH_SHORT).show();
-                bundle.putString("LASTNAME", mAgentsBeansList1.get(i).getLastname());
-                bundle.putString("MOBILE", mAgentsBeansList1.get(i).getMphoneNO());
-                bundle.putString("ADDRESS", mAgentsBeansList1.get(i).getMaddress());
-                //Add the bundle to the intent
-                intent.putExtras(bundle);
+                mPreferences.putString("FIRSTNAME", mAgentsBeansList1.get(position).getmAgentName());
 
-                ctxt.startActivity(intent);
+                Log.i("firstnamebhagya",mAgentsBeansList1.get(position).getmAgentCode()+"");
+                mPreferences.putString("LASTNAME", mAgentsBeansList1.get(position).getmLastname());
+                mPreferences.putString("MOBILE", mAgentsBeansList1.get(position).getMphoneNO());
+                Log.i("mobilebhagya",mAgentsBeansList1.get(position).getMphoneNO()+"");
+                mPreferences.putString("ADDRESS", mAgentsBeansList1.get(position).getMaddress());
+                //Add the bundle to the intent
+                //intent.putExtras(bundle);
+
+                activity.startActivity(new Intent(activity,AgentsInfoActivity.class));
+                activity.finish();
             }
         });
 
@@ -142,5 +142,21 @@ public class AgentsAdapter extends BaseAdapter {
         ImageView mPicImage;
         public Button viewbtn;
         public Button infobtn;
+    }
+
+    // Filter Class
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        mAgentsBeansList1.clear();
+        if (charText.length() == 0) {
+            mAgentsBeansList1.addAll(arraylist);
+        } else {
+            for (AgentsBean wp : arraylist) {
+                if (wp.getmAgentName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    mAgentsBeansList1.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

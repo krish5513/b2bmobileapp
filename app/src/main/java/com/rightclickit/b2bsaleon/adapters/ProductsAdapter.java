@@ -3,7 +3,10 @@ package com.rightclickit.b2bsaleon.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +23,10 @@ import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by PPS on 5/25/2017.
@@ -34,6 +39,9 @@ public class ProductsAdapter extends BaseAdapter {
     Context ctxt;
     ArrayList<ProductsBean> mProductsBeansList1;
     private ImageLoader mImageLoader;
+    private ArrayList<ProductsBean> arraylist;
+    private MMSharedPreferences mPreferences;
+
 
     public ProductsAdapter(Context ctxt,Products_Activity productsActivity, ArrayList<ProductsBean> mProductsBeansList1) {
         this.ctxt=ctxt;
@@ -41,6 +49,9 @@ public class ProductsAdapter extends BaseAdapter {
         this.mProductsBeansList1 = mProductsBeansList1;
         this.mImageLoader = new ImageLoader(productsActivity);
         this.mInflater = LayoutInflater.from(activity);
+        this.arraylist = new ArrayList<ProductsBean>();
+        this.arraylist.addAll(mProductsBeansList1);
+        this.mPreferences = new MMSharedPreferences(activity);
     }
 
 
@@ -138,16 +149,19 @@ public class ProductsAdapter extends BaseAdapter {
         holder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(ctxt,ProductViewActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("CODE", mProductsBeansList1.get(position).getProductCode());
-                bundle.putString("DESCRIPTION", mProductsBeansList1.get(position).getProductDescription());
-                bundle.putString("RETURNABLE", mProductsBeansList1.get(position).getProductReturnable());
-                bundle.putString("MOQ", mProductsBeansList1.get(position).getProductMOQ());
-                bundle.putString("AGENT", mProductsBeansList1.get(position).getProductAgentPrice());
-                bundle.putString("RETAILER", mProductsBeansList1.get(position).getProductRetailerPrice());
-                bundle.putString("CONSUMER", mProductsBeansList1.get(position).getProductConsumerPrice());
-                ctxt.startActivity(intent);
+
+                mPreferences.putString("CODE", mProductsBeansList1.get(position).getProductCode());
+                Log.i("firstnamebhagya",mProductsBeansList1.get(position).getProductCode()+"");
+                mPreferences.putString("TITLE", mProductsBeansList1.get(position).getProductTitle());
+                mPreferences.putString("RETURNABLE", mProductsBeansList1.get(position).getProductReturnable());
+                mPreferences.putString("MOQ", mProductsBeansList1.get(position).getProductMOQ());
+                mPreferences.putString("AGENT", mProductsBeansList1.get(position).getProductAgentPrice());
+                mPreferences.putString("RETAILER", mProductsBeansList1.get(position).getProductRetailerPrice());
+                mPreferences.putString("CONSUMER", mProductsBeansList1.get(position).getProductConsumerPrice());
+
+              //  mPreferences.putString("IMAGE", mProductsBeansList1.get(position).getProductImageUrl());
+                activity.startActivity(new Intent(activity,ProductViewActivity.class));
+                activity.finish();
             }
         });
 
@@ -170,5 +184,25 @@ public class ProductsAdapter extends BaseAdapter {
         public Button stockbtn;
 
 
+    }
+
+    // Filter Class
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        mProductsBeansList1.clear();
+        if (charText.length() == 0) {
+            mProductsBeansList1.addAll(arraylist);
+        } else {
+            for (ProductsBean wp : arraylist) {
+                if (wp.getProductTitle().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    mProductsBeansList1.add(wp);
+                }
+
+                if (wp.getProductCode().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    mProductsBeansList1.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

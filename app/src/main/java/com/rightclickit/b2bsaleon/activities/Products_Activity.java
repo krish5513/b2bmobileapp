@@ -1,16 +1,19 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -52,6 +55,7 @@ public class Products_Activity extends AppCompatActivity {
     RecyclerView recyclerView;
     public ScrollView scrollView;
     Products_Activity c;
+    private SearchView search;
 
     private DBHelper dbHelper;
     private LinearLayout mDashboardLayout,mTripSheetsLayout,mCustomersLayout,mProductsLayout,mTDCLayout;
@@ -260,19 +264,62 @@ public class Products_Activity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                pAdapter.filter(query);
+
+                return true;
+
+            }
+
+        });
+
+        // Get the search close button image view
+        ImageView closeButton = (ImageView)search.findViewById(R.id.search_close_btn);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search.setQuery("", false);
+                search.clearFocus();
+                search.onActionViewCollapsed();
+            }
+        });
+
+
         return super.onCreateOptionsMenu(menu);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_search) {
-
-            return true;
-        }
+//        if (id == R.id.action_search) {
+//
+//            return true;
+//        }
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                if(search.isIconified()) {
+                    onBackPressed();
+                }else {
+                    search.setQuery("", false);
+                    search.clearFocus();
+                    search.onActionViewCollapsed();
+                }
                 return true;
             default:
                 return true;

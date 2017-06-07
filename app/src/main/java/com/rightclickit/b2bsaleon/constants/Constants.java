@@ -55,6 +55,8 @@ public class Constants {
      */
     public static final String PORT_AGENTS_LIST = ":3004";
 
+
+
     public static final String PORT_PRODUCTSLIST = ":3006";
 
     public static final String SYNC_TAKE_ORDERS_PORT = ":3008";
@@ -86,6 +88,9 @@ public class Constants {
     public static final String GET_STAKE_HOLDERS_LIST = "/usergroup/stakeholder_list";
     // Get Customers list Url
     public static final String GET_CUSTOMERS_LIST = "/customer/list";
+    // Get Customers list Url
+    public static final String GET_CUSTOMERS_ADD = "/customer/add";
+
     // Products api url
     public static final String PRODUCTSLIST_SERVICE = "/product/document_region";
     // Sync take orders data url

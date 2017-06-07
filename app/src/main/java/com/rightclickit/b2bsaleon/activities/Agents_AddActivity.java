@@ -4,9 +4,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -14,6 +16,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +29,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -46,10 +51,11 @@ public class Agents_AddActivity extends AppCompatActivity {
     ImageButton addImage;
     ImageView imageview;
     String imagePath;
-
+    DBHelper db;
+    SQLiteDatabase sqlDB;
     private static final int ACTION_TAKE_PHOTO_A = 1;
     private static final int ACTION_TAKE_GALLERY_PIC_A = 2;
-
+Location presentLocation=null;
 
 
 
@@ -83,7 +89,7 @@ public class Agents_AddActivity extends AppCompatActivity {
         // uid_no=(EditText) v.findViewById(R.id.uid_no);
         save=(TextView) findViewById(R.id.tv_save);
 
-
+         db=new DBHelper(getApplicationContext());
 
 
         save.setOnClickListener(new View.OnClickListener() {
@@ -128,8 +134,8 @@ public class Agents_AddActivity extends AppCompatActivity {
                 }
 
 
-                else {
-/*                    bname.setError(null);
+               /* else {
+                    bname.setError(null);
                     pname.setError(null);
                     mobile.setError(null);
                     // uid_no.setError(null);
@@ -150,7 +156,7 @@ public class Agents_AddActivity extends AppCompatActivity {
                                     if(presentLocation!= null)
                                         location=presentLocation.getLatitude()+","+presentLocation.getLongitude();
                                     String time= String.valueOf(System.currentTimeMillis());
-                                    db.addCutomers(new CustomerObj(bname.getText().toString(),pname.getText().toString(),mobile.getText().toString(),CustImage,0,location,time));
+                                    db.insertAgentDetails(new AgentsBean(bname.getText().toString(),pname.getText().toString(),mobile.getText().toString(),CustImage,0,location,time));
                                     Log.e("completed","dssdf");
                                     List<CustomerObj> customers = db.getAllCustomers();
 
@@ -160,11 +166,7 @@ public class Agents_AddActivity extends AppCompatActivity {
                                         Log.d("Name: ", log);
                                     }
                                     isActive = true;
-                                    Customers_Fragment fragment = new Customers_Fragment();
-                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                    fragmentTransaction.replace(R.id.flContent, fragment);
-                                    fragmentTransaction.addToBackStack(null);
-                                    fragmentTransaction.commit();
+
 //                                    values.put("bname",bname.getText().toString() );
 //                                    values.put("pname", pname.getText().toString());
 //                                    values.put("mobile", mobile.getText().toString());
@@ -182,9 +184,9 @@ public class Agents_AddActivity extends AppCompatActivity {
                                 }
                             })
                             .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();*/
+                            .show();
 
-                }
+                }*/
             }
         });
 

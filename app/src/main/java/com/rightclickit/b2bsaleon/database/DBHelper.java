@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
@@ -97,6 +98,7 @@ public class DBHelper extends SQLiteOpenHelper {
     // Column names for Agents Table
     private final String KEY_AGENT_ID = "agent_id";
     private final String KEY_AGENT_NAME = "agent_name";
+
     private final String KEY_OB_AMOUNT = "ob_value";
     private final String KEY_ORDER_VALUE = "order_value";
     private final String KEY_TOTAL_AMOUNT = "total_amount";
@@ -255,6 +257,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 // insert row
                 db.insert(TABLE_AGENTS, null, values);
                 System.out.println("F*********** INSERTED***************88");
+
                 values.clear();
             }
         } catch (Exception e){

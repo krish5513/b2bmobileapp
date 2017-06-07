@@ -10,51 +10,7 @@ public class AgentsBean {
     private String mLatitude;
     private String mLongitude;
     private String mAgentName;
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    private String firstname;
-    private String lastname;
-    private String mObAmount;
-    private String mOrderValue;
-    private String mTotalAmount;
-    private String mDueAmount;
-    private String mAgentPic;
-    private String mAgentCode;
-    private String mStatus;
-
-    public String getMphoneNO() {
-        return mphoneNO;
-    }
-
-    public void setMphoneNO(String mphoneNO) {
-        this.mphoneNO = mphoneNO;
-    }
-
-    public String getMaddress() {
-        return maddress;
-    }
-
-    public void setMaddress(String maddress) {
-        this.maddress = maddress;
-    }
-
-    private String mphoneNO;
-    private String maddress;
+    private String mFirstname;
 
     public String getmAgentId() {
         return mAgentId;
@@ -86,6 +42,22 @@ public class AgentsBean {
 
     public void setmAgentName(String mAgentName) {
         this.mAgentName = mAgentName;
+    }
+
+    public String getmFirstname() {
+        return mFirstname;
+    }
+
+    public void setmFirstname(String mFirstname) {
+        this.mFirstname = mFirstname;
+    }
+
+    public String getmLastname() {
+        return mLastname;
+    }
+
+    public void setmLastname(String mLastname) {
+        this.mLastname = mLastname;
     }
 
     public String getmObAmount() {
@@ -120,20 +92,20 @@ public class AgentsBean {
         this.mDueAmount = mDueAmount;
     }
 
-    public String getmAgentCode() {
-        return mAgentCode;
-    }
-
-    public void setmAgentCode(String mAgentCode) {
-        this.mAgentCode = mAgentCode;
-    }
-
     public String getmAgentPic() {
         return mAgentPic;
     }
 
     public void setmAgentPic(String mAgentPic) {
         this.mAgentPic = mAgentPic;
+    }
+
+    public String getmAgentCode() {
+        return mAgentCode;
+    }
+
+    public void setmAgentCode(String mAgentCode) {
+        this.mAgentCode = mAgentCode;
     }
 
     public String getmStatus() {
@@ -143,4 +115,32 @@ public class AgentsBean {
     public void setmStatus(String mStatus) {
         this.mStatus = mStatus;
     }
+
+    public String getMphoneNO() {
+        return mphoneNO;
+    }
+
+    public void setMphoneNO(String mphoneNO) {
+        this.mphoneNO = mphoneNO;
+    }
+
+    public String getMaddress() {
+        return maddress;
+    }
+
+    public void setMaddress(String maddress) {
+        this.maddress = maddress;
+    }
+
+    private String mLastname;
+    private String mObAmount;
+    private String mOrderValue;
+    private String mTotalAmount;
+    private String mDueAmount;
+    private String mAgentPic;
+    private String mAgentCode;
+    private String mStatus;
+    private String mphoneNO;
+    private String maddress;
+
 }

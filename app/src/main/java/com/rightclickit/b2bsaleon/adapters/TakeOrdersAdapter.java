@@ -30,6 +30,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.activities.TakeOrderScreen;
+import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -47,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Sekhar Kuppa
@@ -67,6 +69,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
     private ListView mList;
+    private ArrayList<TakeOrderBean> arraylist;
 
     public TakeOrdersAdapter(TakeOrderScreen productsActivity, ArrayList<TakeOrderBean> mTakeOrderBeansList, ListView mTakeOrderListView) {
         this.activity = productsActivity;
@@ -75,6 +78,8 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         this.mDBHelper = new DBHelper(activity);
         this.mPreferences = new MMSharedPreferences(activity);
         this.mList = mTakeOrderListView;
+        this.arraylist = new ArrayList<TakeOrderBean>();
+        this.arraylist.addAll(mTakeOrderBeansList1);
         try {
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -373,6 +378,23 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         public EditText productQuantity;
         public ImageButton productQuantityIncrement;
         public ImageButton productQuantityDecrement;
+    }
+
+    // Filter Class
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        mTakeOrderBeansList1.clear();
+        if (charText.length() == 0) {
+            mTakeOrderBeansList1.addAll(arraylist);
+        } else {
+            for (TakeOrderBean wp : arraylist) {
+                if (wp.getmProductTitle().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    mTakeOrderBeansList1.add(wp);
+                }
+
+            }
+        }
+        notifyDataSetChanged();
     }
 
     private void datePickerMethod(){

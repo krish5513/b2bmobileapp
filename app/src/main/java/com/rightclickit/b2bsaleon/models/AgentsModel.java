@@ -146,21 +146,24 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                     if (jo.has("longitude")){
                         agentsBean.setmLongitude(jo.getString("longitude"));
                     }
-                    if (jo.has("first_name") || jo.has("last_name")){
-                        agentsBean.setmAgentName(jo.getString("first_name") + jo.getString("last_name"));
-                    }
-                    if (jo.has("first_name") ){
-                        agentsBean.setFirstname(jo.getString("first_name") );
+
+                    if (jo.has("first_name")){
+                        agentsBean.setmFirstname(jo.getString("first_name"));
+                        Log.i("dgferkgferf",jo.getString("first_name") );
                     }
                     if (jo.has("last_name")){
-                        agentsBean.setLastname( jo.getString("last_name"));
+                        agentsBean.setmLastname( jo.getString("last_name"));
+                        System.out.println("dgferkgferf IS::: "+ jo.getString("last_name"));
                     }
                     if (jo.has("phone")){
                         agentsBean.setMphoneNO( jo.getString("phone"));
                     }
-                    if (jo.has("shop_address")){
-                        agentsBean.setMaddress( jo.getString("shop_address"));
+                    if (jo.has("first_name") || jo.has("last_name")){
+                        agentsBean.setmAgentName(jo.getString("first_name") + jo.getString("last_name"));
+                        System.out.println("firstname and lastname is IS::: "+ jo.getString("first_name") + jo.getString("last_name"));
                     }
+
+
                     if(jo.has("shopdata")){
                         JSONArray priceJsonArray = jo.getJSONArray("shopdata");
                         int length= priceJsonArray.length();

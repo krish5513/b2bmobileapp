@@ -10,17 +10,22 @@ import android.widget.EditText;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 public class AgentsInfoActivity extends AppCompatActivity {
     EditText firstname,lastname,mobile,address;
+    private MMSharedPreferences mPreference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agents_info);
 
+        mPreference = new MMSharedPreferences(this);
+
         this.getSupportActionBar().setTitle("customerName");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
+        this.getSupportActionBar().setTitle(mPreference.getString("FIRSTNAME"));
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -36,19 +41,19 @@ public class AgentsInfoActivity extends AppCompatActivity {
         lastname=(EditText)findViewById(R.id.last_name) ;
         mobile=(EditText)findViewById(R.id.phoneNo);
         address=(EditText)findViewById(R.id.address);
-        Bundle bundle = getIntent().getExtras();
+      //  Bundle bundle = getIntent().getExtras();
 
         //Extract the data…
-        String str_fName = bundle.getString("FIRSTNAME");
+        /*String str_fName = bundle.getString("FIRSTNAME");
         String str_lName = bundle.getString("LASTNAME");
         String str_mobile = bundle.getString("MOBILE");
         String str_address = bundle.getString("ADDRESS");
+*/
 
-
-        firstname.setText(str_fName);
-        lastname.setText(str_lName);
-        mobile.setText(str_mobile);
-        address.setText(str_address);
+        firstname.setText(mPreference.getString("FIRSTNAME"));
+        lastname.setText(mPreference.getString("LASTNAME"));
+        mobile.setText(mPreference.getString("MOBILE"));
+        address.setText(mPreference.getString("ADDRESS"));
     }
 
     @Override
