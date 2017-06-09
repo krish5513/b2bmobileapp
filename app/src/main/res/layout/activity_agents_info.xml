@@ -407,47 +407,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:padding="10dp"
-                    android:text="SHOP IMAGE"
-                    android:textAllCaps="true"
-                    android:textColor="@color/greydark"
-                    android:textSize="16sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@color/white"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/imageView3"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cam" />
-                    <ImageView
-                        android:id="@+id/imageView3"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cam" />
-
-                    <ImageView
-                        android:id="@+id/imageView3"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/cam" />
-
-                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -472,8 +431,115 @@
                         android:layout_margin="10dp"
                         />
 
-
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="10dp"
+                        android:text="SHOP IMAGE"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="16sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/shopaddress_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/cam" />
+                     </LinearLayout>
+                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="10dp"
+                        android:text="POI"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="16sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/poi_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/cam" />
+                </LinearLayout>
+                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+
+                    android:orientation="vertical"
+                    android:gravity="center">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:padding="10dp"
+                        android:text="POA"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:gravity="center">
+                    <ImageView
+                        android:id="@+id/poa_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="10dp"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/cam" />
+                </LinearLayout>
+
+               </LinearLayout>
+
+
 
             </LinearLayout>
 

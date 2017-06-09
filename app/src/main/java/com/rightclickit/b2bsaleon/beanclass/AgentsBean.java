@@ -12,6 +12,16 @@ public class AgentsBean {
     private String mAgentName;
     private String mFirstname;
 
+    public String getmAgentRouteId() {
+        return mAgentRouteId;
+    }
+
+    public void setmAgentRouteId(String mAgentRouteId) {
+        this.mAgentRouteId = mAgentRouteId;
+    }
+
+    private String mAgentRouteId;
+
     public String getmAgentId() {
         return mAgentId;
     }
@@ -138,6 +148,25 @@ public class AgentsBean {
     private String mTotalAmount;
     private String mDueAmount;
     private String mAgentPic;
+
+    public String getmPoiImage() {
+        return mPoiImage;
+    }
+
+    public void setmPoiImage(String mPoiImage) {
+        this.mPoiImage = mPoiImage;
+    }
+
+    public String getmPoaImage() {
+        return mPoaImage;
+    }
+
+    public void setmPoaImage(String mPoaImage) {
+        this.mPoaImage = mPoaImage;
+    }
+
+    private String mPoiImage;
+    private String mPoaImage;
     private String mAgentCode;
     private String mStatus;
     private String mphoneNO;

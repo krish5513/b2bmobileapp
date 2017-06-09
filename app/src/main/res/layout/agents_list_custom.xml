@@ -32,6 +32,20 @@
         android:id="@+id/personImage"
         android:layout_marginTop="3dp"
          />
+         <ImageView
+             android:layout_width="50dp"
+             android:layout_height="50dp"
+             android:id="@+id/poiImage"
+             android:visibility="gone"
+             android:layout_marginTop="3dp"
+             />
+         <ImageView
+             android:layout_width="50dp"
+             android:layout_height="50dp"
+             android:id="@+id/poaImage"
+             android:visibility="gone"
+             android:layout_marginTop="3dp"
+             />
     <TextView
         android:id="@+id/StatusText"
         android:layout_width="match_parent"

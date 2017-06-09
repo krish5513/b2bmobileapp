@@ -2,6 +2,7 @@ package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -32,10 +33,11 @@ public class ProductViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_view);
 
         mPreference = new MMSharedPreferences(this);
-
+        Bundle bundle = getIntent().getExtras();
         this.getSupportActionBar().setTitle("PRODUCTS VIEW");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.ic_shopping_cart_white_24dp);
+        this.getSupportActionBar().setTitle(bundle.getString("TITLE"));
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -55,24 +57,18 @@ public class ProductViewActivity extends AppCompatActivity {
         retailer=(EditText)findViewById(R.id.retailer) ;
         consumer=(EditText)findViewById(R.id.Consumer) ;
         image=(ImageView)findViewById(R.id.productimageview) ;
-     /*   Bundle bundle = getIntent().getExtras();
 
-        //Extract the data…
-        String str_code= bundle.getString("CODE");
-        String str_des = bundle.getString("DESCRIPTION");
-        String str_returnable = bundle.getString("RETURNABLE");
-        String str_moq = bundle.getString("MOQ");
-        String str_agent = bundle.getString("AGENT");
-        String str_retailer = bundle.getString("RETAILER");
-        String str_consumer = bundle.getString("CONSUMER");
-*/
-        code.setText(mPreference.getString("CODE"));
-        description.setText(mPreference.getString("TITLE"));
-        returnable.setText(mPreference.getString("RETURNABLE"));
-        moq.setText(mPreference.getString("MOQ"));
-        agent.setText(mPreference.getString("AGENT"));
-        retailer.setText(mPreference.getString("RETAILER"));
-        consumer.setText(mPreference.getString("CONSUMER"));
+        code.setText(bundle.getString("CODE"));
+        description.setText(bundle.getString("TITLE"));
+        returnable.setText(bundle.getString("RETURNABLE"));
+        moq.setText(bundle.getString("MOQ"));
+        agent.setText(bundle.getString("AGENT"));
+        retailer.setText(bundle.getString("RETAILER"));
+        consumer.setText(bundle.getString("CONSUMER"));
+
+        Bundle extras = getIntent().getExtras();
+        Bitmap bmp = (Bitmap) extras.getParcelable("imagebitmap");
+        image.setImageBitmap(bmp );
        // image.setImageResource(Integer.parseInt(mPreference.getString("IMAGE")));
     }
 

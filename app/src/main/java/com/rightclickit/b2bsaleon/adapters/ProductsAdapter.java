@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -72,7 +73,7 @@ public class ProductsAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        MyViewHolder holder;
+        final MyViewHolder holder;
 
         if (convertView == null) {
 
@@ -149,18 +150,26 @@ public class ProductsAdapter extends BaseAdapter {
         holder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                mPreferences.putString("CODE", mProductsBeansList1.get(position).getProductCode());
+                Intent intent=new Intent(activity,ProductViewActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("CODE", mProductsBeansList1.get(position).getProductCode());
                 Log.i("firstnamebhagya",mProductsBeansList1.get(position).getProductCode()+"");
-                mPreferences.putString("TITLE", mProductsBeansList1.get(position).getProductTitle());
-                mPreferences.putString("RETURNABLE", mProductsBeansList1.get(position).getProductReturnable());
-                mPreferences.putString("MOQ", mProductsBeansList1.get(position).getProductMOQ());
-                mPreferences.putString("AGENT", mProductsBeansList1.get(position).getProductAgentPrice());
-                mPreferences.putString("RETAILER", mProductsBeansList1.get(position).getProductRetailerPrice());
-                mPreferences.putString("CONSUMER", mProductsBeansList1.get(position).getProductConsumerPrice());
+                bundle.putString("TITLE", mProductsBeansList1.get(position).getProductTitle());
+                bundle.putString("RETURNABLE", mProductsBeansList1.get(position).getProductReturnable());
+                bundle.putString("MOQ", mProductsBeansList1.get(position).getProductMOQ());
+                bundle.putString("AGENT", mProductsBeansList1.get(position).getProductAgentPrice());
+                bundle.putString("RETAILER", mProductsBeansList1.get(position).getProductRetailerPrice());
+                bundle.putString("CONSUMER", mProductsBeansList1.get(position).getProductConsumerPrice());
+                 intent.putExtra("IMAGE", mProductsBeansList1.get(position).getProductImageUrl());
+                holder.productImage.buildDrawingCache();
+                 Bitmap image= holder.productImage.getDrawingCache();
+                Bundle extras = new Bundle();
+                extras.putParcelable("imagebitmap", image);
+                intent.putExtras(extras);
 
-              //  mPreferences.putString("IMAGE", mProductsBeansList1.get(position).getProductImageUrl());
-                activity.startActivity(new Intent(activity,ProductViewActivity.class));
+                intent.putExtras(bundle);
+
+                activity.startActivity(intent);
                 activity.finish();
             }
         });

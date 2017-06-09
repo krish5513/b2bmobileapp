@@ -38,6 +38,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
     private ArrayList<String> stakeIdsList = new ArrayList<String>();
     private JSONArray routesArray;
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
+    private String firstname="",lastname="",mobileno="";
 
     public AgentsModel(Context context, AgentsActivity activity) {
         this.context = context;
@@ -105,6 +106,37 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
         }
     }
 
+    public void customerAdd( String firstname,String lastname, String mobile) {
+        try {
+             this.firstname=firstname;
+            this.lastname=lastname;
+            this.mobileno=mobile;
+
+            if (new NetworkConnectionDetector(context).isNetworkConnected()) {
+                String customerAdd = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_ADD);
+               // HashMap<String,String> params = new HashMap<String,String>();
+
+                JSONObject paramsc = new JSONObject();
+                JSONArray agentRouteArray = paramsc.getJSONArray("route_id");
+                paramsc.put("route_id",agentRouteArray);
+
+                paramsc.put("first_name",firstname);
+                paramsc.put("last_name",lastname);
+                paramsc.put("phone",mobile);
+
+
+
+
+                AsyncRequest loginRequest = new AsyncRequest(context, this, customerAdd, AsyncRequest.MethodType.POST, paramsc);
+                loginRequest.execute();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
         try {
@@ -161,6 +193,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                     if (jo.has("phone")){
                         agentsBean.setMphoneNO( jo.getString("phone"));
                     }
+
                     if (jo.has("first_name") || jo.has("last_name")){
                         agentsBean.setmAgentName(jo.getString("first_name") + jo.getString("last_name"));
                         System.out.println("firstname and lastname is IS::: "+ jo.getString("first_name") + jo.getString("last_name"));
@@ -176,10 +209,26 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                 if(priceObj.has("shop_address")){
                                     // Agent price
                                    agentsBean.setMaddress(priceObj.getString("shop_address"));
+
+                                }
+                                if (priceObj.has("poi")){
+                                    agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
+                                }
+                                if (priceObj.has("poa")){
+                                    agentsBean.setmPoaImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poa"));
                                 }
                             }
                         }
                     }
+                    if(jo.has("route_id")){
+                        if(jo.get("route_id") instanceof JSONArray) {
+                            JSONArray agentRouteArray = jo.getJSONArray("route_id");
+                            if(agentRouteArray!=null){
+                                agentsBean.setmAgentRouteId(agentRouteArray.toString());
+                            }
+                        }
+                    }
+
                     agentsBean.setmObAmount("");
                     agentsBean.setmOrderValue("");
                     agentsBean.setmTotalAmount("");

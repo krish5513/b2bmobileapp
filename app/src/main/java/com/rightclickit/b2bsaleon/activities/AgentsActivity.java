@@ -188,7 +188,7 @@ public class AgentsActivity extends AppCompatActivity {
             }
         }
 
-        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Dashboard"));
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
         System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
         for (int z = 0;z<privilegeActionsData.size();z++){
             System.out.println("Name::: "+ privilegeActionsData.get(z).toString());

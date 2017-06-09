@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.models.AgentsModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -57,7 +58,7 @@ public class Agents_AddActivity extends AppCompatActivity {
     private static final int ACTION_TAKE_GALLERY_PIC_A = 2;
 Location presentLocation=null;
 
-
+    AgentsModel agentsmodel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +81,7 @@ Location presentLocation=null;
 
 
 
-        addImage=(ImageButton) findViewById(R.id.imageview1);
+       // addImage=(ImageButton) findViewById(R.id.imageview1);
         imageview=(ImageView) findViewById(R.id.image);
         bname=(EditText) findViewById(R.id.business_name);
 
@@ -93,103 +94,52 @@ Location presentLocation=null;
 
 
         save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                                    @Override
+                                    public void onClick(View view) {
 
-                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.blink);
-                save.startAnimation(animation1);
+                                        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
+                                                R.anim.blink);
+                                        save.startAnimation(animation1);
 
-                validateCustomerDetails();
-                SharedPreferences.Editor editor = Agents_AddActivity.this.getSharedPreferences("customerDetails", MODE_PRIVATE).edit();
-                editor.putString("customerName", bname.getText().toString());
-                editor.putString("personName", pname.getText().toString());
-                //  editor.putString("uid", uid_no.getText().toString());
-                editor.putString("mobile", mobile.getText().toString());
-                editor.commit();
+                                        validateCustomerDetails();
 
 
-            }
 
-            private void validateCustomerDetails() {
-                str_BusinessName=bname.getText().toString();
-                str_PersonName=pname.getText().toString();
-                str_Mobileno=mobile.getText().toString();
-                //  str_UID=uid_no.getText().toString();
-                if (str_BusinessName.length() == 0 || str_BusinessName.length() == ' ') {
-                    bname.setError("Please enter BusinessName");
-                    Toast.makeText(getApplicationContext(),"Please enter BusinessName",Toast.LENGTH_SHORT).show();
-                    //
-                }
-                else if (str_PersonName.length() == 0 || str_PersonName.length() == ' ') {
-                    bname.setError(null);
-                    pname.setError("Please enter PersonName");
-                    Toast.makeText(getApplicationContext(),"Please enter PersonName",Toast.LENGTH_SHORT).show();
-
-                } else if (str_Mobileno.length() == 0 || str_Mobileno.length() == ' ' || str_Mobileno.length()!=10) {
-                    pname.setError(null);
-                    mobile.setError("Please enter  10 digit mobileno");
-                    Toast.makeText(getApplicationContext(),"Please enter  10 digit mobileno",Toast.LENGTH_SHORT).show();
-
-                }
-
-
-               /* else {
-                    bname.setError(null);
-                    pname.setError(null);
-                    mobile.setError(null);
-                    // uid_no.setError(null);
-                    new AlertDialog.Builder(getApplicationContext())
-                            .setMessage("Do you want to save the data? Please confirm.")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // continue with delete
-                                    // checkBox1.setChecked(false);
-                                    sqlDB = db.getWritableDatabase();
-                                    //      ContentValues values = new ContentValues();
-                                    String CustImage;
-                                    if(bitmapLogo==null)
-                                        CustImage="NoImage";
-                                    else
-                                        CustImage=imagePath;
-                                    String location="";
-                                    if(presentLocation!= null)
-                                        location=presentLocation.getLatitude()+","+presentLocation.getLongitude();
-                                    String time= String.valueOf(System.currentTimeMillis());
-                                    db.insertAgentDetails(new AgentsBean(bname.getText().toString(),pname.getText().toString(),mobile.getText().toString(),CustImage,0,location,time));
-                                    Log.e("completed","dssdf");
-                                    List<CustomerObj> customers = db.getAllCustomers();
-
-                                    for (CustomerObj en : customers) {
-                                        String log = "Id: "+en.getID()+" ,BName: " + en.getBName() + " ,PName: " + en.getPName() + ", Mobile:" + en.getMobile();
-                                        // Writing Contacts to log
-                                        Log.d("Name: ", log);
                                     }
-                                    isActive = true;
 
-//                                    values.put("bname",bname.getText().toString() );
-//                                    values.put("pname", pname.getText().toString());
-//                                    values.put("mobile", mobile.getText().toString());
+                                    private void validateCustomerDetails() {
+                                        str_BusinessName = bname.getText().toString();
+                                        Log.i("bname",str_BusinessName);
+                                        str_PersonName = pname.getText().toString();
+                                        str_Mobileno = mobile.getText().toString();
+                                        //  str_UID=uid_no.getText().toString();
+                                        if (str_BusinessName.length() == 0 || str_BusinessName.length() == ' ') {
+                                            bname.setError("Please enter BusinessName");
+                                            Toast.makeText(getApplicationContext(), "Please enter BusinessName", Toast.LENGTH_SHORT).show();
+                                            //
+                                        } else if (str_PersonName.length() == 0 || str_PersonName.length() == ' ') {
+                                            bname.setError(null);
+                                            pname.setError("Please enter PersonName");
+                                            Toast.makeText(getApplicationContext(), "Please enter PersonName", Toast.LENGTH_SHORT).show();
 
-                                    //    sqlDB.execSQL("delete from customers");
-                                    //    sqlDB.insert("customers", null, values);
+                                        } else if (str_Mobileno.length() == 0 || str_Mobileno.length() == ' ' || str_Mobileno.length() != 10) {
+                                            pname.setError(null);
+                                            mobile.setError("Please enter  10 digit mobileno");
+                                            Toast.makeText(getApplicationContext(), "Please enter  10 digit mobileno", Toast.LENGTH_SHORT).show();
+
+                                        } else {
+                                            bname.setError(null);
+                                            pname.setError(null);
+                                            mobile.setError(null);
+                                            // uid_no.setError(null);
+
+                                            agentsmodel.customerAdd(str_BusinessName, str_PersonName,str_Mobileno);
+                                            Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
 
 
-                                }
-                            })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // do nothing
-                                    //   checkBox1.setChecked(true);
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
-
-                }*/
-            }
-        });
-
+                                        }
+                                    }
+                                });
 
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -3,6 +3,7 @@ package com.rightclickit.b2bsaleon.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -66,7 +67,7 @@ public class AgentsAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
-        ViewHolder mHolder = null;
+        final ViewHolder mHolder;
         if(view == null){
             mHolder = new ViewHolder();
             view = mInflater.inflate(R.layout.agents_list_custom,null);
@@ -80,7 +81,9 @@ public class AgentsAdapter extends BaseAdapter {
             mHolder.mDueAmount = (TextView) view.findViewById(R.id.tv_address8);
             mHolder.viewbtn = (Button) view.findViewById(R.id.btn_view);
             mHolder.infobtn = (Button) view.findViewById(R.id.btn_info);
-
+         //   AgentsInfoActivity.avatar=(ImageView) view.findViewById(R.id.shopaddress_image);
+            mHolder.mPoiImage=(ImageView) view.findViewById(R.id.poiImage);
+            mHolder.mPoaImage=(ImageView) view.findViewById(R.id.poaImage);
             view.setTag(mHolder);
         }else {
             mHolder = (ViewHolder) view.getTag();
@@ -111,20 +114,35 @@ public class AgentsAdapter extends BaseAdapter {
         mHolder.infobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent=new Intent(ctxt,AgentsInfoActivity.class);
-               // Bundle bundle = new Bundle();
+                Intent intent=new Intent(activity,AgentsInfoActivity.class);
+                Bundle bundle = new Bundle();
                 //Add your data from getFactualResults method to bundle
-                mPreferences.putString("FIRSTNAME", mAgentsBeansList1.get(position).getmAgentName());
+                bundle.putString("AGENTNAME", mAgentsBeansList1.get(position).getmAgentName());
+                bundle.putString("FIRSTNAME", mAgentsBeansList1.get(position).getmFirstname());
+                bundle.putString("LASTNAME", mAgentsBeansList1.get(position).getmLastname());
+                bundle.putString("MOBILE", mAgentsBeansList1.get(position).getMphoneNO());
+                bundle.putString("ADDRESS", mAgentsBeansList1.get(position).getMaddress());
 
-                Log.i("firstnamebhagya",mAgentsBeansList1.get(position).getmAgentCode()+"");
-                mPreferences.putString("LASTNAME", mAgentsBeansList1.get(position).getmLastname());
-                mPreferences.putString("MOBILE", mAgentsBeansList1.get(position).getMphoneNO());
-                Log.i("mobilebhagya",mAgentsBeansList1.get(position).getMphoneNO()+"");
-                mPreferences.putString("ADDRESS", mAgentsBeansList1.get(position).getMaddress());
+                intent.putExtra("AVATAR", mAgentsBeansList1.get(position).getmAgentPic());
+                Log.i("avatarimage", mAgentsBeansList1.get(position).getmAgentPic()+"");
+               intent.putExtra("POI", mAgentsBeansList1.get(position).getmPoiImage());
+                Log.i("poi_image", mAgentsBeansList1.get(position).getmPoiImage()+"");
+               intent.putExtra("POA", mAgentsBeansList1.get(position).getmPoaImage());
+                mHolder.mPicImage.buildDrawingCache();
+                mHolder.mPoiImage.buildDrawingCache();
+                mHolder.mPoaImage.buildDrawingCache();
+                Bitmap avatar=   mHolder.mPicImage.getDrawingCache();
+                Bitmap poi= mHolder.mPoiImage.getDrawingCache();
+                Bitmap poa= mHolder.mPoaImage.getDrawingCache();
+                Bundle extras = new Bundle();
+                extras.putParcelable("avatar", avatar);
+                extras.putParcelable("poi", poi);
+                extras.putParcelable("poa", poa);
+                intent.putExtras(extras);
                 //Add the bundle to the intent
-                //intent.putExtras(bundle);
+                intent.putExtras(bundle);
 
-                activity.startActivity(new Intent(activity,AgentsInfoActivity.class));
+                activity.startActivity(intent);
                 activity.finish();
             }
         });
@@ -142,6 +160,8 @@ public class AgentsAdapter extends BaseAdapter {
         TextView mDueAmount;
         TextView mStatus;
         ImageView mPicImage;
+        ImageView mPoiImage;
+        ImageView mPoaImage;
         public Button viewbtn;
         public Button infobtn;
     }
@@ -155,6 +175,9 @@ public class AgentsAdapter extends BaseAdapter {
         } else {
             for (AgentsBean wp : arraylist) {
                 if (wp.getmAgentName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    mAgentsBeansList1.add(wp);
+                }
+                if (wp.getmAgentCode().toLowerCase(Locale.getDefault()).contains(charText)) {
                     mAgentsBeansList1.add(wp);
                 }
             }

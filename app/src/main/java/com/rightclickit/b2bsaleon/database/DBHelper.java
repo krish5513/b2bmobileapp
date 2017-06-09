@@ -112,6 +112,13 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_AGENT_LATITUDE = "latitude";
     private final String KEY_AGENT_LONGITUDE = "longitude";
     private final String KEY_AGENT_CODE = "code";
+    private final String KEY_AGENT_FIRSTNAME = "firstname";
+    private final String KEY_AGENT_LASTNAME = "lastname";
+    private final String KEY_AGENT_PHONENO = "mobile";
+    private final String KEY_AGENT_ADDRESS = "address";
+    private final String KEY_AGENT_ROUTE_ID = "agent_route_ids";
+    private final String KEY_POI_IMAGE = "poi";
+    private final String KEY_POA_IMAGE = "poa";
 
     // Column names for Products with take order values
     private final String KEY_TO_PRODUCT_ID = "to_product_id";
@@ -135,7 +142,9 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TOTAL_AMOUNT + " VARCHAR," + KEY_DUE_AMOUNT + " VARCHAR,"  + KEY_AGENT_PIC + " VARCHAR,"
             + KEY_AGENT_STATUS + " VARCHAR,"
             + KEY_AGENT_LATITUDE + " VARCHAR," + KEY_AGENT_LONGITUDE + " VARCHAR,"
-            + KEY_AGENT_CODE + " VARCHAR)";
+            + KEY_AGENT_CODE + " VARCHAR," + KEY_AGENT_FIRSTNAME + " VARCHAR,"+ KEY_AGENT_LASTNAME + " VARCHAR,"
+            + KEY_AGENT_PHONENO + " VARCHAR,"+ KEY_AGENT_ADDRESS + " VARCHAR," + KEY_AGENT_ROUTE_ID + " VARCHAR,"
+            + KEY_POI_IMAGE + " VARCHAR," + KEY_POA_IMAGE + " VARCHAR)";
 
 
     // Userdetails Table Create Statements
@@ -270,7 +279,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_AGENT_LATITUDE, mAgentsBeansList.get(i).getmLatitude());
                 values.put(KEY_AGENT_LONGITUDE, mAgentsBeansList.get(i).getmLongitude());
                 values.put(KEY_AGENT_CODE, mAgentsBeansList.get(i).getmAgentCode());
-
+                values.put(KEY_AGENT_FIRSTNAME, mAgentsBeansList.get(i).getmFirstname());
+                values.put(KEY_AGENT_LASTNAME, mAgentsBeansList.get(i).getmLastname());
+                values.put(KEY_AGENT_PHONENO, mAgentsBeansList.get(i).getMphoneNO());
+                values.put(KEY_AGENT_ADDRESS, mAgentsBeansList.get(i).getMaddress());
+                values.put(KEY_AGENT_ROUTE_ID, mAgentsBeansList.get(i).getmAgentRouteId());
+                values.put(KEY_POI_IMAGE, mAgentsBeansList.get(i).getmPoiImage());
+                values.put(KEY_POA_IMAGE, mAgentsBeansList.get(i).getmPoaImage());
                 // insert row
                 db.insert(TABLE_AGENTS, null, values);
                 System.out.println("F*********** INSERTED***************88");
@@ -310,7 +325,13 @@ public class DBHelper extends SQLiteOpenHelper {
                     agentsBean.setmAgentCode((c.getString(c.getColumnIndex(KEY_AGENT_CODE))));
                     agentsBean.setmAgentPic((c.getString(c.getColumnIndex(KEY_AGENT_PIC))));
                     agentsBean.setmStatus((c.getString(c.getColumnIndex(KEY_AGENT_STATUS))));
-
+                    agentsBean.setmFirstname((c.getString(c.getColumnIndex(KEY_AGENT_FIRSTNAME))));
+                    agentsBean.setmLastname((c.getString(c.getColumnIndex(KEY_AGENT_LASTNAME))));
+                    agentsBean.setMphoneNO((c.getString(c.getColumnIndex(KEY_AGENT_PHONENO))));
+                    agentsBean.setMaddress((c.getString(c.getColumnIndex(KEY_AGENT_ADDRESS))));
+                    agentsBean.setmAgentRouteId((c.getString(c.getColumnIndex(KEY_AGENT_ROUTE_ID))));
+                    agentsBean.setmPoiImage((c.getString(c.getColumnIndex(KEY_POI_IMAGE))));
+                    agentsBean.setmPoaImage((c.getString(c.getColumnIndex(KEY_POA_IMAGE))));
                     allDeviceTrackRecords.add(agentsBean);
                 } while (c.moveToNext());
             }
