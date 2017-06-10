@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
+import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
 import com.rightclickit.b2bsaleon.activities.ViewAgent;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
@@ -49,7 +50,16 @@ public class AgentsAdapter extends BaseAdapter {
         this.arraylist = new ArrayList<AgentsBean>();
         this.arraylist.addAll(mAgentsBeansList1);
     }
-
+    public AgentsAdapter(Context ctxt, Agents_AddActivity agentsActivity, ArrayList<AgentsBean> mAgentsBeansList) {
+        this.ctxt=ctxt;
+        this.activity = agentsActivity;
+        this.mAgentsBeansList1 = mAgentsBeansList;
+        this.mImageLoader = new ImageLoader(agentsActivity);
+        this.mInflater = LayoutInflater.from(activity);
+        this.mPreferences = new MMSharedPreferences(activity);
+        this.arraylist = new ArrayList<AgentsBean>();
+        this.arraylist.addAll(mAgentsBeansList1);
+    }
     @Override
     public int getCount() {
         return mAgentsBeansList1.size();
@@ -93,7 +103,7 @@ public class AgentsAdapter extends BaseAdapter {
         if (!mAgentsBeansList1.get(position).getmAgentPic().equals("")){
             mImageLoader.DisplayImage(mAgentsBeansList1.get(position).getmAgentPic(),mHolder.mPicImage,null,"");
         }
-        mHolder.mTitle.setText(mAgentsBeansList1.get(position).getmAgentName());
+        mHolder.mTitle.setText(mAgentsBeansList1.get(position).getmFirstname());
         mHolder.id.setText(mAgentsBeansList1.get(position).getmAgentCode());
         if (mAgentsBeansList1.get(position).getmStatus().equals("A")){
             mHolder.mStatus.setText("Active");
@@ -105,7 +115,7 @@ public class AgentsAdapter extends BaseAdapter {
         mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPreferences.putString("agentName",mAgentsBeansList1.get(position).getmAgentName());
+                mPreferences.putString("agentName",mAgentsBeansList1.get(position).getmFirstname());
                 activity.startActivity(new Intent(activity,ViewAgent.class));
                 activity.finish();
             }
@@ -117,7 +127,7 @@ public class AgentsAdapter extends BaseAdapter {
                 Intent intent=new Intent(activity,AgentsInfoActivity.class);
                 Bundle bundle = new Bundle();
                 //Add your data from getFactualResults method to bundle
-                bundle.putString("AGENTNAME", mAgentsBeansList1.get(position).getmAgentName());
+             //   bundle.putString("AGENTNAME", mAgentsBeansList1.get(position).getmFirstname());
                 bundle.putString("FIRSTNAME", mAgentsBeansList1.get(position).getmFirstname());
                 bundle.putString("LASTNAME", mAgentsBeansList1.get(position).getmLastname());
                 bundle.putString("MOBILE", mAgentsBeansList1.get(position).getMphoneNO());
@@ -125,14 +135,16 @@ public class AgentsAdapter extends BaseAdapter {
 
                 intent.putExtra("AVATAR", mAgentsBeansList1.get(position).getmAgentPic());
                 Log.i("avatarimage", mAgentsBeansList1.get(position).getmAgentPic()+"");
-               intent.putExtra("POI", mAgentsBeansList1.get(position).getmPoiImage());
+                intent.putExtra("POI", mAgentsBeansList1.get(position).getmPoiImage());
                 Log.i("poi_image", mAgentsBeansList1.get(position).getmPoiImage()+"");
-               intent.putExtra("POA", mAgentsBeansList1.get(position).getmPoaImage());
+                intent.putExtra("POA", mAgentsBeansList1.get(position).getmPoaImage());
                 mHolder.mPicImage.buildDrawingCache();
                 mHolder.mPoiImage.buildDrawingCache();
                 mHolder.mPoaImage.buildDrawingCache();
                 Bitmap avatar=   mHolder.mPicImage.getDrawingCache();
+                Log.i("avatar",avatar+"");
                 Bitmap poi= mHolder.mPoiImage.getDrawingCache();
+                Log.i("poi",poi+"");
                 Bitmap poa= mHolder.mPoaImage.getDrawingCache();
                 Bundle extras = new Bundle();
                 extras.putParcelable("avatar", avatar);

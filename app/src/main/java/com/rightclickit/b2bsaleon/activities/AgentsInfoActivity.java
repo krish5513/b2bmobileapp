@@ -51,7 +51,7 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         this.getSupportActionBar().setTitle("customerName");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
-        this.getSupportActionBar().setTitle(bundle.getString("AGENTNAME"));
+        this.getSupportActionBar().setTitle(bundle.getString("FIRSTNAME"));
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);

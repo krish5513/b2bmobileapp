@@ -459,7 +459,7 @@
                     <ImageView
                         android:id="@+id/shopaddress_image"
                         android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_height="150dp"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
                         android:scaleType="fitXY"

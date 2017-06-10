@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
+import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
 import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
@@ -32,6 +33,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
     private Context context;
     private AgentsActivity activity;
+    private Agents_AddActivity activity1;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private String type="";
@@ -39,6 +41,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
     private JSONArray routesArray;
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
     private String firstname="",lastname="",mobileno="";
+    private boolean isSaveDeviceDetails;
 
     public AgentsModel(Context context, AgentsActivity activity) {
         this.context = context;
@@ -46,7 +49,12 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
         this.mPreferences = new MMSharedPreferences(context);
         this.mDBHelper = new DBHelper(context);
     }
-
+    public AgentsModel(Context context, Agents_AddActivity activity) {
+        this.context = context;
+        this.activity1 = activity;
+       // this.mPreferences = new MMSharedPreferences(context);
+      //  this.mDBHelper = new DBHelper(context);
+    }
     public void getStakeHoldersList(String s) {
         try {
             type = s;
@@ -80,7 +88,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 //            stakeId.add("5");
 //            stakeId.add("10");
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-                String logInURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_LIST);
+                String logInURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_ADD);
                 JSONObject job = new JSONObject();
 //                JSONArray routesArray = new JSONArray();
 //                routesArray.put("59158cb42c432907e4771bad");
@@ -108,12 +116,14 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
     public void customerAdd( String firstname,String lastname, String mobile) {
         try {
+
+            isSaveDeviceDetails = true;
              this.firstname=firstname;
             this.lastname=lastname;
             this.mobileno=mobile;
 
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-                String customerAdd = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_ADD);
+                String customerAdd = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_LIST);
                // HashMap<String,String> params = new HashMap<String,String>();
 
                 JSONObject paramsc = new JSONObject();
@@ -194,12 +204,6 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                         agentsBean.setMphoneNO( jo.getString("phone"));
                     }
 
-                    if (jo.has("first_name") || jo.has("last_name")){
-                        agentsBean.setmAgentName(jo.getString("first_name") + jo.getString("last_name"));
-                        System.out.println("firstname and lastname is IS::: "+ jo.getString("first_name") + jo.getString("last_name"));
-                    }
-
-
                     if(jo.has("shopdata")){
                         JSONArray priceJsonArray = jo.getJSONArray("shopdata");
                         int length= priceJsonArray.length();
@@ -212,7 +216,12 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
                                 }
                                 if (priceObj.has("poi")){
-                                    agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
+
+                                    String URL  = Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi");
+                                    agentsBean.setmPoiImage(URL);
+                         Log.i("THE POI URL IS::: ",URL);
+
+                                    // agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
                                 }
                                 if (priceObj.has("poa")){
                                     agentsBean.setmPoaImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poa"));

@@ -1,8 +1,11 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -12,6 +15,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,24 +32,39 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentsModel;
+import com.rightclickit.b2bsaleon.models.GetAddressTask;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
-public class Agents_AddActivity extends AppCompatActivity {
+public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback{
 
     String str_BusinessName,str_PersonName,str_Mobileno,str_UID;
+
+    private GoogleMap googlemap;
+    private AgentsAdapter mAgentsAdapter;
 
     TextView save;
     EditText bname;
     EditText pname;
+    EditText address;
     Bitmap bitmapLogo;
     EditText mobile;
     EditText uid_no;
@@ -56,9 +75,10 @@ public class Agents_AddActivity extends AppCompatActivity {
     SQLiteDatabase sqlDB;
     private static final int ACTION_TAKE_PHOTO_A = 1;
     private static final int ACTION_TAKE_GALLERY_PIC_A = 2;
-Location presentLocation=null;
+    Location presentLocation=null;
 
     AgentsModel agentsmodel;
+    private Context applicationContext, activityContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,19 +99,31 @@ Location presentLocation=null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-
+        address=(EditText) findViewById(R.id.uid_no);
 
        // addImage=(ImageButton) findViewById(R.id.imageview1);
-        imageview=(ImageView) findViewById(R.id.image);
+        imageview=(ImageView) findViewById(R.id.shop_image);
         bname=(EditText) findViewById(R.id.business_name);
 
         pname=(EditText) findViewById(R.id.person_name);
         mobile=(EditText) findViewById(R.id.mobile_no);
         // uid_no=(EditText) v.findViewById(R.id.uid_no);
         save=(TextView) findViewById(R.id.tv_save);
+        Bundle extras = getIntent().getExtras();
+      //  Bitmap avatarbmp = (Bitmap) extras.getParcelable("avatar");
 
+      //  imageview.setImageBitmap(avatarbmp);
          db=new DBHelper(getApplicationContext());
-
+        agentsmodel=new AgentsModel(activityContext, this);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.mapFrag);
+        mapFragment.getMapAsync(this);
+        imageview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+            }
+        });
 
         save.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -137,21 +169,18 @@ Location presentLocation=null;
                                             Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
 
 
-                                        }
-                                    }
-                                });
 
-        addImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectImage();
-            }
+                                        }
+
+                                    }
         });
 
 
 
 
+
     }
+
 
 
     private void selectImage() {
@@ -273,7 +302,60 @@ Location presentLocation=null;
                 return true;
         }
     }
+    private void replaceMapFragment() {
 
+
+        // Enable Zoom
+        googlemap.getUiSettings().setZoomGesturesEnabled(true);
+
+        //set Map TYPE
+        googlemap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        //enable Current location Button
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        googlemap.setMyLocationEnabled(true);
+
+        //set "listener" for changing my location
+        googlemap.setOnMyLocationChangeListener(myLocationChangeListener());
+
+
+
+    }
+
+
+    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener() {
+
+        return new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+                double longitude = location.getLongitude();
+                double latitude = location.getLatitude();
+
+                Marker marker;
+                marker = googlemap.addMarker(new MarkerOptions().position(loc));
+                googlemap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+                // locationText.setText("You are at [" + longitude + " ; " + latitude + " ]");
+
+                //get current address by invoke an AsyncTask object
+                new GetAddressTask(Agents_AddActivity.this).execute(String.valueOf(latitude), String.valueOf(longitude));
+            }
+        };
+    }
+
+
+    public void callBackDataFromAsyncTask(String laddress) {
+        address.setText(laddress);
+    }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
@@ -292,5 +374,12 @@ Location presentLocation=null;
         Intent intent = new Intent(this, AgentsActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        googlemap = map;
+
+        replaceMapFragment();
     }
 }
