@@ -23,6 +23,7 @@ import com.rightclickit.b2bsaleon.activities.ProductViewActivity;
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
@@ -143,8 +144,11 @@ public class ProductsAdapter extends BaseAdapter {
         //System.out.println("URL===== "+mProductsBeansList1.get(position).getProductImageUrl());
         if(mProductsBeansList1.get(position).getProductImageUrl()!=null) {
             if (!mProductsBeansList1.get(position).getProductImageUrl().equals("")) {
-                mImageLoader.DisplayImage(mProductsBeansList1.get(position).getProductImageUrl(), holder.productImage, null, "");
+                String URL  = Constants.MAIN_URL+"/b2b/"+mProductsBeansList1.get(position).getProductImageUrl();
+                mImageLoader.DisplayImage(URL, holder.productImage, null, "");
             }
+        }else {
+            holder.productImage.setBackgroundResource(R.drawable.logo);
         }
 
         holder.viewbtn.setOnClickListener(new View.OnClickListener() {

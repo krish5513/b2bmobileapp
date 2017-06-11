@@ -46,6 +46,7 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentsModel;
 import com.rightclickit.b2bsaleon.models.GetAddressTask;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -184,7 +185,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                                             agentsBean.setmLastname(str_PersonName);
                                             agentsBean.setMphoneNO(str_Mobileno);
                                             agentsBean.setmAgentEmail("");
-                                            agentsBean.setmAgentPassword("123456789");
+                                            agentsBean.setmAgentPassword(Utility.getMd5String("123456789"));
                                             agentsBean.setmAgentCode("");
                                             agentsBean.setmAgentReprtingto("");
                                             agentsBean.setmAgentVerifycode("");
@@ -199,6 +200,11 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                                             String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
                                             agentsBean.setmAgentCreatedOn(timeStamp);
                                             agentsBean.setmAgentUpdatedOn(timeStamp);
+                                            agentsBean.setmObAmount("");
+                                            agentsBean.setmOrderValue("");
+                                            agentsBean.setmTotalAmount("");
+                                            agentsBean.setmDueAmount("");
+                                            agentsBean.setmAgentPic("");
                                             mAgentsBeansList.add(agentsBean);
                                             db.insertAgentDetails(mAgentsBeansList);
 
@@ -408,7 +414,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         menu.findItem(R.id.notifications).setVisible(false);
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.action_search).setVisible(false);
 
 
         return super.onPrepareOptionsMenu(menu);

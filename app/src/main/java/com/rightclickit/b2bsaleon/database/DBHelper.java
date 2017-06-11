@@ -109,26 +109,26 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_DUE_AMOUNT = "due_amount";
     private final String KEY_AGENT_PIC = "agent_pic_url";
     private final String KEY_AGENT_STATUS = "agent_status";
-    private final String KEY_AGENT_LATITUDE = "latitude";
-    private final String KEY_AGENT_LONGITUDE = "longitude";
-    private final String KEY_AGENT_CODE = "code";
-    private final String KEY_AGENT_FIRSTNAME = "firstname";
-    private final String KEY_AGENT_LASTNAME = "lastname";
-    private final String KEY_AGENT_PHONENO = "mobile";
-    private final String KEY_AGENT_ADDRESS = "address";
+    private final String KEY_AGENT_LATITUDE = "agent_latitude";
+    private final String KEY_AGENT_LONGITUDE = "agent_longitude";
+    private final String KEY_AGENT_CODE = "agent_code";
+    private final String KEY_AGENT_FIRSTNAME = "agent_firstname";
+    private final String KEY_AGENT_LASTNAME = "agent_lastname";
+    private final String KEY_AGENT_PHONENO = "agent_mobile";
+    private final String KEY_AGENT_ADDRESS = "agent_address";
     private final String KEY_AGENT_ROUTE_ID = "agent_route_ids";
-    private final String KEY_POI_IMAGE = "poi";
-    private final String KEY_POA_IMAGE = "poa";
-    private final String KEY_AGENT_EMAIL = "email";
-    private final String KEY_AGENT_PASSWORD = "password";
-    private final String KEY_AGENT_STAKEHOLDERID= "stakeid";
-    private final String KEY_AGENT_REPORTINGTO = "reportingto";
-    private final String KEY_AGENT_VERIFYCODE = "verifycode";
-    private final String KEY_AGENT_DELETE= "delete";
-    private final String KEY_AGENT_CREATEDBY= "createdby";
-    private final String KEY_AGENT_CREATEDON= "createdby";
-    private final String KEY_AGENT_UPDATEDBY= "updatedby";
-    private final String KEY_AGENT_UPDATEDON= "updatedon";
+    private final String KEY_POI_IMAGE = "agent_poi";
+    private final String KEY_POA_IMAGE = "agent_poa";
+    private final String KEY_AGENT_EMAIL = "agent_email";
+    private final String KEY_AGENT_PASSWORD = "agent_password";
+    private final String KEY_AGENT_STAKEHOLDERID= "agent_stakeid";
+    private final String KEY_AGENT_REPORTINGTO = "agent_reportingto";
+    private final String KEY_AGENT_VERIFYCODE = "agent_verifycode";
+    private final String KEY_AGENT_DELETE= "agent_dele";
+    private final String KEY_AGENT_CREATEDBY= "agent_createdby";
+    private final String KEY_AGENT_CREATEDON= "agent_createdon";
+    private final String KEY_AGENT_UPDATEDBY= "agent_updatedby";
+    private final String KEY_AGENT_UPDATEDON= "agent_updatedon";
 
 
 

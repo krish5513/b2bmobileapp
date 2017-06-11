@@ -91,8 +91,8 @@ public class AgentsActivity extends AppCompatActivity {
         agentsModel = new AgentsModel(activityContext,this);
 
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
-        ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
-        System.out.println("ELSE::: "+a.size());
+       // ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
+        //System.out.println("ELSE::: "+a.size());
         if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
             if(mDBHelper.getAgentsTableCount()>0){
                 ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();

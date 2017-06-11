@@ -19,6 +19,7 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,7 +89,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 //            stakeId.add("5");
 //            stakeId.add("10");
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-                String logInURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_ADD);
+                String logInURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_LIST);
                 JSONObject job = new JSONObject();
 //                JSONArray routesArray = new JSONArray();
 //                routesArray.put("59158cb42c432907e4771bad");
@@ -173,98 +174,131 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 //                }
             }else {
                 System.out.println("========= AGENTS response = " + response);
-                 JSONArray respArray = new JSONArray(response);
-                int len = respArray.length();
-                for (int k = 0;k<len;k++){
-                    JSONObject jo = respArray.getJSONObject(k);
+                Object json = new JSONTokener(response).nextValue();
+                if (json instanceof JSONArray) {
+                    JSONArray respArray = new JSONArray(response);
+                    int len = respArray.length();
+                    for (int k = 0; k < len; k++) {
+                        JSONObject jo = respArray.getJSONObject(k);
 
-                    AgentsBean agentsBean = new AgentsBean();
-                    if (jo.has("_id")) {
-                        agentsBean.setmAgentId(jo.getString("_id"));
-                    }
-                    if (jo.has("latitude")){
-                        agentsBean.setmLatitude(jo.getString("latitude"));
-                    }
-                    if (jo.has("longitude")){
-                        agentsBean.setmLongitude(jo.getString("longitude"));
-                    }
-                    if (jo.has("code")){
-                        agentsBean.setmAgentCode(jo.getString("code"));
-                    }
+                        AgentsBean agentsBean = new AgentsBean();
+                        if (jo.has("_id")) {
+                            agentsBean.setmAgentId(jo.getString("_id"));
+                        }
+                        if (jo.has("latitude")) {
+                            agentsBean.setmLatitude(jo.getString("latitude"));
+                        }
+                        if (jo.has("longitude")) {
+                            agentsBean.setmLongitude(jo.getString("longitude"));
+                        }
+                        if (jo.has("code")) {
+                            agentsBean.setmAgentCode(jo.getString("code"));
+                        }
 
-                    if (jo.has("first_name")){
-                        agentsBean.setmFirstname(jo.getString("first_name"));
-                        Log.i("dgferkgferf",jo.getString("first_name") );
-                    }
-                    if (jo.has("last_name")){
-                        agentsBean.setmLastname( jo.getString("last_name"));
-                        System.out.println("dgferkgferf IS::: "+ jo.getString("last_name"));
-                    }
-                    if (jo.has("phone")){
-                        agentsBean.setMphoneNO( jo.getString("phone"));
-                    }
+                        if (jo.has("email")) {
+                            agentsBean.setmAgentEmail(jo.getString("email"));
+                        }
+                        if (jo.has("password")) {
+                            agentsBean.setmAgentPassword(jo.getString("password"));
+                        }
+                        if (jo.has("reporting_to")) {
+                            agentsBean.setmAgentReprtingto(jo.getString("reporting_to"));
+                        }
+                        if (jo.has("verify_code")) {
+                            agentsBean.setmAgentVerifycode(jo.getString("verify_code"));
+                        }
+                        if (jo.has("status")) {
+                            agentsBean.setmStatus(jo.getString("status"));
+                        }
+                        if (jo.has("delete")) {
+                            agentsBean.setmAgentDelete(jo.getString("delete"));
+                        }
+                        if (jo.has("first_name")) {
+                            agentsBean.setmFirstname(jo.getString("first_name"));
+                            //Log.i("dgferkgferf", jo.getString("first_name"));
+                        }
+                        if (jo.has("last_name")) {
+                            agentsBean.setmLastname(jo.getString("last_name"));
+                            //System.out.println("dgferkgferf IS::: " + jo.getString("last_name"));
+                        }
+                        if (jo.has("phone")) {
+                            agentsBean.setMphoneNO(jo.getString("phone"));
+                        }
 
-                    if(jo.has("shopdata")){
-                        JSONArray priceJsonArray = jo.getJSONArray("shopdata");
-                        int length= priceJsonArray.length();
-                        if (length>0){
-                            for (int s = 0;s<length;s++){
-                                JSONObject priceObj = priceJsonArray.getJSONObject(s);
-                                if(priceObj.has("shop_address")){
-                                    // Agent price
-                                   agentsBean.setMaddress(priceObj.getString("shop_address"));
+                        if (jo.has("shopdata")) {
+                            JSONArray priceJsonArray = jo.getJSONArray("shopdata");
+                            int length = priceJsonArray.length();
+                            if (length > 0) {
+                                for (int s = 0; s < length; s++) {
+                                    JSONObject priceObj = priceJsonArray.getJSONObject(s);
+                                    if (priceObj.has("shop_address")) {
+                                        // Agent price
+                                        agentsBean.setMaddress(priceObj.getString("shop_address"));
 
-                                }
-                                if (priceObj.has("poi")){
+                                    }
+                                    if (priceObj.has("poi")) {
 
-                                    String URL  = Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi");
-                                    agentsBean.setmPoiImage(URL);
-                         Log.i("THE POI URL IS::: ",URL);
+                                        //String URL = Constants.MAIN_URL + "/b2b/" + priceObj.getString("poi");
+                                        agentsBean.setmPoiImage(priceObj.getString("poi"));
 
-                                    // agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
-                                }
-                                if (priceObj.has("poa")){
-                                    agentsBean.setmPoaImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poa"));
+                                        // agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
+                                    }
+                                    if (priceObj.has("poa")) {
+                                       // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
+                                        agentsBean.setmPoaImage(priceObj.getString("poa"));
+                                    }
                                 }
                             }
                         }
-                    }
-                    if(jo.has("route_id")){
-                        if(jo.get("route_id") instanceof JSONArray) {
-                            JSONArray agentRouteArray = jo.getJSONArray("route_id");
-                            if(agentRouteArray!=null){
-                                agentsBean.setmAgentRouteId(agentRouteArray.toString());
+                        if (jo.has("route_id")) {
+                            if (jo.get("route_id") instanceof JSONArray) {
+                                JSONArray agentRouteArray = jo.getJSONArray("route_id");
+                                if (agentRouteArray != null) {
+                                    agentsBean.setmAgentRouteId(agentRouteArray.toString());
+                                }
                             }
                         }
-                    }
 
-                    agentsBean.setmObAmount("");
-                    agentsBean.setmOrderValue("");
-                    agentsBean.setmTotalAmount("");
-                    agentsBean.setmDueAmount("");
-                    if (jo.has("code")){
-                        agentsBean.setmAgentCode(jo.getString("code"));
-                    }
-                    if (jo.has("avatar")){
-                        agentsBean.setmAgentPic(Constants.MAIN_URL+"/b2b/"+jo.getString("avatar"));
-                    }
-                    if (jo.has("status")){
-                        agentsBean.setmStatus(jo.getString("status"));
-                    }
+                        agentsBean.setmObAmount("");
+                        agentsBean.setmOrderValue("");
+                        agentsBean.setmTotalAmount("");
+                        agentsBean.setmDueAmount("");
+                        if (jo.has("stakeholder_id")) {
+                            agentsBean.setmAgentStakeid(jo.getString("stakeholder_id"));
+                        }
+                        if (jo.has("avatar")) {
+                            agentsBean.setmAgentPic(jo.getString("avatar"));
+                        }
+//                        if (jo.has("address")) {
+//                            agentsBean.setMaddress(jo.getString("address"));
+//                        }
+                        if (jo.has("created_by")) {
+                            agentsBean.setmAgentCreatedBy(jo.getString("created_by"));
+                        }
+                        if (jo.has("created_on")) {
+                            agentsBean.setmAgentCreatedOn(jo.getString("created_on"));
+                        }
+                        if (jo.has("updated_on")) {
+                            agentsBean.setmAgentUpdatedOn(jo.getString("updated_on"));
+                        }
+                        if (jo.has("updated_by")) {
+                            agentsBean.setmAgentUpdatedBy(jo.getString("updated_by"));
+                        }
 
-                    mAgentsBeansList.add(agentsBean);
-                }
-                if(mDBHelper.getAgentsTableCount()>0){
-                    mDBHelper.deleteValuesFromAgentsTable();
-                }
-                synchronized (this){
-                    if(mDBHelper.getAgentsTableCount()>0){
+                        mAgentsBeansList.add(agentsBean);
+                    }
+                    if (mDBHelper.getAgentsTableCount() > 0) {
                         mDBHelper.deleteValuesFromAgentsTable();
                     }
-                    mDBHelper.insertAgentDetails(mAgentsBeansList);
-                }
-                synchronized (this) {
-                    activity.loadAgentsList(mAgentsBeansList);
+                    synchronized (this) {
+                        if (mDBHelper.getAgentsTableCount() > 0) {
+                            mDBHelper.deleteValuesFromAgentsTable();
+                        }
+                        mDBHelper.insertAgentDetails(mAgentsBeansList);
+                    }
+                    synchronized (this) {
+                        activity.loadAgentsList(mAgentsBeansList);
+                    }
                 }
             }
         } catch (Exception e) {

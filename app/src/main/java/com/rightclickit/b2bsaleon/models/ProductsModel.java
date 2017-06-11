@@ -135,8 +135,8 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
                             for (int m = 0;m <len1;m++){
                                 JSONObject imageObj = imageJsonArray.getJSONObject(m);
                                 if (imageObj.has("url")){
-                                    String URL  = Constants.MAIN_URL+"/b2b/"+imageObj.getString("url");
-                                    productsBean.setProductImageUrl(URL);
+                                    //String URL  = Constants.MAIN_URL+"/b2b/"+imageObj.getString("url");
+                                    productsBean.setProductImageUrl(imageObj.getString("url"));
                                 }
                             }
                         }

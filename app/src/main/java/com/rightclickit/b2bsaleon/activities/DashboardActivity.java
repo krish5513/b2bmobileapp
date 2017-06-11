@@ -207,4 +207,15 @@ public class DashboardActivity extends AppCompatActivity {
         startActivity(settingsIntent);
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent homeIntent= new Intent(Intent.ACTION_MAIN);
+        homeIntent.addCategory(Intent.CATEGORY_HOME);
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(homeIntent);
+        finish();
+    }
 }

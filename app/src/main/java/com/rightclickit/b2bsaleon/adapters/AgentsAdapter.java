@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
@@ -20,6 +21,7 @@ import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
 import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
 import com.rightclickit.b2bsaleon.activities.ViewAgent;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
+import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
@@ -94,14 +96,27 @@ public class AgentsAdapter extends BaseAdapter {
          //   AgentsInfoActivity.avatar=(ImageView) view.findViewById(R.id.shopaddress_image);
             mHolder.mPoiImage=(ImageView) view.findViewById(R.id.poiImage);
             mHolder.mPoaImage=(ImageView) view.findViewById(R.id.poaImage);
+
+            mHolder.mEmptyLayout = (LinearLayout) view.findViewById(R.id.EmptyView);
+
             view.setTag(mHolder);
         }else {
             mHolder = (ViewHolder) view.getTag();
         }
 
+        if(position == mAgentsBeansList1.size()-1){
+            mHolder.mEmptyLayout.setVisibility(View.VISIBLE);
+        }else {
+            mHolder.mEmptyLayout.setVisibility(View.GONE);
+        }
+
+
         System.out.println("URL===== "+mAgentsBeansList1.get(position).getmAgentPic());
         if (!mAgentsBeansList1.get(position).getmAgentPic().equals("")){
-            mImageLoader.DisplayImage(mAgentsBeansList1.get(position).getmAgentPic(),mHolder.mPicImage,null,"");
+            String URL = Constants.MAIN_URL + "/b2b/" + mAgentsBeansList1.get(position).getmAgentPic();
+            mImageLoader.DisplayImage(URL,mHolder.mPicImage,null,"");
+        }else {
+            mHolder.mPicImage.setBackgroundResource(R.drawable.logo);
         }
         mHolder.mTitle.setText(mAgentsBeansList1.get(position).getmFirstname());
         mHolder.id.setText(mAgentsBeansList1.get(position).getmAgentCode());
@@ -134,9 +149,9 @@ public class AgentsAdapter extends BaseAdapter {
                 bundle.putString("ADDRESS", mAgentsBeansList1.get(position).getMaddress());
 
                 intent.putExtra("AVATAR", mAgentsBeansList1.get(position).getmAgentPic());
-                Log.i("avatarimage", mAgentsBeansList1.get(position).getmAgentPic()+"");
+               // Log.i("avatarimage", mAgentsBeansList1.get(position).getmAgentPic());
                 intent.putExtra("POI", mAgentsBeansList1.get(position).getmPoiImage());
-                Log.i("poi_image", mAgentsBeansList1.get(position).getmPoiImage()+"");
+                //Log.i("poi_image", mAgentsBeansList1.get(position).getmPoiImage());
                 intent.putExtra("POA", mAgentsBeansList1.get(position).getmPoaImage());
                 mHolder.mPicImage.buildDrawingCache();
                 mHolder.mPoiImage.buildDrawingCache();
@@ -176,6 +191,7 @@ public class AgentsAdapter extends BaseAdapter {
         ImageView mPoaImage;
         public Button viewbtn;
         public Button infobtn;
+        LinearLayout mEmptyLayout;
     }
 
     // Filter Class

@@ -49,7 +49,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="3dp"
@@ -58,7 +58,7 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -75,7 +75,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="3dp"
@@ -84,7 +84,7 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -101,7 +101,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="3dp"
@@ -110,7 +110,7 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address6"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -139,7 +139,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address7"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="3dp"
@@ -148,7 +148,7 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address8"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -165,7 +165,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address9"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="3dp"
@@ -174,7 +174,7 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address10"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -191,7 +191,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address11"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="3dp"
@@ -200,7 +200,7 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address12"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -229,7 +229,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address13"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="3dp"
@@ -238,7 +238,7 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address14"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -256,7 +256,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address15"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="3dp"
@@ -265,7 +265,7 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address16"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -282,7 +282,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address17"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:paddingLeft="3dp"
@@ -291,7 +291,7 @@
                             android:textSize="12sp" />
 
                         <TextView
-                            android:id="@+id/tv_address"
+                            android:id="@+id/tv_address18"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
@@ -342,7 +342,7 @@
 
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/business_name_label"
+                    android:id="@+id/business_name_label1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp">
@@ -362,7 +362,7 @@
 
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/business_name_label"
+                    android:id="@+id/business_name_label2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp">
@@ -382,7 +382,7 @@
 
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/business_name_label"
+                    android:id="@+id/business_name_label3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp">
@@ -458,8 +458,8 @@
 
                     <ImageView
                         android:id="@+id/shopaddress_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
                         android:scaleType="fitXY"
@@ -493,8 +493,8 @@
 
                     <ImageView
                         android:id="@+id/poi_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
                         android:scaleType="fitXY"
@@ -528,8 +528,8 @@
                         android:gravity="center">
                     <ImageView
                         android:id="@+id/poa_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"
                         android:layout_gravity="center"
                         android:layout_margin="10dp"
                         android:scaleType="fitXY"

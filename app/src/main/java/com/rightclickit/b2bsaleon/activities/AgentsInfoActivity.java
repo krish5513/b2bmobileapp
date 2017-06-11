@@ -80,9 +80,15 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         Bitmap avatarbmp = (Bitmap) extras.getParcelable("avatar");
         Bitmap poibmp = (Bitmap) extras.getParcelable("poi");
         Bitmap poabmp = (Bitmap) extras.getParcelable("poa");
-        avatar.setImageBitmap(avatarbmp);
-          poi.setImageBitmap(poibmp );
-         poa.setImageBitmap(poabmp );
+        if(avatarbmp!=null){
+            avatar.setImageBitmap(avatarbmp);
+        }
+        if(poibmp!=null){
+            poi.setImageBitmap(poibmp );
+        }
+        if(poabmp!=null){
+            poa.setImageBitmap(poabmp );
+        }
         /*for (int i = 0; i < mAgentsBeansList1.size(); i++) {
             if (!mAgentsBeansList1.get(i).getmPoiImage().equals("")) {
                 mImageLoader.DisplayImage(mAgentsBeansList1.get(i).getmPoiImage(),poi, null, "");
@@ -137,7 +143,7 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         menu.findItem(R.id.notifications).setVisible(false);
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.action_search).setVisible(false);
 
 
         return super.onPrepareOptionsMenu(menu);
