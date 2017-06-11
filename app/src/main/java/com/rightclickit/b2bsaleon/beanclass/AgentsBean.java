@@ -10,7 +10,102 @@ public class AgentsBean {
     private String mLatitude;
     private String mLongitude;
     private String mAgentName;
+    private String mAgentEmail;
+    private String mAgentPassword;
+    private String mAgentStakeid;
+    private String mAgentReprtingto;
+    private String mAgentVerifycode;
+    private String mAgentDelete;
+
+    public String getmAgentEmail() {
+        return mAgentEmail;
+    }
+
+    public void setmAgentEmail(String mAgentEmail) {
+        this.mAgentEmail = mAgentEmail;
+    }
+
+    public String getmAgentPassword() {
+        return mAgentPassword;
+    }
+
+    public void setmAgentPassword(String mAgentPassword) {
+        this.mAgentPassword = mAgentPassword;
+    }
+
+    public String getmAgentStakeid() {
+        return mAgentStakeid;
+    }
+
+    public void setmAgentStakeid(String mAgentStakeid) {
+        this.mAgentStakeid = mAgentStakeid;
+    }
+
+    public String getmAgentReprtingto() {
+        return mAgentReprtingto;
+    }
+
+    public void setmAgentReprtingto(String mAgentReprtingto) {
+        this.mAgentReprtingto = mAgentReprtingto;
+    }
+
+    public String getmAgentVerifycode() {
+        return mAgentVerifycode;
+    }
+
+    public void setmAgentVerifycode(String mAgentVerifycode) {
+        this.mAgentVerifycode = mAgentVerifycode;
+    }
+
+    public String getmAgentDelete() {
+        return mAgentDelete;
+    }
+
+    public void setmAgentDelete(String mAgentDelete) {
+        this.mAgentDelete = mAgentDelete;
+    }
+
+    public String getmAgentCreatedBy() {
+        return mAgentCreatedBy;
+    }
+
+    public void setmAgentCreatedBy(String mAgentCreatedBy) {
+        this.mAgentCreatedBy = mAgentCreatedBy;
+    }
+
+    public String getmAgentCreatedOn() {
+        return mAgentCreatedOn;
+    }
+
+    public void setmAgentCreatedOn(String mAgentCreatedOn) {
+        this.mAgentCreatedOn = mAgentCreatedOn;
+    }
+
+    public String getmAgentUpdatedBy() {
+        return mAgentUpdatedBy;
+    }
+
+    public void setmAgentUpdatedBy(String mAgentUpdatedBy) {
+        this.mAgentUpdatedBy = mAgentUpdatedBy;
+    }
+
+    public String getmAgentUpdatedOn() {
+        return mAgentUpdatedOn;
+    }
+
+    public void setmAgentUpdatedOn(String mAgentUpdatedOn) {
+        this.mAgentUpdatedOn = mAgentUpdatedOn;
+    }
+
+    private String mAgentCreatedBy;
+    private String mAgentCreatedOn;
+    private String mAgentUpdatedBy;
+    private String mAgentUpdatedOn;
     private String mFirstname;
+
+
+
+
 
     public String getmAgentRouteId() {
         return mAgentRouteId;

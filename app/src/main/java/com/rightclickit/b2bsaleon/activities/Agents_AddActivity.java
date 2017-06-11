@@ -52,22 +52,26 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback{
 
-    String str_BusinessName,str_PersonName,str_Mobileno,str_UID;
+    String str_BusinessName,str_PersonName,str_Mobileno,str_address;
 
     private GoogleMap googlemap;
     private AgentsAdapter mAgentsAdapter;
-
+    double longitude,latitude;
     TextView save;
     EditText bname;
     EditText pname;
-    EditText address;
+
     Bitmap bitmapLogo;
     EditText mobile;
-    EditText uid_no;
+    EditText address;
     ImageButton addImage;
     ImageView imageview;
     String imagePath;
@@ -76,10 +80,10 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
     private static final int ACTION_TAKE_PHOTO_A = 1;
     private static final int ACTION_TAKE_GALLERY_PIC_A = 2;
     Location presentLocation=null;
-
+    private AgentsActivity activity;
     AgentsModel agentsmodel;
     private Context applicationContext, activityContext;
-
+    private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +103,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        address=(EditText) findViewById(R.id.uid_no);
+
 
        // addImage=(ImageButton) findViewById(R.id.imageview1);
         imageview=(ImageView) findViewById(R.id.shop_image);
@@ -107,7 +111,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
 
         pname=(EditText) findViewById(R.id.person_name);
         mobile=(EditText) findViewById(R.id.mobile_no);
-        // uid_no=(EditText) v.findViewById(R.id.uid_no);
+        address=(EditText) findViewById(R.id.uid_no);
         save=(TextView) findViewById(R.id.tv_save);
         Bundle extras = getIntent().getExtras();
       //  Bitmap avatarbmp = (Bitmap) extras.getParcelable("avatar");
@@ -144,7 +148,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                                         Log.i("bname",str_BusinessName);
                                         str_PersonName = pname.getText().toString();
                                         str_Mobileno = mobile.getText().toString();
-                                        //  str_UID=uid_no.getText().toString();
+                                        str_address=address.getText().toString();
                                         if (str_BusinessName.length() == 0 || str_BusinessName.length() == ' ') {
                                             bname.setError("Please enter BusinessName");
                                             Toast.makeText(getApplicationContext(), "Please enter BusinessName", Toast.LENGTH_SHORT).show();
@@ -159,22 +163,63 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                                             mobile.setError("Please enter  10 digit mobileno");
                                             Toast.makeText(getApplicationContext(), "Please enter  10 digit mobileno", Toast.LENGTH_SHORT).show();
 
-                                        } else {
+                                        } else if (str_address.length() == 0 || str_address.length() == ' ') {
+                                            mobile.setError(null);
+                                            address.setError("Please enter address");
+                                            Toast.makeText(getApplicationContext(), "Please enter address", Toast.LENGTH_SHORT).show();
+
+                                        }
+
+                                        else {
                                             bname.setError(null);
                                             pname.setError(null);
                                             mobile.setError(null);
-                                            // uid_no.setError(null);
+                                            address.setError(null);
 
-                                            agentsmodel.customerAdd(str_BusinessName, str_PersonName,str_Mobileno);
-                                            Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
+                                            HashMap<String,String> userMapData = db.getUsersData();
+                                            String stakeholderid=userMapData.get("stakeid");
+                                            String userid=userMapData.get("user_id");
+                                            AgentsBean agentsBean = new AgentsBean();
+                                            agentsBean.setmFirstname(str_BusinessName);
+                                            agentsBean.setmLastname(str_PersonName);
+                                            agentsBean.setMphoneNO(str_Mobileno);
+                                            agentsBean.setmAgentEmail("");
+                                            agentsBean.setmAgentPassword("123456789");
+                                            agentsBean.setmAgentCode("");
+                                            agentsBean.setmAgentReprtingto("");
+                                            agentsBean.setmAgentVerifycode("");
+                                            agentsBean.setmStatus("IA");
+                                            agentsBean.setmAgentDelete("N");
+                                            agentsBean.setmAgentStakeid(stakeholderid);
+                                            agentsBean.setmAgentCreatedBy(userid);
+                                            agentsBean.setmAgentUpdatedBy(userid);
+                                            agentsBean.setMaddress(str_address);
+                                            agentsBean.setmLatitude(String.valueOf(latitude));
+                                            agentsBean.setmLongitude(String.valueOf(longitude));
+                                            String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+                                            agentsBean.setmAgentCreatedOn(timeStamp);
+                                            agentsBean.setmAgentUpdatedOn(timeStamp);
+                                            mAgentsBeansList.add(agentsBean);
+                                            db.insertAgentDetails(mAgentsBeansList);
 
 
+                                            synchronized (this) {
 
+                                                db.insertAgentDetails(mAgentsBeansList);
+                                                Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            synchronized (this) {
+
+                                               Intent i=new Intent(Agents_AddActivity.this,AgentsActivity.class);
+                                                startActivity(i);
+                                                finish();
+
+                                            }
                                         }
 
                                     }
         });
-
 
 
 
@@ -338,8 +383,8 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onMyLocationChange(Location location) {
                 LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-                double longitude = location.getLongitude();
-                double latitude = location.getLatitude();
+            longitude = location.getLongitude();
+               latitude = location.getLatitude();
 
                 Marker marker;
                 marker = googlemap.addMarker(new MarkerOptions().position(loc));

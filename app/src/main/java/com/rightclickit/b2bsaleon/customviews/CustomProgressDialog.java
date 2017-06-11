@@ -19,11 +19,11 @@ public class CustomProgressDialog {
      */
     public static void showProgressDialog(Context ctx, String msg) {
         try {
-            progressDialog = new ProgressDialog(ctx, R.style.ProgressDialogTheme);
+            progressDialog = new ProgressDialog(ctx, R.drawable.progressbar);
             progressDialog.setMessage(msg);
             progressDialog.setIndeterminate(true);
             progressDialog.setCancelable(true);
-            progressDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            progressDialog.getWindow().setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
             progressDialog.show();
             isProgressDialogShown = true;
         } catch (Exception e) {

@@ -119,6 +119,18 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_AGENT_ROUTE_ID = "agent_route_ids";
     private final String KEY_POI_IMAGE = "poi";
     private final String KEY_POA_IMAGE = "poa";
+    private final String KEY_AGENT_EMAIL = "email";
+    private final String KEY_AGENT_PASSWORD = "password";
+    private final String KEY_AGENT_STAKEHOLDERID= "stakeid";
+    private final String KEY_AGENT_REPORTINGTO = "reportingto";
+    private final String KEY_AGENT_VERIFYCODE = "verifycode";
+    private final String KEY_AGENT_DELETE= "delete";
+    private final String KEY_AGENT_CREATEDBY= "createdby";
+    private final String KEY_AGENT_CREATEDON= "createdby";
+    private final String KEY_AGENT_UPDATEDBY= "updatedby";
+    private final String KEY_AGENT_UPDATEDON= "updatedon";
+
+
 
     // Column names for Products with take order values
     private final String KEY_TO_PRODUCT_ID = "to_product_id";
@@ -144,7 +156,11 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_AGENT_LATITUDE + " VARCHAR," + KEY_AGENT_LONGITUDE + " VARCHAR,"
             + KEY_AGENT_CODE + " VARCHAR," + KEY_AGENT_FIRSTNAME + " VARCHAR,"+ KEY_AGENT_LASTNAME + " VARCHAR,"
             + KEY_AGENT_PHONENO + " VARCHAR,"+ KEY_AGENT_ADDRESS + " VARCHAR," + KEY_AGENT_ROUTE_ID + " VARCHAR,"
-            + KEY_POI_IMAGE + " VARCHAR," + KEY_POA_IMAGE + " VARCHAR)";
+            + KEY_POI_IMAGE + " VARCHAR," + KEY_POA_IMAGE + " VARCHAR,"
+            + KEY_AGENT_EMAIL + " VARCHAR," + KEY_AGENT_PASSWORD + " VARCHAR,"
+            + KEY_AGENT_STAKEHOLDERID + " VARCHAR," + KEY_AGENT_REPORTINGTO + " VARCHAR,"+ KEY_AGENT_VERIFYCODE + " VARCHAR,"
+            + KEY_AGENT_DELETE+ " VARCHAR,"+ KEY_AGENT_CREATEDBY + " VARCHAR," + KEY_AGENT_CREATEDON+ " VARCHAR,"
+            + KEY_AGENT_UPDATEDBY+ " VARCHAR," + KEY_AGENT_UPDATEDON + " VARCHAR)";
 
 
     // Userdetails Table Create Statements
@@ -286,6 +302,16 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_AGENT_ROUTE_ID, mAgentsBeansList.get(i).getmAgentRouteId());
                 values.put(KEY_POI_IMAGE, mAgentsBeansList.get(i).getmPoiImage());
                 values.put(KEY_POA_IMAGE, mAgentsBeansList.get(i).getmPoaImage());
+                values.put(KEY_AGENT_EMAIL, mAgentsBeansList.get(i).getmAgentEmail());
+                values.put(KEY_AGENT_PASSWORD, mAgentsBeansList.get(i).getmAgentPassword());
+                values.put(KEY_AGENT_STAKEHOLDERID, mAgentsBeansList.get(i).getmAgentStakeid());
+                values.put(KEY_AGENT_REPORTINGTO, mAgentsBeansList.get(i).getmAgentReprtingto());
+                values.put(KEY_AGENT_VERIFYCODE, mAgentsBeansList.get(i).getmAgentVerifycode());
+                values.put(KEY_AGENT_DELETE, mAgentsBeansList.get(i).getmAgentDelete());
+                values.put(KEY_AGENT_CREATEDBY, mAgentsBeansList.get(i).getmAgentCreatedBy());
+                values.put(KEY_AGENT_CREATEDON, mAgentsBeansList.get(i).getmAgentCreatedOn());
+                values.put(KEY_AGENT_UPDATEDBY, mAgentsBeansList.get(i).getmAgentUpdatedBy());
+                values.put(KEY_AGENT_UPDATEDON, mAgentsBeansList.get(i).getmAgentUpdatedOn());
                 // insert row
                 db.insert(TABLE_AGENTS, null, values);
                 System.out.println("F*********** INSERTED***************88");
@@ -332,6 +358,16 @@ public class DBHelper extends SQLiteOpenHelper {
                     agentsBean.setmAgentRouteId((c.getString(c.getColumnIndex(KEY_AGENT_ROUTE_ID))));
                     agentsBean.setmPoiImage((c.getString(c.getColumnIndex(KEY_POI_IMAGE))));
                     agentsBean.setmPoaImage((c.getString(c.getColumnIndex(KEY_POA_IMAGE))));
+                    agentsBean.setmAgentEmail((c.getString(c.getColumnIndex(KEY_AGENT_EMAIL))));
+                    agentsBean.setmAgentPassword((c.getString(c.getColumnIndex(KEY_AGENT_PASSWORD))));
+                    agentsBean.setmAgentStakeid((c.getString(c.getColumnIndex(KEY_AGENT_STAKEHOLDERID))));
+                    agentsBean.setmAgentReprtingto((c.getString(c.getColumnIndex(KEY_AGENT_REPORTINGTO))));
+                    agentsBean.setmAgentVerifycode((c.getString(c.getColumnIndex(KEY_AGENT_VERIFYCODE))));
+                    agentsBean.setmAgentDelete((c.getString(c.getColumnIndex(KEY_AGENT_DELETE))));
+                    agentsBean.setmAgentCreatedBy((c.getString(c.getColumnIndex(KEY_AGENT_CREATEDBY))));
+                    agentsBean.setmAgentCreatedOn((c.getString(c.getColumnIndex(KEY_AGENT_CREATEDON))));
+                    agentsBean.setmAgentUpdatedBy((c.getString(c.getColumnIndex(KEY_AGENT_UPDATEDBY))));
+                    agentsBean.setmAgentUpdatedOn((c.getString(c.getColumnIndex(KEY_AGENT_UPDATEDON))));
                     allDeviceTrackRecords.add(agentsBean);
                 } while (c.moveToNext());
             }
