@@ -206,15 +206,22 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                                             agentsBean.setmDueAmount("");
                                             agentsBean.setmAgentPic("");
                                             mAgentsBeansList.add(agentsBean);
-                                            db.insertAgentDetails(mAgentsBeansList);
+                                           // db.insertAgentDetails(mAgentsBeansList);
 
 
                                             synchronized (this) {
 
-                                                db.insertAgentDetails(mAgentsBeansList);
-                                                Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
-                                            }
+                                                if (new NetworkConnectionDetector(Agents_AddActivity.this).isNetworkConnected()) {
 
+                                                    agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
+
+                                                } else {
+
+                                                    db.insertAgentDetails(mAgentsBeansList);
+                                                    Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
+
+                                                }
+                                            }
                                             synchronized (this) {
 
                                                Intent i=new Intent(Agents_AddActivity.this,AgentsActivity.class);
@@ -222,15 +229,15 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                                                 finish();
 
                                             }
-                                        }
+
 
                                     }
-        });
+        }
 
 
 
 
-    }
+    });}
 
 
 

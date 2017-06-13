@@ -41,7 +41,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
     private ArrayList<String> stakeIdsList = new ArrayList<String>();
     private JSONArray routesArray;
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
-    private String firstname="",lastname="",mobileno="";
+    private String firstname="",lastname="",mobileno="",stakeid="",userid="",email="",password="123456789",code="",reportingto="",verigycode="",status="IA",delete="N",address="",latitude="",longitude="",timestamp="",ob="",ordervalue="",totalamount="",dueamount="",pic="";
     private boolean isSaveDeviceDetails;
 
     public AgentsModel(Context context, AgentsActivity activity) {
@@ -115,13 +115,32 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
         }
     }
 
-    public void customerAdd( String firstname,String lastname, String mobile) {
+    public void customerAdd(String str_businessName, String str_personName, String str_mobileno, String stakeholderid, String userid, String email, String password1, String code, String reportingto, String verifycode, String status, String delete, String str_address, String latitude, String longitude, String timestamp, String ob, String order, String total, String due, String pic) {
         try {
 
             isSaveDeviceDetails = true;
-             this.firstname=firstname;
-            this.lastname=lastname;
-            this.mobileno=mobile;
+             this.firstname=str_businessName;
+            this.lastname=str_personName;
+            this.mobileno=str_mobileno;
+            this.stakeid=stakeholderid;
+            this.userid=userid;
+            this.email=email;
+            this.password=password1;
+            this.mobileno=str_mobileno;
+            this.code=code;
+            this.reportingto=reportingto;
+            this.verigycode=verifycode;
+            this.status=status;
+            this.delete=delete;
+            this.address=str_address;
+            this.latitude=latitude;
+            this.longitude=longitude;
+            this.timestamp=timestamp;
+            this.ordervalue=order;
+            this.ob=ob;
+            this.totalamount=total;
+            this.dueamount=due;
+            this.pic=pic;
 
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String customerAdd = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_LIST);
@@ -133,10 +152,25 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
                 paramsc.put("first_name",firstname);
                 paramsc.put("last_name",lastname);
-                paramsc.put("phone",mobile);
+                paramsc.put("phone",mobileno);
+                paramsc.put("email",email);
+                paramsc.put("password",password);
+                paramsc.put("code",code);
+                paramsc.put("reporting_to",reportingto);
+                paramsc.put("verify_code",verifycode);
+                paramsc.put("status",status);
+                paramsc.put("delete",delete);
+                paramsc.put("address",address);
+                paramsc.put("created_by",userid);
+                paramsc.put("created_on",timestamp);
+                paramsc.put("updated_on",timestamp);
+                paramsc.put("updated_by",userid);
+                paramsc.put("avatar",pic);
 
 
 
+                System.out.println("THE ADD URL IS::: "+ customerAdd);
+                System.out.println("THE ADD DATA IS::: "+ paramsc.toString());
 
                 AsyncRequest loginRequest = new AsyncRequest(context, this, customerAdd, AsyncRequest.MethodType.POST, paramsc);
                 loginRequest.execute();

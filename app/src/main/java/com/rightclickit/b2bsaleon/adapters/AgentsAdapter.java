@@ -202,7 +202,7 @@ public class AgentsAdapter extends BaseAdapter {
             mAgentsBeansList1.addAll(arraylist);
         } else {
             for (AgentsBean wp : arraylist) {
-                if (wp.getmAgentName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                if (wp.getmFirstname().toLowerCase(Locale.getDefault()).contains(charText)) {
                     mAgentsBeansList1.add(wp);
                 }
                 if (wp.getmAgentCode().toLowerCase(Locale.getDefault()).contains(charText)) {
