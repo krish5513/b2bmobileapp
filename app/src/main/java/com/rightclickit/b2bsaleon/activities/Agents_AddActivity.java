@@ -50,6 +50,9 @@ import com.rightclickit.b2bsaleon.models.AgentsModel;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -143,105 +146,97 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 save.startAnimation(animation1);
 
                 validateCustomerDetails();
-
-
             }
+        });
+    }
 
-            private void validateCustomerDetails() {
-                str_BusinessName = bname.getText().toString();
-                Log.i("bname", str_BusinessName);
-                str_PersonName = pname.getText().toString();
-                str_Mobileno = mobile.getText().toString();
-                str_address = address.getText().toString();
-                if (str_BusinessName.length() == 0 || str_BusinessName.length() == ' ') {
-                    bname.setError("Please enter BusinessName");
-                    Toast.makeText(getApplicationContext(), "Please enter BusinessName", Toast.LENGTH_SHORT).show();
-                    //
-                } else if (str_PersonName.length() == 0 || str_PersonName.length() == ' ') {
-                    bname.setError(null);
-                    pname.setError("Please enter PersonName");
-                    Toast.makeText(getApplicationContext(), "Please enter PersonName", Toast.LENGTH_SHORT).show();
 
-                } else if (str_Mobileno.length() == 0 || str_Mobileno.length() == ' ' || str_Mobileno.length() != 10) {
-                    pname.setError(null);
-                    mobile.setError("Please enter  10 digit mobileno");
-                    Toast.makeText(getApplicationContext(), "Please enter  10 digit mobileno", Toast.LENGTH_SHORT).show();
+    private void validateCustomerDetails() {
+        str_BusinessName = bname.getText().toString();
+        Log.i("bname", str_BusinessName);
+        str_PersonName = pname.getText().toString();
+        str_Mobileno = mobile.getText().toString();
+        str_address = address.getText().toString();
+        if (str_BusinessName.length() == 0 || str_BusinessName.length() == ' ') {
+            bname.setError("Please enter BusinessName");
+            Toast.makeText(getApplicationContext(), "Please enter BusinessName", Toast.LENGTH_SHORT).show();
+            //
+        } else if (str_PersonName.length() == 0 || str_PersonName.length() == ' ') {
+            bname.setError(null);
+            pname.setError("Please enter PersonName");
+            Toast.makeText(getApplicationContext(), "Please enter PersonName", Toast.LENGTH_SHORT).show();
 
-                } /*else if (str_address.length() == 0 || str_address.length() == ' ') {
+        } else if (str_Mobileno.length() == 0 || str_Mobileno.length() == ' ' || str_Mobileno.length() != 10) {
+            pname.setError(null);
+            mobile.setError("Please enter  10 digit mobileno");
+            Toast.makeText(getApplicationContext(), "Please enter  10 digit mobileno", Toast.LENGTH_SHORT).show();
+
+        } /*else if (str_address.length() == 0 || str_address.length() == ' ') {
                                             mobile.setError(null);
                                             address.setError("Please enter address");
                                             Toast.makeText(getApplicationContext(), "Please enter address", Toast.LENGTH_SHORT).show();
 
                                         }
 */ else {
-                    bname.setError(null);
-                    pname.setError(null);
-                    mobile.setError(null);
-                    address.setError(null);
+            bname.setError(null);
+            pname.setError(null);
+            mobile.setError(null);
+            address.setError(null);
 
-                    HashMap<String, String> userMapData = db.getUsersData();
-                    String stakeholderid = userMapData.get("stakeid");
-                    String userid = userMapData.get("user_id");
-                    AgentsBean agentsBean = new AgentsBean();
-                    agentsBean.setmFirstname(str_BusinessName);
-                    agentsBean.setmLastname(str_PersonName);
-                    agentsBean.setMphoneNO(str_Mobileno);
-                    agentsBean.setmAgentEmail("");
-                    agentsBean.setmAgentPassword(Utility.getMd5String("123456789"));
-                    agentsBean.setmAgentCode("");
-                    agentsBean.setmAgentReprtingto("");
-                    agentsBean.setmAgentVerifycode("");
-                    agentsBean.setmStatus("IA");
-                    agentsBean.setmAgentDelete("N");
-                    agentsBean.setmAgentStakeid(stakeholderid);
-                    agentsBean.setmAgentCreatedBy(userid);
-                    agentsBean.setmAgentUpdatedBy(userid);
-                    agentsBean.setMaddress(str_address);
-                    agentsBean.setmLatitude(String.valueOf(latitude));
-                    agentsBean.setmLongitude(String.valueOf(longitude));
-                    String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-                    agentsBean.setmAgentCreatedOn(timeStamp);
-                    agentsBean.setmAgentUpdatedOn(timeStamp);
-                    agentsBean.setmObAmount("");
-                    agentsBean.setmOrderValue("");
-                    agentsBean.setmTotalAmount("");
-                    agentsBean.setmDueAmount("");
-                    agentsBean.setmAgentPic("");
-                    mAgentsBeansList.add(agentsBean);
-                    // db.insertAgentDetails(mAgentsBeansList);
+            HashMap<String, String> userMapData = db.getUsersData();
+            String stakeholderid = userMapData.get("stakeid");
+            String userid = userMapData.get("user_id");
+            try {
+                JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
+                JSONArray routesArray = routesJob.getJSONArray("routeArray");
 
-
-                    synchronized (this) {
-/*
-
-                                                if (new NetworkConnectionDetector(Agents_AddActivity.this).isNetworkConnected()) {
-
-                                                    agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
-
-                                                } else {
-*/
-
-                        db.insertAgentDetails(mAgentsBeansList);
-                        Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
-
-
-                    }
-                    synchronized (this) {
-
-                        Intent i = new Intent(Agents_AddActivity.this, AgentsActivity.class);
-                        startActivity(i);
-                        finish();
-
-                    }
-
-
+                AgentsBean agentsBean = new AgentsBean();
+                agentsBean.setmFirstname(str_BusinessName);
+                agentsBean.setmLastname(str_PersonName);
+                agentsBean.setMphoneNO(str_Mobileno);
+                agentsBean.setmAgentEmail("");
+                agentsBean.setmAgentPassword(Utility.getMd5String("123456789"));
+                agentsBean.setmAgentCode("");
+                agentsBean.setmAgentReprtingto("");
+                agentsBean.setmAgentVerifycode("");
+                agentsBean.setmStatus("IA");
+                agentsBean.setmAgentDelete("N");
+                agentsBean.setmAgentStakeid(stakeholderid);
+                agentsBean.setmAgentCreatedBy(userid);
+                agentsBean.setmAgentUpdatedBy(userid);
+                agentsBean.setMaddress(str_address);
+                agentsBean.setmLatitude(String.valueOf(latitude));
+                agentsBean.setmLongitude(String.valueOf(longitude));
+                String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+                agentsBean.setmAgentCreatedOn(timeStamp);
+                agentsBean.setmAgentUpdatedOn(timeStamp);
+                agentsBean.setmObAmount("");
+                agentsBean.setmOrderValue("");
+                agentsBean.setmTotalAmount("");
+                agentsBean.setmDueAmount("");
+                agentsBean.setmAgentPic("");
+                agentsBean.setmAgentRouteId(routesArray.toString());
+                mAgentsBeansList.add(agentsBean);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            // db.insertAgentDetails(mAgentsBeansList);
+            synchronized (this) {
+                if (new NetworkConnectionDetector(Agents_AddActivity.this).isNetworkConnected()) {
+                    //agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
+                    agentsmodel.customerAdd(mAgentsBeansList);
+                }else {
+                    db.insertAgentDetails(mAgentsBeansList);
+                    Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
                 }
             }
-
-
-        });
+            synchronized (this) {
+                Intent i = new Intent(Agents_AddActivity.this, AgentsActivity.class);
+                startActivity(i);
+                finish();
+            }
+        }
     }
-
 
     private void selectImage() {
 
@@ -396,7 +391,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
                 longitude = location.getLongitude();
                 latitude = location.getLatitude();
-                StringBuilder strReturnedAddress =  new StringBuilder("Address:\n");
+                StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
                 Marker marker;
                 googlemap.clear();
                 marker = googlemap.addMarker(new MarkerOptions().position(loc));
@@ -407,18 +402,18 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 try {
                     List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
-                    if(addresses != null && addresses.size()>0) {
+                    if (addresses != null && addresses.size() > 0) {
                         Address returnedAddress = addresses.get(0);
-                         //strReturnedAddress =
+                        //strReturnedAddress =
                         for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
                             strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
                         }
 
                         address.setText(strReturnedAddress.toString());
-                        
+
                     } else {
                         address.setText("No Address returned!");
-                      //  address.setText(strReturnedAddress.toString());
+                        //  address.setText(strReturnedAddress.toString());
                     }
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
@@ -427,13 +422,13 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 }
 
 
-            //get current address by invoke an AsyncTask object
-            // new GetAddressTask(Agents_AddActivity.this).execute(String.valueOf(latitude), String.valueOf(longitude));
+                //get current address by invoke an AsyncTask object
+                // new GetAddressTask(Agents_AddActivity.this).execute(String.valueOf(latitude), String.valueOf(longitude));
+            }
         }
-    }
 
-    ;
-}
+                ;
+    }
 
 
     public void callBackDataFromAsyncTask(String laddress) {
@@ -453,6 +448,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
 
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

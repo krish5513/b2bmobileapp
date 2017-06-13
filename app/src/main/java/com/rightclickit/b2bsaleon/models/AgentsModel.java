@@ -37,11 +37,12 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
     private Agents_AddActivity activity1;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
-    private String type="";
+    private String type = "";
     private ArrayList<String> stakeIdsList = new ArrayList<String>();
     private JSONArray routesArray;
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
-    private String firstname="",lastname="",mobileno="",stakeid="",userid="",email="",password="123456789",code="",reportingto="",verigycode="",status="IA",delete="N",address="",latitude="",longitude="",timestamp="",ob="",ordervalue="",totalamount="",dueamount="",pic="";
+    private ArrayList<AgentsBean> mAgentsBeansList1 = new ArrayList<AgentsBean>();
+    private String firstname = "", lastname = "", mobileno = "", stakeid = "", userid = "", email = "", password = "123456789", code = "", reportingto = "", verigycode = "", status = "IA", delete = "N", address = "", latitude = "", longitude = "", timestamp = "", ob = "", ordervalue = "", totalamount = "", dueamount = "", pic = "";
     private boolean isSaveDeviceDetails;
 
     public AgentsModel(Context context, AgentsActivity activity) {
@@ -50,25 +51,27 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
         this.mPreferences = new MMSharedPreferences(context);
         this.mDBHelper = new DBHelper(context);
     }
+
     public AgentsModel(Context context, Agents_AddActivity activity) {
         this.context = context;
         this.activity1 = activity;
-       // this.mPreferences = new MMSharedPreferences(context);
-      //  this.mDBHelper = new DBHelper(context);
+        // this.mPreferences = new MMSharedPreferences(context);
+        //  this.mDBHelper = new DBHelper(context);
     }
+
     public void getStakeHoldersList(String s) {
         try {
             type = s;
-            HashMap<String,String> userMapData = mDBHelper.getUsersData();
+            HashMap<String, String> userMapData = mDBHelper.getUsersData();
             JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
             routesArray = routesJob.getJSONArray("routeArray");
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-                String logInURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_USER_PREVILEGES, Constants.GET_STAKE_HOLDERS_LIST);
-                HashMap<String,String> params = new HashMap<String,String>();
-                params.put("type[0]","2");
+                String logInURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_USER_PREVILEGES, Constants.GET_STAKE_HOLDERS_LIST);
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("type[0]", "2");
 
-                System.out.println("THE STAKE URL IS::: "+ logInURL);
-                System.out.println("THE STAKE DATA IS::: "+ params.toString());
+                System.out.println("THE STAKE URL IS::: " + logInURL);
+                System.out.println("THE STAKE DATA IS::: " + params.toString());
 
                 AsyncRequest loginRequest = new AsyncRequest(context, this, logInURL, AsyncRequest.MethodType.POST, params);
                 loginRequest.execute();
@@ -89,23 +92,23 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 //            stakeId.add("5");
 //            stakeId.add("10");
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-                String logInURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_LIST);
+                String logInURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_LIST);
                 JSONObject job = new JSONObject();
 //                JSONArray routesArray = new JSONArray();
 //                routesArray.put("59158cb42c432907e4771bad");
                 JSONArray stakesArray = new JSONArray();
-                for (int j = 0; j<stakeIdsList.size();j++){
+                for (int j = 0; j < stakeIdsList.size(); j++) {
                     stakesArray.put(stakeIdsList.get(j).toString());
                 }
 //                stakesArray.put("10");
-                job.put("route_ids",routesArray);
-                job.put("_ids",stakesArray);
+                job.put("route_ids", routesArray);
+                job.put("_ids", stakesArray);
 
 //                HashMap<String,String> params = new HashMap<String,String>();
 //                params.put("route_ids",routeId.toString());
 //                params.put("_ids",stakeId.toString());
-                System.out.println("THE AGENTS URL IS::: "+ logInURL);
-                System.out.println("THE AGENTS DATA IS::: "+ job.toString());
+                System.out.println("THE AGENTS URL IS::: " + logInURL);
+                System.out.println("THE AGENTS DATA IS::: " + job.toString());
                 AsyncRequest loginRequest = new AsyncRequest(context, this, logInURL, AsyncRequest.MethodType.POST, job);
                 loginRequest.execute();
             }
@@ -115,62 +118,107 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
         }
     }
 
-    public void customerAdd(String str_businessName, String str_personName, String str_mobileno, String stakeholderid, String userid, String email, String password1, String code, String reportingto, String verifycode, String status, String delete, String str_address, String latitude, String longitude, String timestamp, String ob, String order, String total, String due, String pic) {
+//    public void customerAdd(String str_businessName, String str_personName, String str_mobileno, String stakeholderid, String userid, String email, String password1, String code, String reportingto, String verifycode, String status, String delete, String str_address, String latitude, String longitude, String timestamp, String ob, String order, String total, String due, String pic) {
+//        try {
+//
+//            isSaveDeviceDetails = true;
+//            this.firstname = str_businessName;
+//            this.lastname = str_personName;
+//            this.mobileno = str_mobileno;
+//            this.stakeid = stakeholderid;
+//            this.userid = userid;
+//            this.email = email;
+//            this.password = password1;
+//            this.mobileno = str_mobileno;
+//            this.code = code;
+//            this.reportingto = reportingto;
+//            this.verigycode = verifycode;
+//            this.status = status;
+//            this.delete = delete;
+//            this.address = str_address;
+//            this.latitude = latitude;
+//            this.longitude = longitude;
+//            this.timestamp = timestamp;
+//            this.ordervalue = order;
+//            this.ob = ob;
+//            this.totalamount = total;
+//            this.dueamount = due;
+//            this.pic = pic;
+//
+//            if (new NetworkConnectionDetector(context).isNetworkConnected()) {
+//                String customerAdd = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_ADD);
+//                // HashMap<String,String> params = new HashMap<String,String>();
+//
+//                JSONObject paramsc = new JSONObject();
+//                JSONArray agentRouteArray = paramsc.getJSONArray("route_id");
+//                paramsc.put("route_id", agentRouteArray);
+//
+//                paramsc.put("first_name", firstname);
+//                paramsc.put("last_name", lastname);
+//                paramsc.put("phone", mobileno);
+//                paramsc.put("email", email);
+//                paramsc.put("password", password);
+//                paramsc.put("code", code);
+//                paramsc.put("reporting_to", reportingto);
+//                paramsc.put("verify_code", verifycode);
+//                paramsc.put("status", status);
+//                paramsc.put("delete", delete);
+//                paramsc.put("address", address);
+//                paramsc.put("created_by", userid);
+//                paramsc.put("created_on", timestamp);
+//                paramsc.put("updated_on", timestamp);
+//                paramsc.put("updated_by", userid);
+//                paramsc.put("avatar", pic);
+//
+//
+//                System.out.println("THE ADD URL IS::: " + customerAdd);
+//                System.out.println("THE ADD DATA IS::: " + paramsc.toString());
+//
+//                AsyncRequest loginRequest = new AsyncRequest(context, this, customerAdd, AsyncRequest.MethodType.POST, paramsc);
+//                loginRequest.execute();
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    public void customerAdd(ArrayList<AgentsBean> list) {
         try {
 
             isSaveDeviceDetails = true;
-             this.firstname=str_businessName;
-            this.lastname=str_personName;
-            this.mobileno=str_mobileno;
-            this.stakeid=stakeholderid;
-            this.userid=userid;
-            this.email=email;
-            this.password=password1;
-            this.mobileno=str_mobileno;
-            this.code=code;
-            this.reportingto=reportingto;
-            this.verigycode=verifycode;
-            this.status=status;
-            this.delete=delete;
-            this.address=str_address;
-            this.latitude=latitude;
-            this.longitude=longitude;
-            this.timestamp=timestamp;
-            this.ordervalue=order;
-            this.ob=ob;
-            this.totalamount=total;
-            this.dueamount=due;
-            this.pic=pic;
+            this.mAgentsBeansList1 = list;
 
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-                String customerAdd = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_LIST);
-               // HashMap<String,String> params = new HashMap<String,String>();
+                String customerAdd = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_ADD);
+                // HashMap<String,String> params = new HashMap<String,String>();
 
                 JSONObject paramsc = new JSONObject();
-                JSONArray agentRouteArray = paramsc.getJSONArray("route_id");
-                paramsc.put("route_id",agentRouteArray);
 
-                paramsc.put("first_name",firstname);
-                paramsc.put("last_name",lastname);
-                paramsc.put("phone",mobileno);
-                paramsc.put("email",email);
-                paramsc.put("password",password);
-                paramsc.put("code",code);
-                paramsc.put("reporting_to",reportingto);
-                paramsc.put("verify_code",verifycode);
-                paramsc.put("status",status);
-                paramsc.put("delete",delete);
-                paramsc.put("address",address);
-                paramsc.put("created_by",userid);
-                paramsc.put("created_on",timestamp);
-                paramsc.put("updated_on",timestamp);
-                paramsc.put("updated_by",userid);
-                paramsc.put("avatar",pic);
+                String rId = mAgentsBeansList1.get(0).getmAgentRouteId();
+                JSONArray agentRouteArray = new JSONArray(rId);
+                paramsc.put("route_id", agentRouteArray);
+
+                paramsc.put("first_name", mAgentsBeansList1.get(0).getmFirstname());
+                paramsc.put("last_name", mAgentsBeansList1.get(0).getmLastname());
+                paramsc.put("phone", mAgentsBeansList1.get(0).getMphoneNO());
+                paramsc.put("email", mAgentsBeansList1.get(0).getmAgentEmail());
+                paramsc.put("password", mAgentsBeansList1.get(0).getmAgentPassword());
+                paramsc.put("code", mAgentsBeansList1.get(0).getmAgentCode());
+                paramsc.put("reporting_to", mAgentsBeansList1.get(0).getmAgentReprtingto());
+                paramsc.put("verify_code", mAgentsBeansList1.get(0).getmAgentVerifycode());
+                paramsc.put("status", mAgentsBeansList1.get(0).getmStatus());
+                paramsc.put("delete", mAgentsBeansList1.get(0).getmAgentDelete());
+                paramsc.put("address", mAgentsBeansList1.get(0).getMaddress());
+                paramsc.put("created_by", mAgentsBeansList1.get(0).getmAgentCreatedBy());
+                paramsc.put("created_on", mAgentsBeansList1.get(0).getmAgentCreatedOn());
+                paramsc.put("updated_on", mAgentsBeansList1.get(0).getmAgentUpdatedOn());
+                paramsc.put("updated_by", mAgentsBeansList1.get(0).getmAgentUpdatedBy());
+                paramsc.put("avatar", mAgentsBeansList1.get(0).getmAgentPic());
 
 
-
-                System.out.println("THE ADD URL IS::: "+ customerAdd);
-                System.out.println("THE ADD DATA IS::: "+ paramsc.toString());
+                System.out.println("THE ADD URL IS::: " + customerAdd);
+                System.out.println("THE ADD DATA IS::: " + paramsc.toString());
 
                 AsyncRequest loginRequest = new AsyncRequest(context, this, customerAdd, AsyncRequest.MethodType.POST, paramsc);
                 loginRequest.execute();
@@ -186,13 +234,13 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
         try {
             CustomProgressDialog.hideProgressDialog();
-            if(type.equals("stakesList")){
+            if (type.equals("stakesList")) {
                 System.out.println("========= STAKES response = " + response);
                 JSONArray respArray = new JSONArray(response);
                 int length = respArray.length();
-                for (int i = 0; i<length;i++){
+                for (int i = 0; i < length; i++) {
                     JSONObject jsonObject = respArray.getJSONObject(i);
-                    if(jsonObject.has("_id")) {
+                    if (jsonObject.has("_id")) {
                         stakeIdsList.add(jsonObject.getString("_id"));
                     }
 
@@ -206,7 +254,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 //                    displayNoNetworkError(context);
 //                    //  activity.logInError();
 //                }
-            }else {
+            } else if (type.equals("agents")) {
                 System.out.println("========= AGENTS response = " + response);
                 Object json = new JSONTokener(response).nextValue();
                 if (json instanceof JSONArray) {
@@ -278,7 +326,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                         // agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
                                     }
                                     if (priceObj.has("poa")) {
-                                       // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
+                                        // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
                                         agentsBean.setmPoaImage(priceObj.getString("poa"));
                                     }
                                 }
@@ -321,8 +369,10 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
                         mAgentsBeansList.add(agentsBean);
                     }
-                    if (mDBHelper.getAgentsTableCount() > 0) {
-                        mDBHelper.deleteValuesFromAgentsTable();
+                    synchronized (this) {
+                        if (mDBHelper.getAgentsTableCount() > 0) {
+                            mDBHelper.deleteValuesFromAgentsTable();
+                        }
                     }
                     synchronized (this) {
                         if (mDBHelper.getAgentsTableCount() > 0) {
@@ -334,6 +384,9 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                         activity.loadAgentsList(mAgentsBeansList);
                     }
                 }
+            } else {
+                // Handle Async response of add customer...
+                System.out.println("RES:: " + response);
             }
         } catch (Exception e) {
             e.printStackTrace();
