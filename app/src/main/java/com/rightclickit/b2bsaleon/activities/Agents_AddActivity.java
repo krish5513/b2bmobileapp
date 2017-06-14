@@ -11,6 +11,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Environment;
@@ -44,7 +46,7 @@ import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentsModel;
-import com.rightclickit.b2bsaleon.models.GetAddressTask;
+
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
@@ -58,14 +60,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 
-public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    String str_BusinessName,str_PersonName,str_Mobileno,str_address;
+    String str_BusinessName, str_PersonName, str_Mobileno, str_address;
 
     private GoogleMap googlemap;
     private AgentsAdapter mAgentsAdapter;
-    double longitude,latitude;
+    double longitude, latitude;
     TextView save;
     EditText bname;
     EditText pname;
@@ -80,11 +84,12 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
     SQLiteDatabase sqlDB;
     private static final int ACTION_TAKE_PHOTO_A = 1;
     private static final int ACTION_TAKE_GALLERY_PIC_A = 2;
-    Location presentLocation=null;
+    Location presentLocation = null;
     private AgentsActivity activity;
     AgentsModel agentsmodel;
     private Context applicationContext, activityContext;
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,21 +110,20 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
 
+        // addImage=(ImageButton) findViewById(R.id.imageview1);
+        imageview = (ImageView) findViewById(R.id.shop_image);
+        bname = (EditText) findViewById(R.id.business_name);
 
-       // addImage=(ImageButton) findViewById(R.id.imageview1);
-        imageview=(ImageView) findViewById(R.id.shop_image);
-        bname=(EditText) findViewById(R.id.business_name);
-
-        pname=(EditText) findViewById(R.id.person_name);
-        mobile=(EditText) findViewById(R.id.mobile_no);
-        address=(EditText) findViewById(R.id.uid_no);
-        save=(TextView) findViewById(R.id.tv_save);
+        pname = (EditText) findViewById(R.id.person_name);
+        mobile = (EditText) findViewById(R.id.mobile_no);
+        address = (EditText) findViewById(R.id.uid_no);
+        save = (TextView) findViewById(R.id.tv_save);
         Bundle extras = getIntent().getExtras();
-      //  Bitmap avatarbmp = (Bitmap) extras.getParcelable("avatar");
+        //  Bitmap avatarbmp = (Bitmap) extras.getParcelable("avatar");
 
-      //  imageview.setImageBitmap(avatarbmp);
-         db=new DBHelper(getApplicationContext());
-        agentsmodel=new AgentsModel(activityContext, this);
+        //  imageview.setImageBitmap(avatarbmp);
+        db = new DBHelper(getApplicationContext());
+        agentsmodel = new AgentsModel(activityContext, this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFrag);
         mapFragment.getMapAsync(this);
@@ -131,139 +135,133 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         });
 
         save.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
 
-                                        Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                                                R.anim.blink);
-                                        save.startAnimation(animation1);
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
+                        R.anim.blink);
+                save.startAnimation(animation1);
 
-                                        validateCustomerDetails();
+                validateCustomerDetails();
 
 
+            }
 
-                                    }
+            private void validateCustomerDetails() {
+                str_BusinessName = bname.getText().toString();
+                Log.i("bname", str_BusinessName);
+                str_PersonName = pname.getText().toString();
+                str_Mobileno = mobile.getText().toString();
+                str_address = address.getText().toString();
+                if (str_BusinessName.length() == 0 || str_BusinessName.length() == ' ') {
+                    bname.setError("Please enter BusinessName");
+                    Toast.makeText(getApplicationContext(), "Please enter BusinessName", Toast.LENGTH_SHORT).show();
+                    //
+                } else if (str_PersonName.length() == 0 || str_PersonName.length() == ' ') {
+                    bname.setError(null);
+                    pname.setError("Please enter PersonName");
+                    Toast.makeText(getApplicationContext(), "Please enter PersonName", Toast.LENGTH_SHORT).show();
 
-                                    private void validateCustomerDetails() {
-                                        str_BusinessName = bname.getText().toString();
-                                        Log.i("bname",str_BusinessName);
-                                        str_PersonName = pname.getText().toString();
-                                        str_Mobileno = mobile.getText().toString();
-                                        str_address=address.getText().toString();
-                                        if (str_BusinessName.length() == 0 || str_BusinessName.length() == ' ') {
-                                            bname.setError("Please enter BusinessName");
-                                            Toast.makeText(getApplicationContext(), "Please enter BusinessName", Toast.LENGTH_SHORT).show();
-                                            //
-                                        } else if (str_PersonName.length() == 0 || str_PersonName.length() == ' ') {
-                                            bname.setError(null);
-                                            pname.setError("Please enter PersonName");
-                                            Toast.makeText(getApplicationContext(), "Please enter PersonName", Toast.LENGTH_SHORT).show();
+                } else if (str_Mobileno.length() == 0 || str_Mobileno.length() == ' ' || str_Mobileno.length() != 10) {
+                    pname.setError(null);
+                    mobile.setError("Please enter  10 digit mobileno");
+                    Toast.makeText(getApplicationContext(), "Please enter  10 digit mobileno", Toast.LENGTH_SHORT).show();
 
-                                        } else if (str_Mobileno.length() == 0 || str_Mobileno.length() == ' ' || str_Mobileno.length() != 10) {
-                                            pname.setError(null);
-                                            mobile.setError("Please enter  10 digit mobileno");
-                                            Toast.makeText(getApplicationContext(), "Please enter  10 digit mobileno", Toast.LENGTH_SHORT).show();
-
-                                        } else if (str_address.length() == 0 || str_address.length() == ' ') {
+                } /*else if (str_address.length() == 0 || str_address.length() == ' ') {
                                             mobile.setError(null);
                                             address.setError("Please enter address");
                                             Toast.makeText(getApplicationContext(), "Please enter address", Toast.LENGTH_SHORT).show();
 
                                         }
+*/ else {
+                    bname.setError(null);
+                    pname.setError(null);
+                    mobile.setError(null);
+                    address.setError(null);
 
-                                        else {
-                                            bname.setError(null);
-                                            pname.setError(null);
-                                            mobile.setError(null);
-                                            address.setError(null);
-
-                                            HashMap<String,String> userMapData = db.getUsersData();
-                                            String stakeholderid=userMapData.get("stakeid");
-                                            String userid=userMapData.get("user_id");
-                                            AgentsBean agentsBean = new AgentsBean();
-                                            agentsBean.setmFirstname(str_BusinessName);
-                                            agentsBean.setmLastname(str_PersonName);
-                                            agentsBean.setMphoneNO(str_Mobileno);
-                                            agentsBean.setmAgentEmail("");
-                                            agentsBean.setmAgentPassword(Utility.getMd5String("123456789"));
-                                            agentsBean.setmAgentCode("");
-                                            agentsBean.setmAgentReprtingto("");
-                                            agentsBean.setmAgentVerifycode("");
-                                            agentsBean.setmStatus("IA");
-                                            agentsBean.setmAgentDelete("N");
-                                            agentsBean.setmAgentStakeid(stakeholderid);
-                                            agentsBean.setmAgentCreatedBy(userid);
-                                            agentsBean.setmAgentUpdatedBy(userid);
-                                            agentsBean.setMaddress(str_address);
-                                            agentsBean.setmLatitude(String.valueOf(latitude));
-                                            agentsBean.setmLongitude(String.valueOf(longitude));
-                                            String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
-                                            agentsBean.setmAgentCreatedOn(timeStamp);
-                                            agentsBean.setmAgentUpdatedOn(timeStamp);
-                                            agentsBean.setmObAmount("");
-                                            agentsBean.setmOrderValue("");
-                                            agentsBean.setmTotalAmount("");
-                                            agentsBean.setmDueAmount("");
-                                            agentsBean.setmAgentPic("");
-                                            mAgentsBeansList.add(agentsBean);
-                                           // db.insertAgentDetails(mAgentsBeansList);
+                    HashMap<String, String> userMapData = db.getUsersData();
+                    String stakeholderid = userMapData.get("stakeid");
+                    String userid = userMapData.get("user_id");
+                    AgentsBean agentsBean = new AgentsBean();
+                    agentsBean.setmFirstname(str_BusinessName);
+                    agentsBean.setmLastname(str_PersonName);
+                    agentsBean.setMphoneNO(str_Mobileno);
+                    agentsBean.setmAgentEmail("");
+                    agentsBean.setmAgentPassword(Utility.getMd5String("123456789"));
+                    agentsBean.setmAgentCode("");
+                    agentsBean.setmAgentReprtingto("");
+                    agentsBean.setmAgentVerifycode("");
+                    agentsBean.setmStatus("IA");
+                    agentsBean.setmAgentDelete("N");
+                    agentsBean.setmAgentStakeid(stakeholderid);
+                    agentsBean.setmAgentCreatedBy(userid);
+                    agentsBean.setmAgentUpdatedBy(userid);
+                    agentsBean.setMaddress(str_address);
+                    agentsBean.setmLatitude(String.valueOf(latitude));
+                    agentsBean.setmLongitude(String.valueOf(longitude));
+                    String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+                    agentsBean.setmAgentCreatedOn(timeStamp);
+                    agentsBean.setmAgentUpdatedOn(timeStamp);
+                    agentsBean.setmObAmount("");
+                    agentsBean.setmOrderValue("");
+                    agentsBean.setmTotalAmount("");
+                    agentsBean.setmDueAmount("");
+                    agentsBean.setmAgentPic("");
+                    mAgentsBeansList.add(agentsBean);
+                    // db.insertAgentDetails(mAgentsBeansList);
 
 
-                                            synchronized (this) {
+                    synchronized (this) {
+/*
 
                                                 if (new NetworkConnectionDetector(Agents_AddActivity.this).isNetworkConnected()) {
 
                                                     agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
 
                                                 } else {
+*/
 
-                                                    db.insertAgentDetails(mAgentsBeansList);
-                                                    Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
-
-                                                }
-                                            }
-                                            synchronized (this) {
-
-                                               Intent i=new Intent(Agents_AddActivity.this,AgentsActivity.class);
-                                                startActivity(i);
-                                                finish();
-
-                                            }
+                        db.insertAgentDetails(mAgentsBeansList);
+                        Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
 
 
-                                    }
-        }
+                    }
+                    synchronized (this) {
+
+                        Intent i = new Intent(Agents_AddActivity.this, AgentsActivity.class);
+                        startActivity(i);
+                        finish();
+
+                    }
 
 
+                }
+            }
 
 
-    });}
-
+        });
+    }
 
 
     private void selectImage() {
 
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Agents_AddActivity.this);
         builder.setTitle("Add Photo!");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo"))
-                {
+                if (options[item].equals("Take Photo")) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, ACTION_TAKE_PHOTO_A);
-                }
-                else if (options[item].equals("Choose from Gallery"))
-                {
-                    Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, ACTION_TAKE_GALLERY_PIC_A);
 
-                }
-                else if (options[item].equals("Cancel")) {
+                } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
@@ -321,14 +319,14 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
             } else if (requestCode == ACTION_TAKE_GALLERY_PIC_A) {
 
                 Uri selectedImage = data.getData();
-                String[] filePath = { MediaStore.Images.Media.DATA };
-                Cursor c = getContentResolver().query(selectedImage,filePath, null, null, null);
+                String[] filePath = {MediaStore.Images.Media.DATA};
+                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
                 c.moveToFirst();
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
                 c.close();
                 Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                System.out.println("path of image from gallery......******************........."+ picturePath+"");
+                System.out.println("path of image from gallery......******************........." + picturePath + "");
                 BitmapDrawable d = new BitmapDrawable(this.getResources(), thumbnail);
                 imageview.setBackgroundDrawable(null);
                 imageview.setBackgroundDrawable(d);
@@ -338,12 +336,12 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
     }
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -360,6 +358,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 return true;
         }
     }
+
     private void replaceMapFragment() {
 
 
@@ -386,7 +385,6 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         googlemap.setOnMyLocationChangeListener(myLocationChangeListener());
 
 
-
     }
 
 
@@ -396,24 +394,53 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onMyLocationChange(Location location) {
                 LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-            longitude = location.getLongitude();
-               latitude = location.getLatitude();
-
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                StringBuilder strReturnedAddress =  new StringBuilder("Address:\n");
                 Marker marker;
+                googlemap.clear();
                 marker = googlemap.addMarker(new MarkerOptions().position(loc));
                 googlemap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
                 // locationText.setText("You are at [" + longitude + " ; " + latitude + " ]");
+                Geocoder geocoder = new Geocoder(Agents_AddActivity.this, Locale.ENGLISH);
 
-                //get current address by invoke an AsyncTask object
-                new GetAddressTask(Agents_AddActivity.this).execute(String.valueOf(latitude), String.valueOf(longitude));
-            }
-        };
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+                    if(addresses != null && addresses.size()>0) {
+                        Address returnedAddress = addresses.get(0);
+                         //strReturnedAddress =
+                        for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                            strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                        }
+
+                        address.setText(strReturnedAddress.toString());
+                        
+                    } else {
+                        address.setText("No Address returned!");
+                      //  address.setText(strReturnedAddress.toString());
+                    }
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    address.setText("Canont get Address!");
+                }
+
+
+            //get current address by invoke an AsyncTask object
+            // new GetAddressTask(Agents_AddActivity.this).execute(String.valueOf(latitude), String.valueOf(longitude));
+        }
     }
+
+    ;
+}
 
 
     public void callBackDataFromAsyncTask(String laddress) {
         address.setText(laddress);
     }
+
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 

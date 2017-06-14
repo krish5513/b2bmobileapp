@@ -629,7 +629,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
 
 
-            alertDialogBuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
