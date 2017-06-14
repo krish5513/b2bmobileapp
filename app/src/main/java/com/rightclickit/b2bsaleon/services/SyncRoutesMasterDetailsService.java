@@ -168,10 +168,17 @@ public class SyncRoutesMasterDetailsService extends Service {
         @Override
         protected void onPostExecute(Void aVoid) {
             stopSelf();
-            Intent mainActivityIntent = new Intent(getApplicationContext(), SettingsActivity.class);
-            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(mainActivityIntent);
+            if(mDBHelper.getUserDeviceId(mSessionManagement.getString("enterEmail")).equals("")){
+                Intent mainActivityIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+                mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(mainActivityIntent);
+            }else {
+                Intent mainActivityIntent = new Intent(getApplicationContext(), DashboardActivity.class);
+                mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(mainActivityIntent);
+            }
             System.out.println("Service Stopped Automatically....");
         }
     }
