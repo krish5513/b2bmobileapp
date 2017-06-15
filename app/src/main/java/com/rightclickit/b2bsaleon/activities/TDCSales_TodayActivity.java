@@ -9,39 +9,41 @@ import android.view.MenuItem;
 
 import com.rightclickit.b2bsaleon.R;
 
-public class AgentDeliveriesView extends AppCompatActivity {
+public class TDCSales_TodayActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agent_deliveries_view);
+        setContentView(R.layout.activity_tdcsales__today);
 
-        this.getSupportActionBar().setTitle("Customer Name");
+        this.getSupportActionBar().setTitle("TODAY");
         this.getSupportActionBar().setSubtitle(null);
-        this.getSupportActionBar().setLogo(R.drawable.ic_shopping_cart_white_24dp);
+        this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
-
 
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        getMenuInflater().inflate( R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_search) {
-
+        if (id == R.id.Add) {
+            Intent i =new Intent(TDCSales_TodayActivity.this,SalesListActivity.class);
+            startActivity(i);
+            finish();
             return true;
         }
 
@@ -58,11 +60,12 @@ public class AgentDeliveriesView extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
 
 
-        menu.findItem(R.id.notifications).setVisible(false);
-        menu.findItem(R.id.settings).setVisible(false);
-        menu.findItem(R.id.logout).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem( R.id.notifications).setVisible(false);
+        menu.findItem( R.id.settings).setVisible(false);
+        menu.findItem( R.id.logout).setVisible(false);
+        menu.findItem( R.id.action_search).setVisible(true);
         menu.findItem( R.id.Add).setVisible(false);
+
 
 
         return super.onPrepareOptionsMenu(menu);
@@ -70,9 +73,8 @@ public class AgentDeliveriesView extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, AgentDeliveries.class);
+        Intent intent = new Intent(this, SalesListActivity.class);
         startActivity(intent);
         finish();
     }
-
 }

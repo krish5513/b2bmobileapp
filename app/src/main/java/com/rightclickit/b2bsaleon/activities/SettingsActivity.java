@@ -270,11 +270,12 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     str_accessdevice = accessDevice.getText().toString();
                     str_backup = backup.getText().toString();
 
-//                    if (str_companyName.length() == 0 || str_companyName.length() == ' ') {
-//                        companyName.setError("Please enter CompanyName");
-//                        Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH_SHORT).show();
+ //                 if (str_companyName.length() == 0 || str_companyName.length() == ' ') {
+ //                     companyName.setError("Please enter CompanyName");
+//  Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH_SHORT).show();
 //                        //
-//                    } else if (str_userName.length() == 0 || str_userName.length() == ' ') {
+ //                 }
+// else if (str_userName.length() == 0 || str_userName.length() == ' ') {
 //                        companyName.setError(null);
 //                        userName.setError("Please enter Username");
 //                        Toast.makeText(getApplicationContext(), "Please enter Username", Toast.LENGTH_SHORT).show();
@@ -300,7 +301,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 //                        Toast.makeText(getApplicationContext(), "Please enter Routeno", Toast.LENGTH_SHORT).show();
 //
 //                    }
-                    if (str_vehicleNo.length() == 0 || str_vehicleNo.length() == ' ') {
+                     if (str_vehicleNo.length() == 0 || str_vehicleNo.length() == ' ') {
                         routeNo.setError(null);
                         vehicleNo.setError("Please enter Vehicleno");
                         Toast.makeText(getApplicationContext(), "Please enter Vehicleno", Toast.LENGTH_SHORT).show();
@@ -608,6 +609,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(true);
         menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem( R.id.Add).setVisible(false);
 
 
         return super.onPrepareOptionsMenu(menu);

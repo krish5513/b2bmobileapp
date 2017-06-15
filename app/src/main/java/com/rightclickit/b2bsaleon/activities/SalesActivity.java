@@ -6,10 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 
 public class SalesActivity extends AppCompatActivity {
+
+    TextView tv_preview,tv_sales_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +35,30 @@ public class SalesActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+        tv_preview=(TextView) findViewById(R.id.tv_preview);
+        tv_sales_list=(TextView) findViewById(R.id.tv_sales_list);
 
+
+
+
+        tv_preview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =new Intent(SalesActivity.this,Sales_PreviewActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+
+        tv_sales_list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =new Intent(SalesActivity.this,SalesListActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
 
 
@@ -68,6 +95,7 @@ public class SalesActivity extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem( R.id.Add).setVisible(false);
 
 
         return super.onPrepareOptionsMenu(menu);

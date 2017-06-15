@@ -9,12 +9,12 @@ import android.view.MenuItem;
 
 import com.rightclickit.b2bsaleon.R;
 
-public class AgentDeliveriesView extends AppCompatActivity {
+public class AgentReturnsView extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agent_deliveries_view);
+        setContentView(R.layout.activity_agent_returns_view);
 
         this.getSupportActionBar().setTitle("Customer Name");
         this.getSupportActionBar().setSubtitle(null);
@@ -31,7 +31,6 @@ public class AgentDeliveriesView extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
@@ -70,7 +69,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, AgentDeliveries.class);
+        Intent intent = new Intent(this, AgentReturns.class);
         startActivity(intent);
         finish();
     }

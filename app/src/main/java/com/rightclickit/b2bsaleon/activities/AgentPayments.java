@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
@@ -19,13 +20,14 @@ public class AgentPayments extends AppCompatActivity {
     TextView payments;
     TextView deliveries;
     TextView orders;
+    Button view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent_payments);
 
 
-        this.getSupportActionBar().setTitle("AgentName");
+        this.getSupportActionBar().setTitle("Payments");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
@@ -45,6 +47,7 @@ public class AgentPayments extends AppCompatActivity {
         returns=(TextView) findViewById(R.id.tv_returns);
         payments=(TextView) findViewById(R.id.tv_payments);
         orders=(TextView) findViewById(R.id.tv_orders);
+        view=(Button)findViewById(R.id.btn_view1);
 
 
         sales.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +113,16 @@ public class AgentPayments extends AppCompatActivity {
                 finish();
             }
         });
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent i =new Intent(AgentPayments.this,AgentPaymentsView.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
     }
 
@@ -143,6 +156,7 @@ public class AgentPayments extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem( R.id.Add).setVisible(false);
 
 
         return super.onPrepareOptionsMenu(menu);

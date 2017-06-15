@@ -1,6 +1,7 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
@@ -18,6 +20,7 @@ public class AgentReturns extends AppCompatActivity {
     TextView payments;
     TextView deliveries;
     TextView orders;
+    Button view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +31,23 @@ public class AgentReturns extends AppCompatActivity {
         returns=(TextView) findViewById(R.id.tv_returns);
         payments=(TextView) findViewById(R.id.tv_payments);
         orders=(TextView) findViewById(R.id.tv_orders);
+        view=(Button)findViewById(R.id.btn_view1);
+
+
+        this.getSupportActionBar().setTitle("Returns");
+        this.getSupportActionBar().setSubtitle(null);
+        this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
+        // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        this.getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+        final ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
 
 
         sales.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +115,18 @@ public class AgentReturns extends AppCompatActivity {
             }
         });
 
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(Agents_ReturnsActivity.this, "Clicked on orders", Toast.LENGTH_SHORT).show();
+
+
+                Intent i =new Intent(AgentReturns.this,AgentReturnsView.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
     }
 
     @Override
@@ -127,6 +159,7 @@ public class AgentReturns extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem( R.id.Add).setVisible(false);
 
 
         return super.onPrepareOptionsMenu(menu);

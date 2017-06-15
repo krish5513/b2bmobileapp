@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
+import com.rightclickit.b2bsaleon.activities.ProductStock;
 import com.rightclickit.b2bsaleon.activities.ProductViewActivity;
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
@@ -150,6 +151,15 @@ public class ProductsAdapter extends BaseAdapter {
         }else {
             holder.productImage.setBackgroundResource(R.drawable.logo);
         }
+
+        holder.stockbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(activity,ProductStock.class);
+                activity.startActivity(intent);
+                activity.finish();
+            }
+        });
 
         holder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override

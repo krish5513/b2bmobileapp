@@ -9,14 +9,14 @@ import android.view.MenuItem;
 
 import com.rightclickit.b2bsaleon.R;
 
-public class AgentDeliveriesView extends AppCompatActivity {
+public class ProductStock extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agent_deliveries_view);
+        setContentView(R.layout.activity_product_stock);
 
-        this.getSupportActionBar().setTitle("Customer Name");
+        this.getSupportActionBar().setTitle("STOCK VIEW");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.ic_shopping_cart_white_24dp);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
@@ -29,6 +29,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
 
     }
 
@@ -61,7 +62,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
         menu.findItem(R.id.notifications).setVisible(false);
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem( R.id.Add).setVisible(false);
 
 
@@ -70,9 +71,10 @@ public class AgentDeliveriesView extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, AgentDeliveries.class);
+        Intent intent = new Intent(this, Products_Activity.class);
         startActivity(intent);
         finish();
     }
 
 }
+

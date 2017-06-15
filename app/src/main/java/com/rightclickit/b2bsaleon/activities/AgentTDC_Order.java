@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
@@ -19,14 +20,14 @@ public class AgentTDC_Order extends AppCompatActivity {
     TextView payments;
     TextView deliveries;
     TextView orders;
-
+Button view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent_tdc__order);
 
 
-        this.getSupportActionBar().setTitle("AgentName");
+        this.getSupportActionBar().setTitle("TDC Orders");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
@@ -50,7 +51,7 @@ public class AgentTDC_Order extends AppCompatActivity {
         returns=(TextView) findViewById(R.id.tv_returns);
         payments=(TextView) findViewById(R.id.tv_payments);
         orders=(TextView) findViewById(R.id.tv_orders);
-
+        view=(Button)findViewById(R.id.btn_view1);
 
         sales.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +117,16 @@ public class AgentTDC_Order extends AppCompatActivity {
             }
         });
 
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Toast.makeText(Agents_Tpc_OrdersActivity.this, "Clicked on orders", Toast.LENGTH_SHORT).show();
 
+                Intent i =new Intent(AgentTDC_Order.this,AgentsTDC_View.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
     }
 
@@ -151,6 +161,7 @@ public class AgentTDC_Order extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem( R.id.Add).setVisible(false);
 
 
         return super.onPrepareOptionsMenu(menu);

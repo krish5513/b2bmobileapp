@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ public class ViewAgent extends AppCompatActivity {
     private LinearLayout mDeliveriesLayout;
     private LinearLayout mReturnsLayout;
     private LinearLayout mPaymentsLayout;
-
+Button view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,16 @@ public class ViewAgent extends AppCompatActivity {
                 finish();
             }
         });
+        view = (Button) findViewById(R.id.btn_view1);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent i =new Intent(ViewAgent.this,AgentsTDC_View.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
     }
 
@@ -123,6 +133,7 @@ public class ViewAgent extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem( R.id.Add).setVisible(false);
 
 
         return super.onPrepareOptionsMenu(menu);
