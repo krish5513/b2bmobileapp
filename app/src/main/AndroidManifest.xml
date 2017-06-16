@@ -134,7 +134,13 @@
         <activity android:name=".activities.Saleslist_ViewActivity" />
         <activity android:name=".activities.TDCSales_TodayActivity" />
         <activity android:name=".activities.TDCSales_Weekly" />
-        <activity android:name=".activities.TDCSales_Month"></activity>
+        <activity android:name=".activities.TDCSales_Month" />
+        <activity android:name=".activities.DashboardTakeorder" />
+        <activity android:name=".activities.DashboardTakeorderPreview" />
+        <activity android:name=".activities.DashboardDelivery" />
+        <activity android:name=".activities.DashboardReturns" />
+        <activity android:name=".activities.DashboardPayments" />
+        <activity android:name=".activities.DashboardDeliveryPreview"></activity>
     </application>
 
 </manifest>

@@ -338,6 +338,8 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                 if (agentRouteArray != null) {
                                     agentsBean.setmAgentRouteId(agentRouteArray.toString());
                                 }
+                            }else {
+                                agentsBean.setmAgentRouteId(jo.getString("route_id"));
                             }
                         }
 

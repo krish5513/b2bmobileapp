@@ -13,6 +13,7 @@ public class TakeOrderBean {
     private String mProductToDate;
     private String mProductOrderType;
     private String mProductQuantity;
+    private String mProductStatus;
 
     public String getmProductId() {
         return mProductId;
@@ -68,5 +69,13 @@ public class TakeOrderBean {
 
     public void setmProductQuantity(String mProductQuantity) {
         this.mProductQuantity = mProductQuantity;
+    }
+
+    public String getmProductStatus() {
+        return mProductStatus;
+    }
+
+    public void setmProductStatus(String mProductStatus) {
+        this.mProductStatus = mProductStatus;
     }
 }

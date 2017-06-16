@@ -16,7 +16,10 @@ import com.rightclickit.b2bsaleon.util.NetworkManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Sekhar Kuppa
@@ -70,6 +73,7 @@ public class SyncTakeOrdersService extends Service {
         private ArrayList<String> IDSLIST = new ArrayList<String>();
         private ArrayList<String> NAMESLIST = new ArrayList<String>();
         private ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
+        private ArrayList<TakeOrderBean> temptoList = new ArrayList<TakeOrderBean>();
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -78,36 +82,66 @@ public class SyncTakeOrdersService extends Service {
 //                    // Clear the db first and then insert..
 //                    mDBHelper.deleteValuesFromRoutesTable();
 //                }
-                mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable();
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                String currentDate = df.format(cal.getTime());
+                String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+                mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes");
                 userId = mSessionManagement.getString("userId");
                 String URL = String.format("%s%s%s%s", Constants.MAIN_URL,Constants.SYNC_TAKE_ORDERS_PORT,Constants.SYNC_TAKE_ORDERS_SERVICE,mSessionManagement.getString("token"));
                 JSONObject params1 = new JSONObject();
-                params1.put("enquiry_id","EPR2");
+                params1.put("enquiry_id","EPR001");
                 params1.put("user_id",mSessionManagement.getString("userId"));
-                params1.put("route_id",mSessionManagement.getString("routeId"));
+                params1.put("route_id",mTakeOrderBeansList.get(0).getmProductId());
                 JSONArray productArra = new JSONArray();
                 JSONArray quantityArra = new JSONArray();
+                JSONArray fromDateArra = new JSONArray();
+                JSONArray toDateArra = new JSONArray();
                 for (int i = 0; i<mTakeOrderBeansList.size();i++){
                     productArra.put(mTakeOrderBeansList.get(i).getmProductId());
                     quantityArra.put(mTakeOrderBeansList.get(i).getmProductQuantity());
+                    fromDateArra.put(mTakeOrderBeansList.get(i).getmProductFromDate());
+                    toDateArra.put(mTakeOrderBeansList.get(i).getmProductToDate());
                 }
                 params1.put("product_ids",productArra);
-                params1.put("from_date",mTakeOrderBeansList.get(0).getmProductFromDate());
-                params1.put("to_date",mTakeOrderBeansList.get(0).getmProductToDate());
+                params1.put("from_date",fromDateArra);
+                params1.put("to_date",toDateArra);
                 params1.put("order_type","1");
                 params1.put("quantity",quantityArra);
                 params1.put("status","I");
                 params1.put("delete","N");
                 params1.put("created_by",mSessionManagement.getString("createdBy"));
-                params1.put("created_on",mSessionManagement.getString("createdOn"));
-                params1.put("updated_on",mSessionManagement.getString("updatedOn"));
+                params1.put("created_on",timeStamp);
+                params1.put("updated_on",timeStamp);
                 params1.put("updated_by",mSessionManagement.getString("updatedBy"));
 
                 mJsonObj = new NetworkManager().makeHttpPostConnection(URL,params1);
 
-                JSONArray resultArray = new JSONArray(mJsonObj);
-                System.out.println("The LENGTH IS:: "+ resultArray.length());
+                JSONObject resultObj = new JSONObject(mJsonObj);
+//                System.out.println("The LENGTH IS:: "+ resultObj.length());
                 System.out.println("The LENGTH IS:: "+ mJsonObj.toString());
+                if(resultObj.has("result_status")){
+                    if(resultObj.getString("result_status").equals("1")){
+                        if (mTakeOrderBeansList.size() > 0) {
+                            for (int v = 0;v<mTakeOrderBeansList.size();v++){
+                                TakeOrderBean t = new TakeOrderBean();
+                                t.setmProductId(mTakeOrderBeansList.get(v).getmProductId());
+                                t.setmRouteId(mTakeOrderBeansList.get(v).getmProductId());
+                                t.setmProductQuantity(mTakeOrderBeansList.get(v).getmProductQuantity());
+                                t.setmProductToDate(mTakeOrderBeansList.get(v).getmProductToDate());
+                                t.setmProductStatus("0");
+                                t.setmProductFromDate(mTakeOrderBeansList.get(v).getmProductFromDate());
+                                t.setmProductOrderType("");
+                                t.setmProductTitle(mTakeOrderBeansList.get(v).getmProductTitle());
+
+                                temptoList.add(t);
+                            }
+                            System.out.println("DB called****"+temptoList.size());
+                            long upd = mDBHelper.updateTakeOrderDetails(temptoList);
+                            System.out.println("UPDATED VALUES COUNT:: "+ upd);
+                        }
+                    }
+                }
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -118,6 +152,12 @@ public class SyncTakeOrdersService extends Service {
         @Override
         protected void onPostExecute(Void aVoid) {
             stopSelf();
+            if(temptoList.size()>0){
+                temptoList.clear();
+            }
+            if(mTakeOrderBeansList.size()>0){
+                mTakeOrderBeansList.clear();
+            }
             System.out.println("Service Stopped Automatically....");
         }
     }

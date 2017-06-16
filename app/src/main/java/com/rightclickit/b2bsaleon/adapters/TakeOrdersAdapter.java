@@ -77,7 +77,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     private HashMap<String,String> ordertypesList = new HashMap<String, String>();
     private int clickedPosition;
 
-    public TakeOrdersAdapter(TakeOrderScreen productsActivity, ArrayList<TakeOrderBean> mTakeOrderBeansList, ListView mTakeOrderListView) {
+    public TakeOrdersAdapter(Activity productsActivity, ArrayList<TakeOrderBean> mTakeOrderBeansList, ListView mTakeOrderListView) {
         this.activity = productsActivity;
         this.mTakeOrderBeansList1 = mTakeOrderBeansList;
         this.mInflater = LayoutInflater.from(activity);
@@ -197,53 +197,53 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             holder.productQuantity.setText("0000.000");
         }
 
-        ArrayAdapter<String> dataAdapter =new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item,list1);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        holder.orderTypeSpinner.setAdapter(dataAdapter);
-        holder.orderTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                String materialOrderType = holder.orderTypeSpinner.getSelectedItem().toString();
-                ordertypesList.put(mTakeOrderBeansList1.get(position).getmProductId(),materialOrderType);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-
-            }
-        });
-
-        if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId())!=null){
-            // Assign changed order type value
-            if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId()).equals("One Time")){
-                holder.orderTypeSpinner.setSelection(0);
-            }else if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId()).equals("Daily")){
-                holder.orderTypeSpinner.setSelection(1);
-            }else if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId()).equals("Weekly")){
-                holder.orderTypeSpinner.setSelection(2);
-            }else if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId()).equals("Monthly")){
-                holder.orderTypeSpinner.setSelection(3);
-            }else {
-                holder.orderTypeSpinner.setSelection(0);
-            }
-        }else if(mTakeOrderBeansList1.get(position).getmProductOrderType()!=null){
-            if(mTakeOrderBeansList1.get(position).getmProductOrderType().length()>0){
-                if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("1")){
-                    holder.orderTypeSpinner.setSelection(0);
-                }else if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("2")){
-                    holder.orderTypeSpinner.setSelection(1);
-                }else if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("3")){
-                    holder.orderTypeSpinner.setSelection(2);
-                }else if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("4")){
-                    holder.orderTypeSpinner.setSelection(3);
-                }else {
-                    holder.orderTypeSpinner.setSelection(0);
-                }
-            }else {
-                holder.orderTypeSpinner.setSelection(0);
-            }
-        }else {
-            holder.orderTypeSpinner.setSelection(0);
-        }
+//        ArrayAdapter<String> dataAdapter =new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item,list1);
+//        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        holder.orderTypeSpinner.setAdapter(dataAdapter);
+//        holder.orderTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//                String materialOrderType = holder.orderTypeSpinner.getSelectedItem().toString();
+//                ordertypesList.put(mTakeOrderBeansList1.get(position).getmProductId(),materialOrderType);
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> arg0) {
+//
+//            }
+//        });
+//
+//        if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId())!=null){
+//            // Assign changed order type value
+//            if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId()).equals("One Time")){
+//                holder.orderTypeSpinner.setSelection(0);
+//            }else if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId()).equals("Daily")){
+//                holder.orderTypeSpinner.setSelection(1);
+//            }else if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId()).equals("Weekly")){
+//                holder.orderTypeSpinner.setSelection(2);
+//            }else if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId()).equals("Monthly")){
+//                holder.orderTypeSpinner.setSelection(3);
+//            }else {
+//                holder.orderTypeSpinner.setSelection(0);
+//            }
+//        }else if(mTakeOrderBeansList1.get(position).getmProductOrderType()!=null){
+//            if(mTakeOrderBeansList1.get(position).getmProductOrderType().length()>0){
+//                if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("1")){
+//                    holder.orderTypeSpinner.setSelection(0);
+//                }else if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("2")){
+//                    holder.orderTypeSpinner.setSelection(1);
+//                }else if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("3")){
+//                    holder.orderTypeSpinner.setSelection(2);
+//                }else if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("4")){
+//                    holder.orderTypeSpinner.setSelection(3);
+//                }else {
+//                    holder.orderTypeSpinner.setSelection(0);
+//                }
+//            }else {
+//                holder.orderTypeSpinner.setSelection(0);
+//            }
+//        }else {
+//            holder.orderTypeSpinner.setSelection(0);
+//        }
 
         holder.fromDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -325,43 +325,77 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                         productId = mTakeOrderBeansList1.get(k).getmProductId();
                         productFD = fromDatesList.get(mTakeOrderBeansList1.get(k).getmProductId());
                         System.out.println("If ******  FROM DATE  **** VAL IS:::: "+ mTakeOrderBeansList1.get(k).getmProductId());
-                    }if(toDatesList.get(mTakeOrderBeansList1.get(k).getmProductId())!= null){
+                        tb.setmProductId(productId);
+                        tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
+                        tb.setmProductFromDate(productFD);
+                        tb.setmProductStatus("1");
+                    }else {
+                        tb.setmProductFromDate(currentDate);
+                    }
+                    if(toDatesList.get(mTakeOrderBeansList1.get(k).getmProductId())!= null){
                         productId = mTakeOrderBeansList1.get(k).getmProductId();
                         productTD = toDatesList.get(mTakeOrderBeansList1.get(k).getmProductId());
                         System.out.println("If ******  TO DATE  **** VAL IS:::: "+ mTakeOrderBeansList1.get(k).getmProductId());
-                    }if(ordertypesList.get(mTakeOrderBeansList1.get(k).getmProductId())!= null){
+                        tb.setmProductId(productId);
+                        tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
+                        tb.setmProductToDate(productTD);
+                        tb.setmProductStatus("1");
+                    }else {
+                        tb.setmProductToDate(currentDate);
+                    }
+
+                    /*if(ordertypesList.get(mTakeOrderBeansList1.get(k).getmProductId())!= null){
                         productId = mTakeOrderBeansList1.get(k).getmProductId();
                         productOrType = ordertypesList.get(mTakeOrderBeansList1.get(k).getmProductId());
                         System.out.println("If ******  ORDER TYPE  **** VAL IS:::: "+ mTakeOrderBeansList1.get(k).getmProductId());
-                    }if(quantityList.get(mTakeOrderBeansList1.get(k).getmProductId())!= null){
+                        tb.setmProductId(productId);
+                        tb.setmRouteId(mPreferences.getString("routeId"));
+                        tb.setmProductFromDate(productFD);
+                        tb.setmProductToDate(productTD);
+                        tb.setmProductOrderType("");
+                    }*/
+                    if(quantityList.get(mTakeOrderBeansList1.get(k).getmProductId())!= null){
                         productId = mTakeOrderBeansList1.get(k).getmProductId();
                         productQua = quantityList.get(mTakeOrderBeansList1.get(k).getmProductId());
                         System.out.println("If ******  QUANTITY **** VAL IS:::: "+ mTakeOrderBeansList1.get(k).getmProductId());
-                    }
-                    tb.setmProductId(productId);
-                    tb.setmRouteId(mPreferences.getString("routeId"));
-                    tb.setmProductFromDate(productFD);
-                    tb.setmProductToDate(productTD);
-                    if(productOrType.equals("One Time")){
-                        tb.setmProductOrderType("1");
-                    }else if(productOrType.equals("Daily")){
-                        tb.setmProductOrderType("2");
-                    }else if(productOrType.equals("Weekly")){
-                        tb.setmProductOrderType("3");
-                    }else if(productOrType.equals("Monthly")){
-                        tb.setmProductOrderType("4");
+                        tb.setmProductId(productId);
+                        tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
+                        tb.setmProductQuantity(productQua);
+                        tb.setmProductStatus("1");
                     }else {
-                        tb.setmProductOrderType("1");
+                        tb.setmProductQuantity("0.000");
                     }
-                    tb.setmProductQuantity(productQua);
+//                    if(productOrType.equals("One Time")){
+//                        tb.setmProductOrderType("1");
+//                    }else if(productOrType.equals("Daily")){
+//                        tb.setmProductOrderType("2");
+//                    }else if(productOrType.equals("Weekly")){
+//                        tb.setmProductOrderType("3");
+//                    }else if(productOrType.equals("Monthly")){
+//                        tb.setmProductOrderType("4");
+//                    }else {
+//                        tb.setmProductOrderType("1");
+//                    }
+
 
                     temptoList.add(tb);
                 }
 
                 synchronized (this) {
                     if (temptoList.size() > 0) {
-                        System.out.println("DB called");
-                        mDBHelper.updateTakeOrderDetails(temptoList);
+                        System.out.println("DB called****"+temptoList.size());
+                        long upd = mDBHelper.updateTakeOrderDetails(temptoList);
+                        System.out.println("UPDATED VALUES COUNT:: "+ upd);
+                    }
+                }
+
+                // Temporary call api from here....
+                synchronized (this) {
+                    if (temptoList.size() > 0) {
+                        System.out.println("SERVICE called");
+                        if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
+                            activity.startService(new Intent(activity, SyncTakeOrdersService.class));
+                        }
                     }
                 }
 

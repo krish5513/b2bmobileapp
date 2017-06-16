@@ -140,6 +140,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TO_TO_DATE = "to_to_date";
     private final String KEY_TO_ORDER_TYPE = "to_order_type";
     private final String KEY_TO_QUANTITY = "to_quantity";
+    private final String KEY_TO_STATUS = "to_status";
 
     // Column names for User privilege actions  Table
     private final String KEY_USER_PRIVILEGE_ID = "user_privilege_id";
@@ -198,7 +199,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + TABLE_TO_PRODUCTS + "("+KEY_TO_PRODUCT_ID + " VARCHAR PRIMARY KEY,"
             + KEY_TO_PRODUCT_NAME + " VARCHAR," + KEY_TO_PRODUCT_ROUTE_ID + " VARCHAR,"
             + KEY_TO_FROM_DATE + " VARCHAR," + KEY_TO_TO_DATE + " VARCHAR," + KEY_TO_ORDER_TYPE + " VARCHAR,"
-            + KEY_TO_QUANTITY + " VARCHAR)";
+            + KEY_TO_QUANTITY + " VARCHAR," + KEY_TO_STATUS + " VARCHAR)";
 
     // User privilege actions Table Create Statements
     private final String CREATE_USER_PRIVILEGE_ACTIONS_TABLE = "CREATE TABLE IF NOT EXISTS "
@@ -1068,6 +1069,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TO_TO_DATE, mProductsBeansList.get(i).getmProductToDate());
                 values.put(KEY_TO_ORDER_TYPE, mProductsBeansList.get(i).getmProductOrderType());
                 values.put(KEY_TO_QUANTITY, mProductsBeansList.get(i).getmProductQuantity());
+                values.put(KEY_TO_STATUS, mProductsBeansList.get(i).getmProductStatus());
 
                 // insert row
                 db.insert(TABLE_TO_PRODUCTS, null, values);
@@ -1083,11 +1085,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to fetch all records from take products table
+     * @param isSync
      */
-    public ArrayList<TakeOrderBean> fetchAllRecordsFromTakeOrderProductsTable(){
+    public ArrayList<TakeOrderBean> fetchAllRecordsFromTakeOrderProductsTable(String isSync){
         ArrayList<TakeOrderBean> allProductTrackRecords = new ArrayList<TakeOrderBean>();
         try {
-            String selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS;
+            if(allProductTrackRecords.size()>0){
+                allProductTrackRecords.clear();
+            }
+            String selectQuery="";
+            if(isSync.equals("yes")){
+                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS +" WHERE "+ KEY_TO_STATUS +" = " + "1";
+            }else {
+                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS;
+            }
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -1104,6 +1115,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     toBean.setmProductToDate((c.getString(c.getColumnIndex(KEY_TO_TO_DATE))));
                     toBean.setmProductOrderType((c.getString(c.getColumnIndex(KEY_TO_ORDER_TYPE))));
                     toBean.setmProductQuantity((c.getString(c.getColumnIndex(KEY_TO_QUANTITY))));
+                    toBean.setmProductStatus((c.getString(c.getColumnIndex(KEY_TO_STATUS))));
 
 
                     allProductTrackRecords.add(toBean);
@@ -1137,6 +1149,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TO_TO_DATE, takeOrderBeanArrayList.get(b).getmProductToDate());
                 values.put(KEY_TO_ORDER_TYPE, takeOrderBeanArrayList.get(b).getmProductOrderType());
                 values.put(KEY_TO_QUANTITY, takeOrderBeanArrayList.get(b).getmProductQuantity());
+                values.put(KEY_TO_STATUS, takeOrderBeanArrayList.get(b).getmProductStatus());
 
                 // update row
                 effectedRows = db.update(TABLE_TO_PRODUCTS, values, KEY_TO_PRODUCT_ID + " = ?", new String[]{String.valueOf(takeOrderBeanArrayList.get(b).getmProductId())});

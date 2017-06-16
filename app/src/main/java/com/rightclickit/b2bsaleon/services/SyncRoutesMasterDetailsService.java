@@ -119,7 +119,9 @@ public class SyncRoutesMasterDetailsService extends Service {
                                                             if (regionName.equals("")) {
                                                                 regionName = regionObj.getString("name");
                                                             } else {
-                                                                regionName = regionName + "," + regionObj.getString("name");
+                                                                if(!regionObj.getString("name").equals(regionName)) {
+                                                                    regionName = regionName + "," + regionObj.getString("name");
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -135,7 +137,9 @@ public class SyncRoutesMasterDetailsService extends Service {
                                                             if (officeName.equals("")) {
                                                                 officeName = officeObj.getString("name");
                                                             } else {
-                                                                officeName = officeName + "," + officeObj.getString("name");
+                                                                if(!officeObj.getString("name").equals(officeName)){
+                                                                    officeName = officeName + "," + officeObj.getString("name");
+                                                                }
                                                             }
                                                         }
                                                     }

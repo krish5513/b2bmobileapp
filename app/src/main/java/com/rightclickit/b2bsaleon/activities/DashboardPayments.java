@@ -12,64 +12,81 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 
-import static com.rightclickit.b2bsaleon.customviews.CustomAlertDialog.showAlertDialogWithCancelButton;
-
-public class SalesActivity extends AppCompatActivity {
-
-    TextView tv_preview,tv_sales_list;
+public class DashboardPayments extends AppCompatActivity {
+    LinearLayout ret;
+    LinearLayout payments;
+    LinearLayout save;
+    LinearLayout print;
+    LinearLayout delivery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sales);
+        setContentView(R.layout.activity_dashboard_payments);
 
-
-        this.getSupportActionBar().setTitle("TDC COUNTER SALES");
+        this.getSupportActionBar().setTitle("PAYMENTS");
         this.getSupportActionBar().setSubtitle(null);
-        this.getSupportActionBar().setLogo(R.drawable.sales_white);
+        this.getSupportActionBar().setLogo(R.drawable.route_white);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
-
 
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        tv_preview=(TextView) findViewById(R.id.tv_preview);
-        tv_sales_list=(TextView) findViewById(R.id.tv_sales_list);
+
+        ret = (LinearLayout) findViewById(R.id.rlinear);
+        payments = (LinearLayout) findViewById(R.id.plinear);
+        save = (LinearLayout) findViewById(R.id.slinear);
+        print = (LinearLayout) findViewById(R.id.prelinear);
+        delivery=(LinearLayout) findViewById(R.id.dlinear) ;
 
 
 
 
-        tv_preview.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+        ret.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent i =new Intent(SalesActivity.this,Sales_PreviewActivity.class);
+            public void onClick(View view) {
+                Intent i=new Intent(DashboardPayments.this,DashboardReturns.class);
                 startActivity(i);
-                finish();
+
             }
         });
-
-
-        tv_sales_list.setOnClickListener(new View.OnClickListener() {
+        delivery.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                showAlertDialogWithCancelButton(SalesActivity.this,"User Action!","Are you sure want to leave sales?");
+            public void onClick(View view) {
+                Intent i=new Intent(DashboardPayments.this,DashboardDelivery.class);
+                startActivity(i);
 
             }
         });
-
-
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showAlertDialogWithCancelButton(DashboardPayments.this,"User Action!","Do you want to save data?");
+            }
+        });
+        print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i=new Intent(DashboardPayments.this,DashboardDeliveryPreview.class);
+                startActivity(i);
+            }
+        });
 
     }
-
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {
         try {
             AlertDialog alertDialog = null;
@@ -84,7 +101,7 @@ public class SalesActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Intent i =new Intent(SalesActivity.this,SalesListActivity.class);
+                    Intent i =new Intent(DashboardPayments.this,DashboardDelivery.class);
                     startActivity(i);
                     finish();
                 }
@@ -115,14 +132,16 @@ public class SalesActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        getMenuInflater().inflate( R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_search) {
-
+        if (id == R.id.Add) {
+            Intent i =new Intent(DashboardPayments.this,SalesListActivity.class);
+            startActivity(i);
+            finish();
             return true;
         }
 
@@ -139,11 +158,12 @@ public class SalesActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
 
 
-        menu.findItem(R.id.notifications).setVisible(false);
-        menu.findItem(R.id.settings).setVisible(false);
-        menu.findItem(R.id.logout).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem( R.id.notifications).setVisible(false);
+        menu.findItem( R.id.settings).setVisible(false);
+        menu.findItem( R.id.logout).setVisible(false);
+        menu.findItem( R.id.action_search).setVisible(true);
         menu.findItem( R.id.Add).setVisible(false);
+
 
 
         return super.onPrepareOptionsMenu(menu);
@@ -157,3 +177,4 @@ public class SalesActivity extends AppCompatActivity {
     }
 
 }
+

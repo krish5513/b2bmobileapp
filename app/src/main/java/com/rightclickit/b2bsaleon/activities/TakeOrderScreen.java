@@ -61,7 +61,7 @@ public class TakeOrderScreen extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable();
+        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("no");
         System.out.println("The TO LIST IS::: "+ mTakeOrderBeansList.size());
         for (int k = 0; k<mTakeOrderBeansList.size();k++){
             System.out.println("AAAA:: "+mTakeOrderBeansList.get(k).getmProductFromDate());

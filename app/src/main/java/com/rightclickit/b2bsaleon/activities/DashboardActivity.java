@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,6 +72,8 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
     Polyline polylineToAdd;
     private String mLatitude = "", mLongitude = "", mDeviceId = "", mProfilePic = "";
     SupportMapFragment mapFragment;
+    Button taleorder;
+    LinearLayout delivery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +98,8 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         mapView=(TextView) findViewById(R.id.tv_mapView);
         listview=(LinearLayout) findViewById(R.id.ll_listview);
         mapview=(LinearLayout) findViewById(R.id.ll_mapview);
+        taleorder=(Button)findViewById(R.id.btn_sale_ord1) ;
+        delivery=(LinearLayout) findViewById(R.id.gotoCustomer);
 
         mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
         mDashBoardLayout.setVisibility(View.GONE);
@@ -183,6 +188,20 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
                 listview.setVisibility(View.GONE);
                 mapview.setVisibility(View.VISIBLE);
 
+            }
+        });
+        taleorder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(DashboardActivity.this,DashboardTakeorder.class);
+                startActivity(i);
+            }
+        });
+        delivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(DashboardActivity.this,DashboardDelivery.class);
+                startActivity(i);
             }
         });
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
