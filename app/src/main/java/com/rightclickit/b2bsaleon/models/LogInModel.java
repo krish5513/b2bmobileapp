@@ -60,7 +60,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
             System.out.println("========= response = " + response);
             String id = "",userCode="",userName="",email="",phone="",
                     profilePic="",stakeHolderId="",address="",deviceSync="",accessDevice="",backUp="",routeArrayListString=""
-                    , latitude="",longitude="",password="";
+                    , latitude="",longitude="",password="",companyname="";
             JSONObject logInResponse = new JSONObject(response);
             if (logInResponse.getInt("result_status") == 1) {
                 if(logInResponse.has("token")){
@@ -135,8 +135,21 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                         mDBHelper.deleteValuesFromUserDetailsTable();
                     }
                     synchronized (this) {
-                        mDBHelper.insertUserDetails(id, userCode, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp, routeArrayListString,
-                                "", "", "", latitude, longitude, password);
+                        String dId = "",trasportName="",vehicleNum="";
+                        if(!mPreferences.getString("").equals("No Data found")
+                                || !mPreferences.getString("").equals("No Data Found")){
+                            dId = mPreferences.getString("deviceId");
+                        }
+                        if(!mPreferences.getString("").equals("No Data found")
+                                || !mPreferences.getString("").equals("No Data Found")){
+                            trasportName = mPreferences.getString("transporterName");
+                        }
+                        if(!mPreferences.getString("").equals("No Data found")
+                                || !mPreferences.getString("").equals("No Data Found")){
+                            vehicleNum = mPreferences.getString("vehicleNumber");
+                        }
+                        mDBHelper.insertUserDetails(id, userCode,companyname, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp, routeArrayListString,
+                                dId, trasportName, vehicleNum, latitude, longitude, password);
                     }
                     synchronized (this) {
                         activity.logInSuccess();

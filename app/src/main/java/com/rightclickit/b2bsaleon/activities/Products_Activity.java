@@ -59,6 +59,7 @@ public class Products_Activity extends AppCompatActivity {
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
     private LinearLayout mDashboardLayout,mTripSheetsLayout,mCustomersLayout,mProductsLayout,mTDCLayout;
+    private LinearLayout mRetailersLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,7 +152,18 @@ public class Products_Activity extends AppCompatActivity {
                 finish();
             }
         });
-
+        mRetailersLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
+        // mRetailersLayout.setVisibility(View.GONE);
+        mRetailersLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mRetailersLayout.startAnimation(animation1);
+                Intent i = new Intent(Products_Activity.this, RetailersActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
         mProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
         mProductsLayout.setVisibility(View.GONE);
         mProductsLayout.setOnClickListener(new View.OnClickListener() {

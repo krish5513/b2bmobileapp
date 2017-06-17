@@ -50,6 +50,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
@@ -112,6 +113,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private String mLatitude="",mLongitude="",mDeviceId="",mProfilePic="";
 
     private LinearLayout mDashboardLayout,mTripSheetsLayout,mCustomersLayout,mProductsLayout,mTDCLayout;
+    private LinearLayout mRetailersLayout;
     private MMSharedPreferences mPreferences;
 
 
@@ -219,7 +221,18 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     finish();
                 }
             });
-
+            mRetailersLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
+            // mRetailersLayout.setVisibility(View.GONE);
+            mRetailersLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                    mRetailersLayout.startAnimation(animation1);
+                    Intent i = new Intent(SettingsActivity.this, RetailersActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
             mProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
             mProductsLayout.setVisibility(View.GONE);
             mProductsLayout.setOnClickListener(new View.OnClickListener() {
@@ -270,11 +283,11 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     str_accessdevice = accessDevice.getText().toString();
                     str_backup = backup.getText().toString();
 
- //                 if (str_companyName.length() == 0 || str_companyName.length() == ' ') {
- //                     companyName.setError("Please enter CompanyName");
-//  Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH_SHORT).show();
-//                        //
- //                 }
+      if (str_companyName.length() == 0 || str_companyName.length() == ' ') {
+                    companyName.setError("Please enter CompanyName");
+Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH_SHORT).show();
+
+               }
 // else if (str_userName.length() == 0 || str_userName.length() == ' ') {
 //                        companyName.setError(null);
 //                        userName.setError("Please enter Username");
@@ -301,7 +314,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 //                        Toast.makeText(getApplicationContext(), "Please enter Routeno", Toast.LENGTH_SHORT).show();
 //
 //                    }
-                     if (str_vehicleNo.length() == 0 || str_vehicleNo.length() == ' ') {
+                      else if (str_vehicleNo.length() == 0 || str_vehicleNo.length() == ' ') {
                         routeNo.setError(null);
                         vehicleNo.setError("Please enter Vehicleno");
                         Toast.makeText(getApplicationContext(), "Please enter Vehicleno", Toast.LENGTH_SHORT).show();
@@ -354,7 +367,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
 
                         String dId  = getDeviceId();
-                        settingsmodel.saveDeviceDetails(dId,vehicleNo.getText().toString(),transporterName.getText().toString());
+                        settingsmodel.saveDeviceDetails(dId,vehicleNo.getText().toString(),transporterName.getText().toString(),companyName.getText().toString());
 //                         long f = mDBHelper.updateUserDetails(sharedPreferences.getString("userId"),"",userName.getText().toString(),
 //                                 "",mobile.getText().toString(),"","","","","","","",dId,transporterName.getText().toString(),
 //                                 vehicleNo.getText().toString(),"","");
@@ -368,7 +381,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                         vehicleNo.setCursorVisible(false);
                         transporterName.setCursorVisible(false);
 
-                        Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
+                       CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
                     }
                 }
             });
@@ -401,6 +414,8 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                         confirmNewPassword.setError(null);
                         settingsmodel.changePassword(sharedPreferences.getString("userId"), Utility.getMd5String(newPassword.getText().toString().trim()));
                     }
+
+                    CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.success_password));
                 }
             });
 
@@ -479,9 +494,15 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             if(userMapData.get("transporter_name")!=null) {
                 transporterName.setText(userMapData.get("transporter_name").toString());
             }
+            if(userMapData.get("companyname")!=null) {
+                companyName.setText(userMapData.get("companyname").toString());
+            }
             if(!mProfilePic.equals("")){
                 String URL = Constants.MAIN_URL+"/b2b/"+mProfilePic;
                 imageLoader.DisplayImage(URL,mPicImage,null,"");
+            }
+            else {
+                mPicImage.setBackgroundResource(R.drawable.logo);
             }
 
             ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));

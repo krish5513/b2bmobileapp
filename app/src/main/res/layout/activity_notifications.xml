@@ -82,7 +82,23 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="12sp" />
         </LinearLayout>
-
+        <LinearLayout
+            android:id="@+id/RetailersLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/tv_retailer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableTop="@drawable/ic_store_black_24dp"
+                android:text="@string/retailers_btn"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp" />
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/ProductsLayout"
             android:layout_width="match_parent"

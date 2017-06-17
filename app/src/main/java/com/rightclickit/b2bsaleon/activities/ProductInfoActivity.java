@@ -13,9 +13,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
-public class ProductViewActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class ProductInfoActivity extends AppCompatActivity {
     EditText code;
     EditText description;
     EditText returnable;
@@ -23,9 +27,11 @@ public class ProductViewActivity extends AppCompatActivity {
     EditText agent;
     EditText retailer;
     EditText consumer;
+    EditText gst;
+    EditText vat;
     ImageView image;
     private MMSharedPreferences mPreference;
-
+     DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,8 @@ public class ProductViewActivity extends AppCompatActivity {
         retailer=(EditText)findViewById(R.id.retailer) ;
         consumer=(EditText)findViewById(R.id.Consumer) ;
         image=(ImageView)findViewById(R.id.productimageview) ;
+        gst=(EditText)findViewById(R.id.GST);
+        vat=(EditText)findViewById(R.id.VAT);
 
         code.setText(bundle.getString("CODE"));
         description.setText(bundle.getString("TITLE"));
@@ -65,10 +73,14 @@ public class ProductViewActivity extends AppCompatActivity {
         agent.setText(bundle.getString("AGENT"));
         retailer.setText(bundle.getString("RETAILER"));
         consumer.setText(bundle.getString("CONSUMER"));
+        gst.setText(bundle.getString("GST"));
+        vat.setText(bundle.getString("VAT"));
 
         Bundle extras = getIntent().getExtras();
         Bitmap bmp = (Bitmap) extras.getParcelable("imagebitmap");
         image.setImageBitmap(bmp );
+
+
        // image.setImageResource(Integer.parseInt(mPreference.getString("IMAGE")));
     }
 

@@ -47,6 +47,7 @@ public class AgentsActivity extends AppCompatActivity {
     private LinearLayout mCustomersLayout;
     private LinearLayout mProductsLayout;
     private LinearLayout mTDCLayout;
+    private LinearLayout mRetailersLayout;
     FloatingActionButton fab;
     private ListView mAgentsList;
     private AgentsAdapter mAgentsAdapter;
@@ -141,6 +142,18 @@ public class AgentsActivity extends AppCompatActivity {
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mCustomersLayout.startAnimation(animation1);
                 Intent i =new Intent(AgentsActivity.this,AgentsActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        mRetailersLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
+        // mRetailersLayout.setVisibility(View.GONE);
+        mRetailersLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mRetailersLayout.startAnimation(animation1);
+                Intent i = new Intent(AgentsActivity.this, RetailersActivity.class);
                 startActivity(i);
                 finish();
             }

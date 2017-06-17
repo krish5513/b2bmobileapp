@@ -26,6 +26,7 @@ public class TripSheetsActivity extends AppCompatActivity {
     LinearLayout tsCustomersLayout;
     LinearLayout tsProductsLayout;
     LinearLayout tsTDCLayout;
+    private LinearLayout mRetailersLayout;
      Button view,stock;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
@@ -93,6 +94,18 @@ public class TripSheetsActivity extends AppCompatActivity {
                         R.anim.blink);
                 tsCustomersLayout.startAnimation(animation1);
                 Intent i =new Intent(TripSheetsActivity.this,AgentsActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        mRetailersLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
+        // mRetailersLayout.setVisibility(View.GONE);
+        mRetailersLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mRetailersLayout.startAnimation(animation1);
+                Intent i = new Intent(TripSheetsActivity.this, RetailersActivity.class);
                 startActivity(i);
                 finish();
             }

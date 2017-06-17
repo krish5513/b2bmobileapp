@@ -61,6 +61,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
     private LinearLayout mCustomersLayout;
     private LinearLayout mProductsLayout;
     private LinearLayout mTDCLayout;
+    private LinearLayout mRetailersLayout;
     TextView listView;
     TextView mapView;
     LinearLayout listview;
@@ -82,6 +83,9 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
             finish();
         }
         setContentView(R.layout.activity_dashboard);
+
+
+
         mDBHelper = new DBHelper(DashboardActivity.this);
         mPreferences = new MMSharedPreferences(DashboardActivity.this);
 //       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -106,7 +110,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         mDashBoardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DashboardActivity.this, "Clicked on Dashboard", Toast.LENGTH_SHORT).show();
+
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mDashBoardLayout.startAnimation(animation1);
 
@@ -117,7 +121,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         mTripsheetsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DashboardActivity.this, "Clicked on Tripsheets", Toast.LENGTH_SHORT).show();
+
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTripsheetsLayout.startAnimation(animation1);
                 Intent i = new Intent(DashboardActivity.this, TripSheetsActivity.class);
@@ -130,10 +134,22 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         mCustomersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DashboardActivity.this, "Clicked on Customers", Toast.LENGTH_SHORT).show();
+
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mCustomersLayout.startAnimation(animation1);
                 Intent i = new Intent(DashboardActivity.this, AgentsActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        mRetailersLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
+       // mRetailersLayout.setVisibility(View.GONE);
+        mRetailersLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mRetailersLayout.startAnimation(animation1);
+                Intent i = new Intent(DashboardActivity.this, RetailersActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -143,7 +159,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         mProductsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DashboardActivity.this, "Clicked on Products", Toast.LENGTH_SHORT).show();
+
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mProductsLayout.startAnimation(animation1);
                 Intent i = new Intent(DashboardActivity.this, Products_Activity.class);
@@ -156,7 +172,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         mTDCLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(DashboardActivity.this, "Clicked on TDC", Toast.LENGTH_SHORT).show();
+
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTDCLayout.startAnimation(animation1);
                 Intent i = new Intent(DashboardActivity.this, SalesActivity.class);

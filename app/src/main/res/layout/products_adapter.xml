@@ -236,9 +236,9 @@
                     android:layout_width="70dp"
                     android:layout_height="25dp"
                     android:background="@drawable/border_btn"
-                    android:drawableLeft="@drawable/ic_remove_red_eye_black_24dp"
+                    android:drawableLeft="@drawable/ic_info_black_24dp"
                     android:padding="5dp"
-                    android:text="View"
+                    android:text="INFO"
                     android:textColor="@color/colorPrimary"
                     android:textSize="10sp" />
                <!-- <Button
@@ -285,5 +285,45 @@
             android:layout_weight="0.25"
             android:background="#dbd7d7" />
     </LinearLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:visibility="gone">
+
+        <EditText
+
+            android:id="@+id/GST"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.20"
+            android:hint="GST"
+            android:editable="false"
+            android:clickable="false"
+            android:longClickable="false"
+            android:paddingTop="20dp"
+            android:textColor="@color/greydark"
+            android:textSize="14sp" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:visibility="gone">
+
+        <EditText
+
+            android:id="@+id/VAT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.20"
+            android:hint="VAT"
+            android:editable="false"
+            android:clickable="false"
+            android:longClickable="false"
+            android:paddingTop="20dp"
+            android:textColor="@color/greydark"
+            android:textSize="14sp" />
+    </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>

@@ -225,7 +225,7 @@ public class TakeOrderScreen extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, ViewAgent.class);
+        Intent intent = new Intent(this, AgentsActivity.class);
         startActivity(intent);
         finish();
     }

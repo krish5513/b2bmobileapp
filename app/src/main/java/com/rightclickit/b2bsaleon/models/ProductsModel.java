@@ -128,6 +128,28 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
                             }
                         }
                     }
+
+
+                    if(resObj.has("tax_data")){
+                        JSONArray taxJsonArray = resObj.getJSONArray("tax_data");
+                        int len = taxJsonArray.length();
+                        if (len>0){
+                            for (int t= 0;t<len;t++){
+                                JSONObject taxObj = taxJsonArray.getJSONObject(t);
+                                if(taxObj.has("tax_type")){
+                                    // Agent price
+                                    if(taxObj.getString("tax_type").equals("1")){
+                                        productsBean.setProductgst(taxObj.getString("tax"));
+                                    }
+                                    // Retailer price
+                                    if(taxObj.getString("tax_type").equals("2")){
+                                        productsBean.setProductvat(taxObj.getString("tax"));
+                                    }
+
+                                }
+                            }
+                        }
+                    }
                     if (resObj.has("image_data")){
                         JSONArray imageJsonArray = resObj.getJSONArray("image_data");
                         int len1 = imageJsonArray.length();

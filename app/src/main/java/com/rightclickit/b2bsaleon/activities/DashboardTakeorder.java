@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TakeOrdersAdapter;
@@ -22,6 +24,7 @@ public class DashboardTakeorder extends AppCompatActivity {
     private TakeOrdersAdapter mTakeOrderAdapter;
     private ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
     private DBHelper mDBHelper;
+    private TextView tv_preview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,17 @@ public class DashboardTakeorder extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
+        tv_preview=(TextView)findViewById(R.id.tv_preview);
+
+        tv_preview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =new Intent(DashboardTakeorder.this,DashboardTakeorderPreview.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
 /*
         mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable();

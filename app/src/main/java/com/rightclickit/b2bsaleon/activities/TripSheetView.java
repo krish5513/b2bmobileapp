@@ -47,6 +47,9 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     TextView mapView;
     LinearLayout listview;
     LinearLayout mapview;
+    Button taleorder;
+    LinearLayout delivery;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +78,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         tsCustomersLayout = (LinearLayout) findViewById(R.id.agent);
         tsProductsLayout = (LinearLayout) findViewById(R.id.product);
         tsTDCLayout = (LinearLayout) findViewById(R.id.tdcsales);
+        taleorder=(Button)findViewById(R.id.btn_sale_ord1) ;
+        delivery=(LinearLayout) findViewById(R.id.gotoCustomer);
 
 
         listView = (TextView) findViewById(R.id.tv_listView);
@@ -165,6 +170,23 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                         R.anim.blink);
                 tsTDCLayout.startAnimation(animation1);
                 Intent i =new Intent(TripSheetView.this,SalesActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        taleorder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(TripSheetView.this,DashboardTakeorder.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        delivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(TripSheetView.this,DashboardDelivery.class);
                 startActivity(i);
                 finish();
             }

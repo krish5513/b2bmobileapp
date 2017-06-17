@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rightclickit.b2bsaleon.activities.ProductViewActivity">
+    tools:context="com.rightclickit.b2bsaleon.activities.ProductInfoActivity">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -157,6 +157,42 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.20"
                         android:hint="Consumer"
+                        android:editable="false"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        android:paddingTop="20dp"
+                        android:textColor="@color/greydark"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/GST"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20"
+                        android:hint="GST"
+                        android:editable="false"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        android:paddingTop="20dp"
+                        android:textColor="@color/greydark"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/VAT"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20"
+                        android:hint="VAT"
                         android:editable="false"
                         android:clickable="false"
                         android:longClickable="false"

@@ -58,6 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
     private final String KEY_USER_CODE = "user_code";
+    private final String KEY_COMPANYNAME = "companyname";
     private final String KEY_NAME = "name";
     private final String KEY_EMAIL = "email";
     private final String KEY_PHONE_NUMBER = "phone_number";
@@ -98,6 +99,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public final String KEY_PRODUCT_AGENT_PRICE = "product_agent_price";
     public final String KEY_PRODUCT_CONSUMER_PRICE= "product_consumer_price";
     public final String KEY_PRODUCT_RETAILER_PRICE= "product_retailer_price";
+    public final String KEY_PRODUCT_GST_PRICE= "product_gst_price";
+    public final String KEY_PRODUCT_VAT_PRICE= "product_vat_price";
 
 
     // Column names for Agents Table
@@ -167,7 +170,7 @@ public class DBHelper extends SQLiteOpenHelper {
     // Userdetails Table Create Statements
     private final String CREATE_TABLE_USERDETAILS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_USERDETAILS + "(" + KEY_USER_ID + " VARCHAR,"
-            + KEY_USER_CODE + " VARCHAR," + KEY_NAME + " VARCHAR," + KEY_EMAIL + " VARCHAR,"
+            + KEY_USER_CODE + " VARCHAR,"+ KEY_COMPANYNAME + " VARCHAR,"  + KEY_NAME + " VARCHAR," + KEY_EMAIL + " VARCHAR,"
             + KEY_PHONE_NUMBER + " VARCHAR," + KEY_AVATAR + " VARCHAR,"
             + KEY_STAKEHOLDER_ID + " VARCHAR," + KEY_ADRESS + " VARCHAR," + KEY_DEVICE_SYNC
             + " VARCHAR, " + KEY_ACCESS_DEVICE
@@ -192,7 +195,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_PRODUCT_CODE + " VARCHAR," + KEY_PRODUCT_TITLE + " VARCHAR,"
             + KEY_PRODUCT_DESCRIPTION + " VARCHAR," + KEY_PRODUCT_IMAGE_URL + " VARCHAR," + KEY_PRODUCT_RETURNABLE + " VARCHAR," +
             KEY_PRODUCT_MOQ + " VARCHAR," + KEY_PRODUCT_AGENT_PRICE + " VARCHAR,"+ KEY_PRODUCT_CONSUMER_PRICE + " VARCHAR,"
-            + KEY_PRODUCT_RETAILER_PRICE + " VARCHAR)";
+            + KEY_PRODUCT_RETAILER_PRICE + " VARCHAR,"+ KEY_PRODUCT_GST_PRICE + " VARCHAR,"
+            + KEY_PRODUCT_VAT_PRICE + " VARCHAR)";
 
     //TO Products Table Create Statements
     private final String CREATE_PRODUCTS_TABLE_TO = "CREATE TABLE IF NOT EXISTS "
@@ -397,13 +401,14 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param accessDevice
      * @param backUp
      */
-    public void insertUserDetails(String id, String userCode, String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp,String routeArrayListString,
+    public void insertUserDetails(String id, String userCode, String companyname,String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp,String routeArrayListString,
                                   String deviceId,String transporterName,String vehicleNumber,String latitude,String longitude,String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
             values.put(KEY_USER_ID, id);
             values.put(KEY_USER_CODE, userCode);
+            values.put(KEY_COMPANYNAME, companyname);
             values.put(KEY_NAME, userName);
             values.put(KEY_EMAIL, email);
             values.put(KEY_PHONE_NUMBER, phone);
@@ -447,7 +452,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param accessDevice
      * @param backUp
      */
-    public long updateUserDetails(String id, String userCode, String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp,String routeArrayListString,
+    public long updateUserDetails(String id, String companyname,String userCode, String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp,String routeArrayListString,
                                   String deviceId,String transporterName,String vehicleNumber,String latitude,String longitude) {
         SQLiteDatabase db = this.getWritableDatabase();
         long effectedRows = 0;
@@ -455,6 +460,7 @@ public class DBHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             //values.put(KEY_USER_ID, id);
             //values.put(KEY_USER_CODE, userCode);
+            values.put(KEY_COMPANYNAME,companyname);
             // values.put(KEY_NAME, userName);
             //values.put(KEY_EMAIL, email);
             // values.put(KEY_PHONE_NUMBER, phone);
@@ -465,6 +471,7 @@ public class DBHelper extends SQLiteOpenHelper {
             // values.put(KEY_ACCESS_DEVICE, accessDevice);
             // values.put(KEY_BACKUP, backUp);
             // values.put(KEY_ROUTEIDS,routeArrayListString);
+
             values.put(KEY_DEVICE_UDID,deviceId);
             values.put(KEY_TRANSPORTER_NAME,transporterName);
             values.put(KEY_VEHICLE_NUMBER,vehicleNumber);
@@ -498,6 +505,7 @@ public class DBHelper extends SQLiteOpenHelper {
             if (c.moveToFirst()) {
                 do {
                     userData.put(KEY_USER_ID,(c.getString(c.getColumnIndex(KEY_USER_ID))));
+                    userData.put(KEY_COMPANYNAME,(c.getString(c.getColumnIndex(KEY_COMPANYNAME))));
                     userData.put(KEY_NAME,(c.getString(c.getColumnIndex(KEY_NAME))));
                     userData.put(KEY_EMAIL,(c.getString(c.getColumnIndex(KEY_EMAIL))));
                     userData.put(KEY_PHONE_NUMBER,(c.getString(c.getColumnIndex(KEY_PHONE_NUMBER))));
@@ -999,6 +1007,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_PRODUCT_AGENT_PRICE, mProductsBeansList.get(i).getProductAgentPrice());
                 values.put(KEY_PRODUCT_CONSUMER_PRICE, mProductsBeansList.get(i).getProductConsumerPrice());
                 values.put(KEY_PRODUCT_RETAILER_PRICE, mProductsBeansList.get(i).getProductRetailerPrice());
+                values.put(KEY_PRODUCT_GST_PRICE, mProductsBeansList.get(i).getProductgst());
+                values.put(KEY_PRODUCT_VAT_PRICE, mProductsBeansList.get(i).getProductvat());
 
                 // insert row
                 db.insert(TABLE_PRODUCTS, null, values);
@@ -1038,7 +1048,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     productsBean.setProductAgentPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_AGENT_PRICE))));
                     productsBean.setProductConsumerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_CONSUMER_PRICE))));
                     productsBean.setProductRetailerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_RETAILER_PRICE))));
-
+                    productsBean.setProductgst((c.getString(c.getColumnIndex(KEY_PRODUCT_GST_PRICE))));
+                    productsBean.setProductvat((c.getString(c.getColumnIndex(KEY_PRODUCT_VAT_PRICE))));
 
                     allProductTrackRecords.add(productsBean);
                 } while (c.moveToNext());

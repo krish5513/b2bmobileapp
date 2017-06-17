@@ -13,6 +13,8 @@
     <string name="error_invalid_email">Please enter valid email address.</string>
     <string name="login_response_invalid_login">Invalid login credentials.</string>
     <string name="login_response_contact_admin_login">Please contact administrator.</string>
+    <string name="database_details">Details saved Successfully.</string>
+    <string name="success_password">Password changed Successfully.</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -39,18 +41,20 @@
     <string name="delete_btn">Delete</string>
     <string name="more_btn">More...</string>
 
-    <string name="myroutes_btm">Trip Sheets</string>
+    <string name="myroutes_btm">Trips</string>
     <string name="customers_btm">Agents</string>
     <string name="products_btm">Products</string>
     <string name="settings_btm">Settings</string>
-    <string name="sales_btm">TDC Sales</string>
-    <string name="dashboard_btm">Dashboard</string>
+    <string name="sales_btm">TDC</string>
+    <string name="dashboard_btm">Home</string>
     <string name="orders_btm">Take Orders</string>
     <string name="tpcorders_btm">TPC Orders</string>
     <string name="print_btm">Print</string>
     <string name="payment_btm">Payment</string>
-    <string name="delivery_btm">Delivery</string>
+    <string name="delivery_btm">Deliveries</string>
     <string name="return_btm">Return</string>
+    <string name="payments_btn">Payments</string>
+    <string name="retailers_btn">Retailers</string>
 
 
     <string name="home">Home</string>

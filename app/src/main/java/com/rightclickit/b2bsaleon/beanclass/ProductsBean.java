@@ -20,6 +20,26 @@ public class ProductsBean {
     private String productConsumerPrice;
     private String productRetailerPrice;
 
+    public String getProductgst() {
+        return productgst;
+    }
+
+    public void setProductgst(String productgst) {
+        this.productgst = productgst;
+    }
+
+    public String getProductvat() {
+        return productvat;
+    }
+
+    public void setProductvat(String productvat) {
+        this.productvat = productvat;
+    }
+
+    private String productgst;
+    private String productvat;
+
+
     public String getProductId() {
         return productId;
     }

@@ -3,26 +3,22 @@ package com.rightclickit.b2bsaleon.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.AgentsActivity;
-import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
 import com.rightclickit.b2bsaleon.activities.ProductStock;
-import com.rightclickit.b2bsaleon.activities.ProductViewActivity;
+import com.rightclickit.b2bsaleon.activities.ProductInfoActivity;
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
-import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
@@ -98,7 +94,8 @@ public class ProductsAdapter extends BaseAdapter {
             holder.materialAgent=(TextView)convertView.findViewById(R.id.materialAgent);
             holder.materialAgentUnit=(TextView)convertView.findViewById(R.id.agentUnit);
             holder.stockbtn=(Button) convertView.findViewById(R.id.btnStock);
-
+            holder.gst=(EditText) convertView.findViewById(R.id.GST);
+            holder.vat=(EditText) convertView.findViewById(R.id.VAT);
             convertView.setTag(holder);
         } else {
             holder = (MyViewHolder) convertView.getTag();
@@ -142,6 +139,28 @@ public class ProductsAdapter extends BaseAdapter {
         }else {
             holder.materialConsumerUnit.setText("-");
         }
+
+
+        if(mProductsBeansList1.get(position).getProductgst()!=null) {
+            if (mProductsBeansList1.get(position).getProductgst().length() == 0) {
+                holder.gst.setText("-");
+            } else {
+                holder.gst.setText(mProductsBeansList1.get(position).getProductgst());
+            }
+        }else {
+            holder.gst.setText("-");
+        }
+
+        if(mProductsBeansList1.get(position).getProductvat()!=null) {
+            if (mProductsBeansList1.get(position).getProductvat().length() == 0) {
+                holder.vat.setText("-");
+            } else {
+                holder.materialAgentUnit.setText(mProductsBeansList1.get(position).getProductvat());
+            }
+        }else {
+            holder.vat.setText("-");
+        }
+
         //System.out.println("URL===== "+mProductsBeansList1.get(position).getProductImageUrl());
         if(mProductsBeansList1.get(position).getProductImageUrl()!=null) {
             if (!mProductsBeansList1.get(position).getProductImageUrl().equals("")) {
@@ -164,16 +183,19 @@ public class ProductsAdapter extends BaseAdapter {
         holder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(activity,ProductViewActivity.class);
+                Intent intent=new Intent(activity,ProductInfoActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("CODE", mProductsBeansList1.get(position).getProductCode());
-                Log.i("firstnamebhagya",mProductsBeansList1.get(position).getProductCode()+"");
+
                 bundle.putString("TITLE", mProductsBeansList1.get(position).getProductTitle());
                 bundle.putString("RETURNABLE", mProductsBeansList1.get(position).getProductReturnable());
                 bundle.putString("MOQ", mProductsBeansList1.get(position).getProductMOQ());
                 bundle.putString("AGENT", mProductsBeansList1.get(position).getProductAgentPrice());
                 bundle.putString("RETAILER", mProductsBeansList1.get(position).getProductRetailerPrice());
                 bundle.putString("CONSUMER", mProductsBeansList1.get(position).getProductConsumerPrice());
+                bundle.putString("GST", mProductsBeansList1.get(position).getProductgst());
+                Log.i("firstnamebhagya",mProductsBeansList1.get(position).getProductgst()+"");
+                bundle.putString("VAT", mProductsBeansList1.get(position).getProductvat());
                  intent.putExtra("IMAGE", mProductsBeansList1.get(position).getProductImageUrl());
                 holder.productImage.buildDrawingCache();
                  Bitmap image= holder.productImage.getDrawingCache();
@@ -205,6 +227,8 @@ public class ProductsAdapter extends BaseAdapter {
         public Button viewbtn;
 
         public Button stockbtn;
+        public EditText gst;
+        public EditText vat;
 
 
     }

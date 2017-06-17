@@ -71,6 +71,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     private MMSharedPreferences mPreferences;
     private ListView mList;
     private ArrayList<TakeOrderBean> arraylist;
+    private HashMap<String,String> producttitle = new HashMap<String, String>();
     private HashMap<String,String> quantityList = new HashMap<String, String>();
     private HashMap<String,String> fromDatesList = new HashMap<String, String>();
     private HashMap<String,String> toDatesList = new HashMap<String, String>();
@@ -149,8 +150,21 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             holder = (MyViewHolder) convertView.getTag();
         }
 
-        holder.productName.setText(mTakeOrderBeansList1.get(position).getmProductTitle());
+     //   holder.productName.setText(mTakeOrderBeansList1.get(position).getmProductTitle());
 
+        if(producttitle.get(mTakeOrderBeansList1.get(position).getmProductTitle())!=null){
+            // Assign changed from date value.
+            String fromD = producttitle.get(mTakeOrderBeansList1.get(position).getmProductTitle());
+            holder.productName.setText(fromD);
+        }else if(mTakeOrderBeansList1.get(position).getmProductTitle()!=null){
+            if(mTakeOrderBeansList1.get(position).getmProductTitle().length()>0){
+                holder.productName.setText(mTakeOrderBeansList1.get(position).getmProductTitle());
+            }else {
+                holder.productName.setText(mTakeOrderBeansList1.get(position).getmProductTitle());
+            }
+        }else {
+            holder.productName.setText(mTakeOrderBeansList1.get(position).getmProductTitle());
+        }
 
         if(fromDatesList.get(mTakeOrderBeansList1.get(position).getmProductId())!=null){
             // Assign changed from date value.
@@ -313,14 +327,24 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             @Override
             public void onClick(View v) {
 
-                String productId = "",productFD="",productTD="",productOrType="",productQua="";
+                String productId = "",productFD="",productTD="",productOrType="",productQua="",productTitle="";
                 if(temptoList.size()>0){
                     temptoList.clear();
                 }
 
                 for (int k = 0;k<mTakeOrderBeansList1.size();k++){
                     TakeOrderBean tb = new TakeOrderBean();
-
+                    if(producttitle.get(mTakeOrderBeansList1.get(k).getmProductId())!= null){
+                        productId = mTakeOrderBeansList1.get(k).getmProductId();
+                        productTitle = producttitle.get(mTakeOrderBeansList1.get(k).getmProductId());
+                        System.out.println("If ******  PRODUCT TITLE  **** VAL IS:::: "+ mTakeOrderBeansList1.get(k).getmProductId());
+                        tb.setmProductId(productId);
+                        tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
+                        tb.setmProductTitle(productTitle);
+                        tb.setmProductStatus("1");
+                    }else {
+                        tb.setmProductTitle(mTakeOrderBeansList1.get(k).getmProductTitle());
+                    }
                     if(fromDatesList.get(mTakeOrderBeansList1.get(k).getmProductId())!= null){
                         productId = mTakeOrderBeansList1.get(k).getmProductId();
                         productFD = fromDatesList.get(mTakeOrderBeansList1.get(k).getmProductId());

@@ -31,7 +31,7 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private boolean isSaveDeviceDetails;
-    private String did="",transporterName="",vehicleNumber="";
+    private String did="",transporterName="",vehicleNumber="",companyname="";
 
     public SettingsModel(Context context, SettingsActivity activity) {
         this.context = context;
@@ -78,16 +78,17 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
         }
     }
 
-    public void saveDeviceDetails(String deviceId,String vechicleNumber,String transporterName) {
+    public void saveDeviceDetails(String deviceId,String vechicleNumber,String transporterName,String companyname) {
         try {
             isSaveDeviceDetails = true;
             this.did = deviceId;
             this.vehicleNumber = vechicleNumber;
             this.transporterName = transporterName;
+            this.companyname=companyname;
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String deviceName = mPreferences.getString("name")+deviceId.substring(deviceId.length()-3);
                 String settingsURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_ADD, Constants.SAVE_DEVICE_DETAILS);
-               System.out.println("The URL IS==== "+settingsURL);
+                System.out.println("The URL IS==== "+settingsURL);
                 HashMap<String,String> params = new HashMap<String, String>();
                 params.put("device_id", deviceId);
                 params.put("user_id", mPreferences.getString("userId"));
@@ -112,7 +113,10 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
             System.out.println("========= response = " + response);
             JSONObject logInResponse = new JSONObject(response);
             if (isSaveDeviceDetails){
-                long f = mDBHelper.updateUserDetails(mPreferences.getString("userId"),"","",
+                mPreferences.putString("deviceId",did);
+                mPreferences.putString("transporterName",transporterName);
+                mPreferences.putString("vehicleNumber",vehicleNumber);
+                long f = mDBHelper.updateUserDetails(mPreferences.getString("userId"),companyname,"","",
                         "","","","","","","","","",did,transporterName,
                         vehicleNumber,"","");
             }else {
