@@ -40,6 +40,7 @@ public class CustomAlertDialog {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
+                    CustomProgressDialog.hideProgressDialog();
                 }
             });
 
