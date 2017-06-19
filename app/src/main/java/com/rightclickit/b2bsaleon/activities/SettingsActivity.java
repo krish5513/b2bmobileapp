@@ -222,7 +222,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 }
             });
             mRetailersLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
-            // mRetailersLayout.setVisibility(View.GONE);
+            mRetailersLayout.setVisibility(View.GONE);
             mRetailersLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -519,6 +519,8 @@ Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH
                     mProductsLayout.setVisibility(View.VISIBLE);
                 }else if (privilegesData.get(k).toString().equals("TDC")){
                     mTDCLayout.setVisibility(View.VISIBLE);
+                }else if (privilegesData.get(k).toString().equals("Retailers")){
+                    mRetailersLayout.setVisibility(View.VISIBLE);
                 }
             }
 
