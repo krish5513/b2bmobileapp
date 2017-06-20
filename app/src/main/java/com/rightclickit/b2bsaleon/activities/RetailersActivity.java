@@ -66,7 +66,7 @@ public class RetailersActivity extends AppCompatActivity {
             }
         });
         mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
-       // mDashBoardLayout.setVisibility(View.GONE);
+       mDashBoardLayout.setVisibility(View.GONE);
         mDashBoardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +80,7 @@ public class RetailersActivity extends AppCompatActivity {
             }
         });
         mTripsheetsLayout = (LinearLayout) findViewById(R.id.TripSheetsLayout);
-       // mTripsheetsLayout.setVisibility(View.GONE);
+        mTripsheetsLayout.setVisibility(View.GONE);
         mTripsheetsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +93,7 @@ public class RetailersActivity extends AppCompatActivity {
             }
         });
         mCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
-       // mCustomersLayout.setVisibility(View.GONE);
+       mCustomersLayout.setVisibility(View.GONE);
         mCustomersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +106,7 @@ public class RetailersActivity extends AppCompatActivity {
             }
         });
         mRetailersLayout = (LinearLayout) findViewById(R.id.Retailers);
-        // mRetailersLayout.setVisibility(View.GONE);
+        mRetailersLayout.setVisibility(View.GONE);
         mRetailersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +116,7 @@ public class RetailersActivity extends AppCompatActivity {
             }
         });
         mProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
-       // mProductsLayout.setVisibility(View.GONE);
+        mProductsLayout.setVisibility(View.GONE);
         mProductsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,7 +129,7 @@ public class RetailersActivity extends AppCompatActivity {
             }
         });
         mTDCLayout = (LinearLayout) findViewById(R.id.TDCLayout);
-      //  mTDCLayout.setVisibility(View.GONE);
+        mTDCLayout.setVisibility(View.GONE);
         mTDCLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,9 +180,9 @@ public class RetailersActivity extends AppCompatActivity {
             }else if (privilegesData.get(k).toString().equals("Retailers")){
                 mRetailersLayout.setVisibility(View.VISIBLE);
             }
-        }*/
+        }
 
-
+*/
 
 
     }
