@@ -66,6 +66,7 @@ public class TripSheetsActivity extends AppCompatActivity {
         tsDashBoardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tsDashBoardLayout.setVisibility(View.GONE);
                 //Toast.makeText(TripsheetsActivity.this, "Clicked on Dashboard", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
@@ -79,6 +80,7 @@ public class TripSheetsActivity extends AppCompatActivity {
         tsTripsheetsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tsTripsheetsLayout.setVisibility(View.GONE);
                 //Toast.makeText(TripSheetsActivity.this, "Clicked on Tripsheets", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
@@ -89,6 +91,7 @@ public class TripSheetsActivity extends AppCompatActivity {
         tsCustomersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tsCustomersLayout.setVisibility(View.GONE);
                 //Toast.makeText(Tripsheet_Activity.this, "Clicked on Customers", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
@@ -99,7 +102,7 @@ public class TripSheetsActivity extends AppCompatActivity {
             }
         });
         mRetailersLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
-        // mRetailersLayout.setVisibility(View.GONE);
+         mRetailersLayout.setVisibility(View.GONE);
         mRetailersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +116,7 @@ public class TripSheetsActivity extends AppCompatActivity {
         tsProductsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tsProductsLayout.setVisibility(View.GONE);
                // Toast.makeText(Tripsheet_Activity.this, "Clicked on Products", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
@@ -125,6 +129,7 @@ public class TripSheetsActivity extends AppCompatActivity {
         tsTDCLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tsTDCLayout.setVisibility(View.GONE);
                // Toast.makeText(Tripsheet_Activity.this, "Clicked on TDC", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
@@ -172,6 +177,8 @@ public class TripSheetsActivity extends AppCompatActivity {
                 tsProductsLayout.setVisibility(View.VISIBLE);
             }else if (privilegesData.get(k).toString().equals("TDC")){
                 tsTDCLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("Retailers")){
+                mRetailersLayout.setVisibility(View.VISIBLE);
             }
         }
 
