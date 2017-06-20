@@ -74,6 +74,12 @@
             android:enabled="true"
             android:exported="true" />
 
+        <!-- Take Order data sync service -->
+        <service
+            android:name=".services.SyncTakeOrdersService"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity
             android:name=".activities.Products_Activity"
             android:screenOrientation="portrait"

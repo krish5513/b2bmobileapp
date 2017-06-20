@@ -15,13 +15,17 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.database.DBHelper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RetailersActivity extends AppCompatActivity {
 
     FloatingActionButton fab;
 
     Button info,payments;
-
+    private DBHelper mDBHelper;
     private LinearLayout mDashBoardLayout;
     private LinearLayout mTripsheetsLayout;
     private LinearLayout mCustomersLayout;
@@ -158,7 +162,25 @@ public class RetailersActivity extends AppCompatActivity {
                 finish();
             }
         } );
-
+       /* HashMap<String, String> userMapData = mDBHelper.getUsersData();
+        ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
+        System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
+        for (int k = 0; k<privilegesData.size();k++){
+            System.out.println("F 11111 ***COUNT 4444 === "+ privilegesData.get(k).toString());
+            if (privilegesData.get(k).toString().equals("Dashboard")){
+                mDashBoardLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("TripSheets")){
+                mTripsheetsLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("Customers")){
+                mCustomersLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("Products")){
+                mProductsLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("TDC")){
+                mTDCLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("Retailers")){
+                mRetailersLayout.setVisibility(View.VISIBLE);
+            }
+        }*/
 
 
 

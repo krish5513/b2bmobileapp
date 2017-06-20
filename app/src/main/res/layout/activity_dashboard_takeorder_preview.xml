@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rightclickit.b2bsaleon.fragments.Take_Order_Preview">
+    tools:context="com.rightclickit.b2bsaleon.activities.DashboardTakeorderPreview">
 
 
     <LinearLayout
@@ -268,7 +268,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.15"
+                android:layout_weight="0.18"
                 android:text="One Time"
                 android:textSize="12sp"
                 android:layout_marginRight="7dp"
@@ -278,7 +278,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
-                android:text="From: "
+                android:text="From:"
                 android:textSize="12sp"
                 android:layout_marginRight="7dp"
                 android:textColor="@color/greydark" />

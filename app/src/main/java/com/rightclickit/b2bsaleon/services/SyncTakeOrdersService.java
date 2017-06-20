@@ -89,6 +89,8 @@ public class SyncTakeOrdersService extends Service {
                 mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes");
                 userId = mSessionManagement.getString("userId");
                 String URL = String.format("%s%s%s%s", Constants.MAIN_URL,Constants.SYNC_TAKE_ORDERS_PORT,Constants.SYNC_TAKE_ORDERS_SERVICE,mSessionManagement.getString("token"));
+
+
                 JSONObject params1 = new JSONObject();
                 params1.put("enquiry_id","EPR001");
                 params1.put("user_id",mSessionManagement.getString("userId"));
@@ -118,7 +120,8 @@ public class SyncTakeOrdersService extends Service {
                 mJsonObj = new NetworkManager().makeHttpPostConnection(URL,params1);
 
                 JSONObject resultObj = new JSONObject(mJsonObj);
-//                System.out.println("The LENGTH IS:: "+ resultObj.length());
+                System.out.println("The URL IS:: "+ URL);
+               System.out.println("The LENGTH IS:: "+ resultObj.length());
                 System.out.println("The LENGTH IS:: "+ mJsonObj.toString());
                 if(resultObj.has("result_status")){
                     if(resultObj.getString("result_status").equals("1")){

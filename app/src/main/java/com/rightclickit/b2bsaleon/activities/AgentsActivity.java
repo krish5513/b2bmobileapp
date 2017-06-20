@@ -112,7 +112,7 @@ public class AgentsActivity extends AppCompatActivity {
         mDashBoardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AgentsActivity.this, "Clicked on Dashboard", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(AgentsActivity.this, "Clicked on Dashboard", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mDashBoardLayout.startAnimation(animation1);
                 Intent i =new Intent(AgentsActivity.this,DashboardActivity.class);
@@ -125,7 +125,7 @@ public class AgentsActivity extends AppCompatActivity {
         mTripsheetsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AgentsActivity.this, "Clicked on Tripsheets", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(AgentsActivity.this, "Clicked on Tripsheets", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTripsheetsLayout.startAnimation(animation1);
                 Intent i =new Intent(AgentsActivity.this,TripSheetsActivity.class);
@@ -138,7 +138,7 @@ public class AgentsActivity extends AppCompatActivity {
         mCustomersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AgentsActivity.this, "Clicked on Customers", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(AgentsActivity.this, "Clicked on Customers", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mCustomersLayout.startAnimation(animation1);
                 Intent i =new Intent(AgentsActivity.this,AgentsActivity.class);
@@ -163,7 +163,7 @@ public class AgentsActivity extends AppCompatActivity {
         mProductsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AgentsActivity.this, "Clicked on Products", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(AgentsActivity.this, "Clicked on Products", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mProductsLayout.startAnimation(animation1);
                 Intent i =new Intent(AgentsActivity.this,Products_Activity.class);
