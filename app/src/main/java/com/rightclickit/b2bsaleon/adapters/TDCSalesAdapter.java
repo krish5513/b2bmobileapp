@@ -4,23 +4,19 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.util.Log;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.ProductStock;
-import com.rightclickit.b2bsaleon.activities.ProductInfoActivity;
-import com.rightclickit.b2bsaleon.activities.Products_Activity;
+import com.rightclickit.b2bsaleon.activities.SalesActivity;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
@@ -34,196 +30,94 @@ import java.util.Locale;
  * Created by PPS on 5/25/2017.
  */
 
-public class ProductsAdapter extends BaseAdapter {
-
+public class TDCSalesAdapter extends BaseAdapter {
     LayoutInflater mInflater;
     private Activity activity;
-    Context ctxt;
-    ArrayList<ProductsBean> mProductsBeansList1;
+    private Context ctxt;
     private ImageLoader mImageLoader;
-    private ArrayList<ProductsBean> arraylist;
+    private ArrayList<ProductsBean> allProductsList, filteredProductsList;
     private MMSharedPreferences mPreferences;
+    private Drawable red_circle, green_circle;
 
-
-    public ProductsAdapter(Context ctxt, Products_Activity productsActivity, ArrayList<ProductsBean> mProductsBeansList1) {
+    public TDCSalesAdapter(Context ctxt, SalesActivity salesActivity, ArrayList<ProductsBean> productsList) {
         this.ctxt = ctxt;
-        this.activity = productsActivity;
-        this.mProductsBeansList1 = mProductsBeansList1;
-        this.mImageLoader = new ImageLoader(productsActivity);
+        this.activity = salesActivity;
+        this.mImageLoader = new ImageLoader(salesActivity);
         this.mInflater = LayoutInflater.from(activity);
-        this.arraylist = new ArrayList<ProductsBean>();
-        this.arraylist.addAll(mProductsBeansList1);
         this.mPreferences = new MMSharedPreferences(activity);
+        this.allProductsList = productsList;
+        this.filteredProductsList = new ArrayList<>();
+        this.filteredProductsList.addAll(allProductsList);
+        this.red_circle = ContextCompat.getDrawable(ctxt, R.drawable.ic_circle_red);
+        this.green_circle = ContextCompat.getDrawable(ctxt, R.drawable.ic_circle_green);
     }
-
 
     @Override
     public int getCount() {
-        return mProductsBeansList1.size();
+        return filteredProductsList.size();
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public ProductsBean getItem(int position) {
+        return filteredProductsList.get(position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return 0;
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final MyViewHolder holder;
+        TDCSalesViewHolder tdcSalesViewHolder = null;
 
         if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.tdc_sales_adapter, null);
 
-            holder = new MyViewHolder();
-            convertView = mInflater.inflate(R.layout.products_adapter, null);
+            tdcSalesViewHolder = new TDCSalesViewHolder();
+            tdcSalesViewHolder.arrow_icon = (ImageView) convertView.findViewById(R.id.arrow_icon);
+            tdcSalesViewHolder.product_name = (TextView) convertView.findViewById(R.id.product_name);
+            tdcSalesViewHolder.quantity_stock = (TextView) convertView.findViewById(R.id.quantity_stock);
+            tdcSalesViewHolder.price = (TextView) convertView.findViewById(R.id.price);
+            tdcSalesViewHolder.tax = (TextView) convertView.findViewById(R.id.tax);
+            tdcSalesViewHolder.amount = (TextView) convertView.findViewById(R.id.amount);
+            tdcSalesViewHolder.product_quantity_dec = (ImageView) convertView.findViewById(R.id.product_quantity_dec);
+            tdcSalesViewHolder.product_quantity = (EditText) convertView.findViewById(R.id.product_quantity);
+            tdcSalesViewHolder.product_quantity_inc = (ImageView) convertView.findViewById(R.id.product_quantity_inc);
 
-            holder.productCode = (TextView) convertView.findViewById(R.id.materialCode);
-            holder.product_Unit = (TextView) convertView.findViewById(R.id.material_Unit);
-            holder.productTitle = (TextView) convertView.findViewById(R.id.materialTitle);
-            holder.materialRetailer = (TextView) convertView.findViewById(R.id.tv_Retailer);
-            holder.materialRetailerUnit = (TextView) convertView.findViewById(R.id.materialMRPUnit);
-            holder.materialMOQ = (TextView) convertView.findViewById(R.id.tv_moq);
-            holder.materialMOQUnit = (TextView) convertView.findViewById(R.id.materialMOQUnit);
-            holder.materialConsumer = (TextView) convertView.findViewById(R.id.tv_Consumer);
-            holder.materialConsumerUnit = (TextView) convertView.findViewById(R.id.materialSPUnit);
-            holder.materialReturnable = (TextView) convertView.findViewById(R.id.material_Returnable);
-            holder.productImage = (ImageView) convertView.findViewById(R.id.materialImage);
-            holder.downarrowImage = (ImageView) convertView.findViewById(R.id.img);
-            holder.viewbtn = (Button) convertView.findViewById(R.id.btnView);
-            holder.materialAgent = (TextView) convertView.findViewById(R.id.materialAgent);
-            holder.materialAgentUnit = (TextView) convertView.findViewById(R.id.agentUnit);
-            holder.stockbtn = (Button) convertView.findViewById(R.id.btnStock);
-            holder.gst = (EditText) convertView.findViewById(R.id.GST);
-            holder.vat = (EditText) convertView.findViewById(R.id.VAT);
-            convertView.setTag(holder);
+            convertView.setTag(tdcSalesViewHolder);
         } else {
-            holder = (MyViewHolder) convertView.getTag();
+            tdcSalesViewHolder = (TDCSalesViewHolder) convertView.getTag();
         }
 
-        holder.productCode.setText(mProductsBeansList1.get(position).getProductCode());
-        if (mProductsBeansList1.get(position).getProductReturnable().equals("N")) {
-            holder.product_Unit.setText("NO");
-        } else if (mProductsBeansList1.get(position).getProductReturnable().equals("Y")) {
-            holder.product_Unit.setText("YES");
-        }
-        holder.productTitle.setText(mProductsBeansList1.get(position).getProductTitle());
-        holder.materialMOQUnit.setText(mProductsBeansList1.get(position).getProductMOQ());
+        final ProductsBean productsBean = getItem(position);
 
-        if (mProductsBeansList1.get(position).getProductAgentPrice() != null) {
-            if (mProductsBeansList1.get(position).getProductAgentPrice().length() == 0) {
-                holder.materialAgentUnit.setText("-");
-            } else {
-                holder.materialAgentUnit.setText(mProductsBeansList1.get(position).getProductAgentPrice());
-            }
+        if ((position % 2) == 0) {
+            tdcSalesViewHolder.arrow_icon.setImageResource(R.drawable.ic_arrow_upward_white_24dp);
+            tdcSalesViewHolder.arrow_icon.setBackground(green_circle);
         } else {
-            holder.materialAgentUnit.setText("-");
+            tdcSalesViewHolder.arrow_icon.setImageResource(R.drawable.ic_arrow_downward_white_24dp);
+            tdcSalesViewHolder.arrow_icon.setBackground(red_circle);
         }
 
-        if (mProductsBeansList1.get(position).getProductRetailerPrice() != null) {
-            if (mProductsBeansList1.get(position).getProductRetailerPrice().length() == 0) {
-                holder.materialRetailerUnit.setText("-");
-            } else {
-                holder.materialRetailerUnit.setText(mProductsBeansList1.get(position).getProductRetailerPrice());
-            }
-        } else {
-            holder.materialRetailerUnit.setText("-");
-        }
+        String tax = (productsBean.getProductvat() == null ? "0.00" : productsBean.getProductvat());
 
-        if (mProductsBeansList1.get(position).getProductConsumerPrice() != null) {
-            if (mProductsBeansList1.get(position).getProductConsumerPrice().length() == 0) {
-                holder.materialConsumerUnit.setText("-");
-            } else {
-                holder.materialConsumerUnit.setText(mProductsBeansList1.get(position).getProductConsumerPrice());
-            }
-        } else {
-            holder.materialConsumerUnit.setText("-");
-        }
+        tdcSalesViewHolder.product_name.setText(String.format("%s @ %s%%", productsBean.getProductTitle(), tax));
+        tdcSalesViewHolder.quantity_stock.setText(productsBean.getProductCode());
+        tdcSalesViewHolder.price.setText(productsBean.getProductConsumerPrice());
+        tdcSalesViewHolder.tax.setText(tax);
+        tdcSalesViewHolder.amount.setText(productsBean.getProductConsumerPrice());
 
-
-        if (mProductsBeansList1.get(position).getProductgst() != null) {
-            if (mProductsBeansList1.get(position).getProductgst().length() == 0) {
-                holder.gst.setText("-");
-            } else {
-                holder.gst.setText(mProductsBeansList1.get(position).getProductgst());
-            }
-        } else {
-            holder.gst.setText("-");
-        }
-
-        if (mProductsBeansList1.get(position).getProductvat() != null) {
-            if (mProductsBeansList1.get(position).getProductvat().length() == 0) {
-                holder.vat.setText("-");
-            } else {
-                holder.materialAgentUnit.setText(mProductsBeansList1.get(position).getProductvat());
-            }
-        } else {
-            holder.vat.setText("-");
-        }
-
-        //System.out.println("URL===== "+mProductsBeansList1.get(position).getProductImageUrl());
-        if (mProductsBeansList1.get(position).getProductImageUrl() != null) {
-            if (!mProductsBeansList1.get(position).getProductImageUrl().equals("")) {
-                String URL = Constants.MAIN_URL + "/b2b/" + mProductsBeansList1.get(position).getProductImageUrl();
-                if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
-                    mImageLoader.DisplayImage(URL, holder.productImage, null, "");
-                } else {
-                    holder.productImage.setBackgroundResource(R.drawable.logo);
-                }
-            }
-        } else {
-            holder.productImage.setBackgroundResource(R.drawable.logo);
-        }
-
-        holder.stockbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, ProductStock.class);
-                activity.startActivity(intent);
-                activity.finish();
-            }
-        });
-
-        holder.viewbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, ProductInfoActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("CODE", mProductsBeansList1.get(position).getProductCode());
-
-                bundle.putString("TITLE", mProductsBeansList1.get(position).getProductTitle());
-                bundle.putString("RETURNABLE", mProductsBeansList1.get(position).getProductReturnable());
-                bundle.putString("MOQ", mProductsBeansList1.get(position).getProductMOQ());
-                bundle.putString("AGENT", mProductsBeansList1.get(position).getProductAgentPrice());
-                bundle.putString("RETAILER", mProductsBeansList1.get(position).getProductRetailerPrice());
-                bundle.putString("CONSUMER", mProductsBeansList1.get(position).getProductConsumerPrice());
-                bundle.putString("GST", mProductsBeansList1.get(position).getProductgst());
-                Log.i("firstnamebhagya", mProductsBeansList1.get(position).getProductgst() + "");
-                bundle.putString("VAT", mProductsBeansList1.get(position).getProductvat());
-                intent.putExtra("IMAGE", mProductsBeansList1.get(position).getProductImageUrl());
-                holder.productImage.buildDrawingCache();
-                Bitmap image = holder.productImage.getDrawingCache();
-                Bundle extras = new Bundle();
-                extras.putParcelable("imagebitmap", image);
-                intent.putExtras(extras);
-
-                intent.putExtras(bundle);
-
-                activity.startActivity(intent);
-                activity.finish();
-            }
-        });
-
-        holder.productImage.setOnClickListener(new View.OnClickListener() {
+        tdcSalesViewHolder.product_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
-                    if (!mProductsBeansList1.get(position).getProductImageUrl().equals("")) {
-                        String URL = Constants.MAIN_URL + "/b2b/" + mProductsBeansList1.get(position).getProductImageUrl();
+                    String productImageURL = productsBean.getProductImageUrl();
+                    if (productImageURL != null && productImageURL.length() > 0) {
+                        String URL = Constants.MAIN_URL + "/b2b/" + productImageURL;
                         showProductImageFull(URL);
+                    } else {
+                        Toast.makeText(ctxt, "Product image not available..!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -232,48 +126,37 @@ public class ProductsAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private class MyViewHolder {
-        public TextView productCode;
-        public ImageView productImage;
-        public ImageView downarrowImage;
-        public TextView product_Unit;
-        public TextView productTitle;
-        public TextView materialAgent, materialAgentUnit;
-        public TextView materialRetailer, materialRetailerUnit;
-        public TextView materialMOQ, materialMOQUnit;
-        public TextView materialConsumer, materialConsumerUnit;
-        public TextView materialReturnable;
-        public Button viewbtn;
-
-        public Button stockbtn;
-        public EditText gst;
-        public EditText vat;
-
-
+    private class TDCSalesViewHolder {
+        ImageView arrow_icon, product_quantity_dec, product_quantity_inc;
+        TextView product_name, quantity_stock, price, tax, amount;
+        EditText product_quantity;
     }
 
     // Filter Class
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
-        mProductsBeansList1.clear();
+
+        filteredProductsList.clear();
+
         if (charText.length() == 0) {
-            mProductsBeansList1.addAll(arraylist);
+            filteredProductsList.addAll(allProductsList);
         } else {
-            for (ProductsBean wp : arraylist) {
+            for (ProductsBean wp : allProductsList) {
                 if (wp.getProductTitle().toLowerCase(Locale.getDefault()).contains(charText)) {
-                    mProductsBeansList1.add(wp);
+                    filteredProductsList.add(wp);
                 }
 
                 if (wp.getProductCode().toLowerCase(Locale.getDefault()).contains(charText)) {
-                    mProductsBeansList1.add(wp);
+                    filteredProductsList.add(wp);
                 }
             }
         }
+
         notifyDataSetChanged();
     }
 
     // Methos to display product image as full image
-    private void showProductImageFull(String url){
+    private void showProductImageFull(String url) {
         final AlertDialog.Builder alertadd = new AlertDialog.Builder(activity);
         LayoutInflater factory = LayoutInflater.from(activity);
         final View view = factory.inflate(R.layout.image_full_screen_layout, null);

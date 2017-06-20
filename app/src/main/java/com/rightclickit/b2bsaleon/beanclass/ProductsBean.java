@@ -19,6 +19,8 @@ public class ProductsBean {
     private String productAgentPrice;
     private String productConsumerPrice;
     private String productRetailerPrice;
+    private String productgst;
+    private String productvat;
 
     public String getProductgst() {
         return productgst;
@@ -35,10 +37,6 @@ public class ProductsBean {
     public void setProductvat(String productvat) {
         this.productvat = productvat;
     }
-
-    private String productgst;
-    private String productvat;
-
 
     public String getProductId() {
         return productId;
@@ -119,5 +117,23 @@ public class ProductsBean {
 
     public void setProductRetailerPrice(String productRetailerPrice) {
         this.productRetailerPrice = productRetailerPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductsBean{" +
+                "productId='" + productId + '\'' +
+                ", productCode='" + productCode + '\'' +
+                ", productTitle='" + productTitle + '\'' +
+                ", productDescription='" + productDescription + '\'' +
+                ", productImageUrl='" + productImageUrl + '\'' +
+                ", productReturnable='" + productReturnable + '\'' +
+                ", productMOQ='" + productMOQ + '\'' +
+                ", productAgentPrice='" + productAgentPrice + '\'' +
+                ", productConsumerPrice='" + productConsumerPrice + '\'' +
+                ", productRetailerPrice='" + productRetailerPrice + '\'' +
+                ", productgst='" + productgst + '\'' +
+                ", productvat='" + productvat + '\'' +
+                '}';
     }
 }
