@@ -27,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
+import com.rightclickit.b2bsaleon.activities.DashboardTakeorderPreview;
 import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.activities.TakeOrderScreen;
@@ -146,6 +148,9 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             holder.productQuantityDecrement = (ImageButton) convertView.findViewById(R.id.productQtDec);
 
             convertView.setTag(holder);
+            /*Intent intent=new Intent(activity,DashboardTakeorderPreview.class);
+            activity.startActivity(intent);
+            activity.finish();*/
         } else {
             holder = (MyViewHolder) convertView.getTag();
         }
@@ -327,6 +332,8 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             @Override
             public void onClick(View v) {
 
+                Intent i=new Intent(activity,DashboardTakeorderPreview.class);
+
                 String productId = "",productFD="",productTD="",productOrType="",productQua="",productTitle="";
                 if(temptoList.size()>0){
                     temptoList.clear();
@@ -480,7 +487,11 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
 //                        activity.startService(new Intent(activity, SyncTakeOrdersService.class));
 //                    }
 //                }
+                activity.startActivity(i);
+                activity.finish();
             }
+
+
         });
 
         return convertView;
