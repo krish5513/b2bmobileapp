@@ -95,10 +95,12 @@ public class SyncUserPrivilegesService extends Service {
                                 if(obj.has("name") && !obj.getString("name").equals("")){
                                     // Start Of User Activity
                                     if(obj.getString("name").equals("UserActivity")){
+                                        mSessionManagement.putString("UserActivity",obj.getString("id"));
                                         IDSLIST.add(obj.getString("id"));
                                         NAMESLIST.add(obj.getString("name"));
                                         if (obj.has("actions")) {
                                             JSONArray userActionsArray = obj.getJSONArray("actions");
+                                            ACTIONSLIST.put(obj.getString("id"),userActionsArray);
                                             if (userActionsArray.length()>0){
                                                 for (int j = 0; j<userActionsArray.length();j++){
                                                     JSONObject actObj = userActionsArray.getJSONObject(j);

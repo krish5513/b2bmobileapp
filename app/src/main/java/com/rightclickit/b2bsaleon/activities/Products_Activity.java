@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
@@ -61,6 +62,10 @@ public class Products_Activity extends AppCompatActivity {
     private LinearLayout mDashboardLayout,mTripSheetsLayout,mCustomersLayout,mProductsLayout,mTDCLayout;
     private LinearLayout mRetailersLayout;
 
+    private TextView mNoDataText;
+
+    private String mStock = "",mAgentPrice="",mRetailerPrice="",mConsumerPrice="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,26 +98,53 @@ public class Products_Activity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.list);
         listView.setVisibility(View.GONE);
+        mNoDataText = (TextView) findViewById(R.id.NoDataText);
+        listView.setEmptyView(mNoDataText);
+
         myList= mDBHelper.fetchAllRecordsFromProductsTable();
+
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Products"));
+        System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
+        for (int z = 0;z<privilegeActionsData.size();z++){
+            System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
+            if (privilegeActionsData.get(z).toString().equals("List_View")) {
+                listView.setVisibility(View.VISIBLE);
+            }else if(privilegeActionsData.get(z).toString().equals("Stock")){
+                mStock = privilegeActionsData.get(z).toString();
+            }else if(privilegeActionsData.get(z).toString().equals("Agent_Price")){
+                mAgentPrice = privilegeActionsData.get(z).toString();
+            }else if(privilegeActionsData.get(z).toString().equals("Retailer_Price")){
+                mRetailerPrice = privilegeActionsData.get(z).toString();
+            }else if(privilegeActionsData.get(z).toString().equals("Consumer_Price")){
+                mConsumerPrice = privilegeActionsData.get(z).toString();
+            }
+        }
+
         System.out.println("ELSE::: "+myList.size());
         if (new NetworkConnectionDetector(Products_Activity.this).isNetworkConnected()) {
             if (mDBHelper.getProductsTableCount()>0){
                 myList = mDBHelper.fetchAllRecordsFromProductsTable();
-                loadProductsList(myList);
+                if(myList.size()>0){
+                    mNoDataText.setText("");
+                    loadProductsList(myList);
+                }else {
+                    mNoDataText.setText("No products found.");
+                }
             }else {
                 productsmodel.getProductsList("productsList");
             }
         }else {
             System.out.println("ELSE::: ");
             myList = mDBHelper.fetchAllRecordsFromProductsTable();
-            loadProductsList(myList);
+            if(myList.size()>0) {
+                mNoDataText.setText("");
+                loadProductsList(myList);
+            }else {
+                mNoDataText.setText("No products found.");
+            }
         }
 
-
-
-
-
-        myList = new ArrayList<ProductsBean>();
+        //myList = new ArrayList<ProductsBean>();
 
 
         mDashboardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
@@ -207,17 +239,6 @@ public class Products_Activity extends AppCompatActivity {
                 mRetailersLayout.setVisibility(View.VISIBLE);
             }
         }
-
-        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Products"));
-        System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
-        for (int z = 0;z<privilegeActionsData.size();z++){
-            System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
-
-            if (privilegeActionsData.get(z).toString().equals("List_View")) {
-                listView.setVisibility(View.VISIBLE);
-            }
-
-        }
         //getDataInList();
 
 
@@ -227,8 +248,14 @@ public class Products_Activity extends AppCompatActivity {
         if(pAdapter!=null){
             pAdapter = null;
         }
-        pAdapter = new ProductsAdapter(this,Products_Activity.this,mProductsBeansList);
-        listView.setAdapter(pAdapter);
+        if(mProductsBeansList.size()>0){
+            mNoDataText.setText("");
+            pAdapter = new ProductsAdapter(this,Products_Activity.this,mProductsBeansList,mStock,mAgentPrice,mRetailerPrice,mConsumerPrice);
+            listView.setAdapter(pAdapter);
+        }else {
+            mNoDataText.setText("No products found.");
+        }
+
     }
 
    /* private void getDataInList() {

@@ -1,6 +1,7 @@
 package com.rightclickit.b2bsaleon.models;
 
 import android.content.Context;
+import android.view.View;
 
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
@@ -37,6 +38,7 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
     private JSONArray routesArray;
     private ArrayList<ProductsBean> mProductsBeansList = new ArrayList<ProductsBean>();
     private ArrayList<TakeOrderBean> mTakeOrderProductsBeansList = new ArrayList<TakeOrderBean>();
+    private String mStock = "",mAgentPrice="",mRetailerPrice="",mConsumerPrice="";
 
     public ProductsModel(Context context, Products_Activity activity) {
         this.context = context;

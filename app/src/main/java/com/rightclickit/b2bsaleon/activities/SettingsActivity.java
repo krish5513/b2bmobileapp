@@ -116,6 +116,8 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private LinearLayout mRetailersLayout;
     private MMSharedPreferences mPreferences;
 
+    private String mNotifications = "",mTdcHomeScreen="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -534,12 +536,16 @@ Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH
                 }
             }
 
-
-           /* ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Dashboard"));
+            ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Products"));
             System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
             for (int z = 0;z<privilegeActionsData.size();z++){
                 System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
-            }*/
+                if (privilegeActionsData.get(z).toString().equals("Notification")) {
+                    mNotifications = privilegeActionsData.get(z).toString();
+                }else if(privilegeActionsData.get(z).toString().equals("tdc_home_screen")){
+                    mTdcHomeScreen = privilegeActionsData.get(z).toString();
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -612,7 +618,12 @@ Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = null;
+        if(mTdcHomeScreen.equals("tdc_home_screen")) {
+            intent = new Intent(this, SalesActivity.class);
+        }else {
+            intent = new Intent(this, DashboardActivity.class);
+        }
         startActivity(intent);
         finish();
     }
@@ -636,9 +647,11 @@ Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-
-        menu.findItem(R.id.notifications).setVisible(true);
+        if(mNotifications.equals("Notification")){
+            menu.findItem(R.id.notifications).setVisible(true);
+        }else {
+            menu.findItem(R.id.notifications).setVisible(false);
+        }
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(true);
         menu.findItem(R.id.action_search).setVisible(false);

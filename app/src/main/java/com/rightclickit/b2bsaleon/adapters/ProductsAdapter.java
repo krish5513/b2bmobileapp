@@ -45,9 +45,10 @@ public class ProductsAdapter extends BaseAdapter {
     private ArrayList<ProductsBean> arraylist;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
+    private String mStock="",mAgentPrice="",mRetailerPrice="",mConsumerPrice="";
 
 
-    public ProductsAdapter(Context ctxt, Products_Activity productsActivity, ArrayList<ProductsBean> mProductsBeansList1) {
+    public ProductsAdapter(Context ctxt, Products_Activity productsActivity, ArrayList<ProductsBean> mProductsBeansList1, String mStock, String mAgentPrice, String mRetailerPrice, String mConsumerPrice) {
         this.ctxt = ctxt;
         this.activity = productsActivity;
         this.mProductsBeansList1 = mProductsBeansList1;
@@ -57,6 +58,10 @@ public class ProductsAdapter extends BaseAdapter {
         this.arraylist.addAll(mProductsBeansList1);
         this.mPreferences = new MMSharedPreferences(activity);
         this.mDBHelper=new DBHelper(activity);
+        this.mStock = mStock;
+        this.mAgentPrice = mAgentPrice;
+        this.mRetailerPrice = mRetailerPrice;
+        this.mConsumerPrice = mConsumerPrice;
     }
 
 
@@ -116,6 +121,22 @@ public class ProductsAdapter extends BaseAdapter {
             convertView.setTag(holder);
         } else {
             holder = (MyViewHolder) convertView.getTag();
+        }
+
+        if(mStock.equals("")){
+            holder.stockbtn.setVisibility(View.VISIBLE);
+        }
+
+        if(mAgentPrice.equals("")){
+            holder.materialAgentUnit.setVisibility(View.VISIBLE);
+        }
+
+        if(mRetailerPrice.equals("")){
+            holder.materialRetailerUnit.setVisibility(View.VISIBLE);
+        }
+
+        if(mConsumerPrice.equals("")){
+            holder.materialConsumerUnit.setVisibility(View.VISIBLE);
         }
 
         holder.productCode.setText(mProductsBeansList1.get(position).getProductCode());
@@ -242,57 +263,6 @@ public class ProductsAdapter extends BaseAdapter {
                 }
             }
         });
-
-
-
-
-
-        //HashMap<String,String> userMapData = mDBHelper.getUsersData();
-        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Products"));
-// System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
-        for (int z = 0;z<privilegeActionsData.size();z++){
-
-            System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
-
-            if (privilegeActionsData.get(z).toString().equals("Stock")){
-                holder.stockbtn.setVisibility(View.VISIBLE);
-            }
-            else if (privilegeActionsData.get(z).toString().equals("Agent_Price")){
-                holder.materialAgentUnit.setVisibility(View.VISIBLE);
-            }
-            else if (privilegeActionsData.get(z).toString().equals("Retailer_Price")){
-                holder.materialRetailerUnit.setVisibility(View.VISIBLE);
-            }
-            else if (privilegeActionsData.get(z).toString().equals("Consumer_Price")){
-                holder. materialConsumerUnit.setVisibility(View.VISIBLE);
-            }
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         return convertView;
     }
