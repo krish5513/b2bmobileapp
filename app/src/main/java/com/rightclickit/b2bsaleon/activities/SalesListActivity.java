@@ -75,7 +75,7 @@ public class SalesListActivity extends AppCompatActivity {
         monthly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,TDCSales_Weekly.class);
+                Intent i =new Intent(SalesListActivity.this,TDCSales_Month.class);
                 startActivity(i);
                 finish();
             }
@@ -84,7 +84,7 @@ public class SalesListActivity extends AppCompatActivity {
         weekly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,TDCSales_Month.class);
+                Intent i =new Intent(SalesListActivity.this,TDCSales_Weekly.class);
                 startActivity(i);
                 finish();
             }

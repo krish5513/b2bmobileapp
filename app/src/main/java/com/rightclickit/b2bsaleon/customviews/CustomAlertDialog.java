@@ -3,10 +3,12 @@ package com.rightclickit.b2bsaleon.customviews;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.widget.Button;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.activities.AgentTakeOrderPreview;
 import com.rightclickit.b2bsaleon.interfaces.AlertDialogSelectionListener;
 
 /**
@@ -41,6 +43,39 @@ public class CustomAlertDialog {
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     CustomProgressDialog.hideProgressDialog();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            isAlertDialogShown = true;
+
+        } catch (Exception e) {
+            isAlertDialogShown = false;
+            e.printStackTrace();
+        }
+    }
+
+    public static void showAlertDialogTakeorder(final Context context, String title, String message) {
+        try {
+            // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    dialog.dismiss();
+                    CustomProgressDialog.hideProgressDialog();
+                    Intent i=new Intent(context,AgentTakeOrderPreview.class);
+                    context.startActivity(i);
+
                 }
             });
 

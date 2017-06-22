@@ -99,11 +99,22 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
 
 
         listView=(TextView) findViewById(R.id.tv_listView);
+      //  listView.setVisibility(View.GONE);
+
         mapView=(TextView) findViewById(R.id.tv_mapView);
+        mapView.setVisibility(View.GONE);
+
         listview=(LinearLayout) findViewById(R.id.ll_listview);
+      //  listview.setVisibility(View.GONE);
+
         mapview=(LinearLayout) findViewById(R.id.ll_mapview);
+      //  mapview.setVisibility(View.GONE);
+
         taleorder=(Button)findViewById(R.id.btn_sale_ord1) ;
+        taleorder.setVisibility(View.GONE);
+
         delivery=(LinearLayout) findViewById(R.id.gotoCustomer);
+        delivery.setVisibility(View.GONE);
 
         mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
         mDashBoardLayout.setVisibility(View.GONE);
@@ -253,6 +264,29 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
         for (int z = 0; z < privilegeActionsData.size(); z++) {
             System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+
+
+            if (privilegeActionsData.get(z).toString().equals("map_view")) {
+                mapView.setVisibility(View.VISIBLE);
+            }
+
+               /* if (privilegeActionsData.get(z).toString().equals("map_view_delivery")) {
+              mapview.setVisibility(View.VISIBLE);
+                 }*/
+
+              /* if (privilegeActionsData.get(z).toString().equals("list_view")) {
+               listview.setVisibility(View.VISIBLE);
+                }*/
+
+            if (privilegeActionsData.get(z).toString().equals("list_view_delivery")) {
+                taleorder.setVisibility(View.VISIBLE);
+            }
+
+            if (privilegeActionsData.get(z).toString().equals("list_view_take_order")) {
+                delivery.setVisibility(View.VISIBLE);
+            }
+
+
         }
 
 //        if (mDBHelper.getRouteId().length()==0) {

@@ -353,7 +353,7 @@ Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH
                         deviceSync.setError(null);
                         accessDevice.setError(null);
                         backup.setError(null);
-//                        SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("routeDetails", MODE_PRIVATE).edit();
+//                      SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("routeDetails", MODE_PRIVATE).edit();
 //                        editor.putString("companyName", companyName.getText().toString());
 //                        editor.putString("routeName", routeNo.getText().toString());
 //                        editor.putString("region", region.getText().toString());
@@ -365,12 +365,22 @@ Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH
 //                        Log.e("save on click", routeNo.getText().toString());
 //                        editor.commit();
 
+          SharedPreferences shared = getSharedPreferences("hsh", MODE_PRIVATE);
+          SharedPreferences.Editor editor = shared.edit();
+          editor.putString("companyName", str_companyName);
+          editor.commit();// commit is important here.
+
+
+
+          //Bundle bundle = new Bundle();
+          //bundle.putString("COMPANYNAME", companyName.getText().toString());
 
                         String dId  = getDeviceId();
                         settingsmodel.saveDeviceDetails(dId,vehicleNo.getText().toString(),transporterName.getText().toString(),companyName.getText().toString());
 //                         long f = mDBHelper.updateUserDetails(sharedPreferences.getString("userId"),"",userName.getText().toString(),
 //                                 "",mobile.getText().toString(),"","","","","","","",dId,transporterName.getText().toString(),
 //                                 vehicleNo.getText().toString(),"","");
+
 
                         companyName.setCursorVisible(false);
                         routeNo.setCursorVisible(false);

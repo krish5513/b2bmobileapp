@@ -15,27 +15,34 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 
 import java.util.ArrayList;
 
-public class ViewAgent extends AppCompatActivity {
-    private MMSharedPreferences mPreference;
+public class AgentViewActivity extends AppCompatActivity {
+
     private LinearLayout mTakeOrdersLayout;
     private LinearLayout mDeliveriesLayout;
     private LinearLayout mReturnsLayout;
     private LinearLayout mPaymentsLayout;
-Button view;
+    private LinearLayout mTPCOrdersLayout;
+    Button view;
+
+    private DBHelper mDBHelper;
+    private MMSharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_agent);
-        mPreference = new MMSharedPreferences(this);
 
+
+        mDBHelper = new DBHelper(AgentViewActivity.this);
+        mPreferences = new MMSharedPreferences(AgentViewActivity.this);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
-        this.getSupportActionBar().setTitle(mPreference.getString("agentName"));
+        this.getSupportActionBar().setTitle(mPreferences.getString("agentName"));
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -45,13 +52,19 @@ Button view;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        mTakeOrdersLayout = (LinearLayout) findViewById(R.id.TakeOrdersLayout);
+
+
+        mTPCOrdersLayout = (LinearLayout) findViewById(R.id.TPCOrdersLayout);
+        mTPCOrdersLayout.setVisibility(View.GONE);
+
+
+                mTakeOrdersLayout = (LinearLayout) findViewById(R.id.TakeOrdersLayout);
         mTakeOrdersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTakeOrdersLayout.startAnimation(animation1);
-                Intent i =new Intent(ViewAgent.this,TakeOrderScreen.class);
+                Intent i =new Intent(AgentViewActivity.this,TakeOrderScreen.class);
                 startActivity(i);
                 finish();
             }
@@ -63,7 +76,7 @@ Button view;
             public void onClick(View v) {
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mDeliveriesLayout.startAnimation(animation1);
-                Intent i =new Intent(ViewAgent.this,AgentDeliveries.class);
+                Intent i =new Intent(AgentViewActivity.this,AgentDeliveries.class);
                 startActivity(i);
                 finish();
             }
@@ -74,7 +87,7 @@ Button view;
             public void onClick(View v) {
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mReturnsLayout.startAnimation(animation1);
-                Intent i =new Intent(ViewAgent.this,AgentReturns.class);
+                Intent i =new Intent(AgentViewActivity.this,AgentReturns.class);
                 startActivity(i);
                 finish();
             }
@@ -85,7 +98,7 @@ Button view;
             public void onClick(View v) {
                 Animation  animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mPaymentsLayout.startAnimation(animation1);
-                Intent i =new Intent(ViewAgent.this,AgentPayments.class);
+                Intent i =new Intent(AgentViewActivity.this,AgentPayments.class);
                 startActivity(i);
                 finish();
             }
@@ -95,13 +108,38 @@ Button view;
             @Override
             public void onClick(View v) {
 
-                Intent i =new Intent(ViewAgent.this,AgentsTDC_View.class);
+                Intent i =new Intent(AgentViewActivity.this,AgentsTDC_View.class);
                 startActivity(i);
                 finish();
             }
         });
 
-    }
+
+
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
+        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        for (int z = 0; z < privilegeActionsData.size(); z++) {
+
+            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+            if (privilegeActionsData.get(z).toString().equals("Orders_List")) {
+                mTPCOrdersLayout.setVisibility(View.VISIBLE);
+            }
+            if (privilegeActionsData.get(z).toString().equals("Delivery_List")) {
+                mDeliveriesLayout.setVisibility(View.VISIBLE);
+            }
+            if (privilegeActionsData.get(z).toString().equals("Return_List")) {
+                mReturnsLayout.setVisibility(View.VISIBLE);
+            }
+            if (privilegeActionsData.get(z).toString().equals("Payment_List")) {
+                mPaymentsLayout.setVisibility(View.VISIBLE);
+            }
+            if (privilegeActionsData.get(z).toString().equals("Take_Orders")) {
+                mTakeOrdersLayout.setVisibility(View.VISIBLE);
+            }
+
+
+        }
+        }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

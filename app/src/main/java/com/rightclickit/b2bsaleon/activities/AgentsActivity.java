@@ -207,6 +207,13 @@ public class AgentsActivity extends AppCompatActivity {
         System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
         for (int z = 0;z<privilegeActionsData.size();z++){
             System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
+
+            if (privilegeActionsData.get(z).toString().equals("List_View")){
+                mAgentsList.setVisibility(View.VISIBLE);
+            }
+            if (privilegeActionsData.get(z).toString().equals("Add")){
+                fab.setVisibility(View.VISIBLE);
+            }
         }
     }
 

@@ -105,14 +105,13 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.ViewAgent"
+            android:name=".activities.AgentViewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.SalesActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activities.AgentsTakeOrderPreview" />
         <activity android:name=".activities.TripSheetsActivity" />
         <activity android:name=".activities.TripSheetView" />
         <activity android:name=".activities.TripSheetStock" />
@@ -154,7 +153,8 @@
         <activity android:name=".activities.Retailers_AddActivity" />
         <activity android:name=".activities.Retailers_Payments_ViewActivity" />
         <activity android:name=".activities.Retailers_PaymentsActivity" />
-        <activity android:name=".activities.RetailersInfoActivity"></activity>
+        <activity android:name=".activities.RetailersInfoActivity" />
+        <activity android:name=".activities.AgentTakeOrderPreview"></activity>
     </application>
 
 </manifest>

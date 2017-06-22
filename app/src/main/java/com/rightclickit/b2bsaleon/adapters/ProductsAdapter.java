@@ -23,6 +23,7 @@ import com.rightclickit.b2bsaleon.activities.ProductInfoActivity;
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
@@ -43,6 +44,7 @@ public class ProductsAdapter extends BaseAdapter {
     private ImageLoader mImageLoader;
     private ArrayList<ProductsBean> arraylist;
     private MMSharedPreferences mPreferences;
+    private DBHelper mDBHelper;
 
 
     public ProductsAdapter(Context ctxt, Products_Activity productsActivity, ArrayList<ProductsBean> mProductsBeansList1) {
@@ -54,6 +56,7 @@ public class ProductsAdapter extends BaseAdapter {
         this.arraylist = new ArrayList<ProductsBean>();
         this.arraylist.addAll(mProductsBeansList1);
         this.mPreferences = new MMSharedPreferences(activity);
+        this.mDBHelper=new DBHelper(activity);
     }
 
 
@@ -85,18 +88,29 @@ public class ProductsAdapter extends BaseAdapter {
             holder.product_Unit = (TextView) convertView.findViewById(R.id.material_Unit);
             holder.productTitle = (TextView) convertView.findViewById(R.id.materialTitle);
             holder.materialRetailer = (TextView) convertView.findViewById(R.id.tv_Retailer);
+
             holder.materialRetailerUnit = (TextView) convertView.findViewById(R.id.materialMRPUnit);
+            holder.materialRetailerUnit.setVisibility(View.GONE);
+
             holder.materialMOQ = (TextView) convertView.findViewById(R.id.tv_moq);
             holder.materialMOQUnit = (TextView) convertView.findViewById(R.id.materialMOQUnit);
             holder.materialConsumer = (TextView) convertView.findViewById(R.id.tv_Consumer);
+
             holder.materialConsumerUnit = (TextView) convertView.findViewById(R.id.materialSPUnit);
+            holder.materialConsumerUnit.setVisibility(View.GONE);
+
             holder.materialReturnable = (TextView) convertView.findViewById(R.id.material_Returnable);
             holder.productImage = (ImageView) convertView.findViewById(R.id.materialImage);
             holder.downarrowImage = (ImageView) convertView.findViewById(R.id.img);
             holder.viewbtn = (Button) convertView.findViewById(R.id.btnView);
             holder.materialAgent = (TextView) convertView.findViewById(R.id.materialAgent);
+
             holder.materialAgentUnit = (TextView) convertView.findViewById(R.id.agentUnit);
+            holder.materialAgentUnit.setVisibility(View.GONE);
+
             holder.stockbtn = (Button) convertView.findViewById(R.id.btnStock);
+            holder.stockbtn.setVisibility(View.GONE);
+
             holder.gst = (EditText) convertView.findViewById(R.id.GST);
             holder.vat = (EditText) convertView.findViewById(R.id.VAT);
             convertView.setTag(holder);
@@ -228,6 +242,57 @@ public class ProductsAdapter extends BaseAdapter {
                 }
             }
         });
+
+
+
+
+
+        //HashMap<String,String> userMapData = mDBHelper.getUsersData();
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Products"));
+// System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
+        for (int z = 0;z<privilegeActionsData.size();z++){
+
+            System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
+
+            if (privilegeActionsData.get(z).toString().equals("Stock")){
+                holder.stockbtn.setVisibility(View.VISIBLE);
+            }
+            else if (privilegeActionsData.get(z).toString().equals("Agent_Price")){
+                holder.materialAgentUnit.setVisibility(View.VISIBLE);
+            }
+            else if (privilegeActionsData.get(z).toString().equals("Retailer_Price")){
+                holder.materialRetailerUnit.setVisibility(View.VISIBLE);
+            }
+            else if (privilegeActionsData.get(z).toString().equals("Consumer_Price")){
+                holder. materialConsumerUnit.setVisibility(View.VISIBLE);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         return convertView;
     }

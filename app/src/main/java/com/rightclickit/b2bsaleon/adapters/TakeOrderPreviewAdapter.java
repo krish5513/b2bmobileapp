@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.activities.AgentTakeOrderPreview;
 import com.rightclickit.b2bsaleon.activities.DashboardTakeorderPreview;
 import com.rightclickit.b2bsaleon.activities.ProductInfoActivity;
 import com.rightclickit.b2bsaleon.activities.ProductStock;
@@ -42,20 +43,21 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
     LayoutInflater mInflater;
     private Activity activity;
     Context ctxt;
+    ArrayList<ProductsBean> mProductsBeansList1;
     ArrayList<TakeOrderPreviewBean> mpreviewBeansList1;
     private ImageLoader mImageLoader;
     private ArrayList<TakeOrderPreviewBean> arraylist;
     private MMSharedPreferences mPreferences;
 
 
-    public TakeOrderPreviewAdapter(Context ctxt, DashboardTakeorderPreview previewActivity, ArrayList<TakeOrderPreviewBean> mpreviewBeansList1) {
+    public TakeOrderPreviewAdapter(Context ctxt, AgentTakeOrderPreview previewActivity) {
         this.ctxt = ctxt;
         this.activity = previewActivity;
         this.mpreviewBeansList1 = mpreviewBeansList1;
-
+         this.mProductsBeansList1=mProductsBeansList1;
         this.mInflater = LayoutInflater.from(activity);
         this.arraylist = new ArrayList<TakeOrderPreviewBean>();
-        this.arraylist.addAll(mpreviewBeansList1);
+        //this.arraylist.addAll(mpreviewBeansList1);
         this.mPreferences = new MMSharedPreferences(activity);
     }
 
@@ -98,7 +100,7 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
         } else {
             holder = (TakeOrderPreviewAdapter.MyViewHolder) convertView.getTag();
         }
-        //holder.pName.setText(mProductsBeansList1.get(position).getProductTitle());
+        holder.pName.setText(mProductsBeansList1.get(position).getProductTitle());
 
 
         return convertView;

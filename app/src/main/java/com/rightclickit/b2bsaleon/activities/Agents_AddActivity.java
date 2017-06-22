@@ -98,7 +98,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agents__add);
 
-        this.getSupportActionBar().setTitle("ADD CUSTOMER");
+        this.getSupportActionBar().setTitle("ADD AGENT");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);

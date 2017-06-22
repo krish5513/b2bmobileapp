@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:padding="10dp"
-                android:text="CUSTOMER INFO"
+                android:text="AGENT INFO"
                 android:textAllCaps="true"
                 android:textColor="@color/greydark"
                 android:textSize="16sp" />

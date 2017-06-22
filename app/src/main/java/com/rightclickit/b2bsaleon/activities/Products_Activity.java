@@ -92,6 +92,7 @@ public class Products_Activity extends AppCompatActivity {
         productsmodel = new ProductsModel(activityContext,this);
 
         listView = (ListView) findViewById(R.id.list);
+        listView.setVisibility(View.GONE);
         myList= mDBHelper.fetchAllRecordsFromProductsTable();
         System.out.println("ELSE::: "+myList.size());
         if (new NetworkConnectionDetector(Products_Activity.this).isNetworkConnected()) {
@@ -211,6 +212,11 @@ public class Products_Activity extends AppCompatActivity {
         System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
         for (int z = 0;z<privilegeActionsData.size();z++){
             System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
+
+            if (privilegeActionsData.get(z).toString().equals("List_View")) {
+                listView.setVisibility(View.VISIBLE);
+            }
+
         }
         //getDataInList();
 

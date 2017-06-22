@@ -21,11 +21,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TripSheetsActivity extends AppCompatActivity {
-    LinearLayout tsDashBoardLayout;
-    LinearLayout tsTripsheetsLayout;
-    LinearLayout tsCustomersLayout;
-    LinearLayout tsProductsLayout;
-    LinearLayout tsTDCLayout;
+   private LinearLayout tsDashBoardLayout;
+    private LinearLayout tsTripsheetsLayout;
+    private LinearLayout tsCustomersLayout;
+    private   LinearLayout tsProductsLayout;
+    private LinearLayout tsTDCLayout;
     private LinearLayout mRetailersLayout;
      Button view,stock;
     private DBHelper mDBHelper;
@@ -51,11 +51,10 @@ public class TripSheetsActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
 
-        tsDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
-        tsTripsheetsLayout = (LinearLayout) findViewById(R.id.TripSheetsLayout);
-        tsCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
-        tsProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
-        tsTDCLayout = (LinearLayout) findViewById(R.id.TDCLayout);
+
+
+
+
 
         view=(Button)findViewById(R.id.btn_view1) ;
         stock=(Button) findViewById(R.id.btn_stock1);
@@ -63,10 +62,12 @@ public class TripSheetsActivity extends AppCompatActivity {
         mDBHelper = new DBHelper(TripSheetsActivity.this);
         mPreferences = new MMSharedPreferences(TripSheetsActivity.this);
 
+        tsDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
+        tsDashBoardLayout.setVisibility(View.GONE);
         tsDashBoardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tsDashBoardLayout.setVisibility(View.GONE);
+
                 //Toast.makeText(TripsheetsActivity.this, "Clicked on Dashboard", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
@@ -76,11 +77,12 @@ public class TripSheetsActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        tsTripsheetsLayout = (LinearLayout) findViewById(R.id.TripSheetsLayout);
+        tsTripsheetsLayout.setVisibility(View.GONE);
         tsTripsheetsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tsTripsheetsLayout.setVisibility(View.GONE);
+
                 //Toast.makeText(TripSheetsActivity.this, "Clicked on Tripsheets", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
@@ -88,10 +90,12 @@ public class TripSheetsActivity extends AppCompatActivity {
 
             }
         });
+        tsCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
+        tsCustomersLayout.setVisibility(View.GONE);
         tsCustomersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tsCustomersLayout.setVisibility(View.GONE);
+
                 //Toast.makeText(Tripsheet_Activity.this, "Clicked on Customers", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
@@ -113,10 +117,12 @@ public class TripSheetsActivity extends AppCompatActivity {
                 finish();
             }
         });
+        tsProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
+        tsProductsLayout.setVisibility(View.GONE);
         tsProductsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tsProductsLayout.setVisibility(View.GONE);
+
                // Toast.makeText(Tripsheet_Activity.this, "Clicked on Products", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
@@ -126,10 +132,13 @@ public class TripSheetsActivity extends AppCompatActivity {
                 finish();
             }
         });
+        tsTDCLayout = (LinearLayout) findViewById(R.id.TDCLayout);
+        tsTDCLayout.setVisibility(View.GONE);
+
         tsTDCLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tsTDCLayout.setVisibility(View.GONE);
+
                // Toast.makeText(Tripsheet_Activity.this, "Clicked on TDC", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);

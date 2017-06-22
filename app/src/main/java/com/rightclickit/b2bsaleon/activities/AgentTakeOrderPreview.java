@@ -1,32 +1,27 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.adapters.TakeOrderPreviewAdapter;
-import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
 
-public class DashboardTakeorderPreview extends AppCompatActivity {
+public class AgentTakeOrderPreview extends AppCompatActivity {
     private ListView mAgentsList;
     DBHelper mDBHelper;
     private TakeOrderPreviewAdapter mPreviewAdapter;
     TextView tv_companyName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,22 +41,22 @@ public class DashboardTakeorderPreview extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        tv_companyName=(TextView)findViewById(R.id.tv_companyName);
+        tv_companyName = (TextView) findViewById(R.id.tv_companyName);
 
 
-       // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-       // String imgSett = prefs.getString("companyName", "");
-    //    String ma=bundle.getString("COMPANYNAME");
-     //   Log.i("kjhdfcioseahdf",ma);
-      //  tv_companyName.setText(imgSett);
+        // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        // String imgSett = prefs.getString("companyName", "");
+        //    String ma=bundle.getString("COMPANYNAME");
+        //   Log.i("kjhdfcioseahdf",ma);
+        //  tv_companyName.setText(imgSett);
 
-        mDBHelper = new DBHelper(DashboardTakeorderPreview.this);
+        mDBHelper = new DBHelper(AgentTakeOrderPreview.this);
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
         // ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
         //System.out.println("ELSE::: "+a.size());
 
-             //   ArrayList<TakeOrderPreviewBean> previewArrayList = new ArrayList<>();
-           //     loadAgentsList(previewArrayList);
+        //   ArrayList<TakeOrderPreviewBean> previewArrayList = new ArrayList<>();
+        //     loadAgentsList(previewArrayList);
 
 
 /*
@@ -81,18 +76,25 @@ public class DashboardTakeorderPreview extends AppCompatActivity {
 
     }
 
-
+    private void loadAgentsList(ArrayList<TakeOrderPreviewBean> previewArrayList) {
+        if (mPreviewAdapter != null) {
+            mPreviewAdapter = null;
+        }
+        mPreviewAdapter = new TakeOrderPreviewAdapter(this, AgentTakeOrderPreview.this);
+        mAgentsList.setAdapter(mPreviewAdapter);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate( R.menu.menu_dashboard, menu);
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(DashboardTakeorderPreview.this,SalesListActivity.class);
+            Intent i = new Intent(AgentTakeOrderPreview.this, SalesListActivity.class);
             startActivity(i);
             finish();
             return true;
@@ -111,23 +113,22 @@ public class DashboardTakeorderPreview extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
 
 
-        menu.findItem( R.id.notifications).setVisible(false);
-        menu.findItem( R.id.settings).setVisible(false);
-        menu.findItem( R.id.logout).setVisible(false);
-        menu.findItem( R.id.action_search).setVisible(false);
-        menu.findItem( R.id.Add).setVisible(false);
-
+        menu.findItem(R.id.notifications).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(false);
+        menu.findItem(R.id.logout).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.Add).setVisible(false);
 
 
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardTakeorder.class);
+        Intent intent = new Intent(this, TakeOrderScreen.class);
         startActivity(intent);
         finish();
     }
-
 
 }

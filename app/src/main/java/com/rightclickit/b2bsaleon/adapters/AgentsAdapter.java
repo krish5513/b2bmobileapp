@@ -16,12 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.activities.AgentViewActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
 import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
-import com.rightclickit.b2bsaleon.activities.ViewAgent;
+import com.rightclickit.b2bsaleon.activities.AgentViewActivity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
@@ -41,6 +43,7 @@ public class AgentsAdapter extends BaseAdapter {
     private ImageLoader mImageLoader;
     private MMSharedPreferences mPreferences;
     private ArrayList<AgentsBean> arraylist;
+    private DBHelper mDBHelper;
 
     public AgentsAdapter(Context ctxt,AgentsActivity agentsActivity, ArrayList<AgentsBean> mAgentsBeansList) {
         this.ctxt=ctxt;
@@ -50,6 +53,7 @@ public class AgentsAdapter extends BaseAdapter {
         this.mInflater = LayoutInflater.from(activity);
         this.mPreferences = new MMSharedPreferences(activity);
         this.arraylist = new ArrayList<AgentsBean>();
+        this.mDBHelper=new DBHelper(activity);
         this.arraylist.addAll(mAgentsBeansList1);
     }
     public AgentsAdapter(Context ctxt, Agents_AddActivity agentsActivity, ArrayList<AgentsBean> mAgentsBeansList) {
@@ -131,7 +135,7 @@ public class AgentsAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 mPreferences.putString("agentName",mAgentsBeansList1.get(position).getmFirstname());
-                activity.startActivity(new Intent(activity,ViewAgent.class));
+                activity.startActivity(new Intent(activity,AgentViewActivity.class));
                 activity.finish();
             }
         });
