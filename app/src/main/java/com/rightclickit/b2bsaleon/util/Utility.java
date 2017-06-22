@@ -8,9 +8,11 @@ import android.widget.Toast;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -114,7 +116,8 @@ public class Utility {
     }
 
     /**
-     *  Method to get md5 hash from the given string.
+     * Method to get md5 hash from the given string.
+     *
      * @param s
      * @return md5 hash string
      */
@@ -142,5 +145,10 @@ public class Utility {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public static String getFormattedCurrency(double amount) {
+        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
+        return formatter.format(amount);
     }
 }

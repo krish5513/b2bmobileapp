@@ -22,12 +22,13 @@ import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- * Created by PPS on 5/25/2017.
+ * Created by Venkat on 06/20/2017.
  */
 
 public class TDCSalesAdapter extends BaseAdapter {
@@ -92,7 +93,9 @@ public class TDCSalesAdapter extends BaseAdapter {
 
         final ProductsBean productsBean = getItem(position);
 
-        if ((position % 2) == 0) {
+        float availableStock = 50.0f;
+
+        if (availableStock > 0) {
             tdcSalesViewHolder.arrow_icon.setImageResource(R.drawable.ic_arrow_upward_white_24dp);
             tdcSalesViewHolder.arrow_icon.setBackground(green_circle);
         } else {
@@ -100,13 +103,22 @@ public class TDCSalesAdapter extends BaseAdapter {
             tdcSalesViewHolder.arrow_icon.setBackground(red_circle);
         }
 
-        String tax = (productsBean.getProductvat() == null ? "0.00" : productsBean.getProductvat());
+        double price = Double.parseDouble(productsBean.getProductConsumerPrice().replace(",", ""));
+
+        float tax = 0.0f;
+        if (productsBean.getProductvat() != null)
+            tax = Float.parseFloat(productsBean.getProductvat());
+        else if (productsBean.getProductgst() != null)
+            tax = Float.parseFloat(productsBean.getProductgst());
+
+        double taxAmount = (price * tax) / 100;
+        double amount = price + taxAmount;
 
         tdcSalesViewHolder.product_name.setText(String.format("%s @ %s%%", productsBean.getProductTitle(), tax));
-        tdcSalesViewHolder.quantity_stock.setText(productsBean.getProductCode());
-        tdcSalesViewHolder.price.setText(productsBean.getProductConsumerPrice());
-        tdcSalesViewHolder.tax.setText(tax);
-        tdcSalesViewHolder.amount.setText(productsBean.getProductConsumerPrice());
+        tdcSalesViewHolder.quantity_stock.setText(String.format("%s", availableStock));
+        tdcSalesViewHolder.price.setText(Utility.getFormattedCurrency(price));
+        tdcSalesViewHolder.tax.setText(Utility.getFormattedCurrency(taxAmount));
+        tdcSalesViewHolder.amount.setText(Utility.getFormattedCurrency(amount));
 
         tdcSalesViewHolder.product_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +162,8 @@ public class TDCSalesAdapter extends BaseAdapter {
                     filteredProductsList.add(wp);
                 }
             }
+
+            System.out.println("========== filteredProductsList = " + filteredProductsList);
         }
 
         notifyDataSetChanged();

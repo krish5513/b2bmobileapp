@@ -25,7 +25,7 @@ public class RetailersActivity extends AppCompatActivity {
 
     FloatingActionButton fab;
 
-    Button info,payments;
+    Button info, payments;
     private DBHelper mDBHelper;
     private LinearLayout mDashBoardLayout;
     private LinearLayout mTripsheetsLayout;
@@ -38,8 +38,8 @@ public class RetailersActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_retailers );
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_retailers);
 
         this.getSupportActionBar().setTitle("RETAILERS");
         this.getSupportActionBar().setSubtitle(null);
@@ -50,6 +50,7 @@ public class RetailersActivity extends AppCompatActivity {
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mPreferences = new MMSharedPreferences(RetailersActivity.this);
+        mDBHelper = new DBHelper(RetailersActivity.this);
 
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -57,26 +58,26 @@ public class RetailersActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
         fab = (FloatingActionButton) findViewById(R.id.retailerfab);
-        fab.setVisibility( View.GONE);
-        fab.setImageDrawable( ContextCompat.getDrawable(getApplicationContext(), R.drawable.plus_white));
+        fab.setVisibility(View.GONE);
+        fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.plus_white));
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Toast.makeText(getApplicationContext(),"Clicked Retailers Add",Toast.LENGTH_SHORT).show();
-                Intent i =new Intent(RetailersActivity.this,Retailers_AddActivity.class);
+                Intent i = new Intent(RetailersActivity.this, Retailers_AddActivity.class);
                 startActivity(i);
                 finish();
             }
         });
 
 
-        mRetailerslistview=(LinearLayout)findViewById(R.id.retailerslistview) ;
+        mRetailerslistview = (LinearLayout) findViewById(R.id.retailerslistview);
         mRetailerslistview.setVisibility(View.GONE);
 
 
         mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
-       mDashBoardLayout.setVisibility(View.GONE);
+        mDashBoardLayout.setVisibility(View.GONE);
         mDashBoardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,7 +104,7 @@ public class RetailersActivity extends AppCompatActivity {
             }
         });
         mCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
-       mCustomersLayout.setVisibility(View.GONE);
+        mCustomersLayout.setVisibility(View.GONE);
         mCustomersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,43 +152,43 @@ public class RetailersActivity extends AppCompatActivity {
                 finish();
             }
         });
-        info = (Button) findViewById( R.id.btn_info );
-        payments = (Button) findViewById( R.id.btn_payments );
+        info = (Button) findViewById(R.id.btn_info);
+        payments = (Button) findViewById(R.id.btn_payments);
 
 
-        info.setOnClickListener( new View.OnClickListener() {
+        info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RetailersActivity.this, RetailersInfoActivity.class);
                 startActivity(intent);
                 finish();
             }
-        } );
+        });
 
-        payments.setOnClickListener( new View.OnClickListener() {
+        payments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RetailersActivity.this, Retailers_PaymentsActivity.class);
                 startActivity(intent);
                 finish();
             }
-        } );
-       HashMap<String, String> userMapData = mDBHelper.getUsersData();
+        });
+        HashMap<String, String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
-        System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
-        for (int k = 0; k<privilegesData.size();k++){
-            System.out.println("F 11111 ***COUNT 4444 === "+ privilegesData.get(k).toString());
-            if (privilegesData.get(k).toString().equals("Dashboard")){
+        System.out.println("F 11111 ***COUNT === " + privilegesData.size());
+        for (int k = 0; k < privilegesData.size(); k++) {
+            System.out.println("F 11111 ***COUNT 4444 === " + privilegesData.get(k).toString());
+            if (privilegesData.get(k).toString().equals("Dashboard")) {
                 mDashBoardLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("TripSheets")){
+            } else if (privilegesData.get(k).toString().equals("TripSheets")) {
                 mTripsheetsLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("Customers")){
+            } else if (privilegesData.get(k).toString().equals("Customers")) {
                 mCustomersLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("Products")){
+            } else if (privilegesData.get(k).toString().equals("Products")) {
                 mProductsLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("TDC")){
+            } else if (privilegesData.get(k).toString().equals("TDC")) {
                 mTDCLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("Retailers")){
+            } else if (privilegesData.get(k).toString().equals("Retailers")) {
                 mRetailersLayout.setVisibility(View.VISIBLE);
             }
         }
@@ -199,32 +200,22 @@ public class RetailersActivity extends AppCompatActivity {
 
             if (privilegeActionsData.get(z).toString().equals("List_View")) {
                 mRetailerslistview.setVisibility(View.VISIBLE);
-            }else
-            if (privilegeActionsData.get(z).toString().equals("List_Info")) {
+            } else if (privilegeActionsData.get(z).toString().equals("List_Info")) {
                 info.setVisibility(View.VISIBLE);
-            }else
-            if (privilegeActionsData.get(z).toString().equals("Payment_List")) {
+            } else if (privilegeActionsData.get(z).toString().equals("Payment_List")) {
                 payments.setVisibility(View.VISIBLE);
-            }else
-            if (privilegeActionsData.get(z).toString().equals("Add")) {
-                fab.setVisibility( View.VISIBLE);
+            } else if (privilegeActionsData.get(z).toString().equals("Add")) {
+                fab.setVisibility(View.VISIBLE);
             }
-
-
         }
-
-
-
     }
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -250,11 +241,12 @@ public class RetailersActivity extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
+        menu.findItem(R.id.Add).setVisible(false);
 
 
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
