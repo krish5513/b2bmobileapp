@@ -149,7 +149,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, TakeOrderScreen.class);
+        Intent intent = new Intent(this, AgentTakeOrderScreen.class);
         startActivity(intent);
         finish();
     }

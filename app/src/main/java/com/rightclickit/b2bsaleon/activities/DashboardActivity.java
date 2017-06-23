@@ -62,8 +62,8 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
     private LinearLayout mProductsLayout;
     private LinearLayout mTDCLayout;
     private LinearLayout mRetailersLayout;
-    TextView listView;
-    TextView mapView;
+    TextView tv_listView;
+    TextView tv_mapView;
     LinearLayout listview;
     LinearLayout mapview;
     public static GoogleMap mMap;
@@ -98,11 +98,11 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-        listView=(TextView) findViewById(R.id.tv_listView);
-        listView.setVisibility(View.GONE);
+        tv_listView=(TextView) findViewById(R.id.tv_listView);
+        tv_listView.setVisibility(View.GONE);
 
-        mapView=(TextView) findViewById(R.id.tv_mapView);
-        mapView.setVisibility(View.GONE);
+        tv_mapView=(TextView) findViewById(R.id.tv_mapView);
+        tv_mapView.setVisibility(View.GONE);
 
         listview=(LinearLayout) findViewById(R.id.ll_listview);
       //  listview.setVisibility(View.GONE);
@@ -192,11 +192,11 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
-        listView.setOnClickListener(new View.OnClickListener() {
+        tv_listView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delivery_orange,0,0,0);
-                mapView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mapview_grey,0,0,0);
+                tv_listView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delivery_orange,0,0,0);
+                tv_mapView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mapview_grey,0,0,0);
 //                line1.setBackgroundColor(Color.parseColor("#e99e3b"));
 //                line2.setBackgroundColor(Color.parseColor("#dbd7d7"));
                 //               linelist.setBackgroundColor(Color.parseColor("#e99e3b"));
@@ -205,11 +205,11 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
                 mapview.setVisibility(View.GONE);
             }
         });
-        mapView.setOnClickListener(new View.OnClickListener() {
+        tv_mapView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delivery_grey,0,0,0);
-                mapView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mapview_orange,0,0,0);
+                tv_listView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delivery_grey,0,0,0);
+                tv_mapView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mapview_orange,0,0,0);
 //                line2.setBackgroundColor(0xe99e3b);
 //                line1.setBackgroundColor(0xdbd7d7);
                 listview.setVisibility(View.GONE);
@@ -267,7 +267,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
 
 
             if (privilegeActionsData.get(z).toString().equals("map_view")) {
-                mapView.setVisibility(View.VISIBLE);
+                tv_mapView.setVisibility(View.VISIBLE);
             }
 
               /*  if (privilegeActionsData.get(z).toString().equals("map_view_delivery")) {
@@ -275,7 +275,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
                  }*/
 
               else if (privilegeActionsData.get(z).toString().equals("list_view")) {
-               listview.setVisibility(View.VISIBLE);
+                tv_listView.setVisibility(View.VISIBLE);
                 }
 
              else if (privilegeActionsData.get(z).toString().equals("list_view_delivery")) {

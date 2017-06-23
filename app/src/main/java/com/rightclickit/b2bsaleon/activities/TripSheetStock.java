@@ -49,13 +49,13 @@ public class TripSheetStock extends AppCompatActivity {
 
 
         Dispatch=(TextView)findViewById(R.id.dispatch);
-      //Dispatch.setVisibility(View.GONE);
+      Dispatch.setVisibility(View.GONE);
 
         Verify=(TextView)findViewById(R.id.verify);
-          //Verify.setVisibility(View.GONE);
+          Verify.setVisibility(View.GONE);
 
         tv_save=(TextView)findViewById(R.id.tv_save);
-        tv_save.setVisibility(View.GONE);
+       tv_save.setVisibility(View.GONE);
 
         preview = (TextView) findViewById(R.id.tv_print_print);
         preview.setVisibility(View.GONE);

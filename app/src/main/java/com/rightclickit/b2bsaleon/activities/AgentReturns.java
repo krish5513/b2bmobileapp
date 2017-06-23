@@ -10,27 +10,41 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+
+import java.util.ArrayList;
 
 public class AgentReturns extends AppCompatActivity {
-    TextView sales;
-    TextView returns;
-    TextView payments;
-    TextView deliveries;
-    TextView orders;
+    LinearLayout sales;
+    LinearLayout returns;
+    LinearLayout payments;
+    LinearLayout deliveries;
+    LinearLayout orders;
     Button view;
+    private DBHelper mDBHelper;
+    private MMSharedPreferences mPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent_returns);
 
-        sales=(TextView) findViewById(R.id.tv_sales);
-        deliveries=(TextView) findViewById(R.id.tv_deliveries);
-        returns=(TextView) findViewById(R.id.tv_returns);
-        payments=(TextView) findViewById(R.id.tv_payments);
-        orders=(TextView) findViewById(R.id.tv_orders);
+
+        sales = (LinearLayout) findViewById(R.id.linear_sales);
+        sales.setVisibility(View.GONE);
+        deliveries = (LinearLayout) findViewById(R.id.linear_deliveries);
+        deliveries.setVisibility(View.GONE);
+        returns = (LinearLayout) findViewById(R.id.linear_returns);
+        returns.setVisibility(View.GONE);
+        payments = (LinearLayout) findViewById(R.id.linear_payments);
+        payments.setVisibility(View.GONE);
+        orders = (LinearLayout) findViewById(R.id.linear_orders);
+        orders.setVisibility(View.GONE);
+
         view=(Button)findViewById(R.id.btn_view1);
 
 
@@ -48,7 +62,8 @@ public class AgentReturns extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-
+        mDBHelper = new DBHelper(AgentReturns.this);
+        mPreferences = new MMSharedPreferences(AgentReturns.this);
 
         sales.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +124,7 @@ public class AgentReturns extends AppCompatActivity {
                         R.anim.blink);
                 orders.startAnimation(animation1);
 
-                Intent i =new Intent(AgentReturns.this,TakeOrderScreen.class);
+                Intent i =new Intent(AgentReturns.this,AgentTakeOrderScreen.class);
                 startActivity(i);
                 finish();
             }
@@ -126,6 +141,30 @@ public class AgentReturns extends AppCompatActivity {
                 finish();
             }
         });
+
+
+
+
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
+        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        for (int z = 0; z < privilegeActionsData.size(); z++) {
+
+            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+            if (privilegeActionsData.get(z).toString().equals("Orders_List")) {
+                sales.setVisibility(View.VISIBLE);
+            } else if (privilegeActionsData.get(z).toString().equals("Delivery_List")) {
+                deliveries.setVisibility(View.VISIBLE);
+            } else if (privilegeActionsData.get(z).toString().equals("Return_List")) {
+                returns.setVisibility(View.VISIBLE);
+            } else if (privilegeActionsData.get(z).toString().equals("Payment_List")) {
+                payments.setVisibility(View.VISIBLE);
+            } else if (privilegeActionsData.get(z).toString().equals("Take_Orders")) {
+                orders.setVisibility(View.VISIBLE);
+            }
+
+
+        }
+
 
     }
 

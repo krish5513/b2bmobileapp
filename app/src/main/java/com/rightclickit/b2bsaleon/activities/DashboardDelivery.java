@@ -112,9 +112,9 @@ public class DashboardDelivery extends AppCompatActivity {
         for (int z = 0;z<privilegeActionsData.size();z++) {
             System.out.println("Name::: " + privilegeActionsData.get(z).toString());
 
-            if (privilegeActionsData.get(z).toString().equals("Stock_Dispatch")) {
+            if (privilegeActionsData.get(z).toString().equals("list_view_return")) {
                 ret.setVisibility(View.VISIBLE);
-            } else if (privilegeActionsData.get(z).toString().equals("Stock_Dispatch")) {
+            } else if (privilegeActionsData.get(z).toString().equals("list_view_payment")) {
                 payments.setVisibility(View.VISIBLE);
             }
 

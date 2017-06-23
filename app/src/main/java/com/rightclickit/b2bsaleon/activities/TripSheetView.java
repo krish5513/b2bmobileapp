@@ -78,7 +78,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
 
         taleorder=(Button)findViewById(R.id.btn_sale_ord1) ;
-        taleorder.setVisibility(View.GONE);
+       taleorder.setVisibility(View.GONE);
         delivery=(LinearLayout) findViewById(R.id.gotoCustomer);
         delivery.setVisibility(View.GONE);
 
@@ -247,10 +247,10 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
 
 
-            if (privilegeActionsData.get(z).toString().equals("Stock_Dispatch")) {
+            if (privilegeActionsData.get(z).toString().equals("list_view_takeorder")) {
                 taleorder.setVisibility(View.VISIBLE);
             }else
-            if (privilegeActionsData.get(z).toString().equals("Stock_Dispatch")) {
+            if (privilegeActionsData.get(z).toString().equals("list_view_delivery")) {
                 delivery.setVisibility(View.VISIBLE);
             }
 

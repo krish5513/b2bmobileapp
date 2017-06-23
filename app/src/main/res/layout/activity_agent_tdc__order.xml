@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rightclickit.b2bsaleon.activities.Agents_Tpc_OrdersActivity">
+    tools:context="com.rightclickit.b2bsaleon.activities.AgentTDC_Order">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -2459,6 +2459,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/linear_sales"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="0.25"
@@ -2476,6 +2477,7 @@
 
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/linear_deliveries"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="0.25"
@@ -2493,6 +2495,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/linear_returns"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="0.25"
@@ -2510,6 +2513,7 @@
 
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/linear_payments"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="0.25"
@@ -2527,6 +2531,7 @@
 
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/linear_orders"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="0.25"

@@ -50,7 +50,7 @@
     <string name="sales_btm">TDC</string>
     <string name="dashboard_btm">Home</string>
     <string name="orders_btm">Take Orders</string>
-    <string name="tpcorders_btm">TPC Orders</string>
+    <string name="tpcorders_btm">TDC Orders</string>
     <string name="print_btm">Print</string>
     <string name="payment_btm">Payment</string>
     <string name="delivery_btm">Deliveries</string>

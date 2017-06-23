@@ -65,7 +65,7 @@ public class AgentViewActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTakeOrdersLayout.startAnimation(animation1);
-                Intent i =new Intent(AgentViewActivity.this,TakeOrderScreen.class);
+                Intent i =new Intent(AgentViewActivity.this,AgentTakeOrderScreen.class);
                 startActivity(i);
                 finish();
             }

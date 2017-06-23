@@ -2018,6 +2018,7 @@
 
 
                     <LinearLayout
+                        android:id="@+id/linear_sales"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="0.25"
@@ -2035,6 +2036,7 @@
 
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/linear_deliveries"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="0.25"
@@ -2052,6 +2054,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/linear_returns"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="0.25"
@@ -2069,6 +2072,7 @@
 
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/linear_payments"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="0.25"
@@ -2086,6 +2090,7 @@
 
                     </LinearLayout>
                     <LinearLayout
+                        android:id="@+id/linear_orders"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_weight="0.25"

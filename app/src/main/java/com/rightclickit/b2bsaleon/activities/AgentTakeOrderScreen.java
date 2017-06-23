@@ -27,7 +27,7 @@ import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
 
-public class TakeOrderScreen extends AppCompatActivity {
+public class AgentTakeOrderScreen extends AppCompatActivity {
     private MMSharedPreferences mPreference;
     private ListView mTakeOrderListView;
     private TakeOrdersAdapter mTakeOrderAdapter;
@@ -40,6 +40,7 @@ public class TakeOrderScreen extends AppCompatActivity {
     private LinearLayout mTDCorderLayout;
 
     public static LinearLayout mPaymentsLayout;
+
     public static FloatingActionButton fab;
     private SearchView search;
 
@@ -69,6 +70,10 @@ public class TakeOrderScreen extends AppCompatActivity {
             System.out.println("CCCC:: "+mTakeOrderBeansList.get(k).getmProductOrderType());
         }
 
+
+        mTakeOrdersLayout=(LinearLayout)findViewById(R.id.takeorder) ;
+        mTakeOrdersLayout.setVisibility(View.GONE);
+
         mTakeOrderListView = (ListView) findViewById(R.id.TakeOrdersList);
         if(mTakeOrderBeansList.size()>0){
             mTakeOrderAdapter = new TakeOrdersAdapter(this,mTakeOrderBeansList,mTakeOrderListView);
@@ -78,13 +83,14 @@ public class TakeOrderScreen extends AppCompatActivity {
         mPaymentsLayout = (LinearLayout) findViewById(R.id.PaymentsLayout);
 
         mTDCorderLayout = (LinearLayout) findViewById(R.id.TPCLayout);
+        mTDCorderLayout.setVisibility(View.GONE);
         mTDCorderLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 mTDCorderLayout.startAnimation(animation1);
-                Intent i =new Intent(TakeOrderScreen.this,AgentTDC_Order.class);
+                Intent i =new Intent(AgentTakeOrderScreen.this,AgentTDC_Order.class);
                 startActivity(i);
                 finish();
 
@@ -93,6 +99,7 @@ public class TakeOrderScreen extends AppCompatActivity {
         });
 
         mDeliveriesLayout = (LinearLayout) findViewById(R.id.DeliveriesTakeOrder);
+        mDeliveriesLayout.setVisibility(View.GONE);
         mDeliveriesLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,13 +107,14 @@ public class TakeOrderScreen extends AppCompatActivity {
                         R.anim.blink);
                 mDeliveriesLayout.startAnimation(animation1);
 
-                Intent i =new Intent(TakeOrderScreen.this,AgentDeliveries.class);
+                Intent i =new Intent(AgentTakeOrderScreen.this,AgentDeliveries.class);
                 startActivity(i);
                 finish();
 
             }
         });
         mReturnsLayout = (LinearLayout) findViewById(R.id.ReturnsTakeOrder);
+        mReturnsLayout.setVisibility(View.GONE);
         mReturnsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,13 +122,14 @@ public class TakeOrderScreen extends AppCompatActivity {
                         R.anim.blink);
                 mReturnsLayout.startAnimation(animation1);
 
-                Intent i =new Intent(TakeOrderScreen.this,AgentReturns.class);
+                Intent i =new Intent(AgentTakeOrderScreen.this,AgentReturns.class);
                 startActivity(i);
                 finish();
 
             }
         });
         mPaymentsLayout = (LinearLayout) findViewById(R.id.PaymentsTakeOrder);
+        mPaymentsLayout.setVisibility(View.GONE);
         mPaymentsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +137,7 @@ public class TakeOrderScreen extends AppCompatActivity {
                         R.anim.blink);
                 mPaymentsLayout.startAnimation(animation1);
 
-                Intent i =new Intent(TakeOrderScreen.this,AgentPayments.class);
+                Intent i =new Intent(AgentTakeOrderScreen.this,AgentPayments.class);
                 startActivity(i);
                 finish();
 
@@ -140,6 +149,26 @@ public class TakeOrderScreen extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
         fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_eye_white_24dp));
+
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreference.getString("Customers"));
+        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        for (int z = 0; z < privilegeActionsData.size(); z++) {
+
+            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+            if (privilegeActionsData.get(z).toString().equals("Orders_List")) {
+                mTDCorderLayout.setVisibility(View.VISIBLE);
+            } else if (privilegeActionsData.get(z).toString().equals("Delivery_List")) {
+                mDeliveriesLayout.setVisibility(View.VISIBLE);
+            } else if (privilegeActionsData.get(z).toString().equals("Return_List")) {
+                mReturnsLayout.setVisibility(View.VISIBLE);
+            } else if (privilegeActionsData.get(z).toString().equals("Payment_List")) {
+                mPaymentsLayout.setVisibility(View.VISIBLE);
+            } else if (privilegeActionsData.get(z).toString().equals("Take_Orders")) {
+                mTakeOrdersLayout.setVisibility(View.VISIBLE);
+            }
+
+
+        }
 
     }
 

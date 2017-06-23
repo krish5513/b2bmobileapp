@@ -32,7 +32,7 @@ import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
 import com.rightclickit.b2bsaleon.activities.DashboardTakeorderPreview;
 import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
-import com.rightclickit.b2bsaleon.activities.TakeOrderScreen;
+import com.rightclickit.b2bsaleon.activities.AgentTakeOrderScreen;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
@@ -330,7 +330,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         });
 
 
-        TakeOrderScreen.fab.setOnClickListener(new View.OnClickListener() {
+        AgentTakeOrderScreen.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

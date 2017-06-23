@@ -54,7 +54,7 @@ public class TripSheetsActivity extends AppCompatActivity {
 
 
         mTripsListview=(LinearLayout)findViewById(R.id.tripslistview);
-        mTripsListview.setVisibility(View.GONE);
+       mTripsListview.setVisibility(View.GONE);
 
 
         view=(Button)findViewById(R.id.btn_view1) ;
@@ -62,7 +62,7 @@ public class TripSheetsActivity extends AppCompatActivity {
 
 
         stock=(Button) findViewById(R.id.btn_stock1);
-        stock.setVisibility(View.GONE);
+       stock.setVisibility(View.GONE);
 
         mDBHelper = new DBHelper(TripSheetsActivity.this);
         mPreferences = new MMSharedPreferences(TripSheetsActivity.this);
@@ -200,17 +200,14 @@ public class TripSheetsActivity extends AppCompatActivity {
         for (int z = 0;z<privilegeActionsData.size();z++){
             System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
 
-            if (privilegeActionsData.get(z).toString().equals("List_View")) {
+            if (privilegeActionsData.get(z).toString().equals("list_view")) {
                 mTripsListview.setVisibility(View.VISIBLE);
-            }else
-            if (privilegeActionsData.get(z).toString().equals("tripsheet_summary")) {
+            }
+            else if (privilegeActionsData.get(z).toString().equals("tripsheet_summary")) {
                 view.setVisibility(View.VISIBLE);
-            }else
-            if (privilegeActionsData.get(z).toString().equals("list_stock")) {
+            }else if (privilegeActionsData.get(z).toString().equals("list_stock")) {
                 stock.setVisibility(View.VISIBLE);
             }
-
-
         }
     }
 
