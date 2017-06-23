@@ -21,11 +21,22 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
     DBHelper mDBHelper;
     private TakeOrderPreviewAdapter mPreviewAdapter;
     TextView tv_companyName;
+    TextView Route_Name;
+    TextView RouteCode;
+    TextView orderNo;
+    TextView orderDate;
+    TextView user_Name;
+    TextView agentName;
+
+    TextView agentCode;
+
+    TextView print;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard_takeorder_preview);
+        setContentView(R.layout.activity_agent_take_order_preview);
 
         Bundle bundle = getIntent().getExtras();
         this.getSupportActionBar().setTitle("ORDERS ");
@@ -42,6 +53,18 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
+        user_Name=(TextView)findViewById(R.id.user_Name);
+        Route_Name=(TextView)findViewById(R.id.user_Name);
+        RouteCode=(TextView)findViewById(R.id.user_Name);
+        orderNo=(TextView)findViewById(R.id.user_Name);
+        orderDate=(TextView)findViewById(R.id.user_Name);
+        agentName=(TextView)findViewById(R.id.user_Name);
+        agentCode=(TextView)findViewById(R.id.user_Name);
+
+
+        print=(TextView)findViewById(R.id.tv_print) ;
+
+       // user_Name.setText(bundle.getString("USERNAME"));
 
 
         // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);

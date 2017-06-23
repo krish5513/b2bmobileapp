@@ -151,6 +151,7 @@ public class AgentsAdapter extends BaseAdapter {
                 bundle.putString("LASTNAME", mAgentsBeansList1.get(position).getmLastname());
                 bundle.putString("MOBILE", mAgentsBeansList1.get(position).getMphoneNO());
                 bundle.putString("ADDRESS", mAgentsBeansList1.get(position).getMaddress());
+                bundle.putString("AGENTCODE", mAgentsBeansList1.get(position).getmAgentCode());
 
                 intent.putExtra("AVATAR", mAgentsBeansList1.get(position).getmAgentPic());
                // Log.i("avatarimage", mAgentsBeansList1.get(position).getmAgentPic());

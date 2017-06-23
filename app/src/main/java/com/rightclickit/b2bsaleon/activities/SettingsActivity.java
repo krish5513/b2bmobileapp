@@ -285,12 +285,12 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     str_accessdevice = accessDevice.getText().toString();
                     str_backup = backup.getText().toString();
 
-      if (str_companyName.length() == 0 || str_companyName.length() == ' ') {
+                 if (str_companyName.length() == 0 || str_companyName.length() == ' ') {
                     companyName.setError("Please enter CompanyName");
-Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH_SHORT).show();
 
-               }
-// else if (str_userName.length() == 0 || str_userName.length() == ' ') {
+                  }
+//                        else if (str_userName.length() == 0 || str_userName.length() == ' ') {
 //                        companyName.setError(null);
 //                        userName.setError("Please enter Username");
 //                        Toast.makeText(getApplicationContext(), "Please enter Username", Toast.LENGTH_SHORT).show();
@@ -482,6 +482,8 @@ Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH
             companyName.setText("");
             if(userMapData.get("name")!=null) {
                 userName.setText(userMapData.get("name").toString());
+                Bundle bundle=new Bundle();
+                bundle.putString("USERNAME",userMapData.get("name").toString());
             }
             if(userMapData.get("phone_number")!=null) {
                 mobile.setText(userMapData.get("phone_number").toString());

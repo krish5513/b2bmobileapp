@@ -39,6 +39,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     LinearLayout tsCustomersLayout;
     LinearLayout tsProductsLayout;
     LinearLayout tsTDCLayout;
+    LinearLayout tsRetailersLayout;
+
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
     private GoogleMap mMap;
@@ -73,13 +75,12 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         mDBHelper = new DBHelper(TripSheetView.this);
         mPreferences = new MMSharedPreferences(TripSheetView.this);
 
-        tsDashBoardLayout = (LinearLayout) findViewById(R.id.dashboard);
-        tsTripsheetsLayout = (LinearLayout) findViewById(R.id.tripsheet);
-        tsCustomersLayout = (LinearLayout) findViewById(R.id.agent);
-        tsProductsLayout = (LinearLayout) findViewById(R.id.product);
-        tsTDCLayout = (LinearLayout) findViewById(R.id.tdcsales);
+
+
         taleorder=(Button)findViewById(R.id.btn_sale_ord1) ;
+        taleorder.setVisibility(View.GONE);
         delivery=(LinearLayout) findViewById(R.id.gotoCustomer);
+        delivery.setVisibility(View.GONE);
 
 
         listView = (TextView) findViewById(R.id.tv_listView);
@@ -114,7 +115,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
             }
         });
-
+        tsDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
+        tsDashBoardLayout.setVisibility(View.GONE);
         tsDashBoardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +129,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 finish();
             }
         });
-
+        tsTripsheetsLayout = (LinearLayout) findViewById(R.id.TripSheetsLayout);
+        tsTripsheetsLayout.setVisibility(View.GONE);
         tsTripsheetsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +141,9 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
             }
         });
+
+        tsCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
+        tsCustomersLayout.setVisibility(View.GONE);
         tsCustomersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,6 +156,21 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 finish();
             }
         });
+
+        tsRetailersLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
+        tsRetailersLayout.setVisibility(View.GONE);
+        tsRetailersLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                tsRetailersLayout.startAnimation(animation1);
+                Intent i = new Intent(TripSheetView.this, RetailersActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        tsProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
+        tsProductsLayout.setVisibility(View.GONE);
         tsProductsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,6 +183,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 finish();
             }
         });
+        tsTDCLayout = (LinearLayout) findViewById(R.id.TDCLayout);
+        tsTDCLayout.setVisibility(View.GONE);
         tsTDCLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -210,17 +233,36 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 tsProductsLayout.setVisibility(View.VISIBLE);
             }else if (privilegesData.get(k).toString().equals("TDC")){
                 tsTDCLayout.setVisibility(View.VISIBLE);
+            }else if (privilegesData.get(k).toString().equals("Retailers")){
+                tsRetailersLayout.setVisibility(View.VISIBLE);
             }
         }
+
+
+
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
+        System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
+        for (int z = 0;z<privilegeActionsData.size();z++){
+            System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
+
+
+
+            if (privilegeActionsData.get(z).toString().equals("Stock_Dispatch")) {
+                taleorder.setVisibility(View.VISIBLE);
+            }else
+            if (privilegeActionsData.get(z).toString().equals("Stock_Dispatch")) {
+                delivery.setVisibility(View.VISIBLE);
+            }
+
+
+        }
+
+
 
         mLatitude = userMapData.get("latitude");
         mLongitude = userMapData.get("longitude");
 
-        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Dashboard"));
-        System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
-        for (int z = 0;z<privilegeActionsData.size();z++){
-            System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
-        }
+
 
         fab = (FloatingActionButton) findViewById(R.id.productfab);
         fab.setVisibility(View.VISIBLE);

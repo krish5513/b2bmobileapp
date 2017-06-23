@@ -27,6 +27,7 @@ public class TripSheetsActivity extends AppCompatActivity {
     private   LinearLayout tsProductsLayout;
     private LinearLayout tsTDCLayout;
     private LinearLayout mRetailersLayout;
+    private LinearLayout mTripsListview;
      Button view,stock;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
@@ -52,12 +53,16 @@ public class TripSheetsActivity extends AppCompatActivity {
 
 
 
-
-
+        mTripsListview=(LinearLayout)findViewById(R.id.tripslistview);
+        mTripsListview.setVisibility(View.GONE);
 
 
         view=(Button)findViewById(R.id.btn_view1) ;
+        view.setVisibility(View.GONE);
+
+
         stock=(Button) findViewById(R.id.btn_stock1);
+        stock.setVisibility(View.GONE);
 
         mDBHelper = new DBHelper(TripSheetsActivity.this);
         mPreferences = new MMSharedPreferences(TripSheetsActivity.this);
@@ -105,9 +110,9 @@ public class TripSheetsActivity extends AppCompatActivity {
                 finish();
             }
         });
-        mRetailersLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
+         mRetailersLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
          mRetailersLayout.setVisibility(View.GONE);
-        mRetailersLayout.setOnClickListener(new View.OnClickListener() {
+         mRetailersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
@@ -190,13 +195,23 @@ public class TripSheetsActivity extends AppCompatActivity {
                 mRetailersLayout.setVisibility(View.VISIBLE);
             }
         }
-
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
         System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
         for (int z = 0;z<privilegeActionsData.size();z++){
             System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
-        }
 
+            if (privilegeActionsData.get(z).toString().equals("List_View")) {
+                mTripsListview.setVisibility(View.VISIBLE);
+            }else
+            if (privilegeActionsData.get(z).toString().equals("tripsheet_summary")) {
+                view.setVisibility(View.VISIBLE);
+            }else
+            if (privilegeActionsData.get(z).toString().equals("list_stock")) {
+                stock.setVisibility(View.VISIBLE);
+            }
+
+
+        }
     }
 
 

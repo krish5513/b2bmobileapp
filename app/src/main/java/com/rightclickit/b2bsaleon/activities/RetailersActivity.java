@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +33,8 @@ public class RetailersActivity extends AppCompatActivity {
     private LinearLayout mProductsLayout;
     private LinearLayout mTDCLayout;
     private LinearLayout mRetailersLayout;
+    private LinearLayout mRetailerslistview;
+    private MMSharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class RetailersActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        mPreferences = new MMSharedPreferences(RetailersActivity.this);
 
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -53,7 +57,7 @@ public class RetailersActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
         fab = (FloatingActionButton) findViewById(R.id.retailerfab);
-        fab.setVisibility( View.VISIBLE);
+        fab.setVisibility( View.GONE);
         fab.setImageDrawable( ContextCompat.getDrawable(getApplicationContext(), R.drawable.plus_white));
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +69,12 @@ public class RetailersActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
+        mRetailerslistview=(LinearLayout)findViewById(R.id.retailerslistview) ;
+        mRetailerslistview.setVisibility(View.GONE);
+
+
         mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
        mDashBoardLayout.setVisibility(View.GONE);
         mDashBoardLayout.setOnClickListener(new View.OnClickListener() {
@@ -162,7 +172,7 @@ public class RetailersActivity extends AppCompatActivity {
                 finish();
             }
         } );
-       /* HashMap<String, String> userMapData = mDBHelper.getUsersData();
+       HashMap<String, String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
         System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
         for (int k = 0; k<privilegesData.size();k++){
@@ -182,7 +192,27 @@ public class RetailersActivity extends AppCompatActivity {
             }
         }
 
-*/
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Retailers"));
+        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        for (int z = 0; z < privilegeActionsData.size(); z++) {
+            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+
+            if (privilegeActionsData.get(z).toString().equals("List_View")) {
+                mRetailerslistview.setVisibility(View.VISIBLE);
+            }else
+            if (privilegeActionsData.get(z).toString().equals("List_Info")) {
+                info.setVisibility(View.VISIBLE);
+            }else
+            if (privilegeActionsData.get(z).toString().equals("Payment_List")) {
+                payments.setVisibility(View.VISIBLE);
+            }else
+            if (privilegeActionsData.get(z).toString().equals("Add")) {
+                fab.setVisibility( View.VISIBLE);
+            }
+
+
+        }
+
 
 
     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rightclickit.b2bsaleon.activities.Tripsheet_StockActivity">
+    tools:context="com.rightclickit.b2bsaleon.activities.TripSheetStock">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,6 +32,7 @@
                 android:textColor="@color/greydark"/>
 
             <TextView
+                android:id="@+id/dispatch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.17"
@@ -41,6 +42,7 @@
                 android:textSize="14sp"
                 android:textColor="@color/greydark"/>
             <TextView
+                android:id="@+id/verify"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.17"

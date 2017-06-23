@@ -72,7 +72,7 @@ public class AgentsActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.GONE);
         fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.customer60));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +92,7 @@ public class AgentsActivity extends AppCompatActivity {
         agentsModel = new AgentsModel(activityContext,this);
 
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
+        mAgentsList.setVisibility(View.GONE);
        // ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
         //System.out.println("ELSE::: "+a.size());
         if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
@@ -211,7 +212,7 @@ public class AgentsActivity extends AppCompatActivity {
             if (privilegeActionsData.get(z).toString().equals("List_View")){
                 mAgentsList.setVisibility(View.VISIBLE);
             }
-            if (privilegeActionsData.get(z).toString().equals("Add")){
+             else if (privilegeActionsData.get(z).toString().equals("Add")){
                 fab.setVisibility(View.VISIBLE);
             }
         }

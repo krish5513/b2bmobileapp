@@ -123,19 +123,19 @@ public class ProductsAdapter extends BaseAdapter {
             holder = (MyViewHolder) convertView.getTag();
         }
 
-        if(mStock.equals("")){
+        if(mStock.equals("Stock")){
             holder.stockbtn.setVisibility(View.VISIBLE);
         }
 
-        if(mAgentPrice.equals("")){
+        if(mAgentPrice.equals("Agent_Price")){
             holder.materialAgentUnit.setVisibility(View.VISIBLE);
         }
 
-        if(mRetailerPrice.equals("")){
+        if(mRetailerPrice.equals("Retailer_Price")){
             holder.materialRetailerUnit.setVisibility(View.VISIBLE);
         }
 
-        if(mConsumerPrice.equals("")){
+        if(mConsumerPrice.equals("Consumer_Price")){
             holder.materialConsumerUnit.setVisibility(View.VISIBLE);
         }
 

@@ -59,7 +59,8 @@ public class AgentViewActivity extends AppCompatActivity {
 
 
                 mTakeOrdersLayout = (LinearLayout) findViewById(R.id.TakeOrdersLayout);
-        mTakeOrdersLayout.setOnClickListener(new View.OnClickListener() {
+        mTakeOrdersLayout.setVisibility(View.GONE);
+                mTakeOrdersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
@@ -71,6 +72,7 @@ public class AgentViewActivity extends AppCompatActivity {
         });
 
         mDeliveriesLayout = (LinearLayout) findViewById(R.id.DeliveriesLayout);
+        mDeliveriesLayout.setVisibility(View.GONE);
         mDeliveriesLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +84,7 @@ public class AgentViewActivity extends AppCompatActivity {
             }
         });
         mReturnsLayout = (LinearLayout) findViewById(R.id.ReturnsLayout);
+        mReturnsLayout.setVisibility(View.GONE);
         mReturnsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +96,7 @@ public class AgentViewActivity extends AppCompatActivity {
             }
         });
         mPaymentsLayout = (LinearLayout) findViewById(R.id.PaymentsLayout);
+        mPaymentsLayout.setVisibility(View.GONE);
         mPaymentsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,16 +128,16 @@ public class AgentViewActivity extends AppCompatActivity {
             if (privilegeActionsData.get(z).toString().equals("Orders_List")) {
                 mTPCOrdersLayout.setVisibility(View.VISIBLE);
             }
-            if (privilegeActionsData.get(z).toString().equals("Delivery_List")) {
+           else if (privilegeActionsData.get(z).toString().equals("Delivery_List")) {
                 mDeliveriesLayout.setVisibility(View.VISIBLE);
             }
-            if (privilegeActionsData.get(z).toString().equals("Return_List")) {
+           else if (privilegeActionsData.get(z).toString().equals("Return_List")) {
                 mReturnsLayout.setVisibility(View.VISIBLE);
             }
-            if (privilegeActionsData.get(z).toString().equals("Payment_List")) {
+           else if (privilegeActionsData.get(z).toString().equals("Payment_List")) {
                 mPaymentsLayout.setVisibility(View.VISIBLE);
             }
-            if (privilegeActionsData.get(z).toString().equals("Take_Orders")) {
+            else if (privilegeActionsData.get(z).toString().equals("Take_Orders")) {
                 mTakeOrdersLayout.setVisibility(View.VISIBLE);
             }
 

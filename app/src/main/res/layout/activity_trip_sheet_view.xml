@@ -597,57 +597,53 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/dashboard"
+                android:id="@+id/DashboardLayout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:layout_weight="0.25"
+                android:layout_weight="1"
                 android:gravity="center">
-
                 <TextView
-                    android:id="@+id/tv_home"
+                    android:id="@+id/tv_dashboard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:drawableTop="@drawable/dashboard_icon_grey"
-                    android:gravity="center"
+                    android:drawableTop="@drawable/dashboard_icon_white"
                     android:text="@string/dashboard_btm"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/TripSheetsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tv_routes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableTop="@drawable/route_green"
+                    android:gravity="center"
+                    android:text="@string/myroutes_btm"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/tripsheet"
+                android:id="@+id/CustomersLayout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:layout_weight="0.25"
+                android:layout_weight="1"
                 android:gravity="center">
-
                 <TextView
-                    android:id="@+id/tv_dashboard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:drawableTop="@drawable/route"
-                    android:text="@string/myroutes_btm"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="12sp" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/agent"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:layout_weight="0.25"
-                android:gravity="center">
-
-                <TextView
-                    android:id="@+id/tv_cust"
+                    android:id="@+id/tvrouts_customerN"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -656,21 +652,37 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
             </LinearLayout>
-
             <LinearLayout
-                android:id="@+id/product"
+                android:id="@+id/RetailersLayout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:layout_weight="0.25"
+                android:layout_weight="1"
                 android:gravity="center">
+                <TextView
+                    android:id="@+id/tv_retailer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableTop="@drawable/ic_store_black_24dp"
+                    android:text="@string/retailers_btn"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ProductsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center">
                 <TextView
                     android:id="@+id/tv_products"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:drawableTop="@drawable/ic_shopping_cart_grey_24dp"
+                    android:drawableTop="@drawable/ic_shopping_cart_black_24dp"
                     android:gravity="center"
                     android:text="@string/products_btm"
                     android:textColor="@color/colorPrimary"
@@ -678,14 +690,12 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/tdcsales"
+                android:id="@+id/TDCLayout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:layout_weight="0.25"
-                android:gravity="center"
-               >
-
+                android:layout_weight="1"
+                android:gravity="center">
                 <TextView
                     android:id="@+id/tv_settings"
                     android:layout_width="wrap_content"
@@ -695,9 +705,8 @@
                     android:gravity="center"
                     android:text="@string/sales_btm"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"/>
             </LinearLayout>
-
         </LinearLayout>
 
     </LinearLayout>

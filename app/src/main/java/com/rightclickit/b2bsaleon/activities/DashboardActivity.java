@@ -99,7 +99,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
 
 
         listView=(TextView) findViewById(R.id.tv_listView);
-      //  listView.setVisibility(View.GONE);
+        listView.setVisibility(View.GONE);
 
         mapView=(TextView) findViewById(R.id.tv_mapView);
         mapView.setVisibility(View.GONE);
@@ -270,24 +270,26 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
                 mapView.setVisibility(View.VISIBLE);
             }
 
-               /* if (privilegeActionsData.get(z).toString().equals("map_view_delivery")) {
+              /*  if (privilegeActionsData.get(z).toString().equals("map_view_delivery")) {
               mapview.setVisibility(View.VISIBLE);
                  }*/
 
-              /* if (privilegeActionsData.get(z).toString().equals("list_view")) {
+              else if (privilegeActionsData.get(z).toString().equals("list_view")) {
                listview.setVisibility(View.VISIBLE);
-                }*/
+                }
 
-            if (privilegeActionsData.get(z).toString().equals("list_view_delivery")) {
+             else if (privilegeActionsData.get(z).toString().equals("list_view_delivery")) {
                 taleorder.setVisibility(View.VISIBLE);
-            }
 
-            if (privilegeActionsData.get(z).toString().equals("list_view_take_order")) {
+              }
+
+
+             else  if (privilegeActionsData.get(z).toString().equals("list_view_take_order")) {
                 delivery.setVisibility(View.VISIBLE);
-            }
+              }
 
 
-        }
+         }
 
 //        if (mDBHelper.getRouteId().length()==0) {
 //            startService(new Intent(DashboardActivity.this, SyncRoutesMasterDetailsService.class));

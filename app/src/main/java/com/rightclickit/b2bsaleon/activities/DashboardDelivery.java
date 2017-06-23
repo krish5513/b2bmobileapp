@@ -17,8 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class DashboardDelivery extends AppCompatActivity {
 
@@ -26,6 +29,9 @@ public class DashboardDelivery extends AppCompatActivity {
     LinearLayout payments;
     LinearLayout save;
     LinearLayout print;
+
+    private DBHelper mDBHelper;
+    private MMSharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +54,16 @@ public class DashboardDelivery extends AppCompatActivity {
 
 
         ret = (LinearLayout) findViewById(R.id.linearreturn);
+        ret.setVisibility(View.GONE);
         payments = (LinearLayout) findViewById(R.id.linearpayments);
+        payments.setVisibility(View.GONE);
+
         save = (LinearLayout) findViewById(R.id.linearsave);
         print = (LinearLayout) findViewById(R.id.linearpreview);
 
 
-
+        mDBHelper = new DBHelper(DashboardDelivery.this);
+        mPreferences = new MMSharedPreferences(DashboardDelivery.this);
 
 
 
@@ -95,6 +105,25 @@ public class DashboardDelivery extends AppCompatActivity {
 
             }
         });
+
+
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
+        System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
+        for (int z = 0;z<privilegeActionsData.size();z++) {
+            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+
+            if (privilegeActionsData.get(z).toString().equals("Stock_Dispatch")) {
+                ret.setVisibility(View.VISIBLE);
+            } else if (privilegeActionsData.get(z).toString().equals("Stock_Dispatch")) {
+                payments.setVisibility(View.VISIBLE);
+            }
+
+
+        }
+
+
+
+
 
     }
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {

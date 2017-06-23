@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TDCSalesAdapter;
@@ -35,11 +36,15 @@ public class SalesActivity extends AppCompatActivity {
     private DBHelper mDBHelper;
     private ArrayList<ProductsBean> productsList;
     private TDCSalesAdapter tdcSalesAdapter;
+    TextView tdc_sales_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales);
+
+        tdc_sales_list=(TextView)findViewById(R.id.tdc_sales_list);
+        tdc_sales_list.setVisibility(View.GONE);
 
         try {
             applicationContext = getApplicationContext();
@@ -63,6 +68,9 @@ public class SalesActivity extends AppCompatActivity {
             productsList = new ArrayList<>();
 
             tdc_sales_list_view = (ListView) findViewById(R.id.tdc_sales_list_view);
+            tdc_sales_list_view.setVisibility(View.GONE);
+
+
 
             productsList = mDBHelper.fetchAllRecordsFromProductsTable();
             //System.out.println("========= productsList = " + productsList);
@@ -72,6 +80,22 @@ public class SalesActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("TDC"));
+        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        for (int z = 0; z < privilegeActionsData.size(); z++) {
+            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+
+            if (privilegeActionsData.get(z).toString().equals("List_view")) {
+                tdc_sales_list_view.setVisibility(View.VISIBLE);
+            }else
+            if (privilegeActionsData.get(z).toString().equals("Sales_List")) {
+                tdc_sales_list.setVisibility(View.VISIBLE);
+            }
+
+        }
+
+
     }
 
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {
