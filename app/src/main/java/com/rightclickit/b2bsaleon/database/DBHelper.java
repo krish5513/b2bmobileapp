@@ -92,15 +92,15 @@ public class DBHelper extends SQLiteOpenHelper {
     public final String KEY_PRODUCT_ID = "product_id";
     public final String KEY_PRODUCT_CODE = "product_code";
     public final String KEY_PRODUCT_TITLE = "product_title";
-    public final String KEY_PRODUCT_DESCRIPTION= "product_description";
+    public final String KEY_PRODUCT_DESCRIPTION = "product_description";
     public final String KEY_PRODUCT_IMAGE_URL = "product_image_url";
     public final String KEY_PRODUCT_RETURNABLE = "product_returnable";
     public final String KEY_PRODUCT_MOQ = "product_moq";
     public final String KEY_PRODUCT_AGENT_PRICE = "product_agent_price";
-    public final String KEY_PRODUCT_CONSUMER_PRICE= "product_consumer_price";
-    public final String KEY_PRODUCT_RETAILER_PRICE= "product_retailer_price";
-    public final String KEY_PRODUCT_GST_PRICE= "product_gst_price";
-    public final String KEY_PRODUCT_VAT_PRICE= "product_vat_price";
+    public final String KEY_PRODUCT_CONSUMER_PRICE = "product_consumer_price";
+    public final String KEY_PRODUCT_RETAILER_PRICE = "product_retailer_price";
+    public final String KEY_PRODUCT_GST_PRICE = "product_gst_price";
+    public final String KEY_PRODUCT_VAT_PRICE = "product_vat_price";
 
 
     // Column names for Agents Table
@@ -124,15 +124,14 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_POA_IMAGE = "agent_poa";
     private final String KEY_AGENT_EMAIL = "agent_email";
     private final String KEY_AGENT_PASSWORD = "agent_password";
-    private final String KEY_AGENT_STAKEHOLDERID= "agent_stakeid";
+    private final String KEY_AGENT_STAKEHOLDERID = "agent_stakeid";
     private final String KEY_AGENT_REPORTINGTO = "agent_reportingto";
     private final String KEY_AGENT_VERIFYCODE = "agent_verifycode";
-    private final String KEY_AGENT_DELETE= "agent_dele";
-    private final String KEY_AGENT_CREATEDBY= "agent_createdby";
-    private final String KEY_AGENT_CREATEDON= "agent_createdon";
-    private final String KEY_AGENT_UPDATEDBY= "agent_updatedby";
-    private final String KEY_AGENT_UPDATEDON= "agent_updatedon";
-
+    private final String KEY_AGENT_DELETE = "agent_dele";
+    private final String KEY_AGENT_CREATEDBY = "agent_createdby";
+    private final String KEY_AGENT_CREATEDON = "agent_createdon";
+    private final String KEY_AGENT_UPDATEDBY = "agent_updatedby";
+    private final String KEY_AGENT_UPDATEDON = "agent_updatedon";
 
 
     // Column names for Products with take order values
@@ -155,27 +154,27 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_AGENTS + "(" + KEY_AGENT_ID + " VARCHAR,"
             + KEY_AGENT_NAME + " VARCHAR," + KEY_OB_AMOUNT + " VARCHAR," + KEY_ORDER_VALUE + " VARCHAR,"
-            + KEY_TOTAL_AMOUNT + " VARCHAR," + KEY_DUE_AMOUNT + " VARCHAR,"  + KEY_AGENT_PIC + " VARCHAR,"
+            + KEY_TOTAL_AMOUNT + " VARCHAR," + KEY_DUE_AMOUNT + " VARCHAR," + KEY_AGENT_PIC + " VARCHAR,"
             + KEY_AGENT_STATUS + " VARCHAR,"
             + KEY_AGENT_LATITUDE + " VARCHAR," + KEY_AGENT_LONGITUDE + " VARCHAR,"
-            + KEY_AGENT_CODE + " VARCHAR," + KEY_AGENT_FIRSTNAME + " VARCHAR,"+ KEY_AGENT_LASTNAME + " VARCHAR,"
-            + KEY_AGENT_PHONENO + " VARCHAR,"+ KEY_AGENT_ADDRESS + " VARCHAR," + KEY_AGENT_ROUTE_ID + " VARCHAR,"
+            + KEY_AGENT_CODE + " VARCHAR," + KEY_AGENT_FIRSTNAME + " VARCHAR," + KEY_AGENT_LASTNAME + " VARCHAR,"
+            + KEY_AGENT_PHONENO + " VARCHAR," + KEY_AGENT_ADDRESS + " VARCHAR," + KEY_AGENT_ROUTE_ID + " VARCHAR,"
             + KEY_POI_IMAGE + " VARCHAR," + KEY_POA_IMAGE + " VARCHAR,"
             + KEY_AGENT_EMAIL + " VARCHAR," + KEY_AGENT_PASSWORD + " VARCHAR,"
-            + KEY_AGENT_STAKEHOLDERID + " VARCHAR," + KEY_AGENT_REPORTINGTO + " VARCHAR,"+ KEY_AGENT_VERIFYCODE + " VARCHAR,"
-            + KEY_AGENT_DELETE+ " VARCHAR,"+ KEY_AGENT_CREATEDBY + " VARCHAR," + KEY_AGENT_CREATEDON+ " VARCHAR,"
-            + KEY_AGENT_UPDATEDBY+ " VARCHAR," + KEY_AGENT_UPDATEDON + " VARCHAR)";
+            + KEY_AGENT_STAKEHOLDERID + " VARCHAR," + KEY_AGENT_REPORTINGTO + " VARCHAR," + KEY_AGENT_VERIFYCODE + " VARCHAR,"
+            + KEY_AGENT_DELETE + " VARCHAR," + KEY_AGENT_CREATEDBY + " VARCHAR," + KEY_AGENT_CREATEDON + " VARCHAR,"
+            + KEY_AGENT_UPDATEDBY + " VARCHAR," + KEY_AGENT_UPDATEDON + " VARCHAR)";
 
 
     // Userdetails Table Create Statements
     private final String CREATE_TABLE_USERDETAILS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_USERDETAILS + "(" + KEY_USER_ID + " VARCHAR,"
-            + KEY_USER_CODE + " VARCHAR,"+ KEY_COMPANYNAME + " VARCHAR,"  + KEY_NAME + " VARCHAR," + KEY_EMAIL + " VARCHAR,"
+            + KEY_USER_CODE + " VARCHAR," + KEY_COMPANYNAME + " VARCHAR," + KEY_NAME + " VARCHAR," + KEY_EMAIL + " VARCHAR,"
             + KEY_PHONE_NUMBER + " VARCHAR," + KEY_AVATAR + " VARCHAR,"
             + KEY_STAKEHOLDER_ID + " VARCHAR," + KEY_ADRESS + " VARCHAR," + KEY_DEVICE_SYNC
             + " VARCHAR, " + KEY_ACCESS_DEVICE
             + " VARCHAR, " + KEY_BACKUP + " VARCHAR, " + KEY_ROUTEIDS + " VARCHAR, " + KEY_DEVICE_UDID
-            + " VARCHAR, " + KEY_VEHICLE_NUMBER  + " VARCHAR, " + KEY_TRANSPORTER_NAME  + " VARCHAR, " + KEY_LATITUDE
+            + " VARCHAR, " + KEY_VEHICLE_NUMBER + " VARCHAR, " + KEY_TRANSPORTER_NAME + " VARCHAR, " + KEY_LATITUDE
             + " VARCHAR, " + KEY_LONGITUDE
             + " VARCHAR, " + KEY_PASSWORD + " VARCHAR)";
 
@@ -191,16 +190,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //Products Table Create Statements
     private final String CREATE_PRODUCTS_TABLE = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_PRODUCTS + "("+KEY_PRODUCT_ID + " VARCHAR,"
+            + TABLE_PRODUCTS + "(" + KEY_PRODUCT_ID + " VARCHAR,"
             + KEY_PRODUCT_CODE + " VARCHAR," + KEY_PRODUCT_TITLE + " VARCHAR,"
             + KEY_PRODUCT_DESCRIPTION + " VARCHAR," + KEY_PRODUCT_IMAGE_URL + " VARCHAR," + KEY_PRODUCT_RETURNABLE + " VARCHAR," +
-            KEY_PRODUCT_MOQ + " VARCHAR," + KEY_PRODUCT_AGENT_PRICE + " VARCHAR,"+ KEY_PRODUCT_CONSUMER_PRICE + " VARCHAR,"
-            + KEY_PRODUCT_RETAILER_PRICE + " VARCHAR,"+ KEY_PRODUCT_GST_PRICE + " VARCHAR,"
+            KEY_PRODUCT_MOQ + " VARCHAR," + KEY_PRODUCT_AGENT_PRICE + " VARCHAR," + KEY_PRODUCT_CONSUMER_PRICE + " VARCHAR,"
+            + KEY_PRODUCT_RETAILER_PRICE + " VARCHAR," + KEY_PRODUCT_GST_PRICE + " VARCHAR,"
             + KEY_PRODUCT_VAT_PRICE + " VARCHAR)";
 
     //TO Products Table Create Statements
     private final String CREATE_PRODUCTS_TABLE_TO = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_TO_PRODUCTS + "("+KEY_TO_PRODUCT_ID + " VARCHAR PRIMARY KEY,"
+            + TABLE_TO_PRODUCTS + "(" + KEY_TO_PRODUCT_ID + " VARCHAR PRIMARY KEY,"
             + KEY_TO_PRODUCT_NAME + " VARCHAR," + KEY_TO_PRODUCT_ROUTE_ID + " VARCHAR,"
             + KEY_TO_FROM_DATE + " VARCHAR," + KEY_TO_TO_DATE + " VARCHAR," + KEY_TO_ORDER_TYPE + " VARCHAR,"
             + KEY_TO_QUANTITY + " VARCHAR," + KEY_TO_STATUS + " VARCHAR)";
@@ -224,7 +223,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_AGENTS);
             db.execSQL(CREATE_PRODUCTS_TABLE_TO);
             db.execSQL(CREATE_USER_PRIVILEGE_ACTIONS_TABLE);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -234,7 +233,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USERDETAILS);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_ROUTES);
-            db.execSQL("DROP TABLE IF EXISTS"  + CREATE_PRODUCTS_TABLE);
+            db.execSQL("DROP TABLE IF EXISTS" + CREATE_PRODUCTS_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_USER_ACTIVITY_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_AGENTS);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_PRODUCTS_TABLE_TO);
@@ -242,7 +241,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             // create new tables
             onCreate(db);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -261,11 +260,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 noOfEvents = cursor.getCount();
                 cursor.close();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return noOfEvents;
     }
+
     /**
      * Method to clear values in agents table
      */
@@ -274,7 +274,7 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             db.delete(TABLE_AGENTS, null, null);
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -287,7 +287,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void insertAgentDetails(ArrayList<AgentsBean> mAgentsBeansList) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            for (int i = 0;i<mAgentsBeansList.size();i++){
+            for (int i = 0; i < mAgentsBeansList.size(); i++) {
                 ContentValues values = new ContentValues();
                 values.put(KEY_AGENT_ID, mAgentsBeansList.get(i).getmAgentId());
                 values.put(KEY_AGENT_NAME, mAgentsBeansList.get(i).getmAgentName());
@@ -322,7 +322,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 System.out.println("F*********** INSERTED***************88");
                 values.clear();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -332,7 +332,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch all records from agents table
      */
-    public ArrayList<AgentsBean> fetchAllRecordsFromAgentsTable(){
+    public ArrayList<AgentsBean> fetchAllRecordsFromAgentsTable() {
         ArrayList<AgentsBean> allDeviceTrackRecords = new ArrayList<AgentsBean>();
         try {
             String selectQuery = "SELECT  * FROM " + TABLE_AGENTS;
@@ -379,7 +379,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             c.close();
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -401,8 +401,8 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param accessDevice
      * @param backUp
      */
-    public void insertUserDetails(String id, String userCode, String companyname,String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp,String routeArrayListString,
-                                  String deviceId,String transporterName,String vehicleNumber,String latitude,String longitude,String password) {
+    public void insertUserDetails(String id, String userCode, String companyname, String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp, String routeArrayListString,
+                                  String deviceId, String transporterName, String vehicleNumber, String latitude, String longitude, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
@@ -418,19 +418,19 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_DEVICE_SYNC, deviceSync);
             values.put(KEY_ACCESS_DEVICE, accessDevice);
             values.put(KEY_BACKUP, backUp);
-            values.put(KEY_ROUTEIDS,routeArrayListString);
-            values.put(KEY_DEVICE_UDID,deviceId);
-            values.put(KEY_TRANSPORTER_NAME,transporterName);
-            values.put(KEY_VEHICLE_NUMBER,vehicleNumber);
-            values.put(KEY_LATITUDE,latitude);
-            values.put(KEY_LONGITUDE,longitude);
-            values.put(KEY_PASSWORD,password);
+            values.put(KEY_ROUTEIDS, routeArrayListString);
+            values.put(KEY_DEVICE_UDID, deviceId);
+            values.put(KEY_TRANSPORTER_NAME, transporterName);
+            values.put(KEY_VEHICLE_NUMBER, vehicleNumber);
+            values.put(KEY_LATITUDE, latitude);
+            values.put(KEY_LONGITUDE, longitude);
+            values.put(KEY_PASSWORD, password);
 
             // insert row
             db.insert(TABLE_USERDETAILS, null, values);
             values.clear();
             System.out.println("USER DATA INSERTED.....");
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -452,15 +452,15 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param accessDevice
      * @param backUp
      */
-    public long updateUserDetails(String id, String companyname,String userCode, String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp,String routeArrayListString,
-                                  String deviceId,String transporterName,String vehicleNumber,String latitude,String longitude) {
+    public long updateUserDetails(String id, String companyname, String userCode, String userName, String email, String phone, String profilrPic, String stakeHolder, String address, String deviceSync, String accessDevice, String backUp, String routeArrayListString,
+                                  String deviceId, String transporterName, String vehicleNumber, String latitude, String longitude) {
         SQLiteDatabase db = this.getWritableDatabase();
         long effectedRows = 0;
         try {
             ContentValues values = new ContentValues();
             //values.put(KEY_USER_ID, id);
             //values.put(KEY_USER_CODE, userCode);
-            values.put(KEY_COMPANYNAME,companyname);
+            values.put(KEY_COMPANYNAME, companyname);
             // values.put(KEY_NAME, userName);
             //values.put(KEY_EMAIL, email);
             // values.put(KEY_PHONE_NUMBER, phone);
@@ -472,16 +472,16 @@ public class DBHelper extends SQLiteOpenHelper {
             // values.put(KEY_BACKUP, backUp);
             // values.put(KEY_ROUTEIDS,routeArrayListString);
 
-            values.put(KEY_DEVICE_UDID,deviceId);
-            values.put(KEY_TRANSPORTER_NAME,transporterName);
-            values.put(KEY_VEHICLE_NUMBER,vehicleNumber);
+            values.put(KEY_DEVICE_UDID, deviceId);
+            values.put(KEY_TRANSPORTER_NAME, transporterName);
+            values.put(KEY_VEHICLE_NUMBER, vehicleNumber);
             //values.put(KEY_LATITUDE,latitude);
             // values.put(KEY_LONGITUDE,longitude);
 
             // update row
             effectedRows = db.update(TABLE_USERDETAILS, values, KEY_USER_ID + " = ?", new String[]{String.valueOf(id)});
             values.clear();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -491,10 +491,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to get the users data
+     *
      * @return user data in list form.
      */
-    public HashMap<String,String> getUsersData(){
-        HashMap<String,String> userData = new HashMap<String,String>();
+    public HashMap<String, String> getUsersData() {
+        HashMap<String, String> userData = new HashMap<String, String>();
         try {
             String selectQuery = "SELECT  * FROM " + TABLE_USERDETAILS;
 
@@ -504,30 +505,30 @@ public class DBHelper extends SQLiteOpenHelper {
             // looping through all rows and adding to list
             if (c.moveToFirst()) {
                 do {
-                    userData.put(KEY_USER_ID,(c.getString(c.getColumnIndex(KEY_USER_ID))));
-                    userData.put(KEY_COMPANYNAME,(c.getString(c.getColumnIndex(KEY_COMPANYNAME))));
-                    userData.put(KEY_NAME,(c.getString(c.getColumnIndex(KEY_NAME))));
-                    userData.put(KEY_EMAIL,(c.getString(c.getColumnIndex(KEY_EMAIL))));
-                    userData.put(KEY_PHONE_NUMBER,(c.getString(c.getColumnIndex(KEY_PHONE_NUMBER))));
-                    userData.put(KEY_AVATAR,(c.getString(c.getColumnIndex(KEY_AVATAR))));
-                    userData.put(KEY_ADRESS,(c.getString(c.getColumnIndex(KEY_ADRESS))));
-                    userData.put(KEY_ACCESS_DEVICE,(c.getString(c.getColumnIndex(KEY_ACCESS_DEVICE))));
-                    userData.put(KEY_DEVICE_SYNC,(c.getString(c.getColumnIndex(KEY_DEVICE_SYNC))));
-                    userData.put(KEY_BACKUP,(c.getString(c.getColumnIndex(KEY_BACKUP))));
-                    userData.put(KEY_ROUTEIDS,(c.getString(c.getColumnIndex(KEY_ROUTEIDS))));
-                    userData.put(KEY_DEVICE_UDID,(c.getString(c.getColumnIndex(KEY_DEVICE_UDID))));
-                    userData.put(KEY_TRANSPORTER_NAME,(c.getString(c.getColumnIndex(KEY_TRANSPORTER_NAME))));
-                    userData.put(KEY_VEHICLE_NUMBER,(c.getString(c.getColumnIndex(KEY_VEHICLE_NUMBER))));
-                    userData.put(KEY_LATITUDE,(c.getString(c.getColumnIndex(KEY_LATITUDE))));
-                    userData.put(KEY_LONGITUDE,(c.getString(c.getColumnIndex(KEY_LONGITUDE))));
-                    userData.put(KEY_PASSWORD,(c.getString(c.getColumnIndex(KEY_PASSWORD))));
+                    userData.put(KEY_USER_ID, (c.getString(c.getColumnIndex(KEY_USER_ID))));
+                    userData.put(KEY_COMPANYNAME, (c.getString(c.getColumnIndex(KEY_COMPANYNAME))));
+                    userData.put(KEY_NAME, (c.getString(c.getColumnIndex(KEY_NAME))));
+                    userData.put(KEY_EMAIL, (c.getString(c.getColumnIndex(KEY_EMAIL))));
+                    userData.put(KEY_PHONE_NUMBER, (c.getString(c.getColumnIndex(KEY_PHONE_NUMBER))));
+                    userData.put(KEY_AVATAR, (c.getString(c.getColumnIndex(KEY_AVATAR))));
+                    userData.put(KEY_ADRESS, (c.getString(c.getColumnIndex(KEY_ADRESS))));
+                    userData.put(KEY_ACCESS_DEVICE, (c.getString(c.getColumnIndex(KEY_ACCESS_DEVICE))));
+                    userData.put(KEY_DEVICE_SYNC, (c.getString(c.getColumnIndex(KEY_DEVICE_SYNC))));
+                    userData.put(KEY_BACKUP, (c.getString(c.getColumnIndex(KEY_BACKUP))));
+                    userData.put(KEY_ROUTEIDS, (c.getString(c.getColumnIndex(KEY_ROUTEIDS))));
+                    userData.put(KEY_DEVICE_UDID, (c.getString(c.getColumnIndex(KEY_DEVICE_UDID))));
+                    userData.put(KEY_TRANSPORTER_NAME, (c.getString(c.getColumnIndex(KEY_TRANSPORTER_NAME))));
+                    userData.put(KEY_VEHICLE_NUMBER, (c.getString(c.getColumnIndex(KEY_VEHICLE_NUMBER))));
+                    userData.put(KEY_LATITUDE, (c.getString(c.getColumnIndex(KEY_LATITUDE))));
+                    userData.put(KEY_LONGITUDE, (c.getString(c.getColumnIndex(KEY_LONGITUDE))));
+                    userData.put(KEY_PASSWORD, (c.getString(c.getColumnIndex(KEY_PASSWORD))));
 
                 } while (c.moveToNext());
             }
 
             c.close();
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -536,10 +537,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to get the users route ids data
+     *
      * @return user data in list form.
      */
-    public HashMap<String,String> getUserRouteIds(){
-        HashMap<String,String> userData = new HashMap<String,String>();
+    public HashMap<String, String> getUserRouteIds() {
+        HashMap<String, String> userData = new HashMap<String, String>();
         try {
             String selectQuery = "SELECT  * FROM " + TABLE_USERDETAILS;
 
@@ -549,15 +551,15 @@ public class DBHelper extends SQLiteOpenHelper {
             // looping through all rows and adding to list
             if (c.moveToFirst()) {
                 do {
-                    userData.put(KEY_USER_ID,(c.getString(c.getColumnIndex(KEY_USER_ID))));
-                    userData.put(KEY_ROUTEIDS,(c.getString(c.getColumnIndex(KEY_ROUTEIDS))));
+                    userData.put(KEY_USER_ID, (c.getString(c.getColumnIndex(KEY_USER_ID))));
+                    userData.put(KEY_ROUTEIDS, (c.getString(c.getColumnIndex(KEY_ROUTEIDS))));
 
                 } while (c.moveToNext());
             }
 
             c.close();
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -578,7 +580,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 noOfEvents = cursor.getCount();
                 cursor.close();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return noOfEvents;
@@ -586,13 +588,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to get the user id
+     *
      * @return route id
      */
-    public String getUserId(String emailId,String password){
+    public String getUserId(String emailId, String password) {
         int routeId = 0;
-        String s="";
+        String s = "";
         try {
-            String query = "SELECT  * FROM " + TABLE_USERDETAILS+ " WHERE "+ KEY_EMAIL +" = " + "'"+emailId+"'" + " AND "+ KEY_PASSWORD +" = " + "'"+password+"'";
+            String query = "SELECT  * FROM " + TABLE_USERDETAILS + " WHERE " + KEY_EMAIL + " = " + "'" + emailId + "'" + " AND " + KEY_PASSWORD + " = " + "'" + password + "'";
 
             SQLiteDatabase db = this.getWritableDatabase();
             Cursor cursor = db.rawQuery(query, null);
@@ -602,21 +605,22 @@ public class DBHelper extends SQLiteOpenHelper {
                     s = cursor.getString(0);
                 } while (cursor.moveToNext());
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("F:::" +s);
+        System.out.println("F:::" + s);
         return s;
     }
 
     /**
      * Method to get the user device id
+     *
      * @return route id
      */
-    public String getUserDeviceId(String emailId){
+    public String getUserDeviceId(String emailId) {
         String deviceId = "";
         try {
-            String query = "SELECT  * FROM " + TABLE_USERDETAILS+ " WHERE "+ KEY_EMAIL +" = " + "'"+emailId+"'";
+            String query = "SELECT  * FROM " + TABLE_USERDETAILS + " WHERE " + KEY_EMAIL + " = " + "'" + emailId + "'";
 
             SQLiteDatabase db = this.getWritableDatabase();
             Cursor cursor = db.rawQuery(query, null);
@@ -626,7 +630,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     deviceId = cursor.getString(cursor.getColumnIndex(KEY_DEVICE_UDID));
                 } while (cursor.moveToNext());
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -642,7 +646,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.delete(TABLE_USERDETAILS, null, null);
             // db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE name='" + TABLE_USERDETAILS + "'");
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -653,7 +657,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param routeId
      * @param routeName
      */
-    public void insertRoutesDetails(String routeId, String routeName,String regionName,String officeName) {
+    public void insertRoutesDetails(String routeId, String routeName, String regionName, String officeName) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
@@ -666,7 +670,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.insert(TABLE_ROUTESDETAILS, null, values);
             System.out.println("F*********** INSERTED***************88");
             values.clear();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -675,12 +679,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to get the routes data
+     *
      * @return list of routes data
      */
-    public List<String> getRoutesMasterData(){
+    public List<String> getRoutesMasterData() {
         List<String> routesMasterData = new ArrayList<String>();
         String dbValue = "";
-        System.out.println("Routes Data Size::: "+routesMasterData.size());
+        System.out.println("Routes Data Size::: " + routesMasterData.size());
         try {
             String selectQuery = "SELECT  * FROM " + TABLE_ROUTESDETAILS;
 
@@ -691,10 +696,10 @@ public class DBHelper extends SQLiteOpenHelper {
             if (c.moveToFirst()) {
                 do {
                     System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ====");
-                    System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ===="+c.getString(0));
-                    System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ===="+c.getString(1));
-                    System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ===="+c.getString(2));
-                    System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ===="+c.getString(3));
+                    System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ====" + c.getString(0));
+                    System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ====" + c.getString(1));
+                    System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ====" + c.getString(2));
+                    System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ====" + c.getString(3));
                     routesMasterData.add((c.getString(c.getColumnIndex(KEY_ROUTE_ID))));
                     routesMasterData.add((c.getString(c.getColumnIndex(KEY_ROUTE_NAME))));
                     routesMasterData.add((c.getString(c.getColumnIndex(KEY_REGION_NAME))));
@@ -704,18 +709,19 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             c.close();
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Routes Data Final Size::: "+routesMasterData.size());
+        System.out.println("Routes Data Final Size::: " + routesMasterData.size());
         return routesMasterData;
     }
 
     /**
      * Method to get the route id
+     *
      * @return route id
      */
-    public String getRouteId(){
+    public String getRouteId() {
         String routeId = "";
         try {
             String query = "SELECT  * FROM " + TABLE_ROUTESDETAILS;
@@ -728,7 +734,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     routeId = cursor.getString(0);
                 } while (cursor.moveToNext());
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -744,7 +750,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.delete(TABLE_ROUTESDETAILS, null, null);
             // db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE name='" + TABLE_ROUTESDETAILS + "'");
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -752,10 +758,10 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch trip by id
      */
-    public List<String> getRouteDataByRouteId(String routeId){
+    public List<String> getRouteDataByRouteId(String routeId) {
         List<String> routeDetailsById = new ArrayList<String>();
         try {
-            String selectQuery = "SELECT  * FROM " + TABLE_ROUTESDETAILS + " WHERE "+ KEY_ROUTE_ID +" = " + "'"+routeId+"'";
+            String selectQuery = "SELECT  * FROM " + TABLE_ROUTESDETAILS + " WHERE " + KEY_ROUTE_ID + " = " + "'" + routeId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -772,24 +778,25 @@ public class DBHelper extends SQLiteOpenHelper {
 
             c.close();
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("ASDDDDDDDDAD"+routeDetailsById.size());
+        System.out.println("ASDDDDDDDDAD" + routeDetailsById.size());
         return routeDetailsById;
     }
 
     /**
      * Method to insert the user activity data.
+     *
      * @param userId
      * @param status
      * @param idsList
      * @param nameslist
      */
-    public void insertUserActivityDetails(String userId, String status,ArrayList<String> idsList,ArrayList<String> nameslist) {
+    public void insertUserActivityDetails(String userId, String status, ArrayList<String> idsList, ArrayList<String> nameslist) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            for (int i = 0;i<idsList.size();i++){
+            for (int i = 0; i < idsList.size(); i++) {
                 ContentValues values = new ContentValues();
                 values.put(KEY_USER_ACTIVITY_ID, idsList.get(i).toString());
                 values.put(KEY_USER_ACTIVITY_USER_ID, userId);
@@ -801,7 +808,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 System.out.println("F*********** INSERTED***************88");
                 values.clear();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -811,11 +818,11 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch user activity by user id
      */
-    public ArrayList<String> getUserActivityDetailsByUserId(String userId){
-        String userActivitySetupStatus="";
+    public ArrayList<String> getUserActivityDetailsByUserId(String userId) {
+        String userActivitySetupStatus = "";
         ArrayList<String> userPrivileges = new ArrayList<String>();
         try {
-            String selectQuery = "SELECT  * FROM " + TABLE_PREVILEGES_USER_ACTIVITY + " WHERE "+ KEY_USER_ACTIVITY_USER_ID +" = " + "'"+userId+"'";
+            String selectQuery = "SELECT  * FROM " + TABLE_PREVILEGES_USER_ACTIVITY + " WHERE " + KEY_USER_ACTIVITY_USER_ID + " = " + "'" + userId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -827,10 +834,10 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             c.close();
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("***COUNT === "+ userPrivileges.size());
+        System.out.println("***COUNT === " + userPrivileges.size());
         return userPrivileges;
     }
 
@@ -849,11 +856,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 noOfEvents = cursor.getCount();
                 cursor.close();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return noOfEvents;
     }
+
     /**
      * Method to clear values in user activity table
      */
@@ -862,7 +870,7 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             db.delete(TABLE_PREVILEGES_USER_ACTIVITY, null, null);
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -870,39 +878,38 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to insert the user activity actions data.
+     *
      * @param idsList
      * @param actionslist
      */
-    public void insertUserActivityActionsDetails(ArrayList<String> idsList,HashMap<String,Object> actionslist) {
+    public void insertUserActivityActionsDetails(ArrayList<String> idsList, HashMap<String, Object> actionslist) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            for (int i = 0;i<idsList.size();i++){
-                if(idsList.get(0).toString()!=null) {
-                    JSONArray ja = (JSONArray) actionslist.get(idsList.get(0).toString());
-                    for (int g = 0; g<ja.length();g++){
-                        JSONObject j = ja.getJSONObject(g);
-                        ContentValues values = new ContentValues();
-                        values.put(KEY_USER_PRIVILEGE_ID, idsList.get(i).toString());
-                        if(j.has("_id")){
-                            values.put(KEY_USER_PRIVILEGE_ACTION_ID, j.getString("_id"));
-                        }else {
-                            values.put(KEY_USER_PRIVILEGE_ACTION_ID, "");
-                        }
-                        if(j.has("tag")){
-                            values.put(KEY_USER_PRIVILEGE_ACTION_NAME, j.getString("tag"));
-                        }else {
-                            values.put(KEY_USER_PRIVILEGE_ACTION_NAME, "");
-                        }
-                        values.put(KEY_USER_PRIVILEGE_ACTION_STATUS, "A");
-
-                        // insert row
-                        db.insert(TABLE_PREVILEGE_ACTIONS, null, values);
-                        System.out.println("F*********** ACTIONS INSERTED***************88");
-                        values.clear();
+            for (String actionId : idsList) {
+                JSONArray ja = (JSONArray) actionslist.get(actionId);
+                for (int g = 0; g < ja.length(); g++) {
+                    JSONObject j = ja.getJSONObject(g);
+                    ContentValues values = new ContentValues();
+                    values.put(KEY_USER_PRIVILEGE_ID, actionId);
+                    if (j.has("_id")) {
+                        values.put(KEY_USER_PRIVILEGE_ACTION_ID, j.getString("_id"));
+                    } else {
+                        values.put(KEY_USER_PRIVILEGE_ACTION_ID, "");
                     }
+                    if (j.has("tag")) {
+                        values.put(KEY_USER_PRIVILEGE_ACTION_NAME, j.getString("tag"));
+                    } else {
+                        values.put(KEY_USER_PRIVILEGE_ACTION_NAME, "");
+                    }
+                    values.put(KEY_USER_PRIVILEGE_ACTION_STATUS, "A");
+
+                    // insert row
+                    db.insert(TABLE_PREVILEGE_ACTIONS, null, values);
+                    System.out.println("F*********** ACTIONS INSERTED***************88");
+                    values.clear();
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -912,11 +919,11 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch user activity by user id
      */
-    public ArrayList<String> getUserActivityActionsDetailsByPrivilegeId(String privilegeId){
-        String userActivitySetupStatus="";
+    public ArrayList<String> getUserActivityActionsDetailsByPrivilegeId(String privilegeId) {
+        String userActivitySetupStatus = "";
         ArrayList<String> userPrivileges = new ArrayList<String>();
         try {
-            String selectQuery = "SELECT  * FROM " + TABLE_PREVILEGE_ACTIONS + " WHERE "+ KEY_USER_PRIVILEGE_ID +" = " + "'"+privilegeId+"'";
+            String selectQuery = "SELECT  * FROM " + TABLE_PREVILEGE_ACTIONS + " WHERE " + KEY_USER_PRIVILEGE_ID + " = '" + privilegeId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -928,10 +935,10 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             c.close();
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("***COUNT === "+ userPrivileges.size());
+        System.out.println("======== User Privileges === " + userPrivileges);
         return userPrivileges;
     }
 
@@ -950,11 +957,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 noOfEvents = cursor.getCount();
                 cursor.close();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return noOfEvents;
     }
+
     /**
      * Method to clear values in user activity table
      */
@@ -963,7 +971,7 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             db.delete(TABLE_PREVILEGE_ACTIONS, null, null);
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -982,7 +990,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 noOfEvents = cursor.getCount();
                 cursor.close();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return noOfEvents;
@@ -995,7 +1003,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void insertProductDetails(ArrayList<ProductsBean> mProductsBeansList) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            for (int i = 0;i<mProductsBeansList.size();i++){
+            for (int i = 0; i < mProductsBeansList.size(); i++) {
                 ContentValues values = new ContentValues();
                 values.put(KEY_PRODUCT_ID, mProductsBeansList.get(i).getProductId());
                 values.put(KEY_PRODUCT_CODE, mProductsBeansList.get(i).getProductCode());
@@ -1015,7 +1023,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 System.out.println("F*********** INSERTED***************88");
                 values.clear();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1025,7 +1033,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch all records from products table
      */
-    public ArrayList<ProductsBean> fetchAllRecordsFromProductsTable(){
+    public ArrayList<ProductsBean> fetchAllRecordsFromProductsTable() {
         ArrayList<ProductsBean> allProductTrackRecords = new ArrayList<ProductsBean>();
         try {
             String selectQuery = "SELECT  * FROM " + TABLE_PRODUCTS;
@@ -1057,7 +1065,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             c.close();
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1071,7 +1079,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void insertTakeOrderProductDetails(ArrayList<TakeOrderBean> mProductsBeansList) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            for (int i = 0;i<mProductsBeansList.size();i++){
+            for (int i = 0; i < mProductsBeansList.size(); i++) {
                 ContentValues values = new ContentValues();
                 values.put(KEY_TO_PRODUCT_ID, mProductsBeansList.get(i).getmProductId());
                 values.put(KEY_TO_PRODUCT_NAME, mProductsBeansList.get(i).getmProductTitle());
@@ -1087,7 +1095,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 System.out.println("*********** INSERTED***************9999");
                 values.clear();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1096,18 +1104,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to fetch all records from take products table
+     *
      * @param isSync
      */
-    public ArrayList<TakeOrderBean> fetchAllRecordsFromTakeOrderProductsTable(String isSync){
+    public ArrayList<TakeOrderBean> fetchAllRecordsFromTakeOrderProductsTable(String isSync) {
         ArrayList<TakeOrderBean> allProductTrackRecords = new ArrayList<TakeOrderBean>();
         try {
-            if(allProductTrackRecords.size()>0){
+            if (allProductTrackRecords.size() > 0) {
                 allProductTrackRecords.clear();
             }
-            String selectQuery="";
-            if(isSync.equals("yes")){
-                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS +" WHERE "+ KEY_TO_STATUS +" = " + "1";
-            }else {
+            String selectQuery = "";
+            if (isSync.equals("yes")) {
+                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS + " WHERE " + KEY_TO_STATUS + " = " + "1";
+            } else {
                 selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS;
             }
 
@@ -1135,7 +1144,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             c.close();
             db.close();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1144,6 +1153,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to update take order details...
+     *
      * @param takeOrderBeanArrayList
      * @return
      */
@@ -1151,7 +1161,7 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         long effectedRows = 0;
         try {
-            for (int b = 0;b<takeOrderBeanArrayList.size();b++){
+            for (int b = 0; b < takeOrderBeanArrayList.size(); b++) {
                 ContentValues values = new ContentValues();
                 // values.put(KEY_TO_PRODUCT_ID, mProductsBeansList.get(i).getmProductId());
                 values.put(KEY_TO_PRODUCT_NAME, takeOrderBeanArrayList.get(b).getmProductTitle());
@@ -1166,7 +1176,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 effectedRows = db.update(TABLE_TO_PRODUCTS, values, KEY_TO_PRODUCT_ID + " = ?", new String[]{String.valueOf(takeOrderBeanArrayList.get(b).getmProductId())});
                 values.clear();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -1176,15 +1186,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to insert the user activity privileges data.
+     *
      * @param userId
      * @param status
      * @param idsList
      * @param nameslist
      */
-    public void insertUserActivityPrivileges(String userId, String status,ArrayList<String> idsList,ArrayList<String> nameslist) {
+    public void insertUserActivityPrivileges(String userId, String status, ArrayList<String> idsList, ArrayList<String> nameslist) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            for (int i = 0;i<idsList.size();i++){
+            for (int i = 0; i < idsList.size(); i++) {
                 ContentValues values = new ContentValues();
                 values.put(KEY_USER_ACTIVITY_ID, idsList.get(i).toString());
                 values.put(KEY_USER_ACTIVITY_USER_ID, userId);
@@ -1196,7 +1207,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 System.out.println("F*********** INSERTED***************88");
                 values.clear();
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

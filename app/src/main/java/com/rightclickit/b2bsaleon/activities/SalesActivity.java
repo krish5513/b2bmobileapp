@@ -31,20 +31,19 @@ public class SalesActivity extends AppCompatActivity {
     private MMSharedPreferences mmSharedPreferences;
 
     private SearchView search;
-    private ListView tdc_sales_list_view;
+    private ListView tdc_products_list_view;
+    private TextView tdc_sales_list, tdc_sales_preview;
 
     private DBHelper mDBHelper;
     private ArrayList<ProductsBean> productsList;
     private TDCSalesAdapter tdcSalesAdapter;
-    TextView tdc_sales_list;
+    private boolean showProductsListView = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales);
 
-        tdc_sales_list=(TextView)findViewById(R.id.tdc_sales_list);
-        tdc_sales_list.setVisibility(View.GONE);
 
         try {
             applicationContext = getApplicationContext();
@@ -67,35 +66,35 @@ public class SalesActivity extends AppCompatActivity {
             mmSharedPreferences = new MMSharedPreferences(activityContext);
             productsList = new ArrayList<>();
 
-            tdc_sales_list_view = (ListView) findViewById(R.id.tdc_sales_list_view);
-            tdc_sales_list_view.setVisibility(View.GONE);
+            ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("TDC"));
 
+            tdc_products_list_view = (ListView) findViewById(R.id.tdc_products_list_view);
+            tdc_sales_list = (TextView) findViewById(R.id.tdc_sales_list);
+            tdc_sales_preview = (TextView) findViewById(R.id.tdc_sales_preview);
 
+            if (privilegeActionsData.contains("List_View")) {
+                tdc_products_list_view.setVisibility(View.VISIBLE);
+                showProductsListView = true;
+            } else {
+                tdc_products_list_view.setVisibility(View.GONE);
+                showProductsListView = false;
+            }
 
-            productsList = mDBHelper.fetchAllRecordsFromProductsTable();
-            //System.out.println("========= productsList = " + productsList);
-            tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, productsList);
-            tdc_sales_list_view.setAdapter(tdcSalesAdapter);
+            if (privilegeActionsData.contains("Sales_List")) {
+                tdc_sales_list.setVisibility(View.VISIBLE);
+            } else {
+                tdc_sales_list.setVisibility(View.GONE);
+            }
+
+            if (showProductsListView) {
+                productsList = mDBHelper.fetchAllRecordsFromProductsTable();
+                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, productsList);
+                tdc_products_list_view.setAdapter(tdcSalesAdapter);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("TDC"));
-        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
-        for (int z = 0; z < privilegeActionsData.size(); z++) {
-            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
-
-            if (privilegeActionsData.get(z).toString().equals("List_view")) {
-                tdc_sales_list_view.setVisibility(View.VISIBLE);
-            }else
-            if (privilegeActionsData.get(z).toString().equals("Sales_List")) {
-                tdc_sales_list.setVisibility(View.VISIBLE);
-            }
-
-        }
-
-
     }
 
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {

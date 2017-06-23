@@ -57,21 +57,22 @@ public class SyncUserPrivilegesService extends Service {
         return null;
     }
 
-    private void fetchAndSyncUserPrivilegesData(){
+    private void fetchAndSyncUserPrivilegesData() {
         try {
             new FetchAndSyncUserPrivilegesDataAsyncTask().execute();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     /**
      * Class to perform background operations.
      */
     private class FetchAndSyncUserPrivilegesDataAsyncTask extends AsyncTask<Void, Void, Void> {
-        private String userId="",userPrivilegeName = "",userPrivilegeId = "",userPrivilegeStatus="";
+        private String userId = "", userPrivilegeName = "", userPrivilegeId = "", userPrivilegeStatus = "";
         private ArrayList<String> IDSLIST = new ArrayList<String>();
         private ArrayList<String> NAMESLIST = new ArrayList<String>();
-        private HashMap<String,Object> ACTIONSLIST = new HashMap<String,Object>();
+        private HashMap<String, Object> ACTIONSLIST = new HashMap<String, Object>();
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -81,32 +82,32 @@ public class SyncUserPrivilegesService extends Service {
 //                    mDBHelper.deleteValuesFromRoutesTable();
 //                }
                 userId = mSessionManagement.getString("userId");
-                String URL = String.format("%s%s%s%s", Constants.MAIN_URL,Constants.GET_USER_PREVILEGES_SERVICE,mSessionManagement.getString("stakeId"), Constants.PRIVILEGE_CODE);
+                String URL = String.format("%s%s%s%s", Constants.MAIN_URL, Constants.GET_USER_PREVILEGES_SERVICE, mSessionManagement.getString("stakeId"), Constants.PRIVILEGE_CODE);
 
                 mJsonObj = new NetworkManager().makeHttpGetConnection(URL);
 
                 JSONArray resultArray = new JSONArray(mJsonObj);
-                System.out.println("The LENGTH IS:: "+ resultArray.length());
-                if (resultArray!=null) {
-                    if(resultArray.length()>0){
-                        for (int i = 0; i<resultArray.length();i++){
+                System.out.println("The LENGTH IS:: " + resultArray.length());
+                if (resultArray != null) {
+                    if (resultArray.length() > 0) {
+                        for (int i = 0; i < resultArray.length(); i++) {
                             JSONObject obj = resultArray.getJSONObject(i);
-                            if(obj.has("id")){
-                                if(obj.has("name") && !obj.getString("name").equals("")){
+                            if (obj.has("id")) {
+                                if (obj.has("name") && !obj.getString("name").equals("")) {
                                     // Start Of User Activity
-                                    if(obj.getString("name").equals("UserActivity")){
-                                        mSessionManagement.putString("UserActivity",obj.getString("id"));
+                                    if (obj.getString("name").equals("UserActivity")) {
+                                        mSessionManagement.putString("UserActivity", obj.getString("id"));
                                         IDSLIST.add(obj.getString("id"));
                                         NAMESLIST.add(obj.getString("name"));
                                         if (obj.has("actions")) {
                                             JSONArray userActionsArray = obj.getJSONArray("actions");
-                                            ACTIONSLIST.put(obj.getString("id"),userActionsArray);
-                                            if (userActionsArray.length()>0){
-                                                for (int j = 0; j<userActionsArray.length();j++){
+                                            ACTIONSLIST.put(obj.getString("id"), userActionsArray);
+                                            if (userActionsArray.length() > 0) {
+                                                for (int j = 0; j < userActionsArray.length(); j++) {
                                                     JSONObject actObj = userActionsArray.getJSONObject(j);
-                                                    if (actObj.has("tag")){
-                                                        if (actObj.getString("tag").equals("setup")){
-                                                            mSessionManagement.putString("isSetup","visible");
+                                                    if (actObj.has("tag")) {
+                                                        if (actObj.getString("tag").equals("setup")) {
+                                                            mSessionManagement.putString("isSetup", "visible");
                                                         }
                                                     }
                                                 }
@@ -115,74 +116,74 @@ public class SyncUserPrivilegesService extends Service {
                                     } // End of User Activity
 
                                     // Start Of User Dashboard
-                                    if(obj.getString("name").equals("Dashboard")){
-                                        mSessionManagement.putString("isDashboard","visible");
-                                        mSessionManagement.putString("Dashboard",obj.getString("id"));
+                                    if (obj.getString("name").equals("Dashboard")) {
+                                        mSessionManagement.putString("isDashboard", "visible");
+                                        mSessionManagement.putString("Dashboard", obj.getString("id"));
                                         IDSLIST.add(obj.getString("id"));
                                         NAMESLIST.add(obj.getString("name"));
                                         if (obj.has("actions")) {
                                             JSONArray userActionsArray = obj.getJSONArray("actions");
-                                            ACTIONSLIST.put(obj.getString("id"),userActionsArray);
+                                            ACTIONSLIST.put(obj.getString("id"), userActionsArray);
                                         }
                                     } // End of User Dashboard
 
                                     // Start Of User Tripsheets
-                                    if(obj.getString("name").equals("TripSheets")){
-                                        mSessionManagement.putString("isTripsheets","visible");
-                                        mSessionManagement.putString("TripSheets",obj.getString("id"));
+                                    if (obj.getString("name").equals("TripSheets")) {
+                                        mSessionManagement.putString("isTripsheets", "visible");
+                                        mSessionManagement.putString("TripSheets", obj.getString("id"));
                                         IDSLIST.add(obj.getString("id"));
                                         NAMESLIST.add(obj.getString("name"));
                                         if (obj.has("actions")) {
                                             JSONArray userActionsArray = obj.getJSONArray("actions");
-                                            ACTIONSLIST.put(obj.getString("id"),userActionsArray);
+                                            ACTIONSLIST.put(obj.getString("id"), userActionsArray);
                                         }
                                     } // End of User Tripsheets
 
                                     // Start Of User Customers
-                                    if(obj.getString("name").equals("Customers")){
-                                        mSessionManagement.putString("isCustomers","visible");
-                                        mSessionManagement.putString("Customers",obj.getString("id"));
+                                    if (obj.getString("name").equals("Customers")) {
+                                        mSessionManagement.putString("isCustomers", "visible");
+                                        mSessionManagement.putString("Customers", obj.getString("id"));
                                         IDSLIST.add(obj.getString("id"));
                                         NAMESLIST.add(obj.getString("name"));
                                         if (obj.has("actions")) {
                                             JSONArray userActionsArray = obj.getJSONArray("actions");
-                                            ACTIONSLIST.put(obj.getString("id"),userActionsArray);
+                                            ACTIONSLIST.put(obj.getString("id"), userActionsArray);
                                         }
                                     } // End of User Customers
 
                                     // Start Of User Products
-                                    if(obj.getString("name").equals("Products")){
-                                        mSessionManagement.putString("isProducts","visible");
-                                        mSessionManagement.putString("Products",obj.getString("id"));
+                                    if (obj.getString("name").equals("Products")) {
+                                        mSessionManagement.putString("isProducts", "visible");
+                                        mSessionManagement.putString("Products", obj.getString("id"));
                                         IDSLIST.add(obj.getString("id"));
                                         NAMESLIST.add(obj.getString("name"));
                                         if (obj.has("actions")) {
                                             JSONArray userActionsArray = obj.getJSONArray("actions");
-                                            ACTIONSLIST.put(obj.getString("id"),userActionsArray);
+                                            ACTIONSLIST.put(obj.getString("id"), userActionsArray);
                                         }
                                     } // End of User Products
 
                                     // Start Of User TDC
-                                    if(obj.getString("name").equals("TDC")){
-                                        mSessionManagement.putString("isTdc","visible");
-                                        mSessionManagement.putString("Tdc",obj.getString("id"));
+                                    if (obj.getString("name").equals("TDC")) {
+                                        mSessionManagement.putString("isTdc", "visible");
+                                        mSessionManagement.putString("TDC", obj.getString("id"));
                                         IDSLIST.add(obj.getString("id"));
                                         NAMESLIST.add(obj.getString("name"));
                                         if (obj.has("actions")) {
                                             JSONArray userActionsArray = obj.getJSONArray("actions");
-                                            ACTIONSLIST.put(obj.getString("id"),userActionsArray);
+                                            ACTIONSLIST.put(obj.getString("id"), userActionsArray);
                                         }
                                     } // End of User TDC
 
                                     // Start Of User Retailers
-                                    if(obj.getString("name").equals("Retailers")){
-                                        mSessionManagement.putString("isRetailers","visible");
-                                        mSessionManagement.putString("Retailers",obj.getString("id"));
+                                    if (obj.getString("name").equals("Retailers")) {
+                                        mSessionManagement.putString("isRetailers", "visible");
+                                        mSessionManagement.putString("Retailers", obj.getString("id"));
                                         IDSLIST.add(obj.getString("id"));
                                         NAMESLIST.add(obj.getString("name"));
                                         if (obj.has("actions")) {
                                             JSONArray userActionsArray = obj.getJSONArray("actions");
-                                            ACTIONSLIST.put(obj.getString("id"),userActionsArray);
+                                            ACTIONSLIST.put(obj.getString("id"), userActionsArray);
                                         }
                                     } // End of User Retailers
 
@@ -191,20 +192,20 @@ public class SyncUserPrivilegesService extends Service {
                             }
                         }
                         synchronized (this) {
-                            if(mDBHelper.getUserPrivilegesTableCount()>0){
+                            if (mDBHelper.getUserPrivilegesTableCount() > 0) {
                                 mDBHelper.deleteValuesFromUserActivityTable();
                             }
                             mDBHelper.insertUserActivityDetails(userId, "A", IDSLIST, NAMESLIST);
                         }
-                        synchronized (this){
-                            if(mDBHelper.getUserPrivilegesActionsTableCount()>0){
+                        synchronized (this) {
+                            if (mDBHelper.getUserPrivilegesActionsTableCount() > 0) {
                                 mDBHelper.deleteValuesFromUserActivityActionsTable();
                             }
                             mDBHelper.insertUserActivityActionsDetails(IDSLIST, ACTIONSLIST);
                         }
                     }
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
