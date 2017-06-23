@@ -152,7 +152,9 @@ public class RetailersActivity extends AppCompatActivity {
             }
         });
         info = (Button) findViewById( R.id.btn_info );
+        info.setVisibility(View.GONE);
         payments = (Button) findViewById( R.id.btn_payments );
+        payments.setVisibility(View.GONE);
 
 
         info.setOnClickListener( new View.OnClickListener() {
@@ -172,6 +174,9 @@ public class RetailersActivity extends AppCompatActivity {
                 finish();
             }
         } );
+
+
+
        HashMap<String, String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
         System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
