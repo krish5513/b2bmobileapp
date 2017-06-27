@@ -1,10 +1,12 @@
 package com.rightclickit.b2bsaleon.beanclass;
 
+import java.io.Serializable;
+
 /**
  * Created by Sekhar Kuppa
  */
 
-public class TakeOrderBean {
+public class TakeOrderBean implements Serializable {
 
     private String mProductId;
     private String mRouteId;

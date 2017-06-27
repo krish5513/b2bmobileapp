@@ -19,16 +19,12 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentTakeOrderPreview;
-import com.rightclickit.b2bsaleon.activities.DashboardTakeorderPreview;
-import com.rightclickit.b2bsaleon.activities.ProductInfoActivity;
-import com.rightclickit.b2bsaleon.activities.ProductStock;
-import com.rightclickit.b2bsaleon.activities.Products_Activity;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -43,21 +39,18 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
     LayoutInflater mInflater;
     private Activity activity;
     Context ctxt;
-    ArrayList<ProductsBean> mProductsBeansList1;
     ArrayList<TakeOrderPreviewBean> mpreviewBeansList1;
     private ImageLoader mImageLoader;
     private ArrayList<TakeOrderPreviewBean> arraylist;
     private MMSharedPreferences mPreferences;
 
 
-    public TakeOrderPreviewAdapter(Context ctxt, AgentTakeOrderPreview previewActivity) {
+    public TakeOrderPreviewAdapter(Context ctxt, AgentTakeOrderPreview previewActivity, ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList) {
         this.ctxt = ctxt;
         this.activity = previewActivity;
-        this.mpreviewBeansList1 = mpreviewBeansList1;
-         this.mProductsBeansList1=mProductsBeansList1;
+        this.mpreviewBeansList1 = takeOrderPreviewBeanArrayList;
         this.mInflater = LayoutInflater.from(activity);
         this.arraylist = new ArrayList<TakeOrderPreviewBean>();
-        //this.arraylist.addAll(mpreviewBeansList1);
         this.mPreferences = new MMSharedPreferences(activity);
     }
 
@@ -100,7 +93,26 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
         } else {
             holder = (TakeOrderPreviewAdapter.MyViewHolder) convertView.getTag();
         }
-        holder.pName.setText(mProductsBeansList1.get(position).getProductTitle());
+
+
+        double price = Double.parseDouble(mpreviewBeansList1.get(position).getpPrice().replace(",", ""));
+
+        float tax = 0.0f;
+        if (mpreviewBeansList1.get(position).getmProductTaxVAT() != null)
+            tax = Float.parseFloat(mpreviewBeansList1.get(position).getmProductTaxVAT());
+        else if (mpreviewBeansList1.get(position).getmProductTaxGST() != null)
+            tax = Float.parseFloat(mpreviewBeansList1.get(position).getmProductTaxGST());
+
+        double taxAmount = (price * tax) / 100;
+        double amount = price + taxAmount;
+
+        holder.pName.setText(mpreviewBeansList1.get(position).getpName());
+        holder.pQuantity.setText(mpreviewBeansList1.get(position).getpQuantity());
+        holder.pPrice.setText(Utility.getFormattedCurrency(price));
+        holder.pTax.setText(Utility.getFormattedCurrency(taxAmount));
+        holder.pAmount.setText(Utility.getFormattedCurrency(amount*Double.parseDouble(mpreviewBeansList1.get(position).getpQuantity())));
+        holder.fromPreview.setText(mpreviewBeansList1.get(position).getmProductFromDate());
+        holder.toPreview.setText(mpreviewBeansList1.get(position).getmProductToDate());
 
 
         return convertView;

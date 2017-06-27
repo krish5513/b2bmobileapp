@@ -8,6 +8,10 @@ public class TakeOrderPreviewBean {
     private String pName;
     private String pQuantity;
     private String pPrice;
+    private String mProductTaxGST;
+    private String mProductTaxVAT;
+    private String mProductFromDate;
+    private String mProductToDate;
 
     public String getpName() {
         return pName;
@@ -87,6 +91,38 @@ public class TakeOrderPreviewBean {
     private String taxPercentage;
     private String frompreview;
     private String topreview;
+
+    public String getmProductTaxGST() {
+        return mProductTaxGST;
+    }
+
+    public void setmProductTaxGST(String mProductTaxGST) {
+        this.mProductTaxGST = mProductTaxGST;
+    }
+
+    public String getmProductTaxVAT() {
+        return mProductTaxVAT;
+    }
+
+    public void setmProductTaxVAT(String mProductTaxVAT) {
+        this.mProductTaxVAT = mProductTaxVAT;
+    }
+
+    public String getmProductToDate() {
+        return mProductToDate;
+    }
+
+    public void setmProductToDate(String mProductToDate) {
+        this.mProductToDate = mProductToDate;
+    }
+
+    public String getmProductFromDate() {
+        return mProductFromDate;
+    }
+
+    public void setmProductFromDate(String mProductFromDate) {
+        this.mProductFromDate = mProductFromDate;
+    }
 
 }
 

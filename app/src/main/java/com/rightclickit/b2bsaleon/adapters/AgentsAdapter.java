@@ -135,6 +135,7 @@ public class AgentsAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 mPreferences.putString("agentName",mAgentsBeansList1.get(position).getmFirstname());
+                mPreferences.putString("agentId",mAgentsBeansList1.get(position).getmAgentId());
                 activity.startActivity(new Intent(activity,AgentViewActivity.class));
                 activity.finish();
             }

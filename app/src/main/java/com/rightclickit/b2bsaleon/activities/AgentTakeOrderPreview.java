@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TakeOrderPreviewAdapter;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 
@@ -32,6 +34,10 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 
     TextView print;
 
+    private ArrayList<TakeOrderBean> mProductIdsList;
+    private ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
+    private double mProductsPriceAmountSum = 0.0, mTotalProductsPriceAmountSum = 0.0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,20 +57,65 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        mDBHelper = new DBHelper(AgentTakeOrderPreview.this);
+
+        Intent intent = getIntent();
+        Bundle args = intent.getBundleExtra("BUNDLE");
+        mProductIdsList = (ArrayList<TakeOrderBean>) args.getSerializable("productIdsList");
+        System.out.println("SIZE::: "+ mProductIdsList.size());
+        ArrayList<ProductsBean> productsList = mDBHelper.fetchAllRecordsFromProductsTable();
+        System.out.println("SIZE111::: "+ productsList.size());
+        for (int k = 0; k < mProductIdsList.size(); k++) {
+            for (int i = 0; i < productsList.size(); i++) {
+                if (mProductIdsList.get(k).getmProductId().toString().equals(productsList.get(i).getProductId())) {
+                    System.out.println("P TITLE IS::: " + productsList.get(i).getProductTitle());
+
+                    mProductsPriceAmountSum = (mProductsPriceAmountSum + (Double.parseDouble(productsList.get(i).getProductAgentPrice())
+                            * Double.parseDouble(mProductIdsList.get(k).getmProductQuantity())));
+                    System.out.println("P PRICE IS::: " + mProductsPriceAmountSum);
+
+
+                    TakeOrderPreviewBean topBean = new TakeOrderPreviewBean();
+                    topBean.setpName(mProductIdsList.get(k).getmProductTitle());
+                    topBean.setpQuantity(mProductIdsList.get(k).getmProductQuantity());
+                    topBean.setpPrice(productsList.get(i).getProductAgentPrice());
+                    topBean.setmProductTaxGST(productsList.get(i).getProductgst());
+                    topBean.setmProductTaxVAT(productsList.get(i).getProductvat());
+                    topBean.setmProductFromDate(mProductIdsList.get(k).getmProductFromDate());
+                    topBean.setmProductToDate(mProductIdsList.get(k).getmProductToDate());
+
+                    double price = Double.parseDouble(productsList.get(i).getProductAgentPrice().replace(",", ""));
+
+                    float tax = 0.0f;
+                    if (productsList.get(i).getProductvat() != null)
+                        tax = Float.parseFloat(productsList.get(i).getProductvat());
+                    else if (productsList.get(i).getProductgst() != null)
+                        tax = Float.parseFloat(productsList.get(i).getProductgst());
+
+                    double taxAmount = (price * tax) / 100;
+                    double amount = price + taxAmount;
+                    mTotalProductsPriceAmountSum = (mTotalProductsPriceAmountSum + (amount
+                            *Double.parseDouble(mProductIdsList.get(k).getmProductQuantity())));
+                    System.out.println("FINAL AMOUNT PRICE IS::: " + mTotalProductsPriceAmountSum);
+
+                    takeOrderPreviewBeanArrayList.add(topBean);
+                }
+            }
+        }
 
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
-        user_Name=(TextView)findViewById(R.id.user_Name);
-        Route_Name=(TextView)findViewById(R.id.user_Name);
-        RouteCode=(TextView)findViewById(R.id.user_Name);
-        orderNo=(TextView)findViewById(R.id.user_Name);
-        orderDate=(TextView)findViewById(R.id.user_Name);
-        agentName=(TextView)findViewById(R.id.user_Name);
-        agentCode=(TextView)findViewById(R.id.user_Name);
+        user_Name = (TextView) findViewById(R.id.user_Name);
+        Route_Name = (TextView) findViewById(R.id.user_Name);
+        RouteCode = (TextView) findViewById(R.id.user_Name);
+        orderNo = (TextView) findViewById(R.id.user_Name);
+        orderDate = (TextView) findViewById(R.id.user_Name);
+        agentName = (TextView) findViewById(R.id.user_Name);
+        agentCode = (TextView) findViewById(R.id.user_Name);
 
 
-        print=(TextView)findViewById(R.id.tv_print) ;
+        print = (TextView) findViewById(R.id.tv_print);
 
-       // user_Name.setText(bundle.getString("USERNAME"));
+        // user_Name.setText(bundle.getString("USERNAME"));
 
 
         // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -73,37 +124,23 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         //   Log.i("kjhdfcioseahdf",ma);
         //  tv_companyName.setText(imgSett);
 
-        mDBHelper = new DBHelper(AgentTakeOrderPreview.this);
+
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
         // ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
         //System.out.println("ELSE::: "+a.size());
 
         //   ArrayList<TakeOrderPreviewBean> previewArrayList = new ArrayList<>();
-        //     loadAgentsList(previewArrayList);
-
-
-/*
-        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable();
-        System.out.println("The TO LIST IS::: "+ mTakeOrderBeansList.size());
-        for (int k = 0; k<mTakeOrderBeansList.size();k++){
-            System.out.println("AAAA:: "+mTakeOrderBeansList.get(k).getmProductFromDate());
-            System.out.println("BBBBB:: "+mTakeOrderBeansList.get(k).getmProductQuantity());
-            System.out.println("CCCC:: "+mTakeOrderBeansList.get(k).getmProductOrderType());
+        if (takeOrderPreviewBeanArrayList.size() > 0) {
+            loadAgentsList(takeOrderPreviewBeanArrayList);
         }
-
-        mTakeOrderListView = (ListView) findViewById(R.id.TakeOrdersList);
-        if(mTakeOrderBeansList.size()>0){
-            mTakeOrderAdapter = new TakeOrdersAdapter(DashboardTakeorder.this,mTakeOrderBeansList,mTakeOrderListView);
-            mTakeOrderListView.setAdapter(mTakeOrderAdapter);
-        }*/
 
     }
 
-    private void loadAgentsList(ArrayList<TakeOrderPreviewBean> previewArrayList) {
+    private void loadAgentsList(ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList) {
         if (mPreviewAdapter != null) {
             mPreviewAdapter = null;
         }
-        mPreviewAdapter = new TakeOrderPreviewAdapter(this, AgentTakeOrderPreview.this);
+        mPreviewAdapter = new TakeOrderPreviewAdapter(this, AgentTakeOrderPreview.this, takeOrderPreviewBeanArrayList);
         mAgentsList.setAdapter(mPreviewAdapter);
     }
 
@@ -141,7 +178,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.Add).setVisible(false);
-        menu.findItem( R.id.autorenew).setVisible(true);
+
 
         return super.onPrepareOptionsMenu(menu);
     }

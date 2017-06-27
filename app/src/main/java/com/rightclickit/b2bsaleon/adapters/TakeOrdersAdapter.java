@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -37,6 +38,7 @@ import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
+import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.services.SyncTakeOrdersService;
@@ -46,6 +48,7 @@ import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -75,12 +78,13 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     private MMSharedPreferences mPreferences;
     private ListView mList;
     private ArrayList<TakeOrderBean> arraylist;
-    private HashMap<String,String> producttitle = new HashMap<String, String>();
-    private HashMap<String,String> quantityList = new HashMap<String, String>();
-    private HashMap<String,String> fromDatesList = new HashMap<String, String>();
-    private HashMap<String,String> toDatesList = new HashMap<String, String>();
-    private HashMap<String,String> ordertypesList = new HashMap<String, String>();
+    private HashMap<String, String> producttitle = new HashMap<String, String>();
+    private HashMap<String, String> quantityList = new HashMap<String, String>();
+    private HashMap<String, String> fromDatesList = new HashMap<String, String>();
+    private HashMap<String, String> toDatesList = new HashMap<String, String>();
+    private HashMap<String, String> ordertypesList = new HashMap<String, String>();
     private int clickedPosition;
+    private HashMap<String, String> mProductIdsList = new HashMap<String, String>();
 
     public TakeOrdersAdapter(Activity productsActivity, ArrayList<TakeOrderBean> mTakeOrderBeansList, ListView mTakeOrderListView) {
         this.activity = productsActivity;
@@ -96,23 +100,23 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
             currentDate = df.format(cal.getTime());
             fromDStr = currentDate;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         list1.add("One Time");
         list1.add("Daily");
         list1.add("Weekly");
         list1.add("Monthly");
-        if(quantityList.size()>0){
+        if (quantityList.size() > 0) {
             quantityList.clear();
         }
-        if(fromDatesList.size()>0){
+        if (fromDatesList.size() > 0) {
             fromDatesList.clear();
         }
-        if(toDatesList.size()>0){
+        if (toDatesList.size() > 0) {
             toDatesList.clear();
         }
-        if(ordertypesList.size()>0){
+        if (ordertypesList.size() > 0) {
             ordertypesList.clear();
         }
     }
@@ -157,121 +161,82 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             holder = (MyViewHolder) convertView.getTag();
         }
 
-     //   holder.productName.setText(mTakeOrderBeansList1.get(position).getmProductTitle());
+        //   holder.productName.setText(mTakeOrderBeansList1.get(position).getmProductTitle());
 
-        if(producttitle.get(mTakeOrderBeansList1.get(position).getmProductTitle())!=null){
+        if (producttitle.get(mTakeOrderBeansList1.get(position).getmProductTitle()) != null) {
             // Assign changed from date value.
             String fromD = producttitle.get(mTakeOrderBeansList1.get(position).getmProductTitle());
             holder.productName.setText(fromD);
-        }else if(mTakeOrderBeansList1.get(position).getmProductTitle()!=null){
-            if(mTakeOrderBeansList1.get(position).getmProductTitle().length()>0){
+        } else if (mTakeOrderBeansList1.get(position).getmProductTitle() != null) {
+            if (mTakeOrderBeansList1.get(position).getmProductTitle().length() > 0) {
                 holder.productName.setText(mTakeOrderBeansList1.get(position).getmProductTitle());
-            }else {
+            } else {
                 holder.productName.setText(mTakeOrderBeansList1.get(position).getmProductTitle());
             }
-        }else {
+        } else {
             holder.productName.setText(mTakeOrderBeansList1.get(position).getmProductTitle());
         }
 
-        if(fromDatesList.get(mTakeOrderBeansList1.get(position).getmProductId())!=null){
+        if (fromDatesList.get(mTakeOrderBeansList1.get(position).getmProductId()) != null) {
             // Assign changed from date value.
             String fromD = fromDatesList.get(mTakeOrderBeansList1.get(position).getmProductId());
             holder.fromDate.setText(fromD);
-        }else if(mTakeOrderBeansList1.get(position).getmProductFromDate()!=null){
-            if(mTakeOrderBeansList1.get(position).getmProductFromDate().length()>0){
+        } else if (mTakeOrderBeansList1.get(position).getmProductFromDate() != null) {
+            if (mTakeOrderBeansList1.get(position).getmProductFromDate().length() > 0) {
                 holder.fromDate.setText(mTakeOrderBeansList1.get(position).getmProductFromDate());
-            }else {
+            } else {
                 holder.fromDate.setText(currentDate);
             }
-        }else {
+        } else {
             holder.fromDate.setText(currentDate);
         }
 
-        if(toDatesList.get(mTakeOrderBeansList1.get(position).getmProductId())!=null){
+        if (toDatesList.get(mTakeOrderBeansList1.get(position).getmProductId()) != null) {
             // Assign changed to date value.
             String toD = toDatesList.get(mTakeOrderBeansList1.get(position).getmProductId());
             holder.toDate.setText(toD);
-        }else if(mTakeOrderBeansList1.get(position).getmProductToDate()!=null){
-            if(mTakeOrderBeansList1.get(position).getmProductToDate().length()>0){
+        } else if (mTakeOrderBeansList1.get(position).getmProductToDate() != null) {
+            if (mTakeOrderBeansList1.get(position).getmProductToDate().length() > 0) {
                 holder.toDate.setText(mTakeOrderBeansList1.get(position).getmProductToDate());
-            }else {
+            } else {
                 holder.toDate.setText(currentDate);
             }
-        }else {
+        } else {
             holder.toDate.setText(currentDate);
         }
 
-        if(quantityList.get(mTakeOrderBeansList1.get(position).getmProductId())!=null){
+        if (quantityList.get(mTakeOrderBeansList1.get(position).getmProductId()) != null) {
             // Assign changed quantity value
             String val = quantityList.get(mTakeOrderBeansList1.get(position).getmProductId());
             holder.productQuantity.setText(val);
-        }else if(mTakeOrderBeansList1.get(position).getmProductQuantity()!=null){
-            if(mTakeOrderBeansList1.get(position).getmProductQuantity().length()>0){
+        } else if (mTakeOrderBeansList1.get(position).getmProductQuantity() != null) {
+            if (mTakeOrderBeansList1.get(position).getmProductQuantity().length() > 0) {
                 // Assign stored db quantity value
                 holder.productQuantity.setText(mTakeOrderBeansList1.get(position).getmProductQuantity());
-            }else {
+            } else {
                 // Assign default quantity value
-                holder.productQuantity.setText("0000.000");
+                holder.productQuantity.setText("0.000");
             }
-        }else {
+        } else {
             // Assign default quantity value
-            holder.productQuantity.setText("0000.000");
+            holder.productQuantity.setText("0.000");
         }
-
-//        ArrayAdapter<String> dataAdapter =new ArrayAdapter<String>(activity, android.R.layout.simple_spinner_item,list1);
-//        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        holder.orderTypeSpinner.setAdapter(dataAdapter);
-//        holder.orderTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//                String materialOrderType = holder.orderTypeSpinner.getSelectedItem().toString();
-//                ordertypesList.put(mTakeOrderBeansList1.get(position).getmProductId(),materialOrderType);
-//            }
-//            @Override
-//            public void onNothingSelected(AdapterView<?> arg0) {
-//
-//            }
-//        });
-//
-//        if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId())!=null){
-//            // Assign changed order type value
-//            if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId()).equals("One Time")){
-//                holder.orderTypeSpinner.setSelection(0);
-//            }else if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId()).equals("Daily")){
-//                holder.orderTypeSpinner.setSelection(1);
-//            }else if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId()).equals("Weekly")){
-//                holder.orderTypeSpinner.setSelection(2);
-//            }else if(ordertypesList.get(mTakeOrderBeansList1.get(position).getmProductId()).equals("Monthly")){
-//                holder.orderTypeSpinner.setSelection(3);
-//            }else {
-//                holder.orderTypeSpinner.setSelection(0);
-//            }
-//        }else if(mTakeOrderBeansList1.get(position).getmProductOrderType()!=null){
-//            if(mTakeOrderBeansList1.get(position).getmProductOrderType().length()>0){
-//                if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("1")){
-//                    holder.orderTypeSpinner.setSelection(0);
-//                }else if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("2")){
-//                    holder.orderTypeSpinner.setSelection(1);
-//                }else if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("3")){
-//                    holder.orderTypeSpinner.setSelection(2);
-//                }else if(mTakeOrderBeansList1.get(position).getmProductOrderType().equals("4")){
-//                    holder.orderTypeSpinner.setSelection(3);
-//                }else {
-//                    holder.orderTypeSpinner.setSelection(0);
-//                }
-//            }else {
-//                holder.orderTypeSpinner.setSelection(0);
-//            }
-//        }else {
-//            holder.orderTypeSpinner.setSelection(0);
-//        }
 
         holder.fromDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clickedPosition = position;
-                View childView = mList.getChildAt(position-mList.getFirstVisiblePosition());
+                View childView = mList.getChildAt(position - mList.getFirstVisiblePosition());
                 EditText fromDate = (EditText) childView.findViewById(R.id.from_date);
+                EditText quanity11 = (EditText) childView.findViewById(R.id.productQt);
+                TextView prodName = (TextView) childView.findViewById(R.id.productName);
+                EditText toDate = (EditText) childView.findViewById(R.id.to_date);
+                String presentValStr = quanity11.getText().toString();
+                Double presentIntVal = Double.parseDouble(presentValStr);
+                quantityList.put(mTakeOrderBeansList1.get(position).getmProductId(), String.format("%.3f", presentIntVal));
+                producttitle.put(mTakeOrderBeansList1.get(position).getmProductId(), prodName.getText().toString().trim());
+                toDatesList.put(mTakeOrderBeansList1.get(position).getmProductId(), toDate.getText().toString().trim());
+                mProductIdsList.put(mTakeOrderBeansList1.get(position).getmProductId().toString(), mTakeOrderBeansList1.get(position).getmProductId().toString());
                 et = fromDate;
                 fromStr = "from";
                 datePickerMethod();
@@ -282,8 +247,17 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             @Override
             public void onClick(View v) {
                 clickedPosition = position;
-                View childView = mList.getChildAt(position-mList.getFirstVisiblePosition());
+                View childView = mList.getChildAt(position - mList.getFirstVisiblePosition());
                 EditText toDate = (EditText) childView.findViewById(R.id.to_date);
+                EditText quanity11 = (EditText) childView.findViewById(R.id.productQt);
+                TextView prodName = (TextView) childView.findViewById(R.id.productName);
+                EditText fromDate = (EditText) childView.findViewById(R.id.from_date);
+                String presentValStr = quanity11.getText().toString();
+                Double presentIntVal = Double.parseDouble(presentValStr);
+                quantityList.put(mTakeOrderBeansList1.get(position).getmProductId(), String.format("%.3f", presentIntVal));
+                producttitle.put(mTakeOrderBeansList1.get(position).getmProductId(), prodName.getText().toString().trim());
+                fromDatesList.put(mTakeOrderBeansList1.get(position).getmProductId(), fromDate.getText().toString().trim());
+                mProductIdsList.put(mTakeOrderBeansList1.get(position).getmProductId().toString(), mTakeOrderBeansList1.get(position).getmProductId().toString());
                 et = toDate;
                 fromStr = "to";
                 datePickerMethod();
@@ -296,14 +270,21 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                 try {
                     //Toast.makeText(activity, "POs Is::: "+ position, Toast.LENGTH_SHORT).show();
                     //Toast.makeText(activity, "POs 1 Is::: "+ mList.getFirstVisiblePosition(), Toast.LENGTH_SHORT).show();
-                    View childView = mList.getChildAt(position-mList.getFirstVisiblePosition());
+                    View childView = mList.getChildAt(position - mList.getFirstVisiblePosition());
                     //Toast.makeText(activity, "POs Child View Is ::: "+ childView, Toast.LENGTH_SHORT).show();
                     EditText quanity11 = (EditText) childView.findViewById(R.id.productQt);
+                    TextView prodName = (TextView) childView.findViewById(R.id.productName);
+                    EditText fromDate = (EditText) childView.findViewById(R.id.from_date);
+                    EditText toDate = (EditText) childView.findViewById(R.id.to_date);
                     String presentValStr = quanity11.getText().toString();
                     Double presentIntVal = Double.parseDouble(presentValStr);
                     presentIntVal++;
-                    quanity11.setText(String.format("%.3f",presentIntVal));
-                    quantityList.put(mTakeOrderBeansList1.get(position).getmProductId(),String.format("%.3f",presentIntVal));
+                    quanity11.setText(String.format("%.3f", presentIntVal));
+                    quantityList.put(mTakeOrderBeansList1.get(position).getmProductId(), String.format("%.3f", presentIntVal));
+                    producttitle.put(mTakeOrderBeansList1.get(position).getmProductId(), prodName.getText().toString().trim());
+                    fromDatesList.put(mTakeOrderBeansList1.get(position).getmProductId(), fromDate.getText().toString().trim());
+                    toDatesList.put(mTakeOrderBeansList1.get(position).getmProductId(), toDate.getText().toString().trim());
+                    mProductIdsList.put(mTakeOrderBeansList1.get(position).getmProductId().toString(), mTakeOrderBeansList1.get(position).getmProductId().toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -314,15 +295,22 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             @Override
             public void onClick(View v) {
                 try {
-                    View childView = mList.getChildAt(position-mList.getFirstVisiblePosition());
+                    View childView = mList.getChildAt(position - mList.getFirstVisiblePosition());
                     EditText quanity11 = (EditText) childView.findViewById(R.id.productQt);
+                    TextView prodName = (TextView) childView.findViewById(R.id.productName);
+                    EditText fromDate = (EditText) childView.findViewById(R.id.from_date);
+                    EditText toDate = (EditText) childView.findViewById(R.id.to_date);
                     String presentValStr = quanity11.getText().toString();
                     Double presentIntVal = Double.parseDouble(presentValStr);
-                    if(presentIntVal>0){
+                    if (presentIntVal > 0) {
                         presentIntVal--;
-                        quanity11.setText(String.format("%.3f",presentIntVal));
+                        quanity11.setText(String.format("%.3f", presentIntVal));
                     }
-                    quantityList.put(mTakeOrderBeansList1.get(position).getmProductId(),String.format("%.3f",presentIntVal));
+                    quantityList.put(mTakeOrderBeansList1.get(position).getmProductId(), String.format("%.3f", presentIntVal));
+                    producttitle.put(mTakeOrderBeansList1.get(position).getmProductId(), prodName.getText().toString().trim());
+                    fromDatesList.put(mTakeOrderBeansList1.get(position).getmProductId(), fromDate.getText().toString().trim());
+                    toDatesList.put(mTakeOrderBeansList1.get(position).getmProductId(), toDate.getText().toString().trim());
+                    mProductIdsList.put(mTakeOrderBeansList1.get(position).getmProductId().toString(), mTakeOrderBeansList1.get(position).getmProductId().toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -333,86 +321,45 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         AgentTakeOrderScreen.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
-                String productId = "",productFD="",productTD="",productOrType="",productQua="",productTitle="";
-                if(temptoList.size()>0){
-                    temptoList.clear();
-                }
-
-                for (int k = 0;k<mTakeOrderBeansList1.size();k++) {
-
+                if (producttitle.size() == 0 &&
+                        fromDatesList.size() == 0 &&
+                        toDatesList.size() == 0 &&
+                        quantityList.size() == 0) {
+                    showAlertDialogTakeorder(activity, "Alert!", "No orders placed.");
+                } else {
+                    String productId = "", productFD = "", productTD = "", productOrType = "", productQua = "", productTitle = "";
+                    if (temptoList.size() > 0) {
+                        temptoList.clear();
+                    }
+                    System.out.println("PIDS LIST SIZE IS:: " + mProductIdsList.size());
+                    System.out.println("FROM D LIST SIZE IS:: " + fromDatesList.size());
+                    System.out.println("TO D LIST SIZE IS:: " + toDatesList.size());
+                    System.out.println("QUAN LIST SIZE IS:: " + quantityList.size());
+                    for (int k = 0; k < mTakeOrderBeansList1.size(); k++) {
                         TakeOrderBean tb = new TakeOrderBean();
-                        if (producttitle.get(mTakeOrderBeansList1.get(k).getmProductId()) != null) {
-                            productId = mTakeOrderBeansList1.get(k).getmProductId();
-                            productTitle = producttitle.get(mTakeOrderBeansList1.get(k).getmProductId());
-                            System.out.println("If ******  PRODUCT TITLE  **** VAL IS:::: " + mTakeOrderBeansList1.get(k).getmProductId());
-                            tb.setmProductId(productId);
+//
+//                        productId = mTakeOrderBeansList1.get(k).getmProductId();
+//                        productTitle = producttitle.get(mTakeOrderBeansList1.get(k).getmProductId());
+//                        System.out.println("If ******  PRODUCT TITLE  **** VAL IS:::: " + mTakeOrderBeansList1.get(k).getmProductId());
+//                        tb.setmProductId(productId);
+//                        tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
+//                        tb.setmProductTitle(productTitle);
+//                        tb.setmProductStatus("1");
+                        if (mProductIdsList.get(mTakeOrderBeansList1.get(k).getmProductId()) != null) {
+                            System.out.println("P ID: " + mProductIdsList.get(mTakeOrderBeansList1.get(k).getmProductId()));
+                            System.out.println("FR ID: " + fromDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()));
+                            System.out.println("TO ID: " + toDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()));
+                            System.out.println("QU ID: " + quantityList.get(mTakeOrderBeansList1.get(k).getmProductId()));
+                            tb.setmProductId(mTakeOrderBeansList1.get(k).getmProductId());
                             tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
-                            tb.setmProductTitle(productTitle);
-                            tb.setmProductStatus("1");
-                        } else {
                             tb.setmProductTitle(mTakeOrderBeansList1.get(k).getmProductTitle());
-                        }
-                        if (fromDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()) != null) {
-                            productId = mTakeOrderBeansList1.get(k).getmProductId();
-                            productFD = fromDatesList.get(mTakeOrderBeansList1.get(k).getmProductId());
-                            System.out.println("If ******  FROM DATE  **** VAL IS:::: " + mTakeOrderBeansList1.get(k).getmProductId());
-                            tb.setmProductId(productId);
-                            tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
-                            tb.setmProductFromDate(productFD);
+                            tb.setmProductToDate(toDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()));
+                            tb.setmProductFromDate(fromDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()));
+                            tb.setmProductQuantity(quantityList.get(mTakeOrderBeansList1.get(k).getmProductId()));
                             tb.setmProductStatus("1");
-                        } else {
-                            tb.setmProductFromDate(currentDate);
-                        }
-                        if (toDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()) != null) {
-                            productId = mTakeOrderBeansList1.get(k).getmProductId();
-                            productTD = toDatesList.get(mTakeOrderBeansList1.get(k).getmProductId());
-                            System.out.println("If ******  TO DATE  **** VAL IS:::: " + mTakeOrderBeansList1.get(k).getmProductId());
-                            tb.setmProductId(productId);
-                            tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
-                            tb.setmProductToDate(productTD);
-                            tb.setmProductStatus("1");
-                        } else {
-                            tb.setmProductToDate(currentDate);
-                        }
 
-                    /*if(ordertypesList.get(mTakeOrderBeansList1.get(k).getmProductId())!= null){
-                        productId = mTakeOrderBeansList1.get(k).getmProductId();
-                        productOrType = ordertypesList.get(mTakeOrderBeansList1.get(k).getmProductId());
-                        System.out.println("If ******  ORDER TYPE  **** VAL IS:::: "+ mTakeOrderBeansList1.get(k).getmProductId());
-                        tb.setmProductId(productId);
-                        tb.setmRouteId(mPreferences.getString("routeId"));
-                        tb.setmProductFromDate(productFD);
-                        tb.setmProductToDate(productTD);
-                        tb.setmProductOrderType("");
-                    }*/
-                        if (quantityList.get(mTakeOrderBeansList1.get(k).getmProductId()) != null) {
-                            productId = mTakeOrderBeansList1.get(k).getmProductId();
-                            productQua = quantityList.get(mTakeOrderBeansList1.get(k).getmProductId());
-                            System.out.println("If ******  QUANTITY **** VAL IS:::: " + mTakeOrderBeansList1.get(k).getmProductId());
-                            tb.setmProductId(productId);
-                            tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
-                            tb.setmProductQuantity(productQua);
-                            tb.setmProductStatus("1");
-                        } else {
-                            tb.setmProductQuantity("0.000");
+                            temptoList.add(tb);
                         }
-//                    if(productOrType.equals("One Time")){
-//                        tb.setmProductOrderType("1");
-//                    }else if(productOrType.equals("Daily")){
-//                        tb.setmProductOrderType("2");
-//                    }else if(productOrType.equals("Weekly")){
-//                        tb.setmProductOrderType("3");
-//                    }else if(productOrType.equals("Monthly")){
-//                        tb.setmProductOrderType("4");
-//                    }else {
-//                        tb.setmProductOrderType("1");
-//                    }
-
-
-                        temptoList.add(tb);
                     }
 
                     synchronized (this) {
@@ -432,66 +379,110 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                             }
                         }
                     }
+                    synchronized (this) {
+                        showAlertDialogTakeorder(activity, "Success", activity.getString(R.string.order));
+                    }
 
-//                System.out.println("LIST COUNT::: "+ mList.getCount());
-//                System.out.println("LIST COUNT::: "+ mList.getLastVisiblePosition());
-//                for (int d = 0; d< mList.getLastVisiblePosition();d++){
-//                    try {
-//                    View childView = mList.getChildAt(d);
-//                    TextView tv = (TextView) childView.findViewById(R.id.productName);
-//                    EditText fromDate = (EditText) childView.findViewById(R.id.from_date);
-//                    EditText toDate = (EditText) childView.findViewById(R.id.to_date);
-//                    Spinner sp = (Spinner) childView.findViewById(R.id.spinner1);
-//                    EditText quanity = (EditText) childView.findViewById(R.id.productQt);
-//                    System.out.println("TITLE IS ::: "+ tv.getText().toString().trim());
-//                    System.out.println("FROM IS ::: "+ fromDate.getText().toString().trim());
-//                    System.out.println("TO IS ::: "+ toDate.getText().toString().trim());
-//                    System.out.println("SPINNER IS ::: "+ sp.getSelectedItem().toString());
-//                    System.out.println("QUANTITY IS ::: "+ quanity.getText().toString().trim());
-//                    System.out.println("PROD ID IS ::: "+ mTakeOrderBeansList1.get(d).getmProductId());
-//
-//                    TakeOrderBean tb = new TakeOrderBean();
-//
-//                    tb.setmRouteId(mPreferences.getString("routeId"));
-//                    tb.setmProductId(mTakeOrderBeansList1.get(d).getmProductId());
-//                    tb.setmProductTitle(tv.getText().toString().trim());
-//                    tb.setmProductFromDate(fromDate.getText().toString().trim());
-//                    tb.setmProductToDate(toDate.getText().toString().trim());
-//                    if(sp.getSelectedItem().toString().equals("One Time")){
-//                        tb.setmProductOrderType("1");
-//                    }else if(sp.getSelectedItem().toString().equals("Daily")){
-//                        tb.setmProductOrderType("2");
-//                    }else if(sp.getSelectedItem().toString().equals("Weekly")){
-//                        tb.setmProductOrderType("3");
-//                    }else if(sp.getSelectedItem().toString().equals("Monthly")){
-//                        tb.setmProductOrderType("4");
-//                    }else {
-//                        tb.setmProductOrderType("1");
-//                    }
-//                    tb.setmProductQuantity(quanity.getText().toString().trim());
-//
-//                    temptoList.add(tb);
-//                    }catch (Exception e){
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                synchronized (this) {
-//                    if (temptoList.size() > 0) {
-//                        System.out.println("DB called");
-//                        mDBHelper.updateTakeOrderDetails(temptoList);
-//                    }
-//                }
-//
-//                // Temporary call api from here....
-//                synchronized (this) {
-//                    System.out.println("SERVICE called");
-//                    if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
-//                        activity.startService(new Intent(activity, SyncTakeOrdersService.class));
-//                    }
-//                }
 
-                CustomAlertDialog.showAlertDialogTakeorder(activity, "Success", activity.getString(R.string.order));
+//                    for (int k = 0; k < mTakeOrderBeansList1.size(); k++) {
+//
+//                        TakeOrderBean tb = new TakeOrderBean();
+//                        if (producttitle.get(mTakeOrderBeansList1.get(k).getmProductId()) != null) {
+//                            productId = mTakeOrderBeansList1.get(k).getmProductId();
+//                            productTitle = producttitle.get(mTakeOrderBeansList1.get(k).getmProductId());
+//                            System.out.println("If ******  PRODUCT TITLE  **** VAL IS:::: " + mTakeOrderBeansList1.get(k).getmProductId());
+//                            tb.setmProductId(productId);
+//                            tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
+//                            tb.setmProductTitle(productTitle);
+//                            tb.setmProductStatus("1");
+//                            mProductIdsList.add(productId);
+//                        } else {
+//                            tb.setmProductTitle(mTakeOrderBeansList1.get(k).getmProductTitle());
+//                        }
+//                        if (fromDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()) != null) {
+//                            productId = mTakeOrderBeansList1.get(k).getmProductId();
+//                            productFD = fromDatesList.get(mTakeOrderBeansList1.get(k).getmProductId());
+//                            System.out.println("If ******  FROM DATE  **** VAL IS:::: " + mTakeOrderBeansList1.get(k).getmProductId());
+//                            tb.setmProductId(productId);
+//                            tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
+//                            tb.setmProductFromDate(productFD);
+//                            tb.setmProductStatus("1");
+//                            mProductIdsList.add(productId);
+//                        } else {
+//                            tb.setmProductFromDate(currentDate);
+//                        }
+//                        if (toDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()) != null) {
+//                            productId = mTakeOrderBeansList1.get(k).getmProductId();
+//                            productTD = toDatesList.get(mTakeOrderBeansList1.get(k).getmProductId());
+//                            System.out.println("If ******  TO DATE  **** VAL IS:::: " + mTakeOrderBeansList1.get(k).getmProductId());
+//                            tb.setmProductId(productId);
+//                            tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
+//                            tb.setmProductToDate(productTD);
+//                            tb.setmProductStatus("1");
+//                            mProductIdsList.add(productId);
+//                        } else {
+//                            tb.setmProductToDate(currentDate);
+//                        }
+//
+//                    /*if(ordertypesList.get(mTakeOrderBeansList1.get(k).getmProductId())!= null){
+//                        productId = mTakeOrderBeansList1.get(k).getmProductId();
+//                        productOrType = ordertypesList.get(mTakeOrderBeansList1.get(k).getmProductId());
+//                        System.out.println("If ******  ORDER TYPE  **** VAL IS:::: "+ mTakeOrderBeansList1.get(k).getmProductId());
+//                        tb.setmProductId(productId);
+//                        tb.setmRouteId(mPreferences.getString("routeId"));
+//                        tb.setmProductFromDate(productFD);
+//                        tb.setmProductToDate(productTD);
+//                        tb.setmProductOrderType("");
+//                    }*/
+//                        if (quantityList.get(mTakeOrderBeansList1.get(k).getmProductId()) != null) {
+//                            productId = mTakeOrderBeansList1.get(k).getmProductId();
+//                            productQua = quantityList.get(mTakeOrderBeansList1.get(k).getmProductId());
+//                            System.out.println("If ******  QUANTITY **** VAL IS:::: " + mTakeOrderBeansList1.get(k).getmProductId());
+//                            tb.setmProductId(productId);
+//                            tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
+//                            tb.setmProductQuantity(productQua);
+//                            tb.setmProductStatus("1");
+//                            mProductIdsList.add(productId);
+//                        } else {
+//                            tb.setmProductQuantity("0.000");
+//                        }
+////                    if(productOrType.equals("One Time")){
+////                        tb.setmProductOrderType("1");
+////                    }else if(productOrType.equals("Daily")){
+////                        tb.setmProductOrderType("2");
+////                    }else if(productOrType.equals("Weekly")){
+////                        tb.setmProductOrderType("3");
+////                    }else if(productOrType.equals("Monthly")){
+////                        tb.setmProductOrderType("4");
+////                    }else {
+////                        tb.setmProductOrderType("1");
+////                    }
+//
+//
+//                        temptoList.add(tb);
+//                    }
+
+//                    synchronized (this) {
+//                        if (temptoList.size() > 0) {
+//                            System.out.println("DB called****" + temptoList.size());
+//                            long upd = mDBHelper.updateTakeOrderDetails(temptoList);
+//                            System.out.println("UPDATED VALUES COUNT:: " + upd);
+//                        }
+//                    }
+//
+//                    // Temporary call api from here....
+//                    synchronized (this) {
+//                        if (temptoList.size() > 0) {
+//                            System.out.println("SERVICE called");
+//                            if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
+//                                activity.startService(new Intent(activity, SyncTakeOrdersService.class));
+//                            }
+//                        }
+//                    }
+//                    synchronized (this) {
+//                        showAlertDialogTakeorder(activity, "Success", activity.getString(R.string.order));
+//                    }
+                }
             }
 
 
@@ -504,27 +495,26 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         String date = changeDateToString(year, month + 1, dayOfMonth);
         //   textview.setError(null);
-        Log.e("date dfd",date);
-        if(fromStr.equals("from")){
+        Log.e("date dfd", date);
+        if (fromStr.equals("from")) {
             fromDStr = date;
             et.setText(date);
-            fromDatesList.put(mTakeOrderBeansList1.get(clickedPosition).getmProductId(),date);
-        }
-        else if(fromStr.equals("to")){
+            fromDatesList.put(mTakeOrderBeansList1.get(clickedPosition).getmProductId(), date);
+        } else if (fromStr.equals("to")) {
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             Date pickerdate = null;
-            Date systemdate  = null;
-            try{
+            Date systemdate = null;
+            try {
                 pickerdate = formatter.parse(date);
-                Log.e("pick",pickerdate+"");
+                Log.e("pick", pickerdate + "");
                 systemdate = formatter.parse(fromDStr);
-            }catch (ParseException e){
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if(pickerdate.after(systemdate)){  //greater 0
+            if (pickerdate.after(systemdate)) {  //greater 0
                 et.setText(date);
-                toDatesList.put(mTakeOrderBeansList1.get(clickedPosition).getmProductId(),date);
-            }else if(pickerdate.before(systemdate)){
+                toDatesList.put(mTakeOrderBeansList1.get(clickedPosition).getmProductId(), date);
+            } else if (pickerdate.before(systemdate)) {
                 new AlertDialog.Builder(activity)
                         .setTitle("Alert!")
                         .setMessage("To date should be greater than From date")
@@ -540,9 +530,9 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                         .show();//less0
                 //  Toast.makeText(context,"T must be greater than from",Toast.LENGTH_LONG).show();
                 //alert less date
-            }else if(systemdate.equals(pickerdate)){ //equal
+            } else if (systemdate.equals(pickerdate)) { //equal
                 et.setText(date);
-                toDatesList.put(mTakeOrderBeansList1.get(clickedPosition).getmProductId(),date);
+                toDatesList.put(mTakeOrderBeansList1.get(clickedPosition).getmProductId(), date);
             }
         }
     }
@@ -574,10 +564,10 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         notifyDataSetChanged();
     }
 
-    private void datePickerMethod(){
+    private void datePickerMethod() {
         Calendar now = Calendar.getInstance();
         DatePickerDialog dpd = new DatePickerDialog(
-                activity,this,
+                activity, this,
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
                 now.get(Calendar.DAY_OF_MONTH)
@@ -608,5 +598,50 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         fullDate = newDay + "/" + newMonth + "/" + year;
 
         return fullDate;
+    }
+
+    /**
+     * Method to show alert dialog.
+     *
+     * @param context
+     * @param title
+     * @param message
+     */
+    public void showAlertDialogTakeorder(final Context context, String title, final String message) {
+        try {
+            // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    dialog.dismiss();
+                    CustomProgressDialog.hideProgressDialog();
+                    if (message.equals("Order placed Successfully.")) {
+                        Intent ii = new Intent(activity, AgentTakeOrderPreview.class);
+                        Bundle args = new Bundle();
+                        args.putSerializable("productIdsList", (Serializable) temptoList);
+                        ii.putExtra("BUNDLE", args);
+                        activity.startActivity(ii);
+                        activity.finish();
+                    } else {
+
+                    }
+
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

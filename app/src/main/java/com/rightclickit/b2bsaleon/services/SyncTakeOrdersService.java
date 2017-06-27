@@ -94,10 +94,11 @@ public class SyncTakeOrdersService extends Service {
 
 
                 JSONObject params1 = new JSONObject();
-                params1.put("enquiry_id","EPR001");
+                String enqId = "ENQ"+mSessionManagement.getString("agentId");
+                params1.put("enquiry_id",enqId);
                // params1.put("user_id",mSessionManagement.getString("userId"));
                 params1.put("route_id",mTakeOrderBeansList.get(0).getmRouteId());
-                params1.put("_id",mAgentsBeansList.get(0).getmAgentId());
+                params1.put("_id",mSessionManagement.getString("agentId"));
                 JSONArray productArra = new JSONArray();
                 JSONArray quantityArra = new JSONArray();
                 JSONArray fromDateArra = new JSONArray();
@@ -115,7 +116,7 @@ public class SyncTakeOrdersService extends Service {
                 params1.put("quantity",quantityArra);
                 params1.put("status","I");
                 params1.put("delete","N");
-                params1.put("approved_on"," ");
+                params1.put("approved_on","");
                 params1.put("created_by",mSessionManagement.getString("userId"));
                 params1.put("created_on",timeStamp);
                 params1.put("updated_on",timeStamp);
