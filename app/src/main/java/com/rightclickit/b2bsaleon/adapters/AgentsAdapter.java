@@ -136,6 +136,7 @@ public class AgentsAdapter extends BaseAdapter {
             public void onClick(View v) {
                 mPreferences.putString("agentName",mAgentsBeansList1.get(position).getmFirstname());
                 mPreferences.putString("agentId",mAgentsBeansList1.get(position).getmAgentId());
+                mPreferences.putString("enqId",String.valueOf(position+1));
                 activity.startActivity(new Intent(activity,AgentViewActivity.class));
                 activity.finish();
             }

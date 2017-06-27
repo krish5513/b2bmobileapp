@@ -94,7 +94,7 @@ public class SyncTakeOrdersService extends Service {
 
 
                 JSONObject params1 = new JSONObject();
-                String enqId = "ENQ"+mSessionManagement.getString("agentId");
+                String enqId = "ENQ"+mTakeOrderBeansList.get(0).getmEnquiryId();
                 params1.put("enquiry_id",enqId);
                // params1.put("user_id",mSessionManagement.getString("userId"));
                 params1.put("route_id",mTakeOrderBeansList.get(0).getmRouteId());
@@ -141,6 +141,7 @@ public class SyncTakeOrdersService extends Service {
                                 t.setmProductFromDate(mTakeOrderBeansList.get(v).getmProductFromDate());
                                 t.setmProductOrderType("");
                                 t.setmProductTitle(mTakeOrderBeansList.get(v).getmProductTitle());
+                                t.setmEnquiryId(mTakeOrderBeansList.get(v).getmEnquiryId());
 
                                 temptoList.add(t);
                             }

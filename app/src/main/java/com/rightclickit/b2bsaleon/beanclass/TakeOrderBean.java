@@ -16,6 +16,7 @@ public class TakeOrderBean implements Serializable {
     private String mProductOrderType;
     private String mProductQuantity;
     private String mProductStatus;
+    private String mEnquiryId;
 
     public String getmProductId() {
         return mProductId;
@@ -79,5 +80,13 @@ public class TakeOrderBean implements Serializable {
 
     public void setmProductStatus(String mProductStatus) {
         this.mProductStatus = mProductStatus;
+    }
+
+    public String getmEnquiryId() {
+        return mEnquiryId;
+    }
+
+    public void setmEnquiryId(String mEnquiryId) {
+        this.mEnquiryId = mEnquiryId;
     }
 }
