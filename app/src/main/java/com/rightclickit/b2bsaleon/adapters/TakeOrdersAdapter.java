@@ -85,8 +85,9 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     private HashMap<String, String> ordertypesList = new HashMap<String, String>();
     private int clickedPosition;
     private HashMap<String, String> mProductIdsList = new HashMap<String, String>();
+    private String mAgentID = "";
 
-    public TakeOrdersAdapter(Activity productsActivity, ArrayList<TakeOrderBean> mTakeOrderBeansList, ListView mTakeOrderListView) {
+    public TakeOrdersAdapter(Activity productsActivity, ArrayList<TakeOrderBean> mTakeOrderBeansList, ListView mTakeOrderListView, String agentId) {
         this.activity = productsActivity;
         this.mTakeOrderBeansList1 = mTakeOrderBeansList;
         this.mInflater = LayoutInflater.from(activity);
@@ -107,6 +108,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         list1.add("Daily");
         list1.add("Weekly");
         list1.add("Monthly");
+        this.mAgentID = agentId;
         if (quantityList.size() > 0) {
             quantityList.clear();
         }
@@ -209,7 +211,9 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             // Assign changed quantity value
             String val = quantityList.get(mTakeOrderBeansList1.get(position).getmProductId());
             holder.productQuantity.setText(val);
-        } else if (mTakeOrderBeansList1.get(position).getmProductQuantity() != null) {
+        } else if (mTakeOrderBeansList1.get(position).getmProductQuantity() != null
+                && !mTakeOrderBeansList1.get(position).getmAgentId().equals("")
+                && mTakeOrderBeansList1.get(position).getmAgentId().equals(mAgentID)) {
             if (mTakeOrderBeansList1.get(position).getmProductQuantity().length() > 0) {
                 // Assign stored db quantity value
                 holder.productQuantity.setText(mTakeOrderBeansList1.get(position).getmProductQuantity());
@@ -331,10 +335,10 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     if (temptoList.size() > 0) {
                         temptoList.clear();
                     }
-                    System.out.println("PIDS LIST SIZE IS:: " + mProductIdsList.size());
-                    System.out.println("FROM D LIST SIZE IS:: " + fromDatesList.size());
-                    System.out.println("TO D LIST SIZE IS:: " + toDatesList.size());
-                    System.out.println("QUAN LIST SIZE IS:: " + quantityList.size());
+//                    System.out.println("PIDS LIST SIZE IS:: " + mProductIdsList.size());
+//                    System.out.println("FROM D LIST SIZE IS:: " + fromDatesList.size());
+//                    System.out.println("TO D LIST SIZE IS:: " + toDatesList.size());
+//                    System.out.println("QUAN LIST SIZE IS:: " + quantityList.size());
                     for (int k = 0; k < mTakeOrderBeansList1.size(); k++) {
                         TakeOrderBean tb = new TakeOrderBean();
 //
@@ -346,18 +350,20 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
 //                        tb.setmProductTitle(productTitle);
 //                        tb.setmProductStatus("1");
                         if (mProductIdsList.get(mTakeOrderBeansList1.get(k).getmProductId()) != null) {
-                            System.out.println("P ID: " + mProductIdsList.get(mTakeOrderBeansList1.get(k).getmProductId()));
-                            System.out.println("FR ID: " + fromDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()));
-                            System.out.println("TO ID: " + toDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()));
-                            System.out.println("QU ID: " + quantityList.get(mTakeOrderBeansList1.get(k).getmProductId()));
+//                            System.out.println("P ID: " + mProductIdsList.get(mTakeOrderBeansList1.get(k).getmProductId()));
+//                            System.out.println("FR ID: " + fromDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()));
+//                            System.out.println("TO ID: " + toDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()));
+//                            System.out.println("QU ID: " + quantityList.get(mTakeOrderBeansList1.get(k).getmProductId()));
                             tb.setmProductId(mTakeOrderBeansList1.get(k).getmProductId());
-                            tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
+                           // tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
+                            tb.setmRouteId(mPreferences.getString("agentrouteId"));
                             tb.setmProductTitle(mTakeOrderBeansList1.get(k).getmProductTitle());
                             tb.setmProductToDate(toDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()));
                             tb.setmProductFromDate(fromDatesList.get(mTakeOrderBeansList1.get(k).getmProductId()));
                             tb.setmProductQuantity(quantityList.get(mTakeOrderBeansList1.get(k).getmProductId()));
                             tb.setmProductStatus("1");
                             tb.setmEnquiryId(mPreferences.getString("enqId"));
+                            tb.setmAgentId(mPreferences.getString("agentId"));
 
                             temptoList.add(tb);
                         }

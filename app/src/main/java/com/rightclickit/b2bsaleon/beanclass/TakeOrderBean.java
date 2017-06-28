@@ -17,6 +17,7 @@ public class TakeOrderBean implements Serializable {
     private String mProductQuantity;
     private String mProductStatus;
     private String mEnquiryId;
+    private String mAgentId;
 
     public String getmProductId() {
         return mProductId;
@@ -88,5 +89,13 @@ public class TakeOrderBean implements Serializable {
 
     public void setmEnquiryId(String mEnquiryId) {
         this.mEnquiryId = mEnquiryId;
+    }
+
+    public String getmAgentId() {
+        return mAgentId;
+    }
+
+    public void setmAgentId(String mAgentId) {
+        this.mAgentId = mAgentId;
     }
 }

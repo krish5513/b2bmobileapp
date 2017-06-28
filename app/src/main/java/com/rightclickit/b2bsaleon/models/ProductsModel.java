@@ -166,6 +166,8 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
                         }
                     }
                     takeOrderBean.setmProductStatus("0");
+                    takeOrderBean.setmEnquiryId("");
+                    takeOrderBean.setmAgentId("");
                     mProductsBeansList.add(productsBean);
                     mTakeOrderProductsBeansList.add(takeOrderBean);
                 }

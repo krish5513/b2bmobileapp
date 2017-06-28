@@ -64,11 +64,11 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
 
         mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("no");
         System.out.println("The TO LIST IS::: "+ mTakeOrderBeansList.size());
-        for (int k = 0; k<mTakeOrderBeansList.size();k++){
-            System.out.println("AAAA:: "+mTakeOrderBeansList.get(k).getmProductFromDate());
-            System.out.println("BBBBB:: "+mTakeOrderBeansList.get(k).getmProductQuantity());
-            System.out.println("CCCC:: "+mTakeOrderBeansList.get(k).getmProductOrderType());
-        }
+//        for (int k = 0; k<mTakeOrderBeansList.size();k++){
+//            System.out.println("AAAA:: "+mTakeOrderBeansList.get(k).getmProductFromDate());
+//            System.out.println("BBBBB:: "+mTakeOrderBeansList.get(k).getmProductQuantity());
+//            System.out.println("CCCC:: "+mTakeOrderBeansList.get(k).getmProductOrderType());
+//        }
 
 
         mTakeOrdersLayout=(LinearLayout)findViewById(R.id.takeorder) ;
@@ -76,7 +76,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
 
         mTakeOrderListView = (ListView) findViewById(R.id.TakeOrdersList);
         if(mTakeOrderBeansList.size()>0){
-            mTakeOrderAdapter = new TakeOrdersAdapter(this,mTakeOrderBeansList,mTakeOrderListView);
+            mTakeOrderAdapter = new TakeOrdersAdapter(this,mTakeOrderBeansList,mTakeOrderListView,mPreference.getString("agentId"));
             mTakeOrderListView.setAdapter(mTakeOrderAdapter);
         }
 
