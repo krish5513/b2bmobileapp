@@ -41,52 +41,37 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 android:orientation="horizontal"
                 android:padding="5dp">
 
                 <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="match_parent"
+                    android:id="@+id/subTotalTitle"
+                    android:layout_width="75dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="7dp"
-                    android:layout_weight="0.17"
+                    android:layout_marginRight="0dp"
                     android:text="Sub Total"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/totalQty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|end"
-                    android:layout_weight="0.17"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/greydark"
-                    android:textSize="14sp" />
-
-                <TextView
                     android:id="@+id/totalTaxAmount"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|end"
-                    android:layout_weight="0.2"
-                    android:gravity="center|end"
-                    android:text="0.00"
+                    android:layout_marginLeft="5dp"
+                    android:text="Rs. 0.00"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/subTotalAmount"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_weight="0.16"
-                    android:gravity="end"
+                    android:layout_marginLeft="40dp"
                     android:text="Rs. 0.00"
-                    android:textColor="@color/black"
+                    android:textColor="@color/greydark"
                     android:textSize="14sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -97,7 +82,7 @@
                 android:padding="5dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:text="Total Value"
                     android:textColor="@color/greydark"
@@ -105,10 +90,10 @@
 
                 <TextView
                     android:id="@+id/totalAmount"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:gravity="end"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="0.1"
                     android:text="Rs. 0.00"
                     android:textColor="@color/black"
                     android:textSize="14sp" />

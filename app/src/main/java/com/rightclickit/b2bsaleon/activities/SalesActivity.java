@@ -88,7 +88,7 @@ public class SalesActivity extends AppCompatActivity {
 
             if (showProductsListView) {
                 productsList = mDBHelper.fetchAllRecordsFromProductsTable();
-                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, productsList);
+                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, productsList, tdc_products_list_view);
                 tdc_products_list_view.setAdapter(tdcSalesAdapter);
             }
 
@@ -200,7 +200,8 @@ public class SalesActivity extends AppCompatActivity {
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.Add).setVisible(false);
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(true);
+
         return super.onPrepareOptionsMenu(menu);
     }
 

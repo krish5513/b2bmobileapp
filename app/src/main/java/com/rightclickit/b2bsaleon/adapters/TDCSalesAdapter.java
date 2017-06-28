@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,11 +37,15 @@ public class TDCSalesAdapter extends BaseAdapter {
     private Activity activity;
     private Context ctxt;
     private ImageLoader mImageLoader;
-    private ArrayList<ProductsBean> allProductsList, filteredProductsList;
+    private ArrayList<ProductsBean> allProductsList, filteredProductsList, selectedProductsList;
+    private ListView products_list_view;
     private MMSharedPreferences mPreferences;
     private Drawable red_circle, green_circle;
 
-    public TDCSalesAdapter(Context ctxt, SalesActivity salesActivity, ArrayList<ProductsBean> productsList) {
+    private double availableStock = 5;
+    private final String zero_cost = "0000.000";
+
+    public TDCSalesAdapter(Context ctxt, SalesActivity salesActivity, ArrayList<ProductsBean> productsList, ListView products_list_view) {
         this.ctxt = ctxt;
         this.activity = salesActivity;
         this.mImageLoader = new ImageLoader(salesActivity);
@@ -49,8 +54,16 @@ public class TDCSalesAdapter extends BaseAdapter {
         this.allProductsList = productsList;
         this.filteredProductsList = new ArrayList<>();
         this.filteredProductsList.addAll(allProductsList);
+        this.selectedProductsList = new ArrayList<>();
+        this.products_list_view = products_list_view;
         this.red_circle = ContextCompat.getDrawable(ctxt, R.drawable.ic_circle_red);
         this.green_circle = ContextCompat.getDrawable(ctxt, R.drawable.ic_circle_green);
+    }
+
+    private class TDCSalesViewHolder {
+        ImageView arrow_icon, product_quantity_decrement, product_quantity_increment;
+        TextView product_name, quantity_stock, price, tax, amount;
+        EditText product_quantity;
     }
 
     @Override
@@ -82,20 +95,21 @@ public class TDCSalesAdapter extends BaseAdapter {
             tdcSalesViewHolder.price = (TextView) convertView.findViewById(R.id.price);
             tdcSalesViewHolder.tax = (TextView) convertView.findViewById(R.id.tax);
             tdcSalesViewHolder.amount = (TextView) convertView.findViewById(R.id.amount);
-            tdcSalesViewHolder.product_quantity_dec = (ImageView) convertView.findViewById(R.id.product_quantity_dec);
+            tdcSalesViewHolder.product_quantity_decrement = (ImageView) convertView.findViewById(R.id.product_quantity_dec);
             tdcSalesViewHolder.product_quantity = (EditText) convertView.findViewById(R.id.product_quantity);
-            tdcSalesViewHolder.product_quantity_inc = (ImageView) convertView.findViewById(R.id.product_quantity_inc);
+            tdcSalesViewHolder.product_quantity_increment = (ImageView) convertView.findViewById(R.id.product_quantity_inc);
 
             convertView.setTag(tdcSalesViewHolder);
         } else {
             tdcSalesViewHolder = (TDCSalesViewHolder) convertView.getTag();
         }
 
-        final ProductsBean productsBean = getItem(position);
+        final TDCSalesViewHolder currentTDCSalesViewHolder = tdcSalesViewHolder;
 
-        float availableStock = 50.0f;
+        final ProductsBean currentProductsBean = getItem(position);
+        currentProductsBean.setProductStock(availableStock);
 
-        if (availableStock > 0) {
+        if (currentProductsBean.getProductStock() > 0) {
             tdcSalesViewHolder.arrow_icon.setImageResource(R.drawable.ic_arrow_upward_white_24dp);
             tdcSalesViewHolder.arrow_icon.setBackground(green_circle);
         } else {
@@ -103,20 +117,24 @@ public class TDCSalesAdapter extends BaseAdapter {
             tdcSalesViewHolder.arrow_icon.setBackground(red_circle);
         }
 
-        double price = Double.parseDouble(productsBean.getProductConsumerPrice().replace(",", ""));
+        final double productRate = Double.parseDouble(currentProductsBean.getProductConsumerPrice().replace(",", ""));
+        double taxAmount = 0, amount = 0;
+        float productTax = 0.0f;
 
-        float tax = 0.0f;
-        if (productsBean.getProductvat() != null)
-            tax = Float.parseFloat(productsBean.getProductvat());
-        else if (productsBean.getProductgst() != null)
-            tax = Float.parseFloat(productsBean.getProductgst());
+        if (currentProductsBean.getProductvat() != null)
+            productTax = Float.parseFloat(currentProductsBean.getProductvat());
+        else if (currentProductsBean.getProductgst() != null)
+            productTax = Float.parseFloat(currentProductsBean.getProductgst());
 
-        double taxAmount = (price * tax) / 100;
-        double amount = price + taxAmount;
+        final float finalProductTax = productTax;
 
-        tdcSalesViewHolder.product_name.setText(String.format("%s @ %s%%", productsBean.getProductTitle(), tax));
-        tdcSalesViewHolder.quantity_stock.setText(String.format("%s", availableStock));
-        tdcSalesViewHolder.price.setText(Utility.getFormattedCurrency(price));
+        if (finalProductTax > 0)
+            tdcSalesViewHolder.product_name.setText(String.format("%s (%s%%)", currentProductsBean.getProductTitle(), finalProductTax));
+        else
+            tdcSalesViewHolder.product_name.setText(String.format("%s", currentProductsBean.getProductTitle()));
+
+        tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", availableStock));
+        tdcSalesViewHolder.price.setText(Utility.getFormattedCurrency(productRate));
         tdcSalesViewHolder.tax.setText(Utility.getFormattedCurrency(taxAmount));
         tdcSalesViewHolder.amount.setText(Utility.getFormattedCurrency(amount));
 
@@ -124,7 +142,8 @@ public class TDCSalesAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
-                    String productImageURL = productsBean.getProductImageUrl();
+                    String productImageURL = currentProductsBean.getProductImageUrl();
+
                     if (productImageURL != null && productImageURL.length() > 0) {
                         String URL = Constants.MAIN_URL + "/b2b/" + productImageURL;
                         showProductImageFull(URL);
@@ -135,13 +154,133 @@ public class TDCSalesAdapter extends BaseAdapter {
             }
         });
 
+        tdcSalesViewHolder.product_quantity_decrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Double presentQuantity = Double.parseDouble(currentTDCSalesViewHolder.product_quantity.getText().toString());
+
+                    if (presentQuantity > 0) {
+                        presentQuantity--;
+
+                        double amount = productRate * presentQuantity;
+                        double taxAmount = (amount * finalProductTax) / 100;
+
+                        currentProductsBean.setSelectedQuantity(presentQuantity);
+                        currentProductsBean.setProductAmount(amount);
+                        currentProductsBean.setTaxAmount(taxAmount);
+
+                        currentTDCSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
+                        currentTDCSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
+
+                        if (presentQuantity == 0) {
+                            currentTDCSalesViewHolder.product_quantity.setText(zero_cost);
+                            removeProductFromSelectedProductsList(currentProductsBean);
+                        } else {
+                            currentTDCSalesViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
+                            updateSelectedProductsList(currentProductsBean, presentQuantity);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        tdcSalesViewHolder.product_quantity_increment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Double presentQuantity = Double.parseDouble(currentTDCSalesViewHolder.product_quantity.getText().toString());
+
+                    if (presentQuantity < currentProductsBean.getProductStock()) {
+                        presentQuantity++;
+
+                        double amount = productRate * presentQuantity;
+                        double taxAmount = (amount * finalProductTax) / 100;
+
+                        currentProductsBean.setSelectedQuantity(presentQuantity);
+                        currentProductsBean.setProductAmount(amount);
+                        currentProductsBean.setTaxAmount(taxAmount);
+
+                        currentTDCSalesViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
+                        currentTDCSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
+                        currentTDCSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
+
+                        updateSelectedProductsList(currentProductsBean, presentQuantity);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        tdcSalesViewHolder.product_quantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                try {
+                    if (!hasFocus) {
+                        EditText quantityEditText = (EditText) view;
+                        Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
+
+                        if (enteredQuantity > currentProductsBean.getProductStock()) {
+                            quantityEditText.setText(zero_cost);
+
+                            new AlertDialog.Builder(activity)
+                                    .setTitle("Alert..!")
+                                    .setMessage("Quantity should not be greater than available stock.")
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        } else {
+                            if (enteredQuantity > 0) {
+                                double amount = productRate * enteredQuantity;
+                                double taxAmount = (amount * finalProductTax) / 100;
+
+                                currentProductsBean.setSelectedQuantity(enteredQuantity);
+                                currentProductsBean.setProductAmount(amount);
+                                currentProductsBean.setTaxAmount(taxAmount);
+
+                                currentTDCSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
+                                currentTDCSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
+
+                                updateSelectedProductsList(currentProductsBean, enteredQuantity);
+                            } else if (enteredQuantity == 0) {
+                                if (selectedProductsList.contains(currentProductsBean))
+                                    removeProductFromSelectedProductsList(currentProductsBean);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         return convertView;
     }
 
-    private class TDCSalesViewHolder {
-        ImageView arrow_icon, product_quantity_dec, product_quantity_inc;
-        TextView product_name, quantity_stock, price, tax, amount;
-        EditText product_quantity;
+    public void updateSelectedProductsList(ProductsBean productsBean, Double quantity) {
+        try {
+            if (!selectedProductsList.contains(productsBean)) {
+                selectedProductsList.add(productsBean);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeProductFromSelectedProductsList(ProductsBean productsBean) {
+        try {
+            if (selectedProductsList.contains(productsBean))
+                selectedProductsList.remove(productsBean);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // Filter Class
@@ -162,8 +301,6 @@ public class TDCSalesAdapter extends BaseAdapter {
                     filteredProductsList.add(wp);
                 }
             }
-
-            System.out.println("========== filteredProductsList = " + filteredProductsList);
         }
 
         notifyDataSetChanged();

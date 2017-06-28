@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by murali on 11/2/17.
  */
 
-public class ProductsBean {
+public class ProductsBean implements Serializable {
     private String productId;
     private String productCode;
     private String productTitle;
@@ -21,6 +21,10 @@ public class ProductsBean {
     private String productRetailerPrice;
     private String productgst;
     private String productvat;
+    private double productStock;
+    private double selectedQuantity;
+    private double taxAmount;
+    private double productAmount;
 
     public String getProductgst() {
         return productgst;
@@ -61,7 +65,6 @@ public class ProductsBean {
     public void setProductTitle(String productTitle) {
         this.productTitle = productTitle;
     }
-
 
     public String getProductDescription() {
         return productDescription;
@@ -119,6 +122,38 @@ public class ProductsBean {
         this.productRetailerPrice = productRetailerPrice;
     }
 
+    public double getProductStock() {
+        return productStock;
+    }
+
+    public void setProductStock(double productStock) {
+        this.productStock = productStock;
+    }
+
+    public double getSelectedQuantity() {
+        return selectedQuantity;
+    }
+
+    public void setSelectedQuantity(double selectedQuantity) {
+        this.selectedQuantity = selectedQuantity;
+    }
+
+    public double getTaxAmount() {
+        return taxAmount;
+    }
+
+    public void setTaxAmount(double taxAmount) {
+        this.taxAmount = taxAmount;
+    }
+
+    public double getProductAmount() {
+        return productAmount;
+    }
+
+    public void setProductAmount(double productAmount) {
+        this.productAmount = productAmount;
+    }
+
     @Override
     public String toString() {
         return "ProductsBean{" +
@@ -134,6 +169,10 @@ public class ProductsBean {
                 ", productRetailerPrice='" + productRetailerPrice + '\'' +
                 ", productgst='" + productgst + '\'' +
                 ", productvat='" + productvat + '\'' +
+                ", productStock=" + productStock +
+                ", selectedQuantity=" + selectedQuantity +
+                ", taxAmount=" + taxAmount +
+                ", productAmount=" + productAmount +
                 '}';
     }
 }
