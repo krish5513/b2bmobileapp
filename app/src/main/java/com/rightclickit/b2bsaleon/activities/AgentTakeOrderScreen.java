@@ -248,13 +248,13 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem( R.id.Add).setVisible(false);
 
-
+        menu.findItem( R.id.autorenew).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, AgentsActivity.class);
+        Intent intent = new Intent(this, AgentViewActivity.class);
         startActivity(intent);
         finish();
     }

@@ -6,33 +6,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.TakeOrdersAdapter;
-import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
+import com.rightclickit.b2bsaleon.adapters.TakeOrderPreviewAdapter;
 import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
-import java.util.ArrayList;
-
-public class DashboardTakeorder extends AppCompatActivity {
-    private MMSharedPreferences mPreference;
-    private ListView mTakeOrderListView;
-    private TakeOrdersAdapter mTakeOrderAdapter;
-    private ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
-    private DBHelper mDBHelper;
-    private TextView tv_preview;
+public class TripsheetTakeorderPreview extends AppCompatActivity {
+    private ListView mAgentsList;
+    DBHelper mDBHelper;
+    private TakeOrderPreviewAdapter mPreviewAdapter;
+    TextView tv_companyName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard_takeorder);
-        mPreference = new MMSharedPreferences(this);
-        mDBHelper = new DBHelper(this);
+        setContentView(R.layout.activity_tripsheet_takeorder_preview);
 
-        this.getSupportActionBar().setTitle("TAKE ORDER");
+
+        Bundle bundle = getIntent().getExtras();
+        this.getSupportActionBar().setTitle("ORDERS ");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.pr_icon_black);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
@@ -45,16 +38,23 @@ public class DashboardTakeorder extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        tv_preview=(TextView)findViewById(R.id.tv_preview);
+        tv_companyName=(TextView)findViewById(R.id.tv_companyName);
 
-        tv_preview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i =new Intent(DashboardTakeorder.this,DashboardTakeorderPreview.class);
-                startActivity(i);
-                finish();
-            }
-        });
+
+        // SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        // String imgSett = prefs.getString("companyName", "");
+        //    String ma=bundle.getString("COMPANYNAME");
+        //   Log.i("kjhdfcioseahdf",ma);
+        //  tv_companyName.setText(imgSett);
+
+        mDBHelper = new DBHelper(TripsheetTakeorderPreview.this);
+        mAgentsList = (ListView) findViewById(R.id.AgentsList);
+        // ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
+        //System.out.println("ELSE::: "+a.size());
+
+        //   ArrayList<TakeOrderPreviewBean> previewArrayList = new ArrayList<>();
+        //     loadAgentsList(previewArrayList);
+
 
 /*
         mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable();
@@ -73,6 +73,8 @@ public class DashboardTakeorder extends AppCompatActivity {
 
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate( R.menu.menu_dashboard, menu);
@@ -82,7 +84,7 @@ public class DashboardTakeorder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(DashboardTakeorder.this,SalesListActivity.class);
+            Intent i =new Intent(TripsheetTakeorderPreview.this,SalesListActivity.class);
             startActivity(i);
             finish();
             return true;
@@ -104,7 +106,7 @@ public class DashboardTakeorder extends AppCompatActivity {
         menu.findItem( R.id.notifications).setVisible(false);
         menu.findItem( R.id.settings).setVisible(false);
         menu.findItem( R.id.logout).setVisible(false);
-        menu.findItem( R.id.action_search).setVisible(true);
+        menu.findItem( R.id.action_search).setVisible(false);
         menu.findItem( R.id.Add).setVisible(false);
 
         menu.findItem( R.id.autorenew).setVisible(true);
@@ -114,13 +116,10 @@ public class DashboardTakeorder extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, TripsheetTakeorder.class);
         startActivity(intent);
         finish();
     }
 
 
 }
-
-
-

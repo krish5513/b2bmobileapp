@@ -65,13 +65,13 @@ public class TripSheetViewPreview extends AppCompatActivity {
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem( R.id.Add).setVisible(false);
 
-
+        menu.findItem( R.id.autorenew).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, TripSheetView.class);
         startActivity(intent);
         finish();
     }

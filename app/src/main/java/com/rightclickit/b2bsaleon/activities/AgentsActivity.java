@@ -32,6 +32,8 @@ import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -98,6 +100,17 @@ public class AgentsActivity extends AppCompatActivity {
         if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
             if(mDBHelper.getAgentsTableCount()>0){
                 ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();
+
+
+                Collections.sort(agentsBeanArrayList, new Comparator<AgentsBean>() {
+                    @Override
+                    public int compare(AgentsBean o1, AgentsBean o2) {
+                        return o1.getmAgentName().compareToIgnoreCase(o2.getmAgentName());
+                    }
+
+
+                });
+
                 loadAgentsList(agentsBeanArrayList);
             }else {
                 agentsModel.getStakeHoldersList("stakesList");
@@ -105,6 +118,15 @@ public class AgentsActivity extends AppCompatActivity {
         }else {
             System.out.println("ELSE::: ");
             ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();
+
+            Collections.sort(agentsBeanArrayList, new Comparator<AgentsBean>() {
+                @Override
+                public int compare(AgentsBean o1, AgentsBean o2) {
+                    return o1.getmAgentName().compareToIgnoreCase(o2.getmAgentName());
+                }
+
+
+            });
             loadAgentsList(agentsBeanArrayList);
         }
 
@@ -299,7 +321,7 @@ public class AgentsActivity extends AppCompatActivity {
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem( R.id.Add).setVisible(false);
-
+        menu.findItem( R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
     }

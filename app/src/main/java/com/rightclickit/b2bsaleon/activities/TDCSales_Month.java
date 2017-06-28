@@ -70,7 +70,7 @@ public class TDCSales_Month extends AppCompatActivity {
         menu.findItem( R.id.Add).setVisible(false);
 
 
-
+        menu.findItem( R.id.autorenew).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
     @Override

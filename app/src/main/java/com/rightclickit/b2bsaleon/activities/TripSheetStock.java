@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
@@ -24,6 +25,12 @@ public class TripSheetStock extends AppCompatActivity {
     public static TextView tv_save;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
+
+    public static ImageButton dispatchdec,dispatchinc;
+    public static ImageButton verifydec,verifyinc;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +55,24 @@ public class TripSheetStock extends AppCompatActivity {
         mPreferences = new MMSharedPreferences(TripSheetStock.this);
 
 
-        Dispatch=(TextView)findViewById(R.id.dispatch);
-      Dispatch.setVisibility(View.GONE);
+        dispatchdec=(ImageButton)findViewById(R.id.productQtDec1);
+        dispatchdec.setVisibility(View.GONE);
 
-        Verify=(TextView)findViewById(R.id.verify);
-          Verify.setVisibility(View.GONE);
+        dispatchinc=(ImageButton)findViewById(R.id.productQtInc1);
+        dispatchinc.setVisibility(View.GONE);
+
+        verifydec=(ImageButton)findViewById(R.id.productQtDec2);
+        verifydec.setVisibility(View.GONE);
+
+        verifyinc=(ImageButton)findViewById(R.id.productQtInc2);
+        verifyinc.setVisibility(View.GONE);
+
+
+
+
+
+
+
 
         tv_save=(TextView)findViewById(R.id.tv_save);
        tv_save.setVisibility(View.GONE);
@@ -78,9 +98,13 @@ public class TripSheetStock extends AppCompatActivity {
 
 
             if (privilegeActionsData.get(z).toString().equals("Stock_Dispatch")) {
-                Dispatch.setVisibility(View.VISIBLE);
+
+                dispatchdec.setVisibility(View.VISIBLE);
+                dispatchinc.setVisibility(View.VISIBLE);
             } else if (privilegeActionsData.get(z).toString().equals("Stock_Verify")) {
-                Verify.setVisibility(View.VISIBLE);
+
+                verifydec.setVisibility(View.VISIBLE);
+                verifyinc.setVisibility(View.VISIBLE);
             } else if (privilegeActionsData.get(z).toString().equals("Stock_Save")) {
                 tv_save.setVisibility(View.VISIBLE);
             } else if (privilegeActionsData.get(z).toString().equals("stock_Preview_Print")) {
@@ -120,14 +144,14 @@ public class TripSheetStock extends AppCompatActivity {
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem( R.id.Add).setVisible(false);
-
+        menu.findItem( R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, TripSheetsActivity.class);
         startActivity(intent);
         finish();
     }

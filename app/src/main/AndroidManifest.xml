@@ -154,7 +154,13 @@
         <activity android:name=".activities.Retailers_Payments_ViewActivity" />
         <activity android:name=".activities.Retailers_PaymentsActivity" />
         <activity android:name=".activities.RetailersInfoActivity" />
-        <activity android:name=".activities.AgentTakeOrderPreview"></activity>
+        <activity android:name=".activities.AgentTakeOrderPreview" />
+        <activity android:name=".activities.TripsheetTakeorder" />
+        <activity android:name=".activities.TripsheetDelivery" />
+        <activity android:name=".activities.TripsheetTakeorderPreview" />
+        <activity android:name=".activities.TripsheetReturns" />
+        <activity android:name=".activities.TripsheetDeliveryPreview" />
+        <activity android:name=".activities.TripsheetPayments"></activity>
     </application>
 
 </manifest>

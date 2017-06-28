@@ -201,7 +201,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         taleorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(TripSheetView.this,DashboardTakeorder.class);
+                Intent i=new Intent(TripSheetView.this,TripsheetTakeorder.class);
                 startActivity(i);
                 finish();
             }
@@ -209,7 +209,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         delivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(TripSheetView.this,DashboardDelivery.class);
+                Intent i=new Intent(TripSheetView.this,TripsheetDelivery.class);
                 startActivity(i);
                 finish();
             }
@@ -311,14 +311,14 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem( R.id.Add).setVisible(false);
-
+        menu.findItem( R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
     }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, TripSheetsActivity.class);
         startActivity(intent);
         finish();
     }

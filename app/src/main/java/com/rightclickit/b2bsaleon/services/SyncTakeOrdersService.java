@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -73,6 +74,7 @@ public class SyncTakeOrdersService extends Service {
         private ArrayList<String> IDSLIST = new ArrayList<String>();
         private ArrayList<String> NAMESLIST = new ArrayList<String>();
         private ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
+        private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
         private ArrayList<TakeOrderBean> temptoList = new ArrayList<TakeOrderBean>();
 
         @Override
@@ -85,7 +87,7 @@ public class SyncTakeOrdersService extends Service {
                 Calendar cal = Calendar.getInstance();
                 SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 String currentDate = df.format(cal.getTime());
-                String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+                String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
                 mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes");
                 userId = mSessionManagement.getString("userId");
                 String URL = String.format("%s%s%s%s", Constants.MAIN_URL,Constants.SYNC_TAKE_ORDERS_PORT,Constants.SYNC_TAKE_ORDERS_SERVICE,mSessionManagement.getString("token"));
@@ -93,8 +95,9 @@ public class SyncTakeOrdersService extends Service {
 
                 JSONObject params1 = new JSONObject();
                 params1.put("enquiry_id","EPR001");
-                params1.put("user_id",mSessionManagement.getString("userId"));
-                params1.put("route_id",mTakeOrderBeansList.get(0).getmProductId());
+               // params1.put("user_id",mSessionManagement.getString("userId"));
+                params1.put("route_id",mTakeOrderBeansList.get(0).getmRouteId());
+                params1.put("_id",mAgentsBeansList.get(0).getmAgentId());
                 JSONArray productArra = new JSONArray();
                 JSONArray quantityArra = new JSONArray();
                 JSONArray fromDateArra = new JSONArray();
@@ -112,10 +115,11 @@ public class SyncTakeOrdersService extends Service {
                 params1.put("quantity",quantityArra);
                 params1.put("status","I");
                 params1.put("delete","N");
-                params1.put("created_by",mSessionManagement.getString("createdBy"));
+                params1.put("approved_on"," ");
+                params1.put("created_by",mSessionManagement.getString("userId"));
                 params1.put("created_on",timeStamp);
                 params1.put("updated_on",timeStamp);
-                params1.put("updated_by",mSessionManagement.getString("updatedBy"));
+                params1.put("updated_by",mSessionManagement.getString("userId"));
 
                 mJsonObj = new NetworkManager().makeHttpPostConnection(URL,params1);
 

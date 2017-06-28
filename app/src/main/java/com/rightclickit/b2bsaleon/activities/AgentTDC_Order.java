@@ -199,7 +199,7 @@ Button view;
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem( R.id.Add).setVisible(false);
 
-
+        menu.findItem( R.id.autorenew).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
     @Override

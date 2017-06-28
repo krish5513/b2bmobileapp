@@ -18,7 +18,7 @@ import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
 
-public class DashboardTakeorder extends AppCompatActivity {
+public class TripsheetTakeorder extends AppCompatActivity {
     private MMSharedPreferences mPreference;
     private ListView mTakeOrderListView;
     private TakeOrdersAdapter mTakeOrderAdapter;
@@ -28,7 +28,7 @@ public class DashboardTakeorder extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard_takeorder);
+        setContentView(R.layout.activity_tripsheet_takeorder);
         mPreference = new MMSharedPreferences(this);
         mDBHelper = new DBHelper(this);
 
@@ -50,7 +50,7 @@ public class DashboardTakeorder extends AppCompatActivity {
         tv_preview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =new Intent(DashboardTakeorder.this,DashboardTakeorderPreview.class);
+                Intent i =new Intent(TripsheetTakeorder.this,TripsheetTakeorderPreview.class);
                 startActivity(i);
                 finish();
             }
@@ -82,7 +82,7 @@ public class DashboardTakeorder extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(DashboardTakeorder.this,SalesListActivity.class);
+            Intent i =new Intent(TripsheetTakeorder.this,SalesListActivity.class);
             startActivity(i);
             finish();
             return true;
@@ -114,7 +114,7 @@ public class DashboardTakeorder extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, TripSheetView.class);
         startActivity(intent);
         finish();
     }

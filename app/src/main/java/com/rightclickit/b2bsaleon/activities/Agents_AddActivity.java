@@ -66,7 +66,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class
+Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     String str_BusinessName, str_PersonName, str_Mobileno, str_address;
 
@@ -207,7 +208,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 agentsBean.setMaddress(str_address);
                 agentsBean.setmLatitude(String.valueOf(latitude));
                 agentsBean.setmLongitude(String.valueOf(longitude));
-                String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+                String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
                 agentsBean.setmAgentCreatedOn(timeStamp);
                 agentsBean.setmAgentUpdatedOn(timeStamp);
                 agentsBean.setmObAmount("");
@@ -215,6 +216,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 agentsBean.setmTotalAmount("");
                 agentsBean.setmDueAmount("");
                 agentsBean.setmAgentPic("");
+                agentsBean.setmAgentApprovedOn("");
                 agentsBean.setmAgentRouteId(routesArray.toString());
                 mAgentsBeansList.add(agentsBean);
             }catch (Exception e){
@@ -222,14 +224,14 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
             }
             // db.insertAgentDetails(mAgentsBeansList);
             synchronized (this) {
-                if (new NetworkConnectionDetector(Agents_AddActivity.this).isNetworkConnected()) {
+               /* if (new NetworkConnectionDetector(Agents_AddActivity.this).isNetworkConnected()) {
                     //agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
                     agentsmodel.customerAdd(mAgentsBeansList);
-                }else {
+                }else {*/
                     db.insertAgentDetails(mAgentsBeansList);
                     Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
                 }
-            }
+
             synchronized (this) {
                 Intent i = new Intent(Agents_AddActivity.this, AgentsActivity.class);
                 startActivity(i);
@@ -445,7 +447,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem( R.id.Add).setVisible(false);
-
+        menu.findItem( R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
     }

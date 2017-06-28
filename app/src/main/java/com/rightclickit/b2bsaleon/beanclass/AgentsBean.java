@@ -101,6 +101,16 @@ public class AgentsBean {
     private String mAgentCreatedOn;
     private String mAgentUpdatedBy;
     private String mAgentUpdatedOn;
+
+    public String getmAgentApprovedOn() {
+        return mAgentApprovedOn;
+    }
+
+    public void setmAgentApprovedOn(String mAgentApprovedOn) {
+        this.mAgentApprovedOn = mAgentApprovedOn;
+    }
+
+    private String mAgentApprovedOn;
     private String mFirstname;
 
 

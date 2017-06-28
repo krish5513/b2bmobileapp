@@ -410,7 +410,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_USER_CODE, userCode);
             values.put(KEY_COMPANYNAME, companyname);
             values.put(KEY_NAME, userName);
-            values.put(KEY_EMAIL, email);
+            values.put(KEY_EMAIL, email.toLowerCase());
             values.put(KEY_PHONE_NUMBER, phone);
             values.put(KEY_AVATAR, profilrPic);
             values.put(KEY_STAKEHOLDER_ID, stakeHolder);

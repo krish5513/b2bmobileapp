@@ -13,11 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 
-public class DashboardReturns extends AppCompatActivity {
+public class TripsheetReturns extends AppCompatActivity {
     LinearLayout ret;
     LinearLayout payments;
     LinearLayout save;
@@ -26,7 +25,7 @@ public class DashboardReturns extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard_returns);
+        setContentView(R.layout.activity_tripsheet_returns);
 
 
         this.getSupportActionBar().setTitle("RETURNS");
@@ -59,7 +58,7 @@ public class DashboardReturns extends AppCompatActivity {
         payments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(DashboardReturns.this,DashboardPayments.class);
+                Intent i=new Intent(TripsheetReturns.this,TripsheetPayments.class);
                 startActivity(i);
                 finish();
 
@@ -69,7 +68,7 @@ public class DashboardReturns extends AppCompatActivity {
         delivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(DashboardReturns.this,DashboardDelivery.class);
+                Intent i=new Intent(TripsheetReturns.this,TripsheetDelivery.class);
                 startActivity(i);
                 finish();
 
@@ -78,13 +77,13 @@ public class DashboardReturns extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAlertDialogWithCancelButton(DashboardReturns.this,"User Action!","Do you want to save data?");
+                showAlertDialogWithCancelButton(TripsheetReturns.this,"User Action!","Do you want to save data?");
             }
         });
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(DashboardReturns.this,DashboardDeliveryPreview.class);
+                Intent i=new Intent(TripsheetReturns.this,TripsheetDeliveryPreview.class);
                 startActivity(i);
                 finish();
 
@@ -106,7 +105,7 @@ public class DashboardReturns extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Intent i =new Intent(DashboardReturns.this,DashboardDelivery.class);
+                    Intent i =new Intent(TripsheetReturns.this,DashboardDelivery.class);
                     startActivity(i);
                     finish();
                 }
@@ -144,7 +143,7 @@ public class DashboardReturns extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(DashboardReturns.this,SalesListActivity.class);
+            Intent i =new Intent(TripsheetReturns.this,SalesListActivity.class);
             startActivity(i);
             finish();
             return true;
@@ -176,7 +175,7 @@ public class DashboardReturns extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, TripSheetView.class);
         startActivity(intent);
         finish();
     }

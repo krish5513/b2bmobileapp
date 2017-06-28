@@ -13,23 +13,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
-public class DashboardReturns extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class TripsheetDelivery extends AppCompatActivity {
     LinearLayout ret;
     LinearLayout payments;
     LinearLayout save;
     LinearLayout print;
-    LinearLayout delivery;
+
+    private DBHelper mDBHelper;
+    private MMSharedPreferences mPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard_returns);
+        setContentView(R.layout.activity_tripsheet_delivery);
 
-
-        this.getSupportActionBar().setTitle("RETURNS");
+        this.getSupportActionBar().setTitle("DELIVERIES");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.route_white);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
@@ -43,53 +48,77 @@ public class DashboardReturns extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
 
-        ret = (LinearLayout) findViewById(R.id.rLinear);
-        payments = (LinearLayout) findViewById(R.id.rpayment);
-        save = (LinearLayout) findViewById(R.id.rsave);
-        print = (LinearLayout) findViewById(R.id.rpreview);
-        delivery=(LinearLayout) findViewById(R.id.rdelivery) ;
+        ret = (LinearLayout) findViewById(R.id.linearreturn);
+        ret.setVisibility(View.GONE);
+        payments = (LinearLayout) findViewById(R.id.linearpayments);
+        payments.setVisibility(View.GONE);
+
+        save = (LinearLayout) findViewById(R.id.linearsave);
+        print = (LinearLayout) findViewById(R.id.linearpreview);
+
+
+        mDBHelper = new DBHelper(TripsheetDelivery.this);
+        mPreferences = new MMSharedPreferences(TripsheetDelivery.this);
 
 
 
 
 
 
-
-
-        payments.setOnClickListener(new View.OnClickListener() {
+        ret.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(DashboardReturns.this,DashboardPayments.class);
+                Intent i=new Intent(TripsheetDelivery.this,TripsheetReturns.class);
                 startActivity(i);
                 finish();
 
 
             }
         });
-        delivery.setOnClickListener(new View.OnClickListener() {
+        payments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(DashboardReturns.this,DashboardDelivery.class);
+                Intent i=new Intent(TripsheetDelivery.this,TripsheetPayments.class);
                 startActivity(i);
                 finish();
+
 
             }
         });
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAlertDialogWithCancelButton(DashboardReturns.this,"User Action!","Do you want to save data?");
+                showAlertDialogWithCancelButton(TripsheetDelivery.this,"User Action!","Do you want to save data?");
             }
         });
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(DashboardReturns.this,DashboardDeliveryPreview.class);
+                Intent i=new Intent(TripsheetDelivery.this,TripsheetDeliveryPreview.class);
                 startActivity(i);
                 finish();
 
             }
         });
+
+
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
+        System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
+        for (int z = 0;z<privilegeActionsData.size();z++) {
+            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+
+            if (privilegeActionsData.get(z).toString().equals("list_view_return")) {
+                ret.setVisibility(View.VISIBLE);
+            } else if (privilegeActionsData.get(z).toString().equals("list_view_payment")) {
+                payments.setVisibility(View.VISIBLE);
+            }
+
+
+        }
+
+
+
+
 
     }
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {
@@ -106,7 +135,7 @@ public class DashboardReturns extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Intent i =new Intent(DashboardReturns.this,DashboardDelivery.class);
+                    Intent i =new Intent(TripsheetDelivery.this,TripsheetDelivery.class);
                     startActivity(i);
                     finish();
                 }
@@ -144,7 +173,7 @@ public class DashboardReturns extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(DashboardReturns.this,SalesListActivity.class);
+            Intent i =new Intent(TripsheetDelivery.this,SalesListActivity.class);
             startActivity(i);
             finish();
             return true;
@@ -176,7 +205,7 @@ public class DashboardReturns extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
+        Intent intent = new Intent(this, TripSheetView.class);
         startActivity(intent);
         finish();
     }
