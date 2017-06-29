@@ -24,6 +24,8 @@ public class Constants {
     public static final String FONT_NAME_REGULAR = "fonts/Swiss-721-BT-Roman.ttf";
     public static final String FONT_NAME_BOLD = "fonts/Swiss-721-BT-Bold.ttf";
 
+    public static final String DATE_DISPLAY_FORMAT = "dd/MM/yyyy HH:mm:ss";
+
     public enum RequestCode {
         DEFAULT
     }

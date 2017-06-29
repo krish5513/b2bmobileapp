@@ -21,6 +21,7 @@ import com.rightclickit.b2bsaleon.activities.SalesActivity;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
+import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -35,6 +36,7 @@ import java.util.Locale;
 public class TDCSalesAdapter extends BaseAdapter {
     LayoutInflater mInflater;
     private Activity activity;
+    private TDCSalesListener listener;
     private Context ctxt;
     private ImageLoader mImageLoader;
     private ArrayList<ProductsBean> allProductsList, filteredProductsList, selectedProductsList;
@@ -43,11 +45,12 @@ public class TDCSalesAdapter extends BaseAdapter {
     private Drawable red_circle, green_circle;
 
     private double availableStock = 5;
-    private final String zero_cost = "0000.000";
+    private final String zero_cost = "0.000";
 
-    public TDCSalesAdapter(Context ctxt, SalesActivity salesActivity, ArrayList<ProductsBean> productsList, ListView products_list_view) {
+    public TDCSalesAdapter(Context ctxt, SalesActivity salesActivity, TDCSalesListener salesListener, ArrayList<ProductsBean> productsList, ListView products_list_view) {
         this.ctxt = ctxt;
         this.activity = salesActivity;
+        this.listener = salesListener;
         this.mImageLoader = new ImageLoader(salesActivity);
         this.mInflater = LayoutInflater.from(activity);
         this.mPreferences = new MMSharedPreferences(activity);
@@ -135,8 +138,9 @@ public class TDCSalesAdapter extends BaseAdapter {
 
         tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", availableStock));
         tdcSalesViewHolder.price.setText(Utility.getFormattedCurrency(productRate));
-        tdcSalesViewHolder.tax.setText(Utility.getFormattedCurrency(taxAmount));
-        tdcSalesViewHolder.amount.setText(Utility.getFormattedCurrency(amount));
+        tdcSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
+        tdcSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
+        tdcSalesViewHolder.product_quantity.setText(String.format("%.3f", currentProductsBean.getSelectedQuantity()));
 
         tdcSalesViewHolder.product_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,7 +182,7 @@ public class TDCSalesAdapter extends BaseAdapter {
                             removeProductFromSelectedProductsList(currentProductsBean);
                         } else {
                             currentTDCSalesViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
-                            updateSelectedProductsList(currentProductsBean, presentQuantity);
+                            updateSelectedProductsList(currentProductsBean);
                         }
                     }
                 } catch (Exception e) {
@@ -207,7 +211,7 @@ public class TDCSalesAdapter extends BaseAdapter {
                         currentTDCSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
                         currentTDCSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
 
-                        updateSelectedProductsList(currentProductsBean, presentQuantity);
+                        updateSelectedProductsList(currentProductsBean);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -225,6 +229,9 @@ public class TDCSalesAdapter extends BaseAdapter {
 
                         if (enteredQuantity > currentProductsBean.getProductStock()) {
                             quantityEditText.setText(zero_cost);
+
+                            if (selectedProductsList.contains(currentProductsBean))
+                                removeProductFromSelectedProductsList(currentProductsBean);
 
                             new AlertDialog.Builder(activity)
                                     .setTitle("Alert..!")
@@ -248,7 +255,7 @@ public class TDCSalesAdapter extends BaseAdapter {
                                 currentTDCSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
                                 currentTDCSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
 
-                                updateSelectedProductsList(currentProductsBean, enteredQuantity);
+                                updateSelectedProductsList(currentProductsBean);
                             } else if (enteredQuantity == 0) {
                                 if (selectedProductsList.contains(currentProductsBean))
                                     removeProductFromSelectedProductsList(currentProductsBean);
@@ -264,11 +271,15 @@ public class TDCSalesAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void updateSelectedProductsList(ProductsBean productsBean, Double quantity) {
+    public void updateSelectedProductsList(ProductsBean productsBean) {
         try {
             if (!selectedProductsList.contains(productsBean)) {
                 selectedProductsList.add(productsBean);
             }
+
+            if (listener != null)
+                listener.updateSelectedProductsListAndSubTotal(selectedProductsList);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -278,6 +289,10 @@ public class TDCSalesAdapter extends BaseAdapter {
         try {
             if (selectedProductsList.contains(productsBean))
                 selectedProductsList.remove(productsBean);
+
+            if (listener != null)
+                listener.updateSelectedProductsListAndSubTotal(selectedProductsList);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -306,7 +321,7 @@ public class TDCSalesAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    // Methos to display product image as full image
+    // Method to display product image as full image
     private void showProductImageFull(String url) {
         final AlertDialog.Builder alertadd = new AlertDialog.Builder(activity);
         LayoutInflater factory = LayoutInflater.from(activity);

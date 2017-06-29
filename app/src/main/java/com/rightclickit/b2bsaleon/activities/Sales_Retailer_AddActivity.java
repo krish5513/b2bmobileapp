@@ -3,14 +3,9 @@ package com.rightclickit.b2bsaleon.activities;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.rightclickit.b2bsaleon.R;
-
 
 import com.rightclickit.b2bsaleon.R;
 
@@ -84,7 +79,7 @@ public class Sales_Retailer_AddActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, Sales_PreviewActivity.class);
+        Intent intent = new Intent(this, SalesCustomerSelectionActivity.class);
         startActivity(intent);
         finish();
     }

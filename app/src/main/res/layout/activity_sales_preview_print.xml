@@ -6,245 +6,213 @@
     android:layout_height="match_parent"
     tools:context="com.rightclickit.b2bsaleon.activities.Sales_Preview_PrintActivity">
 
-
-    Conversation opened. 1 unread message.
-
-    Skip to content
-    Using Gmail with screen readers
-    Search
-
-
-
-    Gmail
-    COMPOSE
-    Labels
-    Inbox
-    Starred
-    Sent Mail
-    Drafts (2)
-    More
-    Hangouts
-
-
-
-    More
-    1 of 53
-
-    Print all In new window
-    sales preview
-    Inbox
-    x
-
-    Murali Krishna
-    Attachments3:35 AM (12 hours ago)
-
-    to me
-    7 Attachments
-
-
-    Click here to Reply or Forward
-    5.03 GB (33%) of 15 GB used
-    Manage
-    Terms - Privacy
-    Last account activity: 13 hours ago
-    Details
-    Murali Krishna
-    murali.rcits2017@gmail.com
-
-    Show details
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/layout_background">
+        android:background="@color/layout_background"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/tv_companyName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="thirumala milk products pvt ltd"
             android:gravity="left"
-            android:textAllCaps="true"
-            android:paddingLeft="10dp"
+            android:paddingLeft="5dp"
             android:paddingTop="5dp"
+            android:text="thirumala milk products pvt ltd"
+            android:textAllCaps="true"
             android:textColor="@color/greydark"
-            />
+            android:textSize="16sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/tin_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="29567129023"
                 android:gravity="left"
+                android:paddingLeft="5dp"
                 android:paddingTop="5dp"
+                android:text="29567129023"
                 android:textAllCaps="true"
-                android:paddingLeft="10dp"
                 android:textColor="@color/greydark"
-                />
+                android:textSize="14sp" />
+
             <TextView
                 android:id="@+id/sales_ofc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="Ameerpet"
                 android:gravity="left"
-                android:paddingTop="5dp"
-                android:textAllCaps="true"
                 android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="Ameerpet"
+                android:textAllCaps="true"
                 android:textColor="@color/greydark"
-                />
+                android:textSize="14sp" />
+
             <TextView
                 android:id="@+id/route_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="124587"
                 android:gravity="left"
-                android:paddingTop="5dp"
-                android:textAllCaps="true"
                 android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="124587"
+                android:textAllCaps="true"
                 android:textColor="@color/greydark"
-                />
+                android:textSize="14sp" />
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="TPC Sale info"
             android:gravity="left"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:text="TPC Sale info"
             android:textAllCaps="true"
-            android:padding="10dp"
             android:textColor="@color/greydark"
-            />
+            android:textSize="16sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
             <TextView
                 android:id="@+id/sale_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="121512"
                 android:gravity="left"
+                android:paddingLeft="5dp"
+                android:text="TDC00001"
                 android:textAllCaps="true"
-                android:paddingLeft="10dp"
                 android:textColor="@color/greydark"
-                />
+                android:textSize="14sp" />
+
             <TextView
-                android:id="@+id/tv_date"
+                android:id="@+id/sale_date_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="Date"
                 android:gravity="left"
-                android:textAllCaps="true"
                 android:paddingLeft="10dp"
+                android:text="28/06/2017"
+                android:textAllCaps="true"
                 android:textColor="@color/greydark"
-                />
+                android:textSize="14sp" />
+
             <TextView
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="Raj Kumar"
                 android:gravity="left"
                 android:paddingLeft="10dp"
+                android:text="Raj Kumar"
                 android:textColor="@color/greydark"
-                />
+                android:textSize="14sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.17"
-                android:text="Product"
                 android:layout_gravity="center|left"
+                android:layout_weight="0.17"
                 android:gravity="center|left"
+                android:text="Product"
+                android:textColor="@color/greydark"
                 android:textSize="14sp"
-                android:textColor="@color/greydark"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
-                android:text="Quantity"
-                android:textSize="14sp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@color/greydark"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.22"
-                android:text="Tax"
                 android:layout_gravity="center|end"
-                android:gravity="center|end"
-                android:textSize="14sp"
-                android:textColor="@color/greydark"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.21"
+                android:layout_weight="0.19"
+                android:gravity="center|left"
                 android:text="MRP"
-                android:layout_gravity="center|end"
-                android:gravity="center|end"
+                android:textColor="@color/greydark"
                 android:textSize="14sp"
-                android:textColor="@color/greydark"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="0.2"
-                android:text="Amount"
-                android:layout_gravity="center|end"
-                android:gravity="center|end"
+                android:gravity="center|right"
+                android:text="Quantity"
+                android:textColor="@color/greydark"
                 android:textSize="14sp"
-                android:textColor="@color/greydark"/>
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_weight="0.18"
+                android:gravity="center|end"
+                android:text="Amount"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_weight="0.19"
+                android:gravity="center|end"
+                android:paddingRight="3dp"
+                android:text="Tax"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
         </LinearLayout>
-        <ScrollView
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/scrollViewSearch"
-            android:scrollbars="none"
-            android:layout_marginBottom="105dp">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/cardList"
-                android:scrollbars="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+            android:layout_marginBottom="114dp"
+            android:orientation="vertical">
 
-        </ScrollView>
+            <ListView
+                android:id="@+id/tdc_products_list_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="60dp"
         android:background="@color/white"
         android:gravity="end|center"
-        android:layout_marginBottom="60dp"
         android:orientation="vertical">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -255,73 +223,69 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="5dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/sub_total_title"
+                        android:layout_width="75dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="0dp"
                         android:text="Sub Total"
-                        android:textSize="14sp"
-                        android:layout_weight="0.18"
-                        android:textColor="@color/greydark"/>
+                        android:textColor="@color/greydark"
+                        android:textSize="14sp" />
+
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/total_tax_amount"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0.000"
-                        android:layout_weight="0.16"
-                        android:id="@+id/totalQty"
-                        android:layout_gravity="center|end"
-                        android:gravity="center|end"
-                        android:textSize="14sp"
-                        android:textColor="@color/greydark"/>
+                        android:layout_marginLeft="5dp"
+                        android:text="Rs. 0.00"
+                        android:textColor="@color/greydark"
+                        android:textSize="14sp" />
+
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/total_amount"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0.00"
-                        android:layout_weight="0.18"
-                        android:layout_gravity="center|end"
-                        android:gravity="center|end"
-                        android:textSize="14sp"
-                        android:id="@+id/totalTaxAmount"
-                        android:textColor="@color/greydark"/>
-                    <TextView
-                        android:id="@+id/subTotalAmount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:gravity="end"
-                        android:textSize="14sp"
-                        android:layout_weight="0.15"
-                        android:textColor="@color/black"
-                        android:text="Rs. 0.00"/>
+                        android:layout_marginLeft="40dp"
+                        android:text="Rs. 0.00"
+                        android:textColor="@color/greydark"
+                        android:textSize="14sp" />
+
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.25"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="5dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="75dp"
                         android:layout_height="wrap_content"
                         android:text="Total Value"
-                        android:textSize="14sp"
-                        android:textColor="@color/greydark"/>
+                        android:textColor="@color/greydark"
+                        android:textSize="14sp" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/sub_total_amount"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:gravity="end"
-                        android:textSize="14sp"
-                        android:id="@+id/totalAmount"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="0.1"
+                        android:text="Rs. 0.00"
                         android:textColor="@color/black"
-                        android:text="Rs. 0.00"/>
+                        android:textSize="14sp" />
+
                 </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -329,10 +293,12 @@
         android:background="@color/white"
         android:gravity="end|center"
         android:orientation="vertical">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -341,9 +307,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_weight="0.25"
                 android:layout_gravity="center"
+                android:layout_weight="0.25"
                 android:gravity="center">
+
                 <TextView
                     android:id="@+id/tv_print_print"
                     android:layout_width="wrap_content"
@@ -355,11 +322,9 @@
                     android:textSize="12sp" />
 
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
-    sales preview print.txt
-    Open with Google Docs
-    Displaying sales preview print.txt.
 
 </FrameLayout>

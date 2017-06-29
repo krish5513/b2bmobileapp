@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class TDCCustomer implements Serializable {
     private int id;
-    private int customerType;
+    private int customerType; // 0 for Consumer & 1 for Retailer
     private String name;
     private String mobileNo;
     private String businessName;

@@ -17,33 +17,37 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TDCSalesAdapter;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 
-public class SalesActivity extends AppCompatActivity {
+public class SalesActivity extends AppCompatActivity implements TDCSalesListener {
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
 
     private SearchView search;
     private ListView tdc_products_list_view;
-    private TextView tdc_sales_list, tdc_sales_preview;
+    private TextView tdc_sales_list, tdc_sales_preview, totalTaxAmountTextView, totalAmountTextView, subTotalAmountTextView;
 
     private DBHelper mDBHelper;
-    private ArrayList<ProductsBean> productsList;
+    private ArrayList<ProductsBean> productsList, selectedProductsList;
     private TDCSalesAdapter tdcSalesAdapter;
     private boolean showProductsListView = false;
+    private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales);
-
 
         try {
             applicationContext = getApplicationContext();
@@ -65,12 +69,16 @@ public class SalesActivity extends AppCompatActivity {
             mDBHelper = new DBHelper(activityContext);
             mmSharedPreferences = new MMSharedPreferences(activityContext);
             productsList = new ArrayList<>();
+            selectedProductsList = new ArrayList<>();
 
             ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("TDC"));
 
             tdc_products_list_view = (ListView) findViewById(R.id.tdc_products_list_view);
             tdc_sales_list = (TextView) findViewById(R.id.tdc_sales_list);
             tdc_sales_preview = (TextView) findViewById(R.id.tdc_sales_preview);
+            totalTaxAmountTextView = (TextView) findViewById(R.id.totalTaxAmount);
+            totalAmountTextView = (TextView) findViewById(R.id.totalAmount);
+            subTotalAmountTextView = (TextView) findViewById(R.id.subTotalAmount);
 
             if (privilegeActionsData.contains("List_View")) {
                 tdc_products_list_view.setVisibility(View.VISIBLE);
@@ -88,7 +96,7 @@ public class SalesActivity extends AppCompatActivity {
 
             if (showProductsListView) {
                 productsList = mDBHelper.fetchAllRecordsFromProductsTable();
-                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, productsList, tdc_products_list_view);
+                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, productsList, tdc_products_list_view);
                 tdc_products_list_view.setAdapter(tdcSalesAdapter);
             }
 
@@ -214,13 +222,47 @@ public class SalesActivity extends AppCompatActivity {
         finish();
     }
 
-    public void showTDCSalesList(View view) {
-        showAlertDialogWithCancelButton(SalesActivity.this, "User Action!", "Are you sure want to leave sales?");
+    @Override
+    public void updateSelectedProductsListAndSubTotal(ArrayList<ProductsBean> productsList) {
+        this.selectedProductsList = productsList;
+
+        totalAmount = 0;
+        totalTaxAmount = 0;
+        subTotal = 0;
+
+        for (ProductsBean productsBean : selectedProductsList) {
+            totalAmount = totalAmount + productsBean.getProductAmount();
+            totalTaxAmount = totalTaxAmount + productsBean.getTaxAmount();
+            subTotal = totalAmount + totalTaxAmount;
+        }
+
+        totalTaxAmountTextView.setText(Utility.getFormattedCurrency(totalAmount));
+        totalAmountTextView.setText(Utility.getFormattedCurrency(totalTaxAmount));
+        subTotalAmountTextView.setText(Utility.getFormattedCurrency(subTotal));
     }
 
     public void showTDCSalesPreview(View view) {
-        Intent i = new Intent(SalesActivity.this, Sales_PreviewActivity.class);
-        startActivity(i);
-        finish();
+        try {
+            if (selectedProductsList.size() > 0) {
+                TDCSaleOrder saleOrder = new TDCSaleOrder();
+                saleOrder.setProductsList(selectedProductsList);
+                saleOrder.setOrderTotalAmount(totalAmount);
+                saleOrder.setOrderTotalTaxAmount(totalTaxAmount);
+                saleOrder.setOrderSubTotal(subTotal);
+
+                Intent customerSelectionIntent = new Intent(activityContext, SalesCustomerSelectionActivity.class);
+                customerSelectionIntent.putExtra("TDCSaleOrder", saleOrder);
+                startActivity(customerSelectionIntent);
+                finish();
+            } else {
+                Toast.makeText(activityContext, "Please select at least one product.", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showTDCSalesList(View view) {
+        showAlertDialogWithCancelButton(SalesActivity.this, "User Action!", "Are you sure want to leave sales?");
     }
 }

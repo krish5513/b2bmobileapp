@@ -1256,7 +1256,6 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
 
             ContentValues values = new ContentValues();
-            values.put(KEY_TDC_CUSTOMER_ID, customer.getId());
             values.put(KEY_TDC_CUSTOMER_TYPE, customer.getCustomerType());
             values.put(KEY_TDC_CUSTOMER_NAME, customer.getName());
             values.put(KEY_TDC_CUSTOMER_MOBILE_NO, customer.getMobileNo());
@@ -1264,8 +1263,6 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_CUSTOMER_ADDRESS, customer.getAddress());
             values.put(KEY_TDC_CUSTOMER_LAT_LONG, customer.getLatLong());
             values.put(KEY_TDC_CUSTOMER_SHOP_IMAGE, customer.getShopImage());
-            values.put(KEY_TDC_CUSTOMER_IS_ACTIVE, customer.getIsActive());
-            values.put(KEY_TDC_CUSTOMER_UPLOAD_STATUS, customer.getIsUploaded());
 
             customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
 
@@ -1285,7 +1282,7 @@ public class DBHelper extends SQLiteOpenHelper {
         List<TDCCustomer> allTDCCustomersList = new ArrayList<>();
 
         try {
-            String selectQuery = "SELECT  * FROM " + TABLE_TDC_CUSTOMERS + " WHERE " + KEY_TDC_CUSTOMER_IS_ACTIVE + " = 1";
+            String selectQuery = "SELECT * FROM " + TABLE_TDC_CUSTOMERS + " WHERE " + KEY_TDC_CUSTOMER_IS_ACTIVE + " = 1";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -1315,5 +1312,44 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return allTDCCustomersList;
+    }
+
+    /**
+     * Method to fetch only retailer records from TDC Customers Table
+     */
+    public List<TDCCustomer> fetchAllRetailerRecordsFromTDCCustomers() {
+        List<TDCCustomer> allRetailersList = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TDC_CUSTOMERS + " WHERE " + KEY_TDC_CUSTOMER_IS_ACTIVE + " = 1 AND " + KEY_TDC_CUSTOMER_TYPE + " = 1";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    TDCCustomer customer = new TDCCustomer();
+                    customer.setId(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_ID)));
+                    customer.setCustomerType(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_TYPE)));
+                    customer.setName(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_NAME)));
+                    customer.setMobileNo(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_MOBILE_NO)));
+                    customer.setBusinessName(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_BUSINESS_NAME)));
+                    customer.setAddress(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_ADDRESS)));
+                    customer.setLatLong(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_LAT_LONG)));
+                    customer.setShopImage(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE)));
+                    customer.setIsActive(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_IS_ACTIVE)));
+                    customer.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_UPLOAD_STATUS)));
+
+                    allRetailersList.add(customer);
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allRetailersList;
     }
 }
