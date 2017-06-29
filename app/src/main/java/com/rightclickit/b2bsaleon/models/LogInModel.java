@@ -42,7 +42,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String logInURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_LOGIN, Constants.LOGIN_SERVICE);
                 JSONObject params = new JSONObject();
-                params.put("email", email.trim().toLowerCase());
+                params.put("email", email.trim());
                 params.put("password", Utility.getMd5String(pwd.trim()));
 
                 AsyncRequest loginRequest = new AsyncRequest(context, this, logInURL, AsyncRequest.MethodType.POST, params);

@@ -102,7 +102,7 @@ public class AgentsActivity extends AppCompatActivity {
                 ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();
 
 
-                Collections.sort(agentsBeanArrayList, new Comparator<AgentsBean>() {
+                /*Collections.sort(agentsBeanArrayList, new Comparator<AgentsBean>() {
                     @Override
                     public int compare(AgentsBean o1, AgentsBean o2) {
                         return o1.getmAgentName().compareToIgnoreCase(o2.getmAgentName());
@@ -110,7 +110,7 @@ public class AgentsActivity extends AppCompatActivity {
 
 
                 });
-
+*/
                 loadAgentsList(agentsBeanArrayList);
             }else {
                 agentsModel.getStakeHoldersList("stakesList");
@@ -119,14 +119,6 @@ public class AgentsActivity extends AppCompatActivity {
             System.out.println("ELSE::: ");
             ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();
 
-            Collections.sort(agentsBeanArrayList, new Comparator<AgentsBean>() {
-                @Override
-                public int compare(AgentsBean o1, AgentsBean o2) {
-                    return o1.getmAgentName().compareToIgnoreCase(o2.getmAgentName());
-                }
-
-
-            });
             loadAgentsList(agentsBeanArrayList);
         }
 

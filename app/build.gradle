@@ -28,6 +28,8 @@ dependencies {
     //Gson Library
     // For Edit text's
     // Glide
+    compile files('src/main/libs/sunmiprinter.jar')
+    compile files('src/main/libs/zxing_3.2.0.jar')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -41,4 +43,13 @@ dependencies {
     compile 'com.yayandroid:LocationManager:2.0.1'
     compile 'com.loopj.android:android-async-http:1.4.9'
     testCompile 'junit:junit:4.12'
+    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+
+    //Depandencies injection
+    compile "com.google.dagger:dagger:2.9"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
+    provided 'javax.annotation:jsr250-api:1.0'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
 }

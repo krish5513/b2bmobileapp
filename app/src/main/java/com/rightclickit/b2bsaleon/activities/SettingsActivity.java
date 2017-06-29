@@ -85,7 +85,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
     public static final String TAG = LoginActivity.class.getSimpleName();
 
-    private MMSharedPreferences sharedPreferences;
+ //   private MMSharedPreferences sharedPreferences;
     private Context applicationContext, activityContext;
 
 
@@ -102,7 +102,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
     private DBHelper mDBHelper;
 
-    private String mRouteName = "",mRegionName = "",mOfficeName="";
+    private String mRouteName = "",mRegionName = "",mOfficeName="",mRouteId="";
 
     private ImageView mPicImage;
     private LinearLayout mPicLayout;
@@ -131,7 +131,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             applicationContext = getApplicationContext();
             activityContext = SettingsActivity.this;
 
-            sharedPreferences = new MMSharedPreferences(applicationContext);
+
             ImageLoader imageLoader = new ImageLoader(SettingsActivity.this);
             settingsmodel = new SettingsModel(activityContext, this);
             mDBHelper = new DBHelper(SettingsActivity.this);
@@ -367,10 +367,6 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 //                        Log.e("save on click", routeNo.getText().toString());
 //                        editor.commit();
 
-          SharedPreferences shared = getSharedPreferences("hsh", MODE_PRIVATE);
-          SharedPreferences.Editor editor = shared.edit();
-          editor.putString("companyName", str_companyName);
-          editor.commit();// commit is important here.
 
 
 
@@ -382,7 +378,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 //                         long f = mDBHelper.updateUserDetails(sharedPreferences.getString("userId"),"",userName.getText().toString(),
 //                                 "",mobile.getText().toString(),"","","","","","","",dId,transporterName.getText().toString(),
 //                                 vehicleNo.getText().toString(),"","");
-
+                     mPreferences.putString("companyname",companyName.getText().toString());
 
                         companyName.setCursorVisible(false);
                         routeNo.setCursorVisible(false);
@@ -424,7 +420,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                         Toast.makeText(getApplicationContext(), "New password and  confirm password are not match", Toast.LENGTH_SHORT).show();
                     }else {
                         confirmNewPassword.setError(null);
-                        settingsmodel.changePassword(sharedPreferences.getString("userId"), Utility.getMd5String(newPassword.getText().toString().trim()));
+                        settingsmodel.changePassword(mPreferences.getString("userId"), Utility.getMd5String(newPassword.getText().toString().trim()));
                     }
 
                     CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.success_password));
@@ -448,10 +444,11 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
             JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
             JSONArray routesArray = routesJob.getJSONArray("routeArray");
-            sharedPreferences.putString("routeId",routesArray.get(0).toString());
+            mPreferences.putString("routeId",routesArray.get(0).toString());
             for (int l = 0;l<routesArray.length();l++){
                 System.out.println("The Route Id IS::: "+ routesArray.get(l).toString());
                 List<String> routesDataList = mDBHelper.getRouteDataByRouteId(routesArray.get(l).toString());
+
                 for (int k = 0;k<routesDataList.size();k++){
                     System.out.println(" LOOPPPPPPPPPPPPPP "+k);
                     if(routesDataList.get(k)!=null) {
@@ -464,6 +461,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                                 break;
                             case 3:
                                 mOfficeName =  routesDataList.get(3);
+                                break;
+                            case 4:
+                                mRouteId =  routesDataList.get(4);
                                 break;
                         }
                     }
@@ -478,19 +478,26 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 //                System.out.println("The Data Is::: "+ routesDataList.get(0).toString());
 //            }
 
-            // Append all the db data to lables.
+
+
+             // Append all the db data to lables.
+
+
             companyName.setText("");
             if(userMapData.get("name")!=null) {
                 userName.setText(userMapData.get("name").toString());
-                Bundle bundle=new Bundle();
-                bundle.putString("USERNAME",userMapData.get("name").toString());
+                mPreferences.putString("loginusername",userMapData.get("name").toString());
             }
             if(userMapData.get("phone_number")!=null) {
                 mobile.setText(userMapData.get("phone_number").toString());
             }
             region.setText(mRegionName);
+
             salesOffice.setText(mOfficeName);
             routeNo.setText(mRouteName);
+            mPreferences.putString("routename",mRouteName);
+            mPreferences.putString("routeid",mRouteId);
+
             vehicleNo.setText("");
             transporterName.setText("");
             if(userMapData.get("access_device")!=null) {
@@ -633,7 +640,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
 
     private void loadLogout() {
-        sharedPreferences.putString("isLogin","false");
+        mPreferences.putString("isLogin","false");
         //sharedPreferences.clear();
         Intent loginIntent=new Intent(SettingsActivity.this,LoginActivity.class);
         startActivity(loginIntent);

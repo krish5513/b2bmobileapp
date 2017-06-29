@@ -89,6 +89,7 @@ public class SyncTakeOrdersService extends Service {
                 String currentDate = df.format(cal.getTime());
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
                 mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes");
+                mAgentsBeansList=mDBHelper.fetchAllRecordsFromAgentsTable();
                 userId = mSessionManagement.getString("userId");
                 String URL = String.format("%s%s%s%s", Constants.MAIN_URL,Constants.SYNC_TAKE_ORDERS_PORT,Constants.SYNC_TAKE_ORDERS_SERVICE,mSessionManagement.getString("token"));
 
@@ -96,9 +97,11 @@ public class SyncTakeOrdersService extends Service {
                 JSONObject params1 = new JSONObject();
                 String enqId = "ENQ"+mTakeOrderBeansList.get(0).getmEnquiryId();
                 params1.put("enquiry_id",enqId);
-               // params1.put("user_id",mSessionManagement.getString("userId"));
+                mSessionManagement.putString("enquiryid",enqId);
+              //params1.put("route_id",mSessionManagement.getString("agentrouteId"));
                 params1.put("route_id",mTakeOrderBeansList.get(0).getmRouteId());
-                params1.put("_id",mSessionManagement.getString("agentId"));
+              //  params1.put("route_id",mAgentsBeansList.get(0).getmAgentRouteId());
+                params1.put("user_id",mSessionManagement.getString("agentId"));
                 JSONArray productArra = new JSONArray();
                 JSONArray quantityArra = new JSONArray();
                 JSONArray fromDateArra = new JSONArray();

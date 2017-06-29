@@ -133,7 +133,7 @@ public class LoginActivity extends Activity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        emailId = mEmailView.getText().toString().trim().toLowerCase();
+        emailId = mEmailView.getText().toString().trim();
         password = mPasswordView.getText().toString();
         sharedPreferences.putString("enterEmail",emailId);
         boolean cancel = false;
