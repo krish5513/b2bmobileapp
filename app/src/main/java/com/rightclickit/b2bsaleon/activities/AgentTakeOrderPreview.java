@@ -9,6 +9,8 @@ import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AgentTakeOrderPreview extends AppCompatActivity {
     private ListView mAgentsList;
@@ -43,6 +47,8 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
     TextView agentName;
 
     TextView agentCode;
+    TextView taxprice;
+    TextView amount;
     TextView totalprice;
 
     TextView print;
@@ -105,6 +111,9 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                     topBean.setmProductTaxVAT(productsList.get(i).getProductvat());
                     topBean.setmProductFromDate(mProductIdsList.get(k).getmProductFromDate());
                     topBean.setmProductToDate(mProductIdsList.get(k).getmProductToDate());
+                    //topBean.setTaxPercentage(productsList.get(i).getProductgst());
+                   // topBean.setTaxName(productsList.get(i).getProductvat());
+                    topBean.setmProductToDate(mProductIdsList.get(k).getmProductToDate());
 
                     double price = Double.parseDouble(productsList.get(i).getProductAgentPrice().replace(",", ""));
 
@@ -135,10 +144,10 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         Route_Name.setText(sharedPreferences.getString("routename"));
 
         RouteCode = (TextView) findViewById(R.id.tv_routecode);
-        RouteCode.setText(sharedPreferences.getString("routeid"));
+        RouteCode.setText(sharedPreferences.getString("routecode")+",");
 
         orderNo = (TextView) findViewById(R.id.order_no);
-        orderNo.setText(sharedPreferences.getString("enquiryid"));
+        orderNo.setText(sharedPreferences.getString("enquiryid")+",");
 
         orderDate = (TextView) findViewById(R.id.tv_date);
         Calendar cal = Calendar.getInstance();
@@ -147,13 +156,21 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         orderDate.setText(currentDate);
 
         agentName = (TextView) findViewById(R.id.agentname);
-        agentName.setText(sharedPreferences.getString("agentName"));
+        agentName.setText(sharedPreferences.getString("agentName")+",");
         agentCode = (TextView) findViewById(R.id.tv_AgentCode);
         agentCode.setText(sharedPreferences.getString("agentCode"));
 
-        totalprice=(TextView)findViewById(R.id.totalAmount);
-        totalprice.setText(String.valueOf(mTotalProductsPriceAmountSum));
 
+        taxprice=(TextView)findViewById(R.id.taxAmount);
+        taxprice.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(20,2)});
+
+        amount=(TextView)findViewById(R.id.Amount);
+        amount.setText("Rs:"+String.valueOf(mProductsPriceAmountSum));
+        amount.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(20,2)});
+
+        totalprice=(TextView)findViewById(R.id.totalAmount);
+        totalprice.setText("Rs:"+String.valueOf(mTotalProductsPriceAmountSum));
+        totalprice.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(20,3)});
 
 
 
@@ -178,14 +195,14 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                 canvas.drawText(sharedPreferences.getString("companyname"), 5, 50, paint);
                 paint.setTextSize(20);
-                canvas.drawText(sharedPreferences.getString("routename"), 5, 80, paint);
-                canvas.drawText(sharedPreferences.getString("routeid"), 150, 80, paint);
+                canvas.drawText(sharedPreferences.getString("routename"), 150, 80, paint);
+                canvas.drawText(sharedPreferences.getString("routecode"), 5, 80, paint);
                 canvas.drawText("ORDER", 5, 120, paint);
-                canvas.drawText("by "+sharedPreferences.getString("loginusername"), 120, 120, paint);
+                canvas.drawText("by "+sharedPreferences.getString("loginusername"), 150, 120, paint);
                 canvas.drawText(sharedPreferences.getString("enquiryid"), 5, 150, paint);
-                canvas.drawText(currentDate, 80, 150, paint);
+                canvas.drawText(currentDate, 120, 150, paint);
                 canvas.drawText(sharedPreferences.getString("agentName"), 5, 180, paint);
-                canvas.drawText(sharedPreferences.getString("agentCode"), 180, 180, paint);
+                canvas.drawText(sharedPreferences.getString("agentCode"), 200, 180, paint);
               //  canvas.drawText(String.valueOf(mTotalProductsPriceAmountSum), 240, 150, paint);
                 canvas.drawText("Product", 5, 220, paint);
                 canvas.drawText("QTY", 100, 220, paint);
@@ -223,15 +240,17 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                     st = st + 30;
                 }
                 canvas.drawText("----------------------------------------------------", 5, st, paint);
-                st=st+20;
-                /*canvas.drawText("Sub Total ", 5, st, paint);
+               /* st=st+20;
+                canvas.drawText("Sub Total ", 5, st, paint);
                 canvas.drawText(String.format("%.3f", totalqty), 100, st, paint);
                 canvas.drawText(String.format("%.2f", totaltaxAmount), 160, st, paint);
                 Log.e("dfsdfds",String.format("%.2f", totaltaxAmount));
-                canvas.drawText(String.format("%.2f", subtAmount), 300, st, paint);
-                st=st+20;*/
-                canvas.drawText("Total Amount", 5, st, paint);
-                canvas.drawText(String.valueOf(mTotalProductsPriceAmountSum), 300, st, paint);
+                canvas.drawText(String.format("%.2f", subtAmount), 300, st, paint);*/
+                st=st+20;
+                canvas.drawText("Total Value", 5, st, paint);
+                canvas.drawText(String.valueOf("RS.0.00"), 140, st, paint);
+                canvas.drawText("Rs:"+String.valueOf(mProductsPriceAmountSum), 220, st, paint);
+                canvas.drawText("Rs:"+String.valueOf(mTotalProductsPriceAmountSum), 300, st, paint);
                 st=st+20;
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
@@ -313,5 +332,22 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+    public class DecimalDigitsInputFilter implements InputFilter {
 
+        Pattern mPattern;
+
+        public DecimalDigitsInputFilter(int digitsBeforeZero,int digitsAfterZero) {
+            mPattern=Pattern.compile("[0-9]{0," + (digitsBeforeZero-1) + "}+((\\.[0-9]{0," + (digitsAfterZero-1) + "})?)||(\\.)?");
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+
+            Matcher matcher=mPattern.matcher(dest);
+            if(!matcher.matches())
+                return "";
+            return null;
+        }
+
+    }
 }

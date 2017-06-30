@@ -70,7 +70,7 @@ public class SyncRoutesMasterDetailsService extends Service {
      * Class to perform background operations.
      */
     private class FetchAndSyncRoutesMasterDetailsAsyncTask extends AsyncTask<Void, Void, Void> {
-        private String routeId = "", routeName = "", regionId = "", regionName = "", officeId = "", officeName = "",mStoredRouteIds="";
+        private String routeId = "", routeName = "", regionId = "", regionName = "", officeId = "", officeName = "",mStoredRouteIds="",routeCode="";
         private HashMap<String,String> routeIdsMap = new HashMap<String,String>();
 
 
@@ -149,11 +149,16 @@ public class SyncRoutesMasterDetailsService extends Service {
                                                 //System.out.println("The ROUTE NAME IS:: " + obj.getString("name"));
                                                 routeName = obj.getString("name");
                                             }
+                                            if (obj.has("code")) {
+                                                //System.out.println("The ROUTE NAME IS:: " + obj.getString("name"));
+                                                routeCode = obj.getString("code");
+                                            }
+
                                             //  System.out.println("ROUTE NAME IS:: " + routeName);
                                             //  System.out.println("REGION NAME IS:: " + regionName);
                                             //  System.out.println("OFFICE NAME IS:: " + officeName);
                                             synchronized (this) {
-                                                mDBHelper.insertRoutesDetails(routeId, routeName, regionName, officeName);
+                                                mDBHelper.insertRoutesDetails(routeId, routeName, regionName, officeName,routeCode);
                                             }
                                         }
                                     }

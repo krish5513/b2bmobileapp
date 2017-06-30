@@ -15,7 +15,7 @@ public class Sales_Retailer_AddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales__retailer__add);
-        this.getSupportActionBar().setTitle("Retailer Add");
+        this.getSupportActionBar().setTitle("ADD RETAILERS");
         this.getSupportActionBar().setSubtitle(null);
         //this.getSupportActionBar().setLogo(R.drawable.sales_white);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);

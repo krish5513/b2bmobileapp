@@ -175,9 +175,9 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
             synchronized (this){
                 mDBHelper.insertProductDetails(mProductsBeansList);
             }
-            synchronized (this){
-                mDBHelper.insertTakeOrderProductDetails(mTakeOrderProductsBeansList);
-            }
+//            synchronized (this){
+//                mDBHelper.insertTakeOrderProductDetails(mTakeOrderProductsBeansList);
+//            }
             synchronized (this){
                 activity.loadProductsList(mProductsBeansList);
             }

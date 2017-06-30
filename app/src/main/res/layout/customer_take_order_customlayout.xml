@@ -363,7 +363,7 @@
                     android:id="@+id/img"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:background="@drawable/ic_circle_red"
+                    android:background="@drawable/ic_circle_green"
                     android:src="@drawable/ic_arrow_downward_white_24dp" />
 
                 <TextView

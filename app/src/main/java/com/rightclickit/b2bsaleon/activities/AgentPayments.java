@@ -34,7 +34,7 @@ public class AgentPayments extends AppCompatActivity {
         setContentView(R.layout.activity_agent_payments);
 
 
-        this.getSupportActionBar().setTitle("Payments");
+        this.getSupportActionBar().setTitle("PAYMENTS");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
@@ -202,7 +202,7 @@ public class AgentPayments extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, AgentViewActivity.class);
+        Intent intent = new Intent(this, AgentsActivity.class);
         startActivity(intent);
         finish();
     }

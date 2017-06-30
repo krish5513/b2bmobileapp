@@ -98,11 +98,15 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
         double price = Double.parseDouble(mpreviewBeansList1.get(position).getpPrice().replace(",", ""));
 
         float tax = 0.0f;
-        if (mpreviewBeansList1.get(position).getmProductTaxVAT() != null)
+        String str_Taxname="";
+        if (mpreviewBeansList1.get(position).getmProductTaxVAT() != null) {
             tax = Float.parseFloat(mpreviewBeansList1.get(position).getmProductTaxVAT());
-        else if (mpreviewBeansList1.get(position).getmProductTaxGST() != null)
+            str_Taxname = "VAT:";
+        }
+        else if (mpreviewBeansList1.get(position).getmProductTaxGST() != null) {
             tax = Float.parseFloat(mpreviewBeansList1.get(position).getmProductTaxGST());
-
+            str_Taxname = "GST:";
+        }
         double taxAmount = (price * tax) / 100;
         double amount = price + taxAmount;
 
@@ -113,7 +117,8 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
         holder.pAmount.setText(Utility.getFormattedCurrency(amount*Double.parseDouble(mpreviewBeansList1.get(position).getpQuantity())));
         holder.fromPreview.setText(mpreviewBeansList1.get(position).getmProductFromDate());
         holder.toPreview.setText(mpreviewBeansList1.get(position).getmProductToDate());
-
+        holder.taxName.setText(str_Taxname);
+        holder.taxPer.setText(String.valueOf("("+tax+"%)"));
 
         return convertView;
     }

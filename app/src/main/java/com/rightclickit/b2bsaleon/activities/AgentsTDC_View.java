@@ -16,7 +16,7 @@ public class AgentsTDC_View extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agents_tdc__view);
 
-        this.getSupportActionBar().setTitle("TDC OrdersView");
+        this.getSupportActionBar().setTitle("TDC ORDERS VIEW");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.ic_shopping_cart_white_24dp);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);

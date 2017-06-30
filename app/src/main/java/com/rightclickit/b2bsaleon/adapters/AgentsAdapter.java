@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.activities.AgentTDC_Order;
 import com.rightclickit.b2bsaleon.activities.AgentViewActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
@@ -139,7 +140,7 @@ public class AgentsAdapter extends BaseAdapter {
                 mPreferences.putString("agentrouteId",mAgentsBeansList1.get(position).getmAgentRouteId());
                 mPreferences.putString("enqId",String.valueOf(position+1));
                 mPreferences.putString("agentCode",mAgentsBeansList1.get(position).getmAgentCode());
-                activity.startActivity(new Intent(activity,AgentViewActivity.class));
+                activity.startActivity(new Intent(activity,AgentTDC_Order.class));
                 activity.finish();
             }
         });

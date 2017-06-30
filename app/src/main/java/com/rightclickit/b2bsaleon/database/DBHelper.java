@@ -85,6 +85,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_ROUTE_NAME = "route_name";
     private final String KEY_REGION_NAME = "region_name";
     private final String KEY_OFFICE_NAME = "office_name";
+    private final String KEY_ROUTE_CODE = "route_code";
 
     // Column names for User activity  Table
     private final String KEY_USER_ACTIVITY_ID = "user_activity_id";
@@ -199,7 +200,9 @@ public class DBHelper extends SQLiteOpenHelper {
     // Routes Table Create Statements
     private final String CREATE_TABLE_ROUTES = "CREATE TABLE IF NOT EXISTS "
             + TABLE_ROUTESDETAILS + "(" + KEY_ROUTE_ID + " VARCHAR," + KEY_ROUTE_NAME + " VARCHAR,"
-            + KEY_REGION_NAME + " VARCHAR," + KEY_OFFICE_NAME + " VARCHAR)";
+            + KEY_REGION_NAME + " VARCHAR," + KEY_OFFICE_NAME + " VARCHAR," + KEY_ROUTE_CODE + " VARCHAR)";
+
+
 
     // User activity Table Create Statements
     private final String CREATE_USER_ACTIVITY_TABLE = "CREATE TABLE IF NOT EXISTS "
@@ -217,7 +220,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //TO Products Table Create Statements
     private final String CREATE_PRODUCTS_TABLE_TO = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_TO_PRODUCTS + "(" + KEY_TO_PRODUCT_ID + " VARCHAR PRIMARY KEY,"
+            + TABLE_TO_PRODUCTS + "(" + KEY_TO_PRODUCT_ID + " VARCHAR,"
             + KEY_TO_PRODUCT_NAME + " VARCHAR," + KEY_TO_PRODUCT_ROUTE_ID + " VARCHAR,"
             + KEY_TO_FROM_DATE + " VARCHAR," + KEY_TO_TO_DATE + " VARCHAR," + KEY_TO_ORDER_TYPE + " VARCHAR,"
             + KEY_TO_QUANTITY + " VARCHAR," + KEY_TO_STATUS + " VARCHAR,"
@@ -684,14 +687,17 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param routeId
      * @param routeName
      */
-    public void insertRoutesDetails(String routeId, String routeName, String regionName, String officeName) {
+
+    public void insertRoutesDetails(String routeId, String routeName, String regionName, String officeName,String routeCode) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
             values.put(KEY_ROUTE_ID, routeId);
+
             values.put(KEY_ROUTE_NAME, routeName);
             values.put(KEY_REGION_NAME, regionName);
             values.put(KEY_OFFICE_NAME, officeName);
+            values.put(KEY_ROUTE_CODE, routeCode);
 
             // insert row
             db.insert(TABLE_ROUTESDETAILS, null, values);
@@ -703,6 +709,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+
+
 
     /**
      * Method to get the routes data
@@ -728,9 +736,11 @@ public class DBHelper extends SQLiteOpenHelper {
                     System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ====" + c.getString(2));
                     System.out.println("Routes Data Size::: ====== ==== ===== ====== ===== ====" + c.getString(3));
                     routesMasterData.add((c.getString(c.getColumnIndex(KEY_ROUTE_ID))));
+
                     routesMasterData.add((c.getString(c.getColumnIndex(KEY_ROUTE_NAME))));
                     routesMasterData.add((c.getString(c.getColumnIndex(KEY_REGION_NAME))));
                     routesMasterData.add((c.getString(c.getColumnIndex(KEY_OFFICE_NAME))));
+                    routesMasterData.add((c.getString(c.getColumnIndex(KEY_ROUTE_CODE))));
 
                 } while (c.moveToNext());
             }
@@ -742,6 +752,9 @@ public class DBHelper extends SQLiteOpenHelper {
         System.out.println("Routes Data Final Size::: " + routesMasterData.size());
         return routesMasterData;
     }
+
+
+
 
     /**
      * Method to get the route id
@@ -799,7 +812,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     routeDetailsById.add((c.getString(c.getColumnIndex(KEY_ROUTE_NAME))));
                     routeDetailsById.add((c.getString(c.getColumnIndex(KEY_REGION_NAME))));
                     routeDetailsById.add((c.getString(c.getColumnIndex(KEY_OFFICE_NAME))));
-
+                    routeDetailsById.add((c.getString(c.getColumnIndex(KEY_ROUTE_CODE))));
                 } while (c.moveToNext());
             }
 
@@ -1100,6 +1113,54 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Method to fetch all records from products table
+     * @param agentId
+     */
+    public ArrayList<ProductsBean> fetchAllRecordsFromProductsTableForTakeOrders(String agentId) {
+        ArrayList<ProductsBean> allProductTrackRecords = new ArrayList<ProductsBean>();
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_PRODUCTS +" tp LEFT JOIN "+TABLE_TO_PRODUCTS+" top ON tp."+KEY_PRODUCT_ID
+                    +"=top."+KEY_TO_PRODUCT_ID +" AND top."+KEY_TO_AGENTID+"='"+agentId+"'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    ProductsBean productsBean = new ProductsBean();
+
+                    productsBean.setProductId((c.getString(c.getColumnIndex(KEY_PRODUCT_ID))));
+                    productsBean.setProductCode((c.getString(c.getColumnIndex(KEY_PRODUCT_CODE))));
+                    productsBean.setProductTitle((c.getString(c.getColumnIndex(KEY_PRODUCT_TITLE))));
+                    productsBean.setProductDescription((c.getString(c.getColumnIndex(KEY_PRODUCT_DESCRIPTION))));
+                    productsBean.setProductImageUrl((c.getString(c.getColumnIndex(KEY_PRODUCT_IMAGE_URL))));
+                    productsBean.setProductReturnable((c.getString(c.getColumnIndex(KEY_PRODUCT_RETURNABLE))));
+                    productsBean.setProductMOQ((c.getString(c.getColumnIndex(KEY_PRODUCT_MOQ))));
+                    productsBean.setProductAgentPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_AGENT_PRICE))));
+                    productsBean.setProductConsumerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_CONSUMER_PRICE))));
+                    productsBean.setProductRetailerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_RETAILER_PRICE))));
+                    productsBean.setProductgst((c.getString(c.getColumnIndex(KEY_PRODUCT_GST_PRICE))));
+                    productsBean.setProductvat((c.getString(c.getColumnIndex(KEY_PRODUCT_VAT_PRICE))));
+
+                    productsBean.setmTakeOrderQuantity(c.getString(c.getColumnIndex(KEY_TO_QUANTITY)));
+                    productsBean.setmTakeOrderFromDate(c.getString(c.getColumnIndex(KEY_TO_FROM_DATE)));
+                    productsBean.setmTakeOrderToDate(c.getString(c.getColumnIndex(KEY_TO_TO_DATE)));
+
+                    allProductTrackRecords.add(productsBean);
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allProductTrackRecords;
+    }
+
+    /**
      * Method to insert take order product details
      */
 
@@ -1135,8 +1196,9 @@ public class DBHelper extends SQLiteOpenHelper {
      * Method to fetch all records from take products table
      *
      * @param isSync
+     * @param agentId
      */
-    public ArrayList<TakeOrderBean> fetchAllRecordsFromTakeOrderProductsTable(String isSync) {
+    public ArrayList<TakeOrderBean> fetchAllRecordsFromTakeOrderProductsTable(String isSync, String agentId) {
         ArrayList<TakeOrderBean> allProductTrackRecords = new ArrayList<TakeOrderBean>();
         try {
             if (allProductTrackRecords.size() > 0) {
@@ -1144,9 +1206,9 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             String selectQuery = "";
             if (isSync.equals("yes")) {
-                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS + " WHERE " + KEY_TO_STATUS + " = " + "1";
+                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS + " WHERE " + KEY_TO_STATUS + " = " + "1" + " AND "+ KEY_TO_AGENTID +"='"+agentId+"'";
             } else {
-                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS;
+                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS+ " WHERE " + KEY_TO_AGENTID +"='"+agentId+"'";
             }
 
             SQLiteDatabase db = this.getReadableDatabase();
@@ -1182,6 +1244,23 @@ public class DBHelper extends SQLiteOpenHelper {
         return allProductTrackRecords;
     }
 
+    public int checkProductExistsOrNot(String s, String getmAgentId){
+        int maxID = 0;
+
+        String selectQuery =  "SELECT  * FROM " + TABLE_TO_PRODUCTS + " WHERE " + KEY_TO_PRODUCT_ID + "='"+s+"'" + " AND "+ KEY_TO_AGENTID +"='"+getmAgentId+"'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //System.out.println("DDDD::: "+ cursor.getCount());
+        if (cursor.moveToFirst()) {
+            do{
+                maxID = cursor.getInt(0);
+
+            }while(cursor.moveToNext());
+        }
+        //System.out.println("FGGHH::: "+maxID);
+        return maxID;
+    }
+
     /**
      * Method to update take order details...
      *
@@ -1194,7 +1273,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             for (int b = 0; b < takeOrderBeanArrayList.size(); b++) {
                 ContentValues values = new ContentValues();
-                // values.put(KEY_TO_PRODUCT_ID, mProductsBeansList.get(i).getmProductId());
+                values.put(KEY_TO_PRODUCT_ID, takeOrderBeanArrayList.get(b).getmProductId());
                 values.put(KEY_TO_PRODUCT_NAME, takeOrderBeanArrayList.get(b).getmProductTitle());
                 values.put(KEY_TO_PRODUCT_ROUTE_ID, takeOrderBeanArrayList.get(b).getmRouteId());
                 values.put(KEY_TO_FROM_DATE, takeOrderBeanArrayList.get(b).getmProductFromDate());
@@ -1205,8 +1284,16 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TO_ENQID, takeOrderBeanArrayList.get(b).getmEnquiryId());
                 values.put(KEY_TO_AGENTID, takeOrderBeanArrayList.get(b).getmAgentId());
 
+                int ccc = checkProductExistsOrNot(takeOrderBeanArrayList.get(b).getmProductId(),takeOrderBeanArrayList.get(b).getmAgentId());
+                //System.out.println("Product Exists:::: "+ ccc);
+                if(ccc == 0){
+                    effectedRows= db.insert(TABLE_TO_PRODUCTS, null, values);
+                    // System.out.println("IFFFFFF::: "+effectedRows);
+                }else{
+                    effectedRows = db.update(TABLE_TO_PRODUCTS, values, KEY_TO_PRODUCT_ID + " = ?", new String[]{String.valueOf(takeOrderBeanArrayList.get(b).getmProductId())});
+                    // System.out.println("ELSEEE::: "+effectedRows);
+                }
                 // update row
-                effectedRows = db.update(TABLE_TO_PRODUCTS, values, KEY_TO_PRODUCT_ID + " = ?", new String[]{String.valueOf(takeOrderBeanArrayList.get(b).getmProductId())});
                 values.clear();
             }
         } catch (Exception e) {
@@ -1214,6 +1301,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         db.close();
+        System.out.println("ASDF::: "+effectedRows);
         return effectedRows;
     }
 

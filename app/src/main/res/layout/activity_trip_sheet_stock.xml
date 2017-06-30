@@ -509,7 +509,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.25"
                     android:gravity="center"
-                    android:inputType="numberDecimal"
+
                     android:longClickable="false"
                     android:text="0.000"
                     android:clickable="false"
@@ -546,7 +546,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.25"
                     android:gravity="center"
-                    android:inputType="numberDecimal"
+
                     android:longClickable="false"
                     android:text="0.000"
                     android:clickable="false"

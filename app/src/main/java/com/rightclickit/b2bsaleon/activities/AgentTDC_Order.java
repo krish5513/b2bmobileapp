@@ -34,7 +34,7 @@ Button view;
         setContentView(R.layout.activity_agent_tdc__order);
 
 
-        this.getSupportActionBar().setTitle("TDC Orders");
+        this.getSupportActionBar().setTitle("ORDERS");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);

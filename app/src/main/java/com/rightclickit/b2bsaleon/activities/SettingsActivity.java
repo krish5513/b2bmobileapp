@@ -102,7 +102,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
     private DBHelper mDBHelper;
 
-    private String mRouteName = "",mRegionName = "",mOfficeName="",mRouteId="";
+    private String mRouteName = "",mRegionName = "",mOfficeName="",mRouteCode="";
 
     private ImageView mPicImage;
     private LinearLayout mPicLayout;
@@ -444,9 +444,10 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
             JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
             JSONArray routesArray = routesJob.getJSONArray("routeArray");
-            mPreferences.putString("routeId",routesArray.get(0).toString());
+
             for (int l = 0;l<routesArray.length();l++){
                 System.out.println("The Route Id IS::: "+ routesArray.get(l).toString());
+
                 List<String> routesDataList = mDBHelper.getRouteDataByRouteId(routesArray.get(l).toString());
 
                 for (int k = 0;k<routesDataList.size();k++){
@@ -463,7 +464,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                                 mOfficeName =  routesDataList.get(3);
                                 break;
                             case 4:
-                                mRouteId =  routesDataList.get(4);
+                                mRouteCode=  routesDataList.get(4);
                                 break;
                         }
                     }
@@ -472,6 +473,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             System.out.println("ROUTE NAME IS:::: "+ mRouteName);
             System.out.println("REGION NAME IS:::: "+ mRegionName);
             System.out.println("OFFICE NAME IS:::: "+ mOfficeName);
+            System.out.println("ROUTE CODE IS:::: "+ mRouteCode);
 //            List<String> routesDataList = mDBHelper.getRoutesMasterData();
 //            System.out.println("The Data Is SIZE ======= ::: "+ routesDataList.size());
 //            for (int i=0;i<routesDataList.size();i++){
@@ -496,7 +498,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             salesOffice.setText(mOfficeName);
             routeNo.setText(mRouteName);
             mPreferences.putString("routename",mRouteName);
-            mPreferences.putString("routeid",mRouteId);
+            mPreferences.putString("routecode",mRouteCode);
 
             vehicleNo.setText("");
             transporterName.setText("");

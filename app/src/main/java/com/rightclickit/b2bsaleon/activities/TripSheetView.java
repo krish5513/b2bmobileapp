@@ -58,7 +58,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         setContentView(R.layout.activity_trip_sheet_view);
 
 
-        this.getSupportActionBar().setTitle("Tripsheet Preview");
+        this.getSupportActionBar().setTitle("TRIPSHEET PREVIEW");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.route_white);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);

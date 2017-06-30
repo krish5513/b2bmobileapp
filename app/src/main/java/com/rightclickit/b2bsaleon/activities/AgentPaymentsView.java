@@ -16,7 +16,7 @@ public class AgentPaymentsView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent_payments_view);
 
-        this.getSupportActionBar().setTitle("Payments");
+        this.getSupportActionBar().setTitle("PAYMENTS");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.ic_shopping_cart_white_24dp);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);

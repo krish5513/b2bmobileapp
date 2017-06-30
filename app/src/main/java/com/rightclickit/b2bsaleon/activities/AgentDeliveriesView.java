@@ -16,7 +16,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent_deliveries_view);
 
-        this.getSupportActionBar().setTitle("Agent Name");
+        this.getSupportActionBar().setTitle("AGENT NAME");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.ic_shopping_cart_white_24dp);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);

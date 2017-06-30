@@ -88,8 +88,9 @@ public class SyncTakeOrdersService extends Service {
                 SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
                 String currentDate = df.format(cal.getTime());
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-                mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes");
+                mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes",mSessionManagement.getString("agentId"));
                 mAgentsBeansList=mDBHelper.fetchAllRecordsFromAgentsTable();
+                System.out.println("BEFORE SERVICE:: "+ mTakeOrderBeansList.size());
                 userId = mSessionManagement.getString("userId");
                 String URL = String.format("%s%s%s%s", Constants.MAIN_URL,Constants.SYNC_TAKE_ORDERS_PORT,Constants.SYNC_TAKE_ORDERS_SERVICE,mSessionManagement.getString("token"));
 
@@ -98,10 +99,10 @@ public class SyncTakeOrdersService extends Service {
                 String enqId = "ENQ"+mTakeOrderBeansList.get(0).getmEnquiryId();
                 params1.put("enquiry_id",enqId);
                 mSessionManagement.putString("enquiryid",enqId);
-              //params1.put("route_id",mSessionManagement.getString("agentrouteId"));
+                //params1.put("route_id",mSessionManagement.getString("agentrouteId"));
                 JSONArray rAr = new JSONArray(mTakeOrderBeansList.get(0).getmRouteId());
                 params1.put("route_id",rAr.get(0).toString());
-              //  params1.put("route_id",mAgentsBeansList.get(0).getmAgentRouteId());
+                //  params1.put("route_id",mAgentsBeansList.get(0).getmAgentRouteId());
                 params1.put("user_id",mTakeOrderBeansList.get(0).getmAgentId());
                 JSONArray productArra = new JSONArray();
                 JSONArray quantityArra = new JSONArray();

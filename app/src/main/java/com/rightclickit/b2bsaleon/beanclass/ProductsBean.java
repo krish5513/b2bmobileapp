@@ -26,6 +26,10 @@ public class ProductsBean implements Serializable {
     private double taxAmount;
     private double productAmount;
 
+    private String mTakeOrderQuantity;
+    private String mTakeOrderFromDate;
+    private String mTakeOrderToDate;
+
     public String getProductgst() {
         return productgst;
     }
@@ -152,6 +156,30 @@ public class ProductsBean implements Serializable {
 
     public void setProductAmount(double productAmount) {
         this.productAmount = productAmount;
+    }
+
+    public String getmTakeOrderQuantity() {
+        return mTakeOrderQuantity;
+    }
+
+    public void setmTakeOrderQuantity(String mTakeOrderQuantity) {
+        this.mTakeOrderQuantity = mTakeOrderQuantity;
+    }
+
+    public String getmTakeOrderFromDate() {
+        return mTakeOrderFromDate;
+    }
+
+    public void setmTakeOrderFromDate(String mTakeOrderFromDate) {
+        this.mTakeOrderFromDate = mTakeOrderFromDate;
+    }
+
+    public String getmTakeOrderToDate() {
+        return mTakeOrderToDate;
+    }
+
+    public void setmTakeOrderToDate(String mTakeOrderToDate) {
+        this.mTakeOrderToDate = mTakeOrderToDate;
     }
 
     /*@Override

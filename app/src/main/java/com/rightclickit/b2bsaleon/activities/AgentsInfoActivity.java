@@ -48,7 +48,7 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
 
         mPreference = new MMSharedPreferences(this);
         Bundle bundle = getIntent().getExtras();
-        this.getSupportActionBar().setTitle("customerName");
+        this.getSupportActionBar().setTitle("CUSTOMER NAME");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
         this.getSupportActionBar().setTitle(bundle.getString("FIRSTNAME"));

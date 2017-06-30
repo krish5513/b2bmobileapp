@@ -17,10 +17,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TakeOrdersAdapter;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -44,6 +44,9 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
     public static FloatingActionButton fab;
     private SearchView search;
 
+    private ArrayList<ProductsBean> productsList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,12 +65,18 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("no");
-        System.out.println("The TO LIST IS::: "+ mTakeOrderBeansList.size());
-//        for (int k = 0; k<mTakeOrderBeansList.size();k++){
-//            System.out.println("AAAA:: "+mTakeOrderBeansList.get(k).getmProductFromDate());
-//            System.out.println("BBBBB:: "+mTakeOrderBeansList.get(k).getmProductQuantity());
-//            System.out.println("CCCC:: "+mTakeOrderBeansList.get(k).getmProductOrderType());
+        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("no", mPreference.getString("agentId"));
+        productsList = mDBHelper.fetchAllRecordsFromProductsTableForTakeOrders(mPreference.getString("agentId"));
+        System.out.println("The TO LIST IS::: "+ productsList.size());
+        System.out.println("The TO LIST 111 IS::: "+ mTakeOrderBeansList.size());
+//        for (int k = 0; k<productsList.size();k++){
+//            System.out.println("AAAA FROM:: "+mTakeOrderBeansList.get(k).getmProductFromDate());
+//            System.out.println("BBBBB QUA:: "+mTakeOrderBeansList.get(k).getmProductQuantity());
+//            System.out.println("CCCC TO:: "+mTakeOrderBeansList.get(k).getmProductToDate());
+//            System.out.println("DDDDD PID:: "+mTakeOrderBeansList.get(k).getmProductId());
+//            System.out.println("EEEEE PTI:: "+mTakeOrderBeansList.get(k).getmProductTitle());
+//            System.out.println("FFFFF PAGE ID:: "+mTakeOrderBeansList.get(k).getmAgentId());
+//            System.out.println("GGGGG PENQ ID:: "+mTakeOrderBeansList.get(k).getmEnquiryId());
 //        }
 
 
@@ -75,8 +84,8 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
         mTakeOrdersLayout.setVisibility(View.GONE);
 
         mTakeOrderListView = (ListView) findViewById(R.id.TakeOrdersList);
-        if(mTakeOrderBeansList.size()>0){
-            mTakeOrderAdapter = new TakeOrdersAdapter(this,mTakeOrderBeansList,mTakeOrderListView,mPreference.getString("agentId"));
+        if(productsList.size()>0){
+            mTakeOrderAdapter = new TakeOrdersAdapter(this,productsList,mTakeOrderListView,mPreference.getString("agentId"),mTakeOrderBeansList);
             mTakeOrderListView.setAdapter(mTakeOrderAdapter);
         }
 
@@ -254,7 +263,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, AgentViewActivity.class);
+        Intent intent = new Intent(this, AgentsActivity.class);
         startActivity(intent);
         finish();
     }
