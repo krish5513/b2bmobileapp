@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.beanclass.SpecialPriceBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 
@@ -58,6 +59,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // This table contains TDC Customers i.e. either Retailers or Consumers
     private final String TABLE_TDC_CUSTOMERS = "tdc_customers";
+
+    // This table contains Special price for the product
+    private final String TABLE_SPECIALPRICE= "specialprice";
 
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
@@ -169,6 +173,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_CUSTOMER_IS_ACTIVE = "tdc_customer_is_active";
     private final String KEY_TDC_CUSTOMER_UPLOAD_STATUS = "tdc_customer_upload_status";
 
+    // Column names for Special price
+    private final String KEY_USER_SPECIALID= "userid";
+    private final String KEY_PRODUCT_SPECIALID= "productid";
+    private final String KEY_SPECIALPRICE = "price";
+
     // Userdetails Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_AGENTS + "(" + KEY_AGENT_ID + " VARCHAR,"
@@ -238,6 +247,14 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TDC_CUSTOMER_ADDRESS + " TEXT, " + KEY_TDC_CUSTOMER_LAT_LONG + " TEXT, " + KEY_TDC_CUSTOMER_SHOP_IMAGE + " VARCHAR, "
             + KEY_TDC_CUSTOMER_IS_ACTIVE + " INTEGER DEFAULT 1, " + KEY_TDC_CUSTOMER_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
+
+    // SpecialPrice Table Create Statement
+    private final String CREATE_TABLE_SPECIALPRICE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_SPECIALPRICE + "(" + KEY_USER_SPECIALID + " VARCHAR, " + KEY_PRODUCT_SPECIALID + " INTEGER, "
+            + KEY_SPECIALPRICE + " VARCHAR)";
+
+
+
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -253,6 +270,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_PRODUCTS_TABLE_TO);
             db.execSQL(CREATE_USER_PRIVILEGE_ACTIONS_TABLE);
             db.execSQL(CREATE_TDC_CUSTOMERS_TABLE);
+            db.execSQL(CREATE_TABLE_SPECIALPRICE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -268,7 +286,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_AGENTS);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_PRODUCTS_TABLE_TO);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_USER_PRIVILEGE_ACTIONS_TABLE);
-
+            db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_SPECIALPRICE);
             // create new tables
             onCreate(db);
         } catch (Exception e) {
@@ -1440,4 +1458,62 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return allRetailersList;
     }
+
+    public void insertSpecialPriceDetails(ArrayList<SpecialPriceBean> mSpecialPriceBeansList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0; i < mSpecialPriceBeansList.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_USER_SPECIALID, mSpecialPriceBeansList.get(i).getSpecialUserId());
+                values.put(KEY_PRODUCT_SPECIALID, mSpecialPriceBeansList.get(i).getSpecialProductId());
+                values.put(KEY_SPECIALPRICE, mSpecialPriceBeansList.get(i).getSpecialPrice());
+
+
+                // insert row
+                db.insert(TABLE_SPECIALPRICE, null, values);
+                System.out.println("F*********** INSERTED***************88");
+                values.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    /**
+     * Method to fetch all records from products table
+     */
+    public ArrayList<SpecialPriceBean> fetchAllRecordsFromSpecialPriceTable() {
+        ArrayList<SpecialPriceBean> allSpecialPriceTrackRecords = new ArrayList<SpecialPriceBean>();
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_SPECIALPRICE;
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    SpecialPriceBean specialpriceBean = new SpecialPriceBean();
+
+                    specialpriceBean.setSpecialUserId((c.getString(c.getColumnIndex(KEY_USER_SPECIALID))));
+                    specialpriceBean.setSpecialProductId((c.getString(c.getColumnIndex(KEY_PRODUCT_SPECIALID))));
+                    specialpriceBean.setSpecialPrice((c.getString(c.getColumnIndex(KEY_SPECIALPRICE))));
+
+
+                    allSpecialPriceTrackRecords.add(specialpriceBean);
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allSpecialPriceTrackRecords;
+    }
+
+
 }

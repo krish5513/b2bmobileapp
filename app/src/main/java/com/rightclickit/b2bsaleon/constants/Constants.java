@@ -97,5 +97,6 @@ public class Constants {
     public static final String PRODUCTSLIST_SERVICE = "/product/document_region";
     // Sync take orders data url
     public static final String SYNC_TAKE_ORDERS_SERVICE = "/pending_order/add?token=";
-
+    //Special Price url
+    public static final String SPECIAL_PRICE_SERVICE = "/user_sprice_price/list";
 }

@@ -156,7 +156,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             holder.productQuantity = (EditText) convertView.findViewById(R.id.productQt);
             holder.productQuantityIncrement = (ImageButton) convertView.findViewById(R.id.productQtInc);
             holder.productQuantityDecrement = (ImageButton) convertView.findViewById(R.id.productQtDec);
-
+            holder.productArrow = (ImageView) convertView.findViewById(R.id.img);
             convertView.setTag(holder);
             /*Intent intent=new Intent(activity,DashboardTakeorderPreview.class);
             activity.startActivity(intent);
@@ -177,11 +177,14 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         } else if (mTakeOrderBeansList1.get(position).getProductTitle() != null) {
             if (mTakeOrderBeansList1.get(position).getProductTitle().length() > 0) {
                 holder.productName.setText(mTakeOrderBeansList1.get(position).getProductTitle());
+                holder.productArrow.setImageResource(R.drawable.ic_circle_red);
             } else {
                 holder.productName.setText(mTakeOrderBeansList1.get(position).getProductTitle());
+                holder.productArrow.setImageResource(R.drawable.ic_circle_red);
             }
         } else {
             holder.productName.setText(mTakeOrderBeansList1.get(position).getProductTitle());
+            holder.productArrow.setImageResource(R.drawable.ic_circle_green);
         }
 
         if (fromDatesList.get(mTakeOrderBeansList1.get(position).getProductId()) != null) {
@@ -191,11 +194,14 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         } else if (mTakeOrderBeansList1.get(position).getmTakeOrderFromDate() != null) {
             if (mTakeOrderBeansList1.get(position).getmTakeOrderFromDate().length() > 0) {
                 holder.fromDate.setText(mTakeOrderBeansList1.get(position).getmTakeOrderFromDate());
+                holder.productArrow.setImageResource(R.drawable.ic_circle_red);
             } else {
                 holder.fromDate.setText(currentDate);
+                holder.productArrow.setImageResource(R.drawable.ic_circle_red);
             }
         } else {
             holder.fromDate.setText(currentDate);
+            holder.productArrow.setImageResource(R.drawable.ic_circle_green);
         }
 
         if (toDatesList.get(mTakeOrderBeansList1.get(position).getProductId()) != null) {
@@ -205,11 +211,14 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         } else if (mTakeOrderBeansList1.get(position).getmTakeOrderToDate() != null) {
             if (mTakeOrderBeansList1.get(position).getmTakeOrderToDate().length() > 0) {
                 holder.toDate.setText(mTakeOrderBeansList1.get(position).getmTakeOrderToDate());
+                holder.productArrow.setImageResource(R.drawable.ic_circle_red);
             } else {
                 holder.toDate.setText(currentDate);
+                holder.productArrow.setImageResource(R.drawable.ic_circle_red);
             }
         } else {
             holder.toDate.setText(currentDate);
+            holder.productArrow.setImageResource(R.drawable.ic_circle_green);
         }
 
         if (quantityList.get(mTakeOrderBeansList1.get(position).getProductId()) != null) {
@@ -457,6 +466,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         public EditText productQuantity;
         public ImageButton productQuantityIncrement;
         public ImageButton productQuantityDecrement;
+        public ImageView productArrow;
     }
 
     // Filter Class

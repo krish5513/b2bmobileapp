@@ -94,7 +94,7 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
             holder = (TakeOrderPreviewAdapter.MyViewHolder) convertView.getTag();
         }
 
-
+        double quantity = Double.parseDouble(mpreviewBeansList1.get(position).getpQuantity().replace(",", ""));
         double price = Double.parseDouble(mpreviewBeansList1.get(position).getpPrice().replace(",", ""));
 
         float tax = 0.0f;
@@ -107,14 +107,14 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
             tax = Float.parseFloat(mpreviewBeansList1.get(position).getmProductTaxGST());
             str_Taxname = "GST:";
         }
-        double taxAmount = (price * tax) / 100;
+        double taxAmount = ((quantity*price) * tax) / 100;
         double amount = price + taxAmount;
 
         holder.pName.setText(mpreviewBeansList1.get(position).getpName());
         holder.pQuantity.setText(mpreviewBeansList1.get(position).getpQuantity());
         holder.pPrice.setText(Utility.getFormattedCurrency(price));
         holder.pTax.setText(Utility.getFormattedCurrency(taxAmount));
-        holder.pAmount.setText(Utility.getFormattedCurrency(amount*Double.parseDouble(mpreviewBeansList1.get(position).getpQuantity())));
+        holder.pAmount.setText(Utility.getFormattedCurrency(price*Double.parseDouble(mpreviewBeansList1.get(position).getpQuantity())));
         holder.fromPreview.setText(mpreviewBeansList1.get(position).getmProductFromDate());
         holder.toPreview.setText(mpreviewBeansList1.get(position).getmProductToDate());
         holder.taxName.setText(str_Taxname);

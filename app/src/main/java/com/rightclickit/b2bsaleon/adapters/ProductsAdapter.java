@@ -193,7 +193,7 @@ public class ProductsAdapter extends BaseAdapter {
             if (mProductsBeansList1.get(position).getProductvat().length() == 0) {
                 holder.vat.setText("-");
             } else {
-                holder.materialAgentUnit.setText(mProductsBeansList1.get(position).getProductvat());
+                holder.vat.setText(mProductsBeansList1.get(position).getProductvat());
             }
         } else {
             holder.vat.setText("-");

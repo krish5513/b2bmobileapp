@@ -27,7 +27,6 @@
         android:largeHeap="true"
         android:roundIcon="@mipmap/favicon"
         android:supportsRtl="true"
-
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -240,7 +239,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.TripsheetPayments"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name=".services.SyncSpecialPriceService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

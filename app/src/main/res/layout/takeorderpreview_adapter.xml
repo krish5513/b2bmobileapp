@@ -44,6 +44,17 @@
             android:gravity="center"
             android:textSize="12sp"
             android:textColor="@color/greydark"/>
+
+        <TextView
+            android:id="@+id/amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:text="Rs.000.00"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/greydark"/>
         <TextView
             android:id="@+id/tax"
             android:layout_width="match_parent"
@@ -55,16 +66,6 @@
             android:layout_marginRight="7dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:textColor="@color/greydark"/>
-        <TextView
-            android:id="@+id/amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:text="Rs.000.00"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textSize="12sp"
             android:textColor="@color/greydark"/>
     </LinearLayout>
     <LinearLayout
