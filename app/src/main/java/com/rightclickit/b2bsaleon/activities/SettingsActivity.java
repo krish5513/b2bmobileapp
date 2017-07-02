@@ -485,7 +485,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
              // Append all the db data to lables.
 
 
-            companyName.setText("");
+           companyName.setText("");
             if(userMapData.get("name")!=null) {
                 userName.setText(userMapData.get("name").toString());
                 mPreferences.putString("loginusername",userMapData.get("name").toString());

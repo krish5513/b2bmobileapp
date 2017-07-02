@@ -70,7 +70,7 @@ public class AgentsTDC_View extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, AgentViewActivity.class);
+        Intent intent = new Intent(this, AgentTDC_Order.class);
         startActivity(intent);
         finish();
     }

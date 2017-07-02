@@ -11,9 +11,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.AgentsOrdersAdapter;
+import com.rightclickit.b2bsaleon.adapters.TakeOrderPreviewAdapter;
+import com.rightclickit.b2bsaleon.beanclass.OrdersListBean;
+import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
@@ -25,9 +30,17 @@ public class AgentTDC_Order extends AppCompatActivity {
     LinearLayout payments;
     LinearLayout deliveries;
     LinearLayout orders;
-Button view;
+    TextView tv_OrdersCount;
+    TextView tv_ValueCount;
+     Button view;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
+    AgentsOrdersAdapter ordersAdapter;
+    private ListView mAgentsList;
+
+    private ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
+
+    String enquiryId,orderdate,value,totalprice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +65,36 @@ Button view;
         mDBHelper = new DBHelper(AgentTDC_Order.this);
         mPreferences = new MMSharedPreferences(AgentTDC_Order.this);
 
+        tv_OrdersCount=(TextView)findViewById(R.id.tv_OrdersCount) ;
+        tv_ValueCount=(TextView)findViewById(R.id.tv_TotalValue) ;
+
+
+        ArrayList<OrdersListBean> ordersList=new ArrayList<>();
+
+        totalprice=mPreferences.getString("totalprice");
+        enquiryId=mPreferences.getString("enquiryid");
+        orderdate=mPreferences.getString("orderdate");
+
+
+
+            OrdersListBean topBean = new OrdersListBean();
+            topBean.setmOrders_TotalValue(totalprice);
+            topBean.setmOrders_enguiryId(enquiryId);
+            topBean.setmOrders_date(orderdate);
+            topBean.setmOrdersStatus("Paid");
+
+            ordersList.add(topBean);
+
+
+        mAgentsList = (ListView) findViewById(R.id.AgentsList);
+        // ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
+        //System.out.println("ELSE::: "+a.size());
+
+        //   ArrayList<TakeOrderPreviewBean> previewArrayList = new ArrayList<>();
+        if (ordersList.size() > 0) {
+            loadAgentsList(ordersList);
+        }
+
 
         sales = (LinearLayout) findViewById(R.id.linear_sales);
         sales.setVisibility(View.GONE);
@@ -64,7 +107,7 @@ Button view;
         orders = (LinearLayout) findViewById(R.id.linear_orders);
         orders.setVisibility(View.GONE);
 
-        view=(Button)findViewById(R.id.btn_view1);
+
 
         sales.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,16 +173,7 @@ Button view;
             }
         });
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Toast.makeText(Agents_Tpc_OrdersActivity.this, "Clicked on orders", Toast.LENGTH_SHORT).show();
 
-                Intent i =new Intent(AgentTDC_Order.this,AgentsTDC_View.class);
-                startActivity(i);
-                finish();
-            }
-        });
 
 
 
@@ -164,6 +198,11 @@ Button view;
         }
 
 
+    }
+
+    private void loadAgentsList(ArrayList<OrdersListBean> ordersList) {
+        ordersAdapter = new AgentsOrdersAdapter(this, AgentTDC_Order.this, ordersList);
+        mAgentsList.setAdapter(ordersAdapter);
     }
 
 

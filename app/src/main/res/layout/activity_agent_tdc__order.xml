@@ -26,7 +26,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_address"
+                    android:id="@+id/tv_Orders"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Orders"
@@ -36,7 +36,7 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/tv_address"
+                    android:id="@+id/tv_OrdersCount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="50"
@@ -57,7 +57,7 @@
                     android:id="@+id/tv_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Delivered"
+
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
 
@@ -65,7 +65,7 @@
                     android:id="@+id/tv_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="48"
+
                     android:layout_marginTop="5dp"
                     android:layout_gravity="left"
                     android:gravity="left"
@@ -81,7 +81,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_address"
+                    android:id="@+id/tv_Value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Value"
@@ -89,7 +89,7 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/tv_address"
+                    android:id="@+id/tv_TotalValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Rs.50,000"
@@ -102,6 +102,22 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/view_line"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <ListView
+                android:id="@+id/AgentsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@android:color/transparent"
+                android:smoothScrollbar="true" />
+
+        </LinearLayout>
+<!--
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -2424,6 +2440,7 @@
             </LinearLayout>
 
         </ScrollView>
+-->
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

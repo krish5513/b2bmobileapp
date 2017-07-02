@@ -57,9 +57,9 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
     private ArrayList<TakeOrderBean> mProductIdsList;
     private ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
     private double mProductsPriceAmountSum = 0.0, mTotalProductsPriceAmountSum = 0.0,mTotalProductsTax = 0.0;
-    String currentDate;
+    String currentDate,str_routecode,str_enguiryid,str_agentname;
 
-    double amount;
+    double amount,subtotal;
     double taxAmount;
     String name;
 
@@ -116,13 +116,16 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                    // topBean.setTaxName(productsList.get(i).getProductvat());
                     topBean.setmProductToDate(mProductIdsList.get(k).getmProductToDate());
 
-
                     float tax = 0.0f;
-                    if (productsList.get(i).getProductvat() != null)
+                    String str_Taxname="";
+                    if (productsList.get(i).getProductvat() != null) {
                         tax = Float.parseFloat(productsList.get(i).getProductvat());
-                    else if (productsList.get(i).getProductgst() != null)
+                        str_Taxname = "VAT:";
+                    }
+                    else if (productsList.get(i).getProductgst() != null) {
                         tax = Float.parseFloat(productsList.get(i).getProductgst());
-
+                        str_Taxname = "GST:";
+                    }
 
                      name  = String.valueOf(mProductIdsList.get(k).getmProductTitle().replace(",", ""));
 
@@ -137,6 +140,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                    //  amount = price + taxAmount;
                     amount = price;
 
+                    subtotal=(price*quantity);
 
                     mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
                             * Double.parseDouble(mProductIdsList.get(k).getmProductQuantity())));
@@ -146,6 +150,17 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 
                     mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
                     System.out.println("FINAL AMOUNT PRICE IS::: " + mTotalProductsPriceAmountSum);
+                    String[] temp=new String[10];
+                    temp[0]=name;
+                    temp[1]= String.valueOf(quantity);
+                    temp[2]= String.valueOf(price);
+                    temp[3]= String.valueOf(subtotal);
+                    temp[4]= String.valueOf(taxAmount);
+                    temp[5]= String.valueOf(str_Taxname);
+                    temp[6]= String.valueOf("("+tax+"%)");
+                    temp[7]= mProductIdsList.get(k).getmProductFromDate();
+                    temp[8]= mProductIdsList.get(k).getmProductToDate();
+                    selectedList.put(name,temp);
 
                     takeOrderPreviewBeanArrayList.add(topBean);
                 }
@@ -162,19 +177,25 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         Route_Name.setText(sharedPreferences.getString("routename"));
 
         RouteCode = (TextView) findViewById(R.id.tv_routecode);
-        RouteCode.setText(sharedPreferences.getString("routecode")+",");
+        str_routecode=(sharedPreferences.getString("routecode")+",");
+        RouteCode.setText(str_routecode);
+
 
         orderNo = (TextView) findViewById(R.id.order_no);
-        orderNo.setText(sharedPreferences.getString("enquiryid")+",");
+        str_enguiryid=(sharedPreferences.getString("enquiryid")+",");
+        orderNo.setText(str_enguiryid);
 
         orderDate = (TextView) findViewById(R.id.tv_date);
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         currentDate = df.format(cal.getTime());
         orderDate.setText(currentDate);
+        sharedPreferences.putString("orderdate",currentDate);
 
         agentName = (TextView) findViewById(R.id.agentname);
-        agentName.setText(sharedPreferences.getString("agentName")+",");
+        str_agentname=(sharedPreferences.getString("agentName")+",");
+        agentName.setText(str_agentname);
+
         agentCode = (TextView) findViewById(R.id.tv_AgentCode);
         agentCode.setText(sharedPreferences.getString("agentCode"));
 
@@ -190,7 +211,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         totalprice=(TextView)findViewById(R.id.totalAmount);
         totalprice.setText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
         totalprice.setFilters(new InputFilter[] {new DecimalDigitsInputFilter(20,3)});
-
+        sharedPreferences.putString("totalprice",Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
 
 
         print = (TextView) findViewById(R.id.tv_print);
@@ -214,60 +235,56 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                 canvas.drawText(sharedPreferences.getString("companyname"), 5, 50, paint);
                 paint.setTextSize(20);
-                canvas.drawText(sharedPreferences.getString("routename"), 150, 80, paint);
-                canvas.drawText(sharedPreferences.getString("routecode"), 5, 80, paint);
-                canvas.drawText("ORDER", 5, 120, paint);
-                canvas.drawText("by "+sharedPreferences.getString("loginusername"), 150, 120, paint);
-                canvas.drawText(sharedPreferences.getString("enquiryid"), 5, 150, paint);
-                canvas.drawText(currentDate, 150, 150, paint);
-                canvas.drawText(sharedPreferences.getString("agentName"), 5, 180, paint);
+                canvas.drawText(str_routecode, 5, 80, paint);
+                canvas.drawText(sharedPreferences.getString("routename"), 200, 80, paint);
+                canvas.drawText("ORDER,", 5, 120, paint);
+                canvas.drawText("by "+sharedPreferences.getString("loginusername"), 200, 120, paint);
+                canvas.drawText(str_enguiryid, 5, 150, paint);
+                canvas.drawText(currentDate, 200, 150, paint);
+                canvas.drawText(str_agentname, 5, 180, paint);
                 canvas.drawText(sharedPreferences.getString("agentCode"), 200, 180, paint);
-              //  canvas.drawText(String.valueOf(mTotalProductsPriceAmountSum), 240, 150, paint);
+
+                canvas.drawText("----------------------------------------------------", 5,200, paint);
                 canvas.drawText("Product", 5, 220, paint);
-                canvas.drawText("QTY", 100, 220, paint);
+                canvas.drawText("Qty", 100, 220, paint);
                 canvas.drawText("Price", 160, 220, paint);
                 canvas.drawText("Amount", 230, 220, paint);
                 canvas.drawText("Tax", 320, 220, paint);
+                canvas.drawText("----------------------------------------------------", 5,235, paint);
 
 
 
                 int st = 250;
-                double tAmount = 0.00;
-                double subtAmount = 0.00;
-              //  double taxAmount = 0.00;
-                double totaltaxAmount = 0.00;
-                double totalqty = 0.000;
                 paint.setTextSize(17);
                 for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
                     String[] temps = entry.getValue();
-                    canvas.drawText(name, 5, st, paint);
-                    canvas.drawText(temps[4], 100, st, paint);
+                    canvas.drawText(temps[0], 5, st, paint);
+                    canvas.drawText(temps[1], 115, st, paint);
 
-                   // double Amount = Double.parseDouble(temps[3]) * Double.parseDouble(temps[4]);
 
-                  //  subtAmount = subtAmount + Amount;
+                    canvas.drawText(temps[2], 175, st, paint);
 
-                   // taxAmount=(Double.parseDouble(temps[3]) * Double.parseDouble(temps[4]))*(Double.parseDouble(temps[9])/100);
-                   // totaltaxAmount = totaltaxAmount + taxAmount;
-                    canvas.drawText(String.format("%.2f",taxAmount), 160, st, paint);
-                    Log.e("tax amount",String.format("%.2f",taxAmount));
-                    canvas.drawText(temps[3], 230, st, paint);
-                    canvas.drawText(String.format("%.2f", amount), 300, st, paint);
-                    tAmount = totaltaxAmount + subtAmount;
-                    totalqty=totalqty+Double.parseDouble(temps[4]);
+                    canvas.drawText(temps[3], 245, st, paint);
+                    canvas.drawText(temps[4], 315, st, paint);
+
                     st = st + 30;
-                    canvas.drawText(temps[8], 5, st, paint);
-                    canvas.drawText("FROM:" + temps[5], 100, st, paint);
-                    canvas.drawText("TO:" + temps[6], 250, st, paint);
+                    canvas.drawText(temps[5], 5, st, paint);
+                    canvas.drawText(temps[6], 45, st, paint);
+
+                    canvas.drawText(temps[7], 120, st, paint);
+                    canvas.drawText("to" +" "+" "+ temps[8], 230, st, paint);
+
+                    // canvas.drawText("FROM:" + temps[7], 100, st, paint);
+                    //canvas.drawText("TO:" + temps[8], 250, st, paint);
+
                     st = st + 30;
+                  //  canvas.drawText("----------------------------------------------------", 5, st, paint);
+
+
                 }
+
                 canvas.drawText("----------------------------------------------------", 5, st, paint);
-               /* st=st+20;
-                canvas.drawText("Sub Total ", 5, st, paint);
-                canvas.drawText(String.format("%.3f", totalqty), 100, st, paint);
-                canvas.drawText(String.format("%.2f", totaltaxAmount), 160, st, paint);
-                Log.e("dfsdfds",String.format("%.2f", totaltaxAmount));
-                canvas.drawText(String.format("%.2f", subtAmount), 300, st, paint);*/
+
                 st=st+20;
                 canvas.drawText("Total:", 5, st, paint);
                 canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
