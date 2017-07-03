@@ -72,6 +72,7 @@ public class SyncSpecialPriceService extends Service {
 
         private ArrayList<SpecialPriceBean> temptoList = new ArrayList<SpecialPriceBean>();
 
+
         @Override
         protected Void doInBackground(Void... params) {
             try {
@@ -80,24 +81,29 @@ public class SyncSpecialPriceService extends Service {
 //                    mDBHelper.deleteValuesFromRoutesTable();
 //
 
-                mSpecialPriceList=mDBHelper.fetchAllRecordsFromSpecialPriceTable();
-                System.out.println("BEFORE SERVICE:: "+ mSpecialPriceList.size());
-
+//                mSpecialPriceList=mDBHelper.fetchAllRecordsFromSpecialPriceTable();
+//                System.out.println("BEFORE SERVICE:: "+ mSpecialPriceList.size());
+                if(mSpecialPriceList.size()>0){
+                    mSpecialPriceList.clear();
+                }
                 String URL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_USER_PREVILEGES,Constants.SPECIAL_PRICE_SERVICE);
-
 
                 JSONObject params1 = new JSONObject();
 
-                JSONArray rAr = new JSONArray( );
-                params1.put("user_id",mSpecialPriceList.get(0).getSpecialUserId());
-                params1.put("prod_id",mSpecialPriceList.get(0).getSpecialProductId());
-                params1.put("price",mSpecialPriceList.get(0).getSpecialPrice());
-
-
                 mJsonObj = new NetworkManager().makeHttpPostConnection(URL,params1);
+                System.out.println("Special Price Response Is::: "+ mJsonObj);
+                JSONArray resArray = new JSONArray(mJsonObj);
+                int len = resArray.length();
+                for (int i = 0;i<len;i++){
+                    JSONObject jb = resArray.getJSONObject(i);
 
-                JSONObject resultObj = new JSONObject(mJsonObj);
-//
+                    SpecialPriceBean specialPriceBean = new SpecialPriceBean();
+                    specialPriceBean.setSpecialUserId(jb.getString("user_id"));
+                    specialPriceBean.setSpecialProductId(jb.getString("prod_id"));
+                    specialPriceBean.setSpecialPrice(jb.getString("price"));
+
+                    mSpecialPriceList.add(specialPriceBean);
+                }
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -107,7 +113,8 @@ public class SyncSpecialPriceService extends Service {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-
+            stopSelf();
+            mDBHelper.insertSpecialPriceDetails(mSpecialPriceList);
      }
 }
 }

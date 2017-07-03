@@ -55,7 +55,9 @@ import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.models.SettingsModel;
+import com.rightclickit.b2bsaleon.services.SyncSpecialPriceService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
@@ -69,6 +71,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class SettingsActivity extends AppCompatActivity implements OnMapReadyCallback {
     EditText userName;
@@ -584,6 +587,10 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         }
         locationManager.requestLocationUpdates(bestProvider, 20000, 0, (android.location.LocationListener) this);
 */
+
+       if(new NetworkConnectionDetector(SettingsActivity.this).isNetworkConnected()){
+            startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class));
+       }
 
     }
 

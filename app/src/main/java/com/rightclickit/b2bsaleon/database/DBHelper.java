@@ -1459,6 +1459,30 @@ public class DBHelper extends SQLiteOpenHelper {
         return allRetailersList;
     }
 
+    /**
+     * Method to check whther the special price exists for the combo of userId and productId
+     * @param productId
+     * @param agentId
+     * @return integer value
+     */
+    public int checkSpecialPriceProductExistsOrNot(String productId, String agentId){
+        int maxID = 0;
+
+        String selectQuery =  "SELECT  * FROM " + TABLE_SPECIALPRICE + " WHERE " + KEY_PRODUCT_SPECIALID + "='"+productId+"'" + " AND "+ KEY_USER_SPECIALID +"='"+agentId+"'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //System.out.println("DDDD::: "+ cursor.getCount());
+        if (cursor.moveToFirst()) {
+            do{
+                maxID = cursor.getInt(0);
+
+            }while(cursor.moveToNext());
+        }
+        //System.out.println("FGGHH::: "+maxID);
+        return maxID;
+    }
+
+
     public void insertSpecialPriceDetails(ArrayList<SpecialPriceBean> mSpecialPriceBeansList) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
@@ -1467,11 +1491,20 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_USER_SPECIALID, mSpecialPriceBeansList.get(i).getSpecialUserId());
                 values.put(KEY_PRODUCT_SPECIALID, mSpecialPriceBeansList.get(i).getSpecialProductId());
                 values.put(KEY_SPECIALPRICE, mSpecialPriceBeansList.get(i).getSpecialPrice());
+                int checkVal = checkSpecialPriceProductExistsOrNot(mSpecialPriceBeansList.get(i).getSpecialProductId()
+                ,mSpecialPriceBeansList.get(i).getSpecialUserId());
+                if(checkVal == 0){
+                    // insert row
+                    db.insert(TABLE_SPECIALPRICE, null, values);
+                    System.out.println("F*********** INSERTED***************88");
+                }else {
+                    // Update row
+                    db.update(TABLE_SPECIALPRICE, values, KEY_PRODUCT_SPECIALID + " = ?" + " AND " + KEY_USER_SPECIALID + " = ? ",
+                            new String[]{String.valueOf(mSpecialPriceBeansList.get(i).getSpecialProductId()),
+                                    String.valueOf(mSpecialPriceBeansList.get(i).getSpecialUserId())});
+                    System.out.println("F*********** UPDATED***************88");
+                }
 
-
-                // insert row
-                db.insert(TABLE_SPECIALPRICE, null, values);
-                System.out.println("F*********** INSERTED***************88");
                 values.clear();
             }
         } catch (Exception e) {
