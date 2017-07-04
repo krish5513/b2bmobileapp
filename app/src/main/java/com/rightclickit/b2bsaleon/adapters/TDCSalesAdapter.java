@@ -46,8 +46,9 @@ public class TDCSalesAdapter extends BaseAdapter {
 
     private double availableStock = 5;
     private final String zero_cost = "0.000";
+    private boolean isOrderInEditingMode = false;
 
-    public TDCSalesAdapter(Context ctxt, SalesActivity salesActivity, TDCSalesListener salesListener, ArrayList<ProductsBean> productsList, ListView products_list_view) {
+    public TDCSalesAdapter(Context ctxt, SalesActivity salesActivity, TDCSalesListener salesListener, ArrayList<ProductsBean> productsList, ArrayList<ProductsBean> previouslySelectedProductsList, ListView products_list_view) {
         this.ctxt = ctxt;
         this.activity = salesActivity;
         this.listener = salesListener;
@@ -58,6 +59,12 @@ public class TDCSalesAdapter extends BaseAdapter {
         this.filteredProductsList = new ArrayList<>();
         this.filteredProductsList.addAll(allProductsList);
         this.selectedProductsList = new ArrayList<>();
+
+        if (!previouslySelectedProductsList.isEmpty()) {
+            this.selectedProductsList = previouslySelectedProductsList;
+            isOrderInEditingMode = true;
+        }
+
         this.products_list_view = products_list_view;
         this.red_circle = ContextCompat.getDrawable(ctxt, R.drawable.ic_circle_red);
         this.green_circle = ContextCompat.getDrawable(ctxt, R.drawable.ic_circle_green);
@@ -67,6 +74,19 @@ public class TDCSalesAdapter extends BaseAdapter {
         ImageView arrow_icon, product_quantity_decrement, product_quantity_increment;
         TextView product_name, quantity_stock, price, tax, amount;
         EditText product_quantity;
+    }
+
+    private ProductsBean isPreviouslySelectedThisProduct(String productId) {
+        ProductsBean productBeanWithPreValues = null;
+
+        for (ProductsBean productsBean : selectedProductsList) {
+            if (productsBean.getProductId().equals(productId))
+                productBeanWithPreValues = productsBean;
+            else
+                productBeanWithPreValues = null;
+        }
+
+        return productBeanWithPreValues;
     }
 
     @Override
@@ -109,8 +129,17 @@ public class TDCSalesAdapter extends BaseAdapter {
 
         final TDCSalesViewHolder currentTDCSalesViewHolder = tdcSalesViewHolder;
 
-        final ProductsBean currentProductsBean = getItem(position);
-        currentProductsBean.setProductStock(availableStock);
+        ProductsBean productBean = getItem(position);
+        productBean.setProductStock(availableStock);
+
+        if (isOrderInEditingMode) {
+            ProductsBean productBeanWithPreValues = isPreviouslySelectedThisProduct(productBean.getProductId());
+            if (productBeanWithPreValues != null) {
+                productBean = productBeanWithPreValues;
+            }
+        }
+
+        final ProductsBean currentProductsBean = productBean;
 
         if (currentProductsBean.getProductStock() > 0) {
             tdcSalesViewHolder.arrow_icon.setImageResource(R.drawable.ic_arrow_upward_white_24dp);
@@ -141,6 +170,16 @@ public class TDCSalesAdapter extends BaseAdapter {
         tdcSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
         tdcSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
         tdcSalesViewHolder.product_quantity.setText(String.format("%.3f", currentProductsBean.getSelectedQuantity()));
+
+        /*if (isOrderInEditingMode) {
+            ProductsBean productBeanWithPreValues = isPreviouslySelectedThisProduct(currentProductsBean.getProductId());
+            if (productBeanWithPreValues != null) {
+                tdcSalesViewHolder.price.setText(Utility.getFormattedCurrency(productRate));
+                tdcSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
+                tdcSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
+                tdcSalesViewHolder.product_quantity.setText(String.format("%.3f", currentProductsBean.getSelectedQuantity()));
+            }
+        }*/
 
         tdcSalesViewHolder.product_name.setOnClickListener(new View.OnClickListener() {
             @Override

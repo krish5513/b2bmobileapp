@@ -40,7 +40,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
     public void validateUserLogin(final String email, final String pwd) {
         try {
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-                String logInURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_LOGIN, Constants.LOGIN_SERVICE);
+                String logInURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_LOGIN, Constants.LOGIN_SERVICE);
                 JSONObject params = new JSONObject();
                 params.put("email", email.trim());
                 params.put("password", Utility.getMd5String(pwd.trim()));
@@ -58,103 +58,103 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
         try {
             System.out.println("========= response = " + response);
-            String id = "",userCode="",userName="",email="",phone="",
-                    profilePic="",stakeHolderId="",address="",deviceSync="",accessDevice="",backUp="",routeArrayListString=""
-                    , latitude="",longitude="",password="",companyname="";
+            String id = "", userCode = "", userName = "", email = "", phone = "",
+                    profilePic = "", stakeHolderId = "", address = "", deviceSync = "", accessDevice = "", backUp = "", routeArrayListString = "", latitude = "", longitude = "", password = "", companyname = "";
             JSONObject logInResponse = new JSONObject(response);
             if (logInResponse.getInt("result_status") == 1) {
-                if(logInResponse.has("token")){
-                    mPreferences.putString("token",logInResponse.getString("token"));
+                if (logInResponse.has("token")) {
+                    mPreferences.putString("token", logInResponse.getString("token"));
                 }
-                if(logInResponse.has("_id")){
-                    mPreferences.putString("userId",logInResponse.getString("_id"));
+                if (logInResponse.has("_id")) {
+                    mPreferences.putString("userId", logInResponse.getString("_id"));
                     id = logInResponse.getString("_id");
                 }
-                if(logInResponse.has("code")){
+                if (logInResponse.has("code")) {
                     userCode = logInResponse.getString("code");
                 }
-                if(logInResponse.has("first_name") || logInResponse.has("last_name")){
-                    userName = logInResponse.getString("first_name") + logInResponse.getString("last_name");
+                if (logInResponse.has("first_name") || logInResponse.has("last_name")) {
+                    userName = logInResponse.getString("first_name") + " " + logInResponse.getString("last_name");
+                    mPreferences.putString("userName", userName);
                 }
-                if(logInResponse.has("email")){
+                if (logInResponse.has("email")) {
                     email = logInResponse.getString("email");
                 }
-                if(logInResponse.has("password")){
+                if (logInResponse.has("password")) {
                     password = logInResponse.getString("password");
                 }
-                if(logInResponse.has("phone")){
+                if (logInResponse.has("phone")) {
                     phone = logInResponse.getString("phone");
                 }
-                if(logInResponse.has("avatar")){
+                if (logInResponse.has("avatar")) {
                     profilePic = logInResponse.getString("avatar");
                 }
-                if(logInResponse.has("stakeholder_id")){
-                    mPreferences.putString("stakeId",logInResponse.getString("stakeholder_id"));
+                if (logInResponse.has("stakeholder_id")) {
+                    mPreferences.putString("stakeId", logInResponse.getString("stakeholder_id"));
                     stakeHolderId = logInResponse.getString("stakeholder_id");
                 }
-                if(logInResponse.has("address")){
+                if (logInResponse.has("address")) {
                     address = logInResponse.getString("address");
                 }
-                if(logInResponse.has("device_sync")){
+                if (logInResponse.has("device_sync")) {
                     deviceSync = logInResponse.getString("device_sync");
                 }
-                if(logInResponse.has("access_device")){
+                if (logInResponse.has("access_device")) {
                     accessDevice = logInResponse.getString("access_device");
                 }
-                if(logInResponse.has("back_up")){
+                if (logInResponse.has("back_up")) {
                     backUp = logInResponse.getString("back_up");
                 }
-                if (logInResponse.has("route_id")){
+                if (logInResponse.has("route_id")) {
                     JSONArray routesArray = logInResponse.getJSONArray("route_id");
                     JSONObject json = new JSONObject();
                     json.put("routeArray", routesArray);
                     routeArrayListString = json.toString();
                     // System.out.println("Routes Array List Is:: "+ routeArrayList);
                 }
-                if(logInResponse.has("latitude")){
+                if (logInResponse.has("latitude")) {
                     latitude = logInResponse.getString("latitude");
                 }
-                if(logInResponse.has("longitude")){
+                if (logInResponse.has("longitude")) {
                     longitude = logInResponse.getString("longitude");
                 }
-                if (logInResponse.has("created_by")){
-                    mPreferences.putString("createdBy",logInResponse.getString("created_by"));
+                if (logInResponse.has("created_by")) {
+                    mPreferences.putString("createdBy", logInResponse.getString("created_by"));
                 }
-                if (logInResponse.has("created_on")){
-                    mPreferences.putString("createdOn",logInResponse.getString("created_on"));
+                if (logInResponse.has("created_on")) {
+                    mPreferences.putString("createdOn", logInResponse.getString("created_on"));
                 }
-                if (logInResponse.has("updated_on")){
-                    mPreferences.putString("updatedOn",logInResponse.getString("updated_on"));
+                if (logInResponse.has("updated_on")) {
+                    mPreferences.putString("updatedOn", logInResponse.getString("updated_on"));
                 }
-                if (logInResponse.has("updated_by")){
-                    mPreferences.putString("updatedBy",logInResponse.getString("updated_by"));
+                if (logInResponse.has("updated_by")) {
+                    mPreferences.putString("updatedBy", logInResponse.getString("updated_by"));
                 }
 
-                if(accessDevice.equals("YES")) {
-                    if(mDBHelper.getUserDetailsTableCount()>0) {
+                if (accessDevice.equals("YES")) {
+                    if (mDBHelper.getUserDetailsTableCount() > 0) {
                         mDBHelper.deleteValuesFromUserDetailsTable();
                     }
                     synchronized (this) {
-                        String dId = "",trasportName="",vehicleNum="";
-                        if(!mPreferences.getString("").equals("No Data found")
-                                || !mPreferences.getString("").equals("No Data Found")){
+                        String dId = "", trasportName = "", vehicleNum = "";
+                        if (!mPreferences.getString("").equals("No Data found")
+                                || !mPreferences.getString("").equals("No Data Found")) {
                             dId = mPreferences.getString("deviceId");
                         }
-                        if(!mPreferences.getString("").equals("No Data found")
-                                || !mPreferences.getString("").equals("No Data Found")){
+                        if (!mPreferences.getString("").equals("No Data found")
+                                || !mPreferences.getString("").equals("No Data Found")) {
                             trasportName = mPreferences.getString("transporterName");
                         }
-                        if(!mPreferences.getString("").equals("No Data found")
-                                || !mPreferences.getString("").equals("No Data Found")){
+                        if (!mPreferences.getString("").equals("No Data found")
+                                || !mPreferences.getString("").equals("No Data Found")) {
                             vehicleNum = mPreferences.getString("vehicleNumber");
                         }
-                        mDBHelper.insertUserDetails(id, userCode,companyname, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp, routeArrayListString,
+                        mDBHelper.insertUserDetails(id, userCode, companyname, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp, routeArrayListString,
                                 dId, trasportName, vehicleNum, latitude, longitude, password);
                     }
                     synchronized (this) {
                         activity.logInSuccess();
                     }
-                }else {
+                } else {
                     displayNoNetworkError(context);
                 }
             } else {
@@ -166,9 +166,8 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
         }
 
 
-
-
     }
+
     public static void displayNoNetworkError(Context context) {
         CustomProgressDialog.hideProgressDialog();
         CustomAlertDialog.showAlertDialog(context, "Access Denied", "Please Contact Administrater.");

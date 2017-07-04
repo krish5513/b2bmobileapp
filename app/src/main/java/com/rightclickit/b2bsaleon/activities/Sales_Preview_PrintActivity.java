@@ -31,6 +31,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
     private TDCSaleOrder currentOrder;
     private TDCSalesPreviewAdapter tdcSalesPreviewAdapter;
     private DBHelper mDBHelper;
+    private String loogedInUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,9 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
         try {
             applicationContext = getApplicationContext();
             activityContext = Sales_Preview_PrintActivity.this;
+
+            mmSharedPreferences = new MMSharedPreferences(applicationContext);
+            loogedInUserName = mmSharedPreferences.getString("loogedInUserName");
 
             final ActionBar actionBar = getSupportActionBar();
             assert actionBar != null;
@@ -62,7 +66,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
-                currentOrder = (TDCSaleOrder) bundle.getSerializable("TDCSaleCurrentOrder_Preview");
+                currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW);
 
                 updateUIWithBundleValues(currentOrder);
             }
@@ -113,7 +117,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
         super.onBackPressed();
 
         Intent intent = new Intent(this, SalesCustomerSelectionActivity.class);
-        intent.putExtra("TDCSaleOrder", currentOrder); // to handle back button
+        intent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER, currentOrder); // to handle back button
         startActivity(intent);
         finish();
     }
@@ -122,13 +126,13 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
         try {
             sale_no_text_view.setText(String.format("TDC%05d", 1));
             sale_date_time_text_view.setText(Utility.formatDate(new Date(), Constants.DATE_DISPLAY_FORMAT));
-            //user_name_text_view.setText("");
+            user_name_text_view.setText(loogedInUserName);
 
             tdcSalesPreviewAdapter = new TDCSalesPreviewAdapter(activityContext, this, saleOrder.getProductsList());
             tdc_products_list_preview.setAdapter(tdcSalesPreviewAdapter);
 
-            total_tax_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderTotalAmount()));
-            total_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderTotalTaxAmount()));
+            total_tax_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderTotalTaxAmount()));
+            total_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderTotalAmount()));
             sub_total_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderSubTotal()));
         } catch (Exception e) {
             e.printStackTrace();

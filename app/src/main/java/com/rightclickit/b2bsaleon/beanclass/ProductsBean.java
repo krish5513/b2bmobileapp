@@ -182,7 +182,7 @@ public class ProductsBean implements Serializable {
         this.mTakeOrderToDate = mTakeOrderToDate;
     }
 
-    /*@Override
+    @Override
     public String toString() {
         return "ProductsBean{" +
                 "productId='" + productId + '\'' +
@@ -202,5 +202,5 @@ public class ProductsBean implements Serializable {
                 ", taxAmount=" + taxAmount +
                 ", productAmount=" + productAmount +
                 '}';
-    }*/
+    }
 }

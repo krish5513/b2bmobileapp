@@ -27,6 +27,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TDCSalesCustomerSelectionAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
+import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
@@ -82,14 +83,14 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
 
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
-                currentOrder = (TDCSaleOrder) bundle.getSerializable("TDCSaleOrder");
+                currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_ORDER);
             }
 
             mDBHelper = new DBHelper(activityContext);
             customerList = new ArrayList<>();
 
             customerList = mDBHelper.fetchAllRecordsFromTDCCustomers();
-            customerSelectionAdapter = new TDCSalesCustomerSelectionAdapter(activityContext, this, customerList);
+            customerSelectionAdapter = new TDCSalesCustomerSelectionAdapter(activityContext, this, customerList, currentOrder);
             tdc_customers_list_view.setAdapter(customerSelectionAdapter);
 
             tdc_customers_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -193,6 +194,7 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
         super.onBackPressed();
 
         Intent intent = new Intent(this, SalesActivity.class);
+        intent.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER, currentOrder); // to handle back button
         startActivity(intent);
         finish();
     }
@@ -277,13 +279,14 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
     }
 
     public void showTDCSalesOrderPreview(View view) {
-        if (isCustomerSelected) {
-            Intent i = new Intent(SalesCustomerSelectionActivity.this, Sales_Preview_PrintActivity.class);
-            i.putExtra("TDCSaleCurrentOrder_Preview", currentOrder);
-            startActivity(i);
-            finish();
+        Intent i = new Intent(SalesCustomerSelectionActivity.this, Sales_Preview_PrintActivity.class);
+        i.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
+        startActivity(i);
+        finish();
+
+        /*if (isCustomerSelected) {
         } else {
             Toast.makeText(activityContext, "Please select either retailer or consumer.", Toast.LENGTH_LONG).show();
-        }
+        }*/
     }
 }

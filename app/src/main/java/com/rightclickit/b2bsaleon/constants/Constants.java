@@ -10,6 +10,8 @@ import android.os.Environment;
 public class Constants {
     public static final String databasePath = Environment.getExternalStorageDirectory().toString() + "/B2bSaleOn/Database/";
 
+    public static final String shopImagesPath = Environment.getExternalStorageDirectory().toString() + "/B2bSaleOn/ShopImages/";
+
     public static final String LOADING_MESSAGE = "Please wait..";
 
     // SHARED PREFERENCE CONSTANTS
@@ -17,6 +19,9 @@ public class Constants {
 
     // Bundle Constants
     public static final String BUNDLE_REQUEST_FROM = "RequestFrom";
+    public static final String BUNDLE_TDC_SALE_ORDER = "TDCSaleOrder";
+    public static final String BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW = "TDCSaleCurrentOrder_Preview";
+    public static final String BUNDLE_TDC_SALE_CURRENT_ORDER = "TDCSaleCurrentOrder";
 
     public static final int VOLLEY_SOCKET_TIMEOUT = 30000; // 120 seconds.
 

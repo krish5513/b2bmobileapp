@@ -23,6 +23,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TDCSalesAdapter;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
+import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -39,10 +40,11 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
     private TextView tdc_sales_list, tdc_sales_preview, totalTaxAmountTextView, totalAmountTextView, subTotalAmountTextView;
 
     private DBHelper mDBHelper;
-    private ArrayList<ProductsBean> productsList, selectedProductsList;
+    private ArrayList<ProductsBean> productsList, selectedProductsList, previouslySelectedProductsList;
     private TDCSalesAdapter tdcSalesAdapter;
     private boolean showProductsListView = false;
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
+    private TDCSaleOrder currentOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +70,10 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
 
             mDBHelper = new DBHelper(activityContext);
             mmSharedPreferences = new MMSharedPreferences(activityContext);
+
             productsList = new ArrayList<>();
             selectedProductsList = new ArrayList<>();
+            previouslySelectedProductsList = new ArrayList<>();
 
             ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("TDC"));
 
@@ -94,9 +98,19 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
                 tdc_sales_list.setVisibility(View.GONE);
             }
 
+            // when you came back to this activity when you want to change your order, we are pre populating with previously selected values.
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER);
+
+                // Getting previously selected products list to update on UI
+                previouslySelectedProductsList = currentOrder.getProductsList();
+                updateSelectedProductsListAndSubTotal(previouslySelectedProductsList);
+            }
+            System.out.println("====== productsList = " + previouslySelectedProductsList.size());
             if (showProductsListView) {
                 productsList = mDBHelper.fetchAllRecordsFromProductsTable();
-                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, productsList, tdc_products_list_view);
+                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, productsList, previouslySelectedProductsList, tdc_products_list_view);
                 tdc_products_list_view.setAdapter(tdcSalesAdapter);
             }
 
@@ -236,8 +250,8 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
             subTotal = totalAmount + totalTaxAmount;
         }
 
-        totalTaxAmountTextView.setText(Utility.getFormattedCurrency(totalAmount));
-        totalAmountTextView.setText(Utility.getFormattedCurrency(totalTaxAmount));
+        totalTaxAmountTextView.setText(Utility.getFormattedCurrency(totalTaxAmount));
+        totalAmountTextView.setText(Utility.getFormattedCurrency(totalAmount));
         subTotalAmountTextView.setText(Utility.getFormattedCurrency(subTotal));
     }
 
@@ -251,7 +265,7 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
                 saleOrder.setOrderSubTotal(subTotal);
 
                 Intent customerSelectionIntent = new Intent(activityContext, SalesCustomerSelectionActivity.class);
-                customerSelectionIntent.putExtra("TDCSaleOrder", saleOrder);
+                customerSelectionIntent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER, saleOrder);
                 startActivity(customerSelectionIntent);
                 finish();
             } else {

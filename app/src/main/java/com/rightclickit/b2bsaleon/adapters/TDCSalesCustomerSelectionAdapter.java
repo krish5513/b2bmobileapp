@@ -1,27 +1,19 @@
 package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.SalesCustomerSelectionActivity;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
-import com.rightclickit.b2bsaleon.constants.Constants;
-import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
-import com.rightclickit.b2bsaleon.util.Utility;
+import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +28,20 @@ public class TDCSalesCustomerSelectionAdapter extends BaseAdapter {
     private Activity activity;
     private Context ctxt;
     private ArrayList<TDCCustomer> allCustomersList, filteredCustomersList;
+    private TDCSaleOrder currentOrder;
+    private int selectedTextColor, blackColor;
 
-    public TDCSalesCustomerSelectionAdapter(Context ctxt, SalesCustomerSelectionActivity customerSelectionActivity, List<TDCCustomer> customersList) {
+    public TDCSalesCustomerSelectionAdapter(Context ctxt, SalesCustomerSelectionActivity customerSelectionActivity, List<TDCCustomer> customersList, TDCSaleOrder currentSaleOrder) {
         this.ctxt = ctxt;
         this.activity = customerSelectionActivity;
         this.mInflater = LayoutInflater.from(activity);
         this.allCustomersList = (ArrayList<TDCCustomer>) customersList;
         this.filteredCustomersList = new ArrayList<>();
         this.filteredCustomersList.addAll(allCustomersList);
+        this.currentOrder = currentSaleOrder;
+
+        selectedTextColor = ContextCompat.getColor(ctxt, R.color.colorPrimaryDark);
+        blackColor = ContextCompat.getColor(ctxt, R.color.black);
     }
 
     private class TDCSalesCustomerSelectionViewHolder {
@@ -102,6 +100,12 @@ public class TDCSalesCustomerSelectionAdapter extends BaseAdapter {
 
         tdcSalesCustomerSelectionViewHolder.customer_name.setText(currentCustomer.getName());
         tdcSalesCustomerSelectionViewHolder.customer_mobile_no.setText(currentCustomer.getMobileNo());
+
+        if (currentCustomer.getId() == currentOrder.getSelectedCustomerId()) {
+            tdcSalesCustomerSelectionViewHolder.customer_name.setTextColor(selectedTextColor);
+        } else {
+            tdcSalesCustomerSelectionViewHolder.customer_name.setTextColor(blackColor);
+        }
 
         return convertView;
     }

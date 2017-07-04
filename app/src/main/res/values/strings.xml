@@ -69,16 +69,20 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string-array name="req_type">
+    <string name="rupee_symbol">\u20B9</string>
+    <string name="rupee_text">\u20A8</string>
 
+    <string-array name="req_type">
         <item>Repeated</item>
         <item>One Time</item>
     </string-array>
+
     <string-array name="mop_type">
         <item>Cash</item>
         <item>Card</item>
         <item>Cheque</item>
     </string-array>
+
     <string-array name="rep_type">
         <item>Daily</item>
         <item>Weekly</item>
