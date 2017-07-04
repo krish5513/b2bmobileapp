@@ -14,6 +14,7 @@ import com.rightclickit.b2bsaleon.activities.AgentTDC_Order;
 import com.rightclickit.b2bsaleon.activities.AgentTakeOrderPreview;
 import com.rightclickit.b2bsaleon.activities.AgentsTDC_View;
 import com.rightclickit.b2bsaleon.beanclass.OrdersListBean;
+import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -29,13 +30,13 @@ public class AgentsOrdersAdapter extends BaseAdapter{
     LayoutInflater mInflater;
     private Activity activity;
     Context ctxt;
-    private ArrayList<OrdersListBean> mOrdersList;
+    private ArrayList<TakeOrderBean> mOrdersList;
     private ImageLoader mImageLoader;
 
     private MMSharedPreferences mPreferences;
 
 
-    public AgentsOrdersAdapter(Context ctxt, AgentTDC_Order ordersActivity, ArrayList<OrdersListBean> ordersListBeanArrayList) {
+    public AgentsOrdersAdapter(Context ctxt, AgentTDC_Order ordersActivity, ArrayList<TakeOrderBean> ordersListBeanArrayList) {
         this.ctxt = ctxt;
         this.activity = ordersActivity;
         this.mOrdersList = ordersListBeanArrayList;
@@ -85,11 +86,11 @@ public class AgentsOrdersAdapter extends BaseAdapter{
 
 
 
-        holder.enquiryId.setText(mOrdersList.get(position).getmOrders_enguiryId());
-        holder.date.setText(mOrdersList.get(position).getmOrders_date());
-        holder.status.setText(mOrdersList.get(position).getmOrdersStatus());
-        holder.itemsCount.setText(mOrdersList.get(position).getmOrders_ItemsCount());
-        holder.valueCount.setText(mOrdersList.get(position).getmOrders_TotalValue());
+        holder.enquiryId.setText(mOrdersList.get(position).getmEnquiryId());
+        holder.date.setText(mOrdersList.get(position).getmProductToDate());
+        holder.status.setText("Paid");
+        holder.itemsCount.setText("Rs.00.80");
+        holder.valueCount.setText("12.400");
 
     holder.view.setOnClickListener(new View.OnClickListener() {
     @Override

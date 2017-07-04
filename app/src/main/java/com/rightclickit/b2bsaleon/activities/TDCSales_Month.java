@@ -19,7 +19,7 @@ public class TDCSales_Month extends AppCompatActivity {
 
 
 
-        this.getSupportActionBar().setTitle("MONTHLY");
+        this.getSupportActionBar().setTitle("SALES LIST");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);

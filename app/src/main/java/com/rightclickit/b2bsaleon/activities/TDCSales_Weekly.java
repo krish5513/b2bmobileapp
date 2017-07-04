@@ -17,7 +17,7 @@ public class TDCSales_Weekly extends AppCompatActivity {
         setContentView(R.layout.activity_tdcsales__weekly);
 
 
-        this.getSupportActionBar().setTitle("WEEKLY");
+        this.getSupportActionBar().setTitle("SALES LIST");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);

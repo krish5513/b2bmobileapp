@@ -18,6 +18,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentsOrdersAdapter;
 import com.rightclickit.b2bsaleon.adapters.TakeOrderPreviewAdapter;
 import com.rightclickit.b2bsaleon.beanclass.OrdersListBean;
+import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -37,7 +38,7 @@ public class AgentTDC_Order extends AppCompatActivity {
     private MMSharedPreferences mPreferences;
     AgentsOrdersAdapter ordersAdapter;
     private ListView mAgentsList;
-
+    private MMSharedPreferences mSessionManagement;
     private ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
 
     String enquiryId,orderdate,value,totalprice;
@@ -46,7 +47,7 @@ public class AgentTDC_Order extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent_tdc__order);
 
-
+        mSessionManagement = new MMSharedPreferences(this);
         this.getSupportActionBar().setTitle("ORDERS");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
@@ -69,21 +70,12 @@ public class AgentTDC_Order extends AppCompatActivity {
         tv_ValueCount=(TextView)findViewById(R.id.tv_TotalValue) ;
 
 
-        ArrayList<OrdersListBean> ordersList=new ArrayList<>();
-
-        totalprice=mPreferences.getString("totalprice");
-        enquiryId=mPreferences.getString("enquiryid");
-        orderdate=mPreferences.getString("orderdate");
+        ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
+        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes",mSessionManagement.getString("agentId"));
 
 
 
-            OrdersListBean topBean = new OrdersListBean();
-            topBean.setmOrders_TotalValue(totalprice);
-            topBean.setmOrders_enguiryId(enquiryId);
-            topBean.setmOrders_date(orderdate);
-            topBean.setmOrdersStatus("Paid");
 
-            ordersList.add(topBean);
 
 
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
@@ -91,8 +83,8 @@ public class AgentTDC_Order extends AppCompatActivity {
         //System.out.println("ELSE::: "+a.size());
 
         //   ArrayList<TakeOrderPreviewBean> previewArrayList = new ArrayList<>();
-        if (ordersList.size() > 0) {
-            loadAgentsList(ordersList);
+        if (mTakeOrderBeansList.size() > 0) {
+            loadAgentsList(mTakeOrderBeansList);
         }
 
 
@@ -200,8 +192,8 @@ public class AgentTDC_Order extends AppCompatActivity {
 
     }
 
-    private void loadAgentsList(ArrayList<OrdersListBean> ordersList) {
-        ordersAdapter = new AgentsOrdersAdapter(this, AgentTDC_Order.this, ordersList);
+    private void loadAgentsList(ArrayList<TakeOrderBean> mTakeOrderBeansList) {
+        ordersAdapter = new AgentsOrdersAdapter(this, AgentTDC_Order.this, mTakeOrderBeansList);
         mAgentsList.setAdapter(ordersAdapter);
     }
 
