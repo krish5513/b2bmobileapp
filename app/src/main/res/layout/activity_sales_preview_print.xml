@@ -17,13 +17,94 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:paddingLeft="5dp"
+
             android:paddingTop="5dp"
-            android:text="thirumala milk products pvt ltd"
+            android:text="Company name"
+            android:paddingLeft="10dp"
             android:textAllCaps="true"
             android:textColor="@color/greydark"
             android:textSize="16sp" />
 
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_routecode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="routecode"
+                android:gravity="left"
+                android:paddingTop="5dp"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:textColor="@color/greydark"
+                />
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/sales_ofc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="Sales Office"
+                android:gravity="left"
+                android:paddingTop="5dp"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:textColor="@color/greydark"
+                />
+            <TextView
+                android:id="@+id/route_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="Routename"
+                android:gravity="left"
+                android:paddingTop="5dp"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:textColor="@color/greydark"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_line" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="Bill "
+                android:gravity="left"
+
+                android:textAllCaps="true"
+                android:layout_weight="0.8"
+                android:paddingLeft="10dp"
+                android:textColor="@color/greydark"
+                />
+            <TextView
+                android:id="@+id/tv_user_Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="login User name "
+                android:layout_marginLeft="40dp"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:gravity="right"
+                android:layout_weight="2"
+                android:textColor="@color/greydark"
+                />
+        </LinearLayout>
+<!--
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,18 +146,9 @@
                 android:textColor="@color/greydark"
                 android:textSize="14sp" />
         </LinearLayout>
+-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:paddingBottom="10dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="10dp"
-            android:text="TPC Sale info"
-            android:textAllCaps="true"
-            android:textColor="@color/greydark"
-            android:textSize="16sp" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -89,9 +161,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:paddingLeft="5dp"
-                android:text="TDC00001"
+
+                android:text="Bill No"
                 android:textAllCaps="true"
+                android:paddingLeft="10dp"
                 android:textColor="@color/greydark"
                 android:textSize="14sp" />
 
@@ -106,15 +179,7 @@
                 android:textColor="@color/greydark"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/user_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:paddingLeft="10dp"
-                android:text="Raj Kumar"
-                android:textColor="@color/greydark"
-                android:textSize="14sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -297,7 +362,7 @@
                 android:gravity="center">
 
                 <TextView
-                    android:id="@+id/tv_print_print"
+                    android:id="@+id/tv_sales_print"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

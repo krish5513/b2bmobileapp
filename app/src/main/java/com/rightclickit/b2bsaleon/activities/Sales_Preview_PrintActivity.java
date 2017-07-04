@@ -1,11 +1,17 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TDCSalesPreviewAdapter;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -14,12 +20,20 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.rightclickit.b2bsaleon.R.id.price;
+import static com.rightclickit.b2bsaleon.R.id.tax;
 
 public class Sales_Preview_PrintActivity extends AppCompatActivity {
     private Context applicationContext, activityContext;
@@ -32,10 +46,36 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
     private TDCSalesPreviewAdapter tdcSalesPreviewAdapter;
     private DBHelper mDBHelper;
 
+
+    TextView tv_companyName;
+    TextView Route_Name;
+    TextView RouteCode;
+
+    TextView user_Name;
+    TextView salesprint;
+
+    String amount, subtotal;
+    String taxAmount;
+    String name;
+    double mrp;double quantity;
+
+   String subtaxAmount;
+    String subAmount;
+    String finalAmount;
+
+    String currentDate, str_routecode, str_enguiryid, str_agentname;
+    Map<String, String[]> selectedList = new HashMap<String, String[]>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_preview_print);
+
+        mDBHelper = new DBHelper(Sales_Preview_PrintActivity.this);
+
+
+
+
+//        Log.i("listofproducts",productsList+"");
 
         try {
             applicationContext = getApplicationContext();
@@ -51,6 +91,18 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+            mmSharedPreferences = new MMSharedPreferences(Sales_Preview_PrintActivity.this);
+
+            salesprint=(TextView)findViewById(R.id.tv_sales_print);
+            tv_companyName = (TextView) findViewById(R.id.tv_companyName);
+            user_Name = (TextView) findViewById(R.id.tv_user_Name);
+            Route_Name = (TextView) findViewById(R.id.route_name);
+
+            RouteCode = (TextView) findViewById(R.id.tv_routecode);
+            str_routecode = (mmSharedPreferences.getString("routecode") + ",");
+
+
+
             sale_no_text_view = (TextView) findViewById(R.id.sale_no);
             sale_date_time_text_view = (TextView) findViewById(R.id.sale_date_time);
             user_name_text_view = (TextView) findViewById(R.id.user_name);
@@ -60,15 +112,118 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
             tdc_products_list_preview = (ListView) findViewById(R.id.tdc_products_list_preview);
 
+            currentDate=Utility.formatDate(new Date(), Constants.DATE_DISPLAY_FORMAT);
+
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 currentOrder = (TDCSaleOrder) bundle.getSerializable("TDCSaleCurrentOrder_Preview");
 
+                subtaxAmount=Utility.getFormattedCurrency(currentOrder.getOrderTotalTaxAmount());
+                Log.i("fdgh",subtaxAmount+"");
+                subAmount=Utility.getFormattedCurrency(currentOrder.getOrderTotalAmount());
+                finalAmount=Utility.getFormattedCurrency(currentOrder.getOrderSubTotal());
+                ArrayList<ProductsBean> productsList = currentOrder.getProductsList();
+                for (int i = 0; i < productsList.size(); i++) {
+                    name=String.valueOf(productsList.get(i).getProductTitle().replace(",", ""));
+                    Log.i("pushname",name);
+
+
+                    quantity=productsList.get(i).getSelectedQuantity();
+                    mrp= Double.parseDouble(productsList.get(i).getProductConsumerPrice());
+                    subtotal= Utility.getFormattedCurrency(productsList.get(i).getProductAmount());
+                    taxAmount= Utility.getFormattedCurrency(productsList.get(i).getTaxAmount());
+                    String[] temp = new String[5];
+                    temp[0] = name;
+                    temp[1] = String.valueOf(mrp);
+                    temp[2] = String.valueOf(quantity);
+                    temp[3] = String.valueOf(subtotal);
+                    temp[4] = String.valueOf(taxAmount);
+                    selectedList.put(name, temp);
+                    Log.i("pushtemp",temp+"");
+                }
                 updateUIWithBundleValues(currentOrder);
             }
+
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+
+        salesprint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pageheight = 300 + selectedList.size() * 60;
+                Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
+                Canvas canvas = new Canvas(bmOverlay);
+                canvas.drawColor(Color.WHITE);
+                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                paint.setAntiAlias(true);
+                paint.setFilterBitmap(true);
+                paint.setDither(true);
+                paint.setColor(Color.parseColor("#000000"));
+                paint.setTextSize(26);
+
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
+                paint.setTextSize(20);
+                canvas.drawText(str_routecode, 5, 80, paint);
+                canvas.drawText(mmSharedPreferences.getString("routename"), 200, 80, paint);
+                canvas.drawText("BILL,", 5, 120, paint);
+                canvas.drawText("by " + mmSharedPreferences.getString("loginusername"), 200, 120, paint);
+                canvas.drawText("TDC000C1,", 5, 150, paint);
+                canvas.drawText(currentDate, 170, 150, paint);
+              //  canvas.drawText(str_agentname, 5, 180, paint);
+              //  canvas.drawText(mmSharedPreferences.getString("agentCode"), 200, 180, paint);
+
+                canvas.drawText("----------------------------------------------------", 5, 200, paint);
+                canvas.drawText("Product", 5, 220, paint);
+                canvas.drawText("Qty", 100, 220, paint);
+                canvas.drawText("Price", 160, 220, paint);
+                canvas.drawText("Amount", 230, 220, paint);
+                canvas.drawText("Tax", 320, 220, paint);
+                canvas.drawText("----------------------------------------------------", 5, 235, paint);
+
+
+                int st = 250;
+                paint.setTextSize(17);
+                for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                    String[] temps = entry.getValue();
+                    canvas.drawText(temps[0], 5, st, paint);
+                    canvas.drawText(temps[1], 115, st, paint);
+
+
+                    canvas.drawText(temps[2], 175, st, paint);
+
+                    canvas.drawText(temps[3], 245, st, paint);
+                    canvas.drawText(temps[4], 315, st, paint);
+
+
+
+                    // canvas.drawText("FROM:" + temps[7], 100, st, paint);
+                    //canvas.drawText("TO:" + temps[8], 250, st, paint);
+
+                    st = st + 30;
+                    //  canvas.drawText("----------------------------------------------------", 5, st, paint);
+
+
+                }
+
+                canvas.drawText("----------------------------------------------------", 5, st, paint);
+
+                st = st + 20;
+                canvas.drawText("Total:", 5, st, paint);
+                canvas.drawText(subtaxAmount, 70, st, paint);
+                canvas.drawText(subAmount, 170, st, paint);
+                canvas.drawText(finalAmount, 280, st, paint);
+                st = st + 20;
+                canvas.drawText("--------X---------", 100, st, paint);
+                com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+            }
+        });
     }
 
     @Override
@@ -120,15 +275,19 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
     public void updateUIWithBundleValues(TDCSaleOrder saleOrder) {
         try {
+            tv_companyName.setText(mmSharedPreferences.getString("companyname"));
+            user_Name.setText("by " + mmSharedPreferences.getString("loginusername"));
+            Route_Name.setText(mmSharedPreferences.getString("routename"));
+            RouteCode.setText(str_routecode);
             sale_no_text_view.setText(String.format("TDC%05d", 1));
-            sale_date_time_text_view.setText(Utility.formatDate(new Date(), Constants.DATE_DISPLAY_FORMAT));
+            sale_date_time_text_view.setText(currentDate);
             //user_name_text_view.setText("");
 
             tdcSalesPreviewAdapter = new TDCSalesPreviewAdapter(activityContext, this, saleOrder.getProductsList());
             tdc_products_list_preview.setAdapter(tdcSalesPreviewAdapter);
 
-            total_tax_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderTotalAmount()));
-            total_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderTotalTaxAmount()));
+            total_tax_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderTotalTaxAmount()));
+            total_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderTotalAmount()));
             sub_total_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderSubTotal()));
         } catch (Exception e) {
             e.printStackTrace();

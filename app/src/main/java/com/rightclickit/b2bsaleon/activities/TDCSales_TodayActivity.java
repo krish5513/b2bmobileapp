@@ -16,7 +16,7 @@ public class TDCSales_TodayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tdcsales__today);
 
-        this.getSupportActionBar().setTitle("TODAY");
+        this.getSupportActionBar().setTitle("SALES LIST");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
