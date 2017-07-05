@@ -22,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -157,6 +158,8 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             holder.productQuantityIncrement = (ImageButton) convertView.findViewById(R.id.productQtInc);
             holder.productQuantityDecrement = (ImageButton) convertView.findViewById(R.id.productQtDec);
             holder.productArrow = (ImageView) convertView.findViewById(R.id.img);
+
+            holder.mEmptyLayout = (LinearLayout) convertView.findViewById(R.id.EmptyView);
             convertView.setTag(holder);
             /*Intent intent=new Intent(activity,DashboardTakeorderPreview.class);
             activity.startActivity(intent);
@@ -169,6 +172,12 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         holder.fromDate.setText(currentDate);
         holder.toDate.setText(currentDate);
         holder.productQuantity.setText("0.000");
+
+        if(position == mTakeOrderBeansList1.size()-1){
+            holder.mEmptyLayout.setVisibility(View.VISIBLE);
+        }else {
+            holder.mEmptyLayout.setVisibility(View.GONE);
+        }
 
         if (producttitle.get(mTakeOrderBeansList1.get(position).getProductTitle()) != null) {
             // Assign changed from date value.
@@ -378,6 +387,8 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                             tb.setmProductStatus("1");
                             tb.setmEnquiryId(mPreferences.getString("enqId"));
                             tb.setmAgentId(mPreferences.getString("agentId"));
+                            tb.setMtakeorderProductCode(mTakeOrderBeansList1.get(k).getProductCode());
+                            tb.setmAgentTakeOrderDate(currentDate);
 
                             temptoList.add(tb);
                         }
@@ -467,6 +478,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         public ImageButton productQuantityIncrement;
         public ImageButton productQuantityDecrement;
         public ImageView productArrow;
+        LinearLayout mEmptyLayout;
     }
 
     // Filter Class

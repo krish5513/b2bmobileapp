@@ -162,7 +162,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:layout_marginRight="20dp"
-                            android:layout_weight="0.18"
+                            android:layout_weight="0.16"
                             android:gravity="center">
 
                             <Button

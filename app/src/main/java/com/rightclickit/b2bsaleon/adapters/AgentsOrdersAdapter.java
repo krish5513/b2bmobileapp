@@ -87,10 +87,10 @@ public class AgentsOrdersAdapter extends BaseAdapter{
 
 
         holder.enquiryId.setText(mOrdersList.get(position).getmEnquiryId());
-        holder.date.setText(mOrdersList.get(position).getmProductToDate());
+        holder.date.setText(mOrdersList.get(position).getmAgentTakeOrderDate());
         holder.status.setText("Paid");
-        holder.itemsCount.setText("Rs.00.80");
-        holder.valueCount.setText("12.400");
+        holder.itemsCount.setText("ITEMS");
+        holder.valueCount.setText("TOTALVALUE");
 
     holder.view.setOnClickListener(new View.OnClickListener() {
     @Override

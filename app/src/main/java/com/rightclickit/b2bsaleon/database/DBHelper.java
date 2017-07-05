@@ -145,6 +145,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Column names for Products with take order values
     private final String KEY_TO_PRODUCT_ID = "to_product_id";
+    private final String KEY_TO_PRODUCT_CODE = "to_product_code";
     private final String KEY_TO_PRODUCT_NAME = "to_product_name";
     private final String KEY_TO_PRODUCT_ROUTE_ID = "to_product_route_id";
     private final String KEY_TO_FROM_DATE = "to_from_date";
@@ -154,6 +155,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TO_STATUS = "to_status";
     private final String KEY_TO_ENQID = "to_enquiry_id";
     private final String KEY_TO_AGENTID = "to_agent_id";
+   private final String KEY_TAKEORDER_DATE = "takeorder_date";
+
 
     // Column names for User privilege actions  Table
     private final String KEY_USER_PRIVILEGE_ID = "user_privilege_id";
@@ -229,11 +232,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //TO Products Table Create Statements
     private final String CREATE_PRODUCTS_TABLE_TO = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_TO_PRODUCTS + "(" + KEY_TO_PRODUCT_ID + " VARCHAR,"
+            + TABLE_TO_PRODUCTS + "(" + KEY_TO_PRODUCT_ID + " VARCHAR," + KEY_TO_PRODUCT_CODE + " VARCHAR,"
             + KEY_TO_PRODUCT_NAME + " VARCHAR," + KEY_TO_PRODUCT_ROUTE_ID + " VARCHAR,"
             + KEY_TO_FROM_DATE + " VARCHAR," + KEY_TO_TO_DATE + " VARCHAR," + KEY_TO_ORDER_TYPE + " VARCHAR,"
             + KEY_TO_QUANTITY + " VARCHAR," + KEY_TO_STATUS + " VARCHAR,"
-            + KEY_TO_ENQID + " VARCHAR," + KEY_TO_AGENTID + " VARCHAR)";
+            + KEY_TO_ENQID + " VARCHAR," + KEY_TO_AGENTID + " VARCHAR," + KEY_TAKEORDER_DATE + " VARCHAR)";
+
 
     // User privilege actions Table Create Statements
     private final String CREATE_USER_PRIVILEGE_ACTIONS_TABLE = "CREATE TABLE IF NOT EXISTS "
@@ -1188,6 +1192,7 @@ public class DBHelper extends SQLiteOpenHelper {
             for (int i = 0; i < mProductsBeansList.size(); i++) {
                 ContentValues values = new ContentValues();
                 values.put(KEY_TO_PRODUCT_ID, mProductsBeansList.get(i).getmProductId());
+                values.put(KEY_TO_PRODUCT_CODE, mProductsBeansList.get(i).getMtakeorderProductCode());
                 values.put(KEY_TO_PRODUCT_NAME, mProductsBeansList.get(i).getmProductTitle());
                 values.put(KEY_TO_PRODUCT_ROUTE_ID, mProductsBeansList.get(i).getmRouteId());
                 values.put(KEY_TO_FROM_DATE, mProductsBeansList.get(i).getmProductFromDate());
@@ -1198,6 +1203,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TO_ENQID, mProductsBeansList.get(i).getmEnquiryId());
                 values.put(KEY_TO_AGENTID, mProductsBeansList.get(i).getmAgentId());
 
+              values.put(KEY_TAKEORDER_DATE, mProductsBeansList.get(i).getmAgentTakeOrderDate());
                 // insert row
                 db.insert(TABLE_TO_PRODUCTS, null, values);
                 System.out.println("*********** INSERTED***************9999");
@@ -1238,6 +1244,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     TakeOrderBean toBean = new TakeOrderBean();
 
                     toBean.setmProductId((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_ID))));
+                    toBean.setMtakeorderProductCode((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_CODE))));
                     toBean.setmRouteId((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_ROUTE_ID))));
                     toBean.setmProductTitle((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_NAME))));
                     toBean.setmProductFromDate((c.getString(c.getColumnIndex(KEY_TO_FROM_DATE))));
@@ -1247,6 +1254,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     toBean.setmProductStatus((c.getString(c.getColumnIndex(KEY_TO_STATUS))));
                     toBean.setmEnquiryId((c.getString(c.getColumnIndex(KEY_TO_ENQID))));
                     toBean.setmAgentId((c.getString(c.getColumnIndex(KEY_TO_AGENTID))));
+                    toBean.setmAgentTakeOrderDate((c.getString(c.getColumnIndex(KEY_TAKEORDER_DATE))));
+                   // toBean.setMtakeorderProductCode((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_CODE))));
 
 
                     allProductTrackRecords.add(toBean);
@@ -1292,6 +1301,7 @@ public class DBHelper extends SQLiteOpenHelper {
             for (int b = 0; b < takeOrderBeanArrayList.size(); b++) {
                 ContentValues values = new ContentValues();
                 values.put(KEY_TO_PRODUCT_ID, takeOrderBeanArrayList.get(b).getmProductId());
+                values.put(KEY_TO_PRODUCT_CODE, takeOrderBeanArrayList.get(b).getMtakeorderProductCode());
                 values.put(KEY_TO_PRODUCT_NAME, takeOrderBeanArrayList.get(b).getmProductTitle());
                 values.put(KEY_TO_PRODUCT_ROUTE_ID, takeOrderBeanArrayList.get(b).getmRouteId());
                 values.put(KEY_TO_FROM_DATE, takeOrderBeanArrayList.get(b).getmProductFromDate());
@@ -1301,6 +1311,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TO_STATUS, takeOrderBeanArrayList.get(b).getmProductStatus());
                 values.put(KEY_TO_ENQID, takeOrderBeanArrayList.get(b).getmEnquiryId());
                 values.put(KEY_TO_AGENTID, takeOrderBeanArrayList.get(b).getmAgentId());
+
+               values.put(KEY_TAKEORDER_DATE, takeOrderBeanArrayList.get(b).getmAgentTakeOrderDate());
+
 
                 int ccc = checkProductExistsOrNot(takeOrderBeanArrayList.get(b).getmProductId(),takeOrderBeanArrayList.get(b).getmAgentId());
                 //System.out.println("Product Exists:::: "+ ccc);

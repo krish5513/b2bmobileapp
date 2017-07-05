@@ -141,6 +141,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 
                     double quantity = Double.parseDouble(mProductIdsList.get(k).getmProductQuantity().replace(",", ""));
 
+                    currentDate=mProductIdsList.get(k).getmAgentTakeOrderDate();
 
                     taxAmount = ((quantity * price) * tax) / 100;
                     //  amount = price + taxAmount;
@@ -192,9 +193,9 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         orderNo.setText(str_enguiryid);
 
         orderDate = (TextView) findViewById(R.id.tv_date);
-        Calendar cal = Calendar.getInstance();
+       /* Calendar cal = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        currentDate = df.format(cal.getTime());
+        currentDate = df.format(cal.getTime());*/
         orderDate.setText(currentDate);
         sharedPreferences.putString("orderdate", currentDate);
 

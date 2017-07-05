@@ -125,8 +125,8 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                     taxAmount = Utility.getFormattedCurrency(productsList.get(i).getTaxAmount());
                     String[] temp = new String[5];
                     temp[0] = name;
-                    temp[1] = String.valueOf(mrp);
-                    temp[2] = String.valueOf(quantity);
+                    temp[1] = String.valueOf(quantity);
+                    temp[2] = String.valueOf(mrp);
                     temp[3] = String.valueOf(subtotal);
                     temp[4] = String.valueOf(taxAmount);
                     selectedList.put(name, temp);
@@ -166,12 +166,12 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                 //  canvas.drawText(str_agentname, 5, 180, paint);
                 //  canvas.drawText(mmSharedPreferences.getString("agentCode"), 200, 180, paint);
 
-                canvas.drawText("----------------------------------------------------", 5, 200, paint);
+                canvas.drawText("----------------------------------------------------", 5, 180, paint);
                 canvas.drawText("Product", 5, 220, paint);
-                canvas.drawText("Qty", 100, 220, paint);
+                canvas.drawText("Qty", 110, 220, paint);
                 canvas.drawText("Price", 160, 220, paint);
                 canvas.drawText("Amount", 230, 220, paint);
-                canvas.drawText("Tax", 320, 220, paint);
+                canvas.drawText("Tax", 330, 220, paint);
                 canvas.drawText("----------------------------------------------------", 5, 235, paint);
 
                 int st = 250;
@@ -182,10 +182,10 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                     canvas.drawText(temps[1], 115, st, paint);
 
 
-                    canvas.drawText(temps[2], 175, st, paint);
+                    canvas.drawText(temps[2], 150, st, paint);
 
-                    canvas.drawText(temps[3], 245, st, paint);
-                    canvas.drawText(temps[4], 315, st, paint);
+                    canvas.drawText(temps[3], 190, st, paint);
+                    canvas.drawText(temps[4], 300, st, paint);
 
                     // canvas.drawText("FROM:" + temps[7], 100, st, paint);
                     //canvas.drawText("TO:" + temps[8], 250, st, paint);

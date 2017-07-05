@@ -51,6 +51,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.agents_take_order);
+
         mPreference = new MMSharedPreferences(this);
         mDBHelper = new DBHelper(this);
 
