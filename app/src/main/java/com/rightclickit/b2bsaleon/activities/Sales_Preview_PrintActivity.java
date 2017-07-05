@@ -268,8 +268,10 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
                 if (orderId == -1)
                     Toast.makeText(activityContext, "An error occurred while saving order.", Toast.LENGTH_LONG).show();
-                else
+                else {
                     Toast.makeText(activityContext, "Order Saved Successfully.", Toast.LENGTH_LONG).show();
+                    sale_no_text_view.setText(String.format("TDC%05d", orderId));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
