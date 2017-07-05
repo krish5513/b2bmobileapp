@@ -225,6 +225,10 @@ public class Retailers_AddActivity extends AppCompatActivity {
                 mobile_no.setError("Please enter mobile no.");
                 focusView = mobile_no;
                 cancel = true;
+            } else if (!mobileNo.isEmpty() && mobileNo.length() < 10) {
+                mobile_no.setError("Please enter valid mobile no.");
+                focusView = mobile_no;
+                cancel = true;
             } else if (businessName.isEmpty()) {
                 business_name.setError("Please enter business name.");
                 focusView = business_name;
@@ -256,6 +260,7 @@ public class Retailers_AddActivity extends AppCompatActivity {
             customer.setAddress(retailerAddress);
             customer.setLatLong("");
             customer.setShopImage(shop_image_path);
+            customer.setIsShopImageUploaded(0);
 
             long customerId = mDBHelper.insertIntoTDCCustomers(customer);
 

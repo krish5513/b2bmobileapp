@@ -3,14 +3,18 @@ package com.rightclickit.b2bsaleon.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.SpecialPriceBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
+import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
+import com.rightclickit.b2bsaleon.beanclass.TDCSalesOrderProductBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 
 import org.json.JSONArray;
@@ -19,6 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -61,7 +66,13 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String TABLE_TDC_CUSTOMERS = "tdc_customers";
 
     // This table contains Special price for the product
-    private final String TABLE_SPECIALPRICE= "specialprice";
+    private final String TABLE_SPECIALPRICE = "specialprice";
+
+    // This table contains TDC Sales Orders
+    private final String TABLE_TDC_SALES_ORDERS = "tdc_sales_orders";
+
+    // This table contains TDC Sales Order corresponding Products
+    private final String TABLE_TDC_SALES_ORDER_PRODUCTS = "tdc_sales_order_products";
 
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
@@ -111,7 +122,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public final String KEY_PRODUCT_GST_PRICE = "product_gst_price";
     public final String KEY_PRODUCT_VAT_PRICE = "product_vat_price";
 
-
     // Column names for Agents Table
     private final String KEY_AGENT_ID = "agent_id";
     private final String KEY_AGENT_NAME = "agent_name";
@@ -142,7 +152,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_AGENT_UPDATEDBY = "agent_updatedby";
     private final String KEY_AGENT_UPDATEDON = "agent_updatedon";
 
-
     // Column names for Products with take order values
     private final String KEY_TO_PRODUCT_ID = "to_product_id";
     private final String KEY_TO_PRODUCT_CODE = "to_product_code";
@@ -155,8 +164,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TO_STATUS = "to_status";
     private final String KEY_TO_ENQID = "to_enquiry_id";
     private final String KEY_TO_AGENTID = "to_agent_id";
-   private final String KEY_TAKEORDER_DATE = "takeorder_date";
-
+    private final String KEY_TAKEORDER_DATE = "takeorder_date";
 
     // Column names for User privilege actions  Table
     private final String KEY_USER_PRIVILEGE_ID = "user_privilege_id";
@@ -175,11 +183,34 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_CUSTOMER_SHOP_IMAGE = "tdc_customer_shop_image";
     private final String KEY_TDC_CUSTOMER_IS_ACTIVE = "tdc_customer_is_active";
     private final String KEY_TDC_CUSTOMER_UPLOAD_STATUS = "tdc_customer_upload_status";
+    private final String KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS = "tdc_customer_shop_image_upload_status";
 
     // Column names for Special price
-    private final String KEY_USER_SPECIALID= "userid";
-    private final String KEY_PRODUCT_SPECIALID= "productid";
+    private final String KEY_USER_SPECIALID = "userid";
+    private final String KEY_PRODUCT_SPECIALID = "productid";
     private final String KEY_SPECIALPRICE = "price";
+
+    // Column names for TDC Sales Orders Table
+    private final String KEY_TDC_SALES_ORDER_ID = "tdc_sales_order_id";
+    private final String KEY_TDC_SALES_ORDER_NO_OF_ITEMS = "tdc_sales_order_no_of_items";
+    private final String KEY_TDC_SALES_ORDER_TOTAL_AMOUNT = "tdc_sales_order_total_amount";
+    private final String KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT = "tdc_sales_order_total_tax_amount";
+    private final String KEY_TDC_SALES_ORDER_SUB_TOTAL = "tdc_sales_order_sub_total"; // i.e. ORDER TOTAL AMOUNT + ORDER TOTAL TAX AMOUNT
+    private final String KEY_TDC_SALES_ORDER_CUSTOMER_ID = "tdc_sales_customer_id";
+    private final String KEY_TDC_SALES_ORDER_CUSTOMER_NAME = "tdc_sales_customer_name";
+    private final String KEY_TDC_SALES_ORDER_CREATED_ON = "tdc_sales_order_created_on";
+    private final String KEY_TDC_SALES_ORDER_CREATED_BY = "tdc_sales_order_created_by";
+    private final String KEY_TDC_SALES_ORDER_UPLOAD_STATUS = "tdc_sale_order_upload_status";
+
+    // Column names for TDC Sales Order Products Table
+    private final String KEY_TDC_SOP_ID = "tdc_sop_id";
+    private final String KEY_TDC_SOP_ORDER_ID = "tdc_sop_order_id";
+    private final String KEY_TDC_SOP_PRODUCT_ID = "tdc_sop_product_id";
+    private final String KEY_TDC_SOP_PRODUCT_MRP = "tdc_sop_product_mrp";
+    private final String KEY_TDC_SOP_PRODUCT_QUANTITY = "tdc_sop_product_quantity";
+    private final String KEY_TDC_SOP_PRODUCT_AMOUNT = "tdc_sop_product_amount";
+    private final String KEY_TDC_SOP_PRODUCT_TAX = "tdc_sop_product_tax";
+    private final String KEY_TDC_SOP_UPLOAD_STATUS = "tdc_sop_upload_status";
 
     // Userdetails Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
@@ -215,7 +246,6 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_REGION_NAME + " VARCHAR," + KEY_OFFICE_NAME + " VARCHAR," + KEY_ROUTE_CODE + " VARCHAR)";
 
 
-
     // User activity Table Create Statements
     private final String CREATE_USER_ACTIVITY_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_PREVILEGES_USER_ACTIVITY + "(" + KEY_USER_ACTIVITY_ID + " VARCHAR," + KEY_USER_ACTIVITY_USER_ID + " VARCHAR,"
@@ -249,7 +279,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + TABLE_TDC_CUSTOMERS + "(" + KEY_TDC_CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_CUSTOMER_TYPE + " INTEGER, "
             + KEY_TDC_CUSTOMER_NAME + " VARCHAR, " + KEY_TDC_CUSTOMER_MOBILE_NO + " VARCHAR, " + KEY_TDC_CUSTOMER_BUSINESS_NAME + " VARCHAR, "
             + KEY_TDC_CUSTOMER_ADDRESS + " TEXT, " + KEY_TDC_CUSTOMER_LAT_LONG + " TEXT, " + KEY_TDC_CUSTOMER_SHOP_IMAGE + " VARCHAR, "
-            + KEY_TDC_CUSTOMER_IS_ACTIVE + " INTEGER DEFAULT 1, " + KEY_TDC_CUSTOMER_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
+            + KEY_TDC_CUSTOMER_IS_ACTIVE + " INTEGER DEFAULT 1, " + KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS + " INTEGER DEFAULT 0, " + KEY_TDC_CUSTOMER_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
 
     // SpecialPrice Table Create Statement
@@ -257,7 +287,18 @@ public class DBHelper extends SQLiteOpenHelper {
             + TABLE_SPECIALPRICE + "(" + KEY_USER_SPECIALID + " VARCHAR, " + KEY_PRODUCT_SPECIALID + " INTEGER, "
             + KEY_SPECIALPRICE + " VARCHAR)";
 
+    // TDC Sales Orders Table Create Statement
+    private final String CREATE_TDC_SALES_ORDERS_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_TDC_SALES_ORDERS + "(" + KEY_TDC_SALES_ORDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_SALES_ORDER_NO_OF_ITEMS + " INTEGER, "
+            + KEY_TDC_SALES_ORDER_TOTAL_AMOUNT + " VARCHAR, " + KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT + " VARCHAR, " + KEY_TDC_SALES_ORDER_SUB_TOTAL + " VARCHAR, "
+            + KEY_TDC_SALES_ORDER_CUSTOMER_ID + " INTEGER, " + KEY_TDC_SALES_ORDER_CUSTOMER_NAME + " VARCHAR, " + KEY_TDC_SALES_ORDER_CREATED_ON + " TEXT, "
+            + KEY_TDC_SALES_ORDER_CREATED_BY + " VARCHAR, " + KEY_TDC_SALES_ORDER_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
+    // TDC Sales Order Products Table Create Statement
+    private final String CREATE_TDC_SALES_ORDER_PRODUCTS_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_TDC_SALES_ORDER_PRODUCTS + "(" + KEY_TDC_SOP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_SOP_ORDER_ID + " INTEGER, "
+            + KEY_TDC_SOP_PRODUCT_ID + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_MRP + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_QUANTITY + " VARCHAR, "
+            + KEY_TDC_SOP_PRODUCT_AMOUNT + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_TAX + " TEXT, " + KEY_TDC_SOP_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -275,6 +316,8 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_USER_PRIVILEGE_ACTIONS_TABLE);
             db.execSQL(CREATE_TDC_CUSTOMERS_TABLE);
             db.execSQL(CREATE_TABLE_SPECIALPRICE);
+            db.execSQL(CREATE_TDC_SALES_ORDERS_TABLE);
+            db.execSQL(CREATE_TDC_SALES_ORDER_PRODUCTS_TABLE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -710,7 +753,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param routeName
      */
 
-    public void insertRoutesDetails(String routeId, String routeName, String regionName, String officeName,String routeCode) {
+    public void insertRoutesDetails(String routeId, String routeName, String regionName, String officeName, String routeCode) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
@@ -731,7 +774,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
     }
-
 
 
     /**
@@ -774,8 +816,6 @@ public class DBHelper extends SQLiteOpenHelper {
         System.out.println("Routes Data Final Size::: " + routesMasterData.size());
         return routesMasterData;
     }
-
-
 
 
     /**
@@ -1136,13 +1176,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to fetch all records from products table
+     *
      * @param agentId
      */
     public ArrayList<ProductsBean> fetchAllRecordsFromProductsTableForTakeOrders(String agentId) {
         ArrayList<ProductsBean> allProductTrackRecords = new ArrayList<ProductsBean>();
         try {
-            String selectQuery = "SELECT  * FROM " + TABLE_PRODUCTS +" tp LEFT JOIN "+TABLE_TO_PRODUCTS+" top ON tp."+KEY_PRODUCT_ID
-                    +"=top."+KEY_TO_PRODUCT_ID +" AND top."+KEY_TO_AGENTID+"='"+agentId+"'";
+            String selectQuery = "SELECT  * FROM " + TABLE_PRODUCTS + " tp LEFT JOIN " + TABLE_TO_PRODUCTS + " top ON tp." + KEY_PRODUCT_ID
+                    + "=top." + KEY_TO_PRODUCT_ID + " AND top." + KEY_TO_AGENTID + "='" + agentId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -1203,7 +1244,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TO_ENQID, mProductsBeansList.get(i).getmEnquiryId());
                 values.put(KEY_TO_AGENTID, mProductsBeansList.get(i).getmAgentId());
 
-              values.put(KEY_TAKEORDER_DATE, mProductsBeansList.get(i).getmAgentTakeOrderDate());
+                values.put(KEY_TAKEORDER_DATE, mProductsBeansList.get(i).getmAgentTakeOrderDate());
                 // insert row
                 db.insert(TABLE_TO_PRODUCTS, null, values);
                 System.out.println("*********** INSERTED***************9999");
@@ -1230,9 +1271,9 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             String selectQuery = "";
             if (isSync.equals("yes")) {
-                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS + " WHERE " + KEY_TO_STATUS + " = " + "1" + " AND "+ KEY_TO_AGENTID +"='"+agentId+"'";
+                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS + " WHERE " + KEY_TO_STATUS + " = " + "1" + " AND " + KEY_TO_AGENTID + "='" + agentId + "'";
             } else {
-                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS+ " WHERE " + KEY_TO_AGENTID +"='"+agentId+"'";
+                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS + " WHERE " + KEY_TO_AGENTID + "='" + agentId + "'";
             }
 
             SQLiteDatabase db = this.getReadableDatabase();
@@ -1255,7 +1296,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     toBean.setmEnquiryId((c.getString(c.getColumnIndex(KEY_TO_ENQID))));
                     toBean.setmAgentId((c.getString(c.getColumnIndex(KEY_TO_AGENTID))));
                     toBean.setmAgentTakeOrderDate((c.getString(c.getColumnIndex(KEY_TAKEORDER_DATE))));
-                   // toBean.setMtakeorderProductCode((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_CODE))));
+                    // toBean.setMtakeorderProductCode((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_CODE))));
 
 
                     allProductTrackRecords.add(toBean);
@@ -1271,18 +1312,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return allProductTrackRecords;
     }
 
-    public int checkProductExistsOrNot(String s, String getmAgentId){
+    public int checkProductExistsOrNot(String s, String getmAgentId) {
         int maxID = 0;
 
-        String selectQuery =  "SELECT  * FROM " + TABLE_TO_PRODUCTS + " WHERE " + KEY_TO_PRODUCT_ID + "='"+s+"'" + " AND "+ KEY_TO_AGENTID +"='"+getmAgentId+"'";
+        String selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS + " WHERE " + KEY_TO_PRODUCT_ID + "='" + s + "'" + " AND " + KEY_TO_AGENTID + "='" + getmAgentId + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         //System.out.println("DDDD::: "+ cursor.getCount());
         if (cursor.moveToFirst()) {
-            do{
+            do {
                 maxID = cursor.getInt(0);
 
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         //System.out.println("FGGHH::: "+maxID);
         return maxID;
@@ -1312,15 +1353,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TO_ENQID, takeOrderBeanArrayList.get(b).getmEnquiryId());
                 values.put(KEY_TO_AGENTID, takeOrderBeanArrayList.get(b).getmAgentId());
 
-               values.put(KEY_TAKEORDER_DATE, takeOrderBeanArrayList.get(b).getmAgentTakeOrderDate());
+                values.put(KEY_TAKEORDER_DATE, takeOrderBeanArrayList.get(b).getmAgentTakeOrderDate());
 
 
-                int ccc = checkProductExistsOrNot(takeOrderBeanArrayList.get(b).getmProductId(),takeOrderBeanArrayList.get(b).getmAgentId());
+                int ccc = checkProductExistsOrNot(takeOrderBeanArrayList.get(b).getmProductId(), takeOrderBeanArrayList.get(b).getmAgentId());
                 //System.out.println("Product Exists:::: "+ ccc);
-                if(ccc == 0){
-                    effectedRows= db.insert(TABLE_TO_PRODUCTS, null, values);
+                if (ccc == 0) {
+                    effectedRows = db.insert(TABLE_TO_PRODUCTS, null, values);
                     // System.out.println("IFFFFFF::: "+effectedRows);
-                }else{
+                } else {
                     effectedRows = db.update(TABLE_TO_PRODUCTS, values, KEY_TO_PRODUCT_ID + " = ?", new String[]{String.valueOf(takeOrderBeanArrayList.get(b).getmProductId())});
                     // System.out.println("ELSEEE::: "+effectedRows);
                 }
@@ -1332,7 +1373,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         db.close();
-        System.out.println("ASDF::: "+effectedRows);
+        System.out.println("ASDF::: " + effectedRows);
         return effectedRows;
     }
 
@@ -1367,7 +1408,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Method to fetch record into TDC Customers Table
+     * Method to insert record into TDC Customers Table
      */
     public long insertIntoTDCCustomers(TDCCustomer customer) {
         long customerId = 0;
@@ -1382,6 +1423,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_CUSTOMER_ADDRESS, customer.getAddress());
             values.put(KEY_TDC_CUSTOMER_LAT_LONG, customer.getLatLong());
             values.put(KEY_TDC_CUSTOMER_SHOP_IMAGE, customer.getShopImage());
+            values.put(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS, customer.getIsShopImageUploaded());
 
             customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
 
@@ -1419,6 +1461,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     customer.setShopImage(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE)));
                     customer.setIsActive(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_IS_ACTIVE)));
                     customer.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_UPLOAD_STATUS)));
+                    customer.setIsShopImageUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS)));
 
                     allTDCCustomersList.add(customer);
                 } while (c.moveToNext());
@@ -1458,6 +1501,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     customer.setShopImage(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE)));
                     customer.setIsActive(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_IS_ACTIVE)));
                     customer.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_UPLOAD_STATUS)));
+                    customer.setIsShopImageUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS)));
 
                     allRetailersList.add(customer);
                 } while (c.moveToNext());
@@ -1474,22 +1518,23 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to check whther the special price exists for the combo of userId and productId
+     *
      * @param productId
      * @param agentId
      * @return integer value
      */
-    public int checkSpecialPriceProductExistsOrNot(String productId, String agentId){
+    public int checkSpecialPriceProductExistsOrNot(String productId, String agentId) {
         int maxID = 0;
 
-        String selectQuery =  "SELECT  * FROM " + TABLE_SPECIALPRICE + " WHERE " + KEY_PRODUCT_SPECIALID + "='"+productId+"'" + " AND "+ KEY_USER_SPECIALID +"='"+agentId+"'";
+        String selectQuery = "SELECT  * FROM " + TABLE_SPECIALPRICE + " WHERE " + KEY_PRODUCT_SPECIALID + "='" + productId + "'" + " AND " + KEY_USER_SPECIALID + "='" + agentId + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         //System.out.println("DDDD::: "+ cursor.getCount());
         if (cursor.moveToFirst()) {
-            do{
+            do {
                 maxID = cursor.getInt(0);
 
-            }while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         //System.out.println("FGGHH::: "+maxID);
         return maxID;
@@ -1505,12 +1550,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_PRODUCT_SPECIALID, mSpecialPriceBeansList.get(i).getSpecialProductId());
                 values.put(KEY_SPECIALPRICE, mSpecialPriceBeansList.get(i).getSpecialPrice());
                 int checkVal = checkSpecialPriceProductExistsOrNot(mSpecialPriceBeansList.get(i).getSpecialProductId()
-                ,mSpecialPriceBeansList.get(i).getSpecialUserId());
-                if(checkVal == 0){
+                        , mSpecialPriceBeansList.get(i).getSpecialUserId());
+                if (checkVal == 0) {
                     // insert row
                     db.insert(TABLE_SPECIALPRICE, null, values);
                     System.out.println("F*********** INSERTED***************88");
-                }else {
+                } else {
                     // Update row
                     db.update(TABLE_SPECIALPRICE, values, KEY_PRODUCT_SPECIALID + " = ?" + " AND " + KEY_USER_SPECIALID + " = ? ",
                             new String[]{String.valueOf(mSpecialPriceBeansList.get(i).getSpecialProductId()),
@@ -1561,5 +1606,144 @@ public class DBHelper extends SQLiteOpenHelper {
         return allSpecialPriceTrackRecords;
     }
 
+    /**
+     * Method to fetch all records from TDC Sales Orders Table
+     */
+    public List<TDCSaleOrder> fetchAllRecordsFromTDCSalesOrdersTable() {
+        List<TDCSaleOrder> allOrdersList = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TDC_SALES_ORDERS;
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    TDCSaleOrder order = new TDCSaleOrder();
+                    order.setOrderId(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_ID)));
+                    order.setNoOfItems(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_NO_OF_ITEMS)));
+                    order.setOrderTotalAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_AMOUNT))));
+                    order.setOrderTotalTaxAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT))));
+                    order.setOrderSubTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_SUB_TOTAL))));
+                    order.setSelectedCustomerId(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
+                    order.setSelectedCustomerName(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_NAME)));
+                    order.setCreatedOn(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
+                    order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
+                    order.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_UPLOAD_STATUS)));
+
+                    allOrdersList.add(order);
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allOrdersList;
+    }
+
+    /**
+     * Method to fetch all products for particular order from TDC Sales Order Products Table
+     */
+    public List<TDCSalesOrderProductBean> fetchTDCSalesOrderProductsListByOrderId(long orderId) {
+        List<TDCSalesOrderProductBean> allOrdersProductsList = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TDC_SALES_ORDER_PRODUCTS + " WHERE " + KEY_TDC_SOP_ORDER_ID + " = " + orderId;
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    TDCSalesOrderProductBean orderProducts = new TDCSalesOrderProductBean();
+                    orderProducts.setId(c.getLong(c.getColumnIndex(KEY_TDC_SOP_ID)));
+                    orderProducts.setOrderId(c.getLong(c.getColumnIndex(KEY_TDC_SOP_ORDER_ID)));
+                    orderProducts.setProductId(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_ID)));
+                    orderProducts.setProductMRP(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_MRP))));
+                    orderProducts.setProductQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_QUANTITY))));
+                    orderProducts.setProductAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_AMOUNT))));
+                    orderProducts.setProductTax(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_TAX))));
+                    orderProducts.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SOP_UPLOAD_STATUS)));
+
+                    allOrdersProductsList.add(orderProducts);
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allOrdersProductsList;
+    }
+
+    /**
+     * Method to insert record into TDC Sales Orders Table
+     */
+    public long insertIntoTDCSalesOrdersTable(TDCSaleOrder order) {
+        long orderId = 0;
+
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(KEY_TDC_SALES_ORDER_NO_OF_ITEMS, order.getProductsList().size());
+            values.put(KEY_TDC_SALES_ORDER_TOTAL_AMOUNT, order.getOrderTotalAmount());
+            values.put(KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT, order.getOrderTotalTaxAmount());
+            values.put(KEY_TDC_SALES_ORDER_SUB_TOTAL, order.getOrderSubTotal());
+            values.put(KEY_TDC_SALES_ORDER_CUSTOMER_ID, order.getSelectedCustomerId());
+            values.put(KEY_TDC_SALES_ORDER_CUSTOMER_NAME, order.getSelectedCustomerName());
+            values.put(KEY_TDC_SALES_ORDER_CREATED_ON, order.getCreatedOn());
+            values.put(KEY_TDC_SALES_ORDER_CREATED_BY, order.getCreatedBy());
+
+            orderId = db.insert(TABLE_TDC_SALES_ORDERS, null, values);
+
+            for (Map.Entry<String, ProductsBean> productsBeanEntry : order.getProductsList().entrySet()) {
+                this.insertIntoTDCSalesOrderProductsTable(orderId, productsBeanEntry.getValue());
+            }
+
+            values.clear();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orderId;
+    }
+
+    /**
+     * Method to insert record into TDC Sales Order Products Table
+     */
+    public long insertIntoTDCSalesOrderProductsTable(long orderId, ProductsBean orderProduct) {
+        long orderProductId = 0;
+
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+            values.put(KEY_TDC_SOP_ORDER_ID, orderId);
+            values.put(KEY_TDC_SOP_PRODUCT_ID, orderProduct.getProductId());
+            values.put(KEY_TDC_SOP_PRODUCT_MRP, orderProduct.getProductRatePerUnit());
+            values.put(KEY_TDC_SOP_PRODUCT_QUANTITY, orderProduct.getSelectedQuantity());
+            values.put(KEY_TDC_SOP_PRODUCT_AMOUNT, orderProduct.getProductAmount());
+            values.put(KEY_TDC_SOP_PRODUCT_TAX, orderProduct.getTaxAmount());
+
+            orderProductId = db.insert(TABLE_TDC_SALES_ORDER_PRODUCTS, null, values);
+
+            values.clear();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orderProductId;
+    }
 
 }

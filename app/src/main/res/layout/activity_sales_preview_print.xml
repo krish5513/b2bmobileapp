@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tv_companyName"
+            android:id="@+id/tdc_sales_company_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
@@ -30,7 +30,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_routecode"
+                android:id="@+id/tdc_sales_route_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left"
@@ -42,7 +42,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/sales_ofc"
+                android:id="@+id/tdc_sales_ofc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
@@ -55,7 +55,7 @@
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/route_name"
+                android:id="@+id/tdc_sales_route_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left"
@@ -84,17 +84,17 @@
                 android:layout_weight="0.8"
                 android:gravity="left"
                 android:paddingLeft="10dp"
-
                 android:text="Bill "
                 android:textAllCaps="true"
                 android:textColor="@color/greydark"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tv_user_Name"
+                android:id="@+id/tdc_sales_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="2"
                 android:gravity="right"
                 android:paddingLeft="10dp"
@@ -157,7 +157,7 @@
             android:paddingBottom="5dp">
 
             <TextView
-                android:id="@+id/sale_no"
+                android:id="@+id/tdc_sales_sale_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
@@ -168,7 +168,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/sale_date_time"
+                android:id="@+id/tdc_sales_date_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
@@ -208,6 +208,7 @@
                 android:textColor="@color/greydark"
                 android:textSize="14sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -252,7 +253,7 @@
             android:orientation="vertical">
 
             <ListView
-                android:id="@+id/tdc_products_list_preview"
+                android:id="@+id/tdc_sales_products_list_preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -356,11 +357,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
-                android:layout_weight="0.25"
+                android:layout_weight="0.5"
                 android:gravity="center">
 
                 <TextView
-                    android:id="@+id/tv_sales_print"
+                    android:id="@+id/tdc_sales_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableTop="@drawable/save_icon_green"
+                    android:text="Save"
+                    android:onClick="saveTDCSaleOrder"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/tdc_sales_print"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

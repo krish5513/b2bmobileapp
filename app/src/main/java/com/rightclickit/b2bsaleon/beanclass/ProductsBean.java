@@ -25,7 +25,7 @@ public class ProductsBean implements Serializable {
     private double selectedQuantity;
     private double taxAmount;
     private double productAmount;
-
+    private double productRatePerUnit;
     private String mTakeOrderQuantity;
     private String mTakeOrderFromDate;
     private String mTakeOrderToDate;
@@ -180,6 +180,14 @@ public class ProductsBean implements Serializable {
 
     public void setmTakeOrderToDate(String mTakeOrderToDate) {
         this.mTakeOrderToDate = mTakeOrderToDate;
+    }
+
+    public double getProductRatePerUnit() {
+        return productRatePerUnit;
+    }
+
+    public void setProductRatePerUnit(double productRatePerUnit) {
+        this.productRatePerUnit = productRatePerUnit;
     }
 
     @Override

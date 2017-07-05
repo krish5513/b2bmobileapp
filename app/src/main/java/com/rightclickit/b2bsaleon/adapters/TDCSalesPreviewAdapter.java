@@ -11,12 +11,10 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.Sales_Preview_PrintActivity;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
-import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by Venkat on 06/20/2017.

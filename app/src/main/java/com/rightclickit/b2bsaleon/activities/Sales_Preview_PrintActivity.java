@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,24 +43,12 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
     private TDCSaleOrder currentOrder;
     private TDCSalesPreviewAdapter tdcSalesPreviewAdapter;
     private DBHelper mDBHelper;
-    private String loogedInUserName;
+    private String loggedInUserName;
 
-    TextView tv_companyName;
-    TextView Route_Name;
-    TextView RouteCode;
-
-    TextView user_Name;
-    TextView salesprint;
-
-    String amount, subtotal;
-    String taxAmount;
-    String name;
-    double mrp;
-    double quantity;
-
-    String subtaxAmount;
-    String subAmount;
-    String finalAmount;
+    TextView company_name, route_name, route_code, user_name, sales_print;
+    String amount, subtotal, taxAmount, name;
+    double mrp, quantity;
+    String subtaxAmount, subAmount, finalAmount;
 
     String currentDate, str_routecode, str_enguiryid, str_agentname;
     Map<String, String[]> selectedList = new HashMap<String, String[]>();
@@ -74,7 +63,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
             activityContext = Sales_Preview_PrintActivity.this;
 
             mmSharedPreferences = new MMSharedPreferences(applicationContext);
-            loogedInUserName = mmSharedPreferences.getString("loogedInUserName");
+            loggedInUserName = mmSharedPreferences.getString("loginusername");
 
             mDBHelper = new DBHelper(Sales_Preview_PrintActivity.this);
 
@@ -88,41 +77,40 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-            salesprint = (TextView) findViewById(R.id.tv_sales_print);
-            tv_companyName = (TextView) findViewById(R.id.tv_companyName);
-            user_Name = (TextView) findViewById(R.id.tv_user_Name);
-            Route_Name = (TextView) findViewById(R.id.route_name);
-
-            RouteCode = (TextView) findViewById(R.id.tv_routecode);
-            str_routecode = (mmSharedPreferences.getString("routecode") + ",");
-
-            sale_no_text_view = (TextView) findViewById(R.id.sale_no);
-            sale_date_time_text_view = (TextView) findViewById(R.id.sale_date_time);
+            sales_print = (TextView) findViewById(R.id.tdc_sales_print);
+            company_name = (TextView) findViewById(R.id.tdc_sales_company_name);
+            user_name = (TextView) findViewById(R.id.tdc_sales_user_name);
+            route_name = (TextView) findViewById(R.id.tdc_sales_route_name);
+            route_code = (TextView) findViewById(R.id.tdc_sales_route_code);
+            sale_no_text_view = (TextView) findViewById(R.id.tdc_sales_sale_no);
+            sale_date_time_text_view = (TextView) findViewById(R.id.tdc_sales_date_time);
             total_tax_amount_text_view = (TextView) findViewById(R.id.total_tax_amount);
             total_amount_text_view = (TextView) findViewById(R.id.total_amount);
             sub_total_amount_text_view = (TextView) findViewById(R.id.sub_total_amount);
-
-            tdc_products_list_preview = (ListView) findViewById(R.id.tdc_products_list_preview);
+            tdc_products_list_preview = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
 
             currentDate = Utility.formatDate(new Date(), Constants.DATE_DISPLAY_FORMAT);
+            str_routecode = (mmSharedPreferences.getString("routecode") + ",");
 
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW);
 
+                updateUIWithBundleValues(currentOrder);
+
                 subtaxAmount = Utility.getFormattedCurrency(currentOrder.getOrderTotalTaxAmount());
-                Log.i("fdgh", subtaxAmount + "");
+                //Log.i("fdgh", subtaxAmount + "");
                 subAmount = Utility.getFormattedCurrency(currentOrder.getOrderTotalAmount());
                 finalAmount = Utility.getFormattedCurrency(currentOrder.getOrderSubTotal());
-                ArrayList<ProductsBean> productsList = currentOrder.getProductsList();
-                for (int i = 0; i < productsList.size(); i++) {
-                    name = String.valueOf(productsList.get(i).getProductTitle().replace(",", ""));
-                    Log.i("pushname", name);
-
-                    quantity = productsList.get(i).getSelectedQuantity();
-                    mrp = Double.parseDouble(productsList.get(i).getProductConsumerPrice());
-                    subtotal = Utility.getFormattedCurrency(productsList.get(i).getProductAmount());
-                    taxAmount = Utility.getFormattedCurrency(productsList.get(i).getTaxAmount());
+                Map<String, ProductsBean> productsList = currentOrder.getProductsList();
+                for (Map.Entry<String, ProductsBean> productsBeanEntry : productsList.entrySet()) {
+                    ProductsBean productsBean = productsBeanEntry.getValue();
+                    name = String.valueOf(productsBean.getProductTitle().replace(",", ""));
+                    Log.i("prod.name", name);
+                    quantity = productsBean.getSelectedQuantity();
+                    mrp = Double.parseDouble(productsBean.getProductConsumerPrice().replace(",", ""));
+                    subtotal = Utility.getFormattedCurrency(productsBean.getProductAmount());
+                    taxAmount = Utility.getFormattedCurrency(productsBean.getTaxAmount());
                     String[] temp = new String[5];
                     temp[0] = name;
                     temp[1] = String.valueOf(quantity);
@@ -130,17 +118,15 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                     temp[3] = String.valueOf(subtotal);
                     temp[4] = String.valueOf(taxAmount);
                     selectedList.put(name, temp);
-                    Log.i("pushtemp", temp + "");
+                    //Log.i("pushtemp", temp + "");
                 }
-
-                updateUIWithBundleValues(currentOrder);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        salesprint.setOnClickListener(new View.OnClickListener() {
+        sales_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int pageheight = 300 + selectedList.size() * 60;
@@ -180,13 +166,9 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                     String[] temps = entry.getValue();
                     canvas.drawText(temps[0], 5, st, paint);
                     canvas.drawText(temps[1], 115, st, paint);
-
-
                     canvas.drawText(temps[2], 150, st, paint);
-
                     canvas.drawText(temps[3], 190, st, paint);
                     canvas.drawText(temps[4], 300, st, paint);
-
                     // canvas.drawText("FROM:" + temps[7], 100, st, paint);
                     //canvas.drawText("TO:" + temps[8], 250, st, paint);
 
@@ -257,19 +239,38 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
     public void updateUIWithBundleValues(TDCSaleOrder saleOrder) {
         try {
-            tv_companyName.setText(mmSharedPreferences.getString("companyname"));
-            user_Name.setText("by " + mmSharedPreferences.getString("loginusername"));
-            Route_Name.setText(mmSharedPreferences.getString("routename"));
-            RouteCode.setText(str_routecode);
+            company_name.setText(mmSharedPreferences.getString("companyname"));
+            user_name.setText("by " + loggedInUserName);
+            route_name.setText(mmSharedPreferences.getString("routename"));
+            route_code.setText(str_routecode);
             sale_no_text_view.setText(String.format("TDC%05d", 1));
             sale_date_time_text_view.setText(currentDate);
 
-            tdcSalesPreviewAdapter = new TDCSalesPreviewAdapter(activityContext, this, saleOrder.getProductsList());
+            ArrayList<ProductsBean> selectedProductsList = new ArrayList<>(saleOrder.getProductsList().values());
+            tdcSalesPreviewAdapter = new TDCSalesPreviewAdapter(activityContext, this, selectedProductsList);
             tdc_products_list_preview.setAdapter(tdcSalesPreviewAdapter);
 
             total_tax_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderTotalTaxAmount()));
             total_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderTotalAmount()));
             sub_total_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderSubTotal()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveTDCSaleOrder(View view) {
+        try {
+            if (currentOrder != null) {
+                currentOrder.setCreatedBy(loggedInUserName);
+                currentOrder.setCreatedOn(currentDate);
+
+                long orderId = mDBHelper.insertIntoTDCSalesOrdersTable(currentOrder);
+
+                if (orderId == -1)
+                    Toast.makeText(activityContext, "An error occurred while saving order.", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(activityContext, "Order Saved Successfully.", Toast.LENGTH_LONG).show();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

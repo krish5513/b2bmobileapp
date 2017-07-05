@@ -27,7 +27,9 @@ import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by Venkat on 06/20/2017.
@@ -39,7 +41,8 @@ public class TDCSalesAdapter extends BaseAdapter {
     private TDCSalesListener listener;
     private Context ctxt;
     private ImageLoader mImageLoader;
-    private ArrayList<ProductsBean> allProductsList, filteredProductsList, selectedProductsList;
+    private ArrayList<ProductsBean> allProductsList, filteredProductsList;
+    private Map<String, ProductsBean> selectedProductsListHashMap; // Hash Map Key = Product Id
     private ListView products_list_view;
     private MMSharedPreferences mPreferences;
     private Drawable red_circle, green_circle;
@@ -48,7 +51,7 @@ public class TDCSalesAdapter extends BaseAdapter {
     private final String zero_cost = "0.000";
     private boolean isOrderInEditingMode = false;
 
-    public TDCSalesAdapter(Context ctxt, SalesActivity salesActivity, TDCSalesListener salesListener, ArrayList<ProductsBean> productsList, ArrayList<ProductsBean> previouslySelectedProductsList, ListView products_list_view) {
+    public TDCSalesAdapter(Context ctxt, SalesActivity salesActivity, TDCSalesListener salesListener, ListView products_list_view, ArrayList<ProductsBean> productsList, Map<String, ProductsBean> previouslySelectedProducts) {
         this.ctxt = ctxt;
         this.activity = salesActivity;
         this.listener = salesListener;
@@ -58,10 +61,10 @@ public class TDCSalesAdapter extends BaseAdapter {
         this.allProductsList = productsList;
         this.filteredProductsList = new ArrayList<>();
         this.filteredProductsList.addAll(allProductsList);
-        this.selectedProductsList = new ArrayList<>();
+        this.selectedProductsListHashMap = new HashMap<>();
 
-        if (!previouslySelectedProductsList.isEmpty()) {
-            this.selectedProductsList = previouslySelectedProductsList;
+        if (!previouslySelectedProducts.isEmpty()) {
+            this.selectedProductsListHashMap = previouslySelectedProducts;
             isOrderInEditingMode = true;
         }
 
@@ -76,19 +79,6 @@ public class TDCSalesAdapter extends BaseAdapter {
         EditText product_quantity;
     }
 
-    private ProductsBean isPreviouslySelectedThisProduct(String productId) {
-        ProductsBean productBeanWithPreValues = null;
-
-        for (ProductsBean productsBean : selectedProductsList) {
-            if (productsBean.getProductId().equals(productId))
-                productBeanWithPreValues = productsBean;
-            else
-                productBeanWithPreValues = null;
-        }
-
-        return productBeanWithPreValues;
-    }
-
     @Override
     public int getCount() {
         return filteredProductsList.size();
@@ -96,7 +86,12 @@ public class TDCSalesAdapter extends BaseAdapter {
 
     @Override
     public ProductsBean getItem(int position) {
-        return filteredProductsList.get(position);
+        ProductsBean productBean = filteredProductsList.get(position);
+
+        if (isOrderInEditingMode && selectedProductsListHashMap.get(productBean.getProductId()) != null)
+            productBean = selectedProductsListHashMap.get(productBean.getProductId());
+
+        return productBean;
     }
 
     @Override
@@ -129,17 +124,8 @@ public class TDCSalesAdapter extends BaseAdapter {
 
         final TDCSalesViewHolder currentTDCSalesViewHolder = tdcSalesViewHolder;
 
-        ProductsBean productBean = getItem(position);
-        productBean.setProductStock(availableStock);
-
-        if (isOrderInEditingMode) {
-            ProductsBean productBeanWithPreValues = isPreviouslySelectedThisProduct(productBean.getProductId());
-            if (productBeanWithPreValues != null) {
-                productBean = productBeanWithPreValues;
-            }
-        }
-
-        final ProductsBean currentProductsBean = productBean;
+        final ProductsBean currentProductsBean = getItem(position);
+        currentProductsBean.setProductStock(availableStock);
 
         if (currentProductsBean.getProductStock() > 0) {
             tdcSalesViewHolder.arrow_icon.setImageResource(R.drawable.ic_arrow_upward_white_24dp);
@@ -152,6 +138,8 @@ public class TDCSalesAdapter extends BaseAdapter {
         final double productRate = Double.parseDouble(currentProductsBean.getProductConsumerPrice().replace(",", ""));
         double taxAmount = 0, amount = 0;
         float productTax = 0.0f;
+
+        currentProductsBean.setProductRatePerUnit(productRate);
 
         if (currentProductsBean.getProductvat() != null)
             productTax = Float.parseFloat(currentProductsBean.getProductvat());
@@ -166,20 +154,10 @@ public class TDCSalesAdapter extends BaseAdapter {
             tdcSalesViewHolder.product_name.setText(String.format("%s", currentProductsBean.getProductTitle()));
 
         tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", availableStock));
-        tdcSalesViewHolder.price.setText(Utility.getFormattedCurrency(productRate));
+        tdcSalesViewHolder.price.setText(Utility.getFormattedCurrency(currentProductsBean.getProductRatePerUnit()));
         tdcSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
         tdcSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
         tdcSalesViewHolder.product_quantity.setText(String.format("%.3f", currentProductsBean.getSelectedQuantity()));
-
-        /*if (isOrderInEditingMode) {
-            ProductsBean productBeanWithPreValues = isPreviouslySelectedThisProduct(currentProductsBean.getProductId());
-            if (productBeanWithPreValues != null) {
-                tdcSalesViewHolder.price.setText(Utility.getFormattedCurrency(productRate));
-                tdcSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
-                tdcSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
-                tdcSalesViewHolder.product_quantity.setText(String.format("%.3f", currentProductsBean.getSelectedQuantity()));
-            }
-        }*/
 
         tdcSalesViewHolder.product_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -269,8 +247,7 @@ public class TDCSalesAdapter extends BaseAdapter {
                         if (enteredQuantity > currentProductsBean.getProductStock()) {
                             quantityEditText.setText(zero_cost);
 
-                            if (selectedProductsList.contains(currentProductsBean))
-                                removeProductFromSelectedProductsList(currentProductsBean);
+                            removeProductFromSelectedProductsList(currentProductsBean);
 
                             new AlertDialog.Builder(activity)
                                     .setTitle("Alert..!")
@@ -296,8 +273,7 @@ public class TDCSalesAdapter extends BaseAdapter {
 
                                 updateSelectedProductsList(currentProductsBean);
                             } else if (enteredQuantity == 0) {
-                                if (selectedProductsList.contains(currentProductsBean))
-                                    removeProductFromSelectedProductsList(currentProductsBean);
+                                removeProductFromSelectedProductsList(currentProductsBean);
                             }
                         }
                     }
@@ -312,12 +288,14 @@ public class TDCSalesAdapter extends BaseAdapter {
 
     public void updateSelectedProductsList(ProductsBean productsBean) {
         try {
-            if (!selectedProductsList.contains(productsBean)) {
-                selectedProductsList.add(productsBean);
+            if (selectedProductsListHashMap.containsKey(productsBean.getProductId())) {
+                selectedProductsListHashMap.remove(productsBean.getProductId());
             }
 
+            selectedProductsListHashMap.put(productsBean.getProductId(), productsBean);
+
             if (listener != null)
-                listener.updateSelectedProductsListAndSubTotal(selectedProductsList);
+                listener.updateSelectedProductsListAndSubTotal(selectedProductsListHashMap);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -326,11 +304,11 @@ public class TDCSalesAdapter extends BaseAdapter {
 
     public void removeProductFromSelectedProductsList(ProductsBean productsBean) {
         try {
-            if (selectedProductsList.contains(productsBean))
-                selectedProductsList.remove(productsBean);
+            if (selectedProductsListHashMap.containsKey(productsBean.getProductId()))
+                selectedProductsListHashMap.remove(productsBean.getProductId());
 
             if (listener != null)
-                listener.updateSelectedProductsListAndSubTotal(selectedProductsList);
+                listener.updateSelectedProductsListAndSubTotal(selectedProductsListHashMap);
 
         } catch (Exception e) {
             e.printStackTrace();

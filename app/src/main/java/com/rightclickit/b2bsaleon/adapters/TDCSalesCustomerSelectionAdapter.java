@@ -2,6 +2,7 @@ package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,8 +104,10 @@ public class TDCSalesCustomerSelectionAdapter extends BaseAdapter {
 
         if (currentCustomer.getId() == currentOrder.getSelectedCustomerId()) {
             tdcSalesCustomerSelectionViewHolder.customer_name.setTextColor(selectedTextColor);
+            tdcSalesCustomerSelectionViewHolder.customer_name.setTypeface(null, Typeface.BOLD);
         } else {
             tdcSalesCustomerSelectionViewHolder.customer_name.setTextColor(blackColor);
+            tdcSalesCustomerSelectionViewHolder.customer_name.setTypeface(null, Typeface.NORMAL);
         }
 
         return convertView;

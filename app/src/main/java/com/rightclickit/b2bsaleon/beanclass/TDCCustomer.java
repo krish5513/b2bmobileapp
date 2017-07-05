@@ -17,6 +17,7 @@ public class TDCCustomer implements Serializable {
     private String shopImage;
     private int isActive;
     private int isUploaded;
+    private int isShopImageUploaded;
 
     public int getId() {
         return id;
@@ -96,5 +97,13 @@ public class TDCCustomer implements Serializable {
 
     public void setIsUploaded(int isUploaded) {
         this.isUploaded = isUploaded;
+    }
+
+    public int getIsShopImageUploaded() {
+        return isShopImageUploaded;
+    }
+
+    public void setIsShopImageUploaded(int isShopImageUploaded) {
+        this.isShopImageUploaded = isShopImageUploaded;
     }
 }

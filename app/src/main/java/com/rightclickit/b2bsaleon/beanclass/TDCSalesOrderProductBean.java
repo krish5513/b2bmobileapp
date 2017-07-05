@@ -1,0 +1,96 @@
+package com.rightclickit.b2bsaleon.beanclass;
+
+import java.io.Serializable;
+
+/**
+ * Created by murali on 11/2/17.
+ */
+
+public class TDCSalesOrderProductBean implements Serializable {
+    private long id;
+    private long orderId;
+    private String productId;
+    private double productMRP;
+    private double productQuantity;
+    private double productAmount;
+    private double productTax;
+    private int isUploaded;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public double getProductMRP() {
+        return productMRP;
+    }
+
+    public void setProductMRP(double productMRP) {
+        this.productMRP = productMRP;
+    }
+
+    public double getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(double productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public double getProductAmount() {
+        return productAmount;
+    }
+
+    public void setProductAmount(double productAmount) {
+        this.productAmount = productAmount;
+    }
+
+    public double getProductTax() {
+        return productTax;
+    }
+
+    public void setProductTax(double productTax) {
+        this.productTax = productTax;
+    }
+
+    public int getIsUploaded() {
+        return isUploaded;
+    }
+
+    public void setIsUploaded(int isUploaded) {
+        this.isUploaded = isUploaded;
+    }
+
+    @Override
+    public String toString() {
+        return "TDCSalesOrderProductBean{" +
+                "id=" + id +
+                ", orderId=" + orderId +
+                ", productId='" + productId + '\'' +
+                ", productMRP=" + productMRP +
+                ", productQuantity=" + productQuantity +
+                ", productAmount=" + productAmount +
+                ", productTax=" + productTax +
+                ", isUploaded=" + isUploaded +
+                '}';
+    }
+}

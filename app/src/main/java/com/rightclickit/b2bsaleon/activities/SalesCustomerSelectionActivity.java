@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
@@ -41,7 +40,6 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
     private SearchView search;
     private ListView tdc_customers_list_view;
     private FloatingActionButton fab_add_customer;
-    private TextView tdc_order_preview;
 
     private DBHelper mDBHelper;
     private TDCSalesCustomerSelectionAdapter customerSelectionAdapter;
@@ -262,6 +260,7 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
             customer.setAddress("");
             customer.setLatLong("");
             customer.setShopImage("");
+            customer.setIsShopImageUploaded(1);
 
             long customerId = mDBHelper.insertIntoTDCCustomers(customer);
 

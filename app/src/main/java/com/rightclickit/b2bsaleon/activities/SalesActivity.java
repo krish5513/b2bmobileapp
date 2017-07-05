@@ -23,6 +23,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TDCSalesAdapter;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
+import com.rightclickit.b2bsaleon.beanclass.TDCSalesOrderProductBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
@@ -30,6 +31,9 @@ import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SalesActivity extends AppCompatActivity implements TDCSalesListener {
     private Context applicationContext, activityContext;
@@ -40,7 +44,8 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
     private TextView tdc_sales_list, tdc_sales_preview, totalTaxAmountTextView, totalAmountTextView, subTotalAmountTextView;
 
     private DBHelper mDBHelper;
-    private ArrayList<ProductsBean> productsList, selectedProductsList, previouslySelectedProductsList;
+    private ArrayList<ProductsBean> allProductsList;
+    private Map<String, ProductsBean> selectedProductsListHashMap, previouslySelectedProductsListHashMap; // Hash Map Key = Product Id
     private TDCSalesAdapter tdcSalesAdapter;
     private boolean showProductsListView = false;
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
@@ -54,6 +59,8 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
         try {
             applicationContext = getApplicationContext();
             activityContext = SalesActivity.this;
+            mmSharedPreferences = new MMSharedPreferences(activityContext);
+            mDBHelper = new DBHelper(activityContext);
 
             this.getSupportActionBar().setTitle("COUNTER SALES");
             this.getSupportActionBar().setSubtitle(null);
@@ -67,13 +74,6 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
             assert actionBar != null;
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-
-            mDBHelper = new DBHelper(activityContext);
-            mmSharedPreferences = new MMSharedPreferences(activityContext);
-
-            productsList = new ArrayList<>();
-            selectedProductsList = new ArrayList<>();
-            previouslySelectedProductsList = new ArrayList<>();
 
             ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("TDC"));
 
@@ -98,19 +98,24 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
                 tdc_sales_list.setVisibility(View.GONE);
             }
 
+            allProductsList = new ArrayList<>();
+            selectedProductsListHashMap = new HashMap<>();
+            previouslySelectedProductsListHashMap = new HashMap<>();
+            currentOrder = new TDCSaleOrder();
+
             // when you came back to this activity when you want to change your order, we are pre populating with previously selected values.
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER);
 
                 // Getting previously selected products list to update on UI
-                previouslySelectedProductsList = currentOrder.getProductsList();
-                updateSelectedProductsListAndSubTotal(previouslySelectedProductsList);
+                previouslySelectedProductsListHashMap = currentOrder.getProductsList();
+                updateSelectedProductsListAndSubTotal(previouslySelectedProductsListHashMap);
             }
-            System.out.println("====== productsList = " + previouslySelectedProductsList.size());
+
             if (showProductsListView) {
-                productsList = mDBHelper.fetchAllRecordsFromProductsTable();
-                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, productsList, previouslySelectedProductsList, tdc_products_list_view);
+                allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
+                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsList, previouslySelectedProductsListHashMap);
                 tdc_products_list_view.setAdapter(tdcSalesAdapter);
             }
 
@@ -237,14 +242,15 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
     }
 
     @Override
-    public void updateSelectedProductsListAndSubTotal(ArrayList<ProductsBean> productsList) {
-        this.selectedProductsList = productsList;
+    public void updateSelectedProductsListAndSubTotal(Map<String, ProductsBean> productsList) {
+        this.selectedProductsListHashMap = productsList;
 
         totalAmount = 0;
         totalTaxAmount = 0;
         subTotal = 0;
 
-        for (ProductsBean productsBean : selectedProductsList) {
+        for (Map.Entry<String, ProductsBean> productsBeanEntry : selectedProductsListHashMap.entrySet()) {
+            ProductsBean productsBean = productsBeanEntry.getValue();
             totalAmount = totalAmount + productsBean.getProductAmount();
             totalTaxAmount = totalTaxAmount + productsBean.getTaxAmount();
             subTotal = totalAmount + totalTaxAmount;
@@ -257,15 +263,14 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
 
     public void showTDCSalesPreview(View view) {
         try {
-            if (selectedProductsList.size() > 0) {
-                TDCSaleOrder saleOrder = new TDCSaleOrder();
-                saleOrder.setProductsList(selectedProductsList);
-                saleOrder.setOrderTotalAmount(totalAmount);
-                saleOrder.setOrderTotalTaxAmount(totalTaxAmount);
-                saleOrder.setOrderSubTotal(subTotal);
+            if (selectedProductsListHashMap.size() > 0) {
+                currentOrder.setProductsList(selectedProductsListHashMap);
+                currentOrder.setOrderTotalAmount(totalAmount);
+                currentOrder.setOrderTotalTaxAmount(totalTaxAmount);
+                currentOrder.setOrderSubTotal(subTotal);
 
                 Intent customerSelectionIntent = new Intent(activityContext, SalesCustomerSelectionActivity.class);
-                customerSelectionIntent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER, saleOrder);
+                customerSelectionIntent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER, currentOrder);
                 startActivity(customerSelectionIntent);
                 finish();
             } else {

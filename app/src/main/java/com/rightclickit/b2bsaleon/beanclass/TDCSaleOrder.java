@@ -1,20 +1,40 @@
 package com.rightclickit.b2bsaleon.beanclass;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by venkat on 6/29/17.
  */
 
 public class TDCSaleOrder implements Serializable {
+    private long orderId;
+    private int noOfItems;
     private String selectedCustomerName;
     private int selectedCustomerId;
-    private ArrayList<ProductsBean> productsList;
+    private Map<String, ProductsBean> productsList;
     private double orderTotalAmount;
     private double orderTotalTaxAmount;
     private double orderSubTotal;
     private int isUploaded;
+    private String createdOn;
+    private String createdBy;
+
+    public long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(long orderId) {
+        this.orderId = orderId;
+    }
+
+    public int getNoOfItems() {
+        return noOfItems;
+    }
+
+    public void setNoOfItems(int noOfItems) {
+        this.noOfItems = noOfItems;
+    }
 
     public String getSelectedCustomerName() {
         return selectedCustomerName;
@@ -32,11 +52,11 @@ public class TDCSaleOrder implements Serializable {
         this.selectedCustomerId = selectedCustomerId;
     }
 
-    public ArrayList<ProductsBean> getProductsList() {
+    public Map<String, ProductsBean> getProductsList() {
         return productsList;
     }
 
-    public void setProductsList(ArrayList<ProductsBean> productsList) {
+    public void setProductsList(Map<String, ProductsBean> productsList) {
         this.productsList = productsList;
     }
 
@@ -70,6 +90,22 @@ public class TDCSaleOrder implements Serializable {
 
     public void setIsUploaded(int isUploaded) {
         this.isUploaded = isUploaded;
+    }
+
+    public String getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(String createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override
