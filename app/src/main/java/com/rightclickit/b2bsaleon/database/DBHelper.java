@@ -1750,4 +1750,26 @@ public class DBHelper extends SQLiteOpenHelper {
         return orderProductId;
     }
 
+    public long getTDCSalesMaxOrderNumber() {
+        long orderId = 0;
+
+        try {
+            String countQuery = "SELECT " + KEY_TDC_SALES_ORDER_ID + " FROM " + TABLE_TDC_SALES_ORDERS + " ORDER BY " + KEY_TDC_SALES_ORDER_ID + " DESC LIMIT 1";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                orderId = cursor.getLong(cursor.getColumnIndex(KEY_TDC_SALES_ORDER_ID));
+            }
+
+            cursor.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orderId;
+    }
 }

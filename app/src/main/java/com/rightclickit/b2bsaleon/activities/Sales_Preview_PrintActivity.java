@@ -31,6 +31,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Sales_Preview_PrintActivity extends AppCompatActivity {
@@ -52,6 +53,9 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
     String currentDate, str_routecode, str_enguiryid, str_agentname;
     Map<String, String[]> selectedList = new HashMap<String, String[]>();
+    private long previousOrderId;
+    private String currentOrderId;
+    private boolean isOrderAlreadySaved = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +95,9 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
             currentDate = Utility.formatDate(new Date(), Constants.DATE_DISPLAY_FORMAT);
             str_routecode = (mmSharedPreferences.getString("routecode") + ",");
+
+            previousOrderId = mDBHelper.getTDCSalesMaxOrderNumber();
+            currentOrderId = String.format("TDC%05d", previousOrderId + 1);
 
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
@@ -243,7 +250,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
             user_name.setText("by " + loggedInUserName);
             route_name.setText(mmSharedPreferences.getString("routename"));
             route_code.setText(str_routecode);
-            sale_no_text_view.setText(String.format("TDC%05d", 1));
+            sale_no_text_view.setText(currentOrderId);
             sale_date_time_text_view.setText(currentDate);
 
             ArrayList<ProductsBean> selectedProductsList = new ArrayList<>(saleOrder.getProductsList().values());
@@ -260,7 +267,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
     public void saveTDCSaleOrder(View view) {
         try {
-            if (currentOrder != null) {
+            if (currentOrder != null && !isOrderAlreadySaved) {
                 currentOrder.setCreatedBy(loggedInUserName);
                 currentOrder.setCreatedOn(currentDate);
 
@@ -270,7 +277,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                     Toast.makeText(activityContext, "An error occurred while saving order.", Toast.LENGTH_LONG).show();
                 else {
                     Toast.makeText(activityContext, "Order Saved Successfully.", Toast.LENGTH_LONG).show();
-                    sale_no_text_view.setText(String.format("TDC%05d", orderId));
+                    isOrderAlreadySaved = true;
                 }
             }
         } catch (Exception e) {
