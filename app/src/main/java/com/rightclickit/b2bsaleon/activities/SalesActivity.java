@@ -23,7 +23,6 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TDCSalesAdapter;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
-import com.rightclickit.b2bsaleon.beanclass.TDCSalesOrderProductBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
@@ -32,7 +31,6 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SalesActivity extends AppCompatActivity implements TDCSalesListener {

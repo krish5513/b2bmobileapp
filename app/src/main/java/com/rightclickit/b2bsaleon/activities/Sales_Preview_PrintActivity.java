@@ -15,7 +15,10 @@ import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.services.SyncTDCSalesOrderService;
+import com.rightclickit.b2bsaleon.services.SyncTakeOrdersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import android.content.Intent;
@@ -278,6 +281,12 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                 else {
                     Toast.makeText(activityContext, "Order Saved Successfully.", Toast.LENGTH_LONG).show();
                     isOrderAlreadySaved = true;
+
+                    if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                        Intent syncTDCOrderServiceIntent = new Intent(activityContext, SyncTDCSalesOrderService.class);
+                        //syncTDCOrderServiceIntent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER, currentOrder);
+                        startService(syncTDCOrderServiceIntent);
+                    }
                 }
             }
         } catch (Exception e) {

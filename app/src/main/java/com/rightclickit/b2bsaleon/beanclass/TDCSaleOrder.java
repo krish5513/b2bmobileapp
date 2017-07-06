@@ -1,6 +1,7 @@
 package com.rightclickit.b2bsaleon.beanclass;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,13 +13,14 @@ public class TDCSaleOrder implements Serializable {
     private int noOfItems;
     private String selectedCustomerName;
     private int selectedCustomerId;
-    private Map<String, ProductsBean> productsList;
+    private Map<String, ProductsBean> productsList; // this is the selected products list for the current order
     private double orderTotalAmount;
     private double orderTotalTaxAmount;
     private double orderSubTotal;
     private int isUploaded;
     private String createdOn;
     private String createdBy;
+    private List<TDCSalesOrderProductBean> orderProductsList; // this list is used while syncing data with server
 
     public long getOrderId() {
         return orderId;
@@ -108,16 +110,29 @@ public class TDCSaleOrder implements Serializable {
         this.createdBy = createdBy;
     }
 
+    public List<TDCSalesOrderProductBean> getOrderProductsList() {
+        return orderProductsList;
+    }
+
+    public void setOrderProductsList(List<TDCSalesOrderProductBean> orderProductsList) {
+        this.orderProductsList = orderProductsList;
+    }
+
     @Override
     public String toString() {
         return "TDCSaleOrder{" +
-                "selectedCustomerName='" + selectedCustomerName + '\'' +
+                "orderId=" + orderId +
+                ", noOfItems=" + noOfItems +
+                ", selectedCustomerName='" + selectedCustomerName + '\'' +
                 ", selectedCustomerId=" + selectedCustomerId +
                 ", productsList=" + productsList +
                 ", orderTotalAmount=" + orderTotalAmount +
                 ", orderTotalTaxAmount=" + orderTotalTaxAmount +
                 ", orderSubTotal=" + orderSubTotal +
                 ", isUploaded=" + isUploaded +
+                ", createdOn='" + createdOn + '\'' +
+                ", createdBy='" + createdBy + '\'' +
+                ", orderProductsList=" + orderProductsList +
                 '}';
     }
 }
