@@ -608,9 +608,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:drawableTop="@drawable/dashboard_icon_white"
+                    android:drawableTop="@drawable/dashboard_icon_grey"
                     android:text="@string/dashboard_btm"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
             </LinearLayout>
 
@@ -627,10 +627,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:drawableTop="@drawable/route_green"
+                    android:drawableTop="@drawable/route"
                     android:gravity="center"
                     android:text="@string/myroutes_btm"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorAccent"
                     android:textSize="12sp" />
 
             </LinearLayout>

@@ -98,7 +98,7 @@ Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agents__add);
-
+        activityContext = Agents_AddActivity.this;
         this.getSupportActionBar().setTitle("ADD AGENT");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
@@ -219,23 +219,22 @@ Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
                 agentsBean.setmAgentApprovedOn("");
                 agentsBean.setmAgentRouteId(routesArray.toString());
                 mAgentsBeansList.add(agentsBean);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             // db.insertAgentDetails(mAgentsBeansList);
             synchronized (this) {
-               /* if (new NetworkConnectionDetector(Agents_AddActivity.this).isNetworkConnected()) {
+                if (new NetworkConnectionDetector(Agents_AddActivity.this).isNetworkConnected()) {
                     //agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
                     agentsmodel.customerAdd(mAgentsBeansList);
-                }else {*/
-                    db.insertAgentDetails(mAgentsBeansList);
-                    Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
                 }
-
-            synchronized (this) {
-                Intent i = new Intent(Agents_AddActivity.this, AgentsActivity.class);
-                startActivity(i);
-                finish();
+                db.insertAgentDetails(mAgentsBeansList);
+                Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
+                synchronized (this) {
+                    Intent i = new Intent(Agents_AddActivity.this, AgentsActivity.class);
+                    startActivity(i);
+                    finish();
+                }
             }
         }
     }

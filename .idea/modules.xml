@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/B2BSaleOn.iml" filepath="$PROJECT_DIR$/B2BSaleOn.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/b2bmobileapp.iml" filepath="$PROJECT_DIR$/b2bmobileapp.iml" />
     </modules>

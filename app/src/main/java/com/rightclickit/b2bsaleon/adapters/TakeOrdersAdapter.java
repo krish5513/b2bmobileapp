@@ -389,6 +389,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                             tb.setmAgentId(mPreferences.getString("agentId"));
                             tb.setMtakeorderProductCode(mTakeOrderBeansList1.get(k).getProductCode());
                             tb.setmAgentTakeOrderDate(currentDate);
+                            tb.setmAgentPrice(mTakeOrderBeansList1.get(k).getProductAgentPrice());
 
                             temptoList.add(tb);
                         }

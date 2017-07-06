@@ -1,41 +1,27 @@
 package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentTakeOrderPreview;
-import com.rightclickit.b2bsaleon.activities.AgentsTDC_View;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
-import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
-import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
- * Created by PPS on 6/20/2017.
+ * Created by PPS on 7/5/2017.
  */
 
-public class TakeOrderPreviewAdapter extends BaseAdapter{
-
+public class AgentTDC_ViewAdapter extends BaseAdapter {
 
     LayoutInflater mInflater;
     private Activity activity;
@@ -46,9 +32,9 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
     private MMSharedPreferences mPreferences;
 
 
-    public TakeOrderPreviewAdapter(Context ctxt, AgentTakeOrderPreview previewActivity, ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList) {
+    public AgentTDC_ViewAdapter(Context ctxt, Activity ordersActivity, ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList) {
         this.ctxt = ctxt;
-        this.activity = previewActivity;
+        this.activity = ordersActivity;
         this.mpreviewBeansList1 = takeOrderPreviewBeanArrayList;
         this.mInflater = LayoutInflater.from(activity);
         this.arraylist = new ArrayList<TakeOrderPreviewBean>();
@@ -73,11 +59,11 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final TakeOrderPreviewAdapter.MyViewHolder holder;
+        final AgentTDC_ViewAdapter.MyViewHolder holder;
 
         if (convertView == null) {
 
-            holder = new TakeOrderPreviewAdapter.MyViewHolder();
+            holder = new AgentTDC_ViewAdapter.MyViewHolder();
             convertView = mInflater.inflate(R.layout.takeorderpreview_adapter, null);
 
             holder.pName = (TextView) convertView.findViewById(R.id.pName);
@@ -92,7 +78,7 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
 
             convertView.setTag(holder);
         } else {
-            holder = (TakeOrderPreviewAdapter.MyViewHolder) convertView.getTag();
+            holder = (AgentTDC_ViewAdapter.MyViewHolder) convertView.getTag();
         }
 
         double quantity = Double.parseDouble(mpreviewBeansList1.get(position).getpQuantity().replace(",", ""));
@@ -145,3 +131,5 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
     // Methos to display product image as full image
 
 }
+
+

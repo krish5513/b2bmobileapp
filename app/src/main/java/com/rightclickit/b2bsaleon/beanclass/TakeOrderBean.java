@@ -19,6 +19,16 @@ public class TakeOrderBean implements Serializable {
     private String mEnquiryId;
     private String mAgentId;
 
+    public String getmAgentPrice() {
+        return mAgentPrice;
+    }
+
+    public void setmAgentPrice(String mAgentPrice) {
+        this.mAgentPrice = mAgentPrice;
+    }
+
+    private String mAgentPrice;
+
 
     public String getMtakeorderProductCode() {
         return mtakeorderProductCode;

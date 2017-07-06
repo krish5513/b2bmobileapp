@@ -166,7 +166,7 @@ public class SyncTakeOrdersService extends Service {
                                 t.setmProductTitle(mTakeOrderBeansList.get(v).getmProductTitle());
                                 t.setmEnquiryId(mTakeOrderBeansList.get(v).getmEnquiryId());
                                 t.setmAgentId(mTakeOrderBeansList.get(v).getmAgentId());
-
+                                t.setmAgentTakeOrderDate(mTakeOrderBeansList.get(v).getmAgentTakeOrderDate());
                                 temptoList.add(t);
                             }
                             System.out.println("DB called****"+temptoList.size());

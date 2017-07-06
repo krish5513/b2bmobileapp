@@ -1,14 +1,20 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,10 +26,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.constants.Constants;
@@ -34,8 +43,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
-public class Retailers_AddActivity extends AppCompatActivity {
+public class Retailers_AddActivity extends AppCompatActivity implements OnMapReadyCallback{
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
 
@@ -46,7 +57,8 @@ public class Retailers_AddActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_TAKE_PHOTO = 1;
     private static final int REQUEST_CODE_IMAGE_SELECTION_FROM_GALLERY = 2;
     private String shop_image_path;
-
+    private GoogleMap googlemap;
+    double longitude, latitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +86,12 @@ public class Retailers_AddActivity extends AppCompatActivity {
             business_name = (EditText) findViewById(R.id.business_name);
             address = (EditText) findViewById(R.id.address);
             shop_image = (ImageView) findViewById(R.id.shop_image);
+
+
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.mapFrag);
+            mapFragment.getMapAsync(this);
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -280,5 +298,98 @@ public class Retailers_AddActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+
+    }
+
+
+    private void replaceMapFragment() {
+
+
+        // Enable Zoom
+        googlemap.getUiSettings().setZoomGesturesEnabled(true);
+
+        //set Map TYPE
+        googlemap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        //enable Current location Button
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        googlemap.setMyLocationEnabled(true);
+
+        //set "listener" for changing my location
+        googlemap.setOnMyLocationChangeListener(myLocationChangeListener());
+
+
+    }
+
+
+    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener() {
+
+        return new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
+                Marker marker;
+                googlemap.clear();
+                marker = googlemap.addMarker(new MarkerOptions().position(loc));
+                googlemap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+                // locationText.setText("You are at [" + longitude + " ; " + latitude + " ]");
+                Geocoder geocoder = new Geocoder(Retailers_AddActivity.this, Locale.ENGLISH);
+
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+                    if (addresses != null && addresses.size() > 0) {
+                        Address returnedAddress = addresses.get(0);
+                        //strReturnedAddress =
+                        for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                            strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                        }
+
+                        address.setText(strReturnedAddress.toString());
+
+                    } else {
+                        address.setText("No Address returned!");
+                        //  address.setText(strReturnedAddress.toString());
+                    }
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    address.setText("Canont get Address!");
+                }
+
+
+                //get current address by invoke an AsyncTask object
+                // new GetAddressTask(Agents_AddActivity.this).execute(String.valueOf(latitude), String.valueOf(longitude));
+            }
+        }
+
+                ;
+    }
+
+
+    public void callBackDataFromAsyncTask(String laddress) {
+        address.setText(laddress);
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googlemap = googleMap;
+
+        replaceMapFragment();
     }
 }

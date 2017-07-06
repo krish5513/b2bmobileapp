@@ -165,6 +165,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TO_ENQID = "to_enquiry_id";
     private final String KEY_TO_AGENTID = "to_agent_id";
     private final String KEY_TAKEORDER_DATE = "takeorder_date";
+    private final String KEY_PRICE = "price";
 
     // Column names for User privilege actions  Table
     private final String KEY_USER_PRIVILEGE_ID = "user_privilege_id";
@@ -266,7 +267,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TO_PRODUCT_NAME + " VARCHAR," + KEY_TO_PRODUCT_ROUTE_ID + " VARCHAR,"
             + KEY_TO_FROM_DATE + " VARCHAR," + KEY_TO_TO_DATE + " VARCHAR," + KEY_TO_ORDER_TYPE + " VARCHAR,"
             + KEY_TO_QUANTITY + " VARCHAR," + KEY_TO_STATUS + " VARCHAR,"
-            + KEY_TO_ENQID + " VARCHAR," + KEY_TO_AGENTID + " VARCHAR," + KEY_TAKEORDER_DATE + " VARCHAR)";
+            + KEY_TO_ENQID + " VARCHAR," + KEY_TO_AGENTID + " VARCHAR," + KEY_TAKEORDER_DATE + " VARCHAR," + KEY_PRICE + " VARCHAR)";
 
 
     // User privilege actions Table Create Statements
@@ -1245,6 +1246,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TO_AGENTID, mProductsBeansList.get(i).getmAgentId());
 
                 values.put(KEY_TAKEORDER_DATE, mProductsBeansList.get(i).getmAgentTakeOrderDate());
+                values.put(KEY_PRICE, mProductsBeansList.get(i).getmAgentPrice());
                 // insert row
                 db.insert(TABLE_TO_PRODUCTS, null, values);
                 System.out.println("*********** INSERTED***************9999");
@@ -1296,6 +1298,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     toBean.setmEnquiryId((c.getString(c.getColumnIndex(KEY_TO_ENQID))));
                     toBean.setmAgentId((c.getString(c.getColumnIndex(KEY_TO_AGENTID))));
                     toBean.setmAgentTakeOrderDate((c.getString(c.getColumnIndex(KEY_TAKEORDER_DATE))));
+                    toBean.setmAgentPrice((c.getString(c.getColumnIndex(KEY_PRICE))));
                     // toBean.setMtakeorderProductCode((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_CODE))));
 
 
@@ -1354,6 +1357,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TO_AGENTID, takeOrderBeanArrayList.get(b).getmAgentId());
 
                 values.put(KEY_TAKEORDER_DATE, takeOrderBeanArrayList.get(b).getmAgentTakeOrderDate());
+                values.put(KEY_PRICE, takeOrderBeanArrayList.get(b).getmAgentPrice());
 
 
                 int ccc = checkProductExistsOrNot(takeOrderBeanArrayList.get(b).getmProductId(), takeOrderBeanArrayList.get(b).getmAgentId());

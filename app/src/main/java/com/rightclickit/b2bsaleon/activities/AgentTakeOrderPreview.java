@@ -102,7 +102,9 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
             for (int i = 0; i < productsList.size(); i++) {
                 if (mProductIdsList.get(k).getmProductId().toString().equals(productsList.get(i).getProductId())) {
                     System.out.println("P TITLE IS::: " + productsList.get(i).getProductTitle());
+
                     TakeOrderPreviewBean topBean = new TakeOrderPreviewBean();
+
                     topBean.setpName(mProductIdsList.get(k).getmProductTitle());
                     topBean.setpQuantity(mProductIdsList.get(k).getmProductQuantity());
                     for (int l = 0; l < specialPriceBeanArrayList.size(); l++) {

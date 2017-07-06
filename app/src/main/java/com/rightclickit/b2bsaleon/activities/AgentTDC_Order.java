@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,9 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentsOrdersAdapter;
-import com.rightclickit.b2bsaleon.adapters.TakeOrderPreviewAdapter;
 import com.rightclickit.b2bsaleon.beanclass.OrdersListBean;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -31,17 +31,34 @@ public class AgentTDC_Order extends AppCompatActivity {
     LinearLayout payments;
     LinearLayout deliveries;
     LinearLayout orders;
-    TextView tv_OrdersCount;
-    TextView tv_ValueCount;
-     Button view;
+
+
+    public TextView tv_enquiryId;
+
+    public TextView date;
+    public TextView status;
+    public TextView tv_itemsCount;
+    public TextView valueCount;
+    public Button ordersview;
+
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
-    AgentsOrdersAdapter ordersAdapter;
-    private ListView mAgentsList;
+
+
     private MMSharedPreferences mSessionManagement;
     private ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
+    double amount, subtotal;
+    double taxAmount;
+    String name;
+    private double mProductsPriceAmountSum = 0.0, mTotalProductsPriceAmountSum = 0.0, mTotalProductsTax = 0.0;
 
-    String enquiryId,orderdate,value,totalprice;
+    String enquiryId;
+    String orderdate;
+    String itemCount;
+    String totalprice;
+    float tax;
+
+    double quantity,price;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,27 +83,113 @@ public class AgentTDC_Order extends AppCompatActivity {
         mDBHelper = new DBHelper(AgentTDC_Order.this);
         mPreferences = new MMSharedPreferences(AgentTDC_Order.this);
 
-        tv_OrdersCount=(TextView)findViewById(R.id.tv_OrdersCount) ;
-        tv_ValueCount=(TextView)findViewById(R.id.tv_TotalValue) ;
+        tv_enquiryId = (TextView) findViewById(R.id.tv_EnquiryId);
+        date = (TextView) findViewById(R.id.tv_ordersdate);
+        status= (TextView) findViewById(R.id.tv_orderstatus);
+        tv_itemsCount=(TextView)findViewById(R.id.tv_ItemsCount);
+        valueCount=(TextView)findViewById(R.id.tv_OrdervalueCount) ;
+        ordersview = (Button) findViewById(R.id.btn_ordersview);
+
+        ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
 
 
         ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
-        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes",mSessionManagement.getString("agentId"));
+        ArrayList<OrdersListBean> ordersList=new ArrayList<>();
+        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable(" ",mSessionManagement.getString("agentId"));
 
+        Log.i("takeorderlist", String.valueOf(mTakeOrderBeansList.size()));
 
+        if(mTakeOrderBeansList.size()>0) {
 
+            tv_enquiryId .setText("ENQ"+mTakeOrderBeansList.get(0).getmEnquiryId());
+            date.setText(mTakeOrderBeansList.get(0).getmAgentTakeOrderDate());
+            mPreferences.putString("ORDERDATE", String.valueOf(date));
+            itemCount= String.valueOf(mTakeOrderBeansList.size());
+            tv_itemsCount.setText(itemCount);
 
+            for (int i=0;i<takeOrderPreviewBeanArrayList.size();i++) {
 
+                tax = 0.0f;
 
-        mAgentsList = (ListView) findViewById(R.id.AgentsList);
-        // ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
-        //System.out.println("ELSE::: "+a.size());
+                if (takeOrderPreviewBeanArrayList.get(i).getmProductTaxVAT() != null) {
+                    tax = Float.parseFloat(takeOrderPreviewBeanArrayList.get(i).getmProductTaxVAT());
 
-        //   ArrayList<TakeOrderPreviewBean> previewArrayList = new ArrayList<>();
-        if (mTakeOrderBeansList.size() > 0) {
-            loadAgentsList(mTakeOrderBeansList);
+                } else if (takeOrderPreviewBeanArrayList.get(i).getmProductTaxGST() != null) {
+                    tax = Float.parseFloat(takeOrderPreviewBeanArrayList.get(i).getmProductTaxGST());
+
+                }
+            }
+
+            for (int j=0;j<mTakeOrderBeansList.size();j++){
+                 price= Double.parseDouble(mTakeOrderBeansList.get(j).getmAgentPrice());
+                quantity= Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity());
+            }
+
+            taxAmount = ((quantity * price) * tax) / 100;
+            //  amount = price + taxAmount;
+            amount = price;
+
+            subtotal = (price * quantity);
+
+            mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
+                    * quantity));
+            System.out.println("P PRICE IS::: " + mProductsPriceAmountSum);
+
+            mTotalProductsTax = (mTotalProductsTax + taxAmount);
+
+            mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
+            totalprice= String.valueOf(mTotalProductsPriceAmountSum);
+            valueCount.setText(totalprice);
         }
 
+
+       /* for (int i=0;i<ordersList.size();i++)
+        {
+            mTotalProductsPriceAmountSum= Double.parseDouble(ordersList.get(i).getmOrders_TotalValue());
+            System.out.println("P FINAL IS::: " + mTotalProductsPriceAmountSum);
+
+        }
+        totalprice= String.valueOf(mTotalProductsPriceAmountSum);
+        valueCount.setText(totalprice);
+        */
+
+        /*for (int i=0;i<takeOrderPreviewBeanArrayList.size();i++){
+
+            tax= 0.0f;
+
+            if (takeOrderPreviewBeanArrayList.get(i).getmProductTaxVAT() != null) {
+                tax = Float.parseFloat(takeOrderPreviewBeanArrayList.get(i).getmProductTaxVAT());
+
+            } else if (takeOrderPreviewBeanArrayList.get(i).getmProductTaxGST() != null) {
+                tax = Float.parseFloat(takeOrderPreviewBeanArrayList.get(i).getmProductTaxGST());
+
+            }
+            double price = Double.parseDouble(takeOrderPreviewBeanArrayList.get(i).getpPrice().replace(",", ""));
+            Log.i("priceAmount", String.valueOf(price));
+
+            double quantity = Double.parseDouble(takeOrderPreviewBeanArrayList.get(i).getpQuantity().replace(",", ""));
+            Log.i("quantityAmount", String.valueOf(quantity));
+
+            taxAmount = ((quantity * price) * tax) / 100;
+            Log.i("taxAmount", String.valueOf(taxAmount));
+            //  amount = price + taxAmount;
+            amount = price;
+
+            subtotal = (price * quantity);
+
+            mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
+                    * Double.parseDouble(takeOrderPreviewBeanArrayList.get(i).getpQuantity())));
+            System.out.println("P PRICE IS::: " + mProductsPriceAmountSum);
+
+            mTotalProductsTax = (mTotalProductsTax + taxAmount);
+            System.out.println("P TAX IS::: " + mTotalProductsTax);
+
+            mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
+
+            totalprice= String.valueOf(mTotalProductsPriceAmountSum);
+            valueCount.setText(totalprice);
+        }
+*/
 
         sales = (LinearLayout) findViewById(R.id.linear_sales);
         sales.setVisibility(View.GONE);
@@ -98,7 +201,6 @@ public class AgentTDC_Order extends AppCompatActivity {
         payments.setVisibility(View.GONE);
         orders = (LinearLayout) findViewById(R.id.linear_orders);
         orders.setVisibility(View.GONE);
-
 
 
         sales.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +266,15 @@ public class AgentTDC_Order extends AppCompatActivity {
                 finish();
             }
         });
+        ordersview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent i =new Intent(AgentTDC_Order.this,AgentsTDC_View.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
 
 
@@ -192,10 +302,7 @@ public class AgentTDC_Order extends AppCompatActivity {
 
     }
 
-    private void loadAgentsList(ArrayList<TakeOrderBean> mTakeOrderBeansList) {
-        ordersAdapter = new AgentsOrdersAdapter(this, AgentTDC_Order.this, mTakeOrderBeansList);
-        mAgentsList.setAdapter(ordersAdapter);
-    }
+
 
 
     @Override
