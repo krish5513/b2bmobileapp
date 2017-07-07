@@ -109,8 +109,9 @@ public class AgentTDC_Order extends AppCompatActivity {
 
 
 
+
             for (int j=0;j<mTakeOrderBeansList.size();j++){
-                 price= Double.parseDouble(mTakeOrderBeansList.get(j).getmAgentPrice());
+                price= Double.parseDouble(mTakeOrderBeansList.get(j).getmAgentPrice());
                 quantity= Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity());
                 tax = 0.0f;
                 if (mTakeOrderBeansList.get(j).getmAgentVAT() != null) {
@@ -120,7 +121,6 @@ public class AgentTDC_Order extends AppCompatActivity {
                     tax = Float.parseFloat(mTakeOrderBeansList.get(j).getmAgentGST());
 
                 }
-
                 taxAmount = ((quantity * price) * tax) / 100;
                 System.out.println("P TAX IS::: " + taxAmount);
                 //  amount = price + taxAmount;
@@ -129,7 +129,7 @@ public class AgentTDC_Order extends AppCompatActivity {
                 subtotal = (price * quantity);
 
                 mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
-                        * Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity())));
+                        *quantity));
                 System.out.println("P SUBTOTAl IS::: " + mProductsPriceAmountSum);
 
                 mTotalProductsTax = (mTotalProductsTax + taxAmount);
@@ -139,6 +139,8 @@ public class AgentTDC_Order extends AppCompatActivity {
                 totalprice= String.valueOf(mTotalProductsPriceAmountSum);
                 valueCount.setText(totalprice);
             }
+
+
 
 
         }

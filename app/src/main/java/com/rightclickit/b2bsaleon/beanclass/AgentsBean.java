@@ -17,6 +17,16 @@ public class AgentsBean {
     private String mAgentVerifycode;
     private String mAgentDelete;
 
+    public String getmAgentRoutecode() {
+        return mAgentRoutecode;
+    }
+
+    public void setmAgentRoutecode(String mAgentRoutecode) {
+        this.mAgentRoutecode = mAgentRoutecode;
+    }
+
+    private String mAgentRoutecode;
+
     public String getmAgentEmail() {
         return mAgentEmail;
     }

@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Sekhar Kuppa
@@ -34,6 +35,7 @@ public class SyncTakeOrdersService extends Service {
     private DBHelper mDBHelper;
     private String mJsonObj,str_routecode;
     private MMSharedPreferences mSessionManagement;
+    private String mRouteName = "",mRegionName = "",mOfficeName="",mRouteCode="";
 
     @Override
     public void onCreate() {
@@ -106,12 +108,17 @@ public class SyncTakeOrdersService extends Service {
                 //params1.put("route_id",mSessionManagement.getString("agentrouteId"));
                 JSONArray rAr = new JSONArray(mTakeOrderBeansList.get(0).getmRouteId());
                 params1.put("route_id",rAr.get(0).toString());
-                //  params1.put("route_id",mAgentsBeansList.get(0).getmAgentRouteId());
+                  //params1.put("route_id",mAgentsBeansList.get(0).getmAgentRouteId());
                 params1.put("user_id",mTakeOrderBeansList.get(0).getmAgentId());
                 params1.put("user_code",mAgentsBeansList.get(0).getmAgentCode());
 
-                str_routecode = (mSessionManagement.getString("routecode"));
-                params1.put("route_code",str_routecode);
+                List<String> routesDataList = mDBHelper.getRouteDataByRouteId(mTakeOrderBeansList.get(0).getmRouteId());
+                Log.i("routesdatalistsize", String.valueOf(routesDataList.size()));
+                 mRouteCode=routesDataList.get(4);
+                Log.i("routesdatalist", mRouteCode);
+                params1.put("route_code",mRouteCode);
+             //   str_routecode = (mSessionManagement.getString("routecode"));
+            //    params1.put("route_code",str_routecode);
                 JSONArray productArra = new JSONArray();
                 JSONArray quantityArra = new JSONArray();
                 JSONArray fromDateArra = new JSONArray();
