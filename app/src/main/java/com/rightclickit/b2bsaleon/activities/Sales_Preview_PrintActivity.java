@@ -154,7 +154,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                 canvas.drawText(mmSharedPreferences.getString("routename"), 200, 80, paint);
                 canvas.drawText("BILL,", 5, 120, paint);
                 canvas.drawText("by " + mmSharedPreferences.getString("loginusername"), 200, 120, paint);
-                canvas.drawText("TDC000C1,", 5, 150, paint);
+                canvas.drawText("currentOrderId", 5, 150, paint);
                 canvas.drawText(currentDate, 170, 150, paint);
                 //  canvas.drawText(str_agentname, 5, 180, paint);
                 //  canvas.drawText(mmSharedPreferences.getString("agentCode"), 200, 180, paint);

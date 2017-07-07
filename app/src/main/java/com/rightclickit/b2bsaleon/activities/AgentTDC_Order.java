@@ -107,25 +107,23 @@ public class AgentTDC_Order extends AppCompatActivity {
             itemCount= String.valueOf(mTakeOrderBeansList.size());
             tv_itemsCount.setText(itemCount);
 
-            for (int i=0;i<takeOrderPreviewBeanArrayList.size();i++) {
 
-                tax = 0.0f;
-
-                if (takeOrderPreviewBeanArrayList.get(i).getmProductTaxVAT() != null) {
-                    tax = Float.parseFloat(takeOrderPreviewBeanArrayList.get(i).getmProductTaxVAT());
-
-                } else if (takeOrderPreviewBeanArrayList.get(i).getmProductTaxGST() != null) {
-                    tax = Float.parseFloat(takeOrderPreviewBeanArrayList.get(i).getmProductTaxGST());
-
-                }
-            }
 
             for (int j=0;j<mTakeOrderBeansList.size();j++){
                  price= Double.parseDouble(mTakeOrderBeansList.get(j).getmAgentPrice());
                 quantity= Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity());
+                tax = 0.0f;
+                if (mTakeOrderBeansList.get(j).getmAgentVAT() != null) {
+                    tax = Float.parseFloat(mTakeOrderBeansList.get(j).getmAgentVAT());
+
+                } else if (mTakeOrderBeansList.get(j).getmAgentGST() != null) {
+                    tax = Float.parseFloat(mTakeOrderBeansList.get(j).getmAgentGST());
+
+                }
             }
 
             taxAmount = ((quantity * price) * tax) / 100;
+            System.out.println("P TAX IS::: " + taxAmount);
             //  amount = price + taxAmount;
             amount = price;
 
@@ -133,11 +131,12 @@ public class AgentTDC_Order extends AppCompatActivity {
 
             mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
                     * quantity));
-            System.out.println("P PRICE IS::: " + mProductsPriceAmountSum);
+            System.out.println("P SUBTOTAl IS::: " + mProductsPriceAmountSum);
 
             mTotalProductsTax = (mTotalProductsTax + taxAmount);
 
             mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
+            System.out.println("P FINAL IS::: " + mTotalProductsPriceAmountSum);
             totalprice= String.valueOf(mTotalProductsPriceAmountSum);
             valueCount.setText(totalprice);
         }

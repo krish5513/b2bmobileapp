@@ -18,6 +18,25 @@ public class TakeOrderBean implements Serializable {
     private String mProductStatus;
     private String mEnquiryId;
     private String mAgentId;
+    private String mAgentGST;
+
+    public String getmAgentGST() {
+        return mAgentGST;
+    }
+
+    public void setmAgentGST(String mAgentGST) {
+        this.mAgentGST = mAgentGST;
+    }
+
+    public String getmAgentVAT() {
+        return mAgentVAT;
+    }
+
+    public void setmAgentVAT(String mAgentVAT) {
+        this.mAgentVAT = mAgentVAT;
+    }
+
+    private String mAgentVAT;
 
     public String getmAgentPrice() {
         return mAgentPrice;

@@ -534,7 +534,7 @@
                 android:layout_gravity="center"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/tv_print"
+                    android:id="@+id/tv_ordersprint"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
