@@ -214,6 +214,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_SOP_PRODUCT_QUANTITY = "tdc_sop_product_quantity";
     private final String KEY_TDC_SOP_PRODUCT_AMOUNT = "tdc_sop_product_amount";
     private final String KEY_TDC_SOP_PRODUCT_TAX = "tdc_sop_product_tax";
+    private final String KEY_TDC_SOP_PRODUCT_TAX_AMOUNT = "tdc_sop_product_tax_amount";
     private final String KEY_TDC_SOP_UPLOAD_STATUS = "tdc_sop_upload_status";
 
     // Userdetails Table Create Statements
@@ -302,7 +303,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String CREATE_TDC_SALES_ORDER_PRODUCTS_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_TDC_SALES_ORDER_PRODUCTS + "(" + KEY_TDC_SOP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_SOP_ORDER_ID + " INTEGER, "
             + KEY_TDC_SOP_PRODUCT_ID + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_MRP + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_QUANTITY + " VARCHAR, "
-            + KEY_TDC_SOP_PRODUCT_AMOUNT + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_TAX + " TEXT, " + KEY_TDC_SOP_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
+            + KEY_TDC_SOP_PRODUCT_AMOUNT + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_TAX + " TEXT, " + KEY_TDC_SOP_PRODUCT_TAX_AMOUNT + " TEXT, "
+            + KEY_TDC_SOP_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -1681,6 +1683,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     orderProducts.setProductQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_QUANTITY))));
                     orderProducts.setProductAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_AMOUNT))));
                     orderProducts.setProductTax(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_TAX))));
+                    orderProducts.setProductTaxAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_TAX_AMOUNT))));
                     orderProducts.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SOP_UPLOAD_STATUS)));
 
                     allOrdersProductsList.add(orderProducts);
@@ -1746,7 +1749,8 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_SOP_PRODUCT_MRP, orderProduct.getProductRatePerUnit());
             values.put(KEY_TDC_SOP_PRODUCT_QUANTITY, orderProduct.getSelectedQuantity());
             values.put(KEY_TDC_SOP_PRODUCT_AMOUNT, orderProduct.getProductAmount());
-            values.put(KEY_TDC_SOP_PRODUCT_TAX, orderProduct.getTaxAmount());
+            values.put(KEY_TDC_SOP_PRODUCT_TAX, orderProduct.getProductTaxPerUnit());
+            values.put(KEY_TDC_SOP_PRODUCT_TAX_AMOUNT, orderProduct.getTaxAmount());
 
             orderProductId = db.insert(TABLE_TDC_SALES_ORDER_PRODUCTS, null, values);
 
@@ -1780,5 +1784,88 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return orderId;
+    }
+
+    /**
+     * Method to fetch all un uploaded records from TDC Sales Orders Table
+     */
+    public List<TDCSaleOrder> fetchAllUnUploadedTDCSalesOrders() {
+        List<TDCSaleOrder> allOrdersList = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_UPLOAD_STATUS + "= 0";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    TDCSaleOrder order = new TDCSaleOrder();
+
+                    long orderId = c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_ID));
+
+                    order.setOrderId(orderId);
+                    order.setNoOfItems(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_NO_OF_ITEMS)));
+                    order.setOrderTotalAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_AMOUNT))));
+                    order.setOrderTotalTaxAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT))));
+                    order.setOrderSubTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_SUB_TOTAL))));
+                    order.setSelectedCustomerId(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
+                    order.setSelectedCustomerName(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_NAME)));
+                    order.setCreatedOn(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
+                    order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
+                    order.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_UPLOAD_STATUS)));
+                    order.setOrderProductsList(fetchTDCSalesOrderProductsListByOrderId(orderId));
+
+                    allOrdersList.add(order);
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allOrdersList;
+    }
+
+    public void updateTDCSalesOrdersTable(long orderId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_TDC_SALES_ORDER_UPLOAD_STATUS, 1);
+
+            int status = db.update(TABLE_TDC_SALES_ORDERS, values, KEY_TDC_SALES_ORDER_ID + " = ?", new String[]{String.valueOf(orderId)});
+
+            if (status != -1)
+                this.updateTDCSalesOrderProductsTable(orderId);
+
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    public void updateTDCSalesOrderProductsTable(long orderId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_TDC_SOP_UPLOAD_STATUS, 1);
+
+            int status = db.update(TABLE_TDC_SALES_ORDER_PRODUCTS, values, KEY_TDC_SOP_ORDER_ID + " = ?", new String[]{String.valueOf(orderId)});
+
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
     }
 }

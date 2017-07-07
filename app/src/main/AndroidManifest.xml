@@ -245,6 +245,13 @@
             android:name=".services.SyncSpecialPriceService"
             android:enabled="true"
             android:exported="true" />
+
+        <!-- TDC Sales Orders Sync Service -->
+        <service
+            android:name=".services.SyncTDCSalesOrderService"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>

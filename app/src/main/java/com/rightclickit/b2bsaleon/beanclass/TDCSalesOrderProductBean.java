@@ -14,6 +14,7 @@ public class TDCSalesOrderProductBean implements Serializable {
     private double productQuantity;
     private double productAmount;
     private double productTax;
+    private double productTaxAmount;
     private int isUploaded;
 
     public long getId() {
@@ -72,6 +73,14 @@ public class TDCSalesOrderProductBean implements Serializable {
         this.productTax = productTax;
     }
 
+    public double getProductTaxAmount() {
+        return productTaxAmount;
+    }
+
+    public void setProductTaxAmount(double productTaxAmount) {
+        this.productTaxAmount = productTaxAmount;
+    }
+
     public int getIsUploaded() {
         return isUploaded;
     }
@@ -90,6 +99,7 @@ public class TDCSalesOrderProductBean implements Serializable {
                 ", productQuantity=" + productQuantity +
                 ", productAmount=" + productAmount +
                 ", productTax=" + productTax +
+                ", productTaxAmount=" + productTaxAmount +
                 ", isUploaded=" + isUploaded +
                 '}';
     }

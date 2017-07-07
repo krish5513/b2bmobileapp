@@ -26,6 +26,7 @@ public class ProductsBean implements Serializable {
     private double taxAmount;
     private double productAmount;
     private double productRatePerUnit;
+    private double productTaxPerUnit;
     private String mTakeOrderQuantity;
     private String mTakeOrderFromDate;
     private String mTakeOrderToDate;
@@ -190,6 +191,14 @@ public class ProductsBean implements Serializable {
         this.productRatePerUnit = productRatePerUnit;
     }
 
+    public double getProductTaxPerUnit() {
+        return productTaxPerUnit;
+    }
+
+    public void setProductTaxPerUnit(double productTaxPerUnit) {
+        this.productTaxPerUnit = productTaxPerUnit;
+    }
+
     @Override
     public String toString() {
         return "ProductsBean{" +
@@ -209,6 +218,11 @@ public class ProductsBean implements Serializable {
                 ", selectedQuantity=" + selectedQuantity +
                 ", taxAmount=" + taxAmount +
                 ", productAmount=" + productAmount +
+                ", productRatePerUnit=" + productRatePerUnit +
+                ", productTaxPerUnit=" + productTaxPerUnit +
+                ", mTakeOrderQuantity='" + mTakeOrderQuantity + '\'' +
+                ", mTakeOrderFromDate='" + mTakeOrderFromDate + '\'' +
+                ", mTakeOrderToDate='" + mTakeOrderToDate + '\'' +
                 '}';
     }
 }

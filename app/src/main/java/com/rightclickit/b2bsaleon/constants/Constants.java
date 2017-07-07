@@ -104,4 +104,6 @@ public class Constants {
     public static final String SYNC_TAKE_ORDERS_SERVICE = "/pending_order/add?token=";
     //Special Price url
     public static final String SPECIAL_PRICE_SERVICE = "/user_sprice_price/list";
+    //TDC Sales Order Add URL
+    public static final String TDC_SALES_ORDER_ADD = "/tdc_customer_order/add";
 }
