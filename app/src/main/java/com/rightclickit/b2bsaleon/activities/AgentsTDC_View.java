@@ -77,7 +77,7 @@ public class AgentsTDC_View extends AppCompatActivity {
         ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
         ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
         ArrayList<OrdersListBean> ordersList=new ArrayList<>();
-        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable(" ",sharedPreferences.getString("agentId"));
+        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes",sharedPreferences.getString("agentId"));
 
 
 
@@ -131,7 +131,20 @@ public class AgentsTDC_View extends AppCompatActivity {
         //System.out.println("ELSE::: "+a.size());
 
         //   ArrayList<TakeOrderPreviewBean> previewArrayList = new ArrayList<>();
-        if (mTakeOrderBeansList.size() > 0) {
+        if (mTakeOrderBeansList.size()>0) {
+            for(int i=0;i<mTakeOrderBeansList.size();i++){
+                TakeOrderPreviewBean tb=new TakeOrderPreviewBean();
+                TakeOrderBean tob=mTakeOrderBeansList.get(i);
+                tb.setpName(tob.getmProductTitle());
+                tb.setpQuantity(tob.getmProductQuantity());
+                tb.setpPrice(tob.getmAgentPrice());
+                //tb.setpAmount(tob.ge);
+                tb.setmProductTaxVAT(tob.getmAgentVAT());
+                tb.setmProductTaxGST(tob.getmAgentGST());
+                tb.setmProductFromDate(tob.getmProductFromDate());
+                tb.setmProductToDate(tob.getmProductToDate());
+                takeOrderPreviewBeanArrayList.add(tb);
+            }
             loadAgentsList(takeOrderPreviewBeanArrayList);
         }
 

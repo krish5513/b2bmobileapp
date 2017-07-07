@@ -120,25 +120,27 @@ public class AgentTDC_Order extends AppCompatActivity {
                     tax = Float.parseFloat(mTakeOrderBeansList.get(j).getmAgentGST());
 
                 }
+
+                taxAmount = ((quantity * price) * tax) / 100;
+                System.out.println("P TAX IS::: " + taxAmount);
+                //  amount = price + taxAmount;
+                amount = price;
+
+                subtotal = (price * quantity);
+
+                mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
+                        * Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity())));
+                System.out.println("P SUBTOTAl IS::: " + mProductsPriceAmountSum);
+
+                mTotalProductsTax = (mTotalProductsTax + taxAmount);
+
+                mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
+                System.out.println("P FINAL IS::: " + mTotalProductsPriceAmountSum);
+                totalprice= String.valueOf(mTotalProductsPriceAmountSum);
+                valueCount.setText(totalprice);
             }
 
-            taxAmount = ((quantity * price) * tax) / 100;
-            System.out.println("P TAX IS::: " + taxAmount);
-            //  amount = price + taxAmount;
-            amount = price;
 
-            subtotal = (price * quantity);
-
-            mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
-                    * quantity));
-            System.out.println("P SUBTOTAl IS::: " + mProductsPriceAmountSum);
-
-            mTotalProductsTax = (mTotalProductsTax + taxAmount);
-
-            mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
-            System.out.println("P FINAL IS::: " + mTotalProductsPriceAmountSum);
-            totalprice= String.valueOf(mTotalProductsPriceAmountSum);
-            valueCount.setText(totalprice);
         }
 
 

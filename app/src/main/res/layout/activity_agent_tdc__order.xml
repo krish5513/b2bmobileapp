@@ -144,7 +144,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="orderdate"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="12dp"
                             android:textColor="@color/greydark"
                             android:textSize="10sp" />
 
@@ -154,6 +154,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:layout_marginTop="3dp"
+                            android:visibility="gone"
                             android:text="Paid"
                             android:textColor="@color/colorPrimary"
                             android:textSize="14sp" />
