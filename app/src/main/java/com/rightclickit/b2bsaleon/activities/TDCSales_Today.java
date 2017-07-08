@@ -4,25 +4,22 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.AgentTDC_ListAdapter;
+import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
+
+import java.util.ArrayList;
 
 public class TDCSales_Today extends AppCompatActivity {
-    Button view1;
-    Button view2;
-    Button view3;
-    Button view4;
-    Button view5;
-    Button view6;
-    Button view7;
-    Button view8;
-    Button view9;
-    Button view10;
+    private ListView mAgentsList;
+    private AgentTDC_ListAdapter mPreviewAdapter;
     TextView today;
     TextView monthly;
     TextView weekly;
@@ -30,6 +27,8 @@ public class TDCSales_Today extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_list);
+
+        ArrayList<TDCSaleOrder> tdcBeanArrayList = new ArrayList<TDCSaleOrder>();
 
         this.getSupportActionBar().setTitle("AGENTS");
         this.getSupportActionBar().setSubtitle(null);
@@ -47,20 +46,10 @@ public class TDCSales_Today extends AppCompatActivity {
 
 
 
-
+        mAgentsList = (ListView) findViewById(R.id.AgentsList);
         today=(TextView) findViewById(R.id.tv_today);
         monthly=(TextView) findViewById(R.id.tv_monthly);
         weekly=(TextView) findViewById(R.id.tv_weekly);
-        view1 = (Button) findViewById(R.id.btn_view1);
-        view2 = (Button) findViewById(R.id.btn_view2);
-        view3 = (Button) findViewById(R.id.btn_view3);
-        view4 = (Button) findViewById(R.id.btn_view4);
-        view5 = (Button) findViewById(R.id.btn_view5);
-        view6 = (Button) findViewById(R.id.btn_view6);
-        view7 = (Button) findViewById(R.id.btn_view7);
-        view8 = (Button) findViewById(R.id.btn_view8);
-        view9 = (Button) findViewById(R.id.btn_view9);
-        view10 = (Button) findViewById(R.id.btn_view10);
 
 
 
@@ -82,93 +71,23 @@ public class TDCSales_Today extends AppCompatActivity {
             }
         });
 
+      if(tdcBeanArrayList.size()>0) {
+    loadAgentsList(tdcBeanArrayList);
 
 
-
-        view1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        view2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        view3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        view4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        view5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        view6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        view7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        view8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        view9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        view10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
+    }
 
 
+    }
 
+    private void loadAgentsList(ArrayList<TDCSaleOrder> tdcBeanArrayList) {
+        if (mPreviewAdapter != null) {
+            mPreviewAdapter = null;
+        }
+        mPreviewAdapter = new AgentTDC_ListAdapter(this, TDCSales_Today.this, tdcBeanArrayList);
+        Log.i("previewadapter",mPreviewAdapter+"");
 
+        mAgentsList.setAdapter(mPreviewAdapter);
     }
 
 

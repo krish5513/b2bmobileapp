@@ -115,6 +115,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                 subAmount = Utility.getFormattedCurrency(currentOrder.getOrderTotalAmount());
                 finalAmount = Utility.getFormattedCurrency(currentOrder.getOrderSubTotal());
                 Map<String, ProductsBean> productsList = currentOrder.getProductsList();
+              //  selectedList=productsList.size();
                 for (Map.Entry<String, ProductsBean> productsBeanEntry : productsList.entrySet()) {
                     ProductsBean productsBean = productsBeanEntry.getValue();
                     name = String.valueOf(productsBean.getProductTitle().replace(",", ""));

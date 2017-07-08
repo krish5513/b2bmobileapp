@@ -9,127 +9,78 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.AgentTakeOrderPreview;
-import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
-import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
-import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.activities.Sales_Preview_PrintActivity;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by PPS on 7/5/2017.
+ * Created by PPS on 7/8/2017.
  */
 
 public class AgentTDC_ViewAdapter extends BaseAdapter {
 
-    LayoutInflater mInflater;
+    private LayoutInflater mInflater;
     private Activity activity;
-    Context ctxt;
-    ArrayList<TakeOrderPreviewBean> mpreviewBeansList1;
-    private ImageLoader mImageLoader;
-    private ArrayList<TakeOrderPreviewBean> arraylist;
-    private MMSharedPreferences mPreferences;
+    private Context ctxt;
+    private ArrayList<ProductsBean> selectedProductsList;
 
-
-    public AgentTDC_ViewAdapter(Context ctxt, Activity ordersActivity, ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList) {
+    public AgentTDC_ViewAdapter(Context ctxt, Sales_Preview_PrintActivity sales_preview_printActivity, List<ProductsBean> productsList) {
         this.ctxt = ctxt;
-        this.activity = ordersActivity;
-        this.mpreviewBeansList1 = takeOrderPreviewBeanArrayList;
+        this.activity = sales_preview_printActivity;
         this.mInflater = LayoutInflater.from(activity);
-        this.arraylist = new ArrayList<TakeOrderPreviewBean>();
-        this.mPreferences = new MMSharedPreferences(activity);
+        this.selectedProductsList = (ArrayList<ProductsBean>) productsList;
     }
 
+    private class TDCSalesPreviewViewHolder {
+        TextView order_preview_product_name, order_preview_quantity, order_preview_tax, order_preview_mrp, order_preview_amount;
+    }
 
     @Override
     public int getCount() {
-        return mpreviewBeansList1.size();
+        return selectedProductsList.size();
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public ProductsBean getItem(int position) {
+        return selectedProductsList.get(position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return 0;
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final AgentTDC_ViewAdapter.MyViewHolder holder;
+        TDCSalesPreviewViewHolder salesPreviewViewHolder = null;
 
         if (convertView == null) {
+            convertView = mInflater.inflate(R.layout.tdc_sales_preview_adapter, null);
 
-            holder = new AgentTDC_ViewAdapter.MyViewHolder();
-            convertView = mInflater.inflate(R.layout.takeorderpreview_adapter, null);
+            salesPreviewViewHolder = new TDCSalesPreviewViewHolder();
+            salesPreviewViewHolder.order_preview_product_name = (TextView) convertView.findViewById(R.id.order_preview_product_name);
+            salesPreviewViewHolder.order_preview_quantity = (TextView) convertView.findViewById(R.id.order_preview_quantity);
+            salesPreviewViewHolder.order_preview_tax = (TextView) convertView.findViewById(R.id.order_preview_tax);
+            salesPreviewViewHolder.order_preview_mrp = (TextView) convertView.findViewById(R.id.order_preview_mrp);
+            salesPreviewViewHolder.order_preview_amount = (TextView) convertView.findViewById(R.id.order_preview_amount);
 
-            holder.pName = (TextView) convertView.findViewById(R.id.pName);
-            holder.pQuantity = (TextView) convertView.findViewById(R.id.productQt);
-            holder.pPrice = (TextView) convertView.findViewById(R.id.price);
-            holder.pTax = (TextView) convertView.findViewById(R.id.tax);
-            holder.pAmount = (TextView) convertView.findViewById(R.id.amount);
-            holder.taxName = (TextView) convertView.findViewById(R.id.taxname);
-            holder.taxPer = (TextView) convertView.findViewById(R.id.taxper);
-            holder.fromPreview = (TextView) convertView.findViewById(R.id.fromDate);
-            holder.toPreview = (TextView) convertView.findViewById(R.id.toDate);
-
-            convertView.setTag(holder);
+            convertView.setTag(salesPreviewViewHolder);
         } else {
-            holder = (AgentTDC_ViewAdapter.MyViewHolder) convertView.getTag();
+            salesPreviewViewHolder = (TDCSalesPreviewViewHolder) convertView.getTag();
         }
 
-        double quantity = Double.parseDouble(mpreviewBeansList1.get(position).getpQuantity().replace(",", ""));
-        double price = Double.parseDouble(mpreviewBeansList1.get(position).getpPrice().replace(",", ""));
+        final ProductsBean productBean = getItem(position);
 
-        float tax = 0.0f;
-        String str_Taxname="";
-        if (mpreviewBeansList1.get(position).getmProductTaxVAT() != null) {
-            tax = Float.parseFloat(mpreviewBeansList1.get(position).getmProductTaxVAT());
-            str_Taxname = "VAT:";
-        }
-        else if (mpreviewBeansList1.get(position).getmProductTaxGST() != null) {
-            tax = Float.parseFloat(mpreviewBeansList1.get(position).getmProductTaxGST());
-            str_Taxname = "GST:";
-        }
-        double taxAmount = ((quantity*price) * tax) / 100;
-        double amount = price + taxAmount;
-
-        holder.pName.setText(mpreviewBeansList1.get(position).getpName());
-        holder.pQuantity.setText(mpreviewBeansList1.get(position).getpQuantity());
-        holder.pPrice.setText(Utility.getFormattedCurrency(price));
-        holder.pTax.setText(Utility.getFormattedCurrency(taxAmount));
-        holder.pAmount.setText(Utility.getFormattedCurrency(price*Double.parseDouble(mpreviewBeansList1.get(position).getpQuantity())));
-        holder.fromPreview.setText(mpreviewBeansList1.get(position).getmProductFromDate());
-        holder.toPreview.setText(mpreviewBeansList1.get(position).getmProductToDate());
-        holder.taxName.setText(str_Taxname);
-        holder.taxPer.setText(String.valueOf("("+tax+"%)"));
+        salesPreviewViewHolder.order_preview_product_name.setText(productBean.getProductTitle());
+        salesPreviewViewHolder.order_preview_quantity.setText(String.format("%.3f", productBean.getSelectedQuantity()));
+        salesPreviewViewHolder.order_preview_tax.setText(Utility.getFormattedCurrency(productBean.getTaxAmount()));
+        salesPreviewViewHolder.order_preview_mrp.setText(Utility.getFormattedCurrency(Double.parseDouble(productBean.getProductConsumerPrice().replace(",", ""))));
+        salesPreviewViewHolder.order_preview_amount.setText(Utility.getFormattedCurrency(productBean.getProductAmount()));
 
         return convertView;
     }
-
-    private class MyViewHolder {
-        public TextView pName;
-
-        public TextView pQuantity;
-        public TextView pPrice;
-        public TextView pTax, pAmount;
-        public TextView taxName, taxPer;
-        public TextView fromPreview, toPreview;
-
-
-
-
-
-
-    }
-
-
-
-    // Methos to display product image as full image
-
 }
-
 
