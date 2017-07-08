@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,12 +44,20 @@ public class AgentsTDC_View extends AppCompatActivity {
     TextView agentCode;
     TextView taxprice;
     TextView tv_amount;
-    TextView totalprice;
+    TextView tv_totalprice;
 
     DBHelper mDBHelper;
     TextView ordersprint;
     String currentDate, str_routecode, str_enguiryid, str_agentname;
     private MMSharedPreferences sharedPreferences;
+
+    double amount, subtotal;
+    double taxAmount;
+    String name;
+    private double mProductsPriceAmountSum = 0.0, mTotalProductsPriceAmountSum = 0.0, mTotalProductsTax = 0.0;
+    float tax;
+
+    double quantity,price;
 
     Map<String, String[]> selectedList = new HashMap<String, String[]>();
     @Override
@@ -119,11 +128,6 @@ public class AgentsTDC_View extends AppCompatActivity {
         agentCode.setText(sharedPreferences.getString("agentCode"));
 
 
-        taxprice = (TextView) findViewById(R.id.taxAmount);
-
-        tv_amount = (TextView) findViewById(R.id.Amount);
-
-        totalprice = (TextView) findViewById(R.id.totalAmount);
 
 
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
@@ -144,6 +148,56 @@ public class AgentsTDC_View extends AppCompatActivity {
                 tb.setmProductFromDate(tob.getmProductFromDate());
                 tb.setmProductToDate(tob.getmProductToDate());
                 takeOrderPreviewBeanArrayList.add(tb);
+
+                name=mTakeOrderBeansList.get(i).getmProductTitle();
+                price= Double.parseDouble(mTakeOrderBeansList.get(i).getmAgentPrice());
+                quantity= Double.parseDouble(mTakeOrderBeansList.get(i).getmProductQuantity());
+                tax = 0.0f;
+                String str_Taxname = "";
+                if (mTakeOrderBeansList.get(i).getmAgentVAT() != null) {
+                    tax = Float.parseFloat(mTakeOrderBeansList.get(i).getmAgentVAT());
+                    str_Taxname = "VAT:";
+                } else if (mTakeOrderBeansList.get(i).getmAgentGST() != null) {
+                    tax = Float.parseFloat(mTakeOrderBeansList.get(i).getmAgentGST());
+                    str_Taxname = "GST:";
+                }
+                taxAmount = ((quantity * price) * tax) / 100;
+                System.out.println("P TAX IS::: " + taxAmount);
+                //  amount = price + taxAmount;
+                amount = price;
+
+                subtotal = (price * quantity);
+
+                mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
+                        *Double.parseDouble(mTakeOrderBeansList.get(i).getmProductQuantity())));
+                System.out.println("P SUBTOTAl IS::: " + mProductsPriceAmountSum);
+
+                mTotalProductsTax = (mTotalProductsTax + taxAmount);
+
+                mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
+                System.out.println("P FINAL IS::: " + mTotalProductsPriceAmountSum);
+
+                taxprice = (TextView) findViewById(R.id.taxAmount);
+                taxprice.setText(Utility.getFormattedCurrency(mTotalProductsTax));
+
+                tv_amount = (TextView) findViewById(R.id.Amount);
+                tv_amount.setText(Utility.getFormattedCurrency(mProductsPriceAmountSum));
+
+                tv_totalprice = (TextView) findViewById(R.id.totalAmount);
+                tv_totalprice.setText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
+
+                String[] temp = new String[10];
+                temp[0] = name;
+                temp[1] = String.valueOf(quantity);
+                temp[2] = String.valueOf(price);
+                temp[3] = String.valueOf(subtotal);
+                temp[4] = String.valueOf(taxAmount);
+                temp[5] = String.valueOf(str_Taxname);
+                temp[6] = String.valueOf("(" + tax + "%)");
+                temp[7] = mTakeOrderBeansList.get(i).getmProductFromDate();
+                temp[8] = mTakeOrderBeansList.get(i).getmProductToDate();
+                selectedList.put(name, temp);
+                Log.i("takeordertemp", temp + "");
             }
             loadAgentsList(takeOrderPreviewBeanArrayList);
         }
@@ -218,9 +272,9 @@ public class AgentsTDC_View extends AppCompatActivity {
 
                 st = st + 20;
                 canvas.drawText("Total:", 5, st, paint);
-               // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
-                //canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
-               // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
+               canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
+                canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
+               canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
                 st = st + 20;
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);

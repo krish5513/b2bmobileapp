@@ -152,6 +152,9 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_AGENT_UPDATEDBY = "agent_updatedby";
     private final String KEY_AGENT_UPDATEDON = "agent_updatedon";
     private final String KEY_AGENT_ROUTECODE= "agent_routecode";
+    private final String KEY_AGENT_DEVICESYNC= "agent_devicesync";
+    private final String KEY_AGENT_ACCESSDEVICE= "agent_accessdevice";
+    private final String KEY_AGENT_BACKUP= "agent_backup";
 
     // Column names for Products with take order values
     private final String KEY_TO_PRODUCT_ID = "to_product_id";
@@ -231,7 +234,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_AGENT_EMAIL + " VARCHAR," + KEY_AGENT_PASSWORD + " VARCHAR,"
             + KEY_AGENT_STAKEHOLDERID + " VARCHAR," + KEY_AGENT_REPORTINGTO + " VARCHAR," + KEY_AGENT_VERIFYCODE + " VARCHAR,"
             + KEY_AGENT_DELETE + " VARCHAR," + KEY_AGENT_CREATEDBY + " VARCHAR," + KEY_AGENT_CREATEDON + " VARCHAR,"
-            + KEY_AGENT_UPDATEDBY + " VARCHAR," + KEY_AGENT_UPDATEDON + " VARCHAR," + KEY_AGENT_ROUTECODE + " VARCHAR)";
+            + KEY_AGENT_UPDATEDBY + " VARCHAR," + KEY_AGENT_UPDATEDON + " VARCHAR," + KEY_AGENT_ROUTECODE + " VARCHAR," + KEY_AGENT_DEVICESYNC + " VARCHAR,"
+             + KEY_AGENT_ACCESSDEVICE + " VARCHAR," + KEY_AGENT_BACKUP + " VARCHAR)";
 
 
     // Userdetails Table Create Statements
@@ -420,6 +424,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_AGENT_UPDATEDBY, mAgentsBeansList.get(i).getmAgentUpdatedBy());
                 values.put(KEY_AGENT_UPDATEDON, mAgentsBeansList.get(i).getmAgentUpdatedOn());
                 values.put(KEY_AGENT_ROUTECODE, mAgentsBeansList.get(i).getmAgentRoutecode());
+                values.put(KEY_AGENT_DEVICESYNC, mAgentsBeansList.get(i).getmAgentDeviceSync());
+                values.put(KEY_AGENT_ACCESSDEVICE, mAgentsBeansList.get(i).getmAgentAccessDevice());
+                values.put(KEY_AGENT_BACKUP, mAgentsBeansList.get(i).getmAgentBackUp());
                 // insert row
                 db.insert(TABLE_AGENTS, null, values);
                 System.out.println("F*********** INSERTED***************88");
@@ -477,6 +484,9 @@ public class DBHelper extends SQLiteOpenHelper {
                     agentsBean.setmAgentUpdatedBy((c.getString(c.getColumnIndex(KEY_AGENT_UPDATEDBY))));
                     agentsBean.setmAgentUpdatedOn((c.getString(c.getColumnIndex(KEY_AGENT_UPDATEDON))));
                     agentsBean.setmAgentRoutecode((c.getString(c.getColumnIndex(KEY_AGENT_ROUTECODE))));
+                    agentsBean.setmAgentDeviceSync((c.getString(c.getColumnIndex(KEY_AGENT_DEVICESYNC))));
+                    agentsBean.setmAgentAccessDevice((c.getString(c.getColumnIndex(KEY_AGENT_ACCESSDEVICE))));
+                   // agentsBean.setmAgentBackUp((c.getString(c.getColumnIndex(KEY_AGENT_BACKUP))));
                     allDeviceTrackRecords.add(agentsBean);
                 } while (c.moveToNext());
             }

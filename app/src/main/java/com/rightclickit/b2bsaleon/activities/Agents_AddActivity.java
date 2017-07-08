@@ -66,8 +66,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class
-Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     String str_BusinessName, str_PersonName, str_Mobileno, str_address;
 
@@ -186,6 +185,7 @@ Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
 
             HashMap<String, String> userMapData = db.getUsersData();
             String stakeholderid = userMapData.get("stakeid");
+            //Log.i("STAKEID",stakeholderid);
             String userid = userMapData.get("user_id");
             try {
                 JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
@@ -200,7 +200,7 @@ Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
                 agentsBean.setmAgentCode("");
                 agentsBean.setmAgentReprtingto("");
                 agentsBean.setmAgentVerifycode("");
-                agentsBean.setmStatus("IA");
+                agentsBean.setmStatus("I");
                 agentsBean.setmAgentDelete("N");
                 agentsBean.setmAgentStakeid(stakeholderid);
                 agentsBean.setmAgentCreatedBy(userid);
@@ -217,6 +217,9 @@ Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
                 agentsBean.setmDueAmount("");
                 agentsBean.setmAgentPic("");
                 agentsBean.setmAgentApprovedOn("");
+                agentsBean.setmAgentDeviceSync("0");
+                agentsBean.setmAgentAccessDevice("NO");
+                agentsBean.setmAgentBackUp("0");
                 agentsBean.setmAgentRouteId(routesArray.toString());
                 mAgentsBeansList.add(agentsBean);
             } catch (Exception e) {

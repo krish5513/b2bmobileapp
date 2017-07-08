@@ -16,6 +16,34 @@ public class AgentsBean {
     private String mAgentReprtingto;
     private String mAgentVerifycode;
     private String mAgentDelete;
+    private String mAgentDeviceSync;
+
+    public String getmAgentDeviceSync() {
+        return mAgentDeviceSync;
+    }
+
+    public void setmAgentDeviceSync(String mAgentDeviceSync) {
+        this.mAgentDeviceSync = mAgentDeviceSync;
+    }
+
+    public String getmAgentAccessDevice() {
+        return mAgentAccessDevice;
+    }
+
+    public void setmAgentAccessDevice(String mAgentAccessDevice) {
+        this.mAgentAccessDevice = mAgentAccessDevice;
+    }
+
+    public String getmAgentBackUp() {
+        return mAgentBackUp;
+    }
+
+    public void setmAgentBackUp(String mAgentBackUp) {
+        this.mAgentBackUp = mAgentBackUp;
+    }
+
+    private String mAgentAccessDevice;
+    private String mAgentBackUp;
 
     public String getmAgentRoutecode() {
         return mAgentRoutecode;

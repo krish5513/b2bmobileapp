@@ -129,7 +129,7 @@ public class AgentTDC_Order extends AppCompatActivity {
                 subtotal = (price * quantity);
 
                 mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
-                        *quantity));
+                        *Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity())));
                 System.out.println("P SUBTOTAl IS::: " + mProductsPriceAmountSum);
 
                 mTotalProductsTax = (mTotalProductsTax + taxAmount);

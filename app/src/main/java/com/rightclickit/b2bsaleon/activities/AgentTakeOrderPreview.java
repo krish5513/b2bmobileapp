@@ -176,7 +176,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                         takeOrderPreviewBeanArrayList.add(topBean);
                     }
                 }
-
+            }
 
             tv_companyName = (TextView) findViewById(R.id.tv_companyName);
             tv_companyName.setText(sharedPreferences.getString("companyname"));
@@ -266,7 +266,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                     int st = 250;
                     paint.setTextSize(17);
                     for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-                        for (int i = selectedList.size(); i > 0; i++) {
+                       // for (int i = selectedList.size(); i > 0; i++) {
                             String[] temps = entry.getValue();
                             //String[] temps = selectedList.get(i-1);
                             canvas.drawText(temps[0], 5, st, paint);
@@ -292,7 +292,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                             //  canvas.drawText("----------------------------------------------------", 5, st, paint);
 
 
-                        }
+
                     }
                     canvas.drawText("----------------------------------------------------", 5, st, paint);
 
@@ -317,7 +317,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                 loadAgentsList(takeOrderPreviewBeanArrayList);
             }
 
-        }
+
     }
 
     private void loadAgentsList(ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList) {

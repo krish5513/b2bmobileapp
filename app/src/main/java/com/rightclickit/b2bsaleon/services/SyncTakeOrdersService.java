@@ -112,11 +112,11 @@ public class SyncTakeOrdersService extends Service {
                 params1.put("user_id",mTakeOrderBeansList.get(0).getmAgentId());
                 params1.put("user_code",mAgentsBeansList.get(0).getmAgentCode());
 
-                List<String> routesDataList = mDBHelper.getRouteDataByRouteId(mTakeOrderBeansList.get(0).getmRouteId());
-                Log.i("routesdatalistsize", String.valueOf(routesDataList.size()));
-                 mRouteCode=routesDataList.get(4);
-                Log.i("routesdatalist", mRouteCode);
-                params1.put("route_code",mRouteCode);
+              //  List<String> routesDataList = mDBHelper.getRouteDataByRouteId(mTakeOrderBeansList.get(0).getmRouteId());
+                //Log.i("routesdatalistsize", String.valueOf(routesDataList.size()));
+                // mRouteCode=routesDataList.get(4);
+                //Log.i("routesdatalist", mRouteCode);
+                params1.put("route_code","2500L");
              //   str_routecode = (mSessionManagement.getString("routecode"));
             //    params1.put("route_code",str_routecode);
                 JSONArray productArra = new JSONArray();

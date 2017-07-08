@@ -216,6 +216,10 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                 paramsc.put("updated_by", mAgentsBeansList1.get(0).getmAgentUpdatedBy());
                 paramsc.put("avatar", mAgentsBeansList1.get(0).getmAgentPic());
                 paramsc.put("approved_on", mAgentsBeansList1.get(0).getmAgentApprovedOn());
+                paramsc.put("stakeholder_id", mAgentsBeansList1.get(0).getmAgentStakeid());
+                paramsc.put("device_sync", mAgentsBeansList1.get(0).getmAgentDeviceSync());
+                paramsc.put("access_device", mAgentsBeansList1.get(0).getmAgentAccessDevice());
+                paramsc.put("back_up", mAgentsBeansList1.get(0).getmAgentBackUp());
 
 
                 System.out.println("THE ADD URL IS::: " + customerAdd);
