@@ -170,13 +170,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.SalesListActivity"
+            android:name=".activities.TDCSales_Today"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.Saleslist_ViewActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.TDCSales_TodayActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.TDCSales_Weekly"

@@ -44,7 +44,7 @@ public class TDCSales_Month extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(TDCSales_Month.this,SalesListActivity.class);
+            Intent i =new Intent(TDCSales_Month.this,TDCSales_Today.class);
             startActivity(i);
             finish();
             return true;
@@ -76,7 +76,7 @@ public class TDCSales_Month extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, SalesListActivity.class);
+        Intent intent = new Intent(this, TDCSales_Today.class);
         startActivity(intent);
         finish();
 

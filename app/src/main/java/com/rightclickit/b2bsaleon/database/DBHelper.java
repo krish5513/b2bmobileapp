@@ -636,6 +636,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     userData.put(KEY_LATITUDE, (c.getString(c.getColumnIndex(KEY_LATITUDE))));
                     userData.put(KEY_LONGITUDE, (c.getString(c.getColumnIndex(KEY_LONGITUDE))));
                     userData.put(KEY_PASSWORD, (c.getString(c.getColumnIndex(KEY_PASSWORD))));
+                    userData.put(KEY_STAKEHOLDER_ID, (c.getString(c.getColumnIndex(KEY_STAKEHOLDER_ID))));
 
                 } while (c.moveToNext());
             }

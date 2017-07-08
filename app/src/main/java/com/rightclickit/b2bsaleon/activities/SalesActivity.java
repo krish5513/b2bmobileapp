@@ -134,7 +134,7 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Intent i = new Intent(SalesActivity.this, SalesListActivity.class);
+                    Intent i = new Intent(SalesActivity.this, TDCSales_Today.class);
                     startActivity(i);
                     finish();
                 }

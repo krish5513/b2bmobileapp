@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 
-public class SalesListActivity extends AppCompatActivity {
+public class TDCSales_Today extends AppCompatActivity {
     Button view1;
     Button view2;
     Button view3;
@@ -63,19 +63,11 @@ public class SalesListActivity extends AppCompatActivity {
         view10 = (Button) findViewById(R.id.btn_view10);
 
 
-        today.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,TDCSales_TodayActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
 
         monthly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,TDCSales_Month.class);
+                Intent i =new Intent(TDCSales_Today.this,TDCSales_Month.class);
                 startActivity(i);
                 finish();
             }
@@ -84,7 +76,7 @@ public class SalesListActivity extends AppCompatActivity {
         weekly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,TDCSales_Weekly.class);
+                Intent i =new Intent(TDCSales_Today.this,TDCSales_Weekly.class);
                 startActivity(i);
                 finish();
             }
@@ -96,7 +88,7 @@ public class SalesListActivity extends AppCompatActivity {
         view1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,Saleslist_ViewActivity.class);
+                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -104,7 +96,7 @@ public class SalesListActivity extends AppCompatActivity {
         view2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,Saleslist_ViewActivity.class);
+                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -112,7 +104,7 @@ public class SalesListActivity extends AppCompatActivity {
         view3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,Saleslist_ViewActivity.class);
+                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -120,7 +112,7 @@ public class SalesListActivity extends AppCompatActivity {
         view4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,Saleslist_ViewActivity.class);
+                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -128,7 +120,7 @@ public class SalesListActivity extends AppCompatActivity {
         view5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,Saleslist_ViewActivity.class);
+                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -136,7 +128,7 @@ public class SalesListActivity extends AppCompatActivity {
         view6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,Saleslist_ViewActivity.class);
+                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -144,7 +136,7 @@ public class SalesListActivity extends AppCompatActivity {
         view7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,Saleslist_ViewActivity.class);
+                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -152,7 +144,7 @@ public class SalesListActivity extends AppCompatActivity {
         view8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,Saleslist_ViewActivity.class);
+                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -160,7 +152,7 @@ public class SalesListActivity extends AppCompatActivity {
         view9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,Saleslist_ViewActivity.class);
+                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -168,7 +160,7 @@ public class SalesListActivity extends AppCompatActivity {
         view10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(SalesListActivity.this,Saleslist_ViewActivity.class);
+                Intent i =new Intent(TDCSales_Today.this,Saleslist_ViewActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -189,7 +181,7 @@ public class SalesListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(SalesListActivity.this,SalesActivity.class);
+            Intent i =new Intent(TDCSales_Today.this,SalesActivity.class);
             startActivity(i);
             finish();
             return true;

@@ -59,7 +59,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
     private long previousOrderId;
     private String currentOrderId;
     private boolean isOrderAlreadySaved = false;
-
+  //  ArrayList<String[]> selectedList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +104,8 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
+
+
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW);
 
                 updateUIWithBundleValues(currentOrder);

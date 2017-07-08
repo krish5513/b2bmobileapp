@@ -59,7 +59,8 @@ public class AgentsTDC_View extends AppCompatActivity {
 
     double quantity,price;
 
-    Map<String, String[]> selectedList = new HashMap<String, String[]>();
+  //  Map<String, String[]> selectedList = new HashMap<String, String[]>();
+       ArrayList<String[]> selectedList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,7 +136,9 @@ public class AgentsTDC_View extends AppCompatActivity {
         //System.out.println("ELSE::: "+a.size());
 
         //   ArrayList<TakeOrderPreviewBean> previewArrayList = new ArrayList<>();
+        selectedList=new ArrayList<>(mTakeOrderBeansList.size());
         if (mTakeOrderBeansList.size()>0) {
+
             for(int i=0;i<mTakeOrderBeansList.size();i++){
                 TakeOrderPreviewBean tb=new TakeOrderPreviewBean();
                 TakeOrderBean tob=mTakeOrderBeansList.get(i);
@@ -196,7 +199,7 @@ public class AgentsTDC_View extends AppCompatActivity {
                 temp[6] = String.valueOf("(" + tax + "%)");
                 temp[7] = mTakeOrderBeansList.get(i).getmProductFromDate();
                 temp[8] = mTakeOrderBeansList.get(i).getmProductToDate();
-                selectedList.put(name, temp);
+                selectedList.add(temp);
                 Log.i("takeordertemp", temp + "");
             }
             loadAgentsList(takeOrderPreviewBeanArrayList);
@@ -241,8 +244,9 @@ public class AgentsTDC_View extends AppCompatActivity {
 
                 int st = 250;
                 paint.setTextSize(17);
-                for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-                    String[] temps = entry.getValue();
+               // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                for (int i = 0; i <selectedList.size(); i++) {
+                    String[] temps = selectedList.get(i);
                     canvas.drawText(temps[0], 5, st, paint);
                     canvas.drawText(temps[1], 115, st, paint);
 

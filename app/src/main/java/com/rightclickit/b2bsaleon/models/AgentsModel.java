@@ -282,6 +282,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                             agentsBean.setmAgentCode(jo.getString("code"));
                         }
 
+
                         if (jo.has("email")) {
                             agentsBean.setmAgentEmail(jo.getString("email"));
                         }
@@ -352,6 +353,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                         agentsBean.setmOrderValue("");
                         agentsBean.setmTotalAmount("");
                         agentsBean.setmDueAmount("");
+
                         if (jo.has("stakeholder_id")) {
                             agentsBean.setmAgentStakeid(jo.getString("stakeholder_id"));
                         }
