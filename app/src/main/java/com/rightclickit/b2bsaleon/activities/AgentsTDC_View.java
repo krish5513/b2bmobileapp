@@ -17,8 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentTDC_ViewAdapter;
-import com.rightclickit.b2bsaleon.adapters.TakeOrderPreviewAdapter;
+import com.rightclickit.b2bsaleon.adapters.AgentTakeOrder_ViewAdapter;
 import com.rightclickit.b2bsaleon.beanclass.OrdersListBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
@@ -27,12 +26,10 @@ import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AgentsTDC_View extends AppCompatActivity {
     private ListView mAgentsList;
-    private AgentTDC_ViewAdapter mPreviewAdapter;
+    private AgentTakeOrder_ViewAdapter mPreviewAdapter;
     TextView tv_companyName;
     TextView Route_Name;
     TextView RouteCode;
@@ -59,7 +56,8 @@ public class AgentsTDC_View extends AppCompatActivity {
 
     double quantity,price;
 
-    Map<String, String[]> selectedList = new HashMap<String, String[]>();
+  //  Map<String, String[]> selectedList = new HashMap<String, String[]>();
+       ArrayList<String[]> selectedList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +84,7 @@ public class AgentsTDC_View extends AppCompatActivity {
         ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
         ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
         ArrayList<OrdersListBean> ordersList=new ArrayList<>();
-        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes",sharedPreferences.getString("agentId"));
+        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("",sharedPreferences.getString("agentId"));
 
 
 
@@ -135,7 +133,9 @@ public class AgentsTDC_View extends AppCompatActivity {
         //System.out.println("ELSE::: "+a.size());
 
         //   ArrayList<TakeOrderPreviewBean> previewArrayList = new ArrayList<>();
+        selectedList=new ArrayList<>(mTakeOrderBeansList.size());
         if (mTakeOrderBeansList.size()>0) {
+
             for(int i=0;i<mTakeOrderBeansList.size();i++){
                 TakeOrderPreviewBean tb=new TakeOrderPreviewBean();
                 TakeOrderBean tob=mTakeOrderBeansList.get(i);
@@ -196,7 +196,7 @@ public class AgentsTDC_View extends AppCompatActivity {
                 temp[6] = String.valueOf("(" + tax + "%)");
                 temp[7] = mTakeOrderBeansList.get(i).getmProductFromDate();
                 temp[8] = mTakeOrderBeansList.get(i).getmProductToDate();
-                selectedList.put(name, temp);
+                selectedList.add(temp);
                 Log.i("takeordertemp", temp + "");
             }
             loadAgentsList(takeOrderPreviewBeanArrayList);
@@ -241,8 +241,9 @@ public class AgentsTDC_View extends AppCompatActivity {
 
                 int st = 250;
                 paint.setTextSize(17);
-                for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-                    String[] temps = entry.getValue();
+               // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                for (int i = 0; i <selectedList.size(); i++) {
+                    String[] temps = selectedList.get(i);
                     canvas.drawText(temps[0], 5, st, paint);
                     canvas.drawText(temps[1], 115, st, paint);
 
@@ -287,7 +288,7 @@ public class AgentsTDC_View extends AppCompatActivity {
         if (mPreviewAdapter != null) {
             mPreviewAdapter = null;
         }
-        mPreviewAdapter = new AgentTDC_ViewAdapter(this, AgentsTDC_View.this, takeOrderPreviewBeanArrayList);
+        mPreviewAdapter = new AgentTakeOrder_ViewAdapter(this, AgentsTDC_View.this, takeOrderPreviewBeanArrayList);
         mAgentsList.setAdapter(mPreviewAdapter);
     }
 

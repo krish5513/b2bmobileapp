@@ -6,11 +6,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 
 public class TDCSales_Weekly extends AppCompatActivity {
-
+    TextView today;
+    TextView monthly;
+    TextView weekly;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +34,28 @@ public class TDCSales_Weekly extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+        today=(TextView) findViewById(R.id.tv_today);
+        monthly=(TextView) findViewById(R.id.tv_monthly);
+        weekly=(TextView) findViewById(R.id.tv_weekly);
+
+        monthly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i =new Intent(TDCSales_Weekly.this,TDCSales_Month.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        today.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i =new Intent(TDCSales_Weekly.this,TDCSales_Today.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
 
     }
 
@@ -42,7 +68,7 @@ public class TDCSales_Weekly extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(TDCSales_Weekly.this,SalesListActivity.class);
+            Intent i =new Intent(TDCSales_Weekly.this,TDCSales_Today.class);
             startActivity(i);
             finish();
             return true;
@@ -74,7 +100,7 @@ public class TDCSales_Weekly extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, SalesListActivity.class);
+        Intent intent = new Intent(this, TDCSales_Today.class);
         startActivity(intent);
         finish();
     }

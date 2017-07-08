@@ -773,8 +773,9 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param routeName
      */
 
-    public void insertRoutesDetails(String routeId, String routeName, String regionName, String officeName, String routeCode) {
+    public long insertRoutesDetails(String routeId, String routeName, String regionName, String officeName, String routeCode) {
         SQLiteDatabase db = this.getWritableDatabase();
+        long insertRecordCount = 0;
         try {
             ContentValues values = new ContentValues();
             values.put(KEY_ROUTE_ID, routeId);
@@ -785,14 +786,15 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_ROUTE_CODE, routeCode);
 
             // insert row
-            db.insert(TABLE_ROUTESDETAILS, null, values);
-            System.out.println("F*********** INSERTED***************88");
+            insertRecordCount = db.insert(TABLE_ROUTESDETAILS, null, values);
+            System.out.println("F*********** ROUTE INSERTED COUNT***************" + insertRecordCount);
             values.clear();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         db.close();
+        return insertRecordCount;
     }
 
 
@@ -879,6 +881,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to fetch trip by id
+     *
+     * @param routeId
      */
     public List<String> getRouteDataByRouteId(String routeId) {
         List<String> routeDetailsById = new ArrayList<String>();
@@ -903,7 +907,7 @@ public class DBHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("ASDDDDDDDDAD" + routeDetailsById.size());
+
         return routeDetailsById;
     }
 
@@ -1394,6 +1398,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     effectedRows = db.update(TABLE_TO_PRODUCTS, values, KEY_TO_PRODUCT_ID + " = ?", new String[]{String.valueOf(takeOrderBeanArrayList.get(b).getmProductId())});
                     // System.out.println("ELSEEE::: "+effectedRows);
                 }
+                System.out.println("UpDATE PRICE::: " + takeOrderBeanArrayList.get(b).getmAgentPrice());
                 // update row
                 values.clear();
             }
@@ -1882,6 +1887,30 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         db.close();
+    }
+
+    /**
+     * Method to get route code by routeid
+     */
+    public String getRouteCodeByRouteId(String routeId) {
+        String routecode = "";
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_ROUTESDETAILS + " WHERE " + KEY_ROUTE_ID + " = " + "'" + routeId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    routecode = c.getString(c.getColumnIndex(KEY_ROUTE_CODE));
+                } while (c.moveToNext());
+                c.close();
+                db.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return routecode;
     }
 
     public void updateUserIdInTDCCustomersTable(long customerId, String userId) {

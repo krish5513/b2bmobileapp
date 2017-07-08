@@ -86,7 +86,7 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
             if (bundle != null) {
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_ORDER);
             }
-            System.out.println("==== 1 ==== currentOrder = " + currentOrder);
+
             mDBHelper = new DBHelper(activityContext);
             customerList = new ArrayList<>();
 

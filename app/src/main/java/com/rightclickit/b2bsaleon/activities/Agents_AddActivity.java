@@ -184,7 +184,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
             address.setError(null);
 
             HashMap<String, String> userMapData = db.getUsersData();
-            String stakeholderid = userMapData.get("stakeid");
+            String stakeholderid = userMapData.get("stakeholder_id");
             //Log.i("STAKEID",stakeholderid);
             String userid = userMapData.get("user_id");
             try {

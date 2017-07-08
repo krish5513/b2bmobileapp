@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 
@@ -144,7 +143,7 @@ public class DashboardReturns extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(DashboardReturns.this,SalesListActivity.class);
+            Intent i =new Intent(DashboardReturns.this,TDCSales_Today.class);
             startActivity(i);
             finish();
             return true;

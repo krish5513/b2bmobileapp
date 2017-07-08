@@ -106,7 +106,7 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER);
-                System.out.println("==== 0 ==== currentOrder = " + currentOrder);
+
                 // Getting previously selected products list to update on UI
                 previouslySelectedProductsListHashMap = currentOrder.getProductsList();
                 if (previouslySelectedProductsListHashMap == null) {
@@ -141,7 +141,7 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Intent i = new Intent(SalesActivity.this, SalesListActivity.class);
+                    Intent i = new Intent(SalesActivity.this, TDCSales_Today.class);
                     startActivity(i);
                     finish();
                 }

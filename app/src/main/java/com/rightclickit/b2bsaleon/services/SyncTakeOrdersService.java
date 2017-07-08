@@ -97,6 +97,7 @@ public class SyncTakeOrdersService extends Service {
                 mAgentsBeansList=mDBHelper.fetchAllRecordsFromAgentsTable();
                 mProductsBeansList=mDBHelper.fetchAllRecordsFromProductsTable();
                 System.out.println("BEFORE SERVICE:: "+ mTakeOrderBeansList.size());
+                System.out.println("BEFORE SERVICE PRICE:: "+ mTakeOrderBeansList.get(0).getmAgentPrice());
                 userId = mSessionManagement.getString("userId");
                 String URL = String.format("%s%s%s%s", Constants.MAIN_URL,Constants.SYNC_TAKE_ORDERS_PORT,Constants.SYNC_TAKE_ORDERS_SERVICE,mSessionManagement.getString("token"));
 
@@ -107,24 +108,17 @@ public class SyncTakeOrdersService extends Service {
                 mSessionManagement.putString("enquiryid",enqId);
                 //params1.put("route_id",mSessionManagement.getString("agentrouteId"));
                 JSONArray rAr = new JSONArray(mTakeOrderBeansList.get(0).getmRouteId());
+                String rCode = mDBHelper.getRouteCodeByRouteId(rAr.get(0).toString());
                 params1.put("route_id",rAr.get(0).toString());
                   //params1.put("route_id",mAgentsBeansList.get(0).getmAgentRouteId());
                 params1.put("user_id",mTakeOrderBeansList.get(0).getmAgentId());
                 params1.put("user_code",mAgentsBeansList.get(0).getmAgentCode());
-
-              //  List<String> routesDataList = mDBHelper.getRouteDataByRouteId(mTakeOrderBeansList.get(0).getmRouteId());
-                //Log.i("routesdatalistsize", String.valueOf(routesDataList.size()));
-                // mRouteCode=routesDataList.get(4);
-                //Log.i("routesdatalist", mRouteCode);
-                params1.put("route_code","2500L");
-             //   str_routecode = (mSessionManagement.getString("routecode"));
-            //    params1.put("route_code",str_routecode);
+                params1.put("route_code",rCode);
                 JSONArray productArra = new JSONArray();
                 JSONArray quantityArra = new JSONArray();
                 JSONArray fromDateArra = new JSONArray();
                 JSONArray toDateArra = new JSONArray();
                 JSONArray productCode = new JSONArray();
-
 
 
                 for (int i = 0; i<mTakeOrderBeansList.size();i++){
@@ -150,7 +144,7 @@ public class SyncTakeOrdersService extends Service {
                 params1.put("created_on",timeStamp);
                 params1.put("updated_on",timeStamp);
                 params1.put("updated_by",mSessionManagement.getString("userId"));
-                System.out.println("FUCK::: "+ params1.toString());
+               // System.out.println("******::: "+ params1.toString());
 
                 mJsonObj = new NetworkManager().makeHttpPostConnection(URL,params1);
 
@@ -173,7 +167,12 @@ public class SyncTakeOrdersService extends Service {
                                 t.setmProductTitle(mTakeOrderBeansList.get(v).getmProductTitle());
                                 t.setmEnquiryId(mTakeOrderBeansList.get(v).getmEnquiryId());
                                 t.setmAgentId(mTakeOrderBeansList.get(v).getmAgentId());
-                                //t.setmAgentTakeOrderDate(mTakeOrderBeansList.get(v).getmAgentTakeOrderDate());
+                                t.setMtakeorderProductCode(mTakeOrderBeansList.get(v).getMtakeorderProductCode());
+                                t.setmAgentTakeOrderDate(mTakeOrderBeansList.get(v).getmAgentTakeOrderDate());
+                                t.setmAgentPrice(mTakeOrderBeansList.get(v).getmAgentPrice());
+                                t.setmAgentVAT(mTakeOrderBeansList.get(v).getmAgentVAT());
+                                t.setmAgentGST(mTakeOrderBeansList.get(v).getmAgentGST());
+
                                 temptoList.add(t);
                             }
                             System.out.println("DB called****"+temptoList.size());

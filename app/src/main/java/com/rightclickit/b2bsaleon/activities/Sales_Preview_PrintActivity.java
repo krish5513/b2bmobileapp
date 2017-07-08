@@ -106,7 +106,6 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW);
-                System.out.println("==== 2 ==== currentOrder = " + currentOrder);
                 updateUIWithBundleValues(currentOrder);
 
                 subtaxAmount = Utility.getFormattedCurrency(currentOrder.getOrderTotalTaxAmount());

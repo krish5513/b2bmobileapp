@@ -22,6 +22,7 @@ import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 
@@ -95,7 +96,7 @@ public class AgentTDC_Order extends AppCompatActivity {
 
         ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
         ArrayList<OrdersListBean> ordersList=new ArrayList<>();
-        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable(" ",mSessionManagement.getString("agentId"));
+        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("",mSessionManagement.getString("agentId"));
 
         Log.i("takeorderlist", String.valueOf(mTakeOrderBeansList.size()));
 
@@ -111,8 +112,9 @@ public class AgentTDC_Order extends AppCompatActivity {
 
 
             for (int j=0;j<mTakeOrderBeansList.size();j++){
-                price= Double.parseDouble(mTakeOrderBeansList.get(j).getmAgentPrice());
-                quantity= Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity());
+                Log.i("take order price log",(mTakeOrderBeansList.get(j).getmAgentPrice()+"  count "+j+" size of takeorder"+mTakeOrderBeansList.size()));
+                price= mTakeOrderBeansList.get(j).getmAgentPrice()!= null?Double.parseDouble(mTakeOrderBeansList.get(j).getmAgentPrice()):0.00;
+                quantity= mTakeOrderBeansList.get(j).getmProductQuantity()!=null?Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity()):0.000;
                 tax = 0.0f;
                 if (mTakeOrderBeansList.get(j).getmAgentVAT() != null) {
                     tax = Float.parseFloat(mTakeOrderBeansList.get(j).getmAgentVAT());
@@ -136,7 +138,7 @@ public class AgentTDC_Order extends AppCompatActivity {
 
                 mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
                 System.out.println("P FINAL IS::: " + mTotalProductsPriceAmountSum);
-                totalprice= String.valueOf(mTotalProductsPriceAmountSum);
+                totalprice= String.valueOf(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
                 valueCount.setText(totalprice);
             }
 

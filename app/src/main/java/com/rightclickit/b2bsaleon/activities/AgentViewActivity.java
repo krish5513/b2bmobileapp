@@ -121,10 +121,10 @@ public class AgentViewActivity extends AppCompatActivity {
 
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
-        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+       // System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
         for (int z = 0; z < privilegeActionsData.size(); z++) {
 
-            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+           // System.out.println("Name::: " + privilegeActionsData.get(z).toString());
             if (privilegeActionsData.get(z).toString().equals("Orders_List")) {
                 mTPCOrdersLayout.setVisibility(View.VISIBLE);
             }

@@ -28,11 +28,7 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,9 +60,9 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
     double taxAmount;
     String name;
 
-    Map<String, String[]> selectedList = new HashMap<String, String[]>();
+  //  Map<String, String[]> selectedList = new HashMap<String, String[]>();
 
-  //  ArrayList<String[]> selectedList;
+    ArrayList<String[]> selectedList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +94,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         System.out.println("SIZE111::: " + productsList.size());
         System.out.println("SIZE222::: " + specialPriceBeanArrayList.size());
        // for (int l = 0; l < specialPriceBeanArrayList.size(); l++) {
-            //   selectedList=new ArrayList<>(mProductIdsList.size());
+               selectedList=new ArrayList<>(mProductIdsList.size());
             for (int k = 0; k < mProductIdsList.size(); k++) {
 
                 for (int i = 0; i < productsList.size(); i++) {
@@ -171,7 +167,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                         temp[6] = String.valueOf("(" + tax + "%)");
                         temp[7] = mProductIdsList.get(k).getmProductFromDate();
                         temp[8] = mProductIdsList.get(k).getmProductToDate();
-                        selectedList.put(name, temp);
+                        selectedList.add(temp);
                         Log.i("takeordertemp", temp + "");
                         takeOrderPreviewBeanArrayList.add(topBean);
                     }
@@ -265,9 +261,9 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 
                     int st = 250;
                     paint.setTextSize(17);
-                    for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-                       // for (int i = selectedList.size(); i > 0; i++) {
-                            String[] temps = entry.getValue();
+//                    for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                        for (int i = 0; i <selectedList.size(); i++) {
+                            String[] temps = selectedList.get(i);
                             //String[] temps = selectedList.get(i-1);
                             canvas.drawText(temps[0], 5, st, paint);
                             canvas.drawText(temps[1], 115, st, paint);
@@ -338,7 +334,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i = new Intent(AgentTakeOrderPreview.this, SalesListActivity.class);
+            Intent i = new Intent(AgentTakeOrderPreview.this, TDCSales_Today.class);
             startActivity(i);
             finish();
             return true;
