@@ -18,6 +18,7 @@ import com.rightclickit.b2bsaleon.util.NetworkManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -31,6 +32,12 @@ public class SyncRoutesMasterDetailsService extends Service {
     private String mJsonObj;
     private MMSharedPreferences mSessionManagement;
     private String mRouteIdIs;
+
+    ArrayList<String> routeIdsList = new ArrayList<String>();
+    ArrayList<String> regionNamesList = new ArrayList<String>();
+    ArrayList<String> officeNamesList = new ArrayList<String>();
+    ArrayList<String> routeCodelist = new ArrayList<String>();
+    ArrayList<String> routeNamesList = new ArrayList<String>();
 
     @Override
     public void onCreate() {
@@ -97,17 +104,18 @@ public class SyncRoutesMasterDetailsService extends Service {
                 //  System.out.println("The LENGTH IS:: " + resultArray.length());
                 if (resultArray != null) {
                     if (resultArray.length() > 0) {
-                        if(mStoredRouteIds.length()>0){
-                            JSONObject routesJob = new JSONObject(mStoredRouteIds);
-                            JSONArray routesArray = routesJob.getJSONArray("routeArray");
-                            for (int s = 0;s<routesArray.length();s++) {
+//                        if(mStoredRouteIds.length()>0){
+//                            JSONObject routesJob = new JSONObject(mStoredRouteIds);
+//                            JSONArray routesArray = routesJob.getJSONArray("routeArray");
+//                            for (int s = 0;s<routesArray.length();s++) {
                                 for (int i = 0; i < resultArray.length(); i++) {
                                     JSONObject obj = resultArray.getJSONObject(i);
                                     if (obj.has("_id")) {
                                         //  System.out.println("The ROUTE ID IS:: " + obj.getString("_id"));
                                         //  System.out.println("The STORED ROUTE ID IS:: " + mSessionManagement.getString("routeId"));
                                         routeId = obj.getString("_id");
-                                        if (routesArray.get(s).toString().equals(routeId)) {
+                                        routeIdsList.add(routeId);
+//                                        if (routesArray.get(s).toString().equals(routeId)) {
                                             if (obj.has("region_id")) {
                                                 regionId = obj.getString("region_id");
                                                 if (obj.has("regions")) {
@@ -141,6 +149,7 @@ public class SyncRoutesMasterDetailsService extends Service {
                                                                     officeName = officeName + "," + officeObj.getString("name");
                                                                 }
                                                             }
+                                                            officeNamesList.add(officeName);
                                                         }
                                                     }
                                                 }
@@ -148,25 +157,39 @@ public class SyncRoutesMasterDetailsService extends Service {
                                             if (obj.has("name")) {
                                                 //System.out.println("The ROUTE NAME IS:: " + obj.getString("name"));
                                                 routeName = obj.getString("name");
+                                                routeNamesList.add(routeName);
                                             }
                                             if (obj.has("code")) {
                                                 //System.out.println("The ROUTE NAME IS:: " + obj.getString("name"));
                                                 routeCode = obj.getString("code");
+                                                routeCodelist.add(routeCode);
                                             }
 
-                                            //  System.out.println("ROUTE NAME IS:: " + routeName);
-                                            //  System.out.println("REGION NAME IS:: " + regionName);
-                                            //  System.out.println("OFFICE NAME IS:: " + officeName);
+                                              System.out.println("ROUTE NAME IS:: " + routeName);
+                                              System.out.println("REGION NAME IS:: " + regionName);
+                                              System.out.println("OFFICE NAME IS:: " + officeName);
+                                              System.out.println("ROUTE CODE IS:: " + routeCode);
                                             synchronized (this) {
-                                                mDBHelper.insertRoutesDetails(routeId, routeName, regionName, officeName,routeCode);
+                                                k = mDBHelper.insertRoutesDetails(routeId, routeName, regionName, officeName,routeCode);
+                                                routeId="";
+                                                routeName="";
+                                                regionName="";
+                                                officeName="";
+                                                routeCode="";
                                             }
-                                        }
-                                    }
-                                }
+//                                        }
+//                                    }
+//                                }
                             }
                         }
                     }
                 }
+                System.out.println("ROUTE NAMES LIST::: "+ routeNamesList.size());
+                System.out.println("ROUTE CODES LIST::: "+ routeCodelist.size());
+                System.out.println("OFFICE NAMES LIST::: "+ officeNamesList.size());
+                System.out.println("REGION NAMES LIST::: "+ regionNamesList.size());
+                System.out.println("ROUTE IDS LIST::: "+ routeIdsList.size());
+                System.out.println("INSERTED COUNT IS::: "+ k);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -188,7 +211,8 @@ public class SyncRoutesMasterDetailsService extends Service {
                 mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(mainActivityIntent);
             }
-            System.out.println("Service Stopped Automatically....");
         }
     }
+
+    long k = 0;
 }

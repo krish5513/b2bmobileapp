@@ -108,24 +108,17 @@ public class SyncTakeOrdersService extends Service {
                 mSessionManagement.putString("enquiryid",enqId);
                 //params1.put("route_id",mSessionManagement.getString("agentrouteId"));
                 JSONArray rAr = new JSONArray(mTakeOrderBeansList.get(0).getmRouteId());
+                String rCode = mDBHelper.getRouteCodeByRouteId(rAr.get(0).toString());
                 params1.put("route_id",rAr.get(0).toString());
                   //params1.put("route_id",mAgentsBeansList.get(0).getmAgentRouteId());
                 params1.put("user_id",mTakeOrderBeansList.get(0).getmAgentId());
                 params1.put("user_code",mAgentsBeansList.get(0).getmAgentCode());
-
-              //  List<String> routesDataList = mDBHelper.getRouteDataByRouteId(mTakeOrderBeansList.get(0).getmRouteId());
-                //Log.i("routesdatalistsize", String.valueOf(routesDataList.size()));
-                // mRouteCode=routesDataList.get(4);
-                //Log.i("routesdatalist", mRouteCode);
-                params1.put("route_code","2500L");
-             //   str_routecode = (mSessionManagement.getString("routecode"));
-            //    params1.put("route_code",str_routecode);
+                params1.put("route_code",rCode);
                 JSONArray productArra = new JSONArray();
                 JSONArray quantityArra = new JSONArray();
                 JSONArray fromDateArra = new JSONArray();
                 JSONArray toDateArra = new JSONArray();
                 JSONArray productCode = new JSONArray();
-
 
 
                 for (int i = 0; i<mTakeOrderBeansList.size();i++){
