@@ -8,6 +8,7 @@ import java.io.Serializable;
 
 public class TDCCustomer implements Serializable {
     private int id;
+    private String userId;
     private int customerType; // 0 for Consumer & 1 for Retailer
     private String name;
     private String mobileNo;
@@ -25,6 +26,14 @@ public class TDCCustomer implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public int getCustomerType() {

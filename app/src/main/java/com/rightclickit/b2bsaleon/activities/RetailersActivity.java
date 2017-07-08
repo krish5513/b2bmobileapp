@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.RetailersListAdapter;
@@ -36,6 +37,7 @@ public class RetailersActivity extends AppCompatActivity {
     private SearchView search;
     private LinearLayout mDashBoardLayout, mTripsheetsLayout, mCustomersLayout, mProductsLayout, mTDCLayout, mRetailersLayout;
     private ListView mRetailerslistview;
+    private TextView no_retailers_found_message;
     private FloatingActionButton fab;
     private Button info, payments;
 
@@ -83,6 +85,8 @@ public class RetailersActivity extends AppCompatActivity {
 
             mRetailerslistview = (ListView) findViewById(R.id.retailers_list_view);
             mRetailerslistview.setVisibility(View.GONE);
+
+            no_retailers_found_message = (TextView) findViewById(R.id.no_retailers_found);
 
             mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
             mDashBoardLayout.setVisibility(View.GONE);
@@ -234,6 +238,12 @@ public class RetailersActivity extends AppCompatActivity {
 
             if (canWeShowRetailersListView) {
                 retailersList = mDBHelper.fetchAllRetailerRecordsFromTDCCustomers();
+
+                if (retailersList.size() <= 0) {
+                    mRetailerslistview.setVisibility(View.GONE);
+                    no_retailers_found_message.setVisibility(View.VISIBLE);
+                }
+
                 retailersListAdapter = new RetailersListAdapter(activityContext, this, retailersList);
                 mRetailerslistview.setAdapter(retailersListAdapter);
             }

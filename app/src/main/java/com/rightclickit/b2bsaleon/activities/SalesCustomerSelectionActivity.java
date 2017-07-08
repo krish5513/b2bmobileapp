@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
@@ -39,6 +40,7 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
 
     private SearchView search;
     private ListView tdc_customers_list_view;
+    private TextView tdc_sales_no_consumers_message;
     private FloatingActionButton fab_add_customer;
 
     private DBHelper mDBHelper;
@@ -68,6 +70,7 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
             tdc_customers_list_view = (ListView) findViewById(R.id.tdc_customers_list_view);
+            tdc_sales_no_consumers_message = (TextView) findViewById(R.id.tdc_sales_no_consumers);
 
             fab_add_customer = (FloatingActionButton) findViewById(R.id.add_customer_fab);
             fab_add_customer.setVisibility(View.VISIBLE);
@@ -83,11 +86,17 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
             if (bundle != null) {
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_ORDER);
             }
-
+            System.out.println("==== 1 ==== currentOrder = " + currentOrder);
             mDBHelper = new DBHelper(activityContext);
             customerList = new ArrayList<>();
 
             customerList = mDBHelper.fetchAllRecordsFromTDCCustomers();
+
+            if (customerList.size() <= 0) {
+                tdc_customers_list_view.setVisibility(View.GONE);
+                tdc_sales_no_consumers_message.setVisibility(View.VISIBLE);
+            }
+
             customerSelectionAdapter = new TDCSalesCustomerSelectionAdapter(activityContext, this, customerList, currentOrder);
             tdc_customers_list_view.setAdapter(customerSelectionAdapter);
 
@@ -267,6 +276,9 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
             if (customerId == -1)
                 Toast.makeText(activityContext, "An error occurred while adding new consumer.", Toast.LENGTH_LONG).show();
             else {
+                tdc_customers_list_view.setVisibility(View.VISIBLE);
+                tdc_sales_no_consumers_message.setVisibility(View.GONE);
+
                 customerList = mDBHelper.fetchAllRecordsFromTDCCustomers();
                 customerSelectionAdapter.setAllCustomersList(customerList);
                 customerSelectionAdapter.notifyDataSetChanged();

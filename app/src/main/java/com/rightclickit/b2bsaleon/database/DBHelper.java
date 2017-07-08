@@ -151,10 +151,10 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_AGENT_CREATEDON = "agent_createdon";
     private final String KEY_AGENT_UPDATEDBY = "agent_updatedby";
     private final String KEY_AGENT_UPDATEDON = "agent_updatedon";
-    private final String KEY_AGENT_ROUTECODE= "agent_routecode";
-    private final String KEY_AGENT_DEVICESYNC= "agent_devicesync";
-    private final String KEY_AGENT_ACCESSDEVICE= "agent_accessdevice";
-    private final String KEY_AGENT_BACKUP= "agent_backup";
+    private final String KEY_AGENT_ROUTECODE = "agent_routecode";
+    private final String KEY_AGENT_DEVICESYNC = "agent_devicesync";
+    private final String KEY_AGENT_ACCESSDEVICE = "agent_accessdevice";
+    private final String KEY_AGENT_BACKUP = "agent_backup";
 
     // Column names for Products with take order values
     private final String KEY_TO_PRODUCT_ID = "to_product_id";
@@ -170,7 +170,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TO_AGENTID = "to_agent_id";
     private final String KEY_TAKEORDER_DATE = "takeorder_date";
     private final String KEY_PRICE = "price";
-    private final String KEY_VAT= "vat";
+    private final String KEY_VAT = "vat";
     private final String KEY_GST = "gst";
 
 
@@ -182,6 +182,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Column names for TDC Customers Table
     private final String KEY_TDC_CUSTOMER_ID = "tdc_customer_id";
+    private final String KEY_TDC_CUSTOMER_USER_ID = "tdc_customer_user_id";
     private final String KEY_TDC_CUSTOMER_TYPE = "tdc_customer_type"; // 0 for consumer & 1 for Retailer
     private final String KEY_TDC_CUSTOMER_NAME = "tdc_customer_name";
     private final String KEY_TDC_CUSTOMER_MOBILE_NO = "tdc_customer_mobile_no";
@@ -235,7 +236,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_AGENT_STAKEHOLDERID + " VARCHAR," + KEY_AGENT_REPORTINGTO + " VARCHAR," + KEY_AGENT_VERIFYCODE + " VARCHAR,"
             + KEY_AGENT_DELETE + " VARCHAR," + KEY_AGENT_CREATEDBY + " VARCHAR," + KEY_AGENT_CREATEDON + " VARCHAR,"
             + KEY_AGENT_UPDATEDBY + " VARCHAR," + KEY_AGENT_UPDATEDON + " VARCHAR," + KEY_AGENT_ROUTECODE + " VARCHAR," + KEY_AGENT_DEVICESYNC + " VARCHAR,"
-             + KEY_AGENT_ACCESSDEVICE + " VARCHAR," + KEY_AGENT_BACKUP + " VARCHAR)";
+            + KEY_AGENT_ACCESSDEVICE + " VARCHAR," + KEY_AGENT_BACKUP + " VARCHAR)";
 
 
     // Userdetails Table Create Statements
@@ -286,7 +287,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // TDC Customers Table Create Statement
     private final String CREATE_TDC_CUSTOMERS_TABLE = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_TDC_CUSTOMERS + "(" + KEY_TDC_CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_CUSTOMER_TYPE + " INTEGER, "
+            + TABLE_TDC_CUSTOMERS + "(" + KEY_TDC_CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_CUSTOMER_USER_ID + " VARCHAR, " + KEY_TDC_CUSTOMER_TYPE + " INTEGER, "
             + KEY_TDC_CUSTOMER_NAME + " VARCHAR, " + KEY_TDC_CUSTOMER_MOBILE_NO + " VARCHAR, " + KEY_TDC_CUSTOMER_BUSINESS_NAME + " VARCHAR, "
             + KEY_TDC_CUSTOMER_ADDRESS + " TEXT, " + KEY_TDC_CUSTOMER_LAT_LONG + " TEXT, " + KEY_TDC_CUSTOMER_SHOP_IMAGE + " VARCHAR, "
             + KEY_TDC_CUSTOMER_IS_ACTIVE + " INTEGER DEFAULT 1, " + KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS + " INTEGER DEFAULT 0, " + KEY_TDC_CUSTOMER_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
@@ -486,7 +487,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     agentsBean.setmAgentRoutecode((c.getString(c.getColumnIndex(KEY_AGENT_ROUTECODE))));
                     agentsBean.setmAgentDeviceSync((c.getString(c.getColumnIndex(KEY_AGENT_DEVICESYNC))));
                     agentsBean.setmAgentAccessDevice((c.getString(c.getColumnIndex(KEY_AGENT_ACCESSDEVICE))));
-                   // agentsBean.setmAgentBackUp((c.getString(c.getColumnIndex(KEY_AGENT_BACKUP))));
+                    // agentsBean.setmAgentBackUp((c.getString(c.getColumnIndex(KEY_AGENT_BACKUP))));
                     allDeviceTrackRecords.add(agentsBean);
                 } while (c.moveToNext());
             }
@@ -1480,6 +1481,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 do {
                     TDCCustomer customer = new TDCCustomer();
                     customer.setId(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_ID)));
+                    customer.setUserId(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_USER_ID)));
                     customer.setCustomerType(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_TYPE)));
                     customer.setName(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_NAME)));
                     customer.setMobileNo(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_MOBILE_NO)));
@@ -1520,6 +1522,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 do {
                     TDCCustomer customer = new TDCCustomer();
                     customer.setId(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_ID)));
+                    customer.setUserId(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_USER_ID)));
                     customer.setCustomerType(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_TYPE)));
                     customer.setName(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_NAME)));
                     customer.setMobileNo(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_MOBILE_NO)));
@@ -1656,7 +1659,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setOrderSubTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_SUB_TOTAL))));
                     order.setSelectedCustomerId(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
                     order.setSelectedCustomerName(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_NAME)));
-                    order.setCreatedOn(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
+                    order.setCreatedOn(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
                     order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
                     order.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_UPLOAD_STATUS)));
 
@@ -1785,8 +1788,7 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery(countQuery, null);
 
-            if (cursor != null) {
-                cursor.moveToFirst();
+            if (cursor.moveToFirst()) {
                 orderId = cursor.getLong(cursor.getColumnIndex(KEY_TDC_SALES_ORDER_ID));
             }
 
@@ -1824,7 +1826,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setOrderSubTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_SUB_TOTAL))));
                     order.setSelectedCustomerId(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
                     order.setSelectedCustomerName(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_NAME)));
-                    order.setCreatedOn(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
+                    order.setCreatedOn(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
                     order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
                     order.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_UPLOAD_STATUS)));
                     order.setOrderProductsList(fetchTDCSalesOrderProductsListByOrderId(orderId));
@@ -1849,7 +1851,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             ContentValues values = new ContentValues();
             values.put(KEY_TDC_SALES_ORDER_UPLOAD_STATUS, 1);
-
+            System.out.println("############## orderId = " + orderId);
             int status = db.update(TABLE_TDC_SALES_ORDERS, values, KEY_TDC_SALES_ORDER_ID + " = ?", new String[]{String.valueOf(orderId)});
 
             if (status != -1)
@@ -1872,6 +1874,24 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_SOP_UPLOAD_STATUS, 1);
 
             int status = db.update(TABLE_TDC_SALES_ORDER_PRODUCTS, values, KEY_TDC_SOP_ORDER_ID + " = ?", new String[]{String.valueOf(orderId)});
+
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    public void updateUserIdInTDCCustomersTable(long customerId, String userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_TDC_CUSTOMER_USER_ID, userId);
+
+            int status = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
 
             values.clear();
 

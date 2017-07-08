@@ -26,6 +26,7 @@ import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
+import com.rightclickit.b2bsaleon.services.SyncTDCSalesOrderService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
@@ -105,10 +106,14 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER);
-
+                System.out.println("==== 0 ==== currentOrder = " + currentOrder);
                 // Getting previously selected products list to update on UI
                 previouslySelectedProductsListHashMap = currentOrder.getProductsList();
-                updateSelectedProductsListAndSubTotal(previouslySelectedProductsListHashMap);
+                if (previouslySelectedProductsListHashMap == null) {
+                    previouslySelectedProductsListHashMap = new HashMap<>();
+                } else {
+                    updateSelectedProductsListAndSubTotal(previouslySelectedProductsListHashMap);
+                }
             }
 
             if (showProductsListView) {
@@ -116,6 +121,8 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
                 tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsList, previouslySelectedProductsListHashMap);
                 tdc_products_list_view.setAdapter(tdcSalesAdapter);
             }
+
+            //startService(new Intent(activityContext, SyncTDCSalesOrderService.class));
 
         } catch (Exception e) {
             e.printStackTrace();
