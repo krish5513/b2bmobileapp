@@ -96,7 +96,7 @@ public class AgentTDC_Order extends AppCompatActivity {
 
         ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
         ArrayList<OrdersListBean> ordersList=new ArrayList<>();
-        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable(" ",mSessionManagement.getString("agentId"));
+        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("",mSessionManagement.getString("agentId"));
 
         Log.i("takeorderlist", String.valueOf(mTakeOrderBeansList.size()));
 

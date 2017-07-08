@@ -97,6 +97,7 @@ public class SyncTakeOrdersService extends Service {
                 mAgentsBeansList=mDBHelper.fetchAllRecordsFromAgentsTable();
                 mProductsBeansList=mDBHelper.fetchAllRecordsFromProductsTable();
                 System.out.println("BEFORE SERVICE:: "+ mTakeOrderBeansList.size());
+                System.out.println("BEFORE SERVICE PRICE:: "+ mTakeOrderBeansList.get(0).getmAgentPrice());
                 userId = mSessionManagement.getString("userId");
                 String URL = String.format("%s%s%s%s", Constants.MAIN_URL,Constants.SYNC_TAKE_ORDERS_PORT,Constants.SYNC_TAKE_ORDERS_SERVICE,mSessionManagement.getString("token"));
 
@@ -150,7 +151,7 @@ public class SyncTakeOrdersService extends Service {
                 params1.put("created_on",timeStamp);
                 params1.put("updated_on",timeStamp);
                 params1.put("updated_by",mSessionManagement.getString("userId"));
-                System.out.println("FUCK::: "+ params1.toString());
+               // System.out.println("******::: "+ params1.toString());
 
                 mJsonObj = new NetworkManager().makeHttpPostConnection(URL,params1);
 
@@ -173,7 +174,12 @@ public class SyncTakeOrdersService extends Service {
                                 t.setmProductTitle(mTakeOrderBeansList.get(v).getmProductTitle());
                                 t.setmEnquiryId(mTakeOrderBeansList.get(v).getmEnquiryId());
                                 t.setmAgentId(mTakeOrderBeansList.get(v).getmAgentId());
-                                //t.setmAgentTakeOrderDate(mTakeOrderBeansList.get(v).getmAgentTakeOrderDate());
+                                t.setMtakeorderProductCode(mTakeOrderBeansList.get(v).getMtakeorderProductCode());
+                                t.setmAgentTakeOrderDate(mTakeOrderBeansList.get(v).getmAgentTakeOrderDate());
+                                t.setmAgentPrice(mTakeOrderBeansList.get(v).getmAgentPrice());
+                                t.setmAgentVAT(mTakeOrderBeansList.get(v).getmAgentVAT());
+                                t.setmAgentGST(mTakeOrderBeansList.get(v).getmAgentGST());
+
                                 temptoList.add(t);
                             }
                             System.out.println("DB called****"+temptoList.size());

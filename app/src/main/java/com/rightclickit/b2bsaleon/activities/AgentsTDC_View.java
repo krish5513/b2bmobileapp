@@ -87,7 +87,7 @@ public class AgentsTDC_View extends AppCompatActivity {
         ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
         ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
         ArrayList<OrdersListBean> ordersList=new ArrayList<>();
-        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes",sharedPreferences.getString("agentId"));
+        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("",sharedPreferences.getString("agentId"));
 
 
 

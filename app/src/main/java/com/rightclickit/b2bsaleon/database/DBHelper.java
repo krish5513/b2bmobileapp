@@ -1323,7 +1323,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     toBean.setmAgentVAT((c.getString(c.getColumnIndex(KEY_VAT))));
                     toBean.setmAgentGST((c.getString(c.getColumnIndex(KEY_GST))));
                     // toBean.setMtakeorderProductCode((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_CODE))));
-
+                    System.out.println("");
 
                     allProductTrackRecords.add(toBean);
                 } while (c.moveToNext());
@@ -1394,6 +1394,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     effectedRows = db.update(TABLE_TO_PRODUCTS, values, KEY_TO_PRODUCT_ID + " = ?", new String[]{String.valueOf(takeOrderBeanArrayList.get(b).getmProductId())});
                     // System.out.println("ELSEEE::: "+effectedRows);
                 }
+                System.out.println("UpDATE PRICE::: "+ takeOrderBeanArrayList.get(b).getmAgentPrice());
                 // update row
                 values.clear();
             }
