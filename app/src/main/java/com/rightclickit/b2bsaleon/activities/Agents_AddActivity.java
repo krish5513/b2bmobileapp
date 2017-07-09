@@ -127,6 +127,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         //  imageview.setImageBitmap(avatarbmp);
         db = new DBHelper(getApplicationContext());
         agentsmodel = new AgentsModel(activityContext, this);
+        System.out.println("STAKE ID IS::: "+ db.getStakeTypeIdByStakeType("2"));
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFrag);
         mapFragment.getMapAsync(this);
@@ -229,7 +230,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
             synchronized (this) {
                 if (new NetworkConnectionDetector(Agents_AddActivity.this).isNetworkConnected()) {
                     //agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
-                    agentsmodel.customerAdd(mAgentsBeansList);
+                    agentsmodel.customerAdd(mAgentsBeansList,db.getStakeTypeIdByStakeType("2"));
                 }
                 db.insertAgentDetails(mAgentsBeansList);
                 Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();

@@ -113,10 +113,10 @@ public class AgentsActivity extends AppCompatActivity {
 */
                 loadAgentsList(agentsBeanArrayList);
             }else {
-                agentsModel.getStakeHoldersList("stakesList");
+                agentsModel.getAgentsList("agents");
             }
         }else {
-            System.out.println("ELSE::: ");
+           // System.out.println("ELSE::: ");
             ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();
 
             loadAgentsList(agentsBeanArrayList);
@@ -201,7 +201,7 @@ public class AgentsActivity extends AppCompatActivity {
         });
         HashMap<String,String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
-        System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
+       // System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
         for (int k = 0; k<privilegesData.size();k++){
             if (privilegesData.get(k).toString().equals("Dashboard")){
                 mDashBoardLayout.setVisibility(View.VISIBLE);
@@ -219,9 +219,9 @@ public class AgentsActivity extends AppCompatActivity {
         }
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
-        System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
+        //System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
         for (int z = 0;z<privilegeActionsData.size();z++){
-            System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
+            //System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
 
             if (privilegeActionsData.get(z).toString().equals("List_View")){
                 mAgentsList.setVisibility(View.VISIBLE);

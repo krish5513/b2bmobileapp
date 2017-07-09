@@ -249,7 +249,7 @@
 
         <!-- Stake types Sync Service -->
         <service
-            android:name=".services.SyncTDCSalesOrderService"
+            android:name=".services.SyncStakeHolderTypesService"
             android:enabled="true"
             android:exported="true" />
 
