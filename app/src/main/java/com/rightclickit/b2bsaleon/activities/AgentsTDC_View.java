@@ -17,8 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentTDC_ViewAdapter;
-import com.rightclickit.b2bsaleon.adapters.TakeOrderPreviewAdapter;
+import com.rightclickit.b2bsaleon.adapters.AgentTakeOrder_ViewAdapter;
 import com.rightclickit.b2bsaleon.beanclass.OrdersListBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
@@ -27,12 +26,10 @@ import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AgentsTDC_View extends AppCompatActivity {
     private ListView mAgentsList;
-    private AgentTDC_ViewAdapter mPreviewAdapter;
+    private AgentTakeOrder_ViewAdapter mPreviewAdapter;
     TextView tv_companyName;
     TextView Route_Name;
     TextView RouteCode;
@@ -291,7 +288,7 @@ public class AgentsTDC_View extends AppCompatActivity {
         if (mPreviewAdapter != null) {
             mPreviewAdapter = null;
         }
-        mPreviewAdapter = new AgentTDC_ViewAdapter(this, AgentsTDC_View.this, takeOrderPreviewBeanArrayList);
+        mPreviewAdapter = new AgentTakeOrder_ViewAdapter(this, AgentsTDC_View.this, takeOrderPreviewBeanArrayList);
         mAgentsList.setAdapter(mPreviewAdapter);
     }
 
