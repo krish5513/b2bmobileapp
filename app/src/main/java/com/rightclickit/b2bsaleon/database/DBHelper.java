@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.SpecialPriceBean;
+import com.rightclickit.b2bsaleon.beanclass.StakeHolderTypes;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.beanclass.TDCSalesOrderProductBean;
@@ -71,6 +72,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // This table contains TDC Sales Order corresponding Products
     private final String TABLE_TDC_SALES_ORDER_PRODUCTS = "tdc_sales_order_products";
+
+    // This table contains Stakeholder type ids
+    private final String TABLE_STAKEHOLDER_TYPES = "stake_holder_types";
 
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
@@ -221,6 +225,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_SOP_PRODUCT_TAX_AMOUNT = "tdc_sop_product_tax_amount";
     private final String KEY_TDC_SOP_UPLOAD_STATUS = "tdc_sop_upload_status";
 
+    // Column names for Stakeholder types
+    private final String KEY_STAKEHOLDER_TYPE_ID = "stakeholder_type_id";
+    private final String KEY_STAKEHOLDER_TYPE_NAME = "stakeholder_type_name";
+    private final String KEY_STAKEHOLDER_TYPE = "stakeholder_type";
+
     // Agents Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_AGENTS + "(" + KEY_AGENT_ID + " VARCHAR,"
@@ -311,6 +320,11 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TDC_SOP_PRODUCT_AMOUNT + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_TAX + " TEXT, " + KEY_TDC_SOP_PRODUCT_TAX_AMOUNT + " TEXT, "
             + KEY_TDC_SOP_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
+    // Stakeholder types Table Create Statements
+    private final String CREATE_TABLE_STAKEHOLDER_TYPES = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_STAKEHOLDER_TYPES + "(" + KEY_STAKEHOLDER_TYPE_ID + " VARCHAR," + KEY_STAKEHOLDER_TYPE_NAME + " VARCHAR,"
+            + KEY_STAKEHOLDER_TYPE + " VARCHAR)";
+
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -329,6 +343,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_SPECIALPRICE);
             db.execSQL(CREATE_TDC_SALES_ORDERS_TABLE);
             db.execSQL(CREATE_TDC_SALES_ORDER_PRODUCTS_TABLE);
+            db.execSQL(CREATE_TABLE_STAKEHOLDER_TYPES);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1926,6 +1941,64 @@ public class DBHelper extends SQLiteOpenHelper {
 
             values.clear();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    /**
+     * Method to get count of the stake types table
+     */
+    public int getStakeTypesTableCount() {
+        int noOfEvents = 0;
+        try {
+            String countQuery = "SELECT * FROM " + TABLE_STAKEHOLDER_TYPES;
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfEvents = cursor.getCount();
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return noOfEvents;
+    }
+
+    /**
+     * Method to clear values in agents table
+     */
+    public void deleteValuesFromStakeTypesTable() {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            db.delete(TABLE_STAKEHOLDER_TYPES, null, null);
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to insert stake holder types details
+     *
+     * @param StakeHolderTypesList
+     */
+    public void insertStakeTypesDetails(ArrayList<StakeHolderTypes> StakeHolderTypesList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0; i < StakeHolderTypesList.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_STAKEHOLDER_TYPE_ID, StakeHolderTypesList.get(i).getmStakeHolderTypeId());
+                values.put(KEY_STAKEHOLDER_TYPE_NAME, StakeHolderTypesList.get(i).getmStakeHolderTypeName());
+                values.put(KEY_STAKEHOLDER_TYPE, StakeHolderTypesList.get(i).getmStakeHolderType());
+                // insert row
+               long l =  db.insert(TABLE_STAKEHOLDER_TYPES, null, values);
+                System.out.println("F*********** INSERTED***************STAKE TYPE"+l);
+                values.clear();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

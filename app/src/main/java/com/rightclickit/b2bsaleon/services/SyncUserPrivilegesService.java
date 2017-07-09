@@ -215,8 +215,15 @@ public class SyncUserPrivilegesService extends Service {
         @Override
         protected void onPostExecute(Void aVoid) {
             stopSelf();
-            if (new NetworkConnectionDetector(getApplicationContext()).isNetworkConnected()) {
-                startService(new Intent(getApplicationContext(), SyncRoutesMasterDetailsService.class));
+            synchronized (this){
+                if (new NetworkConnectionDetector(getApplicationContext()).isNetworkConnected()) {
+                    startService(new Intent(getApplicationContext(), SyncStakeHolderTypesService.class));
+                }
+            }
+            synchronized (this){
+                if (new NetworkConnectionDetector(getApplicationContext()).isNetworkConnected()) {
+                    startService(new Intent(getApplicationContext(), SyncRoutesMasterDetailsService.class));
+                }
             }
             System.out.println("Service Stopped Automatically....");
         }

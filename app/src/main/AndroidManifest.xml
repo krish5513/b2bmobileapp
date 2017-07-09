@@ -249,6 +249,13 @@
             android:enabled="true"
             android:exported="true" />
 
+
+        <!-- Stake types Sync Service -->
+        <service
+            android:name=".services.SyncTDCSalesOrderService"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>
