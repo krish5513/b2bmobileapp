@@ -267,7 +267,8 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
             customer.setMobileNo(mobileNo);
             customer.setBusinessName("");
             customer.setAddress("");
-            customer.setLatLong("");
+            customer.setLatitude("");
+            customer.setLongitude("");
             customer.setShopImage("");
             customer.setIsShopImageUploaded(1);
 

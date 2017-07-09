@@ -96,7 +96,7 @@ public class AgentTDC_ListAdapter extends BaseAdapter {
         holder.tv_billno.setText(currentOrderId);
         Log.i("cid",currentOrderId);
         holder.tv_billdate.setText("Date");
-        holder.tv_totalAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(ordersListBeen.get(position).getOrderSubTotal()))));//  holder.tv_totalValue.setText(Utility.getFormattedCurrency(taxAmount));
+        holder.tv_totalAmount.setText(Utility.getFormattedCurrency(ordersListBeen.get(position).getOrderSubTotal()));
         holder.tv_totalValue.setText(ordersListBeen.size());
 
         holder.ViewButton.setOnClickListener(new View.OnClickListener() {

@@ -35,6 +35,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
+import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -46,19 +47,24 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class Retailers_AddActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class Retailers_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
 
     private EditText retailer_name, mobile_no, business_name, address;
+    private GoogleMap googleMap;
     private ImageView shop_image;
-    private DBHelper mDBHelper;
 
     private static final int REQUEST_CODE_TAKE_PHOTO = 1;
     private static final int REQUEST_CODE_IMAGE_SELECTION_FROM_GALLERY = 2;
-    private String shop_image_path;
-    private GoogleMap googlemap;
-    double longitude, latitude;
+
+    private String name, mobileNo, businessName, retailerAddress, shop_image_path = "";
+    private double longitude, latitude;
+
+    private DBHelper mDBHelper;
+    private TDCCustomer customer;
+    private boolean isCameFromRetailersList = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,16 +88,45 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             mDBHelper = new DBHelper(activityContext);
 
             retailer_name = (EditText) findViewById(R.id.retailer_name);
-            mobile_no = (EditText) findViewById(R.id.mobile_no);
-            business_name = (EditText) findViewById(R.id.business_name);
-            address = (EditText) findViewById(R.id.address);
-            shop_image = (ImageView) findViewById(R.id.shop_image);
+            mobile_no = (EditText) findViewById(R.id.retailer_mobile_no);
+            business_name = (EditText) findViewById(R.id.retailer_business_name);
+            address = (EditText) findViewById(R.id.retailer_address);
+            shop_image = (ImageView) findViewById(R.id.retailer_shop_image);
 
-
-            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.mapFrag);
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.retailer_map_fragment);
             mapFragment.getMapAsync(this);
 
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                customer = (TDCCustomer) bundle.getSerializable(Constants.BUNDLE_TDC_CUSTOMER);
+
+                isCameFromRetailersList = true;
+                updateUIWithBundleValues(customer);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateUIWithBundleValues(TDCCustomer retailerObj) {
+        try {
+            System.out.println("====== customer = " + customer);
+            retailer_name.setText(retailerObj.getName());
+            mobile_no.setText(retailerObj.getMobileNo());
+            business_name.setText(retailerObj.getBusinessName());
+            address.setText(retailerObj.getAddress());
+
+            latitude = retailerObj.getLatitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLatitude());
+            longitude = retailerObj.getLongitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLongitude());
+
+            shop_image_path = retailerObj.getShopImage();
+
+            retailer_name.setEnabled(false);
+            mobile_no.setEnabled(false);
+            business_name.setEnabled(false);
+            address.setEnabled(false);
+            shop_image.setEnabled(false);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,28 +176,30 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
      * Method to select the image from camera or gallery..
      */
     public void selectShopImage(View view) {
-        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+        if (!isCameFromRetailersList) {
+            final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
-        builder.setTitle("Add Photo!");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo")) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
+            AlertDialog.Builder builder = new AlertDialog.Builder(activityContext);
+            builder.setTitle("Add Photo!");
+            builder.setItems(options, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int item) {
+                    if (options[item].equals("Take Photo")) {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (intent.resolveActivity(getPackageManager()) != null) {
+                            startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO);
+                        }
+                    } else if (options[item].equals("Choose from Gallery")) {
+                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, REQUEST_CODE_IMAGE_SELECTION_FROM_GALLERY);
+
+                    } else if (options[item].equals("Cancel")) {
+                        dialog.dismiss();
                     }
-                } else if (options[item].equals("Choose from Gallery")) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, REQUEST_CODE_IMAGE_SELECTION_FROM_GALLERY);
-
-                } else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
                 }
-            }
-        });
-        builder.show();
+            });
+            builder.show();
+        }
     }
 
     @Override
@@ -227,42 +264,43 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
     public void saveNewRetailer(View view) {
         try {
-            String name = retailer_name.getText().toString().trim();
-            String mobileNo = mobile_no.getText().toString().trim();
-            String businessName = business_name.getText().toString().trim();
-            String retailerAddress = address.getText().toString().trim();
+            if (!isCameFromRetailersList) {
+                name = retailer_name.getText().toString().trim();
+                mobileNo = mobile_no.getText().toString().trim();
+                businessName = business_name.getText().toString().trim();
+                retailerAddress = address.getText().toString().trim();
 
-            boolean cancel = false;
-            View focusView = null;
+                boolean cancel = false;
+                View focusView = null;
 
-            if (name.isEmpty()) {
-                retailer_name.setError("Please enter person name.");
-                focusView = retailer_name;
-                cancel = true;
-            } else if (mobileNo.isEmpty()) {
-                mobile_no.setError("Please enter mobile no.");
-                focusView = mobile_no;
-                cancel = true;
-            } else if (!mobileNo.isEmpty() && mobileNo.length() < 10) {
-                mobile_no.setError("Please enter valid mobile no.");
-                focusView = mobile_no;
-                cancel = true;
-            } else if (businessName.isEmpty()) {
-                business_name.setError("Please enter business name.");
-                focusView = business_name;
-                cancel = true;
-            } else if (retailerAddress.isEmpty()) {
-                address.setError("Please enter address.");
-                focusView = address;
-                cancel = true;
+                if (name.isEmpty()) {
+                    retailer_name.setError("Please enter person name.");
+                    focusView = retailer_name;
+                    cancel = true;
+                } else if (mobileNo.isEmpty()) {
+                    mobile_no.setError("Please enter mobile no.");
+                    focusView = mobile_no;
+                    cancel = true;
+                } else if (!mobileNo.isEmpty() && mobileNo.length() < 10) {
+                    mobile_no.setError("Please enter valid mobile no.");
+                    focusView = mobile_no;
+                    cancel = true;
+                } else if (businessName.isEmpty()) {
+                    business_name.setError("Please enter business name.");
+                    focusView = business_name;
+                    cancel = true;
+                } else if (retailerAddress.isEmpty()) {
+                    address.setError("Please enter address.");
+                    focusView = address;
+                    cancel = true;
+                }
+
+                if (cancel) {
+                    focusView.requestFocus();
+                } else {
+                    addNewRetailer(name, mobileNo, businessName, retailerAddress);
+                }
             }
-
-            if (cancel) {
-                focusView.requestFocus();
-            } else {
-                addNewRetailer(name, mobileNo, businessName, retailerAddress);
-            }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -270,13 +308,23 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
     public void addNewRetailer(String name, String mobileNo, String businessName, String retailerAddress) {
         try {
-            TDCCustomer customer = new TDCCustomer();
+            customer = new TDCCustomer();
             customer.setCustomerType(1);
             customer.setName(name);
             customer.setMobileNo(mobileNo);
             customer.setBusinessName(businessName);
             customer.setAddress(retailerAddress);
-            customer.setLatLong("");
+
+            if (latitude > 0)
+                customer.setLatitude(String.valueOf(latitude));
+            else
+                customer.setLatitude("");
+
+            if (longitude > 0)
+                customer.setLongitude(String.valueOf(longitude));
+            else
+                customer.setLongitude("");
+
             customer.setShopImage(shop_image_path);
             customer.setIsShopImageUploaded(0);
 
@@ -298,40 +346,67 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        try {
+            this.googleMap = googleMap;
+
+            if (!isCameFromRetailersList) {
+                replaceMapFragment();
+            } else {
+                LatLng shopLocation;
+
+                if (latitude > 0 && longitude > 0)
+                    shopLocation = new LatLng(latitude, longitude);
+                else
+                    shopLocation = new LatLng(17.3850440, 78.4866710);
+
+                this.googleMap.addMarker(new MarkerOptions().position(shopLocation).title(""));
+                this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(shopLocation));
+
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+
+                this.googleMap.setMyLocationEnabled(true);
+                this.googleMap.getUiSettings().setZoomGesturesEnabled(true);
+                this.googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                this.googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(shopLocation, 16.0f));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     private void replaceMapFragment() {
+        try {
+            // Enable Zoom
+            googleMap.getUiSettings().setZoomGesturesEnabled(true);
 
+            //set Map TYPE
+            googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        // Enable Zoom
-        googlemap.getUiSettings().setZoomGesturesEnabled(true);
+            //enable Current location Button
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                // ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                // public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
 
-        //set Map TYPE
-        googlemap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            googleMap.setMyLocationEnabled(true);
 
-        //enable Current location Button
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+            //set "listener" for changing my location
+            googleMap.setOnMyLocationChangeListener(myLocationChangeListener());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        googlemap.setMyLocationEnabled(true);
-
-        //set "listener" for changing my location
-        googlemap.setOnMyLocationChangeListener(myLocationChangeListener());
-
-
     }
-
 
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener() {
 
@@ -341,55 +416,43 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
                 longitude = location.getLongitude();
                 latitude = location.getLatitude();
-                StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
-                Marker marker;
-                googlemap.clear();
-                marker = googlemap.addMarker(new MarkerOptions().position(loc));
-                googlemap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
-                // locationText.setText("You are at [" + longitude + " ; " + latitude + " ]");
-                Geocoder geocoder = new Geocoder(Retailers_AddActivity.this, Locale.ENGLISH);
+
+                googleMap.clear();
+                Marker marker = googleMap.addMarker(new MarkerOptions().position(loc));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+                Geocoder geocoder = new Geocoder(activityContext, Locale.getDefault());
 
                 try {
                     List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
                     if (addresses != null && addresses.size() > 0) {
                         Address returnedAddress = addresses.get(0);
-                        //strReturnedAddress =
-                        for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                            strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+
+                        String currentAddress;
+
+                        if (returnedAddress.getMaxAddressLineIndex() > 0) {
+                            StringBuilder strReturnedAddress = new StringBuilder("");
+
+                            for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                                strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                            }
+
+                            currentAddress = strReturnedAddress.toString();
+                        } else {
+                            // Format the first line of address (if available), city, and country name.
+                            currentAddress = String.format("%s, %s", returnedAddress.getLocality(), returnedAddress.getCountryName());
                         }
 
-                        address.setText(strReturnedAddress.toString());
-
+                        address.setText(currentAddress);
                     } else {
-                        address.setText("No Address returned!");
-                        //  address.setText(strReturnedAddress.toString());
+                        address.setText("Unable to get your address. Please enter it manually.");
                     }
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
-                    address.setText("Canont get Address!");
+                    address.setText("Unable to get your address. Please enter it manually.");
                 }
-
-
-                //get current address by invoke an AsyncTask object
-                // new GetAddressTask(Agents_AddActivity.this).execute(String.valueOf(latitude), String.valueOf(longitude));
             }
-        }
-
-                ;
-    }
-
-
-    public void callBackDataFromAsyncTask(String laddress) {
-        address.setText(laddress);
-    }
-
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        googlemap = googleMap;
-
-        replaceMapFragment();
+        };
     }
 }

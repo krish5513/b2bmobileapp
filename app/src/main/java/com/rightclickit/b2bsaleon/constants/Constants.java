@@ -22,6 +22,7 @@ public class Constants {
     public static final String BUNDLE_TDC_SALE_ORDER = "TDCSaleOrder";
     public static final String BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW = "TDCSaleCurrentOrder_Preview";
     public static final String BUNDLE_TDC_SALE_CURRENT_ORDER = "TDCSaleCurrentOrder";
+    public static final String BUNDLE_TDC_CUSTOMER = "TDCCustomer";
 
     public static final int VOLLEY_SOCKET_TIMEOUT = 30000; // 120 seconds.
 

@@ -3,10 +3,8 @@ package com.rightclickit.b2bsaleon.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
@@ -188,7 +186,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_CUSTOMER_MOBILE_NO = "tdc_customer_mobile_no";
     private final String KEY_TDC_CUSTOMER_BUSINESS_NAME = "tdc_customer_business_name";
     private final String KEY_TDC_CUSTOMER_ADDRESS = "tdc_customer_address";
-    private final String KEY_TDC_CUSTOMER_LAT_LONG = "tdc_customer_lat_long";
+    private final String KEY_TDC_CUSTOMER_LATITUDE = "tdc_customer_latitude";
+    private final String KEY_TDC_CUSTOMER_LONGITUDE = "tdc_customer_longitude";
     private final String KEY_TDC_CUSTOMER_SHOP_IMAGE = "tdc_customer_shop_image";
     private final String KEY_TDC_CUSTOMER_IS_ACTIVE = "tdc_customer_is_active";
     private final String KEY_TDC_CUSTOMER_UPLOAD_STATUS = "tdc_customer_upload_status";
@@ -289,7 +288,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String CREATE_TDC_CUSTOMERS_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_TDC_CUSTOMERS + "(" + KEY_TDC_CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_CUSTOMER_USER_ID + " VARCHAR, " + KEY_TDC_CUSTOMER_TYPE + " INTEGER, "
             + KEY_TDC_CUSTOMER_NAME + " VARCHAR, " + KEY_TDC_CUSTOMER_MOBILE_NO + " VARCHAR, " + KEY_TDC_CUSTOMER_BUSINESS_NAME + " VARCHAR, "
-            + KEY_TDC_CUSTOMER_ADDRESS + " TEXT, " + KEY_TDC_CUSTOMER_LAT_LONG + " TEXT, " + KEY_TDC_CUSTOMER_SHOP_IMAGE + " VARCHAR, "
+            + KEY_TDC_CUSTOMER_ADDRESS + " TEXT, " + KEY_TDC_CUSTOMER_LATITUDE + " TEXT, " + KEY_TDC_CUSTOMER_LONGITUDE + " TEXT, " + KEY_TDC_CUSTOMER_SHOP_IMAGE + " VARCHAR, "
             + KEY_TDC_CUSTOMER_IS_ACTIVE + " INTEGER DEFAULT 1, " + KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS + " INTEGER DEFAULT 0, " + KEY_TDC_CUSTOMER_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
 
@@ -1448,14 +1447,15 @@ public class DBHelper extends SQLiteOpenHelper {
         long customerId = 0;
         try {
             SQLiteDatabase db = this.getWritableDatabase();
-
+            System.out.println("customer = " + customer);
             ContentValues values = new ContentValues();
             values.put(KEY_TDC_CUSTOMER_TYPE, customer.getCustomerType());
             values.put(KEY_TDC_CUSTOMER_NAME, customer.getName());
             values.put(KEY_TDC_CUSTOMER_MOBILE_NO, customer.getMobileNo());
             values.put(KEY_TDC_CUSTOMER_BUSINESS_NAME, customer.getBusinessName());
             values.put(KEY_TDC_CUSTOMER_ADDRESS, customer.getAddress());
-            values.put(KEY_TDC_CUSTOMER_LAT_LONG, customer.getLatLong());
+            values.put(KEY_TDC_CUSTOMER_LATITUDE, customer.getLatitude());
+            values.put(KEY_TDC_CUSTOMER_LONGITUDE, customer.getLongitude());
             values.put(KEY_TDC_CUSTOMER_SHOP_IMAGE, customer.getShopImage());
             values.put(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS, customer.getIsShopImageUploaded());
 
@@ -1492,7 +1492,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     customer.setMobileNo(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_MOBILE_NO)));
                     customer.setBusinessName(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_BUSINESS_NAME)));
                     customer.setAddress(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_ADDRESS)));
-                    customer.setLatLong(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_LAT_LONG)));
+                    customer.setLatitude(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_LATITUDE)));
+                    customer.setLongitude(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_LONGITUDE)));
                     customer.setShopImage(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE)));
                     customer.setIsActive(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_IS_ACTIVE)));
                     customer.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_UPLOAD_STATUS)));
@@ -1533,7 +1534,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     customer.setMobileNo(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_MOBILE_NO)));
                     customer.setBusinessName(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_BUSINESS_NAME)));
                     customer.setAddress(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_ADDRESS)));
-                    customer.setLatLong(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_LAT_LONG)));
+                    customer.setLatitude(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_LATITUDE)));
+                    customer.setLongitude(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_LONGITUDE)));
                     customer.setShopImage(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE)));
                     customer.setIsActive(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_IS_ACTIVE)));
                     customer.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_UPLOAD_STATUS)));

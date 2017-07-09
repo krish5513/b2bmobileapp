@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentTDC_ListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 
 import java.util.ArrayList;
 
@@ -23,12 +24,15 @@ public class TDCSales_Today extends AppCompatActivity {
     TextView today;
     TextView monthly;
     TextView weekly;
+    private DBHelper mDbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_list);
+        mDbHelper = new DBHelper(TDCSales_Today.this);
 
-        ArrayList<TDCSaleOrder> tdcBeanArrayList = new ArrayList<TDCSaleOrder>();
+        ArrayList<TDCSaleOrder> tdcBeanArrayList = (ArrayList<TDCSaleOrder>) mDbHelper.fetchAllRecordsFromTDCSalesOrdersTable();
 
         this.getSupportActionBar().setTitle("AGENTS");
         this.getSupportActionBar().setSubtitle(null);
@@ -44,19 +48,16 @@ public class TDCSales_Today extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
 
-
-
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
-        today=(TextView) findViewById(R.id.tv_today);
-        monthly=(TextView) findViewById(R.id.tv_monthly);
-        weekly=(TextView) findViewById(R.id.tv_weekly);
-
+        today = (TextView) findViewById(R.id.tv_today);
+        monthly = (TextView) findViewById(R.id.tv_monthly);
+        weekly = (TextView) findViewById(R.id.tv_weekly);
 
 
         monthly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(TDCSales_Today.this,TDCSales_Month.class);
+                Intent i = new Intent(TDCSales_Today.this, TDCSales_Month.class);
                 startActivity(i);
                 finish();
             }
@@ -65,17 +66,17 @@ public class TDCSales_Today extends AppCompatActivity {
         weekly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(TDCSales_Today.this,TDCSales_Weekly.class);
+                Intent i = new Intent(TDCSales_Today.this, TDCSales_Weekly.class);
                 startActivity(i);
                 finish();
             }
         });
 
-      if(tdcBeanArrayList.size()>0) {
-    loadAgentsList(tdcBeanArrayList);
+        if (tdcBeanArrayList.size() > 0) {
+            loadAgentsList(tdcBeanArrayList);
 
 
-    }
+        }
 
 
     }
@@ -85,7 +86,7 @@ public class TDCSales_Today extends AppCompatActivity {
             mPreviewAdapter = null;
         }
         mPreviewAdapter = new AgentTDC_ListAdapter(this, TDCSales_Today.this, tdcBeanArrayList);
-        Log.i("previewadapter",mPreviewAdapter+"");
+        Log.i("previewadapter", mPreviewAdapter + "");
 
         mAgentsList.setAdapter(mPreviewAdapter);
     }
@@ -93,14 +94,15 @@ public class TDCSales_Today extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate( R.menu.menu_dashboard, menu);
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(TDCSales_Today.this,SalesActivity.class);
+            Intent i = new Intent(TDCSales_Today.this, SalesActivity.class);
             startActivity(i);
             finish();
             return true;
@@ -119,16 +121,17 @@ public class TDCSales_Today extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
 
 
-        menu.findItem( R.id.notifications).setVisible(false);
-        menu.findItem( R.id.settings).setVisible(false);
-        menu.findItem( R.id.logout).setVisible(false);
-        menu.findItem( R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
+        menu.findItem(R.id.notifications).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(false);
+        menu.findItem(R.id.logout).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.Add).setVisible(false);
 
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
