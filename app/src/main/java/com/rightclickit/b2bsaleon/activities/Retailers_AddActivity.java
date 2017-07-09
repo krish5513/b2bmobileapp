@@ -111,7 +111,6 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
     public void updateUIWithBundleValues(TDCCustomer retailerObj) {
         try {
-            System.out.println("====== customer = " + customer);
             retailer_name.setText(retailerObj.getName());
             mobile_no.setText(retailerObj.getMobileNo());
             business_name.setText(retailerObj.getBusinessName());
@@ -121,6 +120,17 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             longitude = retailerObj.getLongitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLongitude());
 
             shop_image_path = retailerObj.getShopImage();
+            if (shop_image_path != "") {
+                File imgFile = new File(shop_image_path);
+
+                if (imgFile.exists()) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                    BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+
+                    shop_image.setBackground(null);
+                    shop_image.setBackground(bitmapDrawable);
+                }
+            }
 
             retailer_name.setEnabled(false);
             mobile_no.setEnabled(false);

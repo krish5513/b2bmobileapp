@@ -18,7 +18,7 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 
 import java.util.ArrayList;
 
-public class TDCSales_Today extends AppCompatActivity {
+public class TDCSalesListActivity extends AppCompatActivity {
     private ListView mAgentsList;
     private AgentTDC_ListAdapter mPreviewAdapter;
     TextView today;
@@ -30,7 +30,7 @@ public class TDCSales_Today extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_list);
-        mDbHelper = new DBHelper(TDCSales_Today.this);
+        mDbHelper = new DBHelper(TDCSalesListActivity.this);
 
         ArrayList<TDCSaleOrder> tdcBeanArrayList = (ArrayList<TDCSaleOrder>) mDbHelper.fetchAllRecordsFromTDCSalesOrdersTable();
 
@@ -57,7 +57,7 @@ public class TDCSales_Today extends AppCompatActivity {
         monthly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TDCSales_Today.this, TDCSales_Month.class);
+                Intent i = new Intent(TDCSalesListActivity.this, TDCSales_Month.class);
                 startActivity(i);
                 finish();
             }
@@ -66,7 +66,7 @@ public class TDCSales_Today extends AppCompatActivity {
         weekly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TDCSales_Today.this, TDCSales_Weekly.class);
+                Intent i = new Intent(TDCSalesListActivity.this, TDCSales_Weekly.class);
                 startActivity(i);
                 finish();
             }
@@ -85,7 +85,7 @@ public class TDCSales_Today extends AppCompatActivity {
         if (mPreviewAdapter != null) {
             mPreviewAdapter = null;
         }
-        mPreviewAdapter = new AgentTDC_ListAdapter(this, TDCSales_Today.this, tdcBeanArrayList);
+        mPreviewAdapter = new AgentTDC_ListAdapter(this, TDCSalesListActivity.this, tdcBeanArrayList);
         Log.i("previewadapter", mPreviewAdapter + "");
 
         mAgentsList.setAdapter(mPreviewAdapter);
@@ -102,7 +102,7 @@ public class TDCSales_Today extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i = new Intent(TDCSales_Today.this, SalesActivity.class);
+            Intent i = new Intent(TDCSalesListActivity.this, SalesActivity.class);
             startActivity(i);
             finish();
             return true;

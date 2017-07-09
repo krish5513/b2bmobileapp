@@ -50,7 +50,7 @@ public class TDCSales_Weekly extends AppCompatActivity {
         today.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(TDCSales_Weekly.this,TDCSales_Today.class);
+                Intent i =new Intent(TDCSales_Weekly.this,TDCSalesListActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -68,7 +68,7 @@ public class TDCSales_Weekly extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(TDCSales_Weekly.this,TDCSales_Today.class);
+            Intent i =new Intent(TDCSales_Weekly.this,TDCSalesListActivity.class);
             startActivity(i);
             finish();
             return true;
@@ -100,7 +100,7 @@ public class TDCSales_Weekly extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, TDCSales_Today.class);
+        Intent intent = new Intent(this, TDCSalesListActivity.class);
         startActivity(intent);
         finish();
     }

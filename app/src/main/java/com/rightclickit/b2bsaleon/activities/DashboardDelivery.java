@@ -175,7 +175,7 @@ public class DashboardDelivery extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(DashboardDelivery.this,TDCSales_Today.class);
+            Intent i =new Intent(DashboardDelivery.this,TDCSalesListActivity.class);
             startActivity(i);
             finish();
             return true;

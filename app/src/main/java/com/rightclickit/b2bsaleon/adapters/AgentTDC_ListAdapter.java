@@ -11,22 +11,15 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.AgentTakeOrderPreview;
-import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
-import com.rightclickit.b2bsaleon.activities.Sales_Preview_PrintActivity;
 import com.rightclickit.b2bsaleon.activities.Saleslist_ViewActivity;
-import com.rightclickit.b2bsaleon.activities.TDCSales_Today;
-import com.rightclickit.b2bsaleon.beanclass.OrdersListBean;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.activities.TDCSalesListActivity;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
-import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by PPS on 7/8/2017.
@@ -44,7 +37,7 @@ public class AgentTDC_ListAdapter extends BaseAdapter {
     String currentOrderId;
     private long previousOrderId;
 
-    public AgentTDC_ListAdapter(Context ctxt, TDCSales_Today previewActivity, ArrayList<TDCSaleOrder> ordersListBeen) {
+    public AgentTDC_ListAdapter(Context ctxt, TDCSalesListActivity previewActivity, ArrayList<TDCSaleOrder> ordersListBeen) {
         this.ctxt = ctxt;
         this.activity = previewActivity;
         this.ordersListBeen = ordersListBeen;

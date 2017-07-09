@@ -137,7 +137,7 @@ public class TripsheetPayments extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(TripsheetPayments.this,TDCSales_Today.class);
+            Intent i =new Intent(TripsheetPayments.this,TDCSalesListActivity.class);
             startActivity(i);
             finish();
             return true;
