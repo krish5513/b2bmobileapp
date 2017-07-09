@@ -18,6 +18,7 @@ public class TDCSaleOrder implements Serializable {
     private double orderTotalTaxAmount;
     private double orderSubTotal;
     private int isUploaded;
+    private String orderDate;
     private long createdOn;
     private String createdBy;
     private List<TDCSalesOrderProductBean> orderProductsList; // this list is used while syncing data with server
@@ -94,6 +95,14 @@ public class TDCSaleOrder implements Serializable {
         this.isUploaded = isUploaded;
     }
 
+    public String getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
+    }
+
     public long getCreatedOn() {
         return createdOn;
     }
@@ -130,7 +139,8 @@ public class TDCSaleOrder implements Serializable {
                 ", orderTotalTaxAmount=" + orderTotalTaxAmount +
                 ", orderSubTotal=" + orderSubTotal +
                 ", isUploaded=" + isUploaded +
-                ", createdOn='" + createdOn + '\'' +
+                ", orderDate='" + orderDate + '\'' +
+                ", createdOn=" + createdOn +
                 ", createdBy='" + createdBy + '\'' +
                 ", orderProductsList=" + orderProductsList +
                 '}';

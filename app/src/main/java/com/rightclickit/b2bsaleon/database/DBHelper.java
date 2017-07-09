@@ -210,7 +210,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_SALES_ORDER_SUB_TOTAL = "tdc_sales_order_sub_total"; // i.e. ORDER TOTAL AMOUNT + ORDER TOTAL TAX AMOUNT
     private final String KEY_TDC_SALES_ORDER_CUSTOMER_ID = "tdc_sales_customer_id";
     private final String KEY_TDC_SALES_ORDER_CUSTOMER_NAME = "tdc_sales_customer_name";
-    private final String KEY_TDC_SALES_ORDER_CREATED_ON = "tdc_sales_order_created_on";
+    private final String KEY_TDC_SALES_ORDER_DATE = "tdc_sales_order_date";
+    private final String KEY_TDC_SALES_ORDER_CREATED_ON = "tdc_sales_order_created_on"; // this column contains order created date in unix time stamp format
     private final String KEY_TDC_SALES_ORDER_CREATED_BY = "tdc_sales_order_created_by";
     private final String KEY_TDC_SALES_ORDER_UPLOAD_STATUS = "tdc_sale_order_upload_status";
 
@@ -310,8 +311,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String CREATE_TDC_SALES_ORDERS_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_TDC_SALES_ORDERS + "(" + KEY_TDC_SALES_ORDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_SALES_ORDER_NO_OF_ITEMS + " INTEGER, "
             + KEY_TDC_SALES_ORDER_TOTAL_AMOUNT + " VARCHAR, " + KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT + " VARCHAR, " + KEY_TDC_SALES_ORDER_SUB_TOTAL + " VARCHAR, "
-            + KEY_TDC_SALES_ORDER_CUSTOMER_ID + " INTEGER, " + KEY_TDC_SALES_ORDER_CUSTOMER_NAME + " VARCHAR, " + KEY_TDC_SALES_ORDER_CREATED_ON + " TEXT, "
-            + KEY_TDC_SALES_ORDER_CREATED_BY + " VARCHAR, " + KEY_TDC_SALES_ORDER_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
+            + KEY_TDC_SALES_ORDER_CUSTOMER_ID + " INTEGER, " + KEY_TDC_SALES_ORDER_CUSTOMER_NAME + " VARCHAR, " + KEY_TDC_SALES_ORDER_DATE + " TEXT, "
+            + KEY_TDC_SALES_ORDER_CREATED_ON + " TEXT, " + KEY_TDC_SALES_ORDER_CREATED_BY + " VARCHAR, " + KEY_TDC_SALES_ORDER_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // TDC Sales Order Products Table Create Statement
     private final String CREATE_TDC_SALES_ORDER_PRODUCTS_TABLE = "CREATE TABLE IF NOT EXISTS "
@@ -1570,6 +1571,66 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Method to fetch all un uploaded records from TDC Customers Table
+     */
+    public List<TDCCustomer> fetchAllUnUploadedRecordsFromTDCCustomers() {
+        List<TDCCustomer> allTDCCustomersList = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TDC_CUSTOMERS + " WHERE " + KEY_TDC_CUSTOMER_IS_ACTIVE + " = 1 AND " + KEY_TDC_CUSTOMER_UPLOAD_STATUS + " = 0";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    TDCCustomer customer = new TDCCustomer();
+                    customer.setId(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_ID)));
+                    customer.setUserId(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_USER_ID)));
+                    customer.setCustomerType(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_TYPE)));
+                    customer.setName(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_NAME)));
+                    customer.setMobileNo(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_MOBILE_NO)));
+                    customer.setBusinessName(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_BUSINESS_NAME)));
+                    customer.setAddress(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_ADDRESS)));
+                    customer.setLatitude(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_LATITUDE)));
+                    customer.setLongitude(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_LONGITUDE)));
+                    customer.setShopImage(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE)));
+                    customer.setIsActive(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_IS_ACTIVE)));
+                    customer.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_UPLOAD_STATUS)));
+                    customer.setIsShopImageUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS)));
+
+                    allTDCCustomersList.add(customer);
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allTDCCustomersList;
+    }
+
+    public void updateTDCCustomersUploadStatus(long customerId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_TDC_CUSTOMER_UPLOAD_STATUS, 1);
+
+            int status = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
+
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    /**
      * Method to check whther the special price exists for the combo of userId and productId
      *
      * @param productId
@@ -1681,6 +1742,46 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setOrderSubTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_SUB_TOTAL))));
                     order.setSelectedCustomerId(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
                     order.setSelectedCustomerName(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_NAME)));
+                    order.setOrderDate(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_DATE)));
+                    order.setCreatedOn(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
+                    order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
+                    order.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_UPLOAD_STATUS)));
+
+                    allOrdersList.add(order);
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allOrdersList;
+    }
+
+    /**
+     * Method to fetch all records from TDC Sales Orders Table
+     */
+    public List<TDCSaleOrder> fetchAllTDCSalesOrdersForSelectedDuration(String startDate, String endDate) {
+        List<TDCSaleOrder> allOrdersList = new ArrayList<>();
+
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery("SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_DATE + " BETWEEN ? AND ?", new String[]{startDate, endDate});
+
+            if (c.moveToFirst()) {
+                do {
+                    TDCSaleOrder order = new TDCSaleOrder();
+                    order.setOrderId(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_ID)));
+                    order.setNoOfItems(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_NO_OF_ITEMS)));
+                    order.setOrderTotalAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_AMOUNT))));
+                    order.setOrderTotalTaxAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT))));
+                    order.setOrderSubTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_SUB_TOTAL))));
+                    order.setSelectedCustomerId(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
+                    order.setSelectedCustomerName(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_NAME)));
+                    order.setOrderDate(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_DATE)));
                     order.setCreatedOn(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
                     order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
                     order.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_UPLOAD_STATUS)));
@@ -1754,6 +1855,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_SALES_ORDER_SUB_TOTAL, order.getOrderSubTotal());
             values.put(KEY_TDC_SALES_ORDER_CUSTOMER_ID, order.getSelectedCustomerId());
             values.put(KEY_TDC_SALES_ORDER_CUSTOMER_NAME, order.getSelectedCustomerName());
+            values.put(KEY_TDC_SALES_ORDER_DATE, order.getOrderDate());
             values.put(KEY_TDC_SALES_ORDER_CREATED_ON, order.getCreatedOn());
             values.put(KEY_TDC_SALES_ORDER_CREATED_BY, order.getCreatedBy());
 
@@ -1848,6 +1950,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setOrderSubTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_SUB_TOTAL))));
                     order.setSelectedCustomerId(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
                     order.setSelectedCustomerName(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_NAME)));
+                    order.setOrderDate(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_DATE)));
                     order.setCreatedOn(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
                     order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
                     order.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_UPLOAD_STATUS)));
@@ -1995,8 +2098,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_STAKEHOLDER_TYPE_NAME, StakeHolderTypesList.get(i).getmStakeHolderTypeName());
                 values.put(KEY_STAKEHOLDER_TYPE, StakeHolderTypesList.get(i).getmStakeHolderType());
                 // insert row
-               long l =  db.insert(TABLE_STAKEHOLDER_TYPES, null, values);
-                System.out.println("F*********** INSERTED***************STAKE TYPE"+l);
+                long l = db.insert(TABLE_STAKEHOLDER_TYPES, null, values);
+                System.out.println("F*********** INSERTED***************STAKE TYPE" + l);
                 values.clear();
             }
         } catch (Exception e) {

@@ -1,10 +1,12 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,85 +14,83 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentTDC_ListAdapter;
+import com.rightclickit.b2bsaleon.adapters.TDCSalesListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
+import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.Utility;
 
-import java.util.ArrayList;
+import org.w3c.dom.Text;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class TDCSalesListActivity extends AppCompatActivity {
-    private ListView mAgentsList;
-    private AgentTDC_ListAdapter mPreviewAdapter;
-    TextView today;
-    TextView monthly;
-    TextView weekly;
-    private DBHelper mDbHelper;
+    private Context applicationContext, activityContext;
+    private MMSharedPreferences mmSharedPreferences;
+
+    private ListView tdcSalesListView;
+    private TextView no_sales_found_message, tdc_sales_count, tdc_sales_total_amount, tdc_sales_items_count;
+    private TextView tdc_sales_today, tdc_sales_weekly, tdc_sales_monthly;
+
+    private TDCSalesListAdapter tdcSalesListAdapter;
+    private DBHelper mDBHelper;
+    private List<TDCSaleOrder> allTDCSaleOrders;
+
+    private int colorAccent, colorPrimary;
+    private Drawable border_accent, border_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sales_list);
-        mDbHelper = new DBHelper(TDCSalesListActivity.this);
 
-        ArrayList<TDCSaleOrder> tdcBeanArrayList = (ArrayList<TDCSaleOrder>) mDbHelper.fetchAllRecordsFromTDCSalesOrdersTable();
+        try {
+            applicationContext = getApplicationContext();
+            activityContext = TDCSalesListActivity.this;
+            mmSharedPreferences = new MMSharedPreferences(activityContext);
+            mDBHelper = new DBHelper(activityContext);
 
-        this.getSupportActionBar().setTitle("AGENTS");
-        this.getSupportActionBar().setSubtitle(null);
-        this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
-        // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        this.getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+            this.getSupportActionBar().setTitle("SALES LIST");
+            this.getSupportActionBar().setSubtitle(null);
+            this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
+            // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            this.getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            final ActionBar actionBar = getSupportActionBar();
+            assert actionBar != null;
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+            no_sales_found_message = (TextView) findViewById(R.id.no_tdc_sales_found_message);
+            tdc_sales_count = (TextView) findViewById(R.id.tdc_sales_count);
+            tdc_sales_total_amount = (TextView) findViewById(R.id.tdc_sales_total_amount);
+            tdc_sales_items_count = (TextView) findViewById(R.id.tdc_sales_items_count);
+            tdc_sales_today = (TextView) findViewById(R.id.tdc_sales_today);
+            tdc_sales_weekly = (TextView) findViewById(R.id.tdc_sales_weekly);
+            tdc_sales_monthly = (TextView) findViewById(R.id.tdc_sales_monthly);
 
-        mAgentsList = (ListView) findViewById(R.id.AgentsList);
-        today = (TextView) findViewById(R.id.tv_today);
-        monthly = (TextView) findViewById(R.id.tv_monthly);
-        weekly = (TextView) findViewById(R.id.tv_weekly);
+            colorAccent = ContextCompat.getColor(activityContext, R.color.colorAccent);
+            colorPrimary = ContextCompat.getColor(activityContext, R.color.colorPrimary);
 
+            border_accent = ContextCompat.getDrawable(activityContext, R.drawable.border_accent);
+            border_btn = ContextCompat.getDrawable(activityContext, R.drawable.border_btn);
 
-        monthly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(TDCSalesListActivity.this, TDCSales_Month.class);
-                startActivity(i);
-                finish();
-            }
-        });
+            tdcSalesListView = (ListView) findViewById(R.id.tdc_sales_list_view);
+            tdcSalesListAdapter = new TDCSalesListAdapter(activityContext, this, allTDCSaleOrders);
+            tdcSalesListView.setAdapter(tdcSalesListAdapter);
 
-        weekly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(TDCSalesListActivity.this, TDCSales_Weekly.class);
-                startActivity(i);
-                finish();
-            }
-        });
+            loadSalesList(0);
 
-        if (tdcBeanArrayList.size() > 0) {
-            loadAgentsList(tdcBeanArrayList);
-
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-
     }
-
-    private void loadAgentsList(ArrayList<TDCSaleOrder> tdcBeanArrayList) {
-        if (mPreviewAdapter != null) {
-            mPreviewAdapter = null;
-        }
-        mPreviewAdapter = new AgentTDC_ListAdapter(this, TDCSalesListActivity.this, tdcBeanArrayList);
-        Log.i("previewadapter", mPreviewAdapter + "");
-
-        mAgentsList.setAdapter(mPreviewAdapter);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -101,12 +101,6 @@ public class TDCSalesListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.Add) {
-            Intent i = new Intent(TDCSalesListActivity.this, SalesActivity.class);
-            startActivity(i);
-            finish();
-            return true;
-        }
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -119,14 +113,11 @@ public class TDCSalesListActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-
         menu.findItem(R.id.notifications).setVisible(false);
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.Add).setVisible(false);
-
         menu.findItem(R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
@@ -138,5 +129,102 @@ public class TDCSalesListActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SalesActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void loadTDCSalesList(View view) {
+        int tag = Integer.parseInt(view.getTag().toString());
+
+        CustomProgressDialog.showProgressDialog(activityContext, Constants.LOADING_MESSAGE);
+
+        if (tag == 0) {
+            tdc_sales_today.setBackground(border_accent);
+            tdc_sales_today.setTextColor(colorAccent);
+
+            tdc_sales_weekly.setBackground(border_btn);
+            tdc_sales_weekly.setTextColor(colorPrimary);
+
+            tdc_sales_monthly.setBackground(border_btn);
+            tdc_sales_monthly.setTextColor(colorPrimary);
+        } else if (tag == 1) {
+            tdc_sales_today.setBackground(border_btn);
+            tdc_sales_today.setTextColor(colorPrimary);
+
+            tdc_sales_weekly.setBackground(border_accent);
+            tdc_sales_weekly.setTextColor(colorAccent);
+
+            tdc_sales_monthly.setBackground(border_btn);
+            tdc_sales_monthly.setTextColor(colorPrimary);
+        } else if (tag == 2) {
+            tdc_sales_today.setBackground(border_btn);
+            tdc_sales_today.setTextColor(colorPrimary);
+
+            tdc_sales_weekly.setBackground(border_btn);
+            tdc_sales_weekly.setTextColor(colorPrimary);
+
+            tdc_sales_monthly.setBackground(border_accent);
+            tdc_sales_monthly.setTextColor(colorAccent);
+        }
+
+        loadSalesList(tag);
+    }
+
+    /**
+     * @param duration :: 0 for Today, 1 for Weekly & 2 for Monthly
+     */
+    public void loadSalesList(int duration) {
+        try {
+            Date currentDate = new Date(), startingDate = null, endingDate = null;
+            Calendar calendar = Calendar.getInstance();
+            calendar.setFirstDayOfWeek(Calendar.SUNDAY);
+
+            if (duration == 0) {
+                startingDate = currentDate;
+                endingDate = currentDate;
+            } else if (duration == 1) {
+                calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+                startingDate = calendar.getTime();
+                endingDate = currentDate;
+            } else if (duration == 2) {
+                calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+                startingDate = calendar.getTime();
+                endingDate = currentDate;
+            }
+
+            String startDateStr = Utility.formatDate(startingDate, Constants.TDC_SALES_ORDER_DATE_SAVE_FORMAT);
+            String endDateStr = Utility.formatDate(endingDate, Constants.TDC_SALES_ORDER_DATE_SAVE_FORMAT);
+
+            allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr);
+
+            if (allTDCSaleOrders.size() <= 0) {
+                tdcSalesListView.setVisibility(View.GONE);
+                no_sales_found_message.setVisibility(View.VISIBLE);
+
+                tdc_sales_count.setText("0");
+                tdc_sales_total_amount.setText(Utility.getFormattedCurrency(0));
+                tdc_sales_items_count.setText("0");
+            } else {
+                no_sales_found_message.setVisibility(View.GONE);
+                tdcSalesListView.setVisibility(View.VISIBLE);
+
+                tdcSalesListAdapter.setTdcSalesOrders(allTDCSaleOrders);
+
+                int noOfSales = allTDCSaleOrders.size();
+                double amount = 0;
+                int noOfItems = 0;
+
+                for (TDCSaleOrder order : allTDCSaleOrders) {
+                    amount = amount + order.getOrderSubTotal();
+                    noOfItems = noOfItems + order.getNoOfItems();
+                }
+
+                tdc_sales_count.setText(Utility.getFormattedNumber(noOfSales));
+                tdc_sales_total_amount.setText(Utility.getFormattedCurrency(amount));
+                tdc_sales_items_count.setText(Utility.getFormattedNumber(noOfItems));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        CustomProgressDialog.hideProgressDialog();
     }
 }

@@ -176,12 +176,6 @@
             android:name=".activities.Saleslist_ViewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.TDCSales_Weekly"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.TDCSales_Month"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.DashboardTakeorder"
             android:screenOrientation="portrait" />
         <activity
