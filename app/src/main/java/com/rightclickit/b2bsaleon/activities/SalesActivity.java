@@ -26,7 +26,6 @@ import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
-import com.rightclickit.b2bsaleon.services.SyncTDCSalesOrderService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
@@ -141,7 +140,7 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Intent i = new Intent(SalesActivity.this, TDCSales_Today.class);
+                    Intent i = new Intent(SalesActivity.this, TDCSalesListActivity.class);
                     startActivity(i);
                     finish();
                 }
