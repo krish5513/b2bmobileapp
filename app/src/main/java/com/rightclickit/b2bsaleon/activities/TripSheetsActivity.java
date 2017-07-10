@@ -14,8 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.services.SyncStakeHolderTypesService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -179,7 +183,6 @@ public class TripSheetsActivity extends AppCompatActivity {
         });
         HashMap<String,String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
-        System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
         for (int k = 0; k<privilegesData.size();k++){
             if (privilegesData.get(k).toString().equals("Dashboard")){
                 tsDashBoardLayout.setVisibility(View.VISIBLE);
@@ -196,10 +199,7 @@ public class TripSheetsActivity extends AppCompatActivity {
             }
         }
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
-        System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
         for (int z = 0;z<privilegeActionsData.size();z++){
-            System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
-
             if (privilegeActionsData.get(z).toString().equals("list_view")) {
                 mTripsListview.setVisibility(View.VISIBLE);
             }
@@ -208,6 +208,20 @@ public class TripSheetsActivity extends AppCompatActivity {
             }else if (privilegeActionsData.get(z).toString().equals("list_stock")) {
                 stock.setVisibility(View.VISIBLE);
             }
+        }
+
+        if (new NetworkConnectionDetector(TripSheetsActivity.this).isNetworkConnected()) {
+            if(mDBHelper.getTripsheetsTableCount()>0){
+                ArrayList<TripsheetsList> agentsBeanArrayList = mDBHelper.fetchTripsheetsList();
+              //  loadAgentsList(agentsBeanArrayList);
+            }else {
+                startService(new Intent(getApplicationContext(), SyncStakeHolderTypesService.class));
+            }
+        }else {
+            // System.out.println("ELSE::: ");
+            ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();
+
+           // loadAgentsList(agentsBeanArrayList);
         }
     }
 

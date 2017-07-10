@@ -247,6 +247,12 @@
             android:enabled="true"
             android:exported="true" />
 
+        <!-- Tripsheets Sync Service -->
+        <service
+            android:name=".services.SyncTripSheetsListService"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>

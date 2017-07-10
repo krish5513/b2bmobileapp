@@ -71,6 +71,8 @@ public class Constants {
 
     public static final String SYNC_TAKE_ORDERS_PORT = ":3008";
 
+    public static final String SYNC_TRIPSHEETS_PORT = ":3009";
+
     //Production
     public static final String MAIN_URL = "http://52.10.51.54";
 
@@ -109,4 +111,7 @@ public class Constants {
     public static final String SPECIAL_PRICE_SERVICE = "/user_sprice_price/list";
     //TDC Sales Order Add URL
     public static final String TDC_SALES_ORDER_ADD = "/tdc_customer_order/add";
+
+    //Tripsheets List URL
+    public static final String GET_TRIPSHEETS_LIST = "/tripsheet/list";
 }

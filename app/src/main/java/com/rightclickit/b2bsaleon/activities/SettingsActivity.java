@@ -205,7 +205,6 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             mTripSheetsLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(applicationContext, "Clicked on TRIPSHEETS", Toast.LENGTH_SHORT).show();
                     Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                     mTripSheetsLayout.startAnimation(animation1);
                     Intent i = new Intent(SettingsActivity.this, TripSheetsActivity.class);
@@ -455,16 +454,35 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     if (routesDataList.get(k) != null) {
                         switch (k) {
                             case 1:
-                                mRouteName = mRouteName + routesDataList.get(1);
+                                if(mRouteName.equals("")){
+                                    mRouteName = routesDataList.get(1);
+                                }else if(!routesDataList.get(1).toString().equals(mRouteName)){
+                                    mRouteName = mRouteName +","+ routesDataList.get(1);
+                                }
                                 break;
                             case 2:
-                                mRegionName = mRegionName + routesDataList.get(2);
+                                if(mRegionName.equals("")){
+                                    mRegionName = routesDataList.get(2);
+                                }else if(!routesDataList.get(2).toString().equals(mRegionName)){
+                                    mRegionName = mRegionName +","+ routesDataList.get(2);
+                                }
+                              //  mRegionName = mRegionName + routesDataList.get(2);
                                 break;
                             case 3:
-                                mOfficeName = mOfficeName + routesDataList.get(3);
+                                if(mOfficeName.equals("")){
+                                    mOfficeName = routesDataList.get(3);
+                                }else if(!routesDataList.get(3).toString().equals(mOfficeName)){
+                                    mOfficeName = mOfficeName +","+ routesDataList.get(3);
+                                }
+                                //mOfficeName = mOfficeName + routesDataList.get(3);
                                 break;
                             case 4:
-                                mRouteCode = mRouteCode + routesDataList.get(4);
+                                if(mRouteCode.equals("")){
+                                    mRouteCode = routesDataList.get(4);
+                                }else if(!routesDataList.get(4).toString().equals(mRouteCode)){
+                                    mRouteCode = mRouteCode +","+ routesDataList.get(4);
+                                }
+                                //mRouteCode = mRouteCode + routesDataList.get(4);
                                 break;
                         }
                     }

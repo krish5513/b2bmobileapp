@@ -15,6 +15,7 @@ import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.beanclass.TDCSalesOrderProductBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -75,6 +76,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // This table contains Stakeholder type ids
     private final String TABLE_STAKEHOLDER_TYPES = "stake_holder_types";
+
+    // This table contains tripsheets
+    private final String TABLE_TRIPSHEETS_LIST = "tripsheets_list";
 
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
@@ -231,6 +235,20 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_STAKEHOLDER_TYPE_NAME = "stakeholder_type_name";
     private final String KEY_STAKEHOLDER_TYPE = "stakeholder_type";
 
+    // Column names for Tripsheets List  Table
+    private final String KEY_TRIPSHEET_ID = "tripshhet_id";
+    private final String KEY_TRIPSHEET_CODE = "tripshhet_code";
+    private final String KEY_TRIPSHEET_DATE = "tripshhet_date";
+    private final String KEY_TRIPSHEET_STATUS = "tripshhet_status";
+    private final String KEY_TRIPSHEET_OB_AMOUNT = "tripshhet_ob_amount";
+    private final String KEY_TRIPSHEET_ORDERED_AMOUNT = "tripshhet_ordered_amount";
+    private final String KEY_TRIPSHEET_RECEIVED_AMOUNT = "tripshhet_received_amount";
+    private final String KEY_TRIPSHEET_DUE_AMOUNT = "tripshhet_due_amount";
+    private final String KEY_TRIPSHEET_ROUTE_CODE = "tripshhet_route_code";
+    private final String KEY_TRIPSHEET_SALESMEN_CODE = "tripshhet_salesmen_code";
+    private final String KEY_TRIPSHEET_TRANSPORTER_NAME = "tripshhet_transporter_name";
+    private final String KEY_TRIPSHEET_VEHICLE_NUMBER = "tripshhet_vehicle_number";
+
     // Agents Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_AGENTS + "(" + KEY_AGENT_ID + " VARCHAR,"
@@ -326,6 +344,21 @@ public class DBHelper extends SQLiteOpenHelper {
             + TABLE_STAKEHOLDER_TYPES + "(" + KEY_STAKEHOLDER_TYPE_ID + " VARCHAR," + KEY_STAKEHOLDER_TYPE_NAME + " VARCHAR,"
             + KEY_STAKEHOLDER_TYPE + " VARCHAR)";
 
+    // Tripsheets Table Create Statements
+    private final String CREATE_TRIPSHEETS_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_TRIPSHEETS_LIST + "(" + KEY_TRIPSHEET_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_CODE + " VARCHAR,"
+            + KEY_TRIPSHEET_DATE + " VARCHAR,"
+            + KEY_TRIPSHEET_STATUS + " VARCHAR,"
+            + KEY_TRIPSHEET_OB_AMOUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_ORDERED_AMOUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_RECEIVED_AMOUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_DUE_AMOUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_ROUTE_CODE + " VARCHAR,"
+            + KEY_TRIPSHEET_SALESMEN_CODE + " VARCHAR,"
+            + KEY_TRIPSHEET_TRANSPORTER_NAME + " VARCHAR,"
+            + KEY_TRIPSHEET_VEHICLE_NUMBER + " VARCHAR)";
+
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -345,6 +378,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TDC_SALES_ORDERS_TABLE);
             db.execSQL(CREATE_TDC_SALES_ORDER_PRODUCTS_TABLE);
             db.execSQL(CREATE_TABLE_STAKEHOLDER_TYPES);
+            db.execSQL(CREATE_TRIPSHEETS_LIST_TABLE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -2131,5 +2165,111 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
         return stakeTypeId;
+    }
+
+    /**
+     * Method to get count of the tripsheets table
+     */
+    public int getTripsheetsTableCount() {
+        int noOfEvents = 0;
+        try {
+            String countQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST;
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfEvents = cursor.getCount();
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return noOfEvents;
+    }
+
+    /**
+     * Method to insert the tripsheets list.
+     * @param mTripsheetsList
+     */
+    public void insertTripsheetsListData(ArrayList<TripsheetsList> mTripsheetsList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0; i < mTripsheetsList.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_TRIPSHEET_ID, mTripsheetsList.get(i).getmTripshhetId());
+                values.put(KEY_TRIPSHEET_CODE, mTripsheetsList.get(i).getmTripshhetCode());
+                values.put(KEY_TRIPSHEET_DATE, mTripsheetsList.get(i).getmTripshhetDate());
+                values.put(KEY_TRIPSHEET_STATUS, mTripsheetsList.get(i).getmTripshhetStatus());
+                values.put(KEY_TRIPSHEET_OB_AMOUNT, mTripsheetsList.get(i).getmTripshhetOBAmount());
+                values.put(KEY_TRIPSHEET_ORDERED_AMOUNT, mTripsheetsList.get(i).getmTripshhetOrderedAmount());
+                values.put(KEY_TRIPSHEET_RECEIVED_AMOUNT, mTripsheetsList.get(i).getmTripshhetReceivedAmount());
+                values.put(KEY_TRIPSHEET_DUE_AMOUNT, mTripsheetsList.get(i).getmTripshhetDueAmount());
+                values.put(KEY_TRIPSHEET_ROUTE_CODE, mTripsheetsList.get(i).getmTripshhetRouteCode());
+                values.put(KEY_TRIPSHEET_SALESMEN_CODE, mTripsheetsList.get(i).getmTripshhetSalesMenCode());
+                values.put(KEY_TRIPSHEET_TRANSPORTER_NAME, mTripsheetsList.get(i).getmTripshhetTrasnsporterName());
+                values.put(KEY_TRIPSHEET_VEHICLE_NUMBER, mTripsheetsList.get(i).getmTripshhetVehicleNumber());
+//                int checkVal = checkSpecialPriceProductExistsOrNot(mSpecialPriceBeansList.get(i).getSpecialProductId()
+//                        , mSpecialPriceBeansList.get(i).getSpecialUserId());
+//                if (checkVal == 0) {
+//                    // insert row
+//                    db.insert(TABLE_SPECIALPRICE, null, values);
+//                    System.out.println("F*********** INSERTED***************88");
+//                } else {
+//                    // Update row
+//                    db.update(TABLE_SPECIALPRICE, values, KEY_PRODUCT_SPECIALID + " = ?" + " AND " + KEY_USER_SPECIALID + " = ? ",
+//                            new String[]{String.valueOf(mSpecialPriceBeansList.get(i).getSpecialProductId()),
+//                                    String.valueOf(mSpecialPriceBeansList.get(i).getSpecialUserId())});
+//                    System.out.println("F*********** UPDATED***************88");
+//                }
+                db.insert(TABLE_TRIPSHEETS_LIST, null, values);
+                values.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    /**
+     * Method to fetch all tripsheets whose status is A from Tripsheets table
+     */
+    public ArrayList<TripsheetsList> fetchTripsheetsList() {
+        ArrayList<TripsheetsList> alltripsheets = new ArrayList<TripsheetsList>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_STATUS + " = A ";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    TripsheetsList tripsheetsListBean = new TripsheetsList();
+                    tripsheetsListBean.setmTripshhetId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_ID)));
+                    tripsheetsListBean.setmTripshhetCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_CODE)));
+                    tripsheetsListBean.setmTripshhetDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DATE)));
+                    tripsheetsListBean.setmTripshhetStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STATUS)));
+                    tripsheetsListBean.setmTripshhetOBAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_OB_AMOUNT)));
+                    tripsheetsListBean.setmTripshhetOrderedAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_ORDERED_AMOUNT)));
+                    tripsheetsListBean.setmTripshhetReceivedAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RECEIVED_AMOUNT)));
+                    tripsheetsListBean.setmTripshhetDueAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DUE_AMOUNT)));
+                    tripsheetsListBean.setmTripshhetRouteCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_ROUTE_CODE)));
+                    tripsheetsListBean.setmTripshhetSalesMenCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_SALESMEN_CODE)));
+                    tripsheetsListBean.setmTripshhetVehicleNumber(c.getString(c.getColumnIndex(KEY_TRIPSHEET_VEHICLE_NUMBER)));
+                    tripsheetsListBean.setmTripshhetTrasnsporterName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_TRANSPORTER_NAME)));
+
+                    alltripsheets.add(tripsheetsListBean);
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return alltripsheets;
     }
 }
