@@ -151,4 +151,9 @@ public class Utility {
         NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
         return formatter.format(amount);
     }
+
+    public static String getFormattedNumber(double number) {
+        NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("en", "IN"));
+        return formatter.format(number);
+    }
 }

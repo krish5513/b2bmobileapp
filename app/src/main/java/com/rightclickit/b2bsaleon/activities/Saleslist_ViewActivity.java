@@ -49,7 +49,7 @@ public class Saleslist_ViewActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(Saleslist_ViewActivity.this,TDCSales_Today.class);
+            Intent i =new Intent(Saleslist_ViewActivity.this,TDCSalesListActivity.class);
             startActivity(i);
             finish();
             return true;
@@ -81,7 +81,7 @@ public class Saleslist_ViewActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, TDCSales_Today.class);
+        Intent intent = new Intent(this, TDCSalesListActivity.class);
         startActivity(intent);
         finish();
     }

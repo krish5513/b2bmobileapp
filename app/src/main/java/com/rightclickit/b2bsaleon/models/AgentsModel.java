@@ -85,28 +85,18 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
     public void getAgentsList(String s) {
         try {
             type = s;
-//            ArrayList<String> routeId = new ArrayList<String>();
-//            routeId.add("59158cb42c432907e4771bad");
-//
-//            ArrayList<String> stakeId = new ArrayList<String>();
-//            stakeId.add("5");
-//            stakeId.add("10");
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
+                HashMap<String, String> userMapData = mDBHelper.getUsersData();
+                JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
+                routesArray = routesJob.getJSONArray("routeArray");
                 String logInURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_LIST);
                 JSONObject job = new JSONObject();
-//                JSONArray routesArray = new JSONArray();
-//                routesArray.put("59158cb42c432907e4771bad");
+                String stakeHolderId = mDBHelper.getStakeTypeIdByStakeType("2");
                 JSONArray stakesArray = new JSONArray();
-                for (int j = 0; j < stakeIdsList.size(); j++) {
-                    stakesArray.put(stakeIdsList.get(j).toString());
-                }
-//                stakesArray.put("10");
+                stakesArray.put(stakeHolderId);
                 job.put("route_ids", routesArray);
                 job.put("_ids", stakesArray);
 
-//                HashMap<String,String> params = new HashMap<String,String>();
-//                params.put("route_ids",routeId.toString());
-//                params.put("_ids",stakeId.toString());
                 System.out.println("THE AGENTS URL IS::: " + logInURL);
                 System.out.println("THE AGENTS DATA IS::: " + job.toString());
                 AsyncRequest loginRequest = new AsyncRequest(context, this, logInURL, AsyncRequest.MethodType.POST, job);
@@ -118,78 +108,14 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
         }
     }
 
-//    public void customerAdd(String str_businessName, String str_personName, String str_mobileno, String stakeholderid, String userid, String email, String password1, String code, String reportingto, String verifycode, String status, String delete, String str_address, String latitude, String longitude, String timestamp, String ob, String order, String total, String due, String pic) {
-//        try {
-//
-//            isSaveDeviceDetails = true;
-//            this.firstname = str_businessName;
-//            this.lastname = str_personName;
-//            this.mobileno = str_mobileno;
-//            this.stakeid = stakeholderid;
-//            this.userid = userid;
-//            this.email = email;
-//            this.password = password1;
-//            this.mobileno = str_mobileno;
-//            this.code = code;
-//            this.reportingto = reportingto;
-//            this.verigycode = verifycode;
-//            this.status = status;
-//            this.delete = delete;
-//            this.address = str_address;
-//            this.latitude = latitude;
-//            this.longitude = longitude;
-//            this.timestamp = timestamp;
-//            this.ordervalue = order;
-//            this.ob = ob;
-//            this.totalamount = total;
-//            this.dueamount = due;
-//            this.pic = pic;
-//
-//            if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-//                String customerAdd = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_ADD);
-//                // HashMap<String,String> params = new HashMap<String,String>();
-//
-//                JSONObject paramsc = new JSONObject();
-//                JSONArray agentRouteArray = paramsc.getJSONArray("route_id");
-//                paramsc.put("route_id", agentRouteArray);
-//
-//                paramsc.put("first_name", firstname);
-//                paramsc.put("last_name", lastname);
-//                paramsc.put("phone", mobileno);
-//                paramsc.put("email", email);
-//                paramsc.put("password", password);
-//                paramsc.put("code", code);
-//                paramsc.put("reporting_to", reportingto);
-//                paramsc.put("verify_code", verifycode);
-//                paramsc.put("status", status);
-//                paramsc.put("delete", delete);
-//                paramsc.put("address", address);
-//                paramsc.put("created_by", userid);
-//                paramsc.put("created_on", timestamp);
-//                paramsc.put("updated_on", timestamp);
-//                paramsc.put("updated_by", userid);
-//                paramsc.put("avatar", pic);
-//
-//
-//                System.out.println("THE ADD URL IS::: " + customerAdd);
-//                System.out.println("THE ADD DATA IS::: " + paramsc.toString());
-//
-//                AsyncRequest loginRequest = new AsyncRequest(context, this, customerAdd, AsyncRequest.MethodType.POST, paramsc);
-//                loginRequest.execute();
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    public void customerAdd(ArrayList<AgentsBean> list) {
+    public void customerAdd(ArrayList<AgentsBean> list, String stakeTypeIdByStakeType) {
         try {
 
             isSaveDeviceDetails = true;
             this.mAgentsBeansList1 = list;
 
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
+                System.out.println("STAKE HOLDER ID IS:: "+ stakeTypeIdByStakeType);
                 String customerAdd = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_ADD);
                 // HashMap<String,String> params = new HashMap<String,String>();
 
@@ -216,7 +142,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                 paramsc.put("updated_by", mAgentsBeansList1.get(0).getmAgentUpdatedBy());
                 paramsc.put("avatar", mAgentsBeansList1.get(0).getmAgentPic());
                 paramsc.put("approved_on", mAgentsBeansList1.get(0).getmAgentApprovedOn());
-                paramsc.put("stakeholder_id", mAgentsBeansList1.get(0).getmAgentStakeid());
+                paramsc.put("stakeholder_id", stakeTypeIdByStakeType);
                 paramsc.put("device_sync", mAgentsBeansList1.get(0).getmAgentDeviceSync());
                 paramsc.put("access_device", mAgentsBeansList1.get(0).getmAgentAccessDevice());
                 paramsc.put("back_up", mAgentsBeansList1.get(0).getmAgentBackUp());

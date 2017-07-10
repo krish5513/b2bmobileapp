@@ -170,16 +170,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.TDCSales_Today"
+            android:name=".activities.TDCSalesListActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.Saleslist_ViewActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.TDCSales_Weekly"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.TDCSales_Month"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.DashboardTakeorder"
@@ -214,9 +208,6 @@
             android:name=".activities.Retailers_PaymentsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.RetailersInfoActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.AgentTakeOrderPreview"
             android:screenOrientation="portrait" />
         <activity
@@ -246,6 +237,13 @@
         <!-- TDC Sales Orders Sync Service -->
         <service
             android:name=".services.SyncTDCSalesOrderService"
+            android:enabled="true"
+            android:exported="true" />
+
+
+        <!-- Stake types Sync Service -->
+        <service
+            android:name=".services.SyncStakeHolderTypesService"
             android:enabled="true"
             android:exported="true" />
 

@@ -18,6 +18,7 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.NetworkManager;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -26,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -87,6 +89,15 @@ public class SyncTDCSalesOrderService extends Service {
             try {
                 currentOrder = tdcSaleOrders[0];
                 System.out.println("========== currentOrder = " + currentOrder);
+                HashMap<String, String> userRouteIds = mDBHelper.getUserRouteIds();
+                String userId = userRouteIds.get("user_id");
+                JSONArray routesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
+                String routeId = "";
+                if (routesArray.length() > 0)
+                    routeId = routesArray.getString(0);
+
+                String orderCreatedTime = Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALES_ORDER_DATE_FORMAT);
+
                 JSONArray productIdsArray = new JSONArray();
                 JSONArray taxPercentArray = new JSONArray();
                 JSONArray unitPriceArray = new JSONArray();
@@ -96,30 +107,30 @@ public class SyncTDCSalesOrderService extends Service {
 
                 for (TDCSalesOrderProductBean orderProductsBean : currentOrder.getOrderProductsList()) {
                     productIdsArray.put(orderProductsBean.getProductId());
-                    taxPercentArray.put(orderProductsBean.getProductTax());
-                    unitPriceArray.put(orderProductsBean.getProductMRP());
-                    quantityArray.put(orderProductsBean.getProductQuantity());
-                    amountArray.put(orderProductsBean.getProductAmount());
-                    taxAmountArray.put(orderProductsBean.getProductTaxAmount());
+                    taxPercentArray.put(String.valueOf(orderProductsBean.getProductTax()));
+                    unitPriceArray.put(String.valueOf(orderProductsBean.getProductMRP()));
+                    quantityArray.put(String.valueOf(orderProductsBean.getProductQuantity()));
+                    amountArray.put(String.valueOf(orderProductsBean.getProductAmount()));
+                    taxAmountArray.put(String.valueOf(orderProductsBean.getProductTaxAmount()));
                 }
 
                 JSONObject requestObj = new JSONObject();
-                requestObj.put("bill_no", String.format("TDC%05d", currentOrder.getOrderId()));
+                requestObj.put("bill_no", ""); //String.format("TDC%05d", currentOrder.getOrderId())
                 requestObj.put("user_id", "" + currentOrder.getSelectedCustomerId());
-                requestObj.put("route_id", mSessionManagement.getString("routename"));
+                requestObj.put("route_id", routeId);
                 requestObj.put("product_ids", productIdsArray);
                 requestObj.put("tax_percent", taxPercentArray);
                 requestObj.put("unit_price", unitPriceArray);
                 requestObj.put("quantity", quantityArray);
                 requestObj.put("amount", amountArray);
                 requestObj.put("tax_amount", taxAmountArray);
-                requestObj.put("tax_total", currentOrder.getOrderTotalTaxAmount());
-                requestObj.put("sale_value", currentOrder.getOrderSubTotal());
+                requestObj.put("tax_total", String.valueOf(currentOrder.getOrderTotalTaxAmount()));
+                requestObj.put("sale_value", String.valueOf(currentOrder.getOrderSubTotal()));
                 requestObj.put("status", "A");
                 requestObj.put("delete", "N");
                 requestObj.put("created_by", currentOrder.getCreatedBy());
-                requestObj.put("created_on", currentOrder.getCreatedOn());
-                requestObj.put("updated_on", currentOrder.getCreatedOn());
+                requestObj.put("created_on", orderCreatedTime);
+                requestObj.put("updated_on", orderCreatedTime);
                 requestObj.put("updated_by", currentOrder.getCreatedBy());
                 System.out.println("======= requestObj = " + requestObj);
                 String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.TDC_SALES_ORDER_ADD);
@@ -129,7 +140,8 @@ public class SyncTDCSalesOrderService extends Service {
                 if (responseString != null) {
                     JSONObject resultObj = new JSONObject(responseString);
                     System.out.println("====== resultObj = " + resultObj);
-                    // if success, need to update order status as uploaded in local db.
+                    // if success, we are updating order status as uploaded in local db.
+                    mDBHelper.updateTDCSalesOrdersTable(currentOrder.getOrderId());
                 }
             } catch (Exception e) {
                 e.printStackTrace();

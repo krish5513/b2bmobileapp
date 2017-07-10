@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.RetailersListAdapter;
@@ -36,6 +37,7 @@ public class RetailersActivity extends AppCompatActivity {
     private SearchView search;
     private LinearLayout mDashBoardLayout, mTripsheetsLayout, mCustomersLayout, mProductsLayout, mTDCLayout, mRetailersLayout;
     private ListView mRetailerslistview;
+    private TextView no_retailers_found_message;
     private FloatingActionButton fab;
     private Button info, payments;
 
@@ -83,6 +85,8 @@ public class RetailersActivity extends AppCompatActivity {
 
             mRetailerslistview = (ListView) findViewById(R.id.retailers_list_view);
             mRetailerslistview.setVisibility(View.GONE);
+
+            no_retailers_found_message = (TextView) findViewById(R.id.no_retailers_found);
 
             mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
             mDashBoardLayout.setVisibility(View.GONE);
@@ -165,30 +169,6 @@ public class RetailersActivity extends AppCompatActivity {
                 }
             });
 
-            /*info = (Button) findViewById(R.id.btn_info);
-            info.setVisibility(View.GONE);
-            payments = (Button) findViewById(R.id.btn_payments);
-            payments.setVisibility(View.GONE);
-
-            info.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(RetailersActivity.this, RetailersInfoActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-            });
-
-            payments.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(RetailersActivity.this, Retailers_PaymentsActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-
-            });*/
-
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
             ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
             System.out.println("F 11111 ***COUNT === " + privilegesData.size());
@@ -221,20 +201,19 @@ public class RetailersActivity extends AppCompatActivity {
                 canWeShowRetailersListView = true;
             }
 
-            /*if (privilegeActionsData.contains("List_Info")) {
-                info.setVisibility(View.VISIBLE);
-            }
-            if (privilegeActionsData.contains("Payment_List")) {
-                payments.setVisibility(View.VISIBLE);
-            }*/
-
             if (privilegeActionsData.contains("Add")) {
                 fab.setVisibility(View.VISIBLE);
             }
 
             if (canWeShowRetailersListView) {
                 retailersList = mDBHelper.fetchAllRetailerRecordsFromTDCCustomers();
-                retailersListAdapter = new RetailersListAdapter(activityContext, this, retailersList);
+
+                if (retailersList.size() <= 0) {
+                    mRetailerslistview.setVisibility(View.GONE);
+                    no_retailers_found_message.setVisibility(View.VISIBLE);
+                }
+
+                retailersListAdapter = new RetailersListAdapter(activityContext, this, retailersList, privilegeActionsData);
                 mRetailerslistview.setAdapter(retailersListAdapter);
             }
 

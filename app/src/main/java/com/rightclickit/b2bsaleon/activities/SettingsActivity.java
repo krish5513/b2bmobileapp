@@ -88,7 +88,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
     public static final String TAG = LoginActivity.class.getSimpleName();
 
- //   private MMSharedPreferences sharedPreferences;
+    //   private MMSharedPreferences sharedPreferences;
     private Context applicationContext, activityContext;
 
 
@@ -105,7 +105,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
     private DBHelper mDBHelper;
 
-    private String mRouteName = "",mRegionName = "",mOfficeName="",mRouteCode="";
+    private String mRouteName = "", mRegionName = "", mOfficeName = "", mRouteCode = "";
 
     private ImageView mPicImage;
     private LinearLayout mPicLayout;
@@ -113,13 +113,13 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private static final int ACTION_TAKE_PHOTO_A = 1;
     private static final int ACTION_TAKE_GALLERY_PIC_A = 2;
 
-    private String mLatitude="",mLongitude="",mDeviceId="",mProfilePic="";
+    private String mLatitude = "", mLongitude = "", mDeviceId = "", mProfilePic = "";
 
-    private LinearLayout mDashboardLayout,mTripSheetsLayout,mCustomersLayout,mProductsLayout,mTDCLayout;
+    private LinearLayout mDashboardLayout, mTripSheetsLayout, mCustomersLayout, mProductsLayout, mTDCLayout;
     private LinearLayout mRetailersLayout;
     private MMSharedPreferences mPreferences;
 
-    private String mNotifications = "",mTdcHomeScreen="";
+    private String mNotifications = "", mTdcHomeScreen = "";
 
 
     @Override
@@ -195,7 +195,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 public void onClick(View view) {
                     Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                     mDashboardLayout.startAnimation(animation1);
-                    Intent i = new Intent(SettingsActivity.this,DashboardActivity.class);
+                    Intent i = new Intent(SettingsActivity.this, DashboardActivity.class);
                     startActivity(i);
                     finish();
                 }
@@ -208,7 +208,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     Toast.makeText(applicationContext, "Clicked on TRIPSHEETS", Toast.LENGTH_SHORT).show();
                     Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                     mTripSheetsLayout.startAnimation(animation1);
-                    Intent i = new Intent(SettingsActivity.this,TripSheetsActivity.class);
+                    Intent i = new Intent(SettingsActivity.this, TripSheetsActivity.class);
                     startActivity(i);
                     finish();
                 }
@@ -221,7 +221,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 public void onClick(View view) {
                     Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                     mCustomersLayout.startAnimation(animation1);
-                    Intent i = new Intent(SettingsActivity.this,AgentsActivity.class);
+                    Intent i = new Intent(SettingsActivity.this, AgentsActivity.class);
                     startActivity(i);
                     finish();
                 }
@@ -246,7 +246,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     //Toast.makeText(applicationContext, "Clicked on Products", Toast.LENGTH_SHORT).show();
                     Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                     mProductsLayout.startAnimation(animation1);
-                    Intent i =new Intent(SettingsActivity.this,Products_Activity.class);
+                    Intent i = new Intent(SettingsActivity.this, Products_Activity.class);
                     startActivity(i);
                     finish();
                 }
@@ -260,7 +260,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     Toast.makeText(applicationContext, "Clicked on TDC", Toast.LENGTH_SHORT).show();
                     Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                     mTDCLayout.startAnimation(animation1);
-                    Intent i = new Intent(SettingsActivity.this,SalesActivity.class);
+                    Intent i = new Intent(SettingsActivity.this, SalesActivity.class);
                     startActivity(i);
                     finish();
                 }
@@ -271,7 +271,6 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 public void onClick(View v) {
                     saveValidation();
                 }
-
 
 
                 private void saveValidation() {
@@ -288,11 +287,11 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     str_accessdevice = accessDevice.getText().toString();
                     str_backup = backup.getText().toString();
 
-                 if (str_companyName.length() == 0 || str_companyName.length() == ' ') {
-                    companyName.setError("Please enter CompanyName");
-                    Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH_SHORT).show();
+                    if (str_companyName.length() == 0 || str_companyName.length() == ' ') {
+                        companyName.setError("Please enter CompanyName");
+                        Toast.makeText(getApplicationContext(), "Please enter CompanyName", Toast.LENGTH_SHORT).show();
 
-                  }
+                    }
 //                        else if (str_userName.length() == 0 || str_userName.length() == ' ') {
 //                        companyName.setError(null);
 //                        userName.setError("Please enter Username");
@@ -319,7 +318,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 //                        Toast.makeText(getApplicationContext(), "Please enter Routeno", Toast.LENGTH_SHORT).show();
 //
 //                    }
-                      else if (str_vehicleNo.length() == 0 || str_vehicleNo.length() == ' ') {
+                    else if (str_vehicleNo.length() == 0 || str_vehicleNo.length() == ' ') {
                         routeNo.setError(null);
                         vehicleNo.setError("Please enter Vehicleno");
                         Toast.makeText(getApplicationContext(), "Please enter Vehicleno", Toast.LENGTH_SHORT).show();
@@ -371,17 +370,15 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 //                        editor.commit();
 
 
+                        //Bundle bundle = new Bundle();
+                        //bundle.putString("COMPANYNAME", companyName.getText().toString());
 
-
-          //Bundle bundle = new Bundle();
-          //bundle.putString("COMPANYNAME", companyName.getText().toString());
-
-                        String dId  = getDeviceId();
-                        settingsmodel.saveDeviceDetails(dId,vehicleNo.getText().toString(),transporterName.getText().toString(),companyName.getText().toString());
+                        String dId = getDeviceId();
+                        settingsmodel.saveDeviceDetails(dId, vehicleNo.getText().toString(), transporterName.getText().toString(), companyName.getText().toString());
 //                         long f = mDBHelper.updateUserDetails(sharedPreferences.getString("userId"),"",userName.getText().toString(),
 //                                 "",mobile.getText().toString(),"","","","","","","",dId,transporterName.getText().toString(),
 //                                 vehicleNo.getText().toString(),"","");
-                     mPreferences.putString("companyname",companyName.getText().toString());
+                        mPreferences.putString("companyname", companyName.getText().toString());
 
                         companyName.setCursorVisible(false);
                         routeNo.setCursorVisible(false);
@@ -392,7 +389,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                         vehicleNo.setCursorVisible(false);
                         transporterName.setCursorVisible(false);
 
-                       CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
+                        CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
                     }
                 }
             });
@@ -409,19 +406,19 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     if (oldPassword.getText().toString().trim().length() == 0) {
                         oldPassword.setError("Please enter your old password");
                         Toast.makeText(getApplicationContext(), "Please enter your old password", Toast.LENGTH_SHORT).show();
-                    }else if (newPassword.getText().toString().trim().length() == 0) {
+                    } else if (newPassword.getText().toString().trim().length() == 0) {
                         oldPassword.setError(null);
                         newPassword.setError("Please enter new password");
                         Toast.makeText(getApplicationContext(), "Please enter new password", Toast.LENGTH_SHORT).show();
-                    }else if (confirmNewPassword.getText().toString().trim().length() == 0) {
+                    } else if (confirmNewPassword.getText().toString().trim().length() == 0) {
                         newPassword.setError(null);
                         confirmNewPassword.setError("Please enter confirm password");
                         Toast.makeText(getApplicationContext(), "Please enter confirm password", Toast.LENGTH_SHORT).show();
-                    }else if (!newPassword.getText().toString().trim().equals(confirmNewPassword.getText().toString().trim())) {
+                    } else if (!newPassword.getText().toString().trim().equals(confirmNewPassword.getText().toString().trim())) {
 
                         confirmNewPassword.setError("New password and  confirm password are not match");
                         Toast.makeText(getApplicationContext(), "New password and  confirm password are not match", Toast.LENGTH_SHORT).show();
-                    }else {
+                    } else {
                         confirmNewPassword.setError(null);
                         settingsmodel.changePassword(mPreferences.getString("userId"), Utility.getMd5String(newPassword.getText().toString().trim()));
                     }
@@ -431,14 +428,14 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             });
 
 
-            HashMap<String,String> userMapData = mDBHelper.getUsersData();
-            System.out.println("The User Data NAME Is:: "+userMapData.get("name"));
-            System.out.println("The User Data ID Is:: "+userMapData.get("user_id"));
-            System.out.println("The User Data PHONE Is:: "+userMapData.get("phone_number"));
-            System.out.println("The User Data DEVICE SYNC Is:: "+userMapData.get("device_sync"));
-            System.out.println("The User Data BACKUP Is:: "+userMapData.get("backup"));
-            System.out.println("The User Data ACCESS DEVICE Is:: "+userMapData.get("access_device"));
-            System.out.println("The User Data ROUTE IDS Is:: "+userMapData.get("route_ids"));
+            HashMap<String, String> userMapData = mDBHelper.getUsersData();
+            System.out.println("The User Data NAME Is:: " + userMapData.get("name"));
+            System.out.println("The User Data ID Is:: " + userMapData.get("user_id"));
+            System.out.println("The User Data PHONE Is:: " + userMapData.get("phone_number"));
+            System.out.println("The User Data DEVICE SYNC Is:: " + userMapData.get("device_sync"));
+            System.out.println("The User Data BACKUP Is:: " + userMapData.get("backup"));
+            System.out.println("The User Data ACCESS DEVICE Is:: " + userMapData.get("access_device"));
+            System.out.println("The User Data ROUTE IDS Is:: " + userMapData.get("route_ids"));
             mLatitude = userMapData.get("latitude");
             mLongitude = userMapData.get("longitude");
             mDeviceId = userMapData.get("device_udid");
@@ -448,35 +445,35 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
             JSONArray routesArray = routesJob.getJSONArray("routeArray");
 
-            for (int l = 0;l<routesArray.length();l++){
-                System.out.println("The Route Id IS::: "+ routesArray.get(l).toString());
+            for (int l = 0; l < routesArray.length(); l++) {
+                System.out.println("The Route Id IS::: " + routesArray.get(l).toString());
 
                 List<String> routesDataList = mDBHelper.getRouteDataByRouteId(routesArray.get(l).toString());
 
-                for (int k = 0;k<routesDataList.size();k++){
-                    System.out.println(" LOOPPPPPPPPPPPPPP "+k);
-                    if(routesDataList.get(k)!=null) {
-                        switch (k){
+                for (int k = 0; k < routesDataList.size(); k++) {
+                    System.out.println(" LOOPPPPPPPPPPPPPP " + k);
+                    if (routesDataList.get(k) != null) {
+                        switch (k) {
                             case 1:
-                                mRouteName =  routesDataList.get(1);
+                                mRouteName = mRouteName + routesDataList.get(1);
                                 break;
                             case 2:
-                                mRegionName =  routesDataList.get(2);
+                                mRegionName = mRegionName + routesDataList.get(2);
                                 break;
                             case 3:
-                                mOfficeName =  routesDataList.get(3);
+                                mOfficeName = mOfficeName + routesDataList.get(3);
                                 break;
                             case 4:
-                                mRouteCode=  routesDataList.get(4);
+                                mRouteCode = mRouteCode + routesDataList.get(4);
                                 break;
                         }
                     }
                 }
             }
-            System.out.println("ROUTE NAME IS:::: "+ mRouteName);
-            System.out.println("REGION NAME IS:::: "+ mRegionName);
-            System.out.println("OFFICE NAME IS:::: "+ mOfficeName);
-            System.out.println("ROUTE CODE IS:::: "+ mRouteCode);
+            System.out.println("ROUTE NAME IS:::: " + mRouteName);
+            System.out.println("REGION NAME IS:::: " + mRegionName);
+            System.out.println("OFFICE NAME IS:::: " + mOfficeName);
+            System.out.println("ROUTE CODE IS:::: " + mRouteCode);
 //            List<String> routesDataList = mDBHelper.getRoutesMasterData();
 //            System.out.println("The Data Is SIZE ======= ::: "+ routesDataList.size());
 //            for (int i=0;i<routesDataList.size();i++){
@@ -484,79 +481,77 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 //            }
 
 
+            // Append all the db data to lables.
 
-             // Append all the db data to lables.
 
-
-           companyName.setText("");
-            if(userMapData.get("name")!=null) {
+            companyName.setText("");
+            if (userMapData.get("name") != null) {
                 userName.setText(userMapData.get("name").toString());
-                mPreferences.putString("loginusername",userMapData.get("name").toString());
+                mPreferences.putString("loginusername", userMapData.get("name").toString());
             }
-            if(userMapData.get("phone_number")!=null) {
+            if (userMapData.get("phone_number") != null) {
                 mobile.setText(userMapData.get("phone_number").toString());
             }
             region.setText(mRegionName);
 
             salesOffice.setText(mOfficeName);
             routeNo.setText(mRouteName);
-            mPreferences.putString("routename",mRouteName);
-            mPreferences.putString("routecode",mRouteCode);
+            mPreferences.putString("routename", mRouteName);
+            mPreferences.putString("routecode", mRouteCode);
 
             vehicleNo.setText("");
             transporterName.setText("");
-            if(userMapData.get("access_device")!=null) {
+            if (userMapData.get("access_device") != null) {
                 accessDevice.setText(userMapData.get("access_device").toString());
             }
-            if(userMapData.get("device_sync")!=null) {
+            if (userMapData.get("device_sync") != null) {
                 deviceSync.setText(userMapData.get("device_sync").toString());
             }
-            if(userMapData.get("backup")!=null) {
+            if (userMapData.get("backup") != null) {
                 backup.setText(userMapData.get("backup").toString());
             }
-            if(userMapData.get("vehicle_number")!=null) {
+            if (userMapData.get("vehicle_number") != null) {
                 vehicleNo.setText(userMapData.get("vehicle_number").toString());
             }
-            if(userMapData.get("transporter_name")!=null) {
+            if (userMapData.get("transporter_name") != null) {
                 transporterName.setText(userMapData.get("transporter_name").toString());
             }
-            if(userMapData.get("companyname")!=null) {
+            if (userMapData.get("companyname") != null) {
                 companyName.setText(userMapData.get("companyname").toString());
             }
-            if(!mProfilePic.equals("")){
-                String URL = Constants.MAIN_URL+"/b2b/"+mProfilePic;
-                imageLoader.DisplayImage(URL,mPicImage,null,"");
-            }
-            else {
+            if (!mProfilePic.equals("")) {
+                String URL = Constants.MAIN_URL + "/b2b/" + mProfilePic;
+                imageLoader.DisplayImage(URL, mPicImage, null, "");
+            } else {
                 mPicImage.setBackgroundResource(R.drawable.logo);
             }
 
             ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
-            System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
-            for (int k = 0; k<privilegesData.size();k++){
-                System.out.println("F 11111 ***COUNT 4444 === "+ privilegesData.get(k).toString());
-                if (privilegesData.get(k).toString().equals("Dashboard")){
+            System.out.println("F 11111 ***COUNT === " + privilegesData.size());
+            for (int k = 0; k < privilegesData.size(); k++) {
+                System.out.println("F 11111 ***COUNT 4444 === " + privilegesData.get(k).toString());
+                if (privilegesData.get(k).toString().equals("Dashboard")) {
                     mDashboardLayout.setVisibility(View.VISIBLE);
-                }else if (privilegesData.get(k).toString().equals("TripSheets")){
+                } else if (privilegesData.get(k).toString().equals("TripSheets")) {
                     mTripSheetsLayout.setVisibility(View.VISIBLE);
-                }else if (privilegesData.get(k).toString().equals("Customers")){
+                } else if (privilegesData.get(k).toString().equals("Customers")) {
                     mCustomersLayout.setVisibility(View.VISIBLE);
-                }else if (privilegesData.get(k).toString().equals("Products")){
+                } else if (privilegesData.get(k).toString().equals("Products")) {
                     mProductsLayout.setVisibility(View.VISIBLE);
-                }else if (privilegesData.get(k).toString().equals("TDC")){
+                } else if (privilegesData.get(k).toString().equals("TDC")) {
                     mTDCLayout.setVisibility(View.VISIBLE);
-                }else if (privilegesData.get(k).toString().equals("Retailers")){
+                } else if (privilegesData.get(k).toString().equals("Retailers")) {
                     mRetailersLayout.setVisibility(View.VISIBLE);
                 }
             }
 
             ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Products"));
-            System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
-            for (int z = 0;z<privilegeActionsData.size();z++){
-                System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
+            System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+            for (int z = 0; z < privilegeActionsData.size(); z++) {
+                System.out.println("Name::: " + privilegeActionsData.get(z).toString());
                 if (privilegeActionsData.get(z).toString().equals("Notification")) {
                     mNotifications = privilegeActionsData.get(z).toString();
-                }else if(privilegeActionsData.get(z).toString().equals("tdc_home_screen")){
+                } else if (privilegeActionsData.get(z).toString().equals("tdc_home_screen")) {
                     mTdcHomeScreen = privilegeActionsData.get(z).toString();
                 }
             }
@@ -588,9 +583,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         locationManager.requestLocationUpdates(bestProvider, 20000, 0, (android.location.LocationListener) this);
 */
 
-       if(new NetworkConnectionDetector(SettingsActivity.this).isNetworkConnected()){
+        if (new NetworkConnectionDetector(SettingsActivity.this).isNetworkConnected()) {
             startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class));
-       }
+        }
 
     }
 
@@ -621,7 +616,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             return true;
         }
         if (id == R.id.logout) {
-            showAlertDialogWithCancelButton(SettingsActivity.this,"User Action!","Are you sure, you want to Log Out?");
+            showAlertDialogWithCancelButton(SettingsActivity.this, "User Action!", "Are you sure, you want to Log Out?");
             return true;
         }
 
@@ -633,13 +628,14 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 return true;
         }
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = null;
-        if(mTdcHomeScreen.equals("tdc_home_screen")) {
+        if (mTdcHomeScreen.equals("tdc_home_screen")) {
             intent = new Intent(this, SalesActivity.class);
-        }else {
+        } else {
             intent = new Intent(this, DashboardActivity.class);
         }
         startActivity(intent);
@@ -647,17 +643,16 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
 
-
     private void loadLogout() {
-        mPreferences.putString("isLogin","false");
+        mPreferences.putString("isLogin", "false");
         //sharedPreferences.clear();
-        Intent loginIntent=new Intent(SettingsActivity.this,LoginActivity.class);
+        Intent loginIntent = new Intent(SettingsActivity.this, LoginActivity.class);
         startActivity(loginIntent);
         finish();
     }
 
     private void loadNotifications() {
-        Intent notificationsIntent=new Intent(SettingsActivity.this,NotificationsActivity.class);
+        Intent notificationsIntent = new Intent(SettingsActivity.this, NotificationsActivity.class);
         startActivity(notificationsIntent);
         finish();
     }
@@ -665,16 +660,16 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if(mNotifications.equals("Notification")){
+        if (mNotifications.equals("Notification")) {
             menu.findItem(R.id.notifications).setVisible(true);
-        }else {
+        } else {
             menu.findItem(R.id.notifications).setVisible(false);
         }
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(true);
         menu.findItem(R.id.action_search).setVisible(false);
-        menu.findItem( R.id.Add).setVisible(false);
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.Add).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -692,7 +687,6 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             alertDialogBuilder.setTitle(title);
             alertDialogBuilder.setMessage(message);
             alertDialogBuilder.setCancelable(false);
-
 
 
             alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -719,10 +713,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 cancelButton.setTextColor(ContextCompat.getColor(context, R.color.alert_dialog_color_accent));
 
 
-        }
-
-
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -732,27 +723,23 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
      */
     private void selectImage() {
 
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+        final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
         builder.setTitle("Add Photo!");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo"))
-                {
+                if (options[item].equals("Take Photo")) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, ACTION_TAKE_PHOTO_A);
-                }
-                else if (options[item].equals("Choose from Gallery"))
-                {
-                    Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, ACTION_TAKE_GALLERY_PIC_A);
 
-                }
-                else if (options[item].equals("Cancel")) {
+                } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
@@ -810,14 +797,14 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             } else if (requestCode == ACTION_TAKE_GALLERY_PIC_A) {
 
                 Uri selectedImage = data.getData();
-                String[] filePath = { MediaStore.Images.Media.DATA };
-                Cursor c = getContentResolver().query(selectedImage,filePath, null, null, null);
+                String[] filePath = {MediaStore.Images.Media.DATA};
+                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
                 c.moveToFirst();
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
                 c.close();
                 Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                System.out.println("path of image from gallery......******************........."+ picturePath+"");
+                System.out.println("path of image from gallery......******************........." + picturePath + "");
                 BitmapDrawable d = new BitmapDrawable(this.getResources(), thumbnail);
                 mPicImage.setBackgroundDrawable(null);
                 mPicImage.setBackgroundDrawable(d);
@@ -825,12 +812,12 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             }
         }
     }
-    public void goBackToDashboard(){
-        Intent i = new Intent(SettingsActivity.this,DashboardActivity.class);
+
+    public void goBackToDashboard() {
+        Intent i = new Intent(SettingsActivity.this, DashboardActivity.class);
         startActivity(i);
         finish();
     }
-
 
 
     @Override
@@ -844,9 +831,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(100));*/
         LatLng sydney;
-        if(!mLatitude.equals("") && !mLongitude.equals("")){
+        if (!mLatitude.equals("") && !mLongitude.equals("")) {
             sydney = new LatLng(Double.parseDouble(mLatitude), Double.parseDouble(mLongitude));
-        }else {
+        } else {
             // Pass current location lat and long
             sydney = new LatLng(17.3850440, 78.4866710);
         }
@@ -860,7 +847,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
     }
 
-    private String getDeviceId(){
+    private String getDeviceId() {
         String android_id = Settings.Secure.getString(SettingsActivity.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         return android_id;

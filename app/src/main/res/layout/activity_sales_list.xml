@@ -4,27 +4,132 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rightclickit.b2bsaleon.activities.TDCSales_Today">
+    tools:context="com.rightclickit.b2bsaleon.activities.TDCSalesListActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@color/layout_background"
+        android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="3"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sales"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tdc_sales_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="0"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Order value: "
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tdc_sales_total_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="\u20B9 0.00"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Items"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tdc_sales_items_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="0"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_line" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
         android:orientation="vertical">
 
-
         <ListView
-            android:id="@+id/AgentsList"
+            android:id="@+id/tdc_sales_list_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="60dp"
             android:divider="@android:color/transparent"
             android:smoothScrollbar="true" />
 
+        <TextView
+            android:id="@+id/no_tdc_sales_found_message"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="No Sales Found."
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
     </LinearLayout>
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,78 +138,85 @@
         android:background="@color/white"
         android:gravity="end|center"
         android:orientation="vertical">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:orientation="horizontal">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="0.25"
                 android:layout_gravity="center"
+                android:layout_weight="0.25"
                 android:gravity="center">
+
                 <TextView
-                    android:id="@+id/tv_today"
+                    android:id="@+id/tdc_sales_today"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="TODAY"
-                    android:padding="5dp"
                     android:background="@drawable/border_accent"
+                    android:gravity="center"
+                    android:onClick="loadTDCSalesList"
+                    android:padding="5dp"
+                    android:tag="0"
+                    android:text="TODAY"
                     android:textColor="@color/colorAccent"
                     android:textSize="12sp" />
 
-
             </LinearLayout>
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="0.25"
                 android:layout_gravity="center"
+                android:layout_weight="0.25"
                 android:gravity="center">
+
                 <TextView
-                    android:id="@+id/tv_weekly"
+                    android:id="@+id/tdc_sales_weekly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="WEEKLY"
-                    android:padding="5dp"
                     android:background="@drawable/border_btn"
+                    android:onClick="loadTDCSalesList"
+                    android:padding="5dp"
+                    android:tag="1"
+                    android:text="WEEKLY"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 
-
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="0.25"
                 android:layout_gravity="center"
+                android:layout_weight="0.25"
                 android:gravity="center">
+
                 <TextView
-                    android:id="@+id/tv_monthly"
+                    android:id="@+id/tdc_sales_monthly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:padding="5dp"
                     android:background="@drawable/border_btn"
+                    android:gravity="center"
+                    android:onClick="loadTDCSalesList"
+                    android:padding="5dp"
+                    android:tag="2"
                     android:text="MONTHLY"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 
-
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

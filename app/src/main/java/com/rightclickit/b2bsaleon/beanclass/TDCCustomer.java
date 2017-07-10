@@ -8,12 +8,14 @@ import java.io.Serializable;
 
 public class TDCCustomer implements Serializable {
     private int id;
+    private String userId;
     private int customerType; // 0 for Consumer & 1 for Retailer
     private String name;
     private String mobileNo;
     private String businessName;
     private String address;
-    private String latLong;
+    private String latitude;
+    private String longitude;
     private String shopImage;
     private int isActive;
     private int isUploaded;
@@ -25,6 +27,14 @@ public class TDCCustomer implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public int getCustomerType() {
@@ -67,12 +77,20 @@ public class TDCCustomer implements Serializable {
         this.address = address;
     }
 
-    public String getLatLong() {
-        return latLong;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setLatLong(String latLong) {
-        this.latLong = latLong;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String getShopImage() {
@@ -105,5 +123,24 @@ public class TDCCustomer implements Serializable {
 
     public void setIsShopImageUploaded(int isShopImageUploaded) {
         this.isShopImageUploaded = isShopImageUploaded;
+    }
+
+    @Override
+    public String toString() {
+        return "TDCCustomer{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", customerType=" + customerType +
+                ", name='" + name + '\'' +
+                ", mobileNo='" + mobileNo + '\'' +
+                ", businessName='" + businessName + '\'' +
+                ", address='" + address + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", shopImage='" + shopImage + '\'' +
+                ", isActive=" + isActive +
+                ", isUploaded=" + isUploaded +
+                ", isShopImageUploaded=" + isShopImageUploaded +
+                '}';
     }
 }

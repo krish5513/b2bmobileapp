@@ -96,7 +96,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/btn_info"
+                    android:id="@+id/retailer_btn_info"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:background="@drawable/border_btn"
@@ -107,7 +107,7 @@
                     android:textSize="10sp" />
 
                 <Button
-                    android:id="@+id/btn_payments"
+                    android:id="@+id/retailer_btn_payments"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:layout_marginLeft="30dp"

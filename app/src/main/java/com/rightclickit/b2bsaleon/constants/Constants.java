@@ -22,6 +22,7 @@ public class Constants {
     public static final String BUNDLE_TDC_SALE_ORDER = "TDCSaleOrder";
     public static final String BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW = "TDCSaleCurrentOrder_Preview";
     public static final String BUNDLE_TDC_SALE_CURRENT_ORDER = "TDCSaleCurrentOrder";
+    public static final String BUNDLE_TDC_CUSTOMER = "TDCCustomer";
 
     public static final int VOLLEY_SOCKET_TIMEOUT = 30000; // 120 seconds.
 
@@ -29,7 +30,10 @@ public class Constants {
     public static final String FONT_NAME_REGULAR = "fonts/Swiss-721-BT-Roman.ttf";
     public static final String FONT_NAME_BOLD = "fonts/Swiss-721-BT-Bold.ttf";
 
-    public static final String DATE_DISPLAY_FORMAT = "dd/MM/yyyy HH:mm:ss";
+    public static final String TDC_SALE_INFO_DATE_DISPLAY_FORMAT = "dd/MM/yyyy HH:mm a";
+    public static final String TDC_SALES_LIST_DATE_DISPLAY_FORMAT = "dd/MM/yyyy";
+    public static final String TDC_SALES_ORDER_DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
+    public static final String TDC_SALES_ORDER_DATE_SAVE_FORMAT = "yyyy-MM-dd";
 
     public enum RequestCode {
         DEFAULT
@@ -61,7 +65,6 @@ public class Constants {
      * Port for agents list.
      */
     public static final String PORT_AGENTS_LIST = ":3004";
-
 
 
     public static final String PORT_PRODUCTSLIST = ":3006";

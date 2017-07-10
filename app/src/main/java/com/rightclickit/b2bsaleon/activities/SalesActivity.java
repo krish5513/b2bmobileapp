@@ -108,7 +108,11 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
 
                 // Getting previously selected products list to update on UI
                 previouslySelectedProductsListHashMap = currentOrder.getProductsList();
-                updateSelectedProductsListAndSubTotal(previouslySelectedProductsListHashMap);
+                if (previouslySelectedProductsListHashMap == null) {
+                    previouslySelectedProductsListHashMap = new HashMap<>();
+                } else {
+                    updateSelectedProductsListAndSubTotal(previouslySelectedProductsListHashMap);
+                }
             }
 
             if (showProductsListView) {
@@ -116,6 +120,8 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
                 tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsList, previouslySelectedProductsListHashMap);
                 tdc_products_list_view.setAdapter(tdcSalesAdapter);
             }
+
+            //startService(new Intent(activityContext, SyncTDCSalesOrderService.class));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -134,7 +140,7 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Intent i = new Intent(SalesActivity.this, TDCSales_Today.class);
+                    Intent i = new Intent(SalesActivity.this, TDCSalesListActivity.class);
                     startActivity(i);
                     finish();
                 }

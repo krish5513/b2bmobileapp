@@ -16,7 +16,6 @@ import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.services.SyncTDCSalesOrderService;
-import com.rightclickit.b2bsaleon.services.SyncTakeOrdersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -34,7 +33,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Sales_Preview_PrintActivity extends AppCompatActivity {
@@ -47,7 +45,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
     private TDCSaleOrder currentOrder;
     private TDCSalesPreviewAdapter tdcSalesPreviewAdapter;
     private DBHelper mDBHelper;
-    private String loggedInUserName;
+    private String loggedInUserId, loggedInUserName;
 
     TextView company_name, route_name, route_code, user_name, sales_print;
     String amount, subtotal, taxAmount, name;
@@ -55,11 +53,12 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
     String subtaxAmount, subAmount, finalAmount;
 
     String currentDate, str_routecode, str_enguiryid, str_agentname;
+    long currentTimeStamp;
     Map<String, String[]> selectedList = new HashMap<String, String[]>();
     private long previousOrderId;
     private String currentOrderId;
     private boolean isOrderAlreadySaved = false;
-  //  ArrayList<String[]> selectedList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +69,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
             activityContext = Sales_Preview_PrintActivity.this;
 
             mmSharedPreferences = new MMSharedPreferences(applicationContext);
+            loggedInUserId = mmSharedPreferences.getString("userId");
             loggedInUserName = mmSharedPreferences.getString("loginusername");
 
             mDBHelper = new DBHelper(Sales_Preview_PrintActivity.this);
@@ -96,7 +96,8 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
             sub_total_amount_text_view = (TextView) findViewById(R.id.sub_total_amount);
             tdc_products_list_preview = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
 
-            currentDate = Utility.formatDate(new Date(), Constants.DATE_DISPLAY_FORMAT);
+            currentTimeStamp = System.currentTimeMillis();
+            currentDate = Utility.formatTime(currentTimeStamp, Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
             str_routecode = (mmSharedPreferences.getString("routecode") + ",");
 
             previousOrderId = mDBHelper.getTDCSalesMaxOrderNumber();
@@ -104,34 +105,33 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
-
-
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW);
-
                 updateUIWithBundleValues(currentOrder);
 
                 subtaxAmount = Utility.getFormattedCurrency(currentOrder.getOrderTotalTaxAmount());
                 //Log.i("fdgh", subtaxAmount + "");
                 subAmount = Utility.getFormattedCurrency(currentOrder.getOrderTotalAmount());
                 finalAmount = Utility.getFormattedCurrency(currentOrder.getOrderSubTotal());
+
                 Map<String, ProductsBean> productsList = currentOrder.getProductsList();
-              //  selectedList=productsList.size();
-                for (Map.Entry<String, ProductsBean> productsBeanEntry : productsList.entrySet()) {
-                    ProductsBean productsBean = productsBeanEntry.getValue();
-                    name = String.valueOf(productsBean.getProductTitle().replace(",", ""));
-                    Log.i("prod.name", name);
-                    quantity = productsBean.getSelectedQuantity();
-                    mrp = Double.parseDouble(productsBean.getProductConsumerPrice().replace(",", ""));
-                    subtotal = Utility.getFormattedCurrency(productsBean.getProductAmount());
-                    taxAmount = Utility.getFormattedCurrency(productsBean.getTaxAmount());
-                    String[] temp = new String[5];
-                    temp[0] = name;
-                    temp[1] = String.valueOf(quantity);
-                    temp[2] = String.valueOf(mrp);
-                    temp[3] = String.valueOf(subtotal);
-                    temp[4] = String.valueOf(taxAmount);
-                    selectedList.put(name, temp);
-                    //Log.i("pushtemp", temp + "");
+                if (productsList != null) {
+                    for (Map.Entry<String, ProductsBean> productsBeanEntry : productsList.entrySet()) {
+                        ProductsBean productsBean = productsBeanEntry.getValue();
+                        name = String.valueOf(productsBean.getProductTitle().replace(",", ""));
+                        Log.i("prod.name", name);
+                        quantity = productsBean.getSelectedQuantity();
+                        mrp = Double.parseDouble(productsBean.getProductConsumerPrice().replace(",", ""));
+                        subtotal = Utility.getFormattedCurrency(productsBean.getProductAmount());
+                        taxAmount = Utility.getFormattedCurrency(productsBean.getTaxAmount());
+                        String[] temp = new String[5];
+                        temp[0] = name;
+                        temp[1] = String.valueOf(quantity);
+                        temp[2] = String.valueOf(mrp);
+                        temp[3] = String.valueOf(subtotal);
+                        temp[4] = String.valueOf(taxAmount);
+                        selectedList.put(name, temp);
+                        //Log.i("pushtemp", temp + "");
+                    }
                 }
             }
 
@@ -259,9 +259,11 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
             sale_no_text_view.setText(currentOrderId);
             sale_date_time_text_view.setText(currentDate);
 
-            ArrayList<ProductsBean> selectedProductsList = new ArrayList<>(saleOrder.getProductsList().values());
-            tdcSalesPreviewAdapter = new TDCSalesPreviewAdapter(activityContext, this, selectedProductsList);
-            tdc_products_list_preview.setAdapter(tdcSalesPreviewAdapter);
+            if (saleOrder.getProductsList() != null) {
+                ArrayList<ProductsBean> selectedProductsList = new ArrayList<>(saleOrder.getProductsList().values());
+                tdcSalesPreviewAdapter = new TDCSalesPreviewAdapter(activityContext, this, selectedProductsList);
+                tdc_products_list_preview.setAdapter(tdcSalesPreviewAdapter);
+            }
 
             total_tax_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderTotalTaxAmount()));
             total_amount_text_view.setText(Utility.getFormattedCurrency(saleOrder.getOrderTotalAmount()));
@@ -274,8 +276,9 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
     public void saveTDCSaleOrder(View view) {
         try {
             if (currentOrder != null && !isOrderAlreadySaved) {
-                currentOrder.setCreatedBy(loggedInUserName);
-                currentOrder.setCreatedOn(currentDate);
+                currentOrder.setCreatedBy(loggedInUserId);
+                currentOrder.setCreatedOn(currentTimeStamp);
+                currentOrder.setOrderDate(Utility.formatTime(currentTimeStamp, Constants.TDC_SALES_ORDER_DATE_SAVE_FORMAT));
 
                 long orderId = mDBHelper.insertIntoTDCSalesOrdersTable(currentOrder);
 
@@ -284,6 +287,9 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                 else {
                     Toast.makeText(activityContext, "Order Saved Successfully.", Toast.LENGTH_LONG).show();
                     isOrderAlreadySaved = true;
+
+                    // after order was saved successfully, we are creating a new TDCSaleOrder object to clear previous selected products.
+                    currentOrder = new TDCSaleOrder();
 
                     if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
                         Intent syncTDCOrderServiceIntent = new Intent(activityContext, SyncTDCSalesOrderService.class);
