@@ -40,6 +40,7 @@ public class SyncTDCSalesOrderService extends Service {
     private DBHelper mDBHelper;
     private MMSharedPreferences mSessionManagement;
     private NetworkConnectionDetector connectionDetector;
+    private int unUploadedTDCSalesOrdersCount = 0;
 
     @Override
     public void onCreate() {
@@ -71,7 +72,8 @@ public class SyncTDCSalesOrderService extends Service {
     private void syncTDCSalesOrdersDataWithServer() {
         try {
             List<TDCSaleOrder> unUploadedTDCSalesOrders = mDBHelper.fetchAllUnUploadedTDCSalesOrders();
-
+            unUploadedTDCSalesOrdersCount = unUploadedTDCSalesOrders.size();
+            System.out.println("========== unUploadedTDCSalesOrders = " + unUploadedTDCSalesOrdersCount);
             for (TDCSaleOrder order : unUploadedTDCSalesOrders) {
                 if (connectionDetector.isNetworkConnected())
                     new SyncTDCSalesOrderAsyncTask().execute(order);
@@ -89,14 +91,18 @@ public class SyncTDCSalesOrderService extends Service {
             try {
                 currentOrder = tdcSaleOrders[0];
                 System.out.println("========== currentOrder = " + currentOrder);
+                String userId = currentOrder.getSelectedCustomerUserId();
+                if (userId == null || userId.isEmpty()) {
+                    userId = "596312856e6ce831f4279004"; // static value given by service team and we are considering this customer as un known.
+                }
+
                 HashMap<String, String> userRouteIds = mDBHelper.getUserRouteIds();
-                String userId = userRouteIds.get("user_id");
                 JSONArray routesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
                 String routeId = "";
                 if (routesArray.length() > 0)
                     routeId = routesArray.getString(0);
 
-                String orderCreatedTime = Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALES_ORDER_DATE_FORMAT);
+                String orderCreatedTime = Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALES_ORDER_DATE_SAVE_FORMAT);
 
                 JSONArray productIdsArray = new JSONArray();
                 JSONArray taxPercentArray = new JSONArray();
@@ -115,8 +121,8 @@ public class SyncTDCSalesOrderService extends Service {
                 }
 
                 JSONObject requestObj = new JSONObject();
-                requestObj.put("bill_no", ""); //String.format("TDC%05d", currentOrder.getOrderId())
-                requestObj.put("user_id", "" + currentOrder.getSelectedCustomerId());
+                requestObj.put("bill_no", "");
+                requestObj.put("user_id", userId);
                 requestObj.put("route_id", routeId);
                 requestObj.put("product_ids", productIdsArray);
                 requestObj.put("tax_percent", taxPercentArray);
@@ -140,8 +146,12 @@ public class SyncTDCSalesOrderService extends Service {
                 if (responseString != null) {
                     JSONObject resultObj = new JSONObject(responseString);
                     System.out.println("====== resultObj = " + resultObj);
-                    // if success, we are updating order status as uploaded in local db.
-                    mDBHelper.updateTDCSalesOrdersTable(currentOrder.getOrderId());
+                    if (resultObj.getInt("result_status") == 1) {
+                        // if success, we are updating order status as uploaded in local db.
+                        mDBHelper.updateTDCSalesOrdersTable(currentOrder.getOrderId());
+
+                        unUploadedTDCSalesOrdersCount--;
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -152,8 +162,10 @@ public class SyncTDCSalesOrderService extends Service {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            stopSelf();
-            System.out.println("Sync TDC Sales Order Service Stopped Automatically....");
+            if (unUploadedTDCSalesOrdersCount == 0) {
+                stopSelf();
+                System.out.println("Sync TDC Sales Order Service Stopped Automatically....");
+            }
         }
     }
 }

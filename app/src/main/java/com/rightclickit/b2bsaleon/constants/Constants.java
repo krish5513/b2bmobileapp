@@ -32,8 +32,8 @@ public class Constants {
 
     public static final String TDC_SALE_INFO_DATE_DISPLAY_FORMAT = "dd/MM/yyyy HH:mm a";
     public static final String TDC_SALES_LIST_DATE_DISPLAY_FORMAT = "dd/MM/yyyy";
-    public static final String TDC_SALES_ORDER_DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
     public static final String TDC_SALES_ORDER_DATE_SAVE_FORMAT = "yyyy-MM-dd";
+    public static final String CUSTOMER_ADD_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public enum RequestCode {
         DEFAULT

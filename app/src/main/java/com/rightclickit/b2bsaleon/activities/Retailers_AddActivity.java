@@ -38,7 +38,9 @@ import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.services.SyncTDCCustomersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -319,6 +321,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     public void addNewRetailer(String name, String mobileNo, String businessName, String retailerAddress) {
         try {
             customer = new TDCCustomer();
+            customer.setUserId(""); // later we will update this value by fetching from service.
             customer.setCustomerType(1);
             customer.setName(name);
             customer.setMobileNo(mobileNo);
@@ -349,6 +352,11 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 address.setText("");
 
                 Toast.makeText(activityContext, "New retailer added successfully.", Toast.LENGTH_LONG).show();
+
+                if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                    Intent syncTDCCustomersServiceIntent = new Intent(activityContext, SyncTDCCustomersService.class);
+                    startService(syncTDCCustomersServiceIntent);
+                }
 
                 onBackPressed();
             }

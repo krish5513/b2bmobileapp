@@ -29,7 +29,9 @@ import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.services.SyncTDCCustomersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,7 +109,7 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
 
                     if (currentOrder != null) {
                         currentOrder.setSelectedCustomerId(selectedCustomer.getId());
-                        currentOrder.setSelectedCustomerName(selectedCustomer.getName());
+                        currentOrder.setSelectedCustomerUserId(selectedCustomer.getUserId());
                         isCustomerSelected = true;
 
                         showTDCSalesOrderPreview(null);
@@ -262,6 +264,7 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
     public void addNewCustomer(String name, String mobileNo) {
         try {
             TDCCustomer customer = new TDCCustomer();
+            customer.setUserId(""); // later we will update this value by fetching from service.
             customer.setCustomerType(0);
             customer.setName(name);
             customer.setMobileNo(mobileNo);
@@ -283,6 +286,11 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
                 customerList = mDBHelper.fetchAllRecordsFromTDCCustomers();
                 customerSelectionAdapter.setAllCustomersList(customerList);
                 customerSelectionAdapter.notifyDataSetChanged();
+
+                if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                    Intent syncTDCCustomersServiceIntent = new Intent(activityContext, SyncTDCCustomersService.class);
+                    startService(syncTDCCustomersServiceIntent);
+                }
             }
 
         } catch (Exception e) {

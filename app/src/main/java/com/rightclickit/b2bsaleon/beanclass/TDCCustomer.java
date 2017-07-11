@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class TDCCustomer implements Serializable {
     private int id;
-    private String userId;
+    private String userId; // this is mongo db id
     private int customerType; // 0 for Consumer & 1 for Retailer
     private String name;
     private String mobileNo;
