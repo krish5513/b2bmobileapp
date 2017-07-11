@@ -20,14 +20,14 @@ import java.util.List;
  * Created by PPS on 7/8/2017.
  */
 
-public class AgentTDC_ViewAdapter extends BaseAdapter {
+public class TDCSalesListViewAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private Activity activity;
     private Context ctxt;
     private ArrayList<ProductsBean> selectedProductsList;
 
-    public AgentTDC_ViewAdapter(Context ctxt, Sales_Preview_PrintActivity sales_preview_printActivity, List<ProductsBean> productsList) {
+    public TDCSalesListViewAdapter(Context ctxt, Sales_Preview_PrintActivity sales_preview_printActivity, List<ProductsBean> productsList) {
         this.ctxt = ctxt;
         this.activity = sales_preview_printActivity;
         this.mInflater = LayoutInflater.from(activity);
@@ -82,5 +82,8 @@ public class AgentTDC_ViewAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+
+
 }
 

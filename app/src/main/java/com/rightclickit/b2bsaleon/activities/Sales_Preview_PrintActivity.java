@@ -54,11 +54,11 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
     String currentDate, str_routecode, str_enguiryid, str_agentname;
     long currentTimeStamp;
-    Map<String, String[]> selectedList = new HashMap<String, String[]>();
+  //  Map<String, String[]> selectedList = new HashMap<String, String[]>();
     private long previousOrderId;
     private String currentOrderId;
     private boolean isOrderAlreadySaved = false;
-
+    ArrayList<String[]> selectedList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +114,10 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                 finalAmount = Utility.getFormattedCurrency(currentOrder.getOrderSubTotal());
 
                 Map<String, ProductsBean> productsList = currentOrder.getProductsList();
+                selectedList=new ArrayList<>(productsList.size());
                 if (productsList != null) {
+
+
                     for (Map.Entry<String, ProductsBean> productsBeanEntry : productsList.entrySet()) {
                         ProductsBean productsBean = productsBeanEntry.getValue();
                         name = String.valueOf(productsBean.getProductTitle().replace(",", ""));
@@ -129,7 +132,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                         temp[2] = String.valueOf(mrp);
                         temp[3] = String.valueOf(subtotal);
                         temp[4] = String.valueOf(taxAmount);
-                        selectedList.put(name, temp);
+                        selectedList.add(temp);
                         //Log.i("pushtemp", temp + "");
                     }
                 }
@@ -175,8 +178,10 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
                 int st = 250;
                 paint.setTextSize(17);
-                for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-                    String[] temps = entry.getValue();
+               // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+
+                for (int i = 0; i <selectedList.size(); i++) {
+                    String[] temps = selectedList.get(i);
                     canvas.drawText(temps[0], 5, st, paint);
                     canvas.drawText(temps[1], 115, st, paint);
                     canvas.drawText(temps[2], 150, st, paint);

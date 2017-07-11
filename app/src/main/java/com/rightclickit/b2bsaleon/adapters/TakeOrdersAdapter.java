@@ -101,7 +101,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         this.mStoredTakeOrderBeansList = takeOrderBeansList;
         try {
             Calendar cal = Calendar.getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             currentDate = df.format(cal.getTime());
             fromDStr = currentDate;
         } catch (Exception e) {

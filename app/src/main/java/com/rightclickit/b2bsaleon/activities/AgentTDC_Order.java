@@ -32,6 +32,7 @@ public class AgentTDC_Order extends AppCompatActivity {
     LinearLayout payments;
     LinearLayout deliveries;
     LinearLayout orders;
+    public LinearLayout agentOrders,noOrders;
 
 
     public TextView tv_enquiryId;
@@ -91,6 +92,10 @@ public class AgentTDC_Order extends AppCompatActivity {
         valueCount=(TextView)findViewById(R.id.tv_OrdervalueCount) ;
         ordersview = (Button) findViewById(R.id.btn_ordersview);
 
+
+        agentOrders = (LinearLayout) findViewById(R.id.agent_ordersLayout);
+        noOrders = (LinearLayout) findViewById(R.id.noOrders);
+
         ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
 
 
@@ -142,8 +147,9 @@ public class AgentTDC_Order extends AppCompatActivity {
                 valueCount.setText(totalprice);
             }
 
-
-
+        }else if(mTakeOrderBeansList.size() == 0){
+            agentOrders.setVisibility(View.GONE);
+            noOrders.setVisibility(View.VISIBLE);
 
         }
 

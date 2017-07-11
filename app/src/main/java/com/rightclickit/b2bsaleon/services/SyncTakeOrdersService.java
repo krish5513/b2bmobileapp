@@ -90,7 +90,7 @@ public class SyncTakeOrdersService extends Service {
 //                    mDBHelper.deleteValuesFromRoutesTable();
 //                }
                 Calendar cal = Calendar.getInstance();
-                SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 String currentDate = df.format(cal.getTime());
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
                 mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes",mSessionManagement.getString("agentId"));

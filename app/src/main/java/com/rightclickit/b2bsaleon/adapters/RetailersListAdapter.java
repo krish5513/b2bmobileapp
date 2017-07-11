@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.RetailersActivity;
 import com.rightclickit.b2bsaleon.activities.Retailers_AddActivity;
+import com.rightclickit.b2bsaleon.activities.Retailers_PaymentsActivity;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.constants.Constants;
 
@@ -121,6 +122,10 @@ public class RetailersListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 // Need to write logic to show retailer specific payments
+
+                Intent intent = new Intent(activity, Retailers_PaymentsActivity.class);
+                activity.startActivity(intent);
+                activity.finish();
             }
         });
 
@@ -142,6 +147,9 @@ public class RetailersListAdapter extends BaseAdapter {
                 }
 
                 if (customer.getMobileNo().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    filteredRetailersList.add(customer);
+                }
+                if (String.valueOf(customer.getId()).toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredRetailersList.add(customer);
                 }
             }

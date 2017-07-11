@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.Saleslist_ViewActivity;
 import com.rightclickit.b2bsaleon.activities.TDCSalesListActivity;
+import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
@@ -23,6 +24,7 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Venkat on 7/9/2017.
@@ -34,11 +36,13 @@ public class TDCSalesListAdapter extends BaseAdapter {
     private Activity activity;
     private List<TDCSaleOrder> tdcSalesOrders;
 
+
     public TDCSalesListAdapter(Context ctxt, TDCSalesListActivity salesListActivity, List<TDCSaleOrder> ordersList) {
         this.context = ctxt;
         this.activity = salesListActivity;
         this.tdcSalesOrders = ordersList;
         this.mInflater = LayoutInflater.from(activity);
+
     }
 
     private class TDCSalesListViewHolder {
@@ -111,4 +115,24 @@ public class TDCSalesListAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+   /* public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        tdcSalesOrders.clear();
+        if (charText.length() == 0) {
+            tdcSalesOrders.addAll(arraylist);
+        } else {
+            for (TDCSaleOrder wp : arraylist) {
+                if (String.valueOf(wp.getOrderId()).toLowerCase(Locale.getDefault()).contains(charText)) {
+                    tdcSalesOrders.add(wp);
+                }
+                if (String.valueOf(wp.getCreatedOn()).toLowerCase(Locale.getDefault()).contains(charText)) {
+                    tdcSalesOrders.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }*/
+
+
 }
