@@ -1,5 +1,6 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -7,9 +8,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,6 +27,7 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -110,6 +114,71 @@ public class TDCSalesListActivity extends AppCompatActivity {
                 return true;
         }
     }
+
+  /*  @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                mAgentsAdapter.filter(query);
+
+                return true;
+
+            }
+
+        });
+
+        // Get the search close button image view
+        ImageView closeButton = (ImageView)search.findViewById(R.id.search_close_btn);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search.setQuery("", false);
+                search.clearFocus();
+                search.onActionViewCollapsed();
+            }
+        });
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+//        if (id == R.id.action_search) {
+//
+//            return true;
+//        }
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if(search.isIconified()) {
+                    onBackPressed();
+                }else {
+                    search.setQuery("", false);
+                    search.clearFocus();
+                    search.onActionViewCollapsed();
+                }
+                return true;
+            default:
+                return true;
+        }
+    }*/
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {

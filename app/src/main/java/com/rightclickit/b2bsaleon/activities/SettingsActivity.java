@@ -119,7 +119,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private LinearLayout mRetailersLayout;
     private MMSharedPreferences mPreferences;
 
-    private String mNotifications = "", mTdcHomeScreen = "";
+    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen =" ",mAgentsHomeScreen="",mRetailersHomeScreen="";
 
 
     @Override
@@ -572,6 +572,15 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 } else if (privilegeActionsData.get(z).toString().equals("tdc_home_screen")) {
                     mTdcHomeScreen = privilegeActionsData.get(z).toString();
                 }
+                else if (privilegeActionsData.get(z).toString().equals("trips_home")) {
+                    mTripsHomeScreen = privilegeActionsData.get(z).toString();
+                }
+                else if (privilegeActionsData.get(z).toString().equals("agents_home")) {
+                    mAgentsHomeScreen = privilegeActionsData.get(z).toString();
+                }
+                else if (privilegeActionsData.get(z).toString().equals("retailers_home")) {
+                    mRetailersHomeScreen = privilegeActionsData.get(z).toString();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -653,6 +662,16 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         Intent intent = null;
         if (mTdcHomeScreen.equals("tdc_home_screen")) {
             intent = new Intent(this, SalesActivity.class);
+        }
+        else if(mTripsHomeScreen.equals("trips_home")){
+            intent = new Intent(this, TripSheetsActivity.class);
+        }
+        else if(mAgentsHomeScreen.equals("agents_home")){
+            intent = new Intent(this, AgentsActivity.class);
+        }
+        else if(mRetailersHomeScreen.equals("retailers_home")){
+            intent = new Intent(this, RetailersActivity.class);
+
         } else {
             intent = new Intent(this, DashboardActivity.class);
         }
