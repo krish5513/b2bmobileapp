@@ -240,7 +240,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_ID = "tripshhet_id";
     private final String KEY_TRIPSHEET_CODE = "tripshhet_code";
     private final String KEY_TRIPSHEET_DATE = "tripshhet_date";
-    private final String KEY_TRIPSHEET_STATUS = "tripshhet_status";
+    private final String KEY_TRIPSHEET_STATUS = "tripsheet_status";
     private final String KEY_TRIPSHEET_OB_AMOUNT = "tripshhet_ob_amount";
     private final String KEY_TRIPSHEET_ORDERED_AMOUNT = "tripshhet_ordered_amount";
     private final String KEY_TRIPSHEET_RECEIVED_AMOUNT = "tripshhet_received_amount";
@@ -2285,7 +2285,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<TripsheetsList> alltripsheets = new ArrayList<TripsheetsList>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_STATUS + " = A ";
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_STATUS +" = " + "'" + "A" + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);

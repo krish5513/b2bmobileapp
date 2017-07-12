@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/productName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:layout_weight="0.18"
+            android:text="Fcm 500"
+            android:textAllCaps="true"
+            android:textColor="@color/greydark"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/vat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.22"
+            android:text="0"
+            android:textColor="@color/greydark"
+            android:textSize="12sp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:layout_weight="0.17"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/productQtDec1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_remove_circle_black_24dp" />
+
+            <EditText
+                android:id="@+id/productQt1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.25"
+                android:clickable="false"
+
+                android:editable="false"
+                android:gravity="center"
+                android:longClickable="false"
+                android:text="0.000"
+                android:textColor="@color/greydark"
+                android:textSize="12sp" />
+
+            <ImageButton
+                android:id="@+id/productQtInc1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_add_circle_black_24dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:layout_weight="0.17"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/productQtDec2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_remove_circle_black_24dp" />
+
+            <EditText
+                android:id="@+id/productQt2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.25"
+                android:clickable="false"
+
+                android:editable="false"
+                android:gravity="center"
+                android:longClickable="false"
+                android:text="0.000"
+                android:textColor="@color/greydark"
+                android:textSize="12sp" />
+
+            <ImageButton
+                android:id="@+id/productQtInc2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_add_circle_black_24dp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

@@ -116,4 +116,7 @@ public class Constants {
 
     //Tripsheets List URL
     public static final String GET_TRIPSHEETS_LIST = "/tripsheet/list";
+
+    //Tripsheets Stock List
+    public static final String GET_TRIPSHEETS_STOCK_LIST = "/tripsheet/stock";
 }

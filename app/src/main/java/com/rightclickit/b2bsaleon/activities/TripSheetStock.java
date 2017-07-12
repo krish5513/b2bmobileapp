@@ -16,6 +16,8 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class TripSheetStock extends AppCompatActivity {
@@ -23,12 +25,14 @@ public class TripSheetStock extends AppCompatActivity {
     public static TextView Dispatch;
     public static TextView Verify;
     public static TextView tv_save;
+    public static TextView tv_verify;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
 
-    public static ImageButton dispatchdec,dispatchinc;
-    public static ImageButton verifydec,verifyinc;
+    public static ImageButton dispatchdec, dispatchinc;
+    public static ImageButton verifydec, verifyinc;
 
+    private TextView mDispatchText, mVerifyText;
 
 
     @Override
@@ -45,7 +49,6 @@ public class TripSheetStock extends AppCompatActivity {
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -54,28 +57,29 @@ public class TripSheetStock extends AppCompatActivity {
         mDBHelper = new DBHelper(TripSheetStock.this);
         mPreferences = new MMSharedPreferences(TripSheetStock.this);
 
+        mDispatchText = (TextView) findViewById(R.id.dispatch);
+        mDispatchText.setVisibility(View.GONE);
+        mVerifyText = (TextView) findViewById(R.id.verify);
+        mVerifyText.setVisibility(View.GONE);
 
-        dispatchdec=(ImageButton)findViewById(R.id.productQtDec1);
-        dispatchdec.setVisibility(View.GONE);
-
-        dispatchinc=(ImageButton)findViewById(R.id.productQtInc1);
-        dispatchinc.setVisibility(View.GONE);
-
-        verifydec=(ImageButton)findViewById(R.id.productQtDec2);
-        verifydec.setVisibility(View.GONE);
-
-        verifyinc=(ImageButton)findViewById(R.id.productQtInc2);
-        verifyinc.setVisibility(View.GONE);
-
-
-
-
-
-
+//        dispatchdec=(ImageButton)findViewById(R.id.productQtDec1);
+//        dispatchdec.setVisibility(View.GONE);
+//
+//        dispatchinc=(ImageButton)findViewById(R.id.productQtInc1);
+//        dispatchinc.setVisibility(View.GONE);
+//
+//        verifydec=(ImageButton)findViewById(R.id.productQtDec2);
+//        verifydec.setVisibility(View.GONE);
+//
+//        verifyinc=(ImageButton)findViewById(R.id.productQtInc2);
+//        verifyinc.setVisibility(View.GONE);
 
 
-        tv_save=(TextView)findViewById(R.id.tv_save);
-       tv_save.setVisibility(View.GONE);
+        tv_save = (TextView) findViewById(R.id.tv_save);
+        tv_save.setVisibility(View.GONE);
+
+        tv_verify = (TextView) findViewById(R.id.tv_verify);
+        tv_verify.setVisibility(View.GONE);
 
         preview = (TextView) findViewById(R.id.tv_print_print);
         preview.setVisibility(View.GONE);
@@ -98,26 +102,30 @@ public class TripSheetStock extends AppCompatActivity {
 
 
             if (privilegeActionsData.get(z).toString().equals("Stock_Dispatch")) {
-
-                dispatchdec.setVisibility(View.VISIBLE);
-                dispatchinc.setVisibility(View.VISIBLE);
+                // dispatchdec.setVisibility(View.VISIBLE);
+                // dispatchinc.setVisibility(View.VISIBLE);
+                mDispatchText.setVisibility(View.VISIBLE);
             } else if (privilegeActionsData.get(z).toString().equals("Stock_Verify")) {
-
-                verifydec.setVisibility(View.VISIBLE);
-                verifyinc.setVisibility(View.VISIBLE);
+                //verifydec.setVisibility(View.VISIBLE);
+                //verifyinc.setVisibility(View.VISIBLE);
+                mVerifyText.setVisibility(View.VISIBLE);
             } else if (privilegeActionsData.get(z).toString().equals("Stock_Save")) {
                 tv_save.setVisibility(View.VISIBLE);
             } else if (privilegeActionsData.get(z).toString().equals("stock_Preview_Print")) {
                 preview.setVisibility(View.VISIBLE);
+            } else if (privilegeActionsData.get(z).toString().equals("Stock_Verify")) {
+                tv_verify.setVisibility(View.VISIBLE);
             }
         }
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -143,11 +151,12 @@ public class TripSheetStock extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.Add).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -155,5 +164,5 @@ public class TripSheetStock extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-    
+
 }
