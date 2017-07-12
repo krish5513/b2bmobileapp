@@ -2,6 +2,8 @@ package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.Retailers_PaymentsActivity;
+import com.rightclickit.b2bsaleon.activities.Sales_Preview_PrintActivity;
 import com.rightclickit.b2bsaleon.activities.TDCSalesListActivity;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
@@ -96,6 +99,12 @@ public class RetailersPaymentsAdapter extends BaseAdapter{
             paymentsListViewHolder.view_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent = new Intent(activity, Sales_Preview_PrintActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
+                    intent.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_TDC_SALES_LIST);
+                    intent.putExtras(bundle);
+                    activity.startActivity(intent);
                     // Need to write code to show order view.
                 }
             });
