@@ -11,8 +11,8 @@ import java.util.Map;
 public class TDCSaleOrder implements Serializable {
     private long orderId;
     private int noOfItems;
-    private String selectedCustomerName;
-    private int selectedCustomerId;
+    private String selectedCustomerUserId; // this is mongo db user id
+    private int selectedCustomerId; // this is local sqlite db id
     private Map<String, ProductsBean> productsList; // this is the selected products list for the current order
     private double orderTotalAmount;
     private double orderTotalTaxAmount;
@@ -39,12 +39,12 @@ public class TDCSaleOrder implements Serializable {
         this.noOfItems = noOfItems;
     }
 
-    public String getSelectedCustomerName() {
-        return selectedCustomerName;
+    public String getSelectedCustomerUserId() {
+        return selectedCustomerUserId;
     }
 
-    public void setSelectedCustomerName(String selectedCustomerName) {
-        this.selectedCustomerName = selectedCustomerName;
+    public void setSelectedCustomerUserId(String selectedCustomerUserId) {
+        this.selectedCustomerUserId = selectedCustomerUserId;
     }
 
     public int getSelectedCustomerId() {
@@ -132,7 +132,7 @@ public class TDCSaleOrder implements Serializable {
         return "TDCSaleOrder{" +
                 "orderId=" + orderId +
                 ", noOfItems=" + noOfItems +
-                ", selectedCustomerName='" + selectedCustomerName + '\'' +
+                ", selectedCustomerUserId='" + selectedCustomerUserId + '\'' +
                 ", selectedCustomerId=" + selectedCustomerId +
                 ", productsList=" + productsList +
                 ", orderTotalAmount=" + orderTotalAmount +

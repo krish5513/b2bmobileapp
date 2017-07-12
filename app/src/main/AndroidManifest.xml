@@ -253,6 +253,12 @@
             android:enabled="true"
             android:exported="true" />
 
+        <!-- TDC Customers Sync Service -->
+        <service
+            android:name=".services.SyncTDCCustomersService"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>

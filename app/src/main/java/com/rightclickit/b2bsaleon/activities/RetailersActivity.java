@@ -24,6 +24,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.RetailersListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.services.SyncTDCCustomersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
@@ -216,6 +217,8 @@ public class RetailersActivity extends AppCompatActivity {
                 retailersListAdapter = new RetailersListAdapter(activityContext, this, retailersList, privilegeActionsData);
                 mRetailerslistview.setAdapter(retailersListAdapter);
             }
+
+            startService(new Intent(activityContext, SyncTDCCustomersService.class));
 
         } catch (Exception e) {
             e.printStackTrace();

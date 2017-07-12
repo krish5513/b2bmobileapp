@@ -187,8 +187,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_USER_PRIVILEGE_ACTION_STATUS = "user_privilege_action_status";
 
     // Column names for TDC Customers Table
-    private final String KEY_TDC_CUSTOMER_ID = "tdc_customer_id";
-    private final String KEY_TDC_CUSTOMER_USER_ID = "tdc_customer_user_id";
+    private final String KEY_TDC_CUSTOMER_ID = "tdc_customer_id"; // this acts as a primary key & it's auto increment
+    private final String KEY_TDC_CUSTOMER_USER_ID = "tdc_customer_user_id"; // this is the mongo db id which we will pull from service & update it in local db
     private final String KEY_TDC_CUSTOMER_TYPE = "tdc_customer_type"; // 0 for consumer & 1 for Retailer
     private final String KEY_TDC_CUSTOMER_NAME = "tdc_customer_name";
     private final String KEY_TDC_CUSTOMER_MOBILE_NO = "tdc_customer_mobile_no";
@@ -213,8 +213,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT = "tdc_sales_order_total_tax_amount";
     private final String KEY_TDC_SALES_ORDER_SUB_TOTAL = "tdc_sales_order_sub_total"; // i.e. ORDER TOTAL AMOUNT + ORDER TOTAL TAX AMOUNT
     private final String KEY_TDC_SALES_ORDER_CUSTOMER_ID = "tdc_sales_customer_id";
-    private final String KEY_TDC_SALES_ORDER_CUSTOMER_NAME = "tdc_sales_customer_name";
-    private final String KEY_TDC_SALES_ORDER_DATE = "tdc_sales_order_date";
+    private final String KEY_TDC_SALES_ORDER_CUSTOMER_USER_ID = "tdc_sales_customer_user_id"; // i.e. mongo db user id
+    private final String KEY_TDC_SALES_ORDER_DATE = "tdc_sales_order_date"; // we are using this column for filtration in tdc sales list like today, weekly or monthly.
     private final String KEY_TDC_SALES_ORDER_CREATED_ON = "tdc_sales_order_created_on"; // this column contains order created date in unix time stamp format
     private final String KEY_TDC_SALES_ORDER_CREATED_BY = "tdc_sales_order_created_by";
     private final String KEY_TDC_SALES_ORDER_UPLOAD_STATUS = "tdc_sale_order_upload_status";
@@ -329,7 +329,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String CREATE_TDC_SALES_ORDERS_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_TDC_SALES_ORDERS + "(" + KEY_TDC_SALES_ORDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_SALES_ORDER_NO_OF_ITEMS + " INTEGER, "
             + KEY_TDC_SALES_ORDER_TOTAL_AMOUNT + " VARCHAR, " + KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT + " VARCHAR, " + KEY_TDC_SALES_ORDER_SUB_TOTAL + " VARCHAR, "
-            + KEY_TDC_SALES_ORDER_CUSTOMER_ID + " INTEGER, " + KEY_TDC_SALES_ORDER_CUSTOMER_NAME + " VARCHAR, " + KEY_TDC_SALES_ORDER_DATE + " TEXT, "
+            + KEY_TDC_SALES_ORDER_CUSTOMER_ID + " INTEGER, " + KEY_TDC_SALES_ORDER_CUSTOMER_USER_ID + " VARCHAR, " + KEY_TDC_SALES_ORDER_DATE + " TEXT, "
             + KEY_TDC_SALES_ORDER_CREATED_ON + " TEXT, " + KEY_TDC_SALES_ORDER_CREATED_BY + " VARCHAR, " + KEY_TDC_SALES_ORDER_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // TDC Sales Order Products Table Create Statement
@@ -1499,6 +1499,7 @@ public class DBHelper extends SQLiteOpenHelper {
             SQLiteDatabase db = this.getWritableDatabase();
             System.out.println("customer = " + customer);
             ContentValues values = new ContentValues();
+            values.put(KEY_TDC_CUSTOMER_USER_ID, customer.getUserId());
             values.put(KEY_TDC_CUSTOMER_TYPE, customer.getCustomerType());
             values.put(KEY_TDC_CUSTOMER_NAME, customer.getName());
             values.put(KEY_TDC_CUSTOMER_MOBILE_NO, customer.getMobileNo());
@@ -1646,12 +1647,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return allTDCCustomersList;
     }
 
-    public void updateTDCCustomersUploadStatus(long customerId) {
+    public void updateTDCCustomersUploadStatus(long customerId, String userId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try {
             ContentValues values = new ContentValues();
             values.put(KEY_TDC_CUSTOMER_UPLOAD_STATUS, 1);
+            values.put(KEY_TDC_CUSTOMER_USER_ID, userId);
 
             int status = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_ID + " = ?", new String[]{String.valueOf(customerId)});
 
@@ -1775,7 +1777,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setOrderTotalTaxAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT))));
                     order.setOrderSubTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_SUB_TOTAL))));
                     order.setSelectedCustomerId(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
-                    order.setSelectedCustomerName(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_NAME)));
+                    order.setSelectedCustomerUserId(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_USER_ID)));
                     order.setOrderDate(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_DATE)));
                     order.setCreatedOn(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
                     order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
@@ -1814,7 +1816,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setOrderTotalTaxAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT))));
                     order.setOrderSubTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_SUB_TOTAL))));
                     order.setSelectedCustomerId(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
-                    order.setSelectedCustomerName(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_NAME)));
+                    order.setSelectedCustomerUserId(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_USER_ID)));
                     order.setOrderDate(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_DATE)));
                     order.setCreatedOn(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
                     order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
@@ -1888,7 +1890,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT, order.getOrderTotalTaxAmount());
             values.put(KEY_TDC_SALES_ORDER_SUB_TOTAL, order.getOrderSubTotal());
             values.put(KEY_TDC_SALES_ORDER_CUSTOMER_ID, order.getSelectedCustomerId());
-            values.put(KEY_TDC_SALES_ORDER_CUSTOMER_NAME, order.getSelectedCustomerName());
+            values.put(KEY_TDC_SALES_ORDER_CUSTOMER_USER_ID, order.getSelectedCustomerUserId());
             values.put(KEY_TDC_SALES_ORDER_DATE, order.getOrderDate());
             values.put(KEY_TDC_SALES_ORDER_CREATED_ON, order.getCreatedOn());
             values.put(KEY_TDC_SALES_ORDER_CREATED_BY, order.getCreatedBy());
@@ -1983,7 +1985,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setOrderTotalTaxAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT))));
                     order.setOrderSubTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_SUB_TOTAL))));
                     order.setSelectedCustomerId(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
-                    order.setSelectedCustomerName(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_NAME)));
+                    order.setSelectedCustomerUserId(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_USER_ID)));
                     order.setOrderDate(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_DATE)));
                     order.setCreatedOn(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
                     order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
@@ -2145,6 +2147,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to get stake type id by stake type
+     *
+     * stake_type = 2 for Agents, 3 for Retailers & 4 for Consumer
      */
     public String getStakeTypeIdByStakeType(String stakeType) {
         String stakeTypeId = "";

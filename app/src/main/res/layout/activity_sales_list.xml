@@ -124,7 +124,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="No Sales Found."
+            android:text="No sales found for selected duration."
             android:textColor="@color/black"
             android:textSize="12sp"
             android:visibility="gone" />
