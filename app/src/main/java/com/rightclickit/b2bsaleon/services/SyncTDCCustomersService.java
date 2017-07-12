@@ -27,19 +27,16 @@ import java.util.List;
 
 public class SyncTDCCustomersService extends Service {
     private DBHelper mDBHelper;
-    private MMSharedPreferences mmSharedPreferences;
     private NetworkConnectionDetector connectionDetector;
+    private String retailerStakeTypeId, consumerStakeTypeId;
     private int unUploadedTDCCustomersCount = 0;
-    private String loggedInUserId, retailerStakeTypeId, consumerStakeTypeId;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mDBHelper = new DBHelper(this);
-        mmSharedPreferences = new MMSharedPreferences(this);
         connectionDetector = new NetworkConnectionDetector(this);
 
-        loggedInUserId = mmSharedPreferences.getString("userId");
         retailerStakeTypeId = mDBHelper.getStakeTypeIdByStakeType("3");
         consumerStakeTypeId = mDBHelper.getStakeTypeIdByStakeType("4");
     }
@@ -66,7 +63,7 @@ public class SyncTDCCustomersService extends Service {
         try {
             List<TDCCustomer> unUploadedTDCCustomers = mDBHelper.fetchAllUnUploadedRecordsFromTDCCustomers();
             unUploadedTDCCustomersCount = unUploadedTDCCustomers.size();
-            System.out.println("========== unUploadedTDCCustomersCount = " + unUploadedTDCCustomersCount);
+
             for (TDCCustomer customer : unUploadedTDCCustomers) {
                 if (connectionDetector.isNetworkConnected())
                     new SyncTDCCustomerAsyncTask().execute(customer);
@@ -85,13 +82,12 @@ public class SyncTDCCustomersService extends Service {
                 currentTDCCustomer = tdcCustomers[0];
 
                 HashMap<String, String> userRouteIds = mDBHelper.getUserRouteIds();
-                System.out.println("===== userRouteIds = " + userRouteIds);
                 JSONArray routesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
                 String routeId = "";
                 if (routesArray.length() > 0)
                     routeId = routesArray.getString(0);
 
-                String createdBy = loggedInUserId;
+                String createdBy = userRouteIds.get("user_id");
                 String createdTime = Utility.formatDate(new Date(), Constants.CUSTOMER_ADD_DATE_FORMAT);
 
                 JSONObject requestObj = new JSONObject();
@@ -117,11 +113,21 @@ public class SyncTDCCustomersService extends Service {
                 requestObj.put("created_on", createdTime);
                 requestObj.put("updated_on", createdTime);
                 requestObj.put("updated_by", createdBy);
-                System.out.println("====== requestObj = " + requestObj);
+
                 String addCustomerURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_ADD);
+
                 String responseString = new NetworkManager().makeHttpPostConnection(addCustomerURL, requestObj);
-                System.out.println("======= requestURL = " + addCustomerURL);
-                System.out.println("responseString = " + responseString);
+
+                if (responseString != null) {
+                    JSONObject resultObj = new JSONObject(responseString);
+
+                    if (resultObj.getInt("status") == 1) {
+                        // if success, we are updating customer status as uploaded and customer user id (i.e. mongo db id) in local db.
+                        mDBHelper.updateTDCCustomersUploadStatus(currentTDCCustomer.getId(), resultObj.getString("insert_id"));
+
+                        unUploadedTDCCustomersCount--;
+                    }
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -134,7 +140,7 @@ public class SyncTDCCustomersService extends Service {
         protected void onPostExecute(Void aVoid) {
             if (unUploadedTDCCustomersCount == 0) {
                 stopSelf();
-                System.out.println("Sync TDC Sales Order Service Stopped Automatically....");
+                //System.out.println("Sync TDC Sales Order Service Stopped Automatically....");
             }
         }
     }

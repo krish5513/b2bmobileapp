@@ -19,6 +19,8 @@ public class Constants {
 
     // Bundle Constants
     public static final String BUNDLE_REQUEST_FROM = "RequestFrom";
+    public static final String BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION = "TDCCustomersSelection";
+    public static final String BUNDLE_REQUEST_FROM_TDC_SALES_LIST = "TDCSalesList";
     public static final String BUNDLE_TDC_SALE_ORDER = "TDCSaleOrder";
     public static final String BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW = "TDCSaleCurrentOrder_Preview";
     public static final String BUNDLE_TDC_SALE_CURRENT_ORDER = "TDCSaleCurrentOrder";

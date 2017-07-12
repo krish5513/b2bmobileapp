@@ -7,6 +7,7 @@
     tools:context="com.rightclickit.b2bsaleon.activities.Retailers_AddActivity">
 
     <ScrollView
+        android:id="@+id/retailer_add_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
@@ -196,6 +197,7 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/retailer_add_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

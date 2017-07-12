@@ -73,7 +73,7 @@ public class SyncTDCSalesOrderService extends Service {
         try {
             List<TDCSaleOrder> unUploadedTDCSalesOrders = mDBHelper.fetchAllUnUploadedTDCSalesOrders();
             unUploadedTDCSalesOrdersCount = unUploadedTDCSalesOrders.size();
-            System.out.println("========== unUploadedTDCSalesOrders = " + unUploadedTDCSalesOrdersCount);
+
             for (TDCSaleOrder order : unUploadedTDCSalesOrders) {
                 if (connectionDetector.isNetworkConnected())
                     new SyncTDCSalesOrderAsyncTask().execute(order);
@@ -90,7 +90,7 @@ public class SyncTDCSalesOrderService extends Service {
         protected Void doInBackground(TDCSaleOrder... tdcSaleOrders) {
             try {
                 currentOrder = tdcSaleOrders[0];
-                System.out.println("========== currentOrder = " + currentOrder);
+
                 String userId = currentOrder.getSelectedCustomerUserId();
                 if (userId == null || userId.isEmpty()) {
                     userId = "596312856e6ce831f4279004"; // static value given by service team and we are considering this customer as un known.
@@ -138,14 +138,14 @@ public class SyncTDCSalesOrderService extends Service {
                 requestObj.put("created_on", orderCreatedTime);
                 requestObj.put("updated_on", orderCreatedTime);
                 requestObj.put("updated_by", currentOrder.getCreatedBy());
-                System.out.println("======= requestObj = " + requestObj);
+
                 String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.TDC_SALES_ORDER_ADD);
-                System.out.println("======= requestURL = " + requestURL);
+
                 String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
-                System.out.println("======= responseString = " + responseString);
+
                 if (responseString != null) {
                     JSONObject resultObj = new JSONObject(responseString);
-                    System.out.println("====== resultObj = " + resultObj);
+
                     if (resultObj.getInt("result_status") == 1) {
                         // if success, we are updating order status as uploaded in local db.
                         mDBHelper.updateTDCSalesOrdersTable(currentOrder.getOrderId());
@@ -164,7 +164,7 @@ public class SyncTDCSalesOrderService extends Service {
         protected void onPostExecute(Void aVoid) {
             if (unUploadedTDCSalesOrdersCount == 0) {
                 stopSelf();
-                System.out.println("Sync TDC Sales Order Service Stopped Automatically....");
+                //System.out.println("Sync TDC Sales Order Service Stopped Automatically....");
             }
         }
     }

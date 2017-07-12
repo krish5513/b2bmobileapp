@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
     private TextView sale_no_text_view, sale_date_time_text_view, total_tax_amount_text_view, total_amount_text_view, sub_total_amount_text_view;
     private ListView tdc_products_list_preview;
+    private LinearLayout tdc_sales_save_layout;
 
     private TDCSaleOrder currentOrder;
     private TDCSalesPreviewAdapter tdcSalesPreviewAdapter;
@@ -54,11 +56,13 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
     String currentDate, str_routecode, str_enguiryid, str_agentname;
     long currentTimeStamp;
-  //  Map<String, String[]> selectedList = new HashMap<String, String[]>();
+
     private long previousOrderId;
     private String currentOrderId;
     private boolean isOrderAlreadySaved = false;
     ArrayList<String[]> selectedList;
+    private String requestCameFrom;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +75,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
             mmSharedPreferences = new MMSharedPreferences(applicationContext);
             loggedInUserId = mmSharedPreferences.getString("userId");
             loggedInUserName = mmSharedPreferences.getString("loginusername");
+            str_routecode = (mmSharedPreferences.getString("routecode") + ",");
 
             mDBHelper = new DBHelper(Sales_Preview_PrintActivity.this);
 
@@ -95,37 +100,45 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
             total_amount_text_view = (TextView) findViewById(R.id.total_amount);
             sub_total_amount_text_view = (TextView) findViewById(R.id.sub_total_amount);
             tdc_products_list_preview = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
-
-            currentTimeStamp = System.currentTimeMillis();
-            currentDate = Utility.formatTime(currentTimeStamp, Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
-            str_routecode = (mmSharedPreferences.getString("routecode") + ",");
-
-            previousOrderId = mDBHelper.getTDCSalesMaxOrderNumber();
-            currentOrderId = String.format("TDC%05d", previousOrderId + 1);
+            tdc_sales_save_layout = (LinearLayout) findViewById(R.id.tdc_sales_save_layout);
 
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW);
+                requestCameFrom = bundle.getString(Constants.BUNDLE_REQUEST_FROM);
+
+                if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION)) {
+                    currentTimeStamp = System.currentTimeMillis();
+                    currentDate = Utility.formatTime(currentTimeStamp, Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
+
+                    previousOrderId = mDBHelper.getTDCSalesMaxOrderNumber();
+                    currentOrderId = String.format("TDC%05d", previousOrderId + 1);
+
+                } else if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_TDC_SALES_LIST)) {
+                    currentOrderId = String.format("TDC%05d", currentOrder.getOrderId());
+                    currentDate = Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
+
+                    tdc_sales_save_layout.setVisibility(View.GONE);
+                }
+
                 updateUIWithBundleValues(currentOrder);
 
                 subtaxAmount = Utility.getFormattedCurrency(currentOrder.getOrderTotalTaxAmount());
-                //Log.i("fdgh", subtaxAmount + "");
                 subAmount = Utility.getFormattedCurrency(currentOrder.getOrderTotalAmount());
                 finalAmount = Utility.getFormattedCurrency(currentOrder.getOrderSubTotal());
 
                 Map<String, ProductsBean> productsList = currentOrder.getProductsList();
-                selectedList=new ArrayList<>(productsList.size());
+                selectedList = new ArrayList<>(productsList.size());
+
                 if (productsList != null) {
-
-
                     for (Map.Entry<String, ProductsBean> productsBeanEntry : productsList.entrySet()) {
                         ProductsBean productsBean = productsBeanEntry.getValue();
                         name = String.valueOf(productsBean.getProductTitle().replace(",", ""));
-                        Log.i("prod.name", name);
                         quantity = productsBean.getSelectedQuantity();
-                        mrp = Double.parseDouble(productsBean.getProductConsumerPrice().replace(",", ""));
+                        mrp = productsBean.getProductRatePerUnit();
                         subtotal = Utility.getFormattedCurrency(productsBean.getProductAmount());
                         taxAmount = Utility.getFormattedCurrency(productsBean.getTaxAmount());
+
                         String[] temp = new String[5];
                         temp[0] = name;
                         temp[1] = String.valueOf(quantity);
@@ -133,7 +146,6 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                         temp[3] = String.valueOf(subtotal);
                         temp[4] = String.valueOf(taxAmount);
                         selectedList.add(temp);
-                        //Log.i("pushtemp", temp + "");
                     }
                 }
             }
@@ -178,9 +190,9 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
                 int st = 250;
                 paint.setTextSize(17);
-               // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
 
-                for (int i = 0; i <selectedList.size(); i++) {
+                for (int i = 0; i < selectedList.size(); i++) {
                     String[] temps = selectedList.get(i);
                     canvas.drawText(temps[0], 5, st, paint);
                     canvas.drawText(temps[1], 115, st, paint);
@@ -217,12 +229,6 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        /*if (id == R.id.Add) {
-            Intent i = new Intent(Sales_Preview_PrintActivity.this, Sales_Retailer_AddActivity.class);
-            startActivity(i);
-            finish();
-            return true;
-        }*/
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -249,10 +255,14 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(this, SalesCustomerSelectionActivity.class);
-        intent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER, currentOrder); // to handle back button
-        startActivity(intent);
-        finish();
+        if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION)) {
+            Intent intent = new Intent(this, SalesCustomerSelectionActivity.class);
+            intent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER, currentOrder); // to handle back button
+            startActivity(intent);
+            finish();
+        } else if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_TDC_SALES_LIST)) {
+            finish();
+        }
     }
 
     public void updateUIWithBundleValues(TDCSaleOrder saleOrder) {

@@ -354,6 +354,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/tdc_sales_save_layout"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
@@ -366,8 +367,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawableTop="@drawable/save_icon_green"
-                    android:text="Save"
                     android:onClick="saveTDCSaleOrder"
+                    android:text="Save"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 

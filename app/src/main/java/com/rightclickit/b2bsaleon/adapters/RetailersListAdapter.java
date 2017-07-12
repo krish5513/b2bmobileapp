@@ -121,8 +121,6 @@ public class RetailersListAdapter extends BaseAdapter {
         retailersViewHolder.retailer_btn_payments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Need to write logic to show retailer specific payments
-
                 Intent intent = new Intent(activity, Retailers_PaymentsActivity.class);
                 activity.startActivity(intent);
                 activity.finish();
@@ -149,6 +147,7 @@ public class RetailersListAdapter extends BaseAdapter {
                 if (customer.getMobileNo().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredRetailersList.add(customer);
                 }
+
                 if (String.valueOf(customer.getId()).toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredRetailersList.add(customer);
                 }

@@ -10,6 +10,7 @@ public class TDCSalesOrderProductBean implements Serializable {
     private long id;
     private long orderId;
     private String productId;
+    private String productName;
     private double productMRP;
     private double productQuantity;
     private double productAmount;
@@ -39,6 +40,14 @@ public class TDCSalesOrderProductBean implements Serializable {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public double getProductMRP() {

@@ -301,6 +301,7 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
     public void showTDCSalesOrderPreview(View view) {
         Intent i = new Intent(SalesCustomerSelectionActivity.this, Sales_Preview_PrintActivity.class);
         i.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
+        i.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION);
         startActivity(i);
         finish();
 

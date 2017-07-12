@@ -22,8 +22,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -53,9 +56,11 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
 
+    private ScrollView retailer_add_scrollview;
     private EditText retailer_name, mobile_no, business_name, address;
     private GoogleMap googleMap;
     private ImageView shop_image;
+    private LinearLayout retailer_add_footer;
 
     private static final int REQUEST_CODE_TAKE_PHOTO = 1;
     private static final int REQUEST_CODE_IMAGE_SELECTION_FROM_GALLERY = 2;
@@ -89,11 +94,13 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
             mDBHelper = new DBHelper(activityContext);
 
+            retailer_add_scrollview = (ScrollView) findViewById(R.id.retailer_add_scrollview);
             retailer_name = (EditText) findViewById(R.id.retailer_name);
             mobile_no = (EditText) findViewById(R.id.retailer_mobile_no);
             business_name = (EditText) findViewById(R.id.retailer_business_name);
             address = (EditText) findViewById(R.id.retailer_address);
             shop_image = (ImageView) findViewById(R.id.retailer_shop_image);
+            retailer_add_footer = (LinearLayout) findViewById(R.id.retailer_add_footer);
 
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.retailer_map_fragment);
             mapFragment.getMapAsync(this);
@@ -103,6 +110,15 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 customer = (TDCCustomer) bundle.getSerializable(Constants.BUNDLE_TDC_CUSTOMER);
 
                 isCameFromRetailersList = true;
+
+                actionBar.setTitle("RETAILER INFO");
+
+                ViewGroup.MarginLayoutParams scrollViewLp = (ViewGroup.MarginLayoutParams) retailer_add_scrollview.getLayoutParams();
+                scrollViewLp.bottomMargin = 0;
+                retailer_add_scrollview.setLayoutParams(scrollViewLp);
+
+                retailer_add_footer.setVisibility(View.GONE);
+
                 updateUIWithBundleValues(customer);
             }
 

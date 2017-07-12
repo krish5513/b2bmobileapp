@@ -3,21 +3,17 @@ package com.rightclickit.b2bsaleon.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.Saleslist_ViewActivity;
+import com.rightclickit.b2bsaleon.activities.Sales_Preview_PrintActivity;
 import com.rightclickit.b2bsaleon.activities.TDCSalesListActivity;
-import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -31,18 +27,16 @@ import java.util.Locale;
  */
 
 public class TDCSalesListAdapter extends BaseAdapter {
-    private LayoutInflater mInflater;
     private Context context;
     private Activity activity;
-    private List<TDCSaleOrder> tdcSalesOrders;
+    private LayoutInflater mInflater;
+    private List<TDCSaleOrder> allTDCSalesOrders, filteredTDCSalesOrders;
 
-
-    public TDCSalesListAdapter(Context ctxt, TDCSalesListActivity salesListActivity, List<TDCSaleOrder> ordersList) {
+    public TDCSalesListAdapter(Context ctxt, TDCSalesListActivity salesListActivity) {
         this.context = ctxt;
         this.activity = salesListActivity;
-        this.tdcSalesOrders = ordersList;
         this.mInflater = LayoutInflater.from(activity);
-
+        this.filteredTDCSalesOrders = new ArrayList<>();
     }
 
     private class TDCSalesListViewHolder {
@@ -50,23 +44,21 @@ public class TDCSalesListAdapter extends BaseAdapter {
         Button view_button;
     }
 
-    public void setTdcSalesOrders(List<TDCSaleOrder> tdcSalesOrders) {
-        this.tdcSalesOrders = tdcSalesOrders;
-
-        notifyDataSetChanged();
+    public void setAllTDCSalesOrders(List<TDCSaleOrder> allTDCSalesOrders) {
+        this.allTDCSalesOrders = allTDCSalesOrders;
+        this.filteredTDCSalesOrders = new ArrayList<>();
+        this.filteredTDCSalesOrders.addAll(allTDCSalesOrders);
+        //notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        if (tdcSalesOrders != null)
-            return tdcSalesOrders.size();
-        else
-            return 0;
+        return filteredTDCSalesOrders.size();
     }
 
     @Override
     public TDCSaleOrder getItem(int position) {
-        return tdcSalesOrders.get(position);
+        return filteredTDCSalesOrders.get(position);
     }
 
     @Override
@@ -105,7 +97,13 @@ public class TDCSalesListAdapter extends BaseAdapter {
             tdcSalesListViewHolder.view_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // Need to write code to show order view.
+                    Intent intent = new Intent(activity, Sales_Preview_PrintActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
+                    intent.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_TDC_SALES_LIST);
+                    intent.putExtras(bundle);
+                    activity.startActivity(intent);
+                    //activity.finish();
                 }
             });
 
@@ -116,23 +114,28 @@ public class TDCSalesListAdapter extends BaseAdapter {
         return convertView;
     }
 
-   /* public void filter(String charText) {
+    // Filter method
+    public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
-        tdcSalesOrders.clear();
-        if (charText.length() == 0) {
-            tdcSalesOrders.addAll(arraylist);
-        } else {
-            for (TDCSaleOrder wp : arraylist) {
-                if (String.valueOf(wp.getOrderId()).toLowerCase(Locale.getDefault()).contains(charText)) {
-                    tdcSalesOrders.add(wp);
-                }
-                if (String.valueOf(wp.getCreatedOn()).toLowerCase(Locale.getDefault()).contains(charText)) {
-                    tdcSalesOrders.add(wp);
+
+        filteredTDCSalesOrders.clear();
+
+        if (allTDCSalesOrders != null) {
+            if (charText.length() == 0) {
+                filteredTDCSalesOrders.addAll(allTDCSalesOrders);
+            } else {
+                for (TDCSaleOrder order : allTDCSalesOrders) {
+                    if (String.valueOf(order.getOrderId()).toLowerCase(Locale.getDefault()).contains(charText)) {
+                        filteredTDCSalesOrders.add(order);
+                    }
+
+                    if (Utility.formatTime(order.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT).toLowerCase(Locale.getDefault()).contains(charText)) {
+                        filteredTDCSalesOrders.add(order);
+                    }
                 }
             }
         }
+
         notifyDataSetChanged();
-    }*/
-
-
+    }
 }

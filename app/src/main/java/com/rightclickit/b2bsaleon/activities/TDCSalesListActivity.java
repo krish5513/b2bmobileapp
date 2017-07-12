@@ -25,9 +25,6 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +33,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
 
+    private SearchView search;
     private ListView tdcSalesListView;
     private TextView no_sales_found_message, tdc_sales_count, tdc_sales_total_amount, tdc_sales_items_count;
     private TextView tdc_sales_today, tdc_sales_weekly, tdc_sales_monthly;
@@ -86,7 +84,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
             border_btn = ContextCompat.getDrawable(activityContext, R.drawable.border_btn);
 
             tdcSalesListView = (ListView) findViewById(R.id.tdc_sales_list_view);
-            tdcSalesListAdapter = new TDCSalesListAdapter(activityContext, this, allTDCSaleOrders);
+            tdcSalesListAdapter = new TDCSalesListAdapter(activityContext, this);
             tdcSalesListView.setAdapter(tdcSalesListAdapter);
 
             loadSalesList(0);
@@ -99,77 +97,56 @@ public class TDCSalesListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        try {
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return true;
+            search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            search.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String query) {
+                    tdcSalesListAdapter.filter(query);
+                    return true;
+                }
+            });
+
+            // Get the search close button image view
+            ImageView closeButton = (ImageView) search.findViewById(R.id.search_close_btn);
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    search.setQuery("", false);
+                    search.clearFocus();
+                    search.onActionViewCollapsed();
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
-
-  /*  @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
-
-        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
-        search = (SearchView) menu.findItem(R.id.action_search).getActionView();
-
-        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
-
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-
-                mAgentsAdapter.filter(query);
-
-                return true;
-
-            }
-
-        });
-
-        // Get the search close button image view
-        ImageView closeButton = (ImageView)search.findViewById(R.id.search_close_btn);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                search.setQuery("", false);
-                search.clearFocus();
-                search.onActionViewCollapsed();
-            }
-        });
-
 
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-//        if (id == R.id.action_search) {
-//
-//            return true;
-//        }
+
+        if (id == R.id.action_search) {
+            return true;
+        }
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                if(search.isIconified()) {
+                if (search.isIconified()) {
                     onBackPressed();
-                }else {
+                } else {
                     search.setQuery("", false);
                     search.clearFocus();
                     search.onActionViewCollapsed();
@@ -178,7 +155,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
             default:
                 return true;
         }
-    }*/
+    }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -275,7 +252,8 @@ public class TDCSalesListActivity extends AppCompatActivity {
                 no_sales_found_message.setVisibility(View.GONE);
                 tdcSalesListView.setVisibility(View.VISIBLE);
 
-                tdcSalesListAdapter.setTdcSalesOrders(allTDCSaleOrders);
+                tdcSalesListAdapter.setAllTDCSalesOrders(allTDCSaleOrders);
+                tdcSalesListAdapter.notifyDataSetChanged();
 
                 int noOfSales = allTDCSaleOrders.size();
                 double amount = 0;

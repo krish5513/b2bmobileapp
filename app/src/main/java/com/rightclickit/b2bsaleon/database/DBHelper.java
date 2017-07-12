@@ -223,6 +223,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_SOP_ID = "tdc_sop_id";
     private final String KEY_TDC_SOP_ORDER_ID = "tdc_sop_order_id";
     private final String KEY_TDC_SOP_PRODUCT_ID = "tdc_sop_product_id";
+    private final String KEY_TDC_SOP_PRODUCT_NAME = "tdc_sop_product_name";
     private final String KEY_TDC_SOP_PRODUCT_MRP = "tdc_sop_product_mrp";
     private final String KEY_TDC_SOP_PRODUCT_QUANTITY = "tdc_sop_product_quantity";
     private final String KEY_TDC_SOP_PRODUCT_AMOUNT = "tdc_sop_product_amount";
@@ -335,9 +336,9 @@ public class DBHelper extends SQLiteOpenHelper {
     // TDC Sales Order Products Table Create Statement
     private final String CREATE_TDC_SALES_ORDER_PRODUCTS_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_TDC_SALES_ORDER_PRODUCTS + "(" + KEY_TDC_SOP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_SOP_ORDER_ID + " INTEGER, "
-            + KEY_TDC_SOP_PRODUCT_ID + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_MRP + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_QUANTITY + " VARCHAR, "
-            + KEY_TDC_SOP_PRODUCT_AMOUNT + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_TAX + " TEXT, " + KEY_TDC_SOP_PRODUCT_TAX_AMOUNT + " TEXT, "
-            + KEY_TDC_SOP_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
+            + KEY_TDC_SOP_PRODUCT_ID + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_NAME + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_MRP + " VARCHAR, "
+            + KEY_TDC_SOP_PRODUCT_QUANTITY + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_AMOUNT + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_TAX + " TEXT, "
+            + KEY_TDC_SOP_PRODUCT_TAX_AMOUNT + " TEXT, " + KEY_TDC_SOP_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // Stakeholder types Table Create Statements
     private final String CREATE_TABLE_STAKEHOLDER_TYPES = "CREATE TABLE IF NOT EXISTS "
@@ -1497,7 +1498,7 @@ public class DBHelper extends SQLiteOpenHelper {
         long customerId = 0;
         try {
             SQLiteDatabase db = this.getWritableDatabase();
-            System.out.println("customer = " + customer);
+
             ContentValues values = new ContentValues();
             values.put(KEY_TDC_CUSTOMER_USER_ID, customer.getUserId());
             values.put(KEY_TDC_CUSTOMER_TYPE, customer.getCustomerType());
@@ -1810,7 +1811,8 @@ public class DBHelper extends SQLiteOpenHelper {
             if (c.moveToFirst()) {
                 do {
                     TDCSaleOrder order = new TDCSaleOrder();
-                    order.setOrderId(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_ID)));
+                    long orderId = c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_ID));
+                    order.setOrderId(orderId);
                     order.setNoOfItems(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_NO_OF_ITEMS)));
                     order.setOrderTotalAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_AMOUNT))));
                     order.setOrderTotalTaxAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT))));
@@ -1821,6 +1823,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setCreatedOn(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
                     order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
                     order.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_UPLOAD_STATUS)));
+                    order.setProductsList(fetchTDCSalesOrderProductsListForOrderId(orderId));
 
                     allOrdersList.add(order);
 
@@ -1834,6 +1837,43 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return allOrdersList;
+    }
+
+    /**
+     * Method to fetch all products for particular order from TDC Sales Order Products Table
+     */
+    public Map<String, ProductsBean> fetchTDCSalesOrderProductsListForOrderId(long orderId) {
+        Map<String, ProductsBean> OrderAllProductsList = new HashMap<>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TDC_SALES_ORDER_PRODUCTS + " WHERE " + KEY_TDC_SOP_ORDER_ID + " = " + orderId;
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    ProductsBean productsBean = new ProductsBean();
+                    productsBean.setProductId(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_ID)));
+                    productsBean.setProductTitle(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_NAME)));
+                    productsBean.setProductRatePerUnit(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_MRP))));
+                    productsBean.setSelectedQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_QUANTITY))));
+                    productsBean.setProductAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_AMOUNT))));
+                    productsBean.setProductTaxPerUnit(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_TAX))));
+                    productsBean.setTaxAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_TAX_AMOUNT))));
+
+                    OrderAllProductsList.put(productsBean.getProductId(), productsBean);
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return OrderAllProductsList;
     }
 
     /**
@@ -1854,6 +1894,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     orderProducts.setId(c.getLong(c.getColumnIndex(KEY_TDC_SOP_ID)));
                     orderProducts.setOrderId(c.getLong(c.getColumnIndex(KEY_TDC_SOP_ORDER_ID)));
                     orderProducts.setProductId(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_ID)));
+                    orderProducts.setProductName(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_NAME)));
                     orderProducts.setProductMRP(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_MRP))));
                     orderProducts.setProductQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_QUANTITY))));
                     orderProducts.setProductAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_AMOUNT))));
@@ -1922,6 +1963,7 @@ public class DBHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(KEY_TDC_SOP_ORDER_ID, orderId);
             values.put(KEY_TDC_SOP_PRODUCT_ID, orderProduct.getProductId());
+            values.put(KEY_TDC_SOP_PRODUCT_NAME, orderProduct.getProductTitle());
             values.put(KEY_TDC_SOP_PRODUCT_MRP, orderProduct.getProductRatePerUnit());
             values.put(KEY_TDC_SOP_PRODUCT_QUANTITY, orderProduct.getSelectedQuantity());
             values.put(KEY_TDC_SOP_PRODUCT_AMOUNT, orderProduct.getProductAmount());
@@ -2012,7 +2054,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             ContentValues values = new ContentValues();
             values.put(KEY_TDC_SALES_ORDER_UPLOAD_STATUS, 1);
-            System.out.println("############## orderId = " + orderId);
+
             int status = db.update(TABLE_TDC_SALES_ORDERS, values, KEY_TDC_SALES_ORDER_ID + " = ?", new String[]{String.valueOf(orderId)});
 
             if (status != -1)
@@ -2147,7 +2189,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to get stake type id by stake type
-     *
+     * <p>
      * stake_type = 2 for Agents, 3 for Retailers & 4 for Consumer
      */
     public String getStakeTypeIdByStakeType(String stakeType) {
@@ -2193,6 +2235,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to insert the tripsheets list.
+     *
      * @param mTripsheetsList
      */
     public void insertTripsheetsListData(ArrayList<TripsheetsList> mTripsheetsList) {

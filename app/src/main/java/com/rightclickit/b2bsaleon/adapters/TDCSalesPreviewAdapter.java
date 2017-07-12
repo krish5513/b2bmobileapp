@@ -76,7 +76,7 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
         salesPreviewViewHolder.order_preview_product_name.setText(productBean.getProductTitle());
         salesPreviewViewHolder.order_preview_quantity.setText(String.format("%.3f", productBean.getSelectedQuantity()));
         salesPreviewViewHolder.order_preview_tax.setText(Utility.getFormattedCurrency(productBean.getTaxAmount()));
-        salesPreviewViewHolder.order_preview_mrp.setText(Utility.getFormattedCurrency(Double.parseDouble(productBean.getProductConsumerPrice().replace(",", ""))));
+        salesPreviewViewHolder.order_preview_mrp.setText(Utility.getFormattedCurrency(productBean.getProductRatePerUnit()));
         salesPreviewViewHolder.order_preview_amount.setText(Utility.getFormattedCurrency(productBean.getProductAmount()));
 
         return convertView;
