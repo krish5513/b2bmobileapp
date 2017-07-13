@@ -119,7 +119,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private LinearLayout mRetailersLayout;
     private MMSharedPreferences mPreferences;
 
-    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen =" ",mAgentsHomeScreen="",mRetailersHomeScreen="";
+    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen =" ",mAgentsHomeScreen="",mRetailersHomeScreen="",mDashboardHomeScreen="";
 
 
     @Override
@@ -581,6 +581,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 else if (privilegeActionsData.get(z).toString().equals("Retailers@Home")) {
                     mRetailersHomeScreen = privilegeActionsData.get(z).toString();
                 }
+                else if (privilegeActionsData.get(z).toString().equals("Dashboard@Home")) {
+                    mDashboardHomeScreen = privilegeActionsData.get(z).toString();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -669,9 +672,11 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         else if(mAgentsHomeScreen.equals("Agents@Home")){
             intent = new Intent(this, AgentsActivity.class);
         }
-        else if(mRetailersHomeScreen.equals("Retailers@Home")){
+        else if(mRetailersHomeScreen.equals("Retailers@Home")) {
             intent = new Intent(this, RetailersActivity.class);
 
+        } else if(mDashboardHomeScreen.equals("Dashboard@Home")){
+                intent = new Intent(this, DashboardActivity.class);
         } else {
             intent = new Intent(this, DashboardActivity.class);
         }
