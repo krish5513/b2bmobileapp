@@ -112,7 +112,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.SalesActivity"
+            android:name=".activities.TDCSalesActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -158,15 +158,11 @@
             android:name=".activities.AgentsTDC_View"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.SalesCustomerSelectionActivity"
+            android:name=".activities.TDCSalesCustomerSelectionActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".activities.Sales_Preview_PrintActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".activities.Sales_Retailer_AddActivity"
+            android:name=".activities.TDCSales_Preview_PrintActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -198,9 +194,6 @@
             android:name=".activities.Retailers_AddActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".activities.Retailers_Payments_ViewActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.Retailers_PaymentsActivity"
             android:screenOrientation="portrait" />

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.SalesActivity;
+import com.rightclickit.b2bsaleon.activities.TDCSalesActivity;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
@@ -51,11 +51,11 @@ public class TDCSalesAdapter extends BaseAdapter {
     private final String zero_cost = "0.000";
     private boolean isOrderInEditingMode = false;
 
-    public TDCSalesAdapter(Context ctxt, SalesActivity salesActivity, TDCSalesListener salesListener, ListView products_list_view, ArrayList<ProductsBean> productsList, Map<String, ProductsBean> previouslySelectedProducts) {
+    public TDCSalesAdapter(Context ctxt, TDCSalesActivity TDCSalesActivity, TDCSalesListener salesListener, ListView products_list_view, ArrayList<ProductsBean> productsList, Map<String, ProductsBean> previouslySelectedProducts) {
         this.ctxt = ctxt;
-        this.activity = salesActivity;
+        this.activity = TDCSalesActivity;
         this.listener = salesListener;
-        this.mImageLoader = new ImageLoader(salesActivity);
+        this.mImageLoader = new ImageLoader(TDCSalesActivity);
         this.mInflater = LayoutInflater.from(activity);
         this.mPreferences = new MMSharedPreferences(activity);
         this.allProductsList = productsList;
@@ -328,9 +328,7 @@ public class TDCSalesAdapter extends BaseAdapter {
             for (ProductsBean wp : allProductsList) {
                 if (wp.getProductTitle().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredProductsList.add(wp);
-                }
-
-                if (wp.getProductCode().toLowerCase(Locale.getDefault()).contains(charText)) {
+                } else if (wp.getProductCode().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredProductsList.add(wp);
                 }
             }

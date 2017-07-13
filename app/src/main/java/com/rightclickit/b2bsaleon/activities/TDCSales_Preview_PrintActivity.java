@@ -12,6 +12,7 @@ import android.os.Bundle;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TDCSalesPreviewAdapter;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.beanclass.SpecialPriceBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -22,7 +23,6 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,11 +32,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
-public class Sales_Preview_PrintActivity extends AppCompatActivity {
+public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
 
@@ -70,14 +68,14 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
 
         try {
             applicationContext = getApplicationContext();
-            activityContext = Sales_Preview_PrintActivity.this;
+            activityContext = TDCSales_Preview_PrintActivity.this;
 
             mmSharedPreferences = new MMSharedPreferences(applicationContext);
             loggedInUserId = mmSharedPreferences.getString("userId");
             loggedInUserName = mmSharedPreferences.getString("loginusername");
             str_routecode = (mmSharedPreferences.getString("routecode") + ",");
 
-            mDBHelper = new DBHelper(Sales_Preview_PrintActivity.this);
+            mDBHelper = new DBHelper(TDCSales_Preview_PrintActivity.this);
 
             final ActionBar actionBar = getSupportActionBar();
             assert actionBar != null;
@@ -114,7 +112,51 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
                     previousOrderId = mDBHelper.getTDCSalesMaxOrderNumber();
                     currentOrderId = String.format("TDC%05d", previousOrderId + 1);
 
-                } else if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_TDC_SALES_LIST)) {
+                    // Checking weather the selected customer is retailer or not, if yes checking weather he has any special prices.
+                    if (currentOrder.getSelectedCustomerId() > 0 && currentOrder.getSelectedCustomerType() == 1) {
+                        Map<String, String> specialPriceList = mDBHelper.fetchSpecialPricesForUserId(currentOrder.getSelectedCustomerUserId()); // Getting special prices for selected retailer from local db.
+
+                        double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
+
+                        for (Map.Entry<String, ProductsBean> productsBeanEntry : currentOrder.getProductsList().entrySet()) {
+                            ProductsBean productsBean = productsBeanEntry.getValue();
+
+                            // Checking weather product has any special price or not.
+                            if (specialPriceList.size() > 0 && specialPriceList.containsKey(productsBean.getProductId())) {
+                                Double specialPrice = Double.parseDouble(specialPriceList.get(productsBean.getProductId()));
+
+                                if (specialPrice > 0) {
+                                    productsBean.setProductRatePerUnit(specialPrice);
+                                }
+                            } else {
+                                String productRetailerPrice = productsBean.getProductRetailerPrice();
+
+                                if (productRetailerPrice != null) {
+                                    Double productPrice = Double.parseDouble(productRetailerPrice);
+
+                                    if (productPrice > 0) {
+                                        productsBean.setProductRatePerUnit(productPrice);
+                                    }
+                                }
+                            }
+
+                            double amount = productsBean.getProductRatePerUnit() * productsBean.getSelectedQuantity();
+                            double taxAmount = (amount * productsBean.getProductTaxPerUnit()) / 100;
+
+                            productsBean.setProductAmount(amount);
+                            productsBean.setTaxAmount(taxAmount);
+
+                            totalAmount = totalAmount + productsBean.getProductAmount();
+                            totalTaxAmount = totalTaxAmount + productsBean.getTaxAmount();
+                            subTotal = totalAmount + totalTaxAmount;
+                        }
+
+                        currentOrder.setOrderTotalAmount(totalAmount);
+                        currentOrder.setOrderTotalTaxAmount(totalTaxAmount);
+                        currentOrder.setOrderSubTotal(subTotal);
+                    }
+                    
+                } else {
                     currentOrderId = String.format("TDC%05d", currentOrder.getOrderId());
                     currentDate = Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
 
@@ -256,7 +298,7 @@ public class Sales_Preview_PrintActivity extends AppCompatActivity {
         super.onBackPressed();
 
         if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION)) {
-            Intent intent = new Intent(this, SalesCustomerSelectionActivity.class);
+            Intent intent = new Intent(this, TDCSalesCustomerSelectionActivity.class);
             intent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER, currentOrder); // to handle back button
             startActivity(intent);
             finish();

@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.Sales_Preview_PrintActivity;
+import com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity;
 import com.rightclickit.b2bsaleon.activities.TDCSalesListActivity;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
@@ -48,7 +48,6 @@ public class TDCSalesListAdapter extends BaseAdapter {
         this.allTDCSalesOrders = allTDCSalesOrders;
         this.filteredTDCSalesOrders = new ArrayList<>();
         this.filteredTDCSalesOrders.addAll(allTDCSalesOrders);
-        //notifyDataSetChanged();
     }
 
     @Override
@@ -72,7 +71,6 @@ public class TDCSalesListAdapter extends BaseAdapter {
             TDCSalesListViewHolder tdcSalesListViewHolder;
 
             if (convertView == null) {
-
                 convertView = mInflater.inflate(R.layout.tdc_sales_list_view, null);
 
                 tdcSalesListViewHolder = new TDCSalesListViewHolder();
@@ -97,7 +95,7 @@ public class TDCSalesListAdapter extends BaseAdapter {
             tdcSalesListViewHolder.view_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(activity, Sales_Preview_PrintActivity.class);
+                    Intent intent = new Intent(activity, TDCSales_Preview_PrintActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
                     intent.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_TDC_SALES_LIST);
@@ -127,9 +125,7 @@ public class TDCSalesListAdapter extends BaseAdapter {
                 for (TDCSaleOrder order : allTDCSalesOrders) {
                     if (String.valueOf(order.getOrderId()).toLowerCase(Locale.getDefault()).contains(charText)) {
                         filteredTDCSalesOrders.add(order);
-                    }
-
-                    if (Utility.formatTime(order.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT).toLowerCase(Locale.getDefault()).contains(charText)) {
+                    } else if (Utility.formatTime(order.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT).toLowerCase(Locale.getDefault()).contains(charText)) {
                         filteredTDCSalesOrders.add(order);
                     }
                 }

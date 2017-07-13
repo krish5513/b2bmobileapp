@@ -192,7 +192,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 tsTDCLayout.startAnimation(animation1);
-                Intent i =new Intent(TripSheetView.this,SalesActivity.class);
+                Intent i =new Intent(TripSheetView.this,TDCSalesActivity.class);
                 startActivity(i);
                 finish();
             }

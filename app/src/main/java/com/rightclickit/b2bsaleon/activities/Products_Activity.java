@@ -21,25 +21,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.adapters.ProductsAdapter;
-import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
-import com.rightclickit.b2bsaleon.constants.Constants;
-import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.models.AgentsModel;
 import com.rightclickit.b2bsaleon.models.ProductsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Products_Activity extends AppCompatActivity {
 
@@ -216,7 +206,7 @@ public class Products_Activity extends AppCompatActivity {
                 //Toast.makeText(applicationContext, "Clicked on TDC", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTDCLayout.startAnimation(animation1);
-                Intent i =new Intent(Products_Activity.this,SalesActivity.class);
+                Intent i =new Intent(Products_Activity.this,TDCSalesActivity.class);
                 startActivity(i);
                 finish();
             }

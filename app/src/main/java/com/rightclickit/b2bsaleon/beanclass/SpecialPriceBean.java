@@ -6,6 +6,8 @@ package com.rightclickit.b2bsaleon.beanclass;
 
 public class SpecialPriceBean {
     private String specialUserId;
+    private String specialProductId;
+    private String specialPrice;
 
     public String getSpecialUserId() {
         return specialUserId;
@@ -31,6 +33,12 @@ public class SpecialPriceBean {
         this.specialPrice = specialPrice;
     }
 
-    private String specialProductId;
-    private String specialPrice;
+    @Override
+    public String toString() {
+        return "SpecialPriceBean{" +
+                "specialUserId='" + specialUserId + '\'' +
+                ", specialProductId='" + specialProductId + '\'' +
+                ", specialPrice='" + specialPrice + '\'' +
+                '}';
+    }
 }

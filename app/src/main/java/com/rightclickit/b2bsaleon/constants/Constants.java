@@ -21,10 +21,12 @@ public class Constants {
     public static final String BUNDLE_REQUEST_FROM = "RequestFrom";
     public static final String BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION = "TDCCustomersSelection";
     public static final String BUNDLE_REQUEST_FROM_TDC_SALES_LIST = "TDCSalesList";
+    public static final String BUNDLE_REQUEST_FROM_RETAILER_PAYMENTS_LIST = "TDCCustomerPayments";
     public static final String BUNDLE_TDC_SALE_ORDER = "TDCSaleOrder";
     public static final String BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW = "TDCSaleCurrentOrder_Preview";
     public static final String BUNDLE_TDC_SALE_CURRENT_ORDER = "TDCSaleCurrentOrder";
     public static final String BUNDLE_TDC_CUSTOMER = "TDCCustomer";
+    public static final String BUNDLE_SELECTED_CUSTOMER_ID = "CustomerId";
 
     public static final int VOLLEY_SOCKET_TIMEOUT = 30000; // 120 seconds.
 

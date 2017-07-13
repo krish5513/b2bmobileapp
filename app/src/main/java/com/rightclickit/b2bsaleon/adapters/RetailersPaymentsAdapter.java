@@ -13,54 +13,54 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.Retailers_PaymentsActivity;
-import com.rightclickit.b2bsaleon.activities.Sales_Preview_PrintActivity;
-import com.rightclickit.b2bsaleon.activities.TDCSalesListActivity;
+import com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.util.Utility;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
- * Created by PPS on 7/10/2017.
+ * Created by Venkat on 7/10/2017.
  */
 
-public class RetailersPaymentsAdapter extends BaseAdapter{
-
-    private LayoutInflater mInflater;
+public class RetailersPaymentsAdapter extends BaseAdapter {
     private Context context;
     private Activity activity;
-    private List<TDCSaleOrder> tdcSalesOrders;
+    private LayoutInflater mInflater;
+    private List<TDCSaleOrder> allTDCSalesOrders, filteredTDCSalesOrders;
+    ;
 
     public RetailersPaymentsAdapter(Context ctxt, Retailers_PaymentsActivity salesListActivity, List<TDCSaleOrder> ordersList) {
         this.context = ctxt;
         this.activity = salesListActivity;
-        this.tdcSalesOrders = ordersList;
         this.mInflater = LayoutInflater.from(activity);
+        this.allTDCSalesOrders = ordersList;
+        this.filteredTDCSalesOrders = new ArrayList<>();
+        this.filteredTDCSalesOrders.addAll(allTDCSalesOrders);
     }
 
-    private class RetailersListViewHolder {
+    private class RetailerPaymentsListViewHolder {
         TextView tdc_sale_bill_no, tdc_sale_order_date, tdc_sale_order_amount, tdc_sale_order_items_count;
         Button view_button;
     }
 
-    public void setTdcSalesOrders(List<TDCSaleOrder> tdcSalesOrders) {
-        this.tdcSalesOrders = tdcSalesOrders;
-
-        notifyDataSetChanged();
+    public void setAllTDCSalesOrders(List<TDCSaleOrder> allTDCSalesOrders) {
+        this.allTDCSalesOrders = allTDCSalesOrders;
+        this.filteredTDCSalesOrders = new ArrayList<>();
+        this.filteredTDCSalesOrders.addAll(allTDCSalesOrders);
     }
 
     @Override
     public int getCount() {
-        if (tdcSalesOrders != null)
-            return tdcSalesOrders.size();
-        else
-            return 0;
+        return filteredTDCSalesOrders.size();
     }
 
     @Override
     public TDCSaleOrder getItem(int position) {
-        return tdcSalesOrders.get(position);
+        return filteredTDCSalesOrders.get(position);
     }
 
     @Override
@@ -71,13 +71,12 @@ public class RetailersPaymentsAdapter extends BaseAdapter{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         try {
-            RetailersListViewHolder paymentsListViewHolder;
+            RetailerPaymentsListViewHolder paymentsListViewHolder;
 
             if (convertView == null) {
-
                 convertView = mInflater.inflate(R.layout.tdc_sales_list_view, null);
 
-                paymentsListViewHolder = new RetailersListViewHolder();
+                paymentsListViewHolder = new RetailerPaymentsListViewHolder();
                 paymentsListViewHolder.tdc_sale_bill_no = (TextView) convertView.findViewById(R.id.tdc_sale_bill_no);
                 paymentsListViewHolder.tdc_sale_order_date = (TextView) convertView.findViewById(R.id.tdc_sale_order_date);
                 paymentsListViewHolder.tdc_sale_order_amount = (TextView) convertView.findViewById(R.id.tdc_sale_order_amount);
@@ -86,7 +85,7 @@ public class RetailersPaymentsAdapter extends BaseAdapter{
 
                 convertView.setTag(paymentsListViewHolder);
             } else {
-                paymentsListViewHolder = (RetailersListViewHolder) convertView.getTag();
+                paymentsListViewHolder = (RetailerPaymentsListViewHolder) convertView.getTag();
             }
 
             final TDCSaleOrder currentOrder = getItem(position);
@@ -99,13 +98,12 @@ public class RetailersPaymentsAdapter extends BaseAdapter{
             paymentsListViewHolder.view_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(activity, Sales_Preview_PrintActivity.class);
+                    Intent intent = new Intent(activity, TDCSales_Preview_PrintActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
-                    intent.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_TDC_SALES_LIST);
+                    intent.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_RETAILER_PAYMENTS_LIST);
                     intent.putExtras(bundle);
                     activity.startActivity(intent);
-                    // Need to write code to show order view.
                 }
             });
 
@@ -114,6 +112,29 @@ public class RetailersPaymentsAdapter extends BaseAdapter{
         }
 
         return convertView;
+    }
+
+    // Filter method
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+
+        filteredTDCSalesOrders.clear();
+
+        if (allTDCSalesOrders != null) {
+            if (charText.length() == 0) {
+                filteredTDCSalesOrders.addAll(allTDCSalesOrders);
+            } else {
+                for (TDCSaleOrder order : allTDCSalesOrders) {
+                    if (String.valueOf(order.getOrderId()).toLowerCase(Locale.getDefault()).contains(charText)) {
+                        filteredTDCSalesOrders.add(order);
+                    } else if (Utility.formatTime(order.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT).toLowerCase(Locale.getDefault()).contains(charText)) {
+                        filteredTDCSalesOrders.add(order);
+                    }
+                }
+            }
+        }
+
+        notifyDataSetChanged();
     }
 }
 

@@ -163,7 +163,7 @@ public class RetailersActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                     mTDCLayout.startAnimation(animation1);
-                    Intent i = new Intent(RetailersActivity.this, SalesActivity.class);
+                    Intent i = new Intent(RetailersActivity.this, TDCSalesActivity.class);
                     startActivity(i);
                     finish();
                 }
@@ -206,7 +206,7 @@ public class RetailersActivity extends AppCompatActivity {
             }
 
             if (canWeShowRetailersListView) {
-                retailersList = mDBHelper.fetchAllRetailerRecordsFromTDCCustomers();
+                retailersList = mDBHelper.fetchRecordsFromTDCCustomers(1);
 
                 if (retailersList.size() <= 0) {
                     mRetailerslistview.setVisibility(View.GONE);

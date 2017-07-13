@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 
 public class TDCCustomer implements Serializable {
-    private int id;
+    private long id;
     private String userId; // this is mongo db id
     private int customerType; // 0 for Consumer & 1 for Retailer
     private String name;
@@ -21,11 +21,11 @@ public class TDCCustomer implements Serializable {
     private int isUploaded;
     private int isShopImageUploaded;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

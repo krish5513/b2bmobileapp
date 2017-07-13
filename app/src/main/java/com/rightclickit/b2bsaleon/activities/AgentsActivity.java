@@ -1,11 +1,9 @@
 package com.rightclickit.b2bsaleon.activities;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -19,7 +17,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
@@ -29,11 +26,7 @@ import com.rightclickit.b2bsaleon.models.AgentsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 
 /**
@@ -194,7 +187,7 @@ public class AgentsActivity extends AppCompatActivity {
                 //Toast.makeText(AgentsActivity.this, "Clicked on TDC", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTDCLayout.startAnimation(animation1);
-                Intent i =new Intent(AgentsActivity.this,SalesActivity.class);
+                Intent i =new Intent(AgentsActivity.this,TDCSalesActivity.class);
                 startActivity(i);
                 finish();
             }

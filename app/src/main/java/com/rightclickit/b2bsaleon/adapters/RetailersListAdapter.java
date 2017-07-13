@@ -122,6 +122,7 @@ public class RetailersListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, Retailers_PaymentsActivity.class);
+                intent.putExtra(Constants.BUNDLE_SELECTED_CUSTOMER_ID, currentRetailer.getId());
                 activity.startActivity(intent);
                 activity.finish();
             }
@@ -142,13 +143,9 @@ public class RetailersListAdapter extends BaseAdapter {
             for (TDCCustomer customer : allRetailersList) {
                 if (customer.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredRetailersList.add(customer);
-                }
-
-                if (customer.getMobileNo().toLowerCase(Locale.getDefault()).contains(charText)) {
+                } else if (customer.getMobileNo().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredRetailersList.add(customer);
-                }
-
-                if (String.valueOf(customer.getId()).toLowerCase(Locale.getDefault()).contains(charText)) {
+                } else if (String.valueOf(customer.getId()).toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredRetailersList.add(customer);
                 }
             }
