@@ -38,6 +38,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
     private TextView mNotripsText;
     private ArrayList<TripsheetsList> mTripsheetsList = new ArrayList<TripsheetsList>();
     private ArrayList<TripsheetsList> mTripsheetsStockList = new ArrayList<TripsheetsList>();
+    private ArrayList<String> mRouteCodesList = new ArrayList<String>();
 
     private String currentDate;
     private int calledApi = 0;
@@ -56,22 +57,36 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
     /**
      * Method to get tripsheets list
+     *
      * @param mNoTripsFoundText
      */
     public void getTripsheetsList(TextView mNoTripsFoundText) {
         try {
+            String routeCode = "";
             mNotripsText = mNoTripsFoundText;
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 if (mTripsheetsList.size() > 0) {
                     mTripsheetsList.clear();
                 }
                 calledApi = 0;
+                HashMap<String, String> userMapData = mDBHelper.getUsersData();
+                JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
+                JSONArray routesArray = routesJob.getJSONArray("routeArray");
+                for (int i = 0; i < routesArray.length(); i++) {
+                    routeCode = "";
+                    routeCode = mDBHelper.getRouteCodeByRouteId(routesArray.get(i).toString());
+                    mRouteCodesList.add(routeCode);
+                }
+                System.out.println("ROUTE CODES LIST:: " + mRouteCodesList.size());
                 String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TRIPSHEETS_PORT, Constants.GET_TRIPSHEETS_LIST);
 
                 JSONObject params1 = new JSONObject();
-                params1.put("route_code","2500L");
-                params1.put("date",currentDate);
-
+                if (mRouteCodesList.size() > 0) {
+                    for (int k = 0; k < mRouteCodesList.size(); k++) {
+                        params1.put("route_codes[" + k + "]", mRouteCodesList.get(k).toString());
+                    }
+                }
+                params1.put("date", currentDate);
 
                 AsyncRequest getTripsListRequest = new AsyncRequest(context, this, URL, AsyncRequest.MethodType.POST, params1);
                 getTripsListRequest.execute();
@@ -84,9 +99,10 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
     /**
      * Method to get tripsheets stock list
+     *
      * @param mNoTripsSheetsStockFoundText
      */
-    public void getTripsheetsStockList(TextView mNoTripsSheetsStockFoundText,String mTripSheetId) {
+    public void getTripsheetsStockList(TextView mNoTripsSheetsStockFoundText, String mTripSheetId) {
         try {
             mNotripsText = mNoTripsSheetsStockFoundText;
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
@@ -97,7 +113,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                 String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TRIPSHEETS_PORT, Constants.GET_TRIPSHEETS_STOCK_LIST);
 
                 JSONObject params1 = new JSONObject();
-                params1.put("trip_id",mTripSheetId);
+                params1.put("trip_id", mTripSheetId);
 
 
                 AsyncRequest getTripsListRequest = new AsyncRequest(context, this, URL, AsyncRequest.MethodType.POST, params1);
@@ -114,8 +130,8 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
         try {
             CustomProgressDialog.hideProgressDialog();
             System.out.println("========= response = " + response);
-            switch (calledApi){
-                case 0 :
+            switch (calledApi) {
+                case 0:
                     JSONArray resArray = new JSONArray(response);
                     int len = resArray.length();
                     for (int i = 0; i < len; i++) {
@@ -138,15 +154,15 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
                         mTripsheetsList.add(tripsheetsListBean);
                     }
-                    synchronized (this){
+                    synchronized (this) {
                         if (mTripsheetsList.size() > 0) {
                             mDBHelper.insertTripsheetsListData(mTripsheetsList);
                         }
                     }
-                    synchronized (this){
+                    synchronized (this) {
                         if (mTripsheetsList.size() > 0) {
                             activity.loadTripsData(mTripsheetsList);
-                        }else {
+                        } else {
                             mNotripsText.setText("No Tripsheets found.");
                         }
                     }

@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
@@ -33,6 +35,10 @@ public class TripSheetStock extends AppCompatActivity {
     public static ImageButton verifydec, verifyinc;
 
     private TextView mDispatchText, mVerifyText;
+
+    private ListView mTripsheetsStockListView;
+
+    private TripsheetsStockListAdapter mTripsheetsStockAdapter;
 
 
     @Override
@@ -61,6 +67,10 @@ public class TripSheetStock extends AppCompatActivity {
         mDispatchText.setVisibility(View.GONE);
         mVerifyText = (TextView) findViewById(R.id.verify);
         mVerifyText.setVisibility(View.GONE);
+
+        mTripsheetsStockListView = (ListView) findViewById(R.id.TripsheetsStockListView);
+        mTripsheetsStockAdapter = new TripsheetsStockListAdapter(this, TripSheetStock.this);
+        mTripsheetsStockListView.setAdapter(mTripsheetsStockAdapter);
 
 //        dispatchdec=(ImageButton)findViewById(R.id.productQtDec1);
 //        dispatchdec.setVisibility(View.GONE);
@@ -96,9 +106,9 @@ public class TripSheetStock extends AppCompatActivity {
 
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
-        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
         for (int z = 0; z < privilegeActionsData.size(); z++) {
-            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+            //System.out.println("Name::: " + privilegeActionsData.get(z).toString());
 
 
             if (privilegeActionsData.get(z).toString().equals("Stock_Dispatch")) {
