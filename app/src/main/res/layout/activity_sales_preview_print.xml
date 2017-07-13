@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rightclickit.b2bsaleon.activities.Sales_Preview_PrintActivity">
+    tools:context="com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -299,10 +299,8 @@
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
 
-
-
                     <TextView
-                        android:id="@+id/total_tax_amount"
+                        android:id="@+id/total_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.1"
@@ -311,7 +309,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/total_amount"
+                        android:id="@+id/total_tax_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.1"

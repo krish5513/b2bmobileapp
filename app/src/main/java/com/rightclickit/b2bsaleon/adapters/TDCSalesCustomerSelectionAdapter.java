@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.SalesCustomerSelectionActivity;
+import com.rightclickit.b2bsaleon.activities.TDCSalesCustomerSelectionActivity;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 
@@ -32,7 +32,7 @@ public class TDCSalesCustomerSelectionAdapter extends BaseAdapter {
     private TDCSaleOrder currentOrder;
     private int selectedTextColor, blackColor;
 
-    public TDCSalesCustomerSelectionAdapter(Context ctxt, SalesCustomerSelectionActivity customerSelectionActivity, List<TDCCustomer> customersList, TDCSaleOrder currentSaleOrder) {
+    public TDCSalesCustomerSelectionAdapter(Context ctxt, TDCSalesCustomerSelectionActivity customerSelectionActivity, List<TDCCustomer> customersList, TDCSaleOrder currentSaleOrder) {
         this.ctxt = ctxt;
         this.activity = customerSelectionActivity;
         this.mInflater = LayoutInflater.from(activity);
@@ -125,9 +125,7 @@ public class TDCSalesCustomerSelectionAdapter extends BaseAdapter {
             for (TDCCustomer customer : allCustomersList) {
                 if (customer.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredCustomersList.add(customer);
-                }
-
-                if (customer.getMobileNo().toLowerCase(Locale.getDefault()).contains(charText)) {
+                } else if (customer.getMobileNo().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredCustomersList.add(customer);
                 }
             }

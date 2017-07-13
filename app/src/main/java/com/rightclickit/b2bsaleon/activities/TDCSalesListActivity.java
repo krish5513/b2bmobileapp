@@ -172,7 +172,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, SalesActivity.class);
+        Intent intent = new Intent(this, TDCSalesActivity.class);
         startActivity(intent);
         finish();
     }

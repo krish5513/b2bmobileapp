@@ -13,6 +13,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
@@ -138,17 +139,23 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             longitude = retailerObj.getLongitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLongitude());
 
             shop_image_path = retailerObj.getShopImage();
-            if (shop_image_path != "") {
-                File imgFile = new File(shop_image_path);
 
-                if (imgFile.exists()) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                    BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    if (shop_image_path != "") {
+                        File imgFile = new File(shop_image_path);
 
-                    shop_image.setBackground(null);
-                    shop_image.setBackground(bitmapDrawable);
+                        if (imgFile.exists()) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                            BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), bitmap);
+
+                            shop_image.setBackground(null);
+                            shop_image.setBackground(bitmapDrawable);
+                        }
+                    }
                 }
-            }
+            });
 
             retailer_name.setEnabled(false);
             mobile_no.setEnabled(false);
@@ -446,46 +453,52 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
         return new GoogleMap.OnMyLocationChangeListener() {
             @Override
-            public void onMyLocationChange(Location location) {
-                LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-                longitude = location.getLongitude();
-                latitude = location.getLatitude();
+            public void onMyLocationChange(final Location location) {
 
-                googleMap.clear();
-                Marker marker = googleMap.addMarker(new MarkerOptions().position(loc));
-                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
-                Geocoder geocoder = new Geocoder(activityContext, Locale.getDefault());
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+                        longitude = location.getLongitude();
+                        latitude = location.getLatitude();
 
-                try {
-                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+                        googleMap.clear();
+                        Marker marker = googleMap.addMarker(new MarkerOptions().position(loc));
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+                        Geocoder geocoder = new Geocoder(activityContext, Locale.getDefault());
 
-                    if (addresses != null && addresses.size() > 0) {
-                        Address returnedAddress = addresses.get(0);
+                        try {
+                            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
-                        String currentAddress;
+                            if (addresses != null && addresses.size() > 0) {
+                                Address returnedAddress = addresses.get(0);
 
-                        if (returnedAddress.getMaxAddressLineIndex() > 0) {
-                            StringBuilder strReturnedAddress = new StringBuilder("");
+                                String currentAddress;
 
-                            for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                                strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                                if (returnedAddress.getMaxAddressLineIndex() > 0) {
+                                    StringBuilder strReturnedAddress = new StringBuilder("");
+
+                                    for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                                        strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                                    }
+
+                                    currentAddress = strReturnedAddress.toString();
+                                } else {
+                                    // Format the first line of address (if available), city, and country name.
+                                    currentAddress = String.format("%s, %s", returnedAddress.getLocality(), returnedAddress.getCountryName());
+                                }
+
+                                address.setText(currentAddress);
+                            } else {
+                                address.setText("Unable to get your address. Please enter it manually.");
                             }
-
-                            currentAddress = strReturnedAddress.toString();
-                        } else {
-                            // Format the first line of address (if available), city, and country name.
-                            currentAddress = String.format("%s, %s", returnedAddress.getLocality(), returnedAddress.getCountryName());
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                            address.setText("Unable to get your address. Please enter it manually.");
                         }
-
-                        address.setText(currentAddress);
-                    } else {
-                        address.setText("Unable to get your address. Please enter it manually.");
                     }
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    address.setText("Unable to get your address. Please enter it manually.");
-                }
+                });
             }
         };
     }

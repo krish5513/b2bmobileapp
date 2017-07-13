@@ -1566,12 +1566,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to fetch only retailer records from TDC Customers Table
+     *
+     * @param customerType = 0 for Consumers & 1 for Retailers
      */
-    public List<TDCCustomer> fetchAllRetailerRecordsFromTDCCustomers() {
+    public List<TDCCustomer> fetchRecordsFromTDCCustomers(int customerType) {
         List<TDCCustomer> allRetailersList = new ArrayList<>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TDC_CUSTOMERS + " WHERE " + KEY_TDC_CUSTOMER_IS_ACTIVE + " = 1 AND " + KEY_TDC_CUSTOMER_TYPE + " = 1";
+            String selectQuery = "SELECT * FROM " + TABLE_TDC_CUSTOMERS + " WHERE " + KEY_TDC_CUSTOMER_IS_ACTIVE + " = 1 AND " + KEY_TDC_CUSTOMER_TYPE + " = " + customerType;
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -1668,7 +1670,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Method to check whther the special price exists for the combo of userId and productId
+     * Method to check weather the special price exists for the combo of userId and productId
      *
      * @param productId
      * @param agentId
@@ -1758,13 +1760,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Method to fetch all records from TDC Sales Orders Table
+     * Method to fetch customer specific orders from TDC Sales Orders Table
      */
-    public List<TDCSaleOrder> fetchAllRecordsFromTDCSalesOrdersTable() {
+    public List<TDCSaleOrder> fetchTDCSalesOrdersForSelectedCustomer(long customerId) {
         List<TDCSaleOrder> allOrdersList = new ArrayList<>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TDC_SALES_ORDERS;
+            String selectQuery = "SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_CUSTOMER_ID + " = " + customerId;
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -1772,17 +1774,19 @@ public class DBHelper extends SQLiteOpenHelper {
             if (c.moveToFirst()) {
                 do {
                     TDCSaleOrder order = new TDCSaleOrder();
-                    order.setOrderId(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_ID)));
+                    long orderId = c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_ID));
+                    order.setOrderId(orderId);
                     order.setNoOfItems(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_NO_OF_ITEMS)));
                     order.setOrderTotalAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_AMOUNT))));
                     order.setOrderTotalTaxAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT))));
                     order.setOrderSubTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_SUB_TOTAL))));
-                    order.setSelectedCustomerId(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
+                    order.setSelectedCustomerId(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
                     order.setSelectedCustomerUserId(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_USER_ID)));
                     order.setOrderDate(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_DATE)));
                     order.setCreatedOn(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
                     order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
                     order.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_UPLOAD_STATUS)));
+                    order.setProductsList(fetchTDCSalesOrderProductsListForOrderId(orderId));
 
                     allOrdersList.add(order);
 
@@ -1799,7 +1803,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Method to fetch all records from TDC Sales Orders Table
+     * Method to fetch records for selected duration from TDC Sales Orders Table
      */
     public List<TDCSaleOrder> fetchAllTDCSalesOrdersForSelectedDuration(String startDate, String endDate) {
         List<TDCSaleOrder> allOrdersList = new ArrayList<>();
@@ -1817,7 +1821,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setOrderTotalAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_AMOUNT))));
                     order.setOrderTotalTaxAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT))));
                     order.setOrderSubTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_SUB_TOTAL))));
-                    order.setSelectedCustomerId(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
+                    order.setSelectedCustomerId(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
                     order.setSelectedCustomerUserId(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_USER_ID)));
                     order.setOrderDate(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_DATE)));
                     order.setCreatedOn(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
@@ -2026,7 +2030,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setOrderTotalAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_AMOUNT))));
                     order.setOrderTotalTaxAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT))));
                     order.setOrderSubTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_SUB_TOTAL))));
-                    order.setSelectedCustomerId(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
+                    order.setSelectedCustomerId(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_ID)));
                     order.setSelectedCustomerUserId(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_USER_ID)));
                     order.setOrderDate(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_DATE)));
                     order.setCreatedOn(c.getLong(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_ON)));
@@ -2285,7 +2289,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<TripsheetsList> alltripsheets = new ArrayList<TripsheetsList>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_STATUS +" = " + "'" + "A" + "'";
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_STATUS + " = " + "'" + "A" + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -2318,5 +2322,32 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return alltripsheets;
+    }
+
+    /**
+     * Method to fetch special prices for particular user
+     */
+    public Map<String, String> fetchSpecialPricesForUserId(String userId) {
+        Map<String, String> allSpecialPriceForUser = new HashMap<>();
+
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_SPECIALPRICE + " WHERE " + KEY_USER_SPECIALID + "='" + userId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    allSpecialPriceForUser.put(c.getString(c.getColumnIndex(KEY_PRODUCT_SPECIALID)), c.getString(c.getColumnIndex(KEY_SPECIALPRICE)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allSpecialPriceForUser;
     }
 }

@@ -9,20 +9,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsListAdapter;
-import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
-import com.rightclickit.b2bsaleon.services.SyncStakeHolderTypesService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
@@ -159,7 +154,7 @@ public class TripSheetsActivity extends AppCompatActivity {
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 tsTDCLayout.startAnimation(animation1);
-                Intent i = new Intent(TripSheetsActivity.this, SalesActivity.class);
+                Intent i = new Intent(TripSheetsActivity.this, TDCSalesActivity.class);
                 startActivity(i);
                 finish();
             }

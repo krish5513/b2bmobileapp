@@ -26,7 +26,6 @@ import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
-import com.rightclickit.b2bsaleon.services.SyncTDCSalesOrderService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
@@ -34,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SalesActivity extends AppCompatActivity implements TDCSalesListener {
+public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListener {
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
 
@@ -57,7 +56,7 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
 
         try {
             applicationContext = getApplicationContext();
-            activityContext = SalesActivity.this;
+            activityContext = TDCSalesActivity.this;
             mmSharedPreferences = new MMSharedPreferences(activityContext);
             mDBHelper = new DBHelper(activityContext);
 
@@ -141,7 +140,7 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Intent i = new Intent(SalesActivity.this, TDCSalesListActivity.class);
+                    Intent i = new Intent(TDCSalesActivity.this, TDCSalesListActivity.class);
                     startActivity(i);
                     finish();
                 }
@@ -274,7 +273,7 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
                 currentOrder.setOrderTotalTaxAmount(totalTaxAmount);
                 currentOrder.setOrderSubTotal(subTotal);
 
-                Intent customerSelectionIntent = new Intent(activityContext, SalesCustomerSelectionActivity.class);
+                Intent customerSelectionIntent = new Intent(activityContext, TDCSalesCustomerSelectionActivity.class);
                 customerSelectionIntent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER, currentOrder);
                 startActivity(customerSelectionIntent);
                 finish();
@@ -287,6 +286,6 @@ public class SalesActivity extends AppCompatActivity implements TDCSalesListener
     }
 
     public void showTDCSalesList(View view) {
-        showAlertDialogWithCancelButton(SalesActivity.this, "User Action!", "Are you sure want to leave sales?");
+        showAlertDialogWithCancelButton(TDCSalesActivity.this, "User Action!", "Are you sure want to leave sales?");
     }
 }

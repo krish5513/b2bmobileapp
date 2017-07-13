@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.Sales_Preview_PrintActivity;
+import com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.util.Utility;
 
@@ -26,9 +26,9 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
     private Context ctxt;
     private ArrayList<ProductsBean> selectedProductsList;
 
-    public TDCSalesPreviewAdapter(Context ctxt, Sales_Preview_PrintActivity sales_preview_printActivity, List<ProductsBean> productsList) {
+    public TDCSalesPreviewAdapter(Context ctxt, TDCSales_Preview_PrintActivity TDCSales_preview_printActivity, List<ProductsBean> productsList) {
         this.ctxt = ctxt;
-        this.activity = sales_preview_printActivity;
+        this.activity = TDCSales_preview_printActivity;
         this.mInflater = LayoutInflater.from(activity);
         this.selectedProductsList = (ArrayList<ProductsBean>) productsList;
     }
@@ -62,9 +62,9 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
             salesPreviewViewHolder = new TDCSalesPreviewViewHolder();
             salesPreviewViewHolder.order_preview_product_name = (TextView) convertView.findViewById(R.id.order_preview_product_name);
             salesPreviewViewHolder.order_preview_quantity = (TextView) convertView.findViewById(R.id.order_preview_quantity);
-            salesPreviewViewHolder.order_preview_tax = (TextView) convertView.findViewById(R.id.order_preview_tax);
             salesPreviewViewHolder.order_preview_mrp = (TextView) convertView.findViewById(R.id.order_preview_mrp);
             salesPreviewViewHolder.order_preview_amount = (TextView) convertView.findViewById(R.id.order_preview_amount);
+            salesPreviewViewHolder.order_preview_tax = (TextView) convertView.findViewById(R.id.order_preview_tax);
 
             convertView.setTag(salesPreviewViewHolder);
         } else {
@@ -75,9 +75,9 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
 
         salesPreviewViewHolder.order_preview_product_name.setText(productBean.getProductTitle());
         salesPreviewViewHolder.order_preview_quantity.setText(String.format("%.3f", productBean.getSelectedQuantity()));
-        salesPreviewViewHolder.order_preview_tax.setText(Utility.getFormattedCurrency(productBean.getTaxAmount()));
         salesPreviewViewHolder.order_preview_mrp.setText(Utility.getFormattedCurrency(productBean.getProductRatePerUnit()));
         salesPreviewViewHolder.order_preview_amount.setText(Utility.getFormattedCurrency(productBean.getProductAmount()));
+        salesPreviewViewHolder.order_preview_tax.setText(Utility.getFormattedCurrency(productBean.getTaxAmount()));
 
         return convertView;
     }

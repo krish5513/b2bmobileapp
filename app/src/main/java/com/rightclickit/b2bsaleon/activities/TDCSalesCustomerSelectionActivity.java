@@ -36,7 +36,7 @@ import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SalesCustomerSelectionActivity extends AppCompatActivity {
+public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
 
@@ -59,7 +59,7 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
 
         try {
             applicationContext = getApplicationContext();
-            activityContext = SalesCustomerSelectionActivity.this;
+            activityContext = TDCSalesCustomerSelectionActivity.this;
 
             final ActionBar actionBar = getSupportActionBar();
             assert actionBar != null;
@@ -110,6 +110,7 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
                     if (currentOrder != null) {
                         currentOrder.setSelectedCustomerId(selectedCustomer.getId());
                         currentOrder.setSelectedCustomerUserId(selectedCustomer.getUserId());
+                        currentOrder.setSelectedCustomerType(selectedCustomer.getCustomerType());
                         isCustomerSelected = true;
 
                         showTDCSalesOrderPreview(null);
@@ -202,19 +203,19 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(this, SalesActivity.class);
+        Intent intent = new Intent(this, TDCSalesActivity.class);
         intent.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER, currentOrder); // to handle back button
         startActivity(intent);
         finish();
     }
 
     protected void showAddCustomerDialog() {
-        LayoutInflater layoutInflater = LayoutInflater.from(SalesCustomerSelectionActivity.this);
+        LayoutInflater layoutInflater = LayoutInflater.from(TDCSalesCustomerSelectionActivity.this);
         View promptView = layoutInflater.inflate(R.layout.consumer_adddialog, null);
         final EditText name = (EditText) promptView.findViewById(R.id.name);
         final EditText mob = (EditText) promptView.findViewById(R.id.mobileno);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(SalesCustomerSelectionActivity.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TDCSalesCustomerSelectionActivity.this);
         alertDialogBuilder.setView(promptView);
         alertDialogBuilder.setCancelable(false);
         alertDialogBuilder.setPositiveButton(android.R.string.ok, null);
@@ -299,7 +300,7 @@ public class SalesCustomerSelectionActivity extends AppCompatActivity {
     }
 
     public void showTDCSalesOrderPreview(View view) {
-        Intent i = new Intent(SalesCustomerSelectionActivity.this, Sales_Preview_PrintActivity.class);
+        Intent i = new Intent(TDCSalesCustomerSelectionActivity.this, TDCSales_Preview_PrintActivity.class);
         i.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
         i.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION);
         startActivity(i);

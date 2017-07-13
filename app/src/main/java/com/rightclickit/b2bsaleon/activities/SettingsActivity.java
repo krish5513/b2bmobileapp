@@ -4,15 +4,11 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,7 +20,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +36,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -71,7 +65,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class SettingsActivity extends AppCompatActivity implements OnMapReadyCallback {
     EditText userName;
@@ -259,7 +252,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     Toast.makeText(applicationContext, "Clicked on TDC", Toast.LENGTH_SHORT).show();
                     Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                     mTDCLayout.startAnimation(animation1);
-                    Intent i = new Intent(SettingsActivity.this, SalesActivity.class);
+                    Intent i = new Intent(SettingsActivity.this, TDCSalesActivity.class);
                     startActivity(i);
                     finish();
                 }
@@ -661,7 +654,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         super.onBackPressed();
         Intent intent = null;
         if (mTdcHomeScreen.equals("tdc_home_screen")) {
-            intent = new Intent(this, SalesActivity.class);
+            intent = new Intent(this, TDCSalesActivity.class);
         }
         else if(mTripsHomeScreen.equals("Trips@Home")){
             intent = new Intent(this, TripSheetsActivity.class);
