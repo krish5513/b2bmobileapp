@@ -14,7 +14,7 @@ import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
 import java.util.List;
 
 /**
- * Created by PPS on 5/18/2017.
+ * Created by bhagya on 5/18/2017.
  */
 
 public class NotificationAdapter extends ArrayAdapter<NotificationBean> {

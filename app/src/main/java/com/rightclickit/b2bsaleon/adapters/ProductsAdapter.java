@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
- * Created by PPS on 5/25/2017.
+ * Created by bhagya on 5/25/2017.
  */
 
 public class ProductsAdapter extends BaseAdapter {

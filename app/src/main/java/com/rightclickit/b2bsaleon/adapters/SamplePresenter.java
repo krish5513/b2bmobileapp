@@ -7,7 +7,7 @@ import com.yayandroid.locationmanager.constants.FailType;
 import com.yayandroid.locationmanager.constants.ProcessType;
 
 /**
- * Created by murali on 7/4/17.
+ * Created by bhagya on 7/4/17.
  */
 
 public class SamplePresenter {
