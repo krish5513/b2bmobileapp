@@ -1445,10 +1445,11 @@ public class DBHelper extends SQLiteOpenHelper {
                     effectedRows = db.insert(TABLE_TO_PRODUCTS, null, values);
                     // System.out.println("IFFFFFF::: "+effectedRows);
                 } else {
-                    effectedRows = db.update(TABLE_TO_PRODUCTS, values, KEY_TO_PRODUCT_ID + " = ?", new String[]{String.valueOf(takeOrderBeanArrayList.get(b).getmProductId())});
+                    effectedRows = db.update(TABLE_TO_PRODUCTS, values, KEY_TO_PRODUCT_ID + " = ?" + " AND " + KEY_TO_AGENTID + " = ? ",
+                            new String[]{String.valueOf(takeOrderBeanArrayList.get(b).getmProductId()), String.valueOf(takeOrderBeanArrayList.get(b).getmAgentId())});
                     // System.out.println("ELSEEE::: "+effectedRows);
                 }
-                System.out.println("UpDATE PRICE::: " + takeOrderBeanArrayList.get(b).getmAgentPrice());
+                //System.out.println("UpDATE PRICE::: " + takeOrderBeanArrayList.get(b).getmAgentPrice());
                 // update row
                 values.clear();
             }
@@ -1457,7 +1458,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         db.close();
-        System.out.println("ASDF::: " + effectedRows);
+        //System.out.println("ASDF::: " + effectedRows);
         return effectedRows;
     }
 
