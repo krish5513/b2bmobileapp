@@ -6,25 +6,40 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.NotificationAdapter;
 import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
+import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class NotificationsActivity extends AppCompatActivity {
-    public static final String[] name= new String[] { "Sales"};
+    public static final String[] name = new String[]{"Sales"};
 
-    public static final String[] description = new String[] {
+    public static final String[] description = new String[]{
             "Be the first to know about discounts and offers at B2BSaleON ! Click here to subscribe"};
 
-    public static final String[] date = new String[] {"12/2/2017"};
+    public static final String[] date = new String[]{"12/2/2017"};
 
     ListView listView;
     List<NotificationBean> rowItems;
+
+    private DBHelper mDBHelper;
+    private MMSharedPreferences mPreferences;
+
+    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
+    private LinearLayout mDashboardLayout, mTripSheetsLayout, mCustomersLayout, mProductsLayout, mTDCLayout;
+    private LinearLayout mRetailersLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +63,10 @@ public class NotificationsActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
 
+        mDBHelper = new DBHelper(NotificationsActivity.this);
+        mPreferences = new MMSharedPreferences(NotificationsActivity.this);
+
+
         rowItems = new ArrayList<NotificationBean>();
         for (int i = 0; i < name.length; i++) {
             NotificationBean item = new NotificationBean(name[i], description[i], date[i]);
@@ -58,7 +77,125 @@ public class NotificationsActivity extends AppCompatActivity {
         NotificationAdapter adapter = new NotificationAdapter(this,
                 R.layout.notigicationadapter, rowItems);
         listView.setAdapter(adapter);
-      //  listView.setOnItemClickListener(this);
+        //  listView.setOnItemClickListener(this);
+
+
+
+        mDashboardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
+        mDashboardLayout.setVisibility(View.GONE);
+        mDashboardLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mDashboardLayout.startAnimation(animation1);
+                Intent i = new Intent(NotificationsActivity.this, DashboardActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        mTripSheetsLayout = (LinearLayout) findViewById(R.id.TripSheetsLayout);
+        mTripSheetsLayout.setVisibility(View.GONE);
+        mTripSheetsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mTripSheetsLayout.startAnimation(animation1);
+                Intent i = new Intent(NotificationsActivity.this, TripSheetsActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        mCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
+        mCustomersLayout.setVisibility(View.GONE);
+        mCustomersLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mCustomersLayout.startAnimation(animation1);
+                Intent i = new Intent(NotificationsActivity.this, AgentsActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        mRetailersLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
+        mRetailersLayout.setVisibility(View.GONE);
+        mRetailersLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mRetailersLayout.startAnimation(animation1);
+                Intent i = new Intent(NotificationsActivity.this, RetailersActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        mProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
+        mProductsLayout.setVisibility(View.GONE);
+        mProductsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(applicationContext, "Clicked on Products", Toast.LENGTH_SHORT).show();
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mProductsLayout.startAnimation(animation1);
+                Intent i = new Intent(NotificationsActivity.this, Products_Activity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        mTDCLayout = (LinearLayout) findViewById(R.id.TDCLayout);
+        mTDCLayout.setVisibility(View.GONE);
+        mTDCLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                mTDCLayout.startAnimation(animation1);
+                Intent i = new Intent(NotificationsActivity.this, TDCSalesActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        HashMap<String, String> userMapData = mDBHelper.getUsersData();
+        ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
+        System.out.println("F 11111 ***COUNT === " + privilegesData.size());
+        for (int k = 0; k < privilegesData.size(); k++) {
+            System.out.println("F 11111 ***COUNT 4444 === " + privilegesData.get(k).toString());
+            if (privilegesData.get(k).toString().equals("Dashboard")) {
+                mDashboardLayout.setVisibility(View.VISIBLE);
+            } else if (privilegesData.get(k).toString().equals("TripSheets")) {
+                mTripSheetsLayout.setVisibility(View.VISIBLE);
+            } else if (privilegesData.get(k).toString().equals("Customers")) {
+                mCustomersLayout.setVisibility(View.VISIBLE);
+            } else if (privilegesData.get(k).toString().equals("Products")) {
+                mProductsLayout.setVisibility(View.VISIBLE);
+            } else if (privilegesData.get(k).toString().equals("TDC")) {
+                mTDCLayout.setVisibility(View.VISIBLE);
+            } else if (privilegesData.get(k).toString().equals("Retailers")) {
+                mRetailersLayout.setVisibility(View.VISIBLE);
+            }
+        }
+
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("UserActivity"));
+        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        for (int z = 0; z < privilegeActionsData.size(); z++) {
+            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+            if (privilegeActionsData.get(z).toString().equals("Notification")) {
+                mNotifications = privilegeActionsData.get(z).toString();
+            } else if (privilegeActionsData.get(z).toString().equals("tdc_home_screen")) {
+                mTdcHomeScreen = privilegeActionsData.get(z).toString();
+            } else if (privilegeActionsData.get(z).toString().equals("Trips@Home")) {
+                mTripsHomeScreen = privilegeActionsData.get(z).toString();
+            } else if (privilegeActionsData.get(z).toString().equals("Agents@Home")) {
+                mAgentsHomeScreen = privilegeActionsData.get(z).toString();
+            } else if (privilegeActionsData.get(z).toString().equals("Retailers@Home")) {
+                mRetailersHomeScreen = privilegeActionsData.get(z).toString();
+            } else if (privilegeActionsData.get(z).toString().equals("Dashboard@Home")) {
+                mDashboardHomeScreen = privilegeActionsData.get(z).toString();
+            }
+        }
     }
 
     @Override
@@ -66,10 +203,11 @@ public class NotificationsActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-   if (id == R.id.action_search) {
+        if (id == R.id.action_search) {
 
             return true;
         }
@@ -91,19 +229,36 @@ public class NotificationsActivity extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
+        menu.findItem(R.id.Add).setVisible(false);
 
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
-        startActivity(intent);
-        finish();
-    }
+
+        Intent intent = null;
+        if (mTdcHomeScreen.equals("tdc_home_screen")) {
+            intent = new Intent(this, TDCSalesActivity.class);
+        } else if (mTripsHomeScreen.equals("Trips@Home")) {
+            intent = new Intent(this, TripSheetsActivity.class);
+        } else if (mAgentsHomeScreen.equals("Agents@Home")) {
+            intent = new Intent(this, AgentsActivity.class);
+        } else if (mRetailersHomeScreen.equals("Retailers@Home")) {
+            intent = new Intent(this, RetailersActivity.class);
+
+        } else if (mDashboardHomeScreen.equals("Dashboard@Home")) {
+            intent = new Intent(this, DashboardActivity.class);
+        } else {
+            intent = new Intent(this, DashboardActivity.class);
+        }
+            startActivity(intent);
+            finish();
+        }
 
 
     }
+
 

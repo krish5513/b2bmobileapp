@@ -44,6 +44,7 @@ public class RetailersActivity extends AppCompatActivity {
     private DBHelper mDBHelper;
     private RetailersListAdapter retailersListAdapter;
     private List<TDCCustomer> retailersList;
+    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,34 +175,48 @@ public class RetailersActivity extends AppCompatActivity {
             System.out.println("F 11111 ***COUNT === " + privilegesData.size());
             if (privilegesData.contains("Dashboard")) {
                 mDashBoardLayout.setVisibility(View.VISIBLE);
-            }
-            if (privilegesData.contains("TripSheets")) {
+            }  if (privilegesData.contains("TripSheets")) {
                 mTripsheetsLayout.setVisibility(View.VISIBLE);
-            }
-            if (privilegesData.contains("Customers")) {
+            }  if (privilegesData.contains("Customers")) {
                 mCustomersLayout.setVisibility(View.VISIBLE);
-            }
-            if (privilegesData.contains("Products")) {
+            }  if (privilegesData.contains("Products")) {
                 mProductsLayout.setVisibility(View.VISIBLE);
-            }
-            if (privilegesData.contains("TDC")) {
+            }  if (privilegesData.contains("TDC")) {
                 mTDCLayout.setVisibility(View.VISIBLE);
-            }
-            if (privilegesData.contains("Retailers")) {
+            }  if (privilegesData.contains("Retailers")) {
                 mRetailersLayout.setVisibility(View.VISIBLE);
             }
 
-            ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Retailers"));
+
+            ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("UserActivity"));
             System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+            for (int z = 0; z < privilegeActionsData.size(); z++) {
+                System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+                if (privilegeActionsData.get(z).toString().equals("Notification")) {
+                    mNotifications = privilegeActionsData.get(z).toString();
+                } else if (privilegeActionsData.get(z).toString().equals("tdc_home_screen")) {
+                    mTdcHomeScreen = privilegeActionsData.get(z).toString();
+                } else if (privilegeActionsData.get(z).toString().equals("Trips@Home")) {
+                    mTripsHomeScreen = privilegeActionsData.get(z).toString();
+                } else if (privilegeActionsData.get(z).toString().equals("Agents@Home")) {
+                    mAgentsHomeScreen = privilegeActionsData.get(z).toString();
+                } else if (privilegeActionsData.get(z).toString().equals("Retailers@Home")) {
+                    mRetailersHomeScreen = privilegeActionsData.get(z).toString();
+                } else if (privilegeActionsData.get(z).toString().equals("Dashboard@Home")) {
+                    mDashboardHomeScreen = privilegeActionsData.get(z).toString();
+                }
+            }
+
+
+            ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Retailers"));
+            System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
 
             boolean canWeShowRetailersListView = false;
 
-            if (privilegeActionsData.contains("List_View")) {
+            if (privilegeActionsData1.contains("List_View")) {
                 mRetailerslistview.setVisibility(View.VISIBLE);
                 canWeShowRetailersListView = true;
-            }
-
-            if (privilegeActionsData.contains("Add")) {
+            }  if (privilegeActionsData1.contains("Add")) {
                 fab.setVisibility(View.VISIBLE);
             }
 
@@ -287,11 +302,11 @@ public class RetailersActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.notifications).setVisible(false);
-        menu.findItem(R.id.settings).setVisible(false);
-        menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem(R.id.Add).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(true);
+        menu.findItem(R.id.logout).setVisible(false);
+        menu.findItem(R.id.notifications).setVisible(true);
+
         menu.findItem(R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
@@ -300,8 +315,24 @@ public class RetailersActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
-        startActivity(intent);
-        finish();
+
+        Intent intent = null;
+        if (mTdcHomeScreen.equals("tdc_home_screen")) {
+            intent = new Intent(this, TDCSalesActivity.class);
+        } else if (mTripsHomeScreen.equals("Trips@Home")) {
+            intent = new Intent(this, TripSheetsActivity.class);
+        } else if (mAgentsHomeScreen.equals("Agents@Home")) {
+            intent = new Intent(this, AgentsActivity.class);
+        } else if (mRetailersHomeScreen.equals("Retailers@Home")) {
+            intent = new Intent(this, RetailersActivity.class);
+
+        } else if (mDashboardHomeScreen.equals("Dashboard@Home")) {
+            intent = new Intent(this, DashboardActivity.class);
+        } else {
+            intent = new Intent(this, DashboardActivity.class);
+        }
+            startActivity(intent);
+            finish();
+
     }
 }

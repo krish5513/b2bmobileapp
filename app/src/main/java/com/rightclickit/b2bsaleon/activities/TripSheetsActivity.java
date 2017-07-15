@@ -41,6 +41,7 @@ public class TripSheetsActivity extends AppCompatActivity {
     private TripsheetsModel mTripsheetsModel;
 
     private String mTripSheetViewPrivilege = "", mTripSheetStockPrivilege = "";
+    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,6 +212,26 @@ public class TripSheetsActivity extends AppCompatActivity {
             }
         }
 
+        ArrayList<String> privilegeActionsData1= mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("UserActivity"));
+        System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
+        for (int z = 0; z < privilegeActionsData1.size(); z++) {
+            System.out.println("Name::: " + privilegeActionsData1.get(z).toString());
+            if (privilegeActionsData1.get(z).toString().equals("Notification")) {
+                mNotifications = privilegeActionsData1.get(z).toString();
+            } else if (privilegeActionsData1.get(z).toString().equals("tdc_home_screen")) {
+                mTdcHomeScreen = privilegeActionsData1.get(z).toString();
+            } else if (privilegeActionsData1.get(z).toString().equals("Trips@Home")) {
+                mTripsHomeScreen = privilegeActionsData1.get(z).toString();
+            } else if (privilegeActionsData1.get(z).toString().equals("Agents@Home")) {
+                mAgentsHomeScreen = privilegeActionsData1.get(z).toString();
+            } else if (privilegeActionsData1.get(z).toString().equals("Retailers@Home")) {
+                mRetailersHomeScreen = privilegeActionsData1.get(z).toString();
+            } else if (privilegeActionsData1.get(z).toString().equals("Dashboard@Home")) {
+                mDashboardHomeScreen = privilegeActionsData1.get(z).toString();
+            }
+        }
+
+
         if (new NetworkConnectionDetector(TripSheetsActivity.this).isNetworkConnected()) {
             if (mDBHelper.getTripsheetsTableCount() > 0) {
                 ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList();
@@ -270,12 +291,10 @@ public class TripSheetsActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
-
-        menu.findItem(R.id.notifications).setVisible(false);
-        menu.findItem(R.id.settings).setVisible(false);
-        menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem(R.id.Add).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(true);
+        menu.findItem(R.id.logout).setVisible(false);
+        menu.findItem(R.id.notifications).setVisible(true);
 
         menu.findItem(R.id.autorenew).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
@@ -284,13 +303,27 @@ public class TripSheetsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, DashboardActivity.class);
-        startActivity(intent);
-        finish();
+        Intent intent = null;
+        if (mTdcHomeScreen.equals("tdc_home_screen")) {
+            intent = new Intent(this, TDCSalesActivity.class);
+        } else if (mTripsHomeScreen.equals("Trips@Home")) {
+            intent = new Intent(this, TripSheetsActivity.class);
+        } else if (mAgentsHomeScreen.equals("Agents@Home")) {
+            intent = new Intent(this, AgentsActivity.class);
+        } else if (mRetailersHomeScreen.equals("Retailers@Home")) {
+            intent = new Intent(this, RetailersActivity.class);
+
+        } else if (mDashboardHomeScreen.equals("Dashboard@Home")) {
+            intent = new Intent(this, DashboardActivity.class);
+        } else {
+            intent = new Intent(this, DashboardActivity.class);
+        }
+            startActivity(intent);
+            finish();
+        }
     }
 
 
-}
 
 
 
