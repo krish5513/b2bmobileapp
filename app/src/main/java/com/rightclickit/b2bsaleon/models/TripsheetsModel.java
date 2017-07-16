@@ -5,8 +5,10 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
+import com.rightclickit.b2bsaleon.activities.TripSheetStock;
 import com.rightclickit.b2bsaleon.activities.TripSheetsActivity;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -14,6 +16,7 @@ import com.rightclickit.b2bsaleon.interfaces.OnAsyncRequestCompleteListener;
 import com.rightclickit.b2bsaleon.util.AsyncRequest;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,6 +24,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -33,11 +37,12 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
     private Context context;
     private TripSheetsActivity activity;
+    private TripSheetStock activity1;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private TextView mNotripsText;
     private ArrayList<TripsheetsList> mTripsheetsList = new ArrayList<TripsheetsList>();
-    private ArrayList<TripsheetsList> mTripsheetsStockList = new ArrayList<TripsheetsList>();
+    private ArrayList<TripsheetsStockList> mTripsheetsStockList = new ArrayList<TripsheetsStockList>();
     private ArrayList<String> mRouteCodesList = new ArrayList<String>();
 
     private String currentDate;
@@ -53,6 +58,17 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         currentDate = df.format(cal.getTime());
 
+    }
+
+    public TripsheetsModel(TripSheetStock context, TripSheetStock tripSheetStock) {
+        this.context = context;
+        this.activity1 = tripSheetStock;
+        this.mPreferences = new MMSharedPreferences(context);
+        this.mDBHelper = new DBHelper(context);
+
+        // Calendar cal = Calendar.getInstance();
+        //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        currentDate = Utility.formatDate(new Date(), "yyyy-MM-dd");
     }
 
     /**
@@ -79,14 +95,11 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                 }
                 System.out.println("ROUTE CODES LIST:: " + mRouteCodesList.size());
                 String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TRIPSHEETS_PORT, Constants.GET_TRIPSHEETS_LIST);
+                JSONArray jar = new JSONArray(mRouteCodesList);
 
                 JSONObject params1 = new JSONObject();
-                if (mRouteCodesList.size() > 0) {
-                    for (int k = 0; k < mRouteCodesList.size(); k++) {
-                        params1.put("route_codes[" + k + "]", mRouteCodesList.get(k).toString());
-                    }
-                }
-                params1.put("date", currentDate);
+                params1.put("route_codes", jar);
+                params1.put("date", "2017-07-12");
 
                 AsyncRequest getTripsListRequest = new AsyncRequest(context, this, URL, AsyncRequest.MethodType.POST, params1);
                 getTripsListRequest.execute();
@@ -99,12 +112,9 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
     /**
      * Method to get tripsheets stock list
-     *
-     * @param mNoTripsSheetsStockFoundText
      */
-    public void getTripsheetsStockList(TextView mNoTripsSheetsStockFoundText, String mTripSheetId) {
+    public void getTripsheetsStockList(String mTripSheetId) {
         try {
-            mNotripsText = mNoTripsSheetsStockFoundText;
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 if (mTripsheetsStockList.size() > 0) {
                     mTripsheetsStockList.clear();
@@ -144,13 +154,23 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                         tripsheetsListBean.setmTripshhetDate(jb.getString("date"));
                         tripsheetsListBean.setmTripshhetStatus(jb.getString("status"));
                         tripsheetsListBean.setmTripshhetOBAmount(jb.getString("ob_amt"));
-                        tripsheetsListBean.setmTripshhetOrderedAmount(jb.getString("order_amt"));
-                        tripsheetsListBean.setmTripshhetReceivedAmount(jb.getString("received_amt"));
-                        tripsheetsListBean.setmTripshhetDueAmount("0");
+                        if (!jb.getString("order_amt").trim().equals("")) {
+                            tripsheetsListBean.setmTripshhetOrderedAmount(jb.getString("order_amt"));
+                        } else {
+                            tripsheetsListBean.setmTripshhetOrderedAmount("0");
+                        }
+                        if (!jb.getString("received_amt").trim().equals("")) {
+                            tripsheetsListBean.setmTripshhetReceivedAmount(jb.getString("received_amt"));
+                        } else {
+                            tripsheetsListBean.setmTripshhetReceivedAmount("0");
+                        }
+                        int dueAmt = Integer.parseInt(tripsheetsListBean.getmTripshhetOrderedAmount()) - Integer.parseInt(tripsheetsListBean.getmTripshhetReceivedAmount());
+                        tripsheetsListBean.setmTripshhetDueAmount(String.valueOf(dueAmt));
                         tripsheetsListBean.setmTripshhetRouteCode("route_code");
                         tripsheetsListBean.setmTripshhetSalesMenCode("salesman_code");
                         tripsheetsListBean.setmTripshhetVehicleNumber("vehicle_no");
                         tripsheetsListBean.setmTripshhetTrasnsporterName("transporter");
+                        tripsheetsListBean.setmTripshhetVerifyStatus("0");
 
                         mTripsheetsList.add(tripsheetsListBean);
                     }
@@ -168,6 +188,47 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     }
                     break;
                 case 1:
+                    JSONArray stockArray = new JSONArray(response);
+                    int stockLen = stockArray.length();
+                    JSONArray productCodesArray, orderQuantityArray;
+                    for (int i = 0; i < stockLen; i++) {
+                        JSONObject jb = stockArray.getJSONObject(i);
+
+                        productCodesArray = jb.getJSONArray("product_codes");
+                        orderQuantityArray = jb.getJSONArray("order_qty");
+
+                        int productsLen = productCodesArray.length();
+                        if (productsLen > 0) {
+                            for (int j = 0; j < productsLen; j++) {
+                                TripsheetsStockList tripStockBean = new TripsheetsStockList();
+
+                                tripStockBean.setmTripsheetStockTripsheetId(jb.getString("trip_id"));
+                                tripStockBean.setmTripsheetStockId(jb.getString("_id"));
+                                tripStockBean.setmTripsheetStockProductId("");
+                                tripStockBean.setmTripsheetStockProductCode(productCodesArray.get(j).toString());
+                                tripStockBean.setmTripsheetStockProductName("");
+                                tripStockBean.setmTripsheetStockProductOrderQuantity(orderQuantityArray.get(j).toString());
+                                tripStockBean.setmTripsheetStockDispatchBy("");
+                                tripStockBean.setmTripsheetStockDispatchDate("");
+                                tripStockBean.setmTripsheetStockDispatchQuantity("");
+                                tripStockBean.setmTripsheetStockVerifiedDate("");
+                                tripStockBean.setmTripsheetStockVerifiedQuantity("");
+                                tripStockBean.setmTripsheetStockVerifyBy("");
+
+                                mTripsheetsStockList.add(tripStockBean);
+                            }
+                        }
+                    }
+                    synchronized (this) {
+                        if (mTripsheetsStockList.size() > 0) {
+                            mDBHelper.insertTripsheetsStockListData(mTripsheetsStockList);
+                        }
+                    }
+                    synchronized (this) {
+                        if (mTripsheetsStockList.size() > 0) {
+                            activity1.loadTripsData(mTripsheetsStockList);
+                        }
+                    }
                     break;
             }
         } catch (Exception e) {

@@ -18,6 +18,7 @@ public class TripsheetsList {
     private String mTripshhetSalesMenCode;
     private String mTripshhetTrasnsporterName;
     private String mTripshhetVehicleNumber;
+    private String mTripshhetVerifyStatus;
 
     public String getmTripshhetId() {
         return mTripshhetId;
@@ -113,5 +114,13 @@ public class TripsheetsList {
 
     public void setmTripshhetVehicleNumber(String mTripshhetVehicleNumber) {
         this.mTripshhetVehicleNumber = mTripshhetVehicleNumber;
+    }
+
+    public String getmTripshhetVerifyStatus() {
+        return mTripshhetVerifyStatus;
+    }
+
+    public void setmTripshhetVerifyStatus(String mTripshhetVerifyStatus) {
+        this.mTripshhetVerifyStatus = mTripshhetVerifyStatus;
     }
 }

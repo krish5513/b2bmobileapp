@@ -14,9 +14,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.TripsheetsListAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.models.TripsheetsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import org.w3c.dom.Text;
 
@@ -40,10 +45,18 @@ public class TripSheetStock extends AppCompatActivity {
 
     private TripsheetsStockListAdapter mTripsheetsStockAdapter;
 
+    private TripsheetsModel mTripsheetsModel;
+
+    private String mTripSheetId = "", mStockDispatchPrivilege = "", mStockVerifyPrivilege = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle != null) {
+            mTripSheetId = bundle.getString("tripsheetId");
+        }
         setContentView(R.layout.activity_trip_sheet_stock);
 
         this.getSupportActionBar().setTitle("TRIP #908915,27/02/17");
@@ -60,6 +73,8 @@ public class TripSheetStock extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+        mTripsheetsModel = new TripsheetsModel(this, TripSheetStock.this);
+
         mDBHelper = new DBHelper(TripSheetStock.this);
         mPreferences = new MMSharedPreferences(TripSheetStock.this);
 
@@ -69,8 +84,6 @@ public class TripSheetStock extends AppCompatActivity {
         mVerifyText.setVisibility(View.GONE);
 
         mTripsheetsStockListView = (ListView) findViewById(R.id.TripsheetsStockListView);
-        mTripsheetsStockAdapter = new TripsheetsStockListAdapter(this, TripSheetStock.this);
-        mTripsheetsStockListView.setAdapter(mTripsheetsStockAdapter);
 
 //        dispatchdec=(ImageButton)findViewById(R.id.productQtDec1);
 //        dispatchdec.setVisibility(View.GONE);
@@ -115,19 +128,46 @@ public class TripSheetStock extends AppCompatActivity {
                 // dispatchdec.setVisibility(View.VISIBLE);
                 // dispatchinc.setVisibility(View.VISIBLE);
                 mDispatchText.setVisibility(View.VISIBLE);
+                mStockDispatchPrivilege = "Stock_Dispatch";
             } else if (privilegeActionsData.get(z).toString().equals("Stock_Verify")) {
                 //verifydec.setVisibility(View.VISIBLE);
                 //verifyinc.setVisibility(View.VISIBLE);
                 mVerifyText.setVisibility(View.VISIBLE);
+                tv_verify.setVisibility(View.VISIBLE);
+                mStockVerifyPrivilege = "Stock_Verify";
             } else if (privilegeActionsData.get(z).toString().equals("Stock_Save")) {
                 tv_save.setVisibility(View.VISIBLE);
             } else if (privilegeActionsData.get(z).toString().equals("stock_Preview_Print")) {
                 preview.setVisibility(View.VISIBLE);
-            } else if (privilegeActionsData.get(z).toString().equals("Stock_Verify")) {
-                tv_verify.setVisibility(View.VISIBLE);
             }
         }
 
+        if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
+            if (mDBHelper.getTripsheetsStockTableCount() > 0) {
+                ArrayList<TripsheetsStockList> tripsList = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
+                if (tripsList.size() > 0) {
+                    loadTripsData(tripsList);
+                }
+            } else {
+                //startService(new Intent(getApplicationContext(), SyncStakeHolderTypesService.class));
+                mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
+            }
+        } else {
+            // System.out.println("ELSE::: ");
+            ArrayList<TripsheetsStockList> tripsList = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
+            if (tripsList.size() > 0) {
+                loadTripsData(tripsList);
+            }
+        }
+
+    }
+
+    public void loadTripsData(ArrayList<TripsheetsStockList> tripsList) {
+        if (mTripsheetsStockAdapter != null) {
+            mTripsheetsStockAdapter = null;
+        }
+        mTripsheetsStockAdapter = new TripsheetsStockListAdapter(this, TripSheetStock.this, tripsList,mStockDispatchPrivilege,mStockVerifyPrivilege);
+        mTripsheetsStockListView.setAdapter(mTripsheetsStockAdapter);
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
 import com.rightclickit.b2bsaleon.activities.TripSheetsActivity;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -31,31 +32,30 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
     LayoutInflater mInflater;
     private Activity activity;
     Context ctxt;
-    ArrayList<TripsheetsList> mTripSheetsList;
+    ArrayList<TripsheetsStockList> mTripSheetsList;
     private ImageLoader mImageLoader;
     private MMSharedPreferences mPreferences;
-    private ArrayList<TripsheetsList> arraylist;
+    private ArrayList<TripsheetsStockList> arraylist;
     private DBHelper mDBHelper;
-    private String mViewPrivilege = "", mStockPrivilege = "";
+    private String mStcokDispatchPrivilege = "", mStockVerifyPrivilege = "";
 
-    public TripsheetsStockListAdapter(Context ctxt, TripSheetStock agentsActivity) {
+    public TripsheetsStockListAdapter(Context ctxt, TripSheetStock agentsActivity, ArrayList<TripsheetsStockList> tripsList, String mStockDispatchPrivilege, String mStockVerifyPrivilege) {
         this.ctxt = ctxt;
         this.activity = agentsActivity;
-//        this.mTripSheetsList = mAgentsBeansList;
-//        this.mImageLoader = new ImageLoader(agentsActivity);
+        this.mTripSheetsList = tripsList;
         this.mInflater = LayoutInflater.from(activity);
-//        this.mPreferences = new MMSharedPreferences(activity);
-//        this.arraylist = new ArrayList<TripsheetsList>();
-//        this.mDBHelper = new DBHelper(activity);
-//        this.arraylist.addAll(mTripSheetsList);
-//        this.mViewPrivilege = mTripSheetViewPrivilege;
-//        this.mStockPrivilege = mTripSheetStockPrivilege;
+        this.mPreferences = new MMSharedPreferences(activity);
+        this.arraylist = new ArrayList<TripsheetsStockList>();
+        this.mDBHelper = new DBHelper(activity);
+        this.arraylist.addAll(mTripSheetsList);
+        this.mStcokDispatchPrivilege = mStockDispatchPrivilege;
+        this.mStockVerifyPrivilege = mStockVerifyPrivilege;
     }
 
 
     @Override
     public int getCount() {
-        return 10;
+        return mTripSheetsList.size();
     }
 
     @Override
@@ -78,16 +78,39 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
             mHolder.mProductName = (TextView) view.findViewById(R.id.productName);
             mHolder.mOrder = (TextView) view.findViewById(R.id.order);
             mHolder.mDispatchQuantity = (EditText) view.findViewById(R.id.DispatchQuantity);
+            mHolder.mDispatchQuantity.setVisibility(View.GONE);
             mHolder.mVerifyQuantity = (EditText) view.findViewById(R.id.VerifyQuantity);
+            mHolder.mVerifyQuantity.setVisibility(View.GONE);
             mHolder.mDispatchDecrement = (ImageButton) view.findViewById(R.id.DispatchDecrement);
+            mHolder.mDispatchDecrement.setVisibility(View.GONE);
             mHolder.mDispatchIncrement = (ImageButton) view.findViewById(R.id.DispatchIncrement);
+            mHolder.mDispatchIncrement.setVisibility(View.GONE);
             mHolder.mVerifyDecrement = (ImageButton) view.findViewById(R.id.VerifyDecrement);
+            mHolder.mVerifyDecrement.setVisibility(View.GONE);
             mHolder.mVerifyIncrement = (ImageButton) view.findViewById(R.id.VerifyIncrement);
+            mHolder.mVerifyIncrement.setVisibility(View.GONE);
 
             view.setTag(mHolder);
         } else {
             mHolder = (ViewHolder) view.getTag();
         }
+
+        if (mStcokDispatchPrivilege.equals("Stock_Dispatch")) {
+            mHolder.mDispatchQuantity.setVisibility(View.VISIBLE);
+            mHolder.mDispatchDecrement.setVisibility(View.VISIBLE);
+            mHolder.mDispatchIncrement.setVisibility(View.VISIBLE);
+        }
+
+        if (mStockVerifyPrivilege.equals("Stock_Verify")) {
+            mHolder.mDispatchQuantity.setVisibility(View.VISIBLE);
+            mHolder.mDispatchQuantity.setVisibility(View.VISIBLE);
+            mHolder.mDispatchQuantity.setVisibility(View.VISIBLE);
+        }
+
+        mHolder.mProductName.setText(mTripSheetsList.get(position).getmTripsheetStockProductCode());
+        mHolder.mOrder.setText(mTripSheetsList.get(position).getmTripsheetStockProductOrderQuantity());
+        mHolder.mDispatchQuantity.setText(mTripSheetsList.get(position).getmTripsheetStockProductOrderQuantity());
+        mHolder.mVerifyQuantity.setText(mTripSheetsList.get(position).getmTripsheetStockProductOrderQuantity());
 
         return view;
     }
@@ -110,8 +133,8 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
         if (charText.length() == 0) {
             mTripSheetsList.addAll(arraylist);
         } else {
-            for (TripsheetsList wp : arraylist) {
-                if (wp.getmTripshhetTrasnsporterName().toLowerCase(Locale.getDefault()).contains(charText)) {
+            for (TripsheetsStockList wp : arraylist) {
+                if (wp.getmTripsheetStockProductName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     mTripSheetsList.add(wp);
                 }
             }

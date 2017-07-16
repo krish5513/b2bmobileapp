@@ -20,6 +20,7 @@ import com.rightclickit.b2bsaleon.activities.AgentTDC_Order;
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
 import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
+import com.rightclickit.b2bsaleon.activities.TripSheetStock;
 import com.rightclickit.b2bsaleon.activities.TripSheetsActivity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
@@ -27,6 +28,7 @@ import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -45,22 +47,23 @@ public class TripsheetsListAdapter extends BaseAdapter {
     private MMSharedPreferences mPreferences;
     private ArrayList<TripsheetsList> arraylist;
     private DBHelper mDBHelper;
-    private String mViewPrivilege="",mStockPrivilege="";
+    private String mViewPrivilege = "", mStockPrivilege = "";
 
     public TripsheetsListAdapter(Context ctxt, TripSheetsActivity agentsActivity, ArrayList<TripsheetsList> mAgentsBeansList,
                                  String mTripSheetViewPrivilege, String mTripSheetStockPrivilege) {
-        this.ctxt=ctxt;
+        this.ctxt = ctxt;
         this.activity = agentsActivity;
         this.mTripSheetsList = mAgentsBeansList;
         this.mImageLoader = new ImageLoader(agentsActivity);
         this.mInflater = LayoutInflater.from(activity);
         this.mPreferences = new MMSharedPreferences(activity);
         this.arraylist = new ArrayList<TripsheetsList>();
-        this.mDBHelper=new DBHelper(activity);
+        this.mDBHelper = new DBHelper(activity);
         this.arraylist.addAll(mTripSheetsList);
         this.mViewPrivilege = mTripSheetViewPrivilege;
         this.mStockPrivilege = mTripSheetStockPrivilege;
     }
+
     @Override
     public int getCount() {
         return mTripSheetsList.size();
@@ -79,9 +82,9 @@ public class TripsheetsListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
         final ViewHolder mHolder;
-        if(view == null){
+        if (view == null) {
             mHolder = new ViewHolder();
-            view = mInflater.inflate(R.layout.tripsheets_list_custom,null);
+            view = mInflater.inflate(R.layout.tripsheets_list_custom, null);
 
             mHolder.mTripsheetCode = (TextView) view.findViewById(R.id.tv_prid);
             mHolder.mTripsheetDate = (TextView) view.findViewById(R.id.tv_date);
@@ -96,27 +99,34 @@ public class TripsheetsListAdapter extends BaseAdapter {
             mHolder.stockbtn.setVisibility(View.GONE);
 
             view.setTag(mHolder);
-        }else {
+        } else {
             mHolder = (ViewHolder) view.getTag();
         }
 
-        if(mViewPrivilege.equals("tripsheet_summary")){
+        if (mViewPrivilege.equals("tripsheet_summary")) {
             mHolder.viewbtn.setVisibility(View.VISIBLE);
         }
 
-        if(mStockPrivilege.equals("list_stock")){
+        if (mStockPrivilege.equals("list_stock")) {
             mHolder.stockbtn.setVisibility(View.VISIBLE);
         }
 
         mHolder.mTripsheetCode.setText(mTripSheetsList.get(position).getmTripshhetCode());
         mHolder.mTripsheetDate.setText(mTripSheetsList.get(position).getmTripshhetDate());
         mHolder.mTripsheetStatus.setText(mTripSheetsList.get(position).getmTripshhetStatus());
+        mHolder.mTripsheetOBAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetOBAmount())));
+        mHolder.mTripsheetOrderedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetDueAmount())));
+        mHolder.mTripsheetReceivedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetReceivedAmount())));
+        mHolder.mTripsheetDueAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetDueAmount())));
 
 
         mHolder.stockbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent stockIntent = new Intent(activity, TripSheetStock.class);
+                stockIntent.putExtra("tripsheetId", mTripSheetsList.get(position).getmTripshhetId());
+                activity.startActivity(stockIntent);
+                activity.finish();
             }
         });
 
@@ -130,7 +140,7 @@ public class TripsheetsListAdapter extends BaseAdapter {
         return view;
     }
 
-    public class ViewHolder{
+    public class ViewHolder {
         TextView mTripsheetCode;
         TextView mTripsheetDate;
         TextView mTripsheetStatus;
