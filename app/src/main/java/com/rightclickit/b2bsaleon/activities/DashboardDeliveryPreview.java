@@ -32,15 +32,6 @@ public class DashboardDeliveryPreview extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
-
-
     }
 
     @Override

@@ -430,9 +430,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 //get current address by invoke an AsyncTask object
                 // new GetAddressTask(Agents_AddActivity.this).execute(String.valueOf(latitude), String.valueOf(longitude));
             }
-        }
-
-                ;
+        };
     }
 
 

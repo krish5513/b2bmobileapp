@@ -154,53 +154,7 @@ public class AgentTDC_Order extends AppCompatActivity {
         }
 
 
-       /* for (int i=0;i<ordersList.size();i++)
-        {
-            mTotalProductsPriceAmountSum= Double.parseDouble(ordersList.get(i).getmOrders_TotalValue());
-            System.out.println("P FINAL IS::: " + mTotalProductsPriceAmountSum);
 
-        }
-        totalprice= String.valueOf(mTotalProductsPriceAmountSum);
-        valueCount.setText(totalprice);
-        */
-
-        /*for (int i=0;i<takeOrderPreviewBeanArrayList.size();i++){
-
-            tax= 0.0f;
-
-            if (takeOrderPreviewBeanArrayList.get(i).getmProductTaxVAT() != null) {
-                tax = Float.parseFloat(takeOrderPreviewBeanArrayList.get(i).getmProductTaxVAT());
-
-            } else if (takeOrderPreviewBeanArrayList.get(i).getmProductTaxGST() != null) {
-                tax = Float.parseFloat(takeOrderPreviewBeanArrayList.get(i).getmProductTaxGST());
-
-            }
-            double price = Double.parseDouble(takeOrderPreviewBeanArrayList.get(i).getpPrice().replace(",", ""));
-            Log.i("priceAmount", String.valueOf(price));
-
-            double quantity = Double.parseDouble(takeOrderPreviewBeanArrayList.get(i).getpQuantity().replace(",", ""));
-            Log.i("quantityAmount", String.valueOf(quantity));
-
-            taxAmount = ((quantity * price) * tax) / 100;
-            Log.i("taxAmount", String.valueOf(taxAmount));
-            //  amount = price + taxAmount;
-            amount = price;
-
-            subtotal = (price * quantity);
-
-            mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
-                    * Double.parseDouble(takeOrderPreviewBeanArrayList.get(i).getpQuantity())));
-            System.out.println("P PRICE IS::: " + mProductsPriceAmountSum);
-
-            mTotalProductsTax = (mTotalProductsTax + taxAmount);
-            System.out.println("P TAX IS::: " + mTotalProductsTax);
-
-            mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
-
-            totalprice= String.valueOf(mTotalProductsPriceAmountSum);
-            valueCount.setText(totalprice);
-        }
-*/
 
         sales = (LinearLayout) findViewById(R.id.linear_sales);
         sales.setVisibility(View.GONE);

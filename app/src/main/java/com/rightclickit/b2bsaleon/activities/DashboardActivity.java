@@ -318,6 +318,15 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         finish();
     }
 
+    private void loadSettings() {
+        Intent settingsIntent = new Intent(DashboardActivity.this, SettingsActivity.class);
+        // mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        //mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // if you keep these flags white screen is coming on Intent navigation
+        startActivity(settingsIntent);
+        finish();
+    }
+
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
@@ -341,13 +350,6 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         }
     }
 
-    private void loadSettings() {
-        Intent settingsIntent = new Intent(DashboardActivity.this, SettingsActivity.class);
-        // mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        //mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // if you keep these flags white screen is coming on Intent navigation
-        startActivity(settingsIntent);
-        finish();
-    }
 
 
     @Override

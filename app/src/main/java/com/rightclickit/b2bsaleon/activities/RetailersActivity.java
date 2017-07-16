@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.RetailersListAdapter;
@@ -280,6 +281,17 @@ public class RetailersActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if (id == R.id.notifications) {
+            loadNotifications();
+            Toast.makeText(this, "Clicked on Notifications...", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if (id == R.id.settings) {
+
+            loadSettings();
+            Toast.makeText(this, "Clicked on Settings...", Toast.LENGTH_SHORT).show();
+            return true;
+        }
 
         if (id == R.id.action_search) {
             return true;
@@ -298,6 +310,21 @@ public class RetailersActivity extends AppCompatActivity {
             default:
                 return true;
         }
+    }
+    private void loadNotifications() {
+        Intent navigationIntent = new Intent(RetailersActivity.this, NotificationsActivity.class);
+        // mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        //mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // if you keep these flags white screen is coming on Intent navigation
+        startActivity(navigationIntent);
+        finish();
+    }
+
+    private void loadSettings() {
+        Intent settingsIntent = new Intent(RetailersActivity.this, SettingsActivity.class);
+        // mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        //mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // if you keep these flags white screen is coming on Intent navigation
+        startActivity(settingsIntent);
+        finish();
     }
 
     @Override
