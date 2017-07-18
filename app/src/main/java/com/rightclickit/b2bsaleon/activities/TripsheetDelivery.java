@@ -13,8 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.AgentTakeOrder_ViewAdapter;
+import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
@@ -29,6 +33,9 @@ public class TripsheetDelivery extends AppCompatActivity {
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
 
+    private ListView mAgentsList;
+    private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
+    ArrayList customArraylist=new ArrayList();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +68,20 @@ public class TripsheetDelivery extends AppCompatActivity {
         mPreferences = new MMSharedPreferences(TripsheetDelivery.this);
 
 
+        mAgentsList = (ListView) findViewById(R.id.AgentsList);
 
-
-
+        for (int i=0;i<10;i++){
+            TripSheetDeliveriesBean dBean=new TripSheetDeliveriesBean();
+            dBean.setDproductName("FCM 500ML");
+            dBean.setDproductStatus("In Stock");
+            dBean.setDproductInstockAmount("00.000");
+            dBean.setDproductPrice("50.00");
+            dBean.setDproductTax("00.00");
+            dBean.setDproductAmount("00.00");
+            dBean.setDproductQuantity("00.000");
+            customArraylist.add(dBean);
+        }
+        mAgentsList.setAdapter(new TripSheetDeliveriesAdapter(TripsheetDelivery.this,TripsheetDelivery.this,customArraylist));
 
         ret.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -13,15 +13,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
+import com.rightclickit.b2bsaleon.adapters.TripSheetPaymentsAdapter;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetPaymentsBean;
+
+import java.util.ArrayList;
 
 public class TripsheetPayments extends AppCompatActivity {
+
+    ListView paymentListView;
+    private TripSheetPaymentsAdapter mTripSheetPaymentsAdapter;
     LinearLayout ret;
     LinearLayout payments;
     LinearLayout save;
     LinearLayout print;
     LinearLayout delivery;
+    ArrayList paymentsList=new ArrayList();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +57,16 @@ public class TripsheetPayments extends AppCompatActivity {
         print = (LinearLayout) findViewById(R.id.prelinear);
         delivery=(LinearLayout) findViewById(R.id.dlinear) ;
 
+        paymentListView=(ListView) findViewById(R.id.AgentsList);
+        for (int i=0;i<10;i++) {
+            TripSheetPaymentsBean pBean = new TripSheetPaymentsBean();
+            pBean.setPaymentsAmount("0.00");
+            pBean.getPaymentMOP();
+            paymentsList.add(pBean);
 
+        }
 
-
+        paymentListView.setAdapter(new TripSheetPaymentsAdapter(TripsheetPayments.this,TripsheetPayments.this,paymentsList));
 
 
 

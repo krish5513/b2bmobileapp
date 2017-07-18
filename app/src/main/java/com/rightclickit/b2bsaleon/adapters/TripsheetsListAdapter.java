@@ -21,6 +21,7 @@ import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
 import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
+import com.rightclickit.b2bsaleon.activities.TripSheetView;
 import com.rightclickit.b2bsaleon.activities.TripSheetsActivity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
@@ -134,6 +135,10 @@ public class TripsheetsListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
 
+                Intent stockIntent = new Intent(activity, TripSheetView.class);
+               
+                activity.startActivity(stockIntent);
+                activity.finish();
             }
         });
 

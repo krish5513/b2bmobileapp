@@ -13,8 +13,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
+import com.rightclickit.b2bsaleon.adapters.TripSheetReturnsAdapter;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
+
+import java.util.ArrayList;
 
 public class TripsheetReturns extends AppCompatActivity {
     LinearLayout ret;
@@ -22,6 +29,10 @@ public class TripsheetReturns extends AppCompatActivity {
     LinearLayout save;
     LinearLayout print;
     LinearLayout delivery;
+
+    private ListView mAgentsList;
+    private TripSheetReturnsAdapter mTripSheetReturnsAdapter;
+    ArrayList customArraylist=new ArrayList();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +60,18 @@ public class TripsheetReturns extends AppCompatActivity {
         delivery=(LinearLayout) findViewById(R.id.rdelivery) ;
 
 
+        mAgentsList = (ListView) findViewById(R.id.AgentsList);
+
+        for (int i=0;i<10;i++){
+            TripSheetReturnsBean dBean=new TripSheetReturnsBean();
+            dBean.setrProductReturnsName("FCM 500ML");
+            dBean.setrProductReturnsQty("000.00");
+            dBean.setrProductReturnsType("YES");
+            dBean.setrProductReturnsIncAmount("000.00");
+
+            customArraylist.add(dBean);
+        }
+        mAgentsList.setAdapter(new TripSheetReturnsAdapter(TripsheetReturns.this,TripsheetReturns.this,customArraylist));
 
 
 
