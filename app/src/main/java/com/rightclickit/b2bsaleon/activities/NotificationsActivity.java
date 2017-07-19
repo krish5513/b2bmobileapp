@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.NotificationAdapter;
 import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetPaymentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
@@ -24,15 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NotificationsActivity extends AppCompatActivity {
-    public static final String[] name = new String[]{"Sales"};
-
-    public static final String[] description = new String[]{
-            "Be the first to know about discounts and offers at B2BSaleON ! Click here to subscribe"};
-
-    public static final String[] date = new String[]{"12/2/2017"};
 
     ListView listView;
-    List<NotificationBean> rowItems;
+
 
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
@@ -40,6 +35,7 @@ public class NotificationsActivity extends AppCompatActivity {
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
     private LinearLayout mDashboardLayout, mTripSheetsLayout, mCustomersLayout, mProductsLayout, mTDCLayout;
     private LinearLayout mRetailersLayout;
+    private ArrayList notificationList=new ArrayList();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,17 +63,20 @@ public class NotificationsActivity extends AppCompatActivity {
         mPreferences = new MMSharedPreferences(NotificationsActivity.this);
 
 
-        rowItems = new ArrayList<NotificationBean>();
-        for (int i = 0; i < name.length; i++) {
-            NotificationBean item = new NotificationBean(name[i], description[i], date[i]);
-            rowItems.add(item);
-        }
 
         listView = (ListView) findViewById(R.id.list);
+
+        for (int i=0;i<10;i++) {
+            NotificationBean pBean = new NotificationBean();
+            pBean.setName("Sales");
+            pBean.setDescription("Be the first to know about discounts and offers at B2BSaleON ! Click here to subscribe");
+            pBean.setDate("2017-07-18");
+            notificationList.add(pBean);
+
+        }
         NotificationAdapter adapter = new NotificationAdapter(NotificationsActivity.this,
-                R.layout.notigicationadapter, rowItems);
+                NotificationsActivity.this, notificationList);
         listView.setAdapter(adapter);
-        //  listView.setOnItemClickListener(this);
 
 
 

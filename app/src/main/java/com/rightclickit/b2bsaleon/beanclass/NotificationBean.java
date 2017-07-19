@@ -5,11 +5,7 @@ package com.rightclickit.b2bsaleon.beanclass;
  */
 
 public class NotificationBean {
-    public NotificationBean(String name, String description, String date) {
-        this.name = name;
-        this.description = description;
-        this.date = date;
-    }
+
 
     String name;
 
