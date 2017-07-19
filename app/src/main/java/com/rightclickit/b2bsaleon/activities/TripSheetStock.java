@@ -53,10 +53,6 @@ public class TripSheetStock extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle = this.getIntent().getExtras();
-        if (bundle != null) {
-            mTripSheetId = bundle.getString("tripsheetId");
-        }
         setContentView(R.layout.activity_trip_sheet_stock);
 
         this.getSupportActionBar().setTitle("TRIP #908915,27/02/17");
@@ -67,11 +63,15 @@ public class TripSheetStock extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle != null) {
+            mTripSheetId = bundle.getString("tripsheetId");
+        }
 
         mTripsheetsModel = new TripsheetsModel(this, TripSheetStock.this);
 
@@ -123,7 +123,6 @@ public class TripSheetStock extends AppCompatActivity {
         for (int z = 0; z < privilegeActionsData.size(); z++) {
             //System.out.println("Name::: " + privilegeActionsData.get(z).toString());
 
-
             if (privilegeActionsData.get(z).toString().equals("Stock_Dispatch")) {
                 // dispatchdec.setVisibility(View.VISIBLE);
                 // dispatchinc.setVisibility(View.VISIBLE);
@@ -166,7 +165,7 @@ public class TripSheetStock extends AppCompatActivity {
         if (mTripsheetsStockAdapter != null) {
             mTripsheetsStockAdapter = null;
         }
-        mTripsheetsStockAdapter = new TripsheetsStockListAdapter(this, TripSheetStock.this, tripsList,mStockDispatchPrivilege,mStockVerifyPrivilege);
+        mTripsheetsStockAdapter = new TripsheetsStockListAdapter(this, TripSheetStock.this, tripsList, mStockDispatchPrivilege, mStockVerifyPrivilege);
         mTripsheetsStockListView.setAdapter(mTripsheetsStockAdapter);
     }
 
@@ -180,7 +179,6 @@ public class TripSheetStock extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_search) {
-
             return true;
         }
 
@@ -195,8 +193,6 @@ public class TripSheetStock extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-
         menu.findItem(R.id.notifications).setVisible(false);
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);

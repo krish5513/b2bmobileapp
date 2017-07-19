@@ -190,14 +190,20 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                 case 1:
                     JSONArray stockArray = new JSONArray(response);
                     int stockLen = stockArray.length();
+
                     JSONArray productCodesArray, orderQuantityArray;
+
                     for (int i = 0; i < stockLen; i++) {
                         JSONObject jb = stockArray.getJSONObject(i);
+                        int productsLen = 0;
 
-                        productCodesArray = jb.getJSONArray("product_codes");
+                        if (jb.has("productdata")) {
+                            productCodesArray = jb.getJSONArray("productdata");
+                            productsLen = productCodesArray.length();
+                        }
+
                         orderQuantityArray = jb.getJSONArray("order_qty");
 
-                        int productsLen = productCodesArray.length();
                         if (productsLen > 0) {
                             for (int j = 0; j < productsLen; j++) {
                                 TripsheetsStockList tripStockBean = new TripsheetsStockList();
@@ -205,7 +211,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                 tripStockBean.setmTripsheetStockTripsheetId(jb.getString("trip_id"));
                                 tripStockBean.setmTripsheetStockId(jb.getString("_id"));
                                 tripStockBean.setmTripsheetStockProductId("");
-                                tripStockBean.setmTripsheetStockProductCode(productCodesArray.get(j).toString());
+                                //tripStockBean.setmTripsheetStockProductCode(productCodesArray.get(j).toString());
                                 tripStockBean.setmTripsheetStockProductName("");
                                 tripStockBean.setmTripsheetStockProductOrderQuantity(orderQuantityArray.get(j).toString());
                                 tripStockBean.setmTripsheetStockDispatchBy("");

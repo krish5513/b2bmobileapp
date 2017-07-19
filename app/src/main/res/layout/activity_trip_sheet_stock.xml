@@ -10,62 +10,72 @@
         android:id="@+id/TitlesLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:background="@color/layout_background"
+        android:orientation="horizontal"
         android:padding="5dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.18"
             android:text="Product"
-            android:textSize="14sp"
-            android:textColor="@color/greydark"/>
+            android:textColor="@color/greydark"
+            android:textSize="14sp" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.22"
             android:text="Order"
-            android:textSize="14sp"
-            android:textColor="@color/greydark"/>
+            android:textColor="@color/greydark"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/dispatch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.17"
-            android:text="Dispatch"
             android:layout_gravity="center"
+            android:layout_weight="0.17"
             android:gravity="center"
-            android:textSize="14sp"
-            android:textColor="@color/greydark"/>
+            android:text="Dispatch"
+            android:textColor="@color/greydark"
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/verify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.17"
-            android:text="verify"
-            android:layout_marginRight="7dp"
             android:layout_gravity="center"
+            android:layout_marginRight="7dp"
+            android:layout_weight="0.17"
             android:gravity="center"
-            android:textSize="14sp"
-            android:textColor="@color/greydark"/>
+            android:text="Verify"
+            android:textColor="@color/greydark"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
-
+    <ListView
+        android:id="@+id/TripsheetsStockListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/BottomOptionsLayout"
+        android:layout_below="@id/TitlesLayout" />
 
     <LinearLayout
         android:id="@+id/BottomOptionsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:background="@color/white"
-        android:layout_alignParentBottom="true"
         android:orientation="vertical">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,9 +84,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="0.25"
                 android:layout_gravity="center"
+                android:layout_weight="0.25"
                 android:gravity="center">
+
                 <TextView
                     android:id="@+id/tv_save"
                     android:layout_width="wrap_content"
@@ -87,14 +98,15 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 
-
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="0.25"
                 android:layout_gravity="center"
+                android:layout_weight="0.25"
                 android:gravity="center">
+
                 <TextView
                     android:id="@+id/tv_verify"
                     android:layout_width="wrap_content"
@@ -105,15 +117,15 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="0.25"
                 android:layout_gravity="center"
+                android:layout_weight="0.25"
                 android:gravity="center">
+
                 <TextView
                     android:id="@+id/tv_print_print"
                     android:layout_width="wrap_content"
@@ -124,19 +136,10 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 
-
             </LinearLayout>
-
 
         </LinearLayout>
 
     </LinearLayout>
-
-    <ListView
-        android:id="@+id/TripsheetsStockListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/TitlesLayout"
-        android:layout_above="@id/BottomOptionsLayout"/>
 
 </RelativeLayout>
