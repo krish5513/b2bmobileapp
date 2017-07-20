@@ -222,6 +222,7 @@ public class LoginActivity extends Activity {
     }
 
     public void loadDashboard() {
+
         if(mDBHelper.getUserDeviceId(emailId).equals("")){
 //            synchronized (this){
 //                System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"+mDBHelper.getRouteId());
@@ -237,6 +238,8 @@ public class LoginActivity extends Activity {
             //           }
         }else {
             Intent mainActivityIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(mainActivityIntent);
             finish();
         }
@@ -244,6 +247,8 @@ public class LoginActivity extends Activity {
 
     public void loadSettings(){
         Intent mainActivityIntent = new Intent(LoginActivity.this, SettingsActivity.class);
+        mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mainActivityIntent);
         finish();
     }

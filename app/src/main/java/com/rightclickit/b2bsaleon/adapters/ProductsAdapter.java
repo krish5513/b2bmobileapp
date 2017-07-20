@@ -258,6 +258,8 @@ public class ProductsAdapter extends BaseAdapter {
                 if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
                     if (!mProductsBeansList1.get(position).getProductImageUrl().equals("")) {
                         String URL = Constants.MAIN_URL + "/b2b/" + mProductsBeansList1.get(position).getProductImageUrl();
+
+
                         showProductImageFull(URL);
                     }
                 }
@@ -317,7 +319,7 @@ public class ProductsAdapter extends BaseAdapter {
         ImageView iv = (ImageView) view.findViewById(R.id.dialog_imageview);
         mImageLoader.DisplayImage(url, iv, null, "");
 
-        alertadd.setNeutralButton("Okay!", new DialogInterface.OnClickListener() {
+        alertadd.setNeutralButton("Close", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dlg, int sumthin) {
                 dlg.dismiss();
             }

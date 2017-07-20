@@ -413,9 +413,10 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     } else {
                         confirmNewPassword.setError(null);
                         settingsmodel.changePassword(mPreferences.getString("userId"), Utility.getMd5String(newPassword.getText().toString().trim()));
+                        CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.success_password));
                     }
 
-                    CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.success_password));
+
                 }
             });
 

@@ -95,6 +95,7 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
                 params.put("device_name", deviceName);
                 params.put("vehicle_no", vechicleNumber);
                 params.put("transporter_name", transporterName);
+               // params.put("companyname", companyname);
                 System.out.println("The PARAMS ARE==== "+params.toString());
 
                 AsyncRequest routeidRequest = new AsyncRequest(context, this, settingsURL, AsyncRequest.MethodType.POST, params);
@@ -116,6 +117,7 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
                 mPreferences.putString("deviceId",did);
                 mPreferences.putString("transporterName",transporterName);
                 mPreferences.putString("vehicleNumber",vehicleNumber);
+              // mPreferences.putString("companyname",companyname);
                 long f = mDBHelper.updateUserDetails(mPreferences.getString("userId"),companyname,"","",
                         "","","","","","","","","",did,transporterName,
                         vehicleNumber,"","");

@@ -58,9 +58,10 @@ public class AgentViewActivity extends AppCompatActivity {
         mTPCOrdersLayout.setVisibility(View.GONE);
 
 
-                mTakeOrdersLayout = (LinearLayout) findViewById(R.id.TakeOrdersLayout);
+        mTakeOrdersLayout = (LinearLayout) findViewById(R.id.TakeOrdersLayout);
         mTakeOrdersLayout.setVisibility(View.GONE);
-                mTakeOrdersLayout.setOnClickListener(new View.OnClickListener() {
+        mTakeOrdersLayout.setOnClickListener(
+                new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);

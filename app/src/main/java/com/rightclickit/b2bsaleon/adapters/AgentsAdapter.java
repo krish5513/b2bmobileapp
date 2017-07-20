@@ -1,7 +1,9 @@
 package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -183,7 +186,19 @@ public class AgentsAdapter extends BaseAdapter {
                 activity.finish();
             }
         });
+        mHolder.mPicImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
+                    if (!mAgentsBeansList1.get(position).getmAgentPic().equals("")) {
+                        String URL = Constants.MAIN_URL + "/b2b/" + mAgentsBeansList1.get(position).getmAgentPic();
 
+
+                        showProductImageFull(URL);
+                    }
+                }
+            }
+        });
 
         return view;
     }
@@ -221,5 +236,23 @@ public class AgentsAdapter extends BaseAdapter {
             }
         }
         notifyDataSetChanged();
+    }
+
+    private void showProductImageFull(String url){
+        final AlertDialog.Builder alertadd = new AlertDialog.Builder(activity);
+        LayoutInflater factory = LayoutInflater.from(activity);
+        final View view = factory.inflate(R.layout.image_full_screen_layout, null);
+        alertadd.setView(view);
+
+        ImageView iv = (ImageView) view.findViewById(R.id.dialog_imageview);
+        mImageLoader.DisplayImage(url, iv, null, "");
+
+        alertadd.setNeutralButton("Close", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dlg, int sumthin) {
+                dlg.dismiss();
+            }
+        });
+
+        alertadd.show();
     }
 }

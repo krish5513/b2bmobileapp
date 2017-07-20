@@ -174,7 +174,7 @@ public class Products_Activity extends AppCompatActivity {
         mTripSheetsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(applicationContext, "Clicked on TRIPSHEETS", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(applicationContext, "Clicked on TRIPSHEETS", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTripSheetsLayout.startAnimation(animation1);
                 Intent i =new Intent(Products_Activity.this,TripSheetsActivity.class);
