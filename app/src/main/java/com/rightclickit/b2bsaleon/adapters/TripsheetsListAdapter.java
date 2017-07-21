@@ -136,7 +136,7 @@ public class TripsheetsListAdapter extends BaseAdapter {
             public void onClick(View view) {
 
                 Intent stockIntent = new Intent(activity, TripSheetView.class);
-               
+                stockIntent.putExtra("tripsheetId", mTripSheetsList.get(position).getmTripshhetId());
                 activity.startActivity(stockIntent);
                 activity.finish();
             }

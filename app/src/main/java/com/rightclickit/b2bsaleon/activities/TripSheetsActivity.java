@@ -207,13 +207,13 @@ public class TripSheetsActivity extends AppCompatActivity {
             if (privilegeActionsData.get(z).toString().equals("list_view")) {
                 mTripsListview.setVisibility(View.VISIBLE);
             } else if (privilegeActionsData.get(z).toString().equals("tripsheet_summary")) {
-                mTripSheetViewPrivilege=privilegeActionsData.get(z).toString();
+                mTripSheetViewPrivilege = privilegeActionsData.get(z).toString();
             } else if (privilegeActionsData.get(z).toString().equals("list_stock")) {
                 mTripSheetStockPrivilege = privilegeActionsData.get(z).toString();
             }
         }
 
-        ArrayList<String> privilegeActionsData1= mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("UserActivity"));
+        ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("UserActivity"));
         System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
         for (int z = 0; z < privilegeActionsData1.size(); z++) {
             System.out.println("Name::: " + privilegeActionsData1.get(z).toString());
@@ -234,17 +234,18 @@ public class TripSheetsActivity extends AppCompatActivity {
 
 
         if (new NetworkConnectionDetector(TripSheetsActivity.this).isNetworkConnected()) {
-            if (mDBHelper.getTripsheetsTableCount() > 0) {
-                ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList();
-                if (tripsList.size() > 0) {
-                    loadTripsData(tripsList);
-                } else {
-                    mNoTripsFoundText.setText("No Trips found.");
-                }
-            } else {
-                //startService(new Intent(getApplicationContext(), SyncStakeHolderTypesService.class));
-                mTripsheetsModel.getTripsheetsList(mNoTripsFoundText);
-            }
+//            if (mDBHelper.getTripsheetsTableCount() > 0) {
+//                ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList();
+//                if (tripsList.size() > 0) {
+//                    loadTripsData(tripsList);
+//                } else {
+//                    mNoTripsFoundText.setText("No Trips found.");
+//                }
+//            } else {
+//                //startService(new Intent(getApplicationContext(), SyncStakeHolderTypesService.class));
+//                mTripsheetsModel.getTripsheetsList(mNoTripsFoundText);
+//            }
+            mTripsheetsModel.getTripsheetsList(mNoTripsFoundText);
         } else {
             // System.out.println("ELSE::: ");
             ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList();
@@ -261,7 +262,7 @@ public class TripSheetsActivity extends AppCompatActivity {
             mTripsListAdapter = null;
         }
         mTripsListAdapter = new TripsheetsListAdapter(TripSheetsActivity.this, TripSheetsActivity.this,
-                tripsList,mTripSheetViewPrivilege,mTripSheetStockPrivilege);
+                tripsList, mTripSheetViewPrivilege, mTripSheetStockPrivilege);
         mTripsListview.setAdapter(mTripsListAdapter);
     }
 
@@ -302,6 +303,7 @@ public class TripSheetsActivity extends AppCompatActivity {
                 return true;
         }
     }
+
     private void loadNotifications() {
         Intent navigationIntent = new Intent(TripSheetsActivity.this, NotificationsActivity.class);
         // mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -348,10 +350,10 @@ public class TripSheetsActivity extends AppCompatActivity {
         } else {
             intent = new Intent(this, DashboardActivity.class);
         }
-            startActivity(intent);
-            finish();
-        }
+        startActivity(intent);
+        finish();
     }
+}
 
 
 

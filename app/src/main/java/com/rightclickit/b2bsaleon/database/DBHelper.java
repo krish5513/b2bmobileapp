@@ -288,24 +288,24 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_DELIVERY_NO = "tripsheet_delivery_no";
     private final String KEY_TRIPSHEET_DELIVERY_TRIP_ID = "tripshhet_delivery_trip_id";
     private final String KEY_TRIPSHEET_DELIVERY_USER_ID = "tripshhet_delivery_user_id";
-    private final String KEY_TRIPSHEET_DELIVERY_USER_CODES ="tripshhet_delivery_user_codes";
+    private final String KEY_TRIPSHEET_DELIVERY_USER_CODES = "tripshhet_delivery_user_codes";
     private final String KEY_TRIPSHEET_DELIVERY_ROUTE_ID = "tripshhet_delivery_route_id";
-    private final String KEY_TRIPSHEET_DELIVERY_ROUTE_CODES= "tripshhet_delivery_route_codes";
-    private final String KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS= "tripshhet_delivery_product_ids";
-    private final String KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES ="tripshhet_delivery_product_codes";
-    private final String KEY_TRIPSHEET_DELIVERY_TAXPERCENT ="tripshhet_delivery_taxpercent";
-    private final String KEY_TRIPSHEET_DELIVERY_UNITPRICE= "tripshhet_delivery_unitprice";
-    private final String KEY_TRIPSHEET_DELIVERY_QUANTITY= "tripshhet_delivery_quantity";
-    private final String KEY_TRIPSHEET_DELIVERY_AMOUNT ="tripshhet_delivery_amount";
-    private final String KEY_TRIPSHEET_DELIVERY_TAXAMOUNT ="tripshhet_delivery_taxamount";
-    private final String KEY_TRIPSHEET_DELIVERY_TAXTOTAL= "tripshhet_delivery_taxtotal";
-    private final String KEY_TRIPSHEET_DELIVERY_SALEVALUE= "tripshhet_delivery_salevalue";
-    private final String KEY_TRIPSHEET_DELIVERY_STATUS= "tripshhet_delivery_status";
-    private final String KEY_TRIPSHEET_DELIVERY_DELETE= "tripshhet_delivery_delete";
-    private final String KEY_TRIPSHEET_DELIVERY_CREATEDBY= "tripshhet_delivery_createdby";
-    private final String KEY_TRIPSHEET_DELIVERY_CREATEDON= "tripshhet_delivery_createdon";
-    private final String KEY_TRIPSHEET_DELIVERY_UPDATEDON= "tripshhet_delivery_updatedon";
-    private final String KEY_TRIPSHEET_DELIVERY_UPDATEDBY= "tripshhet_delivery_updatedby";
+    private final String KEY_TRIPSHEET_DELIVERY_ROUTE_CODES = "tripshhet_delivery_route_codes";
+    private final String KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS = "tripshhet_delivery_product_ids";
+    private final String KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES = "tripshhet_delivery_product_codes";
+    private final String KEY_TRIPSHEET_DELIVERY_TAXPERCENT = "tripshhet_delivery_taxpercent";
+    private final String KEY_TRIPSHEET_DELIVERY_UNITPRICE = "tripshhet_delivery_unitprice";
+    private final String KEY_TRIPSHEET_DELIVERY_QUANTITY = "tripshhet_delivery_quantity";
+    private final String KEY_TRIPSHEET_DELIVERY_AMOUNT = "tripshhet_delivery_amount";
+    private final String KEY_TRIPSHEET_DELIVERY_TAXAMOUNT = "tripshhet_delivery_taxamount";
+    private final String KEY_TRIPSHEET_DELIVERY_TAXTOTAL = "tripshhet_delivery_taxtotal";
+    private final String KEY_TRIPSHEET_DELIVERY_SALEVALUE = "tripshhet_delivery_salevalue";
+    private final String KEY_TRIPSHEET_DELIVERY_STATUS = "tripshhet_delivery_status";
+    private final String KEY_TRIPSHEET_DELIVERY_DELETE = "tripshhet_delivery_delete";
+    private final String KEY_TRIPSHEET_DELIVERY_CREATEDBY = "tripshhet_delivery_createdby";
+    private final String KEY_TRIPSHEET_DELIVERY_CREATEDON = "tripshhet_delivery_createdon";
+    private final String KEY_TRIPSHEET_DELIVERY_UPDATEDON = "tripshhet_delivery_updatedon";
+    private final String KEY_TRIPSHEET_DELIVERY_UPDATEDBY = "tripshhet_delivery_updatedby";
 
 
     // Column names for Tripsheets returns List  Table
@@ -331,8 +331,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_RETURNS_CREATED_ON = "tripshhet_returns_created_on";
     private final String KEY_TRIPSHEET_RETURNS_UPDATED_ON = "tripshhet_returns_updated_on";
     private final String KEY_TRIPSHEET_RETURNS_UPDATED_BY = "tripshhet_returns_updated_by";
-
-
 
 
     // Column names for Tripsheets payments List  Table
@@ -496,7 +494,6 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_STOCK_VERIFY_BY + " VARCHAR)";
 
 
-
     // Tripsheets Deliveries list Table Create Statements
     private final String CREATE_TRIPSHEETS_DELIVERIES_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_TRIPSHEETS_DELIVERIES_LIST + "(" + KEY_TRIPSHEET_DELIVERY_NO + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -504,17 +501,17 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_DELIVERY_USER_ID + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_USER_CODES + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_ROUTE_ID + " VARCHAR,"
-            + KEY_TRIPSHEET_DELIVERY_ROUTE_CODES+ " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_ROUTE_CODES + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_TAXPERCENT + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_UNITPRICE + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_QUANTITY + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_AMOUNT + " VARCHAR,"
-            + KEY_TRIPSHEET_DELIVERY_TAXAMOUNT+ " VARCHAR,"
-            + KEY_TRIPSHEET_DELIVERY_TAXTOTAL+ " VARCHAR,"
-            + KEY_TRIPSHEET_DELIVERY_SALEVALUE+ " VARCHAR,"
-            + KEY_TRIPSHEET_DELIVERY_STATUS+ " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_TAXAMOUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_TAXTOTAL + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_SALEVALUE + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_STATUS + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_DELETE + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_CREATEDBY + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_CREATEDON + " VARCHAR,"
@@ -547,8 +544,6 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_RETURNS_UPDATED_BY + " VARCHAR)";
 
 
-
-
     // Tripsheets Returns list Table Create Statements
     private final String CREATE_TRIPSHEETS_PAYMENTS_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_TRIPSHEETS_PAYMENTS_LIST + "(" + KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -557,14 +552,14 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_PAYMENTS_USER_CODES + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_ROUTE_ID + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_ROUTE_CODES + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_CHE_TRANS_ID  + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_CHE_TRANS_ID + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_AC_CA_NO + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_ACOUNT_NAME + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_BANK_NAME  + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_TRANS_DATE  + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_TRANS_CLEAR_DATE  + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_RECEIVER_NAME  + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS  + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_BANK_NAME + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_TRANS_DATE + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_TRANS_CLEAR_DATE + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_RECEIVER_NAME + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_PRODUCTS_IDS + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_PRODUCT_CODES + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_TAX_PERCENT + " VARCHAR,"
@@ -581,7 +576,6 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_PAYMENTS_CREATED_ON + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_UPDATED_ON + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_UPDATED_BY + " VARCHAR)";
-
 
 
     public DBHelper(Context context) {
@@ -2736,7 +2730,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Method to fetch all tripsheets deliveries list
      */
     public ArrayList<TripSheetDeliveriesBean> fetchAllTripsheetsDeliveriesList(String tripsheetId) {
-        ArrayList<TripSheetDeliveriesBean> alltripsheetsDeliveries= new ArrayList<TripSheetDeliveriesBean>();
+        ArrayList<TripSheetDeliveriesBean> alltripsheetsDeliveries = new ArrayList<TripSheetDeliveriesBean>();
 
         try {
             String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "'";
@@ -2880,9 +2874,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-
-
-
     /**
      * Method to insert the mTripsheetsPaymentsList.
      *
@@ -3001,10 +2992,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return alltripsheetsPayments;
     }
-
-
-
-
 
 
 }

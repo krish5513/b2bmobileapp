@@ -16,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.models.TripsheetsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
@@ -51,13 +53,16 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     LinearLayout mapview;
     Button taleorder;
     LinearLayout delivery;
+    private ListView mTripsheetsSOListView;
+    private TripsheetsModel mTripsheetsModel;
+    private String mTripSheetId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_sheet_view);
 
-
+        mTripsheetsModel = new TripsheetsModel(this, TripSheetView.this);
         this.getSupportActionBar().setTitle("TRIPSHEET PREVIEW");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.route_white);
@@ -71,21 +76,24 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle != null) {
+            mTripSheetId = bundle.getString("tripsheetId");
+        }
         mDBHelper = new DBHelper(TripSheetView.this);
         mPreferences = new MMSharedPreferences(TripSheetView.this);
 
+        mTripsheetsSOListView = (ListView) findViewById(R.id.TripsheetsSOListView);
 
-
-        taleorder=(Button)findViewById(R.id.btn_sale_ord1) ;
-       taleorder.setVisibility(View.GONE);
-        delivery=(LinearLayout) findViewById(R.id.gotoCustomer);
-        delivery.setVisibility(View.GONE);
+//        taleorder = (Button) findViewById(R.id.btn_sale_ord1);
+//        taleorder.setVisibility(View.GONE);
+//        delivery = (LinearLayout) findViewById(R.id.gotoCustomer);
+//        delivery.setVisibility(View.GONE);
 
 
         listView = (TextView) findViewById(R.id.tv_listView);
         mapView = (TextView) findViewById(R.id.tv_mapView);
-        listview = (LinearLayout) findViewById(R.id.ll_listview);
+        // listview = (LinearLayout) findViewById(R.id.ll_listview);
         mapview = (LinearLayout) findViewById(R.id.ll_mapview);
 
         listView.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +105,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 //                line2.setBackgroundColor(Color.parseColor("#dbd7d7"));
                 //               linelist.setBackgroundColor(Color.parseColor("#e99e3b"));
                 //               lllist.addView(v);
-                listview.setVisibility(View.VISIBLE);
+                mTripsheetsSOListView.setVisibility(View.VISIBLE);
                 mapview.setVisibility(View.GONE);
 
             }
@@ -109,7 +117,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 mapView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mapview_orange, 0, 0, 0);
 //                line2.setBackgroundColor(0xe99e3b);
 //                line1.setBackgroundColor(0xdbd7d7);
-                listview.setVisibility(View.GONE);
+                mTripsheetsSOListView.setVisibility(View.GONE);
                 mapview.setVisibility(View.VISIBLE);
 
 
@@ -124,7 +132,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 tsDashBoardLayout.startAnimation(animation1);
-                Intent i =new Intent(TripSheetView.this,DashboardActivity.class);
+                Intent i = new Intent(TripSheetView.this, DashboardActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -151,7 +159,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 tsCustomersLayout.startAnimation(animation1);
-                Intent i =new Intent(TripSheetView.this,AgentsActivity.class);
+                Intent i = new Intent(TripSheetView.this, AgentsActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -178,7 +186,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 tsProductsLayout.startAnimation(animation1);
-                Intent i =new Intent(TripSheetView.this,Products_Activity.class);
+                Intent i = new Intent(TripSheetView.this, Products_Activity.class);
                 startActivity(i);
                 finish();
             }
@@ -192,76 +200,71 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 tsTDCLayout.startAnimation(animation1);
-                Intent i =new Intent(TripSheetView.this,TDCSalesActivity.class);
+                Intent i = new Intent(TripSheetView.this, TDCSalesActivity.class);
                 startActivity(i);
                 finish();
             }
         });
 
-        taleorder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(TripSheetView.this,TripsheetTakeorder.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        delivery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(TripSheetView.this,TripsheetDelivery.class);
-                startActivity(i);
-                finish();
-            }
-        });
+//        taleorder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(TripSheetView.this, TripsheetTakeorder.class);
+//                startActivity(i);
+//                finish();
+//            }
+//        });
+//        delivery.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(TripSheetView.this, TripsheetDelivery.class);
+//                startActivity(i);
+//                finish();
+//            }
+//        });
 
-       SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        HashMap<String,String> userMapData = mDBHelper.getUsersData();
+        HashMap<String, String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
-        System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
-        for (int k = 0; k<privilegesData.size();k++){
-            if (privilegesData.get(k).toString().equals("Dashboard")){
+        System.out.println("F 11111 ***COUNT === " + privilegesData.size());
+        for (int k = 0; k < privilegesData.size(); k++) {
+            if (privilegesData.get(k).toString().equals("Dashboard")) {
                 tsDashBoardLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("TripSheets")){
+            } else if (privilegesData.get(k).toString().equals("TripSheets")) {
                 tsTripsheetsLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("Customers")){
+            } else if (privilegesData.get(k).toString().equals("Customers")) {
                 tsCustomersLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("Products")){
+            } else if (privilegesData.get(k).toString().equals("Products")) {
                 tsProductsLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("TDC")){
+            } else if (privilegesData.get(k).toString().equals("TDC")) {
                 tsTDCLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("Retailers")){
+            } else if (privilegesData.get(k).toString().equals("Retailers")) {
                 tsRetailersLayout.setVisibility(View.VISIBLE);
             }
         }
 
 
-
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
-        System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
-        for (int z = 0;z<privilegeActionsData.size();z++){
-            System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
+        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        for (int z = 0; z < privilegeActionsData.size(); z++) {
+            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
 
 
-
-            if (privilegeActionsData.get(z).toString().equals("list_view_takeorder")) {
-                taleorder.setVisibility(View.VISIBLE);
-            }else
-            if (privilegeActionsData.get(z).toString().equals("list_view_delivery")) {
-                delivery.setVisibility(View.VISIBLE);
-            }
+//            if (privilegeActionsData.get(z).toString().equals("list_view_takeorder")) {
+//                taleorder.setVisibility(View.VISIBLE);
+//            } else if (privilegeActionsData.get(z).toString().equals("list_view_delivery")) {
+//                delivery.setVisibility(View.VISIBLE);
+//            }
 
 
         }
 
 
-
         mLatitude = userMapData.get("latitude");
         mLongitude = userMapData.get("longitude");
-
 
 
         fab = (FloatingActionButton) findViewById(R.id.productfab);
@@ -271,8 +274,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"Clicked Tripsheet Preview",Toast.LENGTH_SHORT).show();
-                Intent i =new Intent(TripSheetView.this,TripSheetViewPreview.class);
+                Toast.makeText(getApplicationContext(), "Clicked Tripsheet Preview", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(TripSheetView.this, TripSheetViewPreview.class);
                 startActivity(i);
                 finish();
             }
@@ -285,6 +288,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -310,11 +314,12 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.Add).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

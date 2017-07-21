@@ -6,7 +6,9 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
+import com.rightclickit.b2bsaleon.activities.TripSheetView;
 import com.rightclickit.b2bsaleon.activities.TripSheetsActivity;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.constants.Constants;
@@ -38,11 +40,13 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
     private Context context;
     private TripSheetsActivity activity;
     private TripSheetStock activity1;
+    private TripSheetView activity2;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private TextView mNotripsText;
     private ArrayList<TripsheetsList> mTripsheetsList = new ArrayList<TripsheetsList>();
     private ArrayList<TripsheetsStockList> mTripsheetsStockList = new ArrayList<TripsheetsStockList>();
+    private ArrayList<TripsheetSOList> mTripsheetsSOList = new ArrayList<TripsheetSOList>();
     private ArrayList<String> mRouteCodesList = new ArrayList<String>();
 
     private String currentDate;
@@ -63,6 +67,17 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
     public TripsheetsModel(TripSheetStock context, TripSheetStock tripSheetStock) {
         this.context = context;
         this.activity1 = tripSheetStock;
+        this.mPreferences = new MMSharedPreferences(context);
+        this.mDBHelper = new DBHelper(context);
+
+        // Calendar cal = Calendar.getInstance();
+        //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        currentDate = Utility.formatDate(new Date(), "yyyy-MM-dd");
+    }
+
+    public TripsheetsModel(TripSheetView tripSheetView, TripSheetView tripSheetView1) {
+        this.context = tripSheetView;
+        this.activity2 = tripSheetView1;
         this.mPreferences = new MMSharedPreferences(context);
         this.mDBHelper = new DBHelper(context);
 
@@ -99,7 +114,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
                 JSONObject params1 = new JSONObject();
                 params1.put("route_codes", jar);
-                params1.put("date", "2017-07-12");
+                params1.put("date", currentDate);
 
                 AsyncRequest getTripsListRequest = new AsyncRequest(context, this, URL, AsyncRequest.MethodType.POST, params1);
                 getTripsListRequest.execute();
@@ -121,6 +136,31 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                 }
                 calledApi = 1;
                 String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TRIPSHEETS_PORT, Constants.GET_TRIPSHEETS_STOCK_LIST);
+
+                JSONObject params1 = new JSONObject();
+                params1.put("trip_id", mTripSheetId);
+
+
+                AsyncRequest getTripsListRequest = new AsyncRequest(context, this, URL, AsyncRequest.MethodType.POST, params1);
+                getTripsListRequest.execute();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to get tripsheets so list
+     */
+    public void getTripsheetsSoList(String mTripSheetId) {
+        try {
+            if (new NetworkConnectionDetector(context).isNetworkConnected()) {
+                if (mTripsheetsSOList.size() > 0) {
+                    mTripsheetsSOList.clear();
+                }
+                calledApi = 2;
+                String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TRIPSHEETS_PORT, Constants.GET_TRIPSHEETS_SO_LIST);
 
                 JSONObject params1 = new JSONObject();
                 params1.put("trip_id", mTripSheetId);
@@ -235,6 +275,9 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                             activity1.loadTripsData(mTripsheetsStockList);
                         }
                     }
+                    break;
+                case 2:
+                    System.out.println("SO CALLED....");
                     break;
             }
         } catch (Exception e) {

@@ -121,4 +121,7 @@ public class Constants {
 
     //Tripsheets Stock List
     public static final String GET_TRIPSHEETS_STOCK_LIST = "/tripsheet/stock";
+
+    //Tripsheets Sale Orders List
+    public static final String GET_TRIPSHEETS_SO_LIST = "/tripsheet/so";
 }
