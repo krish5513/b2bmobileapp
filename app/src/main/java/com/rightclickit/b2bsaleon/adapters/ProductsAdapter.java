@@ -236,7 +236,6 @@ public class ProductsAdapter extends BaseAdapter {
                 bundle.putString("RETAILER", mProductsBeansList1.get(position).getProductRetailerPrice());
                 bundle.putString("CONSUMER", mProductsBeansList1.get(position).getProductConsumerPrice());
                 bundle.putString("GST", mProductsBeansList1.get(position).getProductgst());
-                Log.i("firstnamebhagya", mProductsBeansList1.get(position).getProductgst() + "");
                 bundle.putString("VAT", mProductsBeansList1.get(position).getProductvat());
                 intent.putExtra("IMAGE", mProductsBeansList1.get(position).getProductImageUrl());
                 holder.productImage.buildDrawingCache();
@@ -255,12 +254,18 @@ public class ProductsAdapter extends BaseAdapter {
         holder.productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
+                   if (mProductsBeansList1.get(position).getProductImageUrl() != null) {
                     if (!mProductsBeansList1.get(position).getProductImageUrl().equals("")) {
                         String URL = Constants.MAIN_URL + "/b2b/" + mProductsBeansList1.get(position).getProductImageUrl();
 
+                        if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
+                            mImageLoader.DisplayImage(URL, holder.productImage, null, "");
+                            showProductImageFull(URL);
+                        } else {
+                            holder.productImage.setBackgroundResource(R.drawable.logo);
+                            showProductImageFull(URL);
+                        }
 
-                        showProductImageFull(URL);
                     }
                 }
             }
