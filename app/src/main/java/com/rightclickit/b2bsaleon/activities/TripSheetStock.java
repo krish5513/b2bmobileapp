@@ -142,15 +142,15 @@ public class TripSheetStock extends AppCompatActivity {
         }
 
         if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
-            if (mDBHelper.getTripsheetsStockTableCount() > 0) {
-                ArrayList<TripsheetsStockList> tripsList = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
-                if (tripsList.size() > 0) {
-                    loadTripsData(tripsList);
-                }
-            } else {
-                //startService(new Intent(getApplicationContext(), SyncStakeHolderTypesService.class));
-                mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
-            }
+//            if (mDBHelper.getTripsheetsStockTableCount() > 0) {
+//                ArrayList<TripsheetsStockList> tripsList = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
+//                if (tripsList.size() > 0) {
+//                    loadTripsData(tripsList);
+//                }
+//            } else {
+            //startService(new Intent(getApplicationContext(), SyncStakeHolderTypesService.class));
+            mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
+//            }
         } else {
             // System.out.println("ELSE::: ");
             ArrayList<TripsheetsStockList> tripsList = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);

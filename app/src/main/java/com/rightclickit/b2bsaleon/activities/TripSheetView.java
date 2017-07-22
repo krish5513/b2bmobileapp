@@ -27,9 +27,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.TripsheetsSOListAdapter;
+import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +60,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     LinearLayout delivery;
     private ListView mTripsheetsSOListView;
     private TripsheetsModel mTripsheetsModel;
-    private String mTripSheetId = "";
+    private TripsheetsSOListAdapter mTripsheetSOAdapter;
+    private String mTripSheetId = "", mTakeOrderPrivilege = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,7 +235,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
         HashMap<String, String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
-        System.out.println("F 11111 ***COUNT === " + privilegesData.size());
+        //System.out.println("F 11111 ***COUNT === " + privilegesData.size());
         for (int k = 0; k < privilegesData.size(); k++) {
             if (privilegesData.get(k).toString().equals("Dashboard")) {
                 tsDashBoardLayout.setVisibility(View.VISIBLE);
@@ -248,9 +254,13 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
-        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
         for (int z = 0; z < privilegeActionsData.size(); z++) {
-            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+            //    System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+
+            if (privilegeActionsData.get(z).toString().equals("list_view_takeorder")) {
+                mTakeOrderPrivilege = privilegeActionsData.get(z).toString();
+            }
 
 
 //            if (privilegeActionsData.get(z).toString().equals("list_view_takeorder")) {
@@ -281,6 +291,32 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             }
         });
 
+        if (new NetworkConnectionDetector(TripSheetView.this).isNetworkConnected()) {
+//            if (mDBHelper.getTripsheetsStockTableCount() > 0) {
+//                ArrayList<TripsheetsStockList> tripsList = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
+//                if (tripsList.size() > 0) {
+//                    loadTripsData(tripsList);
+//                }
+//            } else {
+            //startService(new Intent(getApplicationContext(), SyncStakeHolderTypesService.class));
+            mTripsheetsModel.getTripsheetsSoList(mTripSheetId);
+//            }
+        } else {
+            // System.out.println("ELSE::: ");
+            ArrayList<TripsheetsStockList> tripsList = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
+            if (tripsList.size() > 0) {
+                //loadTripsoData(tripsList);
+            }
+        }
+    }
+
+    public void loadTripsoData(ArrayList<TripsheetSOList> tripsSOList) {
+        System.out.println("FUC:::: " + tripsSOList.size());
+        if (mTripsheetSOAdapter != null) {
+            mTripsheetSOAdapter = null;
+        }
+        mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripsSOList, mTakeOrderPrivilege);
+        mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
     }
 
     @Override

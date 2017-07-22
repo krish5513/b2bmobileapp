@@ -65,7 +65,7 @@
 
                             <TextView
 
-                                android:id="@+id/tv_prid"
+                                android:id="@+id/tv_agent_code"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
@@ -74,7 +74,7 @@
                                 android:textSize="12sp" />
 
                             <TextView
-                                android:id="@+id/tv_date"
+                                android:id="@+id/tv_so_date"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
