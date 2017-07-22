@@ -46,6 +46,7 @@ import com.rightclickit.b2bsaleon.services.SyncTakeOrdersService;
 import com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.w3c.dom.Text;
 
@@ -103,7 +104,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             currentDate = df.format(cal.getTime());
-            fromDStr = currentDate;
+            fromDStr = Utility.formatDate(cal.getTime(), "dd/MM/yyyy");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,9 +162,6 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
 
             holder.mEmptyLayout = (LinearLayout) convertView.findViewById(R.id.EmptyView);
             convertView.setTag(holder);
-            /*Intent intent=new Intent(activity,DashboardTakeorderPreview.class);
-            activity.startActivity(intent);
-            activity.finish();*/
         } else {
             holder = (MyViewHolder) convertView.getTag();
         }
@@ -173,9 +171,9 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         holder.toDate.setText(currentDate);
         holder.productQuantity.setText("0.000");
 
-        if(position == mTakeOrderBeansList1.size()-1){
+        if (position == mTakeOrderBeansList1.size() - 1) {
             holder.mEmptyLayout.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             holder.mEmptyLayout.setVisibility(View.GONE);
         }
 
@@ -293,10 +291,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             @Override
             public void onClick(View v) {
                 try {
-                    //Toast.makeText(activity, "POs Is::: "+ position, Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(activity, "POs 1 Is::: "+ mList.getFirstVisiblePosition(), Toast.LENGTH_SHORT).show();
                     View childView = mList.getChildAt(position - mList.getFirstVisiblePosition());
-                    //Toast.makeText(activity, "POs Child View Is ::: "+ childView, Toast.LENGTH_SHORT).show();
                     EditText quanity11 = (EditText) childView.findViewById(R.id.productQt);
                     TextView prodName = (TextView) childView.findViewById(R.id.productName);
                     EditText fromDate = (EditText) childView.findViewById(R.id.from_date);
@@ -356,29 +351,11 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     if (temptoList.size() > 0) {
                         temptoList.clear();
                     }
-//                    System.out.println("PIDS LIST SIZE IS:: " + mProductIdsList.size());
-//                    System.out.println("FROM D LIST SIZE IS:: " + fromDatesList.size());
-//                    System.out.println("TO D LIST SIZE IS:: " + toDatesList.size());
-//                    System.out.println("QUAN LIST SIZE IS:: " + quantityList.size());
                     for (int k = 0; k < mTakeOrderBeansList1.size(); k++) {
                         TakeOrderBean tb = new TakeOrderBean();
-//
-//                        productId = mTakeOrderBeansList1.get(k).getmProductId();
-//                        productTitle = producttitle.get(mTakeOrderBeansList1.get(k).getmProductId());
-//                        System.out.println("If ******  PRODUCT TITLE  **** VAL IS:::: " + mTakeOrderBeansList1.get(k).getmProductId());
-//                        tb.setmProductId(productId);
-//                        tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
-//                        tb.setmProductTitle(productTitle);
-//                        tb.setmProductStatus("1");
+
                         if (mProductIdsList.get(mTakeOrderBeansList1.get(k).getProductId()) != null) {
-//                            System.out.println("P ID: " + mProductIdsList.get(mTakeOrderBeansList1.get(k).getProductId()));
-//                            System.out.println("FR ID: " + fromDatesList.get(mTakeOrderBeansList1.get(k).getProductId()));
-//                            System.out.println("TO ID: " + toDatesList.get(mTakeOrderBeansList1.get(k).getProductId()));
-//                            System.out.println("QU ID: " + quantityList.get(mTakeOrderBeansList1.get(k).getProductId()));
-//                            System.out.println("AgentId ID: " + mPreferences.getString("agentId"));
-//                            System.out.println("ENQ ID: " + mPreferences.getString("enqId"));
                             tb.setmProductId(mTakeOrderBeansList1.get(k).getProductId());
-                            // tb.setmRouteId(mTakeOrderBeansList1.get(k).getmRouteId());
                             tb.setmRouteId(mPreferences.getString("agentrouteId"));
                             tb.setmProductTitle(mTakeOrderBeansList1.get(k).getProductTitle());
                             tb.setmProductToDate(toDatesList.get(mTakeOrderBeansList1.get(k).getProductId()));
@@ -399,16 +376,13 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
 
                     synchronized (this) {
                         if (temptoList.size() > 0) {
-                            // System.out.println("DB called****" + temptoList.size());
                             long upd = mDBHelper.updateTakeOrderDetails(temptoList);
-                            //System.out.println("UPDATED VALUES COUNT:: " + upd);
                         }
                     }
 
                     // Temporary call api from here....
                     synchronized (this) {
                         if (temptoList.size() > 0) {
-                            // System.out.println("SERVICE called");
                             if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
                                 activity.startService(new Intent(activity, SyncTakeOrdersService.class));
                             }
@@ -441,7 +415,6 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             Date systemdate = null;
             try {
                 pickerdate = formatter.parse(date);
-                Log.e("pick", pickerdate + "");
                 systemdate = formatter.parse(fromDStr);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -463,8 +436,6 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();//less0
-                //  Toast.makeText(context,"T must be greater than from",Toast.LENGTH_LONG).show();
-                //alert less date
             } else if (systemdate.equals(pickerdate)) { //equal
                 et.setText(date);
                 toDatesList.put(mTakeOrderBeansList1.get(clickedPosition).getProductId(), date);
@@ -512,8 +483,6 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         dpd.getDatePicker().setMinDate(now.getTimeInMillis());
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 365);
-//        int yellow = Color.parseColor("#dfba69");
-//        dpd.getDatePicker().setAccentColor(yellow);
         dpd.getDatePicker().setMaxDate(calendar.getTimeInMillis());
         dpd.show();
     }

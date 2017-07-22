@@ -64,7 +64,7 @@ public class LoginActivity extends Activity {
             sharedPreferences = new MMSharedPreferences(applicationContext);
 
             logInModel = new LogInModel(activityContext, this);
-            previlegesModel = new PrevilegesModel(activityContext,this);
+            previlegesModel = new PrevilegesModel(activityContext, this);
 
             mEmailView = (EditText) findViewById(R.id.user_name);
             mEmailView.requestFocus();
@@ -100,7 +100,7 @@ public class LoginActivity extends Activity {
                 }
             });
 
-            if(sharedPreferences.getString("isLogin").equals("true")){
+            if (sharedPreferences.getString("isLogin").equals("true")) {
                 loadDashboard();
             }
 
@@ -135,7 +135,7 @@ public class LoginActivity extends Activity {
         // Store values at the time of the login attempt.
         emailId = mEmailView.getText().toString().trim();
         password = mPasswordView.getText().toString();
-        sharedPreferences.putString("enterEmail",emailId);
+        sharedPreferences.putString("enterEmail", emailId);
         boolean cancel = false;
         View focusView = null;
 
@@ -159,18 +159,17 @@ public class LoginActivity extends Activity {
         } else {
             if (new NetworkConnectionDetector(LoginActivity.this).isNetworkConnected()) {
                 authenticateUser(emailId, password);
-            }else if (mDBHelper.getUserDetailsTableCount()>0){
+            } else if (mDBHelper.getUserDetailsTableCount() > 0) {
                 // Data is there and do actions..
-                String userId = mDBHelper.getUserId(emailId,Utility.getMd5String(password.trim()));
-                if(!userId.equals("")){
+                String userId = mDBHelper.getUserId(emailId, Utility.getMd5String(password.trim()));
+                if (!userId.equals("")) {
                     // User exists and do actions..
                     loadDashboard();
-                }
-                else {
+                } else {
                     // The entered user is different...
                     LogInModel.displayNoNetworkError(LoginActivity.this);
                 }
-            }else {
+            } else {
                 LogInModel.displayNoNetworkError(LoginActivity.this);
             }
         }
@@ -194,11 +193,11 @@ public class LoginActivity extends Activity {
                 sharedPreferences.putString("emailId", emailId);
                 sharedPreferences.putString("password", password);
             }
-            sharedPreferences.putString("isLogin","true");
+            sharedPreferences.putString("isLogin", "true");
 
             // Call Previleges API
             // previlegesModel.getUserPrevileges();
-            synchronized (this){
+            synchronized (this) {
                 System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                 if (new NetworkConnectionDetector(LoginActivity.this).isNetworkConnected()) {
                     startService(new Intent(LoginActivity.this, SyncUserPrivilegesService.class));
@@ -223,7 +222,7 @@ public class LoginActivity extends Activity {
 
     public void loadDashboard() {
 
-        if(mDBHelper.getUserDeviceId(emailId).equals("")){
+        if (mDBHelper.getUserDeviceId(sharedPreferences.getString("enterEmail")).equals("")) {
 //            synchronized (this){
 //                System.out.println("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"+mDBHelper.getRouteId());
 //                //if (mDBHelper.getRouteId().length()==0) {
@@ -236,7 +235,7 @@ public class LoginActivity extends Activity {
 //                System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDD");
             loadSettings();
             //           }
-        }else {
+        } else {
             Intent mainActivityIntent = new Intent(LoginActivity.this, DashboardActivity.class);
             mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -245,7 +244,7 @@ public class LoginActivity extends Activity {
         }
     }
 
-    public void loadSettings(){
+    public void loadSettings() {
         Intent mainActivityIntent = new Intent(LoginActivity.this, SettingsActivity.class);
         mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

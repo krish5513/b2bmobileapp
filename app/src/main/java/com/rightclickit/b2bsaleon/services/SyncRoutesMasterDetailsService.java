@@ -184,12 +184,12 @@ public class SyncRoutesMasterDetailsService extends Service {
                         }
                     }
                 }
-                System.out.println("ROUTE NAMES LIST::: "+ routeNamesList.size());
-                System.out.println("ROUTE CODES LIST::: "+ routeCodelist.size());
-                System.out.println("OFFICE NAMES LIST::: "+ officeNamesList.size());
-                System.out.println("REGION NAMES LIST::: "+ regionNamesList.size());
-                System.out.println("ROUTE IDS LIST::: "+ routeIdsList.size());
-                System.out.println("INSERTED COUNT IS::: "+ k);
+//                System.out.println("ROUTE NAMES LIST::: "+ routeNamesList.size());
+//                System.out.println("ROUTE CODES LIST::: "+ routeCodelist.size());
+//                System.out.println("OFFICE NAMES LIST::: "+ officeNamesList.size());
+//                System.out.println("REGION NAMES LIST::: "+ regionNamesList.size());
+//                System.out.println("ROUTE IDS LIST::: "+ routeIdsList.size());
+//                System.out.println("INSERTED COUNT IS::: "+ k);
             } catch (Exception e) {
                 e.printStackTrace();
             }
