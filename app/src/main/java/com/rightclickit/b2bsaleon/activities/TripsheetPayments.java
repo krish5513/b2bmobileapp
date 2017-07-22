@@ -60,8 +60,8 @@ public class TripsheetPayments extends AppCompatActivity {
         paymentListView=(ListView) findViewById(R.id.AgentsList);
         for (int i=0;i<10;i++) {
             TripSheetPaymentsBean pBean = new TripSheetPaymentsBean();
-            pBean.setPaymentsAmount("0.00");
-            pBean.getPaymentMOP();
+            pBean.setmTripshhetPaymentsAmount("0.00");
+            pBean.getmTripshhetPaymentsType();
             paymentsList.add(pBean);
 
         }

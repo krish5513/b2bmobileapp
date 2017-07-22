@@ -64,10 +64,10 @@ public class TripsheetReturns extends AppCompatActivity {
 
         for (int i=0;i<10;i++){
             TripSheetReturnsBean dBean=new TripSheetReturnsBean();
-            dBean.setrProductReturnsName("FCM 500ML");
-            dBean.setrProductReturnsQty("000.00");
-            dBean.setrProductReturnsType("YES");
-            dBean.setrProductReturnsIncAmount("000.00");
+            dBean.setmTripsheetReturnsName("FCM 500ML");
+            dBean.setmTripshhetReturnsQuantity("000.00");
+            dBean.setmTripshhetReturnsType("  ");
+            dBean.setmTripsheetReturnsIncAmount("000.00");
 
             customArraylist.add(dBean);
         }

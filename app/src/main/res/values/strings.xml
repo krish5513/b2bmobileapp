@@ -77,6 +77,14 @@
         <item>One Time</item>
     </string-array>
 
+
+    <string-array name="return_type">
+
+        <item>Sale Return</item>
+        <item>Leakage</item>
+    </string-array>
+
+
     <string-array name="mop_type">
         <item>Cash</item>
         <item>Card</item>

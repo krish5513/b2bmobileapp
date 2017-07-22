@@ -15,6 +15,9 @@ import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.beanclass.TDCSalesOrderProductBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetPaymentsBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 
@@ -83,6 +86,15 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // This table contains tripsheets stock list
     private final String TABLE_TRIPSHEETS_STOCK_LIST = "tripsheets_stock_list";
+
+    // This table contains tripsheets deliveries list
+    private final String TABLE_TRIPSHEETS_DELIVERIES_LIST = "tripsheets_deliveries_list";
+
+    // This table contains tripsheets returns list
+    private final String TABLE_TRIPSHEETS_RETURNS_LIST = "tripsheets_returns_list";
+
+    // This table contains tripsheets payments list
+    private final String TABLE_TRIPSHEETS_PAYMENTS_LIST = "tripsheets_payments_list";
 
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
@@ -271,6 +283,90 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_STOCK_VERIFY_DATE = "tripshhet_stock_verify_date";
     private final String KEY_TRIPSHEET_STOCK_VERIFY_BY = "tripshhet_stock_verify_by";
 
+
+    // Column names for Tripsheets deliveries List  Table
+    private final String KEY_TRIPSHEET_DELIVERY_NO = "tripsheet_delivery_no";
+    private final String KEY_TRIPSHEET_DELIVERY_TRIP_ID = "tripshhet_delivery_trip_id";
+    private final String KEY_TRIPSHEET_DELIVERY_USER_ID = "tripshhet_delivery_user_id";
+    private final String KEY_TRIPSHEET_DELIVERY_USER_CODES ="tripshhet_delivery_user_codes";
+    private final String KEY_TRIPSHEET_DELIVERY_ROUTE_ID = "tripshhet_delivery_route_id";
+    private final String KEY_TRIPSHEET_DELIVERY_ROUTE_CODES= "tripshhet_delivery_route_codes";
+    private final String KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS= "tripshhet_delivery_product_ids";
+    private final String KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES ="tripshhet_delivery_product_codes";
+    private final String KEY_TRIPSHEET_DELIVERY_TAXPERCENT ="tripshhet_delivery_taxpercent";
+    private final String KEY_TRIPSHEET_DELIVERY_UNITPRICE= "tripshhet_delivery_unitprice";
+    private final String KEY_TRIPSHEET_DELIVERY_QUANTITY= "tripshhet_delivery_quantity";
+    private final String KEY_TRIPSHEET_DELIVERY_AMOUNT ="tripshhet_delivery_amount";
+    private final String KEY_TRIPSHEET_DELIVERY_TAXAMOUNT ="tripshhet_delivery_taxamount";
+    private final String KEY_TRIPSHEET_DELIVERY_TAXTOTAL= "tripshhet_delivery_taxtotal";
+    private final String KEY_TRIPSHEET_DELIVERY_SALEVALUE= "tripshhet_delivery_salevalue";
+    private final String KEY_TRIPSHEET_DELIVERY_STATUS= "tripshhet_delivery_status";
+    private final String KEY_TRIPSHEET_DELIVERY_DELETE= "tripshhet_delivery_delete";
+    private final String KEY_TRIPSHEET_DELIVERY_CREATEDBY= "tripshhet_delivery_createdby";
+    private final String KEY_TRIPSHEET_DELIVERY_CREATEDON= "tripshhet_delivery_createdon";
+    private final String KEY_TRIPSHEET_DELIVERY_UPDATEDON= "tripshhet_delivery_updatedon";
+    private final String KEY_TRIPSHEET_DELIVERY_UPDATEDBY= "tripshhet_delivery_updatedby";
+
+
+    // Column names for Tripsheets returns List  Table
+    private final String KEY_TRIPSHEET_RETURNS_RETURN_NO = "tripsheet_returns_return_no";
+    private final String KEY_TRIPSHEET_RETURNS_TRIP_ID = "tripshhet_returns_trip_id";
+    private final String KEY_TRIPSHEET_RETURNS_USER_ID = "tripshhet_returns_user_id";
+    private final String KEY_TRIPSHEET_RETURNS_USER_CODES = "tripshhet_returns_user_codes";
+    private final String KEY_TRIPSHEET_RETURNS_ROUTE_ID = "tripshhet_returns_route_id";
+    private final String KEY_TRIPSHEET_RETURNS_ROUTE_CODES = "tripsheet_returns_route_codes";
+    private final String KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS = "tripshhet_returns_product_ids";
+    private final String KEY_TRIPSHEET_RETURNS_PRODUCT_CODES = "tripshhet_returns_product_codes";
+    private final String KEY_TRIPSHEET_RETURNS_TAX_PERCENT = "tripshhet_returns_tax_percent";
+    private final String KEY_TRIPSHEET_RETURNS_UNIT_PRICE = "tripshhet_returns_unit_price";
+    private final String KEY_TRIPSHEET_RETURNS_QUANTITY = "tripshhet_returns_quantity";
+    private final String KEY_TRIPSHEET_RETURNS_AMOUNT = "tripshhet_returns_amount";
+    private final String KEY_TRIPSHEET_RETURNS_TAX_AMOUNT = "tripshhet_returns_tax_amount";
+    private final String KEY_TRIPSHEET_RETURNS_TAX_TOTAL = "tripshhet_returns_tax_total";
+    private final String KEY_TRIPSHEET_RETURNS_SALE_VALUE = "tripshhet_returns_sale_value";
+    private final String KEY_TRIPSHEET_RETURNS_TYPE = "tripshhet_returns_type";
+    private final String KEY_TRIPSHEET_RETURNS_STATUS = "tripshhet_returns_status";
+    private final String KEY_TRIPSHEET_RETURNS_DELETE = "tripshhet_returns_delete";
+    private final String KEY_TRIPSHEET_RETURNS_CREATED_BY = "tripshhet_returns_created_by";
+    private final String KEY_TRIPSHEET_RETURNS_CREATED_ON = "tripshhet_returns_created_on";
+    private final String KEY_TRIPSHEET_RETURNS_UPDATED_ON = "tripshhet_returns_updated_on";
+    private final String KEY_TRIPSHEET_RETURNS_UPDATED_BY = "tripshhet_returns_updated_by";
+
+
+
+
+    // Column names for Tripsheets payments List  Table
+    private final String KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO = "tripsheet_payments_payment_no";
+    private final String KEY_TRIPSHEET_PAYMENTS_TRIP_ID = "tripshhet_payments_trip_id";
+    private final String KEY_TRIPSHEET_PAYMENTS_USER_ID = "tripshhet_payments_user_id";
+    private final String KEY_TRIPSHEET_PAYMENTS_USER_CODES = "tripshhet_payments_user_codes";
+    private final String KEY_TRIPSHEET_PAYMENTS_ROUTE_ID = "tripshhet_payments_route_id";
+    private final String KEY_TRIPSHEET_PAYMENTS_ROUTE_CODES = "tripsheet_payments_route_codes";
+    private final String KEY_TRIPSHEET_PAYMENTS_CHE_TRANS_ID = "tripshhet_payments_che_trans_id";
+    private final String KEY_TRIPSHEET_PAYMENTS_AC_CA_NO = "tripshhet_payments_ac_ca_no";
+    private final String KEY_TRIPSHEET_PAYMENTS_ACOUNT_NAME = "tripshhet_payments_account_name";
+    private final String KEY_TRIPSHEET_PAYMENTS_BANK_NAME = "tripshhet_payments_bank_name";
+    private final String KEY_TRIPSHEET_PAYMENTS_TRANS_DATE = "tripshhet_payments_trans_date";
+    private final String KEY_TRIPSHEET_PAYMENTS_TRANS_CLEAR_DATE = "tripshhet_payments_trans_clear_date";
+    private final String KEY_TRIPSHEET_PAYMENTS_RECEIVER_NAME = "tripshhet_payments_receiver_name";
+    private final String KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS = "tripshhet_payments_trans_status";
+    private final String KEY_TRIPSHEET_PAYMENTS_PRODUCTS_IDS = "tripshhet_payments_product_ids";
+    private final String KEY_TRIPSHEET_PAYMENTS_PRODUCT_CODES = "tripshhet_payments_product_codes";
+    private final String KEY_TRIPSHEET_PAYMENTS_TAX_PERCENT = "tripshhet_payments_tax_percent";
+    private final String KEY_TRIPSHEET_PAYMENTS_UNIT_PRICE = "tripshhet_payments_unit_price";
+    private final String KEY_TRIPSHEET_PAYMENTS_QUANTITY = "tripshhet_payments_quantity";
+    private final String KEY_TRIPSHEET_PAYMENTS_AMOUNT = "tripshhet_payments_amount";
+    private final String KEY_TRIPSHEET_PAYMENTS_TAX_AMOUNT = "tripshhet_payments_tax_amount";
+    private final String KEY_TRIPSHEET_PAYMENTS_TAX_TOTAL = "tripshhet_payments_tax_total";
+    private final String KEY_TRIPSHEET_PAYMENTS_SALE_VALUE = "tripshhet_payments_sale_value";
+    private final String KEY_TRIPSHEET_PAYMENTS_TYPE = "tripshhet_payments_type";
+    private final String KEY_TRIPSHEET_PAYMENTS_STATUS = "tripshhet_payments_status";
+    private final String KEY_TRIPSHEET_PAYMENTS_DELETE = "tripshhet_payments_delete";
+    private final String KEY_TRIPSHEET_PAYMENTS_CREATED_BY = "tripshhet_payments_created_by";
+    private final String KEY_TRIPSHEET_PAYMENTS_CREATED_ON = "tripshhet_payments_created_on";
+    private final String KEY_TRIPSHEET_PAYMENTS_UPDATED_ON = "tripshhet_payments_updated_on";
+    private final String KEY_TRIPSHEET_PAYMENTS_UPDATED_BY = "tripshhet_payments_updated_by";
+
     // Agents Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_AGENTS + "(" + KEY_AGENT_ID + " VARCHAR,"
@@ -399,6 +495,95 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_STOCK_VERIFY_DATE + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_VERIFY_BY + " VARCHAR)";
 
+
+
+    // Tripsheets Deliveries list Table Create Statements
+    private final String CREATE_TRIPSHEETS_DELIVERIES_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_TRIPSHEETS_DELIVERIES_LIST + "(" + KEY_TRIPSHEET_DELIVERY_NO + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_USER_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_USER_CODES + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_ROUTE_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_ROUTE_CODES+ " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_TAXPERCENT + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_UNITPRICE + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_QUANTITY + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_AMOUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_TAXAMOUNT+ " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_TAXTOTAL+ " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_SALEVALUE+ " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_STATUS+ " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_DELETE + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_CREATEDBY + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_CREATEDON + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_UPDATEDON + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_UPDATEDBY + " VARCHAR)";
+
+    // Tripsheets Returns list Table Create Statements
+    private final String CREATE_TRIPSHEETS_RETURNS_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_TRIPSHEETS_RETURNS_LIST + "(" + KEY_TRIPSHEET_RETURNS_RETURN_NO + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_TRIPSHEET_RETURNS_TRIP_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_USER_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_USER_CODES + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_ROUTE_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_ROUTE_CODES + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_TAX_PERCENT + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_UNIT_PRICE + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_QUANTITY + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_AMOUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_TAX_AMOUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_TAX_TOTAL + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_SALE_VALUE + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_TYPE + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_STATUS + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_DELETE + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_CREATED_BY + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_CREATED_ON + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_UPDATED_ON + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_UPDATED_BY + " VARCHAR)";
+
+
+
+
+    // Tripsheets Returns list Table Create Statements
+    private final String CREATE_TRIPSHEETS_PAYMENTS_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_TRIPSHEETS_PAYMENTS_LIST + "(" + KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_USER_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_USER_CODES + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_ROUTE_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_ROUTE_CODES + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_CHE_TRANS_ID  + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_AC_CA_NO + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_ACOUNT_NAME + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_BANK_NAME  + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_TRANS_DATE  + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_TRANS_CLEAR_DATE  + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_RECEIVER_NAME  + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS  + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_PRODUCTS_IDS + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_PRODUCT_CODES + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_TAX_PERCENT + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_UNIT_PRICE + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_QUANTITY + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_AMOUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_TAX_AMOUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_TAX_TOTAL + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_SALE_VALUE + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_TYPE + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_STATUS + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_DELETE + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_CREATED_BY + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_CREATED_ON + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_UPDATED_ON + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_UPDATED_BY + " VARCHAR)";
+
+
+
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -420,6 +605,9 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_STAKEHOLDER_TYPES);
             db.execSQL(CREATE_TRIPSHEETS_LIST_TABLE);
             db.execSQL(CREATE_TRIPSHEETS_STOCK_LIST_TABLE);
+            db.execSQL(CREATE_TRIPSHEETS_DELIVERIES_LIST_TABLE);
+            db.execSQL(CREATE_TRIPSHEETS_RETURNS_LIST_TABLE);
+            db.execSQL(CREATE_TRIPSHEETS_PAYMENTS_LIST_TABLE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -436,6 +624,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_PRODUCTS_TABLE_TO);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_USER_PRIVILEGE_ACTIONS_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_SPECIALPRICE);
+
             // create new tables
             onCreate(db);
         } catch (Exception e) {
@@ -2500,4 +2689,322 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return alltripsheetsStock;
     }
+
+
+    /**
+     * Method to insert the mTripsheetsDeliveriesList.
+     *
+     * @param mTripsheetsDeliveriesList
+     */
+    public void insertTripsheetsDeliveriesListData(ArrayList<TripSheetDeliveriesBean> mTripsheetsDeliveriesList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0; i < mTripsheetsDeliveriesList.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_TRIPSHEET_DELIVERY_NO, mTripsheetsDeliveriesList.get(i).getmTripsheetDeliveryNo());
+                values.put(KEY_TRIPSHEET_DELIVERY_TRIP_ID, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_tripId());
+                values.put(KEY_TRIPSHEET_DELIVERY_USER_ID, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_userId());
+                values.put(KEY_TRIPSHEET_DELIVERY_USER_CODES, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_userCodes());
+                values.put(KEY_TRIPSHEET_DELIVERY_ROUTE_ID, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_routeId());
+                values.put(KEY_TRIPSHEET_DELIVERY_ROUTE_CODES, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_routeCodes());
+                values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_productId());
+                values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_productCodes());
+                values.put(KEY_TRIPSHEET_DELIVERY_TAXPERCENT, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_TaxPercent());
+                values.put(KEY_TRIPSHEET_DELIVERY_UNITPRICE, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_UnitPrice());
+                values.put(KEY_TRIPSHEET_DELIVERY_QUANTITY, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_Quantity());
+                values.put(KEY_TRIPSHEET_DELIVERY_AMOUNT, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_Amount());
+                values.put(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_TaxAmount());
+                values.put(KEY_TRIPSHEET_DELIVERY_TAXTOTAL, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_TaxTotal());
+                values.put(KEY_TRIPSHEET_DELIVERY_SALEVALUE, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_SaleValue());
+                values.put(KEY_TRIPSHEET_DELIVERY_STATUS, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_Status());
+                values.put(KEY_TRIPSHEET_DELIVERY_DELETE, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_Delete());
+                values.put(KEY_TRIPSHEET_DELIVERY_CREATEDBY, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_CreatedBy());
+                values.put(KEY_TRIPSHEET_DELIVERY_CREATEDON, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_CreatedOn());
+                values.put(KEY_TRIPSHEET_DELIVERY_UPDATEDON, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_UpdatedOn());
+                values.put(KEY_TRIPSHEET_DELIVERY_UPDATEDBY, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_UpdatedBy());
+
+                db.insert(TABLE_TRIPSHEETS_DELIVERIES_LIST, null, values);
+                values.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        db.close();
+    }
+
+    /**
+     * Method to fetch all tripsheets deliveries list
+     */
+    public ArrayList<TripSheetDeliveriesBean> fetchAllTripsheetsDeliveriesList(String tripsheetId) {
+        ArrayList<TripSheetDeliveriesBean> alltripsheetsDeliveries= new ArrayList<TripSheetDeliveriesBean>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    TripSheetDeliveriesBean tripDeliveriesBean = new TripSheetDeliveriesBean();
+
+                    tripDeliveriesBean.setmTripsheetDeliveryNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NO)));
+                    tripDeliveriesBean.setmTripsheetDelivery_tripId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TRIP_ID)));
+                    tripDeliveriesBean.setmTripsheetDelivery_userId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_USER_ID)));
+                    tripDeliveriesBean.setmTripsheetDelivery_userCodes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_USER_CODES)));
+                    tripDeliveriesBean.setmTripsheetDelivery_routeId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_ROUTE_ID)));
+                    tripDeliveriesBean.setmTripsheetDelivery_routeCodes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_ROUTE_CODES)));
+                    tripDeliveriesBean.setmTripsheetDelivery_productId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)));
+                    tripDeliveriesBean.setmTripsheetDelivery_productCodes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES)));
+                    tripDeliveriesBean.setmTripsheetDelivery_TaxPercent(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXPERCENT)));
+                    tripDeliveriesBean.setmTripsheetDelivery_UnitPrice(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UNITPRICE)));
+                    tripDeliveriesBean.setmTripsheetDelivery_Quantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_QUANTITY)));
+                    tripDeliveriesBean.setmTripsheetDelivery_Amount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_AMOUNT)));
+                    tripDeliveriesBean.setmTripsheetDelivery_TaxAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT)));
+                    tripDeliveriesBean.setmTripsheetDelivery_TaxTotal(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXTOTAL)));
+                    tripDeliveriesBean.setmTripsheetDelivery_SaleValue(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SALEVALUE)));
+                    tripDeliveriesBean.setmTripsheetDelivery_Status(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_STATUS)));
+                    tripDeliveriesBean.setmTripsheetDelivery_Delete(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_DELETE)));
+                    tripDeliveriesBean.setmTripsheetDelivery_CreatedBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDBY)));
+                    tripDeliveriesBean.setmTripsheetDelivery_CreatedOn(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
+                    tripDeliveriesBean.setmTripsheetDelivery_UpdatedOn(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UPDATEDON)));
+                    tripDeliveriesBean.setmTripsheetDelivery_UpdatedBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UPDATEDBY)));
+
+
+                    alltripsheetsDeliveries.add(tripDeliveriesBean);
+
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return alltripsheetsDeliveries;
+    }
+
+    /**
+     * Method to insert the mTripsheetsReturnsList.
+     *
+     * @param mTripsheetsReturnsList
+     */
+    public void insertTripsheetsReturnsListData(ArrayList<TripSheetReturnsBean> mTripsheetsReturnsList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0; i < mTripsheetsReturnsList.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_TRIPSHEET_RETURNS_RETURN_NO, mTripsheetsReturnsList.get(i).getmTripshhetReturnsReturn_no());
+                values.put(KEY_TRIPSHEET_RETURNS_TRIP_ID, mTripsheetsReturnsList.get(i).getmTripshhetReturnsTrip_id());
+                values.put(KEY_TRIPSHEET_RETURNS_USER_ID, mTripsheetsReturnsList.get(i).getmTripshhetReturnsUser_id());
+                values.put(KEY_TRIPSHEET_RETURNS_USER_CODES, mTripsheetsReturnsList.get(i).getmTripshhetReturnsUser_codes());
+                values.put(KEY_TRIPSHEET_RETURNS_ROUTE_ID, mTripsheetsReturnsList.get(i).getmTripshhetReturnsRoute_id());
+                values.put(KEY_TRIPSHEET_RETURNS_ROUTE_CODES, mTripsheetsReturnsList.get(i).getmTripshhetReturnsRoute_codes());
+                values.put(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS, mTripsheetsReturnsList.get(i).getmTripshhetReturnsProduct_ids());
+                values.put(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES, mTripsheetsReturnsList.get(i).getmTripshhetReturnsProduct_codes());
+                values.put(KEY_TRIPSHEET_RETURNS_TAX_PERCENT, mTripsheetsReturnsList.get(i).getmTripshhetReturnsTax_percent());
+                values.put(KEY_TRIPSHEET_RETURNS_UNIT_PRICE, mTripsheetsReturnsList.get(i).getmTripshhetReturnsUnit_price());
+                values.put(KEY_TRIPSHEET_RETURNS_QUANTITY, mTripsheetsReturnsList.get(i).getmTripshhetReturnsQuantity());
+                values.put(KEY_TRIPSHEET_RETURNS_AMOUNT, mTripsheetsReturnsList.get(i).getmTripshhetReturnsAmount());
+                values.put(KEY_TRIPSHEET_RETURNS_TAX_AMOUNT, mTripsheetsReturnsList.get(i).getmTripshhetReturnsTax_amount());
+                values.put(KEY_TRIPSHEET_RETURNS_TAX_TOTAL, mTripsheetsReturnsList.get(i).getmTripshhetReturnsTax_total());
+                values.put(KEY_TRIPSHEET_RETURNS_SALE_VALUE, mTripsheetsReturnsList.get(i).getmTripshhetReturnsSale_value());
+                values.put(KEY_TRIPSHEET_RETURNS_TYPE, mTripsheetsReturnsList.get(i).getmTripshhetReturnsType());
+                values.put(KEY_TRIPSHEET_RETURNS_STATUS, mTripsheetsReturnsList.get(i).getmTripshhetReturnsStatus());
+                values.put(KEY_TRIPSHEET_RETURNS_DELETE, mTripsheetsReturnsList.get(i).getmTripshhetReturnsDelete());
+                values.put(KEY_TRIPSHEET_RETURNS_CREATED_BY, mTripsheetsReturnsList.get(i).getmTripshhetReturnsCreated_by());
+                values.put(KEY_TRIPSHEET_RETURNS_CREATED_ON, mTripsheetsReturnsList.get(i).getmTripshhetReturnsCreated_on());
+                values.put(KEY_TRIPSHEET_RETURNS_UPDATED_ON, mTripsheetsReturnsList.get(i).getmTripshhetReturnsUpdated_on());
+                values.put(KEY_TRIPSHEET_RETURNS_UPDATED_BY, mTripsheetsReturnsList.get(i).getmTripshhetReturnsUpdated_by());
+
+
+                db.insert(TABLE_TRIPSHEETS_RETURNS_LIST, null, values);
+                values.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        db.close();
+    }
+
+    /**
+     * Method to fetch all tripsheets returns list baed on tripsheet id from Tripsheets returns list table
+     */
+    public ArrayList<TripSheetReturnsBean> fetchAllTripsheetsReturnsList(String tripsheetId) {
+        ArrayList<TripSheetReturnsBean> alltripsheetsReturns = new ArrayList<TripSheetReturnsBean>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = " + "'" + tripsheetId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    TripSheetReturnsBean tripReturnsBean = new TripSheetReturnsBean();
+
+                    tripReturnsBean.setmTripshhetReturnsReturn_no(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NO)));
+                    tripReturnsBean.setmTripshhetReturnsTrip_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TRIP_ID)));
+                    tripReturnsBean.setmTripshhetReturnsUser_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_ID)));
+                    tripReturnsBean.setmTripshhetReturnsUser_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_CODES)));
+                    tripReturnsBean.setmTripshhetReturnsRoute_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_ROUTE_ID)));
+                    tripReturnsBean.setmTripshhetReturnsRoute_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_ROUTE_CODES)));
+                    tripReturnsBean.setmTripshhetReturnsProduct_ids(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)));
+                    tripReturnsBean.setmTripshhetReturnsProduct_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
+                    tripReturnsBean.setmTripshhetReturnsTax_percent(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TAX_PERCENT)));
+                    tripReturnsBean.setmTripshhetReturnsUnit_price(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_UNIT_PRICE)));
+                    tripReturnsBean.setmTripshhetReturnsQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY)));
+                    tripReturnsBean.setmTripshhetReturnsAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_AMOUNT)));
+                    tripReturnsBean.setmTripshhetReturnsTax_amount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TAX_AMOUNT)));
+                    tripReturnsBean.setmTripshhetReturnsTax_total(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TAX_TOTAL)));
+                    tripReturnsBean.setmTripshhetReturnsSale_value(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_SALE_VALUE)));
+                    tripReturnsBean.setmTripshhetReturnsType(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TYPE)));
+                    tripReturnsBean.setmTripshhetReturnsStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_STATUS)));
+                    tripReturnsBean.setmTripshhetReturnsDelete(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_DELETE)));
+                    tripReturnsBean.setmTripshhetReturnsCreated_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_BY)));
+                    tripReturnsBean.setmTripshhetReturnsCreated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_ON)));
+                    tripReturnsBean.setmTripshhetReturnsUpdated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_UPDATED_ON)));
+                    tripReturnsBean.setmTripshhetReturnsUpdated_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_UPDATED_BY)));
+
+                    alltripsheetsReturns.add(tripReturnsBean);
+
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return alltripsheetsReturns;
+    }
+
+
+
+
+
+    /**
+     * Method to insert the mTripsheetsPaymentsList.
+     *
+     * @param mTripsheetsPaymentsList
+     */
+    public void insertTripsheetsPaymentsListData(ArrayList<TripSheetPaymentsBean> mTripsheetsPaymentsList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0; i < mTripsheetsPaymentsList.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsPayment_no());
+
+                values.put(KEY_TRIPSHEET_PAYMENTS_TRIP_ID, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTrip_id());
+                values.put(KEY_TRIPSHEET_PAYMENTS_USER_ID, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsUser_id());
+                values.put(KEY_TRIPSHEET_PAYMENTS_USER_CODES, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsUser_codes());
+                values.put(KEY_TRIPSHEET_PAYMENTS_ROUTE_ID, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsRoute_id());
+                values.put(KEY_TRIPSHEET_PAYMENTS_ROUTE_CODES, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsRoute_codes());
+
+                values.put(KEY_TRIPSHEET_PAYMENTS_CHE_TRANS_ID, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsChe_trans_id());
+                values.put(KEY_TRIPSHEET_PAYMENTS_AC_CA_NO, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsAc_ca_no());
+                values.put(KEY_TRIPSHEET_PAYMENTS_ACOUNT_NAME, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsAccount_name());
+                values.put(KEY_TRIPSHEET_PAYMENTS_BANK_NAME, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsBank_name());
+                values.put(KEY_TRIPSHEET_PAYMENTS_TRANS_DATE, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTrans_date());
+                values.put(KEY_TRIPSHEET_PAYMENTS_TRANS_CLEAR_DATE, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTrans_clear_date());
+                values.put(KEY_TRIPSHEET_PAYMENTS_RECEIVER_NAME, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsReceiver_name());
+                values.put(KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTrans_status());
+
+
+                values.put(KEY_TRIPSHEET_PAYMENTS_PRODUCTS_IDS, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsProduct_ids());
+                values.put(KEY_TRIPSHEET_PAYMENTS_PRODUCT_CODES, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsProduct_codes());
+                values.put(KEY_TRIPSHEET_PAYMENTS_TAX_PERCENT, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTax_percent());
+                values.put(KEY_TRIPSHEET_PAYMENTS_UNIT_PRICE, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsUnit_price());
+                values.put(KEY_TRIPSHEET_PAYMENTS_QUANTITY, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsQuantity());
+                values.put(KEY_TRIPSHEET_PAYMENTS_AMOUNT, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsAmount());
+                values.put(KEY_TRIPSHEET_PAYMENTS_TAX_AMOUNT, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTax_amount());
+                values.put(KEY_TRIPSHEET_PAYMENTS_TAX_TOTAL, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTax_total());
+                values.put(KEY_TRIPSHEET_PAYMENTS_SALE_VALUE, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsSale_value());
+                values.put(KEY_TRIPSHEET_PAYMENTS_TYPE, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsType());
+                values.put(KEY_TRIPSHEET_PAYMENTS_STATUS, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsStatus());
+                values.put(KEY_TRIPSHEET_PAYMENTS_DELETE, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsDelete());
+                values.put(KEY_TRIPSHEET_PAYMENTS_CREATED_BY, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsCreated_by());
+                values.put(KEY_TRIPSHEET_PAYMENTS_CREATED_ON, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsCreated_on());
+                values.put(KEY_TRIPSHEET_PAYMENTS_UPDATED_ON, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsUpdated_on());
+                values.put(KEY_TRIPSHEET_PAYMENTS_UPDATED_BY, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsUpdated_by());
+
+
+                db.insert(TABLE_TRIPSHEETS_PAYMENTS_LIST, null, values);
+                values.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        db.close();
+    }
+
+    /**
+     * Method to fetch all tripsheets payments list baed on tripsheet id from Tripsheets payments list table
+     */
+    public ArrayList<TripSheetPaymentsBean> fetchAllTripsheetsPaymentsList(String tripsheetId) {
+        ArrayList<TripSheetPaymentsBean> alltripsheetsPayments = new ArrayList<TripSheetPaymentsBean>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = " + "'" + tripsheetId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    TripSheetPaymentsBean tripPaymentsBean = new TripSheetPaymentsBean();
+
+                    tripPaymentsBean.setmTripshhetPaymentsPayment_no(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO)));
+
+                    tripPaymentsBean.setmTripshhetPaymentsTrip_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRIP_ID)));
+                    tripPaymentsBean.setmTripshhetPaymentsUser_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_USER_ID)));
+                    tripPaymentsBean.setmTripshhetPaymentsUser_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_USER_CODES)));
+                    tripPaymentsBean.setmTripshhetPaymentsRoute_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_ROUTE_ID)));
+                    tripPaymentsBean.setmTripshhetPaymentsRoute_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_ROUTE_CODES)));
+
+                    tripPaymentsBean.setmTripshhetPaymentsChe_trans_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_CHE_TRANS_ID)));
+                    tripPaymentsBean.setmTripshhetPaymentsAc_ca_no(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_AC_CA_NO)));
+                    tripPaymentsBean.setmTripshhetPaymentsAccount_name(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_ACOUNT_NAME)));
+                    tripPaymentsBean.setmTripshhetPaymentsBank_name(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_BANK_NAME)));
+                    tripPaymentsBean.setmTripshhetPaymentsTrans_date(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_DATE)));
+                    tripPaymentsBean.setmTripshhetPaymentsTrans_clear_date(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_CLEAR_DATE)));
+                    tripPaymentsBean.setmTripshhetPaymentsReceiver_name(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_RECEIVER_NAME)));
+                    tripPaymentsBean.setmTripshhetPaymentsTrans_status(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS)));
+
+
+                    tripPaymentsBean.setmTripshhetPaymentsProduct_ids(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_PRODUCTS_IDS)));
+                    tripPaymentsBean.setmTripshhetPaymentsProduct_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_PRODUCT_CODES)));
+                    tripPaymentsBean.setmTripshhetPaymentsTax_percent(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TAX_PERCENT)));
+                    tripPaymentsBean.setmTripshhetPaymentsUnit_price(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_UNIT_PRICE)));
+                    tripPaymentsBean.setmTripshhetPaymentsQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_QUANTITY)));
+                    tripPaymentsBean.setmTripshhetPaymentsAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_AMOUNT)));
+                    tripPaymentsBean.setmTripshhetPaymentsTax_amount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TAX_AMOUNT)));
+                    tripPaymentsBean.setmTripshhetPaymentsTax_total(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TAX_TOTAL)));
+                    tripPaymentsBean.setmTripshhetPaymentsSale_value(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_SALE_VALUE)));
+                    tripPaymentsBean.setmTripshhetPaymentsType(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TYPE)));
+                    tripPaymentsBean.setmTripshhetPaymentsStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_STATUS)));
+                    tripPaymentsBean.setmTripshhetPaymentsDelete(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_DELETE)));
+                    tripPaymentsBean.setmTripshhetPaymentsCreated_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_CREATED_BY)));
+                    tripPaymentsBean.setmTripshhetPaymentsCreated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_CREATED_ON)));
+                    tripPaymentsBean.setmTripshhetPaymentsUpdated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_UPDATED_ON)));
+                    tripPaymentsBean.setmTripshhetPaymentsUpdated_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_UPDATED_BY)));
+
+                    alltripsheetsPayments.add(tripPaymentsBean);
+
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return alltripsheetsPayments;
+    }
+
+
+
+
+
+
 }

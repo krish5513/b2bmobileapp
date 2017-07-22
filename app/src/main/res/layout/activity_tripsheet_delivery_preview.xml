@@ -196,7 +196,7 @@
                 android:layout_gravity="center|end"
                 android:layout_weight="0.17"
                 android:gravity="center"
-                android:text="MRP"
+                android:text="Price"
                 android:textColor="@color/greydark"
                 android:textSize="14sp"
                 android:textStyle="bold" />

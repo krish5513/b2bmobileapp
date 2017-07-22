@@ -93,13 +93,13 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         }
 
 
-        mHolder.dProductName.setText(mTripSheetsDeliveries.get(position).getDproductName());
-        mHolder.dProductStatus.setText(mTripSheetsDeliveries.get(position).getDproductStatus());
-        mHolder.dInStockAmount.setText(mTripSheetsDeliveries.get(position).getDproductInstockAmount());
-        mHolder.dProductPrice.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getDproductPrice())));
-        mHolder.dProductTax.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getDproductTax())));
-        mHolder.dProductAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getDproductAmount())));
-        mHolder.dProductQuantity.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getDproductQuantity())));
+        mHolder.dProductName.setText(mTripSheetsDeliveries.get(position).getmTripsheetDeleveryName());
+        mHolder.dProductStatus.setText(mTripSheetsDeliveries.get(position).getmTripsheetDelivery_Status());
+        mHolder.dInStockAmount.setText(mTripSheetsDeliveries.get(position).getmTripsheetDeleveryInstockAmount());
+        mHolder.dProductPrice.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getmTripsheetDelivery_UnitPrice())));
+        mHolder.dProductTax.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getmTripsheetDelivery_TaxPercent())));
+        mHolder.dProductAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getmTripsheetDelivery_Amount())));
+        mHolder.dProductQuantity.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getmTripsheetDelivery_Quantity())));
 
 
 

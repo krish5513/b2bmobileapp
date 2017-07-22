@@ -35,7 +35,7 @@ public class TripsheetDelivery extends AppCompatActivity {
 
     private ListView mAgentsList;
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
-    ArrayList customArraylist=new ArrayList();
+    ArrayList deliveriesArraylist=new ArrayList();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,16 +72,16 @@ public class TripsheetDelivery extends AppCompatActivity {
 
         for (int i=0;i<10;i++){
             TripSheetDeliveriesBean dBean=new TripSheetDeliveriesBean();
-            dBean.setDproductName("FCM 500ML");
-            dBean.setDproductStatus("In Stock");
-            dBean.setDproductInstockAmount("00.000");
-            dBean.setDproductPrice("50.00");
-            dBean.setDproductTax("00.00");
-            dBean.setDproductAmount("00.00");
-            dBean.setDproductQuantity("00.000");
-            customArraylist.add(dBean);
+            dBean.setmTripsheetDeleveryName("FCM 500ML");
+            dBean.setmTripsheetDelivery_Status("In Stock");
+            dBean.setmTripsheetDeleveryInstockAmount("00.000");
+            dBean.setmTripsheetDelivery_UnitPrice("50.00");
+            dBean.setmTripsheetDelivery_TaxPercent("00.00");
+            dBean.setmTripsheetDelivery_Amount("00.00");
+            dBean.setmTripsheetDelivery_Quantity("00.000");
+            deliveriesArraylist.add(dBean);
         }
-        mAgentsList.setAdapter(new TripSheetDeliveriesAdapter(TripsheetDelivery.this,TripsheetDelivery.this,customArraylist));
+        mAgentsList.setAdapter(new TripSheetDeliveriesAdapter(TripsheetDelivery.this,TripsheetDelivery.this,deliveriesArraylist));
 
         ret.setOnClickListener(new View.OnClickListener() {
             @Override

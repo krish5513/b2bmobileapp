@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
@@ -77,7 +78,7 @@ public class TripSheetReturnsAdapter extends BaseAdapter{
 
             mHolder.dProductReturnName = (TextView) view.findViewById(R.id.productName);
             mHolder.dProductReturnAmount = (TextView) view.findViewById(R.id.D_QTY);
-            mHolder.dProductReturnTypr = (TextView) view.findViewById(R.id.returnable);
+            mHolder.dProductReturnTypr = (Spinner) view.findViewById(R.id.paymentTypeSpinner);
             mHolder.dProductIncAmount = (TextView) view.findViewById(R.id.productQt);
 
 
@@ -88,10 +89,10 @@ public class TripSheetReturnsAdapter extends BaseAdapter{
         }
 
 
-        mHolder.dProductReturnName.setText(mTripSheetsReturns.get(position).getrProductReturnsName());
-        mHolder.dProductReturnAmount.setText(mTripSheetsReturns.get(position).getrProductReturnsQty());
-        mHolder.dProductReturnTypr.setText(mTripSheetsReturns.get(position).getrProductReturnsType());
-        mHolder.dProductIncAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsReturns.get(position).getrProductReturnsIncAmount())));
+        mHolder.dProductReturnName.setText(mTripSheetsReturns.get(position).getmTripsheetReturnsName());
+        mHolder.dProductReturnAmount.setText(mTripSheetsReturns.get(position).getmTripshhetReturnsQuantity());
+      //  mHolder.dProductReturnTypr.setText(mTripSheetsReturns.get(position).getrProductReturnsType());
+        mHolder.dProductIncAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsReturns.get(position).getmTripsheetReturnsIncAmount())));
 
 
 
@@ -103,7 +104,7 @@ public class TripSheetReturnsAdapter extends BaseAdapter{
     public class ViewHolder {
         TextView dProductReturnName;
         TextView dProductReturnAmount;
-        TextView dProductReturnTypr;
+        Spinner dProductReturnTypr;
         TextView dProductIncAmount;
 
     }

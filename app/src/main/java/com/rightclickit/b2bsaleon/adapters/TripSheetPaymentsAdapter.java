@@ -84,7 +84,7 @@ public class TripSheetPaymentsAdapter extends BaseAdapter{
         }
 
 
-        mHolder.paymentsAmount.setText(mTripSheetsPayments.get(position).getPaymentsAmount());
+        mHolder.paymentsAmount.setText(mTripSheetsPayments.get(position).getmTripshhetPaymentsAmount());
        // mHolder.paymentsMOP.setText(mTripSheetsPayments.get(position).getPaymentMOP());
 
 
