@@ -93,8 +93,8 @@ public class SyncTDCCustomersService extends Service {
                 JSONObject requestObj = new JSONObject();
                 requestObj.put("route_id", routeId);
                 requestObj.put("stakeholder_id", (currentTDCCustomer.getCustomerType() == 1 ? retailerStakeTypeId : consumerStakeTypeId));
-                requestObj.put("first_name", currentTDCCustomer.getName());
-                requestObj.put("last_name", currentTDCCustomer.getBusinessName());
+                requestObj.put("first_name", currentTDCCustomer.getBusinessName());
+                requestObj.put("last_name", currentTDCCustomer.getName());
                 requestObj.put("phone", currentTDCCustomer.getMobileNo());
                 requestObj.put("email", "");
                 requestObj.put("password", Utility.getMd5String("123456789"));

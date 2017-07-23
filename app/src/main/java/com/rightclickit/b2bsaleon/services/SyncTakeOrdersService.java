@@ -113,7 +113,7 @@ public class SyncTakeOrdersService extends Service {
                 params1.put("route_id", rAr.get(0).toString());
                 //params1.put("route_id",mAgentsBeansList.get(0).getmAgentRouteId());
                 params1.put("user_id", mTakeOrderBeansList.get(0).getmAgentId());
-                params1.put("user_code", mAgentsBeansList.get(0).getmAgentCode());
+                params1.put("user_code", mTakeOrderBeansList.get(0).getmTakeorderAgentCode());
                 params1.put("route_code", rCode);
                 JSONArray productArra = new JSONArray();
                 JSONArray quantityArra = new JSONArray();

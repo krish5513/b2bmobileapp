@@ -194,6 +194,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_PRICE = "price";
     private final String KEY_VAT = "vat";
     private final String KEY_GST = "gst";
+    private final String KEY_TO_AGENTCODE= "to_agent_code";
 
 
     // Column names for User privilege actions  Table
@@ -420,7 +421,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TO_PRODUCT_NAME + " VARCHAR," + KEY_TO_PRODUCT_ROUTE_ID + " VARCHAR,"
             + KEY_TO_FROM_DATE + " VARCHAR," + KEY_TO_TO_DATE + " VARCHAR," + KEY_TO_ORDER_TYPE + " VARCHAR,"
             + KEY_TO_QUANTITY + " VARCHAR," + KEY_TO_STATUS + " VARCHAR,"
-            + KEY_TO_ENQID + " VARCHAR," + KEY_TO_AGENTID + " VARCHAR," + KEY_TAKEORDER_DATE + " VARCHAR," + KEY_PRICE + " VARCHAR," + KEY_VAT + " VARCHAR," + KEY_GST + " VARCHAR)";
+            + KEY_TO_ENQID + " VARCHAR," + KEY_TO_AGENTID + " VARCHAR," + KEY_TAKEORDER_DATE + " VARCHAR," + KEY_PRICE + " VARCHAR," + KEY_VAT + " VARCHAR," + KEY_GST + " VARCHAR," + KEY_TO_AGENTCODE + " VARCHAR)";
 
 
     // User privilege actions Table Create Statements
@@ -1540,7 +1541,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TO_STATUS, mProductsBeansList.get(i).getmProductStatus());
                 values.put(KEY_TO_ENQID, mProductsBeansList.get(i).getmEnquiryId());
                 values.put(KEY_TO_AGENTID, mProductsBeansList.get(i).getmAgentId());
-
+                values.put(KEY_TO_AGENTCODE, mProductsBeansList.get(i).getmTakeorderAgentCode());
                 values.put(KEY_TAKEORDER_DATE, mProductsBeansList.get(i).getmAgentTakeOrderDate());
                 values.put(KEY_PRICE, mProductsBeansList.get(i).getmAgentPrice());
                 values.put(KEY_VAT, mProductsBeansList.get(i).getmAgentVAT());
@@ -1599,6 +1600,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     toBean.setmAgentPrice((c.getString(c.getColumnIndex(KEY_PRICE))));
                     toBean.setmAgentVAT((c.getString(c.getColumnIndex(KEY_VAT))));
                     toBean.setmAgentGST((c.getString(c.getColumnIndex(KEY_GST))));
+                    toBean.setmTakeorderAgentCode((c.getString(c.getColumnIndex(KEY_TO_AGENTCODE))));
                     // toBean.setMtakeorderProductCode((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_CODE))));
 
 
@@ -1655,7 +1657,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TO_STATUS, takeOrderBeanArrayList.get(b).getmProductStatus());
                 values.put(KEY_TO_ENQID, takeOrderBeanArrayList.get(b).getmEnquiryId());
                 values.put(KEY_TO_AGENTID, takeOrderBeanArrayList.get(b).getmAgentId());
-
+                values.put(KEY_TO_AGENTCODE, takeOrderBeanArrayList.get(b).getmTakeorderAgentCode());
                 values.put(KEY_TAKEORDER_DATE, takeOrderBeanArrayList.get(b).getmAgentTakeOrderDate());
                 values.put(KEY_PRICE, takeOrderBeanArrayList.get(b).getmAgentPrice());
                 values.put(KEY_VAT, takeOrderBeanArrayList.get(b).getmAgentVAT());
