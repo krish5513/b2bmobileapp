@@ -91,7 +91,7 @@ public class NetworkManager {
 
                 //JSONObject jsonObject = new JSONObject(responseObject);
 
-            } else if(responseCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT){
+            } else if (responseCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT) {
                 responseObject = "timeout";
             } else {
                 responseObject = "failure";
@@ -147,7 +147,7 @@ public class NetworkManager {
 
                 //JSONObject jsonObject = new JSONObject(responseObject);
 
-            } else if(responseCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT){
+            } else if (responseCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT) {
                 responseObject = "timeout";
             } else {
                 responseObject = "failure";
@@ -179,7 +179,7 @@ public class NetworkManager {
      * @return String
      */
 
-    public String makeHttpPostConnectionWithUrlEncoeContentType(String url, HashMap<String,String> params) {
+    public String makeHttpPostConnectionWithUrlEncoeContentType(String url, HashMap<String, String> params) {
         try {
             urlObj = new URL(url);
             con = (HttpURLConnection) urlObj.openConnection();
@@ -219,7 +219,7 @@ public class NetworkManager {
 
                 //JSONObject jsonObject = new JSONObject(responseObject);
 
-            } else if(responseCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT){
+            } else if (responseCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT) {
                 responseObject = "timeout";
             } else {
                 responseObject = "failure";
@@ -241,7 +241,7 @@ public class NetworkManager {
     private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
-        for(Map.Entry<String, String> entry : params.entrySet()){
+        for (Map.Entry<String, String> entry : params.entrySet()) {
             if (first)
                 first = false;
             else
@@ -253,6 +253,48 @@ public class NetworkManager {
         }
 
         return result.toString();
+    }
+
+    /**
+     * Method to execute GET requests.
+     *
+     * @param url
+     * @return json object
+     */
+    public JSONObject makeHttpGetConnectionWithJsonOutput(String url) {
+        JSONObject jObj = null;
+        try {
+            //String url1 = "http://dev.ppa.neobric.com/mobile/released_version1/login";
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+            // optional default is GET
+            con.setRequestMethod("GET");
+
+            // add request header
+            //con.setRequestProperty("User-Agent", USER_AGENT);
+
+
+            int responseCode = con.getResponseCode();
+            printDataInLog("GET Request : ", "URL : " + url);
+            printDataInLog("GET Request : ", "Response Code : " + responseCode);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+            jObj = new JSONObject(response.toString());
+            // print result
+            printDataInLog("GET Request Response : ", response.toString());
+        } catch (Exception e) {
+            // TODO: handle exception
+            return null;
+        }
+        return jObj;
     }
 }
 

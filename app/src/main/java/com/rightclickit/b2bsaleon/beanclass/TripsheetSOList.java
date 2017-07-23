@@ -21,6 +21,8 @@ public class TripsheetSOList {
     private String mTripshetSOProductValue;
     private String mTripshetSOAgentLastName;
     private String mTripshetSOApprovedBy;
+    private String mTripshetSOAgentLatitude;
+    private String mTripshetSOAgentLongitude;
 
     public String getmTripshetSOId() {
         return mTripshetSOId;
@@ -140,5 +142,21 @@ public class TripsheetSOList {
 
     public void setmTripshetSOApprovedBy(String mTripshetSOApprovedBy) {
         this.mTripshetSOApprovedBy = mTripshetSOApprovedBy;
+    }
+
+    public String getmTripshetSOAgentLatitude() {
+        return mTripshetSOAgentLatitude;
+    }
+
+    public void setmTripshetSOAgentLatitude(String mTripshetSOAgentLatitude) {
+        this.mTripshetSOAgentLatitude = mTripshetSOAgentLatitude;
+    }
+
+    public String getmTripshetSOAgentLongitude() {
+        return mTripshetSOAgentLongitude;
+    }
+
+    public void setmTripshetSOAgentLongitude(String mTripshetSOAgentLongitude) {
+        this.mTripshetSOAgentLongitude = mTripshetSOAgentLongitude;
     }
 }

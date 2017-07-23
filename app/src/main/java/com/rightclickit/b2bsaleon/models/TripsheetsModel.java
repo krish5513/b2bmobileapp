@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Sekhar Kuppa.
@@ -114,7 +115,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
                 JSONObject params1 = new JSONObject();
                 params1.put("route_codes", jar);
-                params1.put("date", currentDate);
+                params1.put("date", "2017-07-22");
 
                 AsyncRequest getTripsListRequest = new AsyncRequest(context, this, URL, AsyncRequest.MethodType.POST, params1);
                 getTripsListRequest.execute();
@@ -301,6 +302,10 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
                         if (productsLen > 0) {
                             for (int j = 0; j < productsLen; j++) {
+                                Map<String, String> latLangDetails = mDBHelper.getLatLangOfAgentByAgentId(agentData.getString("_id"));
+                                System.out.println("AGENT LAT::: " + latLangDetails.get(agentData.getString("_id") + "_Lat"));
+                                System.out.println("AGENT LANG::: " + latLangDetails.get(agentData.getString("_id") + "_Lang"));
+
                                 TripsheetSOList tripStockBean = new TripsheetSOList();
 
                                 tripStockBean.setmTripshetSOId(jb.getString("_id"));
@@ -318,16 +323,18 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                 tripStockBean.setmTripshetSOProductValue(productValuearray.get(j).toString());
                                 tripStockBean.setmTripshetSOAgentLastName(agentData.getString("last_name"));
                                 tripStockBean.setmTripshetSOApprovedBy(jb.getString("approved_by"));
+                                tripStockBean.setmTripshetSOAgentLatitude(latLangDetails.get(agentData.getString("_id") + "_Lat"));
+                                tripStockBean.setmTripshetSOAgentLongitude(latLangDetails.get(agentData.getString("_id") + "_Lang"));
 
                                 mTripsheetsSOList.add(tripStockBean);
                             }
                         }
                     }
-//                    synchronized (this) {
-//                        if (mTripsheetsStockList.size() > 0) {
-//                            mDBHelper.insertTripsheetsStockListData(mTripsheetsStockList);
-//                        }
-//                    }
+                    synchronized (this) {
+                        if (mTripsheetsSOList.size() > 0) {
+                            mDBHelper.insertTripsheetsSOListData(mTripsheetsSOList);
+                        }
+                    }
                     synchronized (this) {
                         if (mTripsheetsSOList.size() > 0) {
                             activity2.loadTripsoData(mTripsheetsSOList);

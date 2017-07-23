@@ -18,6 +18,7 @@ import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetPaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 
@@ -95,6 +96,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // This table contains tripsheets payments list
     private final String TABLE_TRIPSHEETS_PAYMENTS_LIST = "tripsheets_payments_list";
+
+    // This table contains tripsheets so list
+    private final String TABLE_TRIPSHEETS_SO_LIST = "tripsheets_so_list";
 
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
@@ -194,7 +198,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_PRICE = "price";
     private final String KEY_VAT = "vat";
     private final String KEY_GST = "gst";
-    private final String KEY_TO_AGENTCODE= "to_agent_code";
+    private final String KEY_TO_AGENTCODE = "to_agent_code";
 
 
     // Column names for User privilege actions  Table
@@ -365,6 +369,26 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_PAYMENTS_CREATED_ON = "tripshhet_payments_created_on";
     private final String KEY_TRIPSHEET_PAYMENTS_UPDATED_ON = "tripshhet_payments_updated_on";
     private final String KEY_TRIPSHEET_PAYMENTS_UPDATED_BY = "tripshhet_payments_updated_by";
+
+    // Column names for Tripsheets so List  Table
+    private final String KEY_TRIPSHEET_SO_UNIQUE_ID = "tripsheet_so_unique_id";
+    private final String KEY_TRIPSHEET_SO_ID = "tripshhet_so_id";
+    private final String KEY_TRIPSHEET_SO_TRIPID = "tripshhet_so_tripid";
+    private final String KEY_TRIPSHEET_SO_AGENTCODE = "tripshhet_so_agentcode";
+    private final String KEY_TRIPSHEET_SO_CODE = "tripsheet_so_code";
+    private final String KEY_TRIPSHEET_SO_DATE = "tripshhet_so_date";
+    private final String KEY_TRIPSHEET_SO_VALUE = "tripshhet_so_value";
+    private final String KEY_TRIPSHEET_SO_OPAMOUNT = "tripshhet_so_opamount";
+    private final String KEY_TRIPSHEET_SO_CBAMOUNT = "tripshhet_so_cbamount";
+    private final String KEY_TRIPSHEET_SO_AGENTID = "tripshhet_so_agentid";
+    private final String KEY_TRIPSHEET_SO_AGENTFIRSTNAME = "tripshhet_so_agentfirstname";
+    private final String KEY_TRIPSHEET_SO_AGENTLASTNAME = "tripshhet_so_agentlastname";
+    private final String KEY_TRIPSHEET_SO_PRODUCTCODE = "tripshhet_so_vehiclenumber";
+    private final String KEY_TRIPSHEET_SO_PRODUCTORDER_QUANTITY = "tripshhet_so_productorder_quantity";
+    private final String KEY_TRIPSHEET_SO_PRODUCT_VALUE = "tripshhet_so_product_value";
+    private final String KEY_TRIPSHEET_SO_APPROVEDBY = "tripshhet_so_approvedby";
+    private final String KEY_TRIPSHEET_SO_AGENTLATITUDE = "tripshhet_so_agentlatitude";
+    private final String KEY_TRIPSHEET_SO_AGENTLONGITUDE = "tripshhet_so_agentlongitude";
 
     // Agents Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
@@ -577,6 +601,28 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_PAYMENTS_CREATED_ON + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_UPDATED_ON + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_UPDATED_BY + " VARCHAR)";
+
+
+    // Tripsheets SO Table Create Statements
+    private final String CREATE_TRIPSHEETS_SO_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_TRIPSHEETS_SO_LIST + "(" + KEY_TRIPSHEET_SO_UNIQUE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_TRIPSHEET_SO_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_TRIPID + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_AGENTCODE + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_CODE + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_DATE + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_VALUE + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_OPAMOUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_CBAMOUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_AGENTID + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_AGENTFIRSTNAME + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_AGENTLASTNAME + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_PRODUCTCODE + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_PRODUCTORDER_QUANTITY + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_PRODUCT_VALUE + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_APPROVEDBY + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_AGENTLATITUDE + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_AGENTLONGITUDE + " VARCHAR)";
 
 
     public DBHelper(Context context) {
@@ -2651,7 +2697,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<TripsheetsStockList> alltripsheetsStock = new ArrayList<TripsheetsStockList>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_STOCK_TRIPSHEET_ID + " = " + "'" + tripsheetId + "'";
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_STOCK_LIST + " WHERE " + KEY_TRIPSHEET_STOCK_TRIPSHEET_ID + " = " + "'" + tripsheetId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -2995,5 +3041,81 @@ public class DBHelper extends SQLiteOpenHelper {
         return alltripsheetsPayments;
     }
 
+    /**
+     * Method to fetch agent latitude and longitude based on agentid
+     */
+    public Map<String, String> getLatLangOfAgentByAgentId(String agentId) {
+        Map<String, String> agentLatLangDetails = new HashMap<>();
 
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_AGENTS + " WHERE " + KEY_AGENT_ID + "='" + agentId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    agentLatLangDetails.put(agentId + "_Lat", c.getString(c.getColumnIndex(KEY_AGENT_LATITUDE)));
+                    agentLatLangDetails.put(agentId + "_Lang", c.getString(c.getColumnIndex(KEY_AGENT_LONGITUDE)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return agentLatLangDetails;
+    }
+
+    /**
+     * Method to insert the tripsheets so list.
+     *
+     * @param mTripsheetsList
+     */
+    public void insertTripsheetsSOListData(ArrayList<TripsheetSOList> mTripsheetsList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0; i < mTripsheetsList.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_TRIPSHEET_SO_ID, mTripsheetsList.get(i).getmTripshetSOId());
+                values.put(KEY_TRIPSHEET_SO_TRIPID, mTripsheetsList.get(i).getmTripshetSOTripId());
+                values.put(KEY_TRIPSHEET_SO_AGENTCODE, mTripsheetsList.get(i).getmTripshetSOAgentCode());
+                values.put(KEY_TRIPSHEET_SO_CODE, mTripsheetsList.get(i).getmTripshetSOCode());
+                values.put(KEY_TRIPSHEET_SO_DATE, mTripsheetsList.get(i).getmTripshetSODate());
+                values.put(KEY_TRIPSHEET_SO_VALUE, mTripsheetsList.get(i).getmTripshetSOValue());
+                values.put(KEY_TRIPSHEET_SO_OPAMOUNT, mTripsheetsList.get(i).getmTripshetSOOpAmount());
+                values.put(KEY_TRIPSHEET_SO_CBAMOUNT, mTripsheetsList.get(i).getmTripshetSOCBAmount());
+                values.put(KEY_TRIPSHEET_SO_AGENTID, mTripsheetsList.get(i).getmTripshetSOAgentId());
+                values.put(KEY_TRIPSHEET_SO_AGENTFIRSTNAME, mTripsheetsList.get(i).getmTripshetSOAgentFirstName());
+                values.put(KEY_TRIPSHEET_SO_AGENTLASTNAME, mTripsheetsList.get(i).getmTripshetSOAgentLastName());
+                values.put(KEY_TRIPSHEET_SO_PRODUCTCODE, mTripsheetsList.get(i).getmTripshetSOProductCode());
+                values.put(KEY_TRIPSHEET_SO_PRODUCTORDER_QUANTITY, mTripsheetsList.get(i).getmTripshetSOProductOrderQuantity());
+                values.put(KEY_TRIPSHEET_SO_PRODUCT_VALUE, mTripsheetsList.get(i).getmTripshetSOProductValue());
+                values.put(KEY_TRIPSHEET_SO_APPROVEDBY, mTripsheetsList.get(i).getmTripshetSOApprovedBy());
+                values.put(KEY_TRIPSHEET_SO_AGENTLATITUDE, mTripsheetsList.get(i).getmTripshetSOAgentLatitude());
+                values.put(KEY_TRIPSHEET_SO_AGENTLONGITUDE, mTripsheetsList.get(i).getmTripshetSOAgentLongitude());
+//                int checkVal = checkSpecialPriceProductExistsOrNot(mSpecialPriceBeansList.get(i).getSpecialProductId()
+//                        , mSpecialPriceBeansList.get(i).getSpecialUserId());
+//                if (checkVal == 0) {
+//                    // insert row
+//                    db.insert(TABLE_SPECIALPRICE, null, values);
+//                    System.out.println("F*********** INSERTED***************88");
+//                } else {
+//                    // Update row
+//                    db.update(TABLE_SPECIALPRICE, values, KEY_PRODUCT_SPECIALID + " = ?" + " AND " + KEY_USER_SPECIALID + " = ? ",
+//                            new String[]{String.valueOf(mSpecialPriceBeansList.get(i).getSpecialProductId()),
+//                                    String.valueOf(mSpecialPriceBeansList.get(i).getSpecialUserId())});
+//                    System.out.println("F*********** UPDATED***************88");
+//                }
+                db.insert(TABLE_TRIPSHEETS_SO_LIST, null, values);
+                values.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
 }

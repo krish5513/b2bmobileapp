@@ -70,8 +70,8 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("type[0]", "2");
 
-                System.out.println("THE STAKE URL IS::: " + logInURL);
-                System.out.println("THE STAKE DATA IS::: " + params.toString());
+                //System.out.println("THE STAKE URL IS::: " + logInURL);
+                //System.out.println("THE STAKE DATA IS::: " + params.toString());
 
                 AsyncRequest loginRequest = new AsyncRequest(context, this, logInURL, AsyncRequest.MethodType.POST, params);
                 loginRequest.execute();
@@ -97,8 +97,8 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                 job.put("route_ids", routesArray);
                 job.put("_ids", stakesArray);
 
-                System.out.println("THE AGENTS URL IS::: " + logInURL);
-                System.out.println("THE AGENTS DATA IS::: " + job.toString());
+                //System.out.println("THE AGENTS URL IS::: " + logInURL);
+                //System.out.println("THE AGENTS DATA IS::: " + job.toString());
                 AsyncRequest loginRequest = new AsyncRequest(context, this, logInURL, AsyncRequest.MethodType.POST, job);
                 loginRequest.execute();
             }
@@ -148,8 +148,8 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                 paramsc.put("back_up", mAgentsBeansList1.get(0).getmAgentBackUp());
 
 
-                System.out.println("THE ADD URL IS::: " + customerAdd);
-                System.out.println("THE ADD DATA IS::: " + paramsc.toString());
+                //System.out.println("THE ADD URL IS::: " + customerAdd);
+                //System.out.println("THE ADD DATA IS::: " + paramsc.toString());
 
                 AsyncRequest loginRequest = new AsyncRequest(context, this, customerAdd, AsyncRequest.MethodType.POST, paramsc);
                 loginRequest.execute();
@@ -304,11 +304,11 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
                         mAgentsBeansList.add(agentsBean);
                     }
-                    synchronized (this) {
-                        if (mDBHelper.getAgentsTableCount() > 0) {
-                            mDBHelper.deleteValuesFromAgentsTable();
-                        }
-                    }
+//                    synchronized (this) {
+//                        if (mDBHelper.getAgentsTableCount() > 0) {
+//                            mDBHelper.deleteValuesFromAgentsTable();
+//                        }
+//                    }
                     synchronized (this) {
                         if (mDBHelper.getAgentsTableCount() > 0) {
                             mDBHelper.deleteValuesFromAgentsTable();

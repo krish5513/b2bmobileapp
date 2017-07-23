@@ -1,14 +1,22 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,26 +28,41 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsSOListAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
+import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+import com.rightclickit.b2bsaleon.util.NetworkManager;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class TripSheetView extends AppCompatActivity implements OnMapReadyCallback {
+public class TripSheetView extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
     FloatingActionButton fab;
     LinearLayout tsDashBoardLayout;
     LinearLayout tsTripsheetsLayout;
@@ -47,10 +70,27 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     LinearLayout tsProductsLayout;
     LinearLayout tsTDCLayout;
     LinearLayout tsRetailersLayout;
+    private Location mLastLocation, startingLocation, endingLocation;
 
+    // Google client to interact with Google API
+    private GoogleApiClient mGoogleApiClient;
+
+    // boolean flag to toggle periodic location updates
+    private boolean mRequestingLocationUpdates;
+
+    private LocationRequest mLocationRequest;
+    private LocationManager lm = null;
+    private boolean gps_enabled;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
     private GoogleMap mMap;
+    private MarkerOptions markerOptions, sourceMarkerOptions, destinationMarkerOptions;
+    private Marker mapMarker, sourceMarker, destinationMarker;
+    private DownloadGoogleDirectionsTask downloadGoogleDirectionsTask;
+    private List<List<HashMap<String, String>>> routes = null;
+    private ArrayList<LatLng> points = null;
+    private PolylineOptions lineOptions = null;
+    private Polyline destinationPolyline = null;
     private String mLatitude = "", mLongitude = "", mDeviceId = "", mProfilePic = "";
     TextView listView;
     TextView mapView;
@@ -62,11 +102,18 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private TripsheetsModel mTripsheetsModel;
     private TripsheetsSOListAdapter mTripsheetSOAdapter;
     private String mTripSheetId = "", mTakeOrderPrivilege = "";
+    private double mCurrentLocationLat = 0.0, mCurrentLocationLongitude = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_sheet_view);
+        mRequestingLocationUpdates = false;
+
+        if (lm == null)
+            lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         mTripsheetsModel = new TripsheetsModel(this, TripSheetView.this);
         this.getSupportActionBar().setTitle("TRIPSHEET PREVIEW");
@@ -125,6 +172,16 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 //                line1.setBackgroundColor(0xdbd7d7);
                 mTripsheetsSOListView.setVisibility(View.GONE);
                 mapview.setVisibility(View.VISIBLE);
+
+                // Formatting Google Directions API URL
+                String destinationDirectionsURL = String.format(Constants.GOOGLE_DIRECTIONS_URL, mCurrentLocationLat, mCurrentLocationLongitude, "17.433740", "78.501596");
+                new DownloadGoogleDirectionsTask().execute(destinationDirectionsURL);
+                LatLng destLatLng = new LatLng(Double.parseDouble("17.433740"), Double.parseDouble("78.501596"));
+                destinationMarkerOptions = new MarkerOptions();
+                destinationMarkerOptions.position(destLatLng).icon(BitmapDescriptorFactory.defaultMarker());
+
+                destinationMarker = mMap.addMarker(destinationMarkerOptions);
+                destinationMarker.setTitle("Secunderabad RailwayStation");
 
 
             }
@@ -311,7 +368,6 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     }
 
     public void loadTripsoData(ArrayList<TripsheetSOList> tripsSOList) {
-        System.out.println("FUC:::: " + tripsSOList.size());
         if (mTripsheetSOAdapter != null) {
             mTripsheetSOAdapter = null;
         }
@@ -367,22 +423,281 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng sydney;
-        if (!mLatitude.equals("") && !mLongitude.equals("")) {
-            sydney = new LatLng(Double.parseDouble(mLatitude), Double.parseDouble(mLongitude));
-        } else {
-            // Pass current location lat and long
-            sydney = new LatLng(17.3850440, 78.4866710);
-        }
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Hyderabad, Telangana"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            return;
-        }
+//        LatLng sydney;
+//        if (!mLatitude.equals("") && !mLongitude.equals("")) {
+//            sydney = new LatLng(Double.parseDouble(mLatitude), Double.parseDouble(mLongitude));
+//        } else {
+//            // Pass current location lat and long
+//            sydney = new LatLng(17.3850440, 78.4866710);
+//        }
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Hyderabad, Telangana"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            return;
+//        }
         mMap.setMyLocationEnabled(true);
 
-
+        buildGoogleApiClient();
     }
 
+    /**
+     * Creating google api client object
+     */
+    protected synchronized void buildGoogleApiClient() {
+        try {
+            System.out.println("In GOOGLE API CLIENT");
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API).build();
+            mGoogleApiClient.connect();
+            createLocationRequest();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Creating location reqpuest object
+     */
+    protected void createLocationRequest() {
+        System.out.println("In CREATE LOCATION REQUEST");
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(60 * 1000);
+        mLocationRequest.setFastestInterval(5 * 1000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        //mLocationRequest.setSmallestDisplacement(Utils.DISPLACEMENT);
+    }
+
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        try {
+            System.out.println("IN CONNECTED.....");
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+                if (mRequestingLocationUpdates) {
+                    startLocationUpdates();
+                }
+
+                if (mLastLocation == null) {
+                    mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                }
+
+                if (mLastLocation != null) {
+                    locationChanged(mLastLocation);
+                } else {
+                    Toast.makeText(this, "Unable to get location details.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.i("TRIPSHEETS", "Connection failed: ConnectionResult.getErrorCode() = " + connectionResult.getErrorCode());
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if (location != null) {
+            mLastLocation = location;
+            locationChanged(mLastLocation);
+        }
+    }
+
+    /**
+     * Starting the location updates
+     */
+    protected void startLocationUpdates() {
+        try {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Stopping location updates
+     */
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+    }
+
+    public void locationChanged(Location location) {
+        try {
+
+            // Updating Current Location on Map
+            addMarkerOnMap(location.getLatitude(), location.getLongitude());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * function to add marker on map based on current location lat long
+     *
+     * @param latitude
+     * @param longitude
+     */
+    private void addMarkerOnMap(double latitude, double longitude) {
+        try {
+            System.out.println("LAT::: " + latitude);
+            System.out.println("LONG::: " + longitude);
+            mCurrentLocationLat = latitude;
+            mCurrentLocationLongitude = longitude;
+            if (markerOptions == null)
+                markerOptions = new MarkerOptions();
+
+            // Creating a LatLng object for the current / new location
+            LatLng currentLatLng = new LatLng(latitude, longitude);
+            markerOptions.position(currentLatLng).icon(BitmapDescriptorFactory.defaultMarker());
+
+            if (mapMarker != null)
+                mapMarker.remove();
+
+            mapMarker = mMap.addMarker(markerOptions);
+
+//            if (dlBean.getAddress() != null) {
+//                if (!dlBean.getAddress().equals("No Location Found") && !dlBean.getAddress().equals("No Address returned") && !dlBean.getAddress().equals("No Network To Get Address"))
+//                    mapMarker.setTitle(dlBean.getAddress());
+//            }
+
+            // Showing the current location in Google Map by Zooming it
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Fetches data from url passed
+    private class DownloadGoogleDirectionsTask extends AsyncTask<String, Void, JSONObject> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        // Downloading data in non-ui thread
+        @Override
+        protected JSONObject doInBackground(String... url) {
+            JSONObject data = null;
+
+            try {
+                // Fetching the data from web service
+                data = new NetworkManager().makeHttpGetConnectionWithJsonOutput(url[0]);
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
+            }
+            return data;
+        }
+
+        // Executes in UI thread, after the execution of doInBackground()
+        @Override
+        protected void onPostExecute(JSONObject result) {
+            super.onPostExecute(result);
+
+            ParserTask parserTask = new ParserTask();
+
+            // Invokes the thread for parsing the JSON data
+            parserTask.execute(result);
+        }
+    }
+
+
+    /**
+     * A class to parse the Google Places in JSON format
+     */
+    private class ParserTask extends AsyncTask<JSONObject, Integer, List<List<HashMap<String, String>>>> {
+
+        // Parsing the data in non-ui thread
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(JSONObject... jsonData) {
+
+            JSONObject jObject;
+
+            try {
+                if (routes != null) {
+                    if (routes.size() > 0) {
+                        routes.clear();
+                    }
+                }
+
+                DirectionsJSONParser parser = new DirectionsJSONParser();
+                // Starts parsing data
+                routes = parser.parse(jsonData[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return routes;
+        }
+
+        // Executes in UI thread, after the parsing process
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+            generatePolyLinesFromWayPointsAndAddToMap(result);
+        }
+    }
+
+    public void generatePolyLinesFromWayPointsAndAddToMap(List<List<HashMap<String, String>>> wayPoints) {
+        try {
+            // Removing previous routes to destination if any
+            if (destinationPolyline != null)
+                destinationPolyline.remove();
+
+            if (points != null) {
+                if (points.size() > 0) {
+                    points.clear();
+                }
+            }
+
+            if (lineOptions != null) {
+                lineOptions = null;
+            }
+
+            // Traversing through all the routes
+            for (int i = 0; i < wayPoints.size(); i++) {
+                points = new ArrayList<LatLng>();
+                lineOptions = new PolylineOptions();
+
+                // Fetching i-th route
+                List<HashMap<String, String>> path = wayPoints.get(i);
+
+                // Fetching all the points in i-th route
+                for (int j = 0; j < path.size(); j++) {
+                    HashMap<String, String> point = path.get(j);
+
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    LatLng position = new LatLng(lat, lng);
+
+                    points.add(position);
+                }
+
+                // Adding all the points in the route to LineOptions
+                lineOptions.addAll(points);
+                lineOptions.width(8);
+                lineOptions.color(Color.parseColor("#1E90FF"));
+            }
+
+            // Drawing polyline in the Google Map for the i-th route
+            destinationPolyline = mMap.addPolyline(lineOptions);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -39,6 +39,8 @@ public class Constants {
     public static final String TDC_SALES_ORDER_DATE_SAVE_FORMAT = "yyyy-MM-dd";
     public static final String CUSTOMER_ADD_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+    public static final String GOOGLE_DIRECTIONS_URL = "https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s,%s";
+
     public enum RequestCode {
         DEFAULT
     }

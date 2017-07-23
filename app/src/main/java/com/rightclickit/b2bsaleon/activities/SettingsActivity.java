@@ -112,7 +112,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private LinearLayout mRetailersLayout;
     private MMSharedPreferences mPreferences;
 
-    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen =" ",mAgentsHomeScreen="",mRetailersHomeScreen="",mDashboardHomeScreen="";
+    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
 
 
     @Override
@@ -422,13 +422,13 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
 
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
-            System.out.println("The User Data NAME Is:: " + userMapData.get("name"));
-            System.out.println("The User Data ID Is:: " + userMapData.get("user_id"));
-            System.out.println("The User Data PHONE Is:: " + userMapData.get("phone_number"));
-            System.out.println("The User Data DEVICE SYNC Is:: " + userMapData.get("device_sync"));
-            System.out.println("The User Data BACKUP Is:: " + userMapData.get("backup"));
-            System.out.println("The User Data ACCESS DEVICE Is:: " + userMapData.get("access_device"));
-            System.out.println("The User Data ROUTE IDS Is:: " + userMapData.get("route_ids"));
+//            System.out.println("The User Data NAME Is:: " + userMapData.get("name"));
+//            System.out.println("The User Data ID Is:: " + userMapData.get("user_id"));
+//            System.out.println("The User Data PHONE Is:: " + userMapData.get("phone_number"));
+//            System.out.println("The User Data DEVICE SYNC Is:: " + userMapData.get("device_sync"));
+//            System.out.println("The User Data BACKUP Is:: " + userMapData.get("backup"));
+//            System.out.println("The User Data ACCESS DEVICE Is:: " + userMapData.get("access_device"));
+//            System.out.println("The User Data ROUTE IDS Is:: " + userMapData.get("route_ids"));
             mLatitude = userMapData.get("latitude");
             mLongitude = userMapData.get("longitude");
             mDeviceId = userMapData.get("device_udid");
@@ -439,42 +439,42 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             JSONArray routesArray = routesJob.getJSONArray("routeArray");
 
             for (int l = 0; l < routesArray.length(); l++) {
-                System.out.println("The Route Id IS::: " + routesArray.get(l).toString());
+                // System.out.println("The Route Id IS::: " + routesArray.get(l).toString());
 
                 List<String> routesDataList = mDBHelper.getRouteDataByRouteId(routesArray.get(l).toString());
 
                 for (int k = 0; k < routesDataList.size(); k++) {
-                    System.out.println(" LOOPPPPPPPPPPPPPP " + k);
+                    //System.out.println(" LOOPPPPPPPPPPPPPP " + k);
                     if (routesDataList.get(k) != null) {
                         switch (k) {
                             case 1:
-                                if(mRouteName.equals("")){
+                                if (mRouteName.equals("")) {
                                     mRouteName = routesDataList.get(1);
-                                }else if(!routesDataList.get(1).toString().equals(mRouteName)){
-                                    mRouteName = mRouteName +","+ routesDataList.get(1);
+                                } else if (!routesDataList.get(1).toString().equals(mRouteName)) {
+                                    mRouteName = mRouteName + "," + routesDataList.get(1);
                                 }
                                 break;
                             case 2:
-                                if(mRegionName.equals("")){
+                                if (mRegionName.equals("")) {
                                     mRegionName = routesDataList.get(2);
-                                }else if(!routesDataList.get(2).toString().equals(mRegionName)){
-                                    mRegionName = mRegionName +","+ routesDataList.get(2);
+                                } else if (!routesDataList.get(2).toString().equals(mRegionName)) {
+                                    mRegionName = mRegionName + "," + routesDataList.get(2);
                                 }
-                              //  mRegionName = mRegionName + routesDataList.get(2);
+                                //  mRegionName = mRegionName + routesDataList.get(2);
                                 break;
                             case 3:
-                                if(mOfficeName.equals("")){
+                                if (mOfficeName.equals("")) {
                                     mOfficeName = routesDataList.get(3);
-                                }else if(!routesDataList.get(3).toString().equals(mOfficeName)){
-                                    mOfficeName = mOfficeName +","+ routesDataList.get(3);
+                                } else if (!routesDataList.get(3).toString().equals(mOfficeName)) {
+                                    mOfficeName = mOfficeName + "," + routesDataList.get(3);
                                 }
                                 //mOfficeName = mOfficeName + routesDataList.get(3);
                                 break;
                             case 4:
-                                if(mRouteCode.equals("")){
+                                if (mRouteCode.equals("")) {
                                     mRouteCode = routesDataList.get(4);
-                                }else if(!routesDataList.get(4).toString().equals(mRouteCode)){
-                                    mRouteCode = mRouteCode +","+ routesDataList.get(4);
+                                } else if (!routesDataList.get(4).toString().equals(mRouteCode)) {
+                                    mRouteCode = mRouteCode + "," + routesDataList.get(4);
                                 }
                                 //mRouteCode = mRouteCode + routesDataList.get(4);
                                 break;
@@ -482,10 +482,10 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                     }
                 }
             }
-            System.out.println("ROUTE NAME IS:::: " + mRouteName);
-            System.out.println("REGION NAME IS:::: " + mRegionName);
-            System.out.println("OFFICE NAME IS:::: " + mOfficeName);
-            System.out.println("ROUTE CODE IS:::: " + mRouteCode);
+//            System.out.println("ROUTE NAME IS:::: " + mRouteName);
+//            System.out.println("REGION NAME IS:::: " + mRegionName);
+//            System.out.println("OFFICE NAME IS:::: " + mOfficeName);
+//            System.out.println("ROUTE CODE IS:::: " + mRouteCode);
 //            List<String> routesDataList = mDBHelper.getRoutesMasterData();
 //            System.out.println("The Data Is SIZE ======= ::: "+ routesDataList.size());
 //            for (int i=0;i<routesDataList.size();i++){
@@ -539,9 +539,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             }
 
             ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
-            System.out.println("F 11111 ***COUNT === " + privilegesData.size());
+           // System.out.println("F 11111 ***COUNT === " + privilegesData.size());
             for (int k = 0; k < privilegesData.size(); k++) {
-                System.out.println("F 11111 ***COUNT 4444 === " + privilegesData.get(k).toString());
+             //   System.out.println("F 11111 ***COUNT 4444 === " + privilegesData.get(k).toString());
                 if (privilegesData.get(k).toString().equals("Dashboard")) {
                     mDashboardLayout.setVisibility(View.VISIBLE);
                 } else if (privilegesData.get(k).toString().equals("TripSheets")) {
@@ -558,24 +558,20 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             }
 
             ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("UserActivity"));
-            System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+           // System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
             for (int z = 0; z < privilegeActionsData.size(); z++) {
-                System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+             //   System.out.println("Name::: " + privilegeActionsData.get(z).toString());
                 if (privilegeActionsData.get(z).toString().equals("Notification")) {
                     mNotifications = privilegeActionsData.get(z).toString();
                 } else if (privilegeActionsData.get(z).toString().equals("tdc_home_screen")) {
                     mTdcHomeScreen = privilegeActionsData.get(z).toString();
-                }
-                else if (privilegeActionsData.get(z).toString().equals("Trips@Home")) {
+                } else if (privilegeActionsData.get(z).toString().equals("Trips@Home")) {
                     mTripsHomeScreen = privilegeActionsData.get(z).toString();
-                }
-                else if (privilegeActionsData.get(z).toString().equals("Agents@Home")) {
+                } else if (privilegeActionsData.get(z).toString().equals("Agents@Home")) {
                     mAgentsHomeScreen = privilegeActionsData.get(z).toString();
-                }
-                else if (privilegeActionsData.get(z).toString().equals("Retailers@Home")) {
+                } else if (privilegeActionsData.get(z).toString().equals("Retailers@Home")) {
                     mRetailersHomeScreen = privilegeActionsData.get(z).toString();
-                }
-                else if (privilegeActionsData.get(z).toString().equals("Dashboard@Home")) {
+                } else if (privilegeActionsData.get(z).toString().equals("Dashboard@Home")) {
                     mDashboardHomeScreen = privilegeActionsData.get(z).toString();
                 }
             }
@@ -659,18 +655,15 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         Intent intent = null;
         if (mTdcHomeScreen.equals("tdc_home_screen")) {
             intent = new Intent(this, TDCSalesActivity.class);
-        }
-        else if(mTripsHomeScreen.equals("Trips@Home")){
+        } else if (mTripsHomeScreen.equals("Trips@Home")) {
             intent = new Intent(this, TripSheetsActivity.class);
-        }
-        else if(mAgentsHomeScreen.equals("Agents@Home")){
+        } else if (mAgentsHomeScreen.equals("Agents@Home")) {
             intent = new Intent(this, AgentsActivity.class);
-        }
-        else if(mRetailersHomeScreen.equals("Retailers@Home")) {
+        } else if (mRetailersHomeScreen.equals("Retailers@Home")) {
             intent = new Intent(this, RetailersActivity.class);
 
-        } else if(mDashboardHomeScreen.equals("Dashboard@Home")){
-                intent = new Intent(this, DashboardActivity.class);
+        } else if (mDashboardHomeScreen.equals("Dashboard@Home")) {
+            intent = new Intent(this, DashboardActivity.class);
         } else {
             intent = new Intent(this, DashboardActivity.class);
         }
