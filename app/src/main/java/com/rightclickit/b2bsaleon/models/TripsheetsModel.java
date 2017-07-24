@@ -8,6 +8,7 @@ import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
 import com.rightclickit.b2bsaleon.activities.TripSheetView;
 import com.rightclickit.b2bsaleon.activities.TripSheetsActivity;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
@@ -135,12 +136,13 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                 if (mTripsheetsStockList.size() > 0) {
                     mTripsheetsStockList.clear();
                 }
+
                 calledApi = 1;
+
                 String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TRIPSHEETS_PORT, Constants.GET_TRIPSHEETS_STOCK_LIST);
 
                 JSONObject params1 = new JSONObject();
                 params1.put("trip_id", mTripSheetId);
-
 
                 AsyncRequest getTripsListRequest = new AsyncRequest(context, this, URL, AsyncRequest.MethodType.POST, params1);
                 getTripsListRequest.execute();
@@ -228,6 +230,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                         }
                     }
                     break;
+
                 case 1:
                     JSONArray stockArray = new JSONArray(response);
                     int stockLen = stockArray.length();
@@ -236,46 +239,49 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
                     for (int i = 0; i < stockLen; i++) {
                         JSONObject jb = stockArray.getJSONObject(i);
-                        int productsLen = 0;
 
-                        if (jb.has("productdata")) {
-                            productCodesArray = jb.getJSONArray("productdata");
-                            productsLen = productCodesArray.length();
-                        }
-
+                        productCodesArray = jb.getJSONArray("product_codes");
                         orderQuantityArray = jb.getJSONArray("order_qty");
+                        int noOfProducts = productCodesArray.length();
 
-                        if (productsLen > 0) {
-                            for (int j = 0; j < productsLen; j++) {
-                                TripsheetsStockList tripStockBean = new TripsheetsStockList();
+                        for (int j = 0; j < noOfProducts; j++) {
+                            TripsheetsStockList tripStockBean = new TripsheetsStockList();
 
-                                tripStockBean.setmTripsheetStockTripsheetId(jb.getString("trip_id"));
-                                tripStockBean.setmTripsheetStockId(jb.getString("_id"));
-                                tripStockBean.setmTripsheetStockProductId("");
-                                //tripStockBean.setmTripsheetStockProductCode(productCodesArray.get(j).toString());
-                                tripStockBean.setmTripsheetStockProductName("");
-                                tripStockBean.setmTripsheetStockProductOrderQuantity(orderQuantityArray.get(j).toString());
-                                tripStockBean.setmTripsheetStockDispatchBy("");
-                                tripStockBean.setmTripsheetStockDispatchDate("");
-                                tripStockBean.setmTripsheetStockDispatchQuantity("");
-                                tripStockBean.setmTripsheetStockVerifiedDate("");
-                                tripStockBean.setmTripsheetStockVerifiedQuantity("");
-                                tripStockBean.setmTripsheetStockVerifyBy("");
+                            tripStockBean.setmTripsheetStockTripsheetId(jb.getString("trip_id"));
+                            tripStockBean.setmTripsheetStockId(jb.getString("_id"));
+                            tripStockBean.setmTripsheetStockProductCode(productCodesArray.get(j).toString());
 
-                                mTripsheetsStockList.add(tripStockBean);
+                            ProductsBean productsDetails = mDBHelper.fetchProductDetailsByProductCode(productCodesArray.get(j).toString());
+                            if (productsDetails != null) {
+                                tripStockBean.setmTripsheetStockProductId(productsDetails.getProductId());
+
+                                tripStockBean.setmTripsheetStockProductName(productsDetails.getProductTitle());
                             }
+
+                            tripStockBean.setmTripsheetStockProductOrderQuantity(orderQuantityArray.get(j).toString());
+                            tripStockBean.setmTripsheetStockDispatchBy("");
+                            tripStockBean.setmTripsheetStockDispatchDate("");
+                            tripStockBean.setmTripsheetStockDispatchQuantity("");
+                            tripStockBean.setmTripsheetStockVerifiedDate("");
+                            tripStockBean.setmTripsheetStockVerifiedQuantity("");
+                            tripStockBean.setmTripsheetStockVerifyBy("");
+
+                            mTripsheetsStockList.add(tripStockBean);
                         }
                     }
+
                     synchronized (this) {
                         if (mTripsheetsStockList.size() > 0) {
                             mDBHelper.insertTripsheetsStockListData(mTripsheetsStockList);
                         }
                     }
+
                     synchronized (this) {
                         if (mTripsheetsStockList.size() > 0) {
                             activity1.loadTripsData(mTripsheetsStockList);
                         }
                     }
+
                     break;
                 case 2:
                     JSONArray soArray = new JSONArray(response);

@@ -8,7 +8,7 @@
 
 
     <LinearLayout
-        android:id="@+id/BottomOptionsLayout"
+        android:id="@+id/tpsBottomOptionsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -144,7 +144,7 @@
         android:id="@+id/TripsheetsListview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/BottomOptionsLayout"/>
+        android:layout_above="@id/tpsBottomOptionsLayout"/>
 
     <TextView
         android:id="@+id/NoTripsFoundTextView"

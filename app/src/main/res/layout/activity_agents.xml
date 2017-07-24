@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/layout_background">
 
-    <LinearLayout android:id="@+id/BottomOptionsLayout"
+    <LinearLayout android:id="@+id/tpsBottomOptionsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -138,7 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@id/BottomOptionsLayout">
+        android:layout_above="@id/tpsBottomOptionsLayout">
 
         <ListView
             android:id="@+id/AgentsList"
@@ -159,7 +159,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         app:backgroundTint="@color/colorPrimary"
-        android:layout_above="@id/BottomOptionsLayout"
+        android:layout_above="@id/tpsBottomOptionsLayout"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
 </RelativeLayout>

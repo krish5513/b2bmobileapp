@@ -6,116 +6,102 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
-import com.rightclickit.b2bsaleon.activities.TripSheetsActivity;
-import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
-import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
-import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 /**
  * Created by Sekhar Kuppa
+ * <p>
+ * Modified by Venkat
  */
 
 public class TripsheetsStockListAdapter extends BaseAdapter {
-
-    LayoutInflater mInflater;
+    private Context ctxt;
     private Activity activity;
-    Context ctxt;
-    ArrayList<TripsheetsStockList> mTripSheetsList;
-    private ImageLoader mImageLoader;
-    private MMSharedPreferences mPreferences;
-    private ArrayList<TripsheetsStockList> arraylist;
-    private DBHelper mDBHelper;
-    private String mStcokDispatchPrivilege = "", mStockVerifyPrivilege = "";
+    private LayoutInflater mInflater;
+    private ArrayList<TripsheetsStockList> allTripSheetStockList, filteredTripSheetStockList;
+    private ArrayList<String> privilegeActionsData;
 
-    public TripsheetsStockListAdapter(Context ctxt, TripSheetStock agentsActivity, ArrayList<TripsheetsStockList> tripsList, String mStockDispatchPrivilege, String mStockVerifyPrivilege) {
+    public TripsheetsStockListAdapter(Context ctxt, TripSheetStock agentsActivity, ArrayList<TripsheetsStockList> tripSheetStockList, ArrayList<String> privilegeActionsData) {
         this.ctxt = ctxt;
         this.activity = agentsActivity;
-        this.mTripSheetsList = tripsList;
         this.mInflater = LayoutInflater.from(activity);
-        this.mPreferences = new MMSharedPreferences(activity);
-        this.arraylist = new ArrayList<TripsheetsStockList>();
-        this.mDBHelper = new DBHelper(activity);
-        this.arraylist.addAll(mTripSheetsList);
-        this.mStcokDispatchPrivilege = mStockDispatchPrivilege;
-        this.mStockVerifyPrivilege = mStockVerifyPrivilege;
+        this.allTripSheetStockList = tripSheetStockList;
+        this.filteredTripSheetStockList = new ArrayList<>();
+        this.filteredTripSheetStockList.addAll(allTripSheetStockList);
+        this.privilegeActionsData = privilegeActionsData;
     }
-
 
     @Override
     public int getCount() {
-        return mTripSheetsList.size();
+        return filteredTripSheetStockList.size();
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public TripsheetsStockList getItem(int position) {
+        return filteredTripSheetStockList.get(position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return 0;
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
-        final ViewHolder mHolder;
+        final TripSheetStockViewHolder tripSheetStockViewHolder;
+
         if (view == null) {
-            mHolder = new ViewHolder();
             view = mInflater.inflate(R.layout.tripsheets_stock_list_custom, null);
 
-            mHolder.mProductName = (TextView) view.findViewById(R.id.productName);
-            mHolder.mOrder = (TextView) view.findViewById(R.id.order);
-            mHolder.mDispatchQuantity = (EditText) view.findViewById(R.id.DispatchQuantity);
-            mHolder.mDispatchQuantity.setVisibility(View.GONE);
-            mHolder.mVerifyQuantity = (EditText) view.findViewById(R.id.VerifyQuantity);
-            mHolder.mVerifyQuantity.setVisibility(View.GONE);
-            mHolder.mDispatchDecrement = (ImageButton) view.findViewById(R.id.DispatchDecrement);
-            mHolder.mDispatchDecrement.setVisibility(View.GONE);
-            mHolder.mDispatchIncrement = (ImageButton) view.findViewById(R.id.DispatchIncrement);
-            mHolder.mDispatchIncrement.setVisibility(View.GONE);
-            mHolder.mVerifyDecrement = (ImageButton) view.findViewById(R.id.VerifyDecrement);
-            mHolder.mVerifyDecrement.setVisibility(View.GONE);
-            mHolder.mVerifyIncrement = (ImageButton) view.findViewById(R.id.VerifyIncrement);
-            mHolder.mVerifyIncrement.setVisibility(View.GONE);
+            tripSheetStockViewHolder = new TripSheetStockViewHolder();
+            tripSheetStockViewHolder.mProductName = (TextView) view.findViewById(R.id.ts_stock_product_name);
+            tripSheetStockViewHolder.mOrder = (TextView) view.findViewById(R.id.ts_stock_order_quantity);
+            tripSheetStockViewHolder.mDispatchQuantity = (EditText) view.findViewById(R.id.ts_stock_dispatch_quantity);
+            tripSheetStockViewHolder.mDispatchDecrement = (ImageButton) view.findViewById(R.id.ts_stock_dispatch_decrement);
+            tripSheetStockViewHolder.mDispatchIncrement = (ImageButton) view.findViewById(R.id.ts_stock_dispatch_increment);
+            tripSheetStockViewHolder.mVerifyDecrement = (ImageButton) view.findViewById(R.id.ts_stock_verify_decrement);
+            tripSheetStockViewHolder.mVerifyQuantity = (EditText) view.findViewById(R.id.ts_stock_verify_quantity);
+            tripSheetStockViewHolder.mVerifyIncrement = (ImageButton) view.findViewById(R.id.ts_stock_verify_increment);
 
-            view.setTag(mHolder);
+            view.setTag(tripSheetStockViewHolder);
         } else {
-            mHolder = (ViewHolder) view.getTag();
+            tripSheetStockViewHolder = (TripSheetStockViewHolder) view.getTag();
         }
 
-        if (mStcokDispatchPrivilege.equals("Stock_Dispatch")) {
-            mHolder.mDispatchQuantity.setVisibility(View.VISIBLE);
-            mHolder.mDispatchDecrement.setVisibility(View.VISIBLE);
-            mHolder.mDispatchIncrement.setVisibility(View.VISIBLE);
+        if (privilegeActionsData.contains("Stock_Dispatch")) {
+            tripSheetStockViewHolder.mDispatchQuantity.setVisibility(View.VISIBLE);
+            tripSheetStockViewHolder.mDispatchDecrement.setVisibility(View.VISIBLE);
+            tripSheetStockViewHolder.mDispatchIncrement.setVisibility(View.VISIBLE);
         }
 
-        if (mStockVerifyPrivilege.equals("Stock_Verify")) {
-            mHolder.mDispatchQuantity.setVisibility(View.VISIBLE);
-            mHolder.mDispatchQuantity.setVisibility(View.VISIBLE);
-            mHolder.mDispatchQuantity.setVisibility(View.VISIBLE);
+        if (privilegeActionsData.contains("Stock_Verify")) {
+            tripSheetStockViewHolder.mVerifyDecrement.setVisibility(View.VISIBLE);
+            tripSheetStockViewHolder.mVerifyQuantity.setVisibility(View.VISIBLE);
+            tripSheetStockViewHolder.mVerifyIncrement.setVisibility(View.VISIBLE);
         }
 
-        mHolder.mProductName.setText(mTripSheetsList.get(position).getmTripsheetStockProductCode());
-        mHolder.mOrder.setText(mTripSheetsList.get(position).getmTripsheetStockProductOrderQuantity());
-        mHolder.mDispatchQuantity.setText(mTripSheetsList.get(position).getmTripsheetStockProductOrderQuantity());
-        mHolder.mVerifyQuantity.setText(mTripSheetsList.get(position).getmTripsheetStockProductOrderQuantity());
+        TripsheetsStockList currentStockList = getItem(position);
+
+        tripSheetStockViewHolder.mProductName.setText(currentStockList.getmTripsheetStockProductName());
+        tripSheetStockViewHolder.mOrder.setText(currentStockList.getmTripsheetStockProductOrderQuantity());
+        tripSheetStockViewHolder.mDispatchQuantity.setText(currentStockList.getmTripsheetStockProductOrderQuantity());
+        tripSheetStockViewHolder.mVerifyQuantity.setText(currentStockList.getmTripsheetStockProductOrderQuantity());
+
+
 
         return view;
     }
 
-    public class ViewHolder {
+    public class TripSheetStockViewHolder {
         TextView mProductName;
         TextView mOrder;
         EditText mDispatchQuantity;
@@ -129,16 +115,18 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
     // Filter Class
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
-        mTripSheetsList.clear();
+        filteredTripSheetStockList.clear();
+
         if (charText.length() == 0) {
-            mTripSheetsList.addAll(arraylist);
+            filteredTripSheetStockList.addAll(allTripSheetStockList);
         } else {
-            for (TripsheetsStockList wp : arraylist) {
-                if (wp.getmTripsheetStockProductName().toLowerCase(Locale.getDefault()).contains(charText)) {
-                    mTripSheetsList.add(wp);
+            for (TripsheetsStockList stock : allTripSheetStockList) {
+                if (stock.getmTripsheetStockProductName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    filteredTripSheetStockList.add(stock);
                 }
             }
         }
+
         notifyDataSetChanged();
     }
 }

@@ -287,7 +287,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_STOCK_VERIFY_QUANTITY = "tripshhet_stock_verify_quantity";
     private final String KEY_TRIPSHEET_STOCK_VERIFY_DATE = "tripshhet_stock_verify_date";
     private final String KEY_TRIPSHEET_STOCK_VERIFY_BY = "tripshhet_stock_verify_by";
-
+    private final String KEY_TRIPSHEET_STOCK_UPLOAD_STATUS = "tripshhet_stock_upload_status";
 
     // Column names for Tripsheets deliveries List  Table
     private final String KEY_TRIPSHEET_DELIVERY_NO = "tripsheet_delivery_no";
@@ -516,8 +516,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_STOCK_DISPATCH_BY + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_VERIFY_QUANTITY + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_VERIFY_DATE + " VARCHAR,"
-            + KEY_TRIPSHEET_STOCK_VERIFY_BY + " VARCHAR)";
-
+            + KEY_TRIPSHEET_STOCK_VERIFY_BY + " VARCHAR,"
+            + KEY_TRIPSHEET_STOCK_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // Tripsheets Deliveries list Table Create Statements
     private final String CREATE_TRIPSHEETS_DELIVERIES_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
@@ -2669,19 +2669,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_STOCK_VERIFY_QUANTITY, mTripsheetsStockList.get(i).getmTripsheetStockVerifiedQuantity());
                 values.put(KEY_TRIPSHEET_STOCK_VERIFY_DATE, mTripsheetsStockList.get(i).getmTripsheetStockVerifiedDate());
                 values.put(KEY_TRIPSHEET_STOCK_VERIFY_BY, mTripsheetsStockList.get(i).getmTripsheetStockVerifyBy());
-//                int checkVal = checkSpecialPriceProductExistsOrNot(mSpecialPriceBeansList.get(i).getSpecialProductId()
-//                        , mSpecialPriceBeansList.get(i).getSpecialUserId());
-//                if (checkVal == 0) {
-//                    // insert row
-//                    db.insert(TABLE_SPECIALPRICE, null, values);
-//                    System.out.println("F*********** INSERTED***************88");
-//                } else {
-//                    // Update row
-//                    db.update(TABLE_SPECIALPRICE, values, KEY_PRODUCT_SPECIALID + " = ?" + " AND " + KEY_USER_SPECIALID + " = ? ",
-//                            new String[]{String.valueOf(mSpecialPriceBeansList.get(i).getSpecialProductId()),
-//                                    String.valueOf(mSpecialPriceBeansList.get(i).getSpecialUserId())});
-//                    System.out.println("F*********** UPDATED***************88");
-//                }
+
                 db.insert(TABLE_TRIPSHEETS_STOCK_LIST, null, values);
                 values.clear();
             }
@@ -3118,5 +3106,31 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         db.close();
+    }
+
+    public ProductsBean fetchProductDetailsByProductCode(String productCode) {
+        ProductsBean productsBean = null;
+
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_PRODUCTS + " WHERE " + KEY_PRODUCT_CODE + " = " + productCode;
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    productsBean = new ProductsBean();
+                    productsBean.setProductId((c.getString(c.getColumnIndex(KEY_PRODUCT_ID))));
+                    productsBean.setProductTitle((c.getString(c.getColumnIndex(KEY_PRODUCT_TITLE))));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return productsBean;
     }
 }

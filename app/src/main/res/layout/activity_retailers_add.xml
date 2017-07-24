@@ -218,7 +218,7 @@
             android:gravity="center">
 
             <TextView
-                android:id="@+id/tv_save"
+                android:id="@+id/ts_dispatch_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -58,7 +57,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -120,7 +118,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         pname = (EditText) findViewById(R.id.person_name);
         mobile = (EditText) findViewById(R.id.mobile_no);
         address = (EditText) findViewById(R.id.uid_no);
-        save = (TextView) findViewById(R.id.tv_save);
+        save = (TextView) findViewById(R.id.ts_dispatch_save);
         Bundle extras = getIntent().getExtras();
         //  Bitmap avatarbmp = (Bitmap) extras.getParcelable("avatar");
 

@@ -49,6 +49,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
     private TDCSaleOrder currentOrder;
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,13 +74,10 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-
-
-
             ArrayList<String> privilegeActionsData1= mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("UserActivity"));
-            System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
+            //System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
             for (int z = 0; z < privilegeActionsData1.size(); z++) {
-                System.out.println("Name::: " + privilegeActionsData1.get(z).toString());
+                //System.out.println("Name::: " + privilegeActionsData1.get(z).toString());
                 if (privilegeActionsData1.get(z).toString().equals("Notification")) {
                     mNotifications = privilegeActionsData1.get(z).toString();
                 } else if (privilegeActionsData1.get(z).toString().equals("tdc_home_screen")) {
@@ -94,8 +92,6 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                     mDashboardHomeScreen = privilegeActionsData1.get(z).toString();
                 }
             }
-
-
 
             ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("TDC"));
 
@@ -144,8 +140,6 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                 tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsList, previouslySelectedProductsListHashMap);
                 tdc_products_list_view.setAdapter(tdcSalesAdapter);
             }
-
-            //startService(new Intent(activityContext, SyncTDCSalesOrderService.class));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -278,7 +272,6 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.settings).setVisible(true);
         menu.findItem(R.id.logout).setVisible(false);

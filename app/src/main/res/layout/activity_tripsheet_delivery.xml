@@ -77,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
-            android:layout_above="@id/BottomOptionsLayout">
+            android:layout_above="@id/tpsBottomOptionsLayout">
 
             <ListView
                 android:id="@+id/AgentsList"
@@ -188,7 +188,7 @@
                 android:layout_gravity="center"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/tv_save"
+                    android:id="@+id/ts_dispatch_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
