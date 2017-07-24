@@ -646,6 +646,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_STAKEHOLDER_TYPES);
             db.execSQL(CREATE_TRIPSHEETS_LIST_TABLE);
             db.execSQL(CREATE_TRIPSHEETS_STOCK_LIST_TABLE);
+            db.execSQL(CREATE_TRIPSHEETS_SO_LIST_TABLE);
             db.execSQL(CREATE_TRIPSHEETS_DELIVERIES_LIST_TABLE);
             db.execSQL(CREATE_TRIPSHEETS_RETURNS_LIST_TABLE);
             db.execSQL(CREATE_TRIPSHEETS_PAYMENTS_LIST_TABLE);
@@ -657,14 +658,14 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         try {
-            db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USERDETAILS);
+            /*db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_USERDETAILS);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_ROUTES);
             db.execSQL("DROP TABLE IF EXISTS" + CREATE_PRODUCTS_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_USER_ACTIVITY_TABLE);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_AGENTS);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_PRODUCTS_TABLE_TO);
             db.execSQL("DROP TABLE IF EXISTS " + CREATE_USER_PRIVILEGE_ACTIONS_TABLE);
-            db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_SPECIALPRICE);
+            db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_SPECIALPRICE);*/
 
             // create new tables
             onCreate(db);
