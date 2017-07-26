@@ -256,7 +256,6 @@
             android:enabled="true"
             android:exported="true" />
 
-
         <!-- Stake types Sync Service -->
         <service
             android:name=".services.SyncStakeHolderTypesService"
@@ -274,7 +273,10 @@
             android:name=".services.SyncTDCCustomersService"
             android:enabled="true"
             android:exported="true" />
-
+        <service
+            android:name=".services.SyncNotificationsListService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

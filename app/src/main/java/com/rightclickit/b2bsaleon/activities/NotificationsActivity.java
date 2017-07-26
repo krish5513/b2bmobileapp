@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,14 +12,18 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.NotificationAdapter;
+import com.rightclickit.b2bsaleon.adapters.TripsheetsListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetPaymentsBean;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +33,7 @@ public class NotificationsActivity extends AppCompatActivity {
 
     ListView listView;
 
-
+    private TextView mNotificationsFoundText;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
 
@@ -36,6 +41,8 @@ public class NotificationsActivity extends AppCompatActivity {
     private LinearLayout mDashboardLayout, mTripSheetsLayout, mCustomersLayout, mProductsLayout, mTDCLayout;
     private LinearLayout mRetailersLayout;
     private ArrayList notificationList=new ArrayList();
+
+    private NotificationAdapter mNotificationAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,20 +70,8 @@ public class NotificationsActivity extends AppCompatActivity {
         mPreferences = new MMSharedPreferences(NotificationsActivity.this);
 
 
-
-        listView = (ListView) findViewById(R.id.list);
-
-        for (int i=0;i<10;i++) {
-            NotificationBean pBean = new NotificationBean();
-            pBean.setName("Sales");
-            pBean.setDescription("Be the first to know about discounts and offers at B2BSaleON ! Click here to subscribe");
-            pBean.setDate("2017-07-18");
-            notificationList.add(pBean);
-
-        }
-        NotificationAdapter adapter = new NotificationAdapter(NotificationsActivity.this,
-                NotificationsActivity.this, notificationList);
-        listView.setAdapter(adapter);
+        mNotificationsFoundText = (TextView) findViewById(R.id.NoNotificationsFoundTextView);
+        listView = (ListView) findViewById(R.id.notifications_listview);
 
 
 
@@ -195,6 +190,32 @@ public class NotificationsActivity extends AppCompatActivity {
                 mDashboardHomeScreen = privilegeActionsData.get(z).toString();
             }
         }
+
+
+
+        if (new NetworkConnectionDetector(NotificationsActivity.this).isNetworkConnected()) {
+
+
+            ArrayList<NotificationBean> notificationsList = mDBHelper.fetchAllNotificationsList();
+            Log.e("received",notificationsList.size()+"");
+            if (notificationsList.size() > 0) {
+                loadNotificationsData(notificationsList);
+            } else {
+                mNotificationsFoundText.setText("No Notifications found.");
+            }
+        }
+    }
+
+
+
+
+    public void loadNotificationsData(ArrayList<NotificationBean> notificationsList) {
+        if (mNotificationAdapter != null) {
+            mNotificationAdapter = null;
+        }
+        mNotificationAdapter = new NotificationAdapter(NotificationsActivity.this, NotificationsActivity.this,
+                notificationsList );
+        listView.setAdapter(mNotificationAdapter);
     }
 
     @Override

@@ -5,9 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
+import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.SpecialPriceBean;
 import com.rightclickit.b2bsaleon.beanclass.StakeHolderTypes;
@@ -99,6 +101,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // This table contains tripsheets so list
     private final String TABLE_TRIPSHEETS_SO_LIST = "tripsheets_so_list";
+
+    // This table contains notifications list
+    private final String TABLE_NOTIFICATION_LIST = "notification_list";
+
 
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
@@ -390,6 +396,13 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_SO_AGENTLATITUDE = "tripshhet_so_agentlatitude";
     private final String KEY_TRIPSHEET_SO_AGENTLONGITUDE = "tripshhet_so_agentlongitude";
 
+
+
+    // Column names for Notifications List  Table
+    private final String KEY_NOTIFICATIONS_DATE = "notification_date";
+    private final String KEY_NOTIFICATIONS_NAME = "notification_name";
+    private final String KEY_NOTIFICATIONS_DESCRIPTION = "notification_description";
+
     // Agents Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_AGENTS + "(" + KEY_AGENT_ID + " VARCHAR,"
@@ -625,6 +638,16 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_SO_AGENTLONGITUDE + " VARCHAR)";
 
 
+
+
+    // Notifications Table Create Statements
+    private final String CREATE_NOTIFICATIONS_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_NOTIFICATION_LIST + "(" + KEY_NOTIFICATIONS_DATE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_NOTIFICATIONS_NAME + " VARCHAR,"
+            + KEY_NOTIFICATIONS_DESCRIPTION + " VARCHAR)";
+
+
+
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -650,6 +673,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TRIPSHEETS_DELIVERIES_LIST_TABLE);
             db.execSQL(CREATE_TRIPSHEETS_RETURNS_LIST_TABLE);
             db.execSQL(CREATE_TRIPSHEETS_PAYMENTS_LIST_TABLE);
+            db.execSQL(CREATE_NOTIFICATIONS_LIST_TABLE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -3133,4 +3157,69 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return productsBean;
     }
+
+
+
+
+    /**
+     * Method to insert the mNotificationsList.
+     *
+     * @param mNotificationsList
+     */
+    public void insertNotificationsListData(ArrayList<NotificationBean> mNotificationsList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0; i < mNotificationsList.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_NOTIFICATIONS_DATE, mNotificationsList.get(i).getDate());
+
+                values.put(KEY_NOTIFICATIONS_NAME, mNotificationsList.get(i).getName());
+                values.put(KEY_NOTIFICATIONS_DESCRIPTION, mNotificationsList.get(i).getDescription());
+
+
+                db.insert(TABLE_NOTIFICATION_LIST, null, values);
+                Log.e("inserten",values+"");
+                values.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        db.close();
+    }
+
+
+    /**
+     * Method to fetch all notifications list baed on tripsheet id from Notification list table
+     */
+    public ArrayList<NotificationBean> fetchAllNotificationsList() {
+        ArrayList<NotificationBean> notificationsList = new ArrayList<NotificationBean>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_NOTIFICATION_LIST ;
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    NotificationBean notificationsBean = new NotificationBean();
+
+                    notificationsBean.setDate(c.getString(c.getColumnIndex(KEY_NOTIFICATIONS_DATE)));
+
+                    notificationsBean.setName(c.getString(c.getColumnIndex(KEY_NOTIFICATIONS_NAME)));
+                    notificationsBean.setDescription(c.getString(c.getColumnIndex(KEY_NOTIFICATIONS_DESCRIPTION)));
+
+                    notificationsList.add(notificationsBean);
+
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return notificationsList;
+    }
+
 }

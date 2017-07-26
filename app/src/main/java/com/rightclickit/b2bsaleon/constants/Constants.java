@@ -79,6 +79,9 @@ public class Constants {
 
     public static final String SYNC_TRIPSHEETS_PORT = ":3009";
 
+    //Port for notifications list
+    public static final String SYNC_NOTIFICATIONS_PORT = ":3010";
+
     //Production
     public static final String MAIN_URL = "http://52.10.51.54";
 
@@ -126,4 +129,7 @@ public class Constants {
 
     //Tripsheets Sale Orders List
     public static final String GET_TRIPSHEETS_SO_LIST = "/tripsheet/so";
+
+    //Get Notifications List  URL
+    public static final String GET_NOTIFICATIONS_LIST = "/notification/list/";
 }
