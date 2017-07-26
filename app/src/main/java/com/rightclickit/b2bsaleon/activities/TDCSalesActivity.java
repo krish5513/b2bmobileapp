@@ -303,9 +303,6 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
         finish();
     }
 
-
-
-
     @Override
     public void updateSelectedProductsListAndSubTotal(Map<String, ProductsBean> productsList) {
         this.selectedProductsListHashMap = productsList;

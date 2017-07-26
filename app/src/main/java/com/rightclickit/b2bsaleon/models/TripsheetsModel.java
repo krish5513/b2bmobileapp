@@ -254,7 +254,6 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                             ProductsBean productsDetails = mDBHelper.fetchProductDetailsByProductCode(productCodesArray.get(j).toString());
                             if (productsDetails != null) {
                                 tripStockBean.setmTripsheetStockProductId(productsDetails.getProductId());
-
                                 tripStockBean.setmTripsheetStockProductName(productsDetails.getProductTitle());
                             }
 

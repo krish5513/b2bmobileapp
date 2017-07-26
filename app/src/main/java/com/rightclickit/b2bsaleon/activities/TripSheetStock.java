@@ -2,8 +2,11 @@ package com.rightclickit.b2bsaleon.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -12,15 +15,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.interfaces.TripSheetStockListener;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
@@ -28,8 +35,10 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
-public class TripSheetStock extends AppCompatActivity {
+public class TripSheetStock extends AppCompatActivity implements TripSheetStockListener {
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
     private DBHelper mDBHelper;
@@ -37,11 +46,15 @@ public class TripSheetStock extends AppCompatActivity {
     private SearchView search;
     private TextView dispatchTitle, verifyTitle, ts_dispatch_save, ts_stock_verify, ts_stock_preview;
     private ListView mTripsheetsStockListView;
+    private LinearLayout tps_stock_save_layout, tps_stock_verify_layout, tps_stock_preview_layout;
 
     private ArrayList<String> privilegeActionsData;
     private TripsheetsModel mTripsheetsModel;
     private TripsheetsStockListAdapter mTripsheetsStockAdapter;
-    private String mTripSheetId = "";
+    private String mTripSheetId;
+    private Map<String, TripsheetsStockList> productsDispatchListHashMap, productsVerifyListHashMap; // Hash Map Key = Product Id
+    private String loggedInUserId;
+    private boolean isStockDispatched = false, isStockVerified = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +66,8 @@ public class TripSheetStock extends AppCompatActivity {
             activityContext = TripSheetStock.this;
             mmSharedPreferences = new MMSharedPreferences(activityContext);
             mDBHelper = new DBHelper(activityContext);
+
+            loggedInUserId = mmSharedPreferences.getString("userId");
 
             String activityTitle = String.format("TRIP #%s, %s", "980915", Utility.formatDate(new Date(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT));
 
@@ -75,21 +90,27 @@ public class TripSheetStock extends AppCompatActivity {
             ts_dispatch_save = (TextView) findViewById(R.id.ts_dispatch_save);
             ts_stock_verify = (TextView) findViewById(R.id.ts_stock_verify);
             ts_stock_preview = (TextView) findViewById(R.id.ts_stock_preview);
+            tps_stock_save_layout = (LinearLayout) findViewById(R.id.tps_stock_save_layout);
+            tps_stock_verify_layout = (LinearLayout) findViewById(R.id.tps_stock_verify_layout);
+            tps_stock_preview_layout = (LinearLayout) findViewById(R.id.tps_stock_preview_layout);
 
             privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("TripSheets"));
             //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
-            for (int z = 0; z < privilegeActionsData.size(); z++) {
-                //System.out.println("Name::: " + privilegeActionsData.get(z).toString());
-                if (privilegeActionsData.get(z).toString().equals("Stock_Dispatch")) {
-                    dispatchTitle.setVisibility(View.VISIBLE);
-                } else if (privilegeActionsData.get(z).toString().equals("Stock_Verify")) {
-                    verifyTitle.setVisibility(View.VISIBLE);
-                    ts_stock_verify.setVisibility(View.VISIBLE);
-                } else if (privilegeActionsData.get(z).toString().equals("Stock_Save")) {
-                    ts_dispatch_save.setVisibility(View.VISIBLE);
-                } else if (privilegeActionsData.get(z).toString().equals("stock_Preview_Print")) {
-                    ts_stock_preview.setVisibility(View.VISIBLE);
-                }
+            if (privilegeActionsData.contains("Stock_Dispatch")) {
+                dispatchTitle.setVisibility(View.VISIBLE);
+            }
+
+            if (privilegeActionsData.contains("Stock_Verify")) {
+                verifyTitle.setVisibility(View.VISIBLE);
+                tps_stock_verify_layout.setVisibility(View.VISIBLE);
+            }
+
+            if (privilegeActionsData.contains("Stock_Save")) {
+                tps_stock_save_layout.setVisibility(View.VISIBLE);
+            }
+
+            if (privilegeActionsData.contains("stock_Preview_Print")) {
+                tps_stock_preview_layout.setVisibility(View.VISIBLE);
             }
 
             Bundle bundle = this.getIntent().getExtras();
@@ -98,13 +119,16 @@ public class TripSheetStock extends AppCompatActivity {
             }
 
             mTripsheetsModel = new TripsheetsModel(this, TripSheetStock.this);
+            ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
 
-            if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
-                mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
+            productsDispatchListHashMap = new HashMap<>();
+            productsVerifyListHashMap = new HashMap<>();
+
+            if (tripsheetsStockLists.size() > 0) {
+                loadTripsData(tripsheetsStockLists);
             } else {
-                ArrayList<TripsheetsStockList> tripsList = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
-                if (tripsList.size() > 0) {
-                    loadTripsData(tripsList);
+                if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
+                    mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
                 }
             }
         } catch (Exception e) {
@@ -117,7 +141,7 @@ public class TripSheetStock extends AppCompatActivity {
             mTripsheetsStockAdapter = null;
         }
 
-        mTripsheetsStockAdapter = new TripsheetsStockListAdapter(this, TripSheetStock.this, tripsStockList, privilegeActionsData);
+        mTripsheetsStockAdapter = new TripsheetsStockListAdapter(this, TripSheetStock.this, this, tripsStockList, privilegeActionsData);
         mTripsheetsStockListView.setAdapter(mTripsheetsStockAdapter);
     }
 
@@ -204,7 +228,116 @@ public class TripSheetStock extends AppCompatActivity {
         Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
         ts_stock_preview.startAnimation(animation1);
         Intent i = new Intent(TripSheetStock.this, TripsheetStockPreview.class);
+        i.putExtra("tripSheetId", mTripSheetId);
         startActivity(i);
         finish();
+    }
+
+    public void saveTripSheetStock(View view) {
+        if (!isStockDispatched)
+            showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to save?\n\nOnce you saved you can't edit.", "Save");
+    }
+
+    public void verifyTripSheetStock(View view) {
+        if (!isStockVerified)
+            showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to verify?\n\nOnce you verified you can't edit.", "Verify");
+    }
+
+    private void showAlertDialogWithCancelButton(Context context, String title, String message, final String actionType) {
+        try {
+            AlertDialog alertDialog = null;
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+
+                    if (actionType.equals("Save"))
+                        saveProductsDispatchList();
+                    else if (actionType.equals("Verify"))
+                        saveProductsVerifyList();
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button cancelButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            if (cancelButton != null)
+                cancelButton.setTextColor(ContextCompat.getColor(context, R.color.alert_dialog_color_accent));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateProductsDispatchList(Map<String, TripsheetsStockList> productsList) {
+        this.productsDispatchListHashMap = productsList;
+
+    }
+
+    @Override
+    public void updateProductsVerifyList(Map<String, TripsheetsStockList> productsList) {
+        this.productsVerifyListHashMap = productsList;
+
+    }
+
+    public void saveProductsDispatchList() {
+        long currentTimeStamp = System.currentTimeMillis();
+
+        for (Map.Entry<String, TripsheetsStockList> stockList : productsDispatchListHashMap.entrySet()) {
+            TripsheetsStockList currentStock = stockList.getValue();
+            currentStock.setmTripsheetStockDispatchBy(loggedInUserId);
+            currentStock.setmTripsheetStockDispatchDate(String.valueOf(currentTimeStamp));
+
+            mDBHelper.updateTripSheetStockDispatchList(currentStock);
+        }
+
+        isStockDispatched = true;
+        Toast.makeText(activityContext, "Stock Saved Successfully.", Toast.LENGTH_LONG).show();
+
+        /*if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+            Intent syncTDCOrderServiceIntent = new Intent(activityContext, SyncTDCSalesOrderService.class);
+            startService(syncTDCOrderServiceIntent);
+        }*/
+    }
+
+    public void saveProductsVerifyList() {
+        long currentTimeStamp = System.currentTimeMillis();
+        String tripSheetId = "";
+
+        for (Map.Entry<String, TripsheetsStockList> stockList : productsVerifyListHashMap.entrySet()) {
+            TripsheetsStockList currentStock = stockList.getValue();
+            currentStock.setmTripsheetStockVerifyBy(loggedInUserId);
+            currentStock.setmTripsheetStockVerifiedDate(String.valueOf(currentTimeStamp));
+
+            tripSheetId = currentStock.getmTripsheetStockTripsheetId();
+
+            mDBHelper.updateTripSheetStockVerifyList(currentStock);
+        }
+
+        // Updating trip sheet verify status in trip sheets table
+        mDBHelper.updateTripSheetStockVerifyStatus(tripSheetId);
+
+        isStockVerified = true;
+
+        Toast.makeText(activityContext, "Stock Verified Successfully.", Toast.LENGTH_LONG).show();
+
+        /*if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+            Intent syncTDCOrderServiceIntent = new Intent(activityContext, SyncTDCSalesOrderService.class);
+            startService(syncTDCOrderServiceIntent);
+        }*/
     }
 }
