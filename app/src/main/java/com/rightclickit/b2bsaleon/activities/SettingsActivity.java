@@ -49,6 +49,7 @@ import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.models.SettingsModel;
+import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.services.SyncSpecialPriceService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
@@ -494,6 +495,8 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
 
             // Append all the db data to lables.
+
+            startService(new Intent(SettingsActivity.this, SyncNotificationsListService.class));
 
 
             companyName.setText("");

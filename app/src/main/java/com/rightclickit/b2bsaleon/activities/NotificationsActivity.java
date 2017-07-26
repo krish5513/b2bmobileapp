@@ -1,15 +1,19 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,6 +26,8 @@ import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetPaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
+import com.rightclickit.b2bsaleon.services.SyncSpecialPriceService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
@@ -32,6 +38,7 @@ import java.util.List;
 public class NotificationsActivity extends AppCompatActivity {
 
     ListView listView;
+    private SearchView search;
 
     private TextView mNotificationsFoundText;
     private DBHelper mDBHelper;
@@ -151,7 +158,7 @@ public class NotificationsActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        startService(new Intent(NotificationsActivity.this, SyncNotificationsListService.class));
         HashMap<String, String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
         System.out.println("F 11111 ***COUNT === " + privilegesData.size());
@@ -221,6 +228,43 @@ public class NotificationsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+
+                mNotificationAdapter.filter(query);
+
+                return true;
+
+            }
+
+        });
+
+        // Get the search close button image view
+        ImageView closeButton = (ImageView)search.findViewById(R.id.search_close_btn);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search.setQuery("", false);
+                search.clearFocus();
+                search.onActionViewCollapsed();
+            }
+        });
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -234,7 +278,13 @@ public class NotificationsActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                if(search.isIconified()) {
+                    onBackPressed();
+                }else {
+                    search.setQuery("", false);
+                    search.clearFocus();
+                    search.onActionViewCollapsed();
+                }
                 return true;
             default:
                 return true;

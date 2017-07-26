@@ -21,6 +21,7 @@ import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.LogInModel;
 import com.rightclickit.b2bsaleon.models.PrevilegesModel;
+import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.services.SyncRoutesMasterDetailsService;
 import com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -91,6 +92,8 @@ public class LoginActivity extends Activity {
                     return false;
                 }
             });
+
+
 
             logInButton = (Button) findViewById(R.id.login_btn);
             logInButton.setOnClickListener(new OnClickListener() {

@@ -6,7 +6,15 @@ package com.rightclickit.b2bsaleon.beanclass;
 
 public class NotificationBean {
 
+    public String getNotification_id() {
+        return notification_id;
+    }
 
+    public void setNotification_id(String notification_id) {
+        this.notification_id = notification_id;
+    }
+
+    String notification_id;
     String name;
 
     public String getName() {

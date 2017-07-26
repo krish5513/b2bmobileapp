@@ -24,6 +24,7 @@ import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentsModel;
+import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
@@ -246,6 +247,8 @@ public class AgentsActivity extends AppCompatActivity {
                 mDashboardHomeScreen = privilegeActionsData.get(z).toString();
             }
         }
+
+        startService(new Intent(AgentsActivity.this, SyncNotificationsListService.class));
 
     }
 

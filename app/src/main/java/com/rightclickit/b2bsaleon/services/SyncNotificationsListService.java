@@ -82,16 +82,17 @@ public class SyncNotificationsListService extends Service {
 
                 mJsonObj = new NetworkManager().makeHttpPostConnection(URL,params1);
 
-                System.out.println("The URL IS:: "+ URL);
+                //System.out.println("The URL IS:: "+ URL);
 
-                System.out.println("The LENGTH IS:: "+ mJsonObj.toString());
-                System.out.println("Notifications Response Is::: "+ mJsonObj);
+                //System.out.println("The LENGTH IS:: "+ mJsonObj.toString());
+                //System.out.println("Notifications Response Is::: "+ mJsonObj);
                 JSONArray resArray = new JSONArray(mJsonObj);
                 int len = resArray.length();
                 for (int i = 0;i<len;i++){
                     JSONObject jb = resArray.getJSONObject(i);
 
                     NotificationBean notificationsBean = new NotificationBean();
+                    notificationsBean.setNotification_id(jb.getString("_id"));
                     notificationsBean.setName(jb.getString("name"));
                     notificationsBean.setDescription(jb.getString("description"));
                     notificationsBean.setDate(jb.getString("created_on"));

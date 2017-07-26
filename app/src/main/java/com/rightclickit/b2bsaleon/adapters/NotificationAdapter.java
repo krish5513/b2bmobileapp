@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.NotificationsActivity;
 import com.rightclickit.b2bsaleon.activities.TripsheetReturns;
+import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -21,6 +22,7 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by bhagya on 5/18/2017.
@@ -54,7 +56,7 @@ public class NotificationAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 10;
+        return mNotifications.size();
     }
 
     @Override
@@ -83,11 +85,13 @@ public class NotificationAdapter extends BaseAdapter {
             mHolder = (NotificationAdapter.ViewHolder) view.getTag();
         }
 
-
+    try {
         mHolder.name.setText(mNotifications.get(position).getName());
         mHolder.description.setText(mNotifications.get(position).getDescription());
         mHolder.date.setText(mNotifications.get(position).getDate());
+    }catch (Exception  e){
 
+    }
 
 
 
@@ -102,6 +106,30 @@ public class NotificationAdapter extends BaseAdapter {
     }
 
 
+    // Filter Class
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        mNotifications.clear();
+
+        if (arraylist != null) {
+            if (charText.length() == 0) {
+                mNotifications.addAll(arraylist);
+            } else {
+                for (NotificationBean wp : arraylist) {
+                    if (wp.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                        mNotifications.add(wp);
+                    }
+                    else  if (wp.getDescription().toLowerCase(Locale.getDefault()).contains(charText)) {
+                        mNotifications.add(wp);
+                    }
+                   else if (wp.getDate().toLowerCase(Locale.getDefault()).contains(charText)) {
+                        mNotifications.add(wp);
+                    }
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 
 }
 

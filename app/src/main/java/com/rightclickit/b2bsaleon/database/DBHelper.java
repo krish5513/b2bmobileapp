@@ -399,6 +399,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     // Column names for Notifications List  Table
+    private final String KEY_NOTIFICATIONS_ID = "notification_id";
     private final String KEY_NOTIFICATIONS_DATE = "notification_date";
     private final String KEY_NOTIFICATIONS_NAME = "notification_name";
     private final String KEY_NOTIFICATIONS_DESCRIPTION = "notification_description";
@@ -642,7 +643,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Notifications Table Create Statements
     private final String CREATE_NOTIFICATIONS_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_NOTIFICATION_LIST + "(" + KEY_NOTIFICATIONS_DATE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + TABLE_NOTIFICATION_LIST + "("+ KEY_NOTIFICATIONS_ID + " VARCHAR," +  KEY_NOTIFICATIONS_DATE + " VARCHAR,"
             + KEY_NOTIFICATIONS_NAME + " VARCHAR,"
             + KEY_NOTIFICATIONS_DESCRIPTION + " VARCHAR)";
 
@@ -3170,23 +3171,33 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             for (int i = 0; i < mNotificationsList.size(); i++) {
-                ContentValues values = new ContentValues();
-                values.put(KEY_NOTIFICATIONS_DATE, mNotificationsList.get(i).getDate());
 
-                values.put(KEY_NOTIFICATIONS_NAME, mNotificationsList.get(i).getName());
-                values.put(KEY_NOTIFICATIONS_DESCRIPTION, mNotificationsList.get(i).getDescription());
+                if(!verification(mNotificationsList.get(i).getNotification_id(),db)) {
+                    ContentValues values = new ContentValues();
+                    values.put(KEY_NOTIFICATIONS_ID,mNotificationsList.get(i).getNotification_id());
+                    values.put(KEY_NOTIFICATIONS_DATE, mNotificationsList.get(i).getDate());
+
+                    values.put(KEY_NOTIFICATIONS_NAME, mNotificationsList.get(i).getName());
+                    values.put(KEY_NOTIFICATIONS_DESCRIPTION, mNotificationsList.get(i).getDescription());
 
 
-                db.insert(TABLE_NOTIFICATION_LIST, null, values);
-                Log.e("inserten",values+"");
-                values.clear();
+                    db.insert(TABLE_NOTIFICATION_LIST, null, values);
+                    Log.e("inserten", values + "");
+                    values.clear();
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         db.close();
     }
+    public boolean verification(String _username, SQLiteDatabase db) {
 
+        Cursor c = db.rawQuery("SELECT 1 FROM "+TABLE_NOTIFICATION_LIST+" WHERE "+KEY_NOTIFICATIONS_ID+"=?", new String[] {_username});
+        boolean exists = c.moveToFirst();
+        c.close();
+        return exists;
+    }
 
     /**
      * Method to fetch all notifications list baed on tripsheet id from Notification list table

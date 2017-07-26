@@ -26,6 +26,7 @@ import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
+import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
@@ -144,6 +145,9 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        startService(new Intent(TDCSalesActivity.this, SyncNotificationsListService.class));
     }
 
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {

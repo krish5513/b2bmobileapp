@@ -19,6 +19,7 @@ import com.rightclickit.b2bsaleon.adapters.TripsheetsListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
+import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
@@ -231,7 +232,7 @@ public class TripSheetsActivity extends AppCompatActivity {
                 mDashboardHomeScreen = privilegeActionsData1.get(z).toString();
             }
         }
-
+        startService(new Intent(TripSheetsActivity.this, SyncNotificationsListService.class));
 
         if (new NetworkConnectionDetector(TripSheetsActivity.this).isNetworkConnected()) {
 //            if (mDBHelper.getTripsheetsTableCount() > 0) {

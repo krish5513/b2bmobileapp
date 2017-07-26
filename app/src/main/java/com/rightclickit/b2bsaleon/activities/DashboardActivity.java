@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.loopj.android.http.AsyncHttpClient;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
@@ -277,6 +278,9 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
 //        if (mDBHelper.getRouteId().length()==0) {
 //            startService(new Intent(DashboardActivity.this, SyncRoutesMasterDetailsService.class));
 //        }
+
+
+        startService(new Intent(DashboardActivity.this, SyncNotificationsListService.class));
 
     }
 

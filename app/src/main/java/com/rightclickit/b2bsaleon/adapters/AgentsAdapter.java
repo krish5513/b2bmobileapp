@@ -60,16 +60,7 @@ public class AgentsAdapter extends BaseAdapter {
         this.mDBHelper=new DBHelper(activity);
         this.arraylist.addAll(mAgentsBeansList1);
     }
-    public AgentsAdapter(Context ctxt, Agents_AddActivity agentsActivity, ArrayList<AgentsBean> mAgentsBeansList) {
-        this.ctxt=ctxt;
-        this.activity = agentsActivity;
-        this.mAgentsBeansList1 = mAgentsBeansList;
-        this.mImageLoader = new ImageLoader(agentsActivity);
-        this.mInflater = LayoutInflater.from(activity);
-        this.mPreferences = new MMSharedPreferences(activity);
-        this.arraylist = new ArrayList<AgentsBean>();
-        this.arraylist.addAll(mAgentsBeansList1);
-    }
+
     @Override
     public int getCount() {
         return mAgentsBeansList1.size();
@@ -154,7 +145,7 @@ public class AgentsAdapter extends BaseAdapter {
                 Intent intent=new Intent(activity,AgentsInfoActivity.class);
                 Bundle bundle = new Bundle();
                 //Add your data from getFactualResults method to bundle
-             //   bundle.putString("AGENTNAME", mAgentsBeansList1.get(position).getmFirstname());
+
                 bundle.putString("FIRSTNAME", mAgentsBeansList1.get(position).getmFirstname());
                 bundle.putString("LASTNAME", mAgentsBeansList1.get(position).getmLastname());
                 bundle.putString("MOBILE", mAgentsBeansList1.get(position).getMphoneNO());
@@ -162,9 +153,9 @@ public class AgentsAdapter extends BaseAdapter {
                 bundle.putString("AGENTCODE", mAgentsBeansList1.get(position).getmAgentCode());
 
                 intent.putExtra("AVATAR", mAgentsBeansList1.get(position).getmAgentPic());
-               // Log.i("avatarimage", mAgentsBeansList1.get(position).getmAgentPic());
+
                 intent.putExtra("POI", mAgentsBeansList1.get(position).getmPoiImage());
-                //Log.i("poi_image", mAgentsBeansList1.get(position).getmPoiImage());
+
                 intent.putExtra("POA", mAgentsBeansList1.get(position).getmPoaImage());
                 mHolder.mPicImage.buildDrawingCache();
                 mHolder.mPoiImage.buildDrawingCache();
