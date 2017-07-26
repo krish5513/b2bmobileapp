@@ -89,7 +89,8 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_weight="0.25"
-                android:gravity="center">
+                android:gravity="center"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/ts_dispatch_save"
@@ -97,10 +98,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawableTop="@drawable/save_icon_green"
+                    android:onClick="saveTripSheetStock"
                     android:text="Save"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -110,7 +111,8 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_weight="0.25"
-                android:gravity="center">
+                android:gravity="center"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/ts_stock_verify"
@@ -118,20 +120,21 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawableTop="@drawable/save_icon_green"
+                    android:onClick="verifyTripSheetStock"
                     android:text="Verify"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/tps_stock_print_layout"
+                android:id="@+id/tps_stock_preview_layout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:layout_weight="0.25"
-                android:gravity="center">
+                android:gravity="center"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/ts_stock_preview"
@@ -142,8 +145,7 @@
                     android:onClick="showTripSheetStockPreview"
                     android:text="Preview"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 

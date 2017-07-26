@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.rightclickit.b2bsaleon.R;
 
 public class TripsheetStockPreview extends AppCompatActivity {
+    private String tripSheetId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,10 @@ public class TripsheetStockPreview extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null)
+            tripSheetId = bundle.getString("tripSheetId");
     }
 
     @Override
@@ -36,6 +41,7 @@ public class TripsheetStockPreview extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -61,15 +67,17 @@ public class TripsheetStockPreview extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
+        menu.findItem(R.id.Add).setVisible(false);
 
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, TripSheetStock.class);
+        intent.putExtra("tripsheetId", tripSheetId);
         startActivity(intent);
         finish();
 

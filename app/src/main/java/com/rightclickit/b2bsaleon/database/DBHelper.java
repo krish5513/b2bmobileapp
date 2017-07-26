@@ -397,7 +397,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_SO_AGENTLONGITUDE = "tripshhet_so_agentlongitude";
 
 
-
     // Column names for Notifications List  Table
     private final String KEY_NOTIFICATIONS_ID = "notification_id";
     private final String KEY_NOTIFICATIONS_DATE = "notification_date";
@@ -639,14 +638,11 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_SO_AGENTLONGITUDE + " VARCHAR)";
 
 
-
-
     // Notifications Table Create Statements
     private final String CREATE_NOTIFICATIONS_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_NOTIFICATION_LIST + "("+ KEY_NOTIFICATIONS_ID + " VARCHAR," +  KEY_NOTIFICATIONS_DATE + " VARCHAR,"
             + KEY_NOTIFICATIONS_NAME + " VARCHAR,"
             + KEY_NOTIFICATIONS_DESCRIPTION + " VARCHAR)";
-
 
 
     public DBHelper(Context context) {
@@ -3160,8 +3156,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-
-
     /**
      * Method to insert the mNotificationsList.
      *
@@ -3181,10 +3175,14 @@ public class DBHelper extends SQLiteOpenHelper {
                     values.put(KEY_NOTIFICATIONS_DESCRIPTION, mNotificationsList.get(i).getDescription());
 
 
+
                     db.insert(TABLE_NOTIFICATION_LIST, null, values);
                     Log.e("inserten", values + "");
                     values.clear();
                 }
+
+
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -3206,7 +3204,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<NotificationBean> notificationsList = new ArrayList<NotificationBean>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_NOTIFICATION_LIST ;
+            String selectQuery = "SELECT * FROM " + TABLE_NOTIFICATION_LIST;
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -3233,4 +3231,59 @@ public class DBHelper extends SQLiteOpenHelper {
         return notificationsList;
     }
 
+    public void updateTripSheetStockDispatchList(TripsheetsStockList currentStock) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_TRIPSHEET_STOCK_DISPATCH_QUANTITY, currentStock.getmTripsheetStockDispatchQuantity());
+            values.put(KEY_TRIPSHEET_STOCK_DISPATCH_DATE, currentStock.getmTripsheetStockDispatchDate());
+            values.put(KEY_TRIPSHEET_STOCK_DISPATCH_BY, currentStock.getmTripsheetStockDispatchBy());
+
+            int status = db.update(TABLE_TRIPSHEETS_STOCK_LIST, values, KEY_TRIPSHEET_STOCK_ID + " = ? AND " + KEY_TRIPSHEET_STOCK_PRODUCT_CODE + " = ?", new String[]{currentStock.getmTripsheetStockId(), currentStock.getmTripsheetStockProductCode()});
+
+            values.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    public void updateTripSheetStockVerifyList(TripsheetsStockList currentStock) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_TRIPSHEET_STOCK_VERIFY_QUANTITY, currentStock.getmTripsheetStockVerifiedQuantity());
+            values.put(KEY_TRIPSHEET_STOCK_VERIFY_DATE, currentStock.getmTripsheetStockVerifiedDate());
+            values.put(KEY_TRIPSHEET_STOCK_VERIFY_BY, currentStock.getmTripsheetStockVerifyBy());
+
+            int status = db.update(TABLE_TRIPSHEETS_STOCK_LIST, values, KEY_TRIPSHEET_STOCK_ID + " = ? AND " + KEY_TRIPSHEET_STOCK_PRODUCT_CODE + " = ?", new String[]{currentStock.getmTripsheetStockId(), currentStock.getmTripsheetStockProductCode()});
+
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    public void updateTripSheetStockVerifyStatus(String tripSheetId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_TRIPSHEET_VERIFY_STATUS, 1);
+
+            db.update(TABLE_TRIPSHEETS_LIST, values, KEY_TRIPSHEET_ID + " = ? ", new String[]{tripSheetId});
+
+            values.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
 }
