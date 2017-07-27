@@ -158,7 +158,9 @@ public class NotificationsActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         startService(new Intent(NotificationsActivity.this, SyncNotificationsListService.class));
+
         HashMap<String, String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
         System.out.println("F 11111 ***COUNT === " + privilegesData.size());
