@@ -17,6 +17,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
@@ -49,6 +50,8 @@ public class AgentsActivity extends AppCompatActivity {
     private ListView mAgentsList;
     private AgentsAdapter mAgentsAdapter;
     private SearchView search;
+
+    private TextView mNoDataText;
 
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen="";
     @Override
@@ -89,6 +92,8 @@ public class AgentsActivity extends AppCompatActivity {
         mPreferences = new MMSharedPreferences(AgentsActivity.this);
         agentsModel = new AgentsModel(activityContext,this);
 
+        mNoDataText = (TextView) findViewById(R.id.NoDataText);
+
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
         mAgentsList.setVisibility(View.GONE);
        // ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
@@ -97,25 +102,26 @@ public class AgentsActivity extends AppCompatActivity {
             if(mDBHelper.getAgentsTableCount()>0){
                 ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();
 
+                if(agentsBeanArrayList.size()>0){
+                    mNoDataText.setText("");
+                    loadAgentsList(agentsBeanArrayList);
+                }else {
+                    mNoDataText.setText("No Agents found.");
+                }
 
-                /*Collections.sort(agentsBeanArrayList, new Comparator<AgentsBean>() {
-                    @Override
-                    public int compare(AgentsBean o1, AgentsBean o2) {
-                        return o1.getmAgentName().compareToIgnoreCase(o2.getmAgentName());
-                    }
-
-
-                });
-*/
-                loadAgentsList(agentsBeanArrayList);
             }else {
                 agentsModel.getAgentsList("agents");
             }
         }else {
            // System.out.println("ELSE::: ");
             ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();
+            if(agentsBeanArrayList.size()>0) {
+                mNoDataText.setText("");
+                loadAgentsList(agentsBeanArrayList);
+            }else {
+                mNoDataText.setText("No Agents found.");
+            }
 
-            loadAgentsList(agentsBeanArrayList);
         }
 
         mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);

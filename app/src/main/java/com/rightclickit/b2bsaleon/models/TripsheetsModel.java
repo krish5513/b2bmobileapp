@@ -207,7 +207,8 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                         } else {
                             tripsheetsListBean.setmTripshhetReceivedAmount("0");
                         }
-                        int dueAmt = Integer.parseInt(tripsheetsListBean.getmTripshhetOrderedAmount()) - Integer.parseInt(tripsheetsListBean.getmTripshhetReceivedAmount());
+               //         int dueAmt = Integer.parseInt(tripsheetsListBean.getmTripshhetOrderedAmount()) - Integer.parseInt(tripsheetsListBean.getmTripshhetReceivedAmount());
+                        Double dueAmt = Double.parseDouble(tripsheetsListBean.getmTripshhetOrderedAmount()) - Double.parseDouble(tripsheetsListBean.getmTripshhetReceivedAmount());
                         tripsheetsListBean.setmTripshhetDueAmount(String.valueOf(dueAmt));
                         tripsheetsListBean.setmTripshhetRouteCode("route_code");
                         tripsheetsListBean.setmTripshhetSalesMenCode("salesman_code");

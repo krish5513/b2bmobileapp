@@ -313,7 +313,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
             user_name.setText("by " + loggedInUserName);
             route_name.setText(mmSharedPreferences.getString("routename"));
             route_code.setText(str_routecode);
-            sale_no_text_view.setText(currentOrderId);
+            sale_no_text_view.setText(currentOrderId +",");
             sale_date_time_text_view.setText(currentDate);
 
             if (saleOrder.getProductsList() != null) {

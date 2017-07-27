@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.ProductStock;
@@ -254,20 +255,26 @@ public class ProductsAdapter extends BaseAdapter {
         holder.productImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                   if (mProductsBeansList1.get(position).getProductImageUrl() != null) {
-                    if (!mProductsBeansList1.get(position).getProductImageUrl().equals("")) {
+                  if (mProductsBeansList1.get(position).getProductImageUrl() != null) {
+                     if (!mProductsBeansList1.get(position).getProductImageUrl().equals("")) {
                         String URL = Constants.MAIN_URL + "/b2b/" + mProductsBeansList1.get(position).getProductImageUrl();
 
                         if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
                             mImageLoader.DisplayImage(URL, holder.productImage, null, "");
                             showProductImageFull(URL);
                         } else {
+
                             holder.productImage.setBackgroundResource(R.drawable.logo);
                             showProductImageFull(URL);
+
                         }
 
                     }
-                }
+
+                  }
+                   else {
+                       Toast.makeText(ctxt, "Product image not available..!Selected is the default image", Toast.LENGTH_SHORT).show();
+                   }
             }
         });
 

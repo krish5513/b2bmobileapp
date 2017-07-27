@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentTDC_Order;
@@ -186,6 +187,8 @@ public class AgentsAdapter extends BaseAdapter {
 
 
                         showProductImageFull(URL);
+                    } else {
+                        Toast.makeText(ctxt, "Agent image not available..!Selected is the default image", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

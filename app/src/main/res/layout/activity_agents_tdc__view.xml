@@ -23,12 +23,12 @@
             android:textColor="@color/greydark"
             />
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/tv_routecode"
-                android:layout_width="match_parent"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:text="routecode"
@@ -38,19 +38,7 @@
                 android:paddingLeft="10dp"
                 android:textColor="@color/greydark"
                 />
-            <TextView
-                android:visibility="gone"
-                android:id="@+id/sales_ofc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="Sales Office"
-                android:gravity="left"
-                android:paddingTop="5dp"
-                android:textAllCaps="true"
-                android:paddingLeft="10dp"
-                android:textColor="@color/greydark"
-                />
+
             <TextView
                 android:id="@+id/route_name"
                 android:layout_width="match_parent"
