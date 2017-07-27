@@ -18,6 +18,8 @@ public class TripsheetsStockList {
     private String mTripsheetStockVerifyBy;
     private String mTripsheetStockVerifiedDate;
     private String mTripsheetStockVerifiedQuantity;
+    private int isStockDispatched; // 0 means not dispatched & 1 means dispatched
+    private int isStockVerified; // 0 means not verified & 1 means verified
 
     public String getmTripsheetStockTripsheetId() {
         return mTripsheetStockTripsheetId;
@@ -115,6 +117,22 @@ public class TripsheetsStockList {
         this.mTripsheetStockVerifiedQuantity = mTripsheetStockVerifiedQuantity;
     }
 
+    public int getIsStockDispatched() {
+        return isStockDispatched;
+    }
+
+    public void setIsStockDispatched(int isStockDispatched) {
+        this.isStockDispatched = isStockDispatched;
+    }
+
+    public int getIsStockVerified() {
+        return isStockVerified;
+    }
+
+    public void setIsStockVerified(int isStockVerified) {
+        this.isStockVerified = isStockVerified;
+    }
+
     @Override
     public String toString() {
         return "TripsheetsStockList{" +
@@ -130,6 +148,8 @@ public class TripsheetsStockList {
                 ", mTripsheetStockVerifyBy='" + mTripsheetStockVerifyBy + '\'' +
                 ", mTripsheetStockVerifiedDate='" + mTripsheetStockVerifiedDate + '\'' +
                 ", mTripsheetStockVerifiedQuantity='" + mTripsheetStockVerifiedQuantity + '\'' +
+                ", isStockDispatched='" + isStockDispatched + '\'' +
+                ", isStockVerified='" + isStockVerified + '\'' +
                 '}';
     }
 }

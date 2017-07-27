@@ -29,6 +29,7 @@ import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetStockListener;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
+import com.rightclickit.b2bsaleon.services.SyncTripSheetsStockService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -143,6 +144,21 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
         mTripsheetsStockAdapter = new TripsheetsStockListAdapter(this, TripSheetStock.this, this, tripsStockList, privilegeActionsData);
         mTripsheetsStockListView.setAdapter(mTripsheetsStockAdapter);
+
+        // Checking weather this stock already verified or not.
+        if (tripsStockList.size() > 0) {
+            TripsheetsStockList stockList = tripsStockList.get(0);
+
+            if (stockList.getIsStockDispatched() == 1) {
+                tps_stock_save_layout.setVisibility(View.GONE);
+                isStockDispatched = true;
+            }
+
+            if (stockList.getIsStockVerified() == 1) {
+                tps_stock_verify_layout.setVisibility(View.GONE);
+                isStockVerified = true;
+            }
+        }
     }
 
     @Override
@@ -308,10 +324,11 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
         isStockDispatched = true;
         Toast.makeText(activityContext, "Stock Saved Successfully.", Toast.LENGTH_LONG).show();
 
-        /*if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
-            Intent syncTDCOrderServiceIntent = new Intent(activityContext, SyncTDCSalesOrderService.class);
-            startService(syncTDCOrderServiceIntent);
-        }*/
+        if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+            Intent syncTripSheetsStockServiceIntent = new Intent(activityContext, SyncTripSheetsStockService.class);
+            syncTripSheetsStockServiceIntent.putExtra("actionType", "dispatch");
+            startService(syncTripSheetsStockServiceIntent);
+        }
     }
 
     public void saveProductsVerifyList() {
@@ -323,6 +340,7 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
             currentStock.setmTripsheetStockVerifyBy(loggedInUserId);
             currentStock.setmTripsheetStockVerifiedDate(String.valueOf(currentTimeStamp));
 
+            // to update status as verified in trip sheet table, we are initializing trip sheet id.
             tripSheetId = currentStock.getmTripsheetStockTripsheetId();
 
             mDBHelper.updateTripSheetStockVerifyList(currentStock);
@@ -335,9 +353,10 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
         Toast.makeText(activityContext, "Stock Verified Successfully.", Toast.LENGTH_LONG).show();
 
-        /*if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
-            Intent syncTDCOrderServiceIntent = new Intent(activityContext, SyncTDCSalesOrderService.class);
-            startService(syncTDCOrderServiceIntent);
-        }*/
+        if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+            Intent syncTripSheetsStockServiceIntent = new Intent(activityContext, SyncTripSheetsStockService.class);
+            syncTripSheetsStockServiceIntent.putExtra("actionType", "verify");
+            startService(syncTripSheetsStockServiceIntent);
+        }
     }
 }

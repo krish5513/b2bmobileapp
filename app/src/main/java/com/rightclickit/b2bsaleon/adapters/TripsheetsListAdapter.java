@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentTDC_Order;
@@ -120,7 +121,6 @@ public class TripsheetsListAdapter extends BaseAdapter {
         mHolder.mTripsheetReceivedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetReceivedAmount())));
         mHolder.mTripsheetDueAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetDueAmount())));
 
-
         mHolder.stockbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,11 +134,14 @@ public class TripsheetsListAdapter extends BaseAdapter {
         mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Intent stockIntent = new Intent(activity, TripSheetView.class);
-                stockIntent.putExtra("tripsheetId", mTripSheetsList.get(position).getmTripshhetId());
-                activity.startActivity(stockIntent);
-                activity.finish();
+                if (mTripSheetsList.get(position).getmTripshhetVerifyStatus().equals("1")) {
+                    Intent stockIntent = new Intent(activity, TripSheetView.class);
+                    stockIntent.putExtra("tripsheetId", mTripSheetsList.get(position).getmTripshhetId());
+                    activity.startActivity(stockIntent);
+                    activity.finish();
+                } else {
+                    Toast.makeText(ctxt, "This Trip Sheet is not yet verified.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

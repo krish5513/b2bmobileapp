@@ -52,13 +52,14 @@ public class SyncNotificationsListService extends Service {
         return null;
     }
 
-    private void fetchAndSyncNotificationsData(){
+    private void fetchAndSyncNotificationsData() {
         try {
             new FetchAndSyncNotificationsDataAsyncTask().execute();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     /**
      * Class to perform background operations.
      */
@@ -66,40 +67,40 @@ public class SyncNotificationsListService extends Service {
 
         private ArrayList<NotificationBean> mNotificationsList = new ArrayList<NotificationBean>();
 
-
-
-
         @Override
         protected Void doInBackground(Void... params) {
             try {
 
-                if(mNotificationsList.size()>0){
+                if (mNotificationsList.size() > 0) {
                     mNotificationsList.clear();
                 }
-                String URL = String.format("%s%s%s", Constants.MAIN_URL,Constants.SYNC_NOTIFICATIONS_PORT,Constants.GET_NOTIFICATIONS_LIST);
+                String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_NOTIFICATIONS_PORT, Constants.GET_NOTIFICATIONS_LIST);
 
                 JSONObject params1 = new JSONObject();
 
-                mJsonObj = new NetworkManager().makeHttpPostConnection(URL,params1);
+                mJsonObj = new NetworkManager().makeHttpPostConnection(URL, params1);
 
                 //System.out.println("The URL IS:: "+ URL);
 
                 //System.out.println("The LENGTH IS:: "+ mJsonObj.toString());
-                //System.out.println("Notifications Response Is::: "+ mJsonObj);
-                JSONArray resArray = new JSONArray(mJsonObj);
-                int len = resArray.length();
-                for (int i = 0;i<len;i++){
-                    JSONObject jb = resArray.getJSONObject(i);
+                //System.out.println("Notifications Response Is::: " + mJsonObj);
+                JSONObject responseObj = new JSONObject(mJsonObj);
+                if (responseObj.getInt("result_status") != 0) {
+                    JSONArray resArray = new JSONArray(mJsonObj);
+                    int len = resArray.length();
+                    for (int i = 0; i < len; i++) {
+                        JSONObject jb = resArray.getJSONObject(i);
 
-                    NotificationBean notificationsBean = new NotificationBean();
-                    notificationsBean.setNotification_id(jb.getString("_id"));
-                    notificationsBean.setName(jb.getString("name"));
-                    notificationsBean.setDescription(jb.getString("description"));
-                    notificationsBean.setDate(jb.getString("created_on"));
+                        NotificationBean notificationsBean = new NotificationBean();
+                        notificationsBean.setNotification_id(jb.getString("_id"));
+                        notificationsBean.setName(jb.getString("name"));
+                        notificationsBean.setDescription(jb.getString("description"));
+                        notificationsBean.setDate(jb.getString("created_on"));
 
-                    mNotificationsList.add(notificationsBean);
+                        mNotificationsList.add(notificationsBean);
+                    }
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

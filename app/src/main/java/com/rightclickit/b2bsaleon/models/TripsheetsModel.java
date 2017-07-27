@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
 import com.rightclickit.b2bsaleon.activities.TripSheetView;
@@ -185,49 +186,54 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
             System.out.println("========= response = " + response);
             switch (calledApi) {
                 case 0:
-                    JSONArray resArray = new JSONArray(response);
-                    int len = resArray.length();
-                    for (int i = 0; i < len; i++) {
-                        JSONObject jb = resArray.getJSONObject(i);
+                    JSONObject responseObj = new JSONObject(response);
+                    if (responseObj.getInt("result_status") == 0) {
+                        mNotripsText.setText("No Trip Sheets Found.");
+                    } else {
+                        JSONArray resArray = new JSONArray(response);
+                        int len = resArray.length();
+                        for (int i = 0; i < len; i++) {
+                            JSONObject jb = resArray.getJSONObject(i);
 
-                        TripsheetsList tripsheetsListBean = new TripsheetsList();
+                            TripsheetsList tripsheetsListBean = new TripsheetsList();
 
-                        tripsheetsListBean.setmTripshhetId(jb.getString("_id"));
-                        tripsheetsListBean.setmTripshhetCode(jb.getString("code"));
-                        tripsheetsListBean.setmTripshhetDate(jb.getString("date"));
-                        tripsheetsListBean.setmTripshhetStatus(jb.getString("status"));
-                        tripsheetsListBean.setmTripshhetOBAmount(jb.getString("ob_amt"));
-                        if (!jb.getString("order_amt").trim().equals("")) {
-                            tripsheetsListBean.setmTripshhetOrderedAmount(jb.getString("order_amt"));
-                        } else {
-                            tripsheetsListBean.setmTripshhetOrderedAmount("0");
-                        }
-                        if (!jb.getString("received_amt").trim().equals("")) {
-                            tripsheetsListBean.setmTripshhetReceivedAmount(jb.getString("received_amt"));
-                        } else {
-                            tripsheetsListBean.setmTripshhetReceivedAmount("0");
-                        }
-               //         int dueAmt = Integer.parseInt(tripsheetsListBean.getmTripshhetOrderedAmount()) - Integer.parseInt(tripsheetsListBean.getmTripshhetReceivedAmount());
-                        Double dueAmt = Double.parseDouble(tripsheetsListBean.getmTripshhetOrderedAmount()) - Double.parseDouble(tripsheetsListBean.getmTripshhetReceivedAmount());
-                        tripsheetsListBean.setmTripshhetDueAmount(String.valueOf(dueAmt));
-                        tripsheetsListBean.setmTripshhetRouteCode("route_code");
-                        tripsheetsListBean.setmTripshhetSalesMenCode("salesman_code");
-                        tripsheetsListBean.setmTripshhetVehicleNumber("vehicle_no");
-                        tripsheetsListBean.setmTripshhetTrasnsporterName("transporter");
-                        tripsheetsListBean.setmTripshhetVerifyStatus("0");
+                            tripsheetsListBean.setmTripshhetId(jb.getString("_id"));
+                            tripsheetsListBean.setmTripshhetCode(jb.getString("code"));
+                            tripsheetsListBean.setmTripshhetDate(jb.getString("date"));
+                            tripsheetsListBean.setmTripshhetStatus(jb.getString("status"));
+                            tripsheetsListBean.setmTripshhetOBAmount(jb.getString("ob_amt"));
+                            if (!jb.getString("order_amt").trim().equals("")) {
+                                tripsheetsListBean.setmTripshhetOrderedAmount(jb.getString("order_amt"));
+                            } else {
+                                tripsheetsListBean.setmTripshhetOrderedAmount("0");
+                            }
+                            if (!jb.getString("received_amt").trim().equals("")) {
+                                tripsheetsListBean.setmTripshhetReceivedAmount(jb.getString("received_amt"));
+                            } else {
+                                tripsheetsListBean.setmTripshhetReceivedAmount("0");
+                            }
 
-                        mTripsheetsList.add(tripsheetsListBean);
-                    }
-                    synchronized (this) {
-                        if (mTripsheetsList.size() > 0) {
-                            mDBHelper.insertTripsheetsListData(mTripsheetsList);
+                            Double dueAmt = Double.parseDouble(tripsheetsListBean.getmTripshhetOrderedAmount()) - Double.parseDouble(tripsheetsListBean.getmTripshhetReceivedAmount());
+                            tripsheetsListBean.setmTripshhetDueAmount(String.valueOf(dueAmt));
+                            tripsheetsListBean.setmTripshhetRouteCode("route_code");
+                            tripsheetsListBean.setmTripshhetSalesMenCode("salesman_code");
+                            tripsheetsListBean.setmTripshhetVehicleNumber("vehicle_no");
+                            tripsheetsListBean.setmTripshhetTrasnsporterName("transporter");
+                            tripsheetsListBean.setmTripshhetVerifyStatus("0");
+
+                            mTripsheetsList.add(tripsheetsListBean);
                         }
-                    }
-                    synchronized (this) {
-                        if (mTripsheetsList.size() > 0) {
-                            activity.loadTripsData(mTripsheetsList);
-                        } else {
-                            mNotripsText.setText("No Tripsheets found.");
+                        synchronized (this) {
+                            if (mTripsheetsList.size() > 0) {
+                                mDBHelper.insertTripsheetsListData(mTripsheetsList);
+                            }
+                        }
+                        synchronized (this) {
+                            if (mTripsheetsList.size() > 0) {
+                                activity.loadTripsData(mTripsheetsList);
+                            } else {
+                                mNotripsText.setText("No Tripsheets found.");
+                            }
                         }
                     }
                     break;

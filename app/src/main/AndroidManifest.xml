@@ -277,6 +277,13 @@
             android:name=".services.SyncNotificationsListService"
             android:enabled="true"
             android:exported="true"></service>
+
+        <!-- TripSheets Stock Sync Service -->
+        <service
+            android:name=".services.SyncTripSheetsStockService"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>
