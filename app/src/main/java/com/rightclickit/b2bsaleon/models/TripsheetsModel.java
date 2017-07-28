@@ -117,7 +117,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
                 JSONObject params1 = new JSONObject();
                 params1.put("route_codes", jar);
-                params1.put("date", "2017-07-22");
+                params1.put("date", currentDate);
 
                 AsyncRequest getTripsListRequest = new AsyncRequest(context, this, URL, AsyncRequest.MethodType.POST, params1);
                 getTripsListRequest.execute();
@@ -186,55 +186,55 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
             System.out.println("========= response = " + response);
             switch (calledApi) {
                 case 0:
-                  //  JSONObject responseObj = new JSONObject(response);
-                   // if (responseObj.getInt("result_status") == 0) {
-                     //   mNotripsText.setText("No Trip Sheets Found.");
-                   // } else {
-                        JSONArray resArray = new JSONArray(response);
-                        int len = resArray.length();
-                        for (int i = 0; i < len; i++) {
-                            JSONObject jb = resArray.getJSONObject(i);
+                    //  JSONObject responseObj = new JSONObject(response);
+                    // if (responseObj.getInt("result_status") == 0) {
+                    //   mNotripsText.setText("No Trip Sheets Found.");
+                    // } else {
+                    JSONArray resArray = new JSONArray(response);
+                    int len = resArray.length();
+                    for (int i = 0; i < len; i++) {
+                        JSONObject jb = resArray.getJSONObject(i);
 
-                            TripsheetsList tripsheetsListBean = new TripsheetsList();
+                        TripsheetsList tripsheetsListBean = new TripsheetsList();
 
-                            tripsheetsListBean.setmTripshhetId(jb.getString("_id"));
-                            tripsheetsListBean.setmTripshhetCode(jb.getString("code"));
-                            tripsheetsListBean.setmTripshhetDate(jb.getString("date"));
-                            tripsheetsListBean.setmTripshhetStatus(jb.getString("status"));
-                            tripsheetsListBean.setmTripshhetOBAmount(jb.getString("ob_amt"));
-                            if (!jb.getString("order_amt").trim().equals("")) {
-                                tripsheetsListBean.setmTripshhetOrderedAmount(jb.getString("order_amt"));
-                            } else {
-                                tripsheetsListBean.setmTripshhetOrderedAmount("0");
-                            }
-                            if (!jb.getString("received_amt").trim().equals("")) {
-                                tripsheetsListBean.setmTripshhetReceivedAmount(jb.getString("received_amt"));
-                            } else {
-                                tripsheetsListBean.setmTripshhetReceivedAmount("0");
-                            }
-
-                            Double dueAmt = Double.parseDouble(tripsheetsListBean.getmTripshhetOrderedAmount()) - Double.parseDouble(tripsheetsListBean.getmTripshhetReceivedAmount());
-                            tripsheetsListBean.setmTripshhetDueAmount(String.valueOf(dueAmt));
-                            tripsheetsListBean.setmTripshhetRouteCode("route_code");
-                            tripsheetsListBean.setmTripshhetSalesMenCode("salesman_code");
-                            tripsheetsListBean.setmTripshhetVehicleNumber("vehicle_no");
-                            tripsheetsListBean.setmTripshhetTrasnsporterName("transporter");
-                            tripsheetsListBean.setmTripshhetVerifyStatus("0");
-
-                            mTripsheetsList.add(tripsheetsListBean);
+                        tripsheetsListBean.setmTripshhetId(jb.getString("_id"));
+                        tripsheetsListBean.setmTripshhetCode(jb.getString("code"));
+                        tripsheetsListBean.setmTripshhetDate(jb.getString("date"));
+                        tripsheetsListBean.setmTripshhetStatus(jb.getString("status"));
+                        tripsheetsListBean.setmTripshhetOBAmount(jb.getString("ob_amt"));
+                        if (!jb.getString("order_amt").trim().equals("")) {
+                            tripsheetsListBean.setmTripshhetOrderedAmount(jb.getString("order_amt"));
+                        } else {
+                            tripsheetsListBean.setmTripshhetOrderedAmount("0");
                         }
-                        synchronized (this) {
-                            if (mTripsheetsList.size() > 0) {
-                                mDBHelper.insertTripsheetsListData(mTripsheetsList);
-                            }
+                        if (!jb.getString("received_amt").trim().equals("")) {
+                            tripsheetsListBean.setmTripshhetReceivedAmount(jb.getString("received_amt"));
+                        } else {
+                            tripsheetsListBean.setmTripshhetReceivedAmount("0");
                         }
-                        synchronized (this) {
-                            if (mTripsheetsList.size() > 0) {
-                                activity.loadTripsData(mTripsheetsList);
-                            } else {
-                                mNotripsText.setText("No Tripsheets found.");
-                            }
+
+                        Double dueAmt = Double.parseDouble(tripsheetsListBean.getmTripshhetOrderedAmount()) - Double.parseDouble(tripsheetsListBean.getmTripshhetReceivedAmount());
+                        tripsheetsListBean.setmTripshhetDueAmount(String.valueOf(dueAmt));
+                        tripsheetsListBean.setmTripshhetRouteCode("route_code");
+                        tripsheetsListBean.setmTripshhetSalesMenCode("salesman_code");
+                        tripsheetsListBean.setmTripshhetVehicleNumber("vehicle_no");
+                        tripsheetsListBean.setmTripshhetTrasnsporterName("transporter");
+                        tripsheetsListBean.setmTripshhetVerifyStatus("0");
+
+                        mTripsheetsList.add(tripsheetsListBean);
+                    }
+                    synchronized (this) {
+                        if (mTripsheetsList.size() > 0) {
+                            mDBHelper.insertTripsheetsListData(mTripsheetsList);
                         }
+                    }
+                    synchronized (this) {
+                        if (mTripsheetsList.size() > 0) {
+                            activity.loadTripsData(mTripsheetsList);
+                        } else {
+                            mNotripsText.setText("No Trip Sheets Found.");
+                        }
+                    }
 
                     break;
 
@@ -245,6 +245,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     JSONArray productCodesArray, orderQuantityArray;
 
                     for (int i = 0; i < stockLen; i++) {
+
                         JSONObject jb = stockArray.getJSONObject(i);
 
                         productCodesArray = jb.getJSONArray("product_codes");
@@ -252,27 +253,30 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                         int noOfProducts = productCodesArray.length();
 
                         for (int j = 0; j < noOfProducts; j++) {
-                            TripsheetsStockList tripStockBean = new TripsheetsStockList();
+                            // Checking weather product code is null or not
+                            if (productCodesArray.get(j).toString() != "null") {
+                                TripsheetsStockList tripStockBean = new TripsheetsStockList();
 
-                            tripStockBean.setmTripsheetStockTripsheetId(jb.getString("trip_id"));
-                            tripStockBean.setmTripsheetStockId(jb.getString("_id"));
-                            tripStockBean.setmTripsheetStockProductCode(productCodesArray.get(j).toString());
+                                tripStockBean.setmTripsheetStockTripsheetId(jb.getString("trip_id"));
+                                tripStockBean.setmTripsheetStockId(jb.getString("_id"));
+                                tripStockBean.setmTripsheetStockProductCode(productCodesArray.get(j).toString());
 
-                            ProductsBean productsDetails = mDBHelper.fetchProductDetailsByProductCode(productCodesArray.get(j).toString());
-                            if (productsDetails != null) {
-                                tripStockBean.setmTripsheetStockProductId(productsDetails.getProductId());
-                                tripStockBean.setmTripsheetStockProductName(productsDetails.getProductTitle());
+                                ProductsBean productsDetails = mDBHelper.fetchProductDetailsByProductCode(productCodesArray.get(j).toString());
+                                if (productsDetails != null) {
+                                    tripStockBean.setmTripsheetStockProductId(productsDetails.getProductId());
+                                    tripStockBean.setmTripsheetStockProductName(productsDetails.getProductTitle());
+                                }
+
+                                tripStockBean.setmTripsheetStockProductOrderQuantity(orderQuantityArray.get(j).toString());
+                                tripStockBean.setmTripsheetStockDispatchBy("");
+                                tripStockBean.setmTripsheetStockDispatchDate("");
+                                tripStockBean.setmTripsheetStockDispatchQuantity("");
+                                tripStockBean.setmTripsheetStockVerifiedDate("");
+                                tripStockBean.setmTripsheetStockVerifiedQuantity("");
+                                tripStockBean.setmTripsheetStockVerifyBy("");
+
+                                mTripsheetsStockList.add(tripStockBean);
                             }
-
-                            tripStockBean.setmTripsheetStockProductOrderQuantity(orderQuantityArray.get(j).toString());
-                            tripStockBean.setmTripsheetStockDispatchBy("");
-                            tripStockBean.setmTripsheetStockDispatchDate("");
-                            tripStockBean.setmTripsheetStockDispatchQuantity("");
-                            tripStockBean.setmTripsheetStockVerifiedDate("");
-                            tripStockBean.setmTripsheetStockVerifiedQuantity("");
-                            tripStockBean.setmTripsheetStockVerifyBy("");
-
-                            mTripsheetsStockList.add(tripStockBean);
                         }
                     }
 

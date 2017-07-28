@@ -293,6 +293,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_STOCK_VERIFY_QUANTITY = "tripshhet_stock_verify_quantity";
     private final String KEY_TRIPSHEET_STOCK_VERIFY_DATE = "tripshhet_stock_verify_date";
     private final String KEY_TRIPSHEET_STOCK_VERIFY_BY = "tripshhet_stock_verify_by";
+    private final String KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY = "tripshhet_stock_in_stock_quantity";
     private final String KEY_TRIPSHEET_STOCK_IS_DISPATCHED = "tripshhet_stock_is_dispatched";
     private final String KEY_TRIPSHEET_STOCK_IS_VERIFIED = "tripshhet_stock_is_verified";
     private final String KEY_TRIPSHEET_STOCK_DISPATCHED_UPLOAD_STATUS = "tripshhet_stock_dispatch_upload_status";
@@ -533,6 +534,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_STOCK_VERIFY_QUANTITY + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_VERIFY_DATE + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_VERIFY_BY + " VARCHAR,"
+            + KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_IS_DISPATCHED + " INTEGER DEFAULT 0,"
             + KEY_TRIPSHEET_STOCK_IS_VERIFIED + " INTEGER DEFAULT 0,"
             + KEY_TRIPSHEET_STOCK_DISPATCHED_UPLOAD_STATUS + " INTEGER DEFAULT 0,"
@@ -2737,6 +2739,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripStockBean.setmTripsheetStockVerifyBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_VERIFY_BY)));
                     tripStockBean.setIsStockDispatched(c.getInt(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IS_DISPATCHED)));
                     tripStockBean.setIsStockVerified(c.getInt(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IS_VERIFIED)));
+                    tripStockBean.setInStockQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY)));
 
                     alltripsheetsStock.add(tripStockBean);
 
@@ -3267,6 +3270,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TRIPSHEET_STOCK_VERIFY_QUANTITY, currentStock.getmTripsheetStockVerifiedQuantity());
             values.put(KEY_TRIPSHEET_STOCK_VERIFY_DATE, currentStock.getmTripsheetStockVerifiedDate());
             values.put(KEY_TRIPSHEET_STOCK_VERIFY_BY, currentStock.getmTripsheetStockVerifyBy());
+            values.put(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY, currentStock.getmTripsheetStockVerifiedQuantity());
             values.put(KEY_TRIPSHEET_STOCK_IS_VERIFIED, 1);
 
             int status = db.update(TABLE_TRIPSHEETS_STOCK_LIST, values, KEY_TRIPSHEET_STOCK_ID + " = ? AND " + KEY_TRIPSHEET_STOCK_PRODUCT_CODE + " = ?", new String[]{currentStock.getmTripsheetStockId(), currentStock.getmTripsheetStockProductCode()});

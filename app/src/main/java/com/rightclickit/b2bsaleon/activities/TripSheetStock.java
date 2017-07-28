@@ -70,7 +70,8 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
             loggedInUserId = mmSharedPreferences.getString("userId");
 
-            String activityTitle = String.format("TRIP #%s, %s", "980915", Utility.formatDate(new Date(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT));
+            //String activityTitle = String.format("TRIP #%s, %s", "980915", Utility.formatDate(new Date(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT));
+            String activityTitle = String.format("TRIP %s", Utility.formatDate(new Date(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT));
 
             this.getSupportActionBar().setTitle(activityTitle);
             this.getSupportActionBar().setSubtitle(null);

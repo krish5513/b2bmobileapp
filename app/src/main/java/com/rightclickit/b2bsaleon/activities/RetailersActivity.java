@@ -177,15 +177,20 @@ public class RetailersActivity extends AppCompatActivity {
             System.out.println("F 11111 ***COUNT === " + privilegesData.size());
             if (privilegesData.contains("Dashboard")) {
                 mDashBoardLayout.setVisibility(View.VISIBLE);
-            }  if (privilegesData.contains("TripSheets")) {
+            }
+            if (privilegesData.contains("TripSheets")) {
                 mTripsheetsLayout.setVisibility(View.VISIBLE);
-            }  if (privilegesData.contains("Customers")) {
+            }
+            if (privilegesData.contains("Customers")) {
                 mCustomersLayout.setVisibility(View.VISIBLE);
-            }  if (privilegesData.contains("Products")) {
+            }
+            if (privilegesData.contains("Products")) {
                 mProductsLayout.setVisibility(View.VISIBLE);
-            }  if (privilegesData.contains("TDC")) {
+            }
+            if (privilegesData.contains("TDC")) {
                 mTDCLayout.setVisibility(View.VISIBLE);
-            }  if (privilegesData.contains("Retailers")) {
+            }
+            if (privilegesData.contains("Retailers")) {
                 mRetailersLayout.setVisibility(View.VISIBLE);
             }
 
@@ -218,7 +223,9 @@ public class RetailersActivity extends AppCompatActivity {
             if (privilegeActionsData1.contains("List_View")) {
                 mRetailerslistview.setVisibility(View.VISIBLE);
                 canWeShowRetailersListView = true;
-            }  if (privilegeActionsData1.contains("Add")) {
+            }
+
+            if (privilegeActionsData1.contains("Add")) {
                 fab.setVisibility(View.VISIBLE);
             }
 
@@ -230,7 +237,7 @@ public class RetailersActivity extends AppCompatActivity {
                     no_retailers_found_message.setVisibility(View.VISIBLE);
                 }
 
-                retailersListAdapter = new RetailersListAdapter(activityContext, this, retailersList, privilegeActionsData);
+                retailersListAdapter = new RetailersListAdapter(activityContext, this, retailersList, privilegeActionsData1);
                 mRetailerslistview.setAdapter(retailersListAdapter);
             }
 
@@ -314,6 +321,7 @@ public class RetailersActivity extends AppCompatActivity {
                 return true;
         }
     }
+
     private void loadNotifications() {
         Intent navigationIntent = new Intent(RetailersActivity.this, NotificationsActivity.class);
         // mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -361,8 +369,8 @@ public class RetailersActivity extends AppCompatActivity {
         } else {
             intent = new Intent(this, DashboardActivity.class);
         }
-            startActivity(intent);
-            finish();
+        startActivity(intent);
+        finish();
 
     }
 }

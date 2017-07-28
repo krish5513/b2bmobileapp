@@ -93,8 +93,6 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
 
         tripSheetStockViewHolder.mProductName.setText(currentStockList.getmTripsheetStockProductName());
         tripSheetStockViewHolder.mOrder.setText(String.format("%.3f", orderQuantity));
-        tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", orderQuantity));
-        tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", orderQuantity));
 
         if (privilegeActionsData.contains("Stock_Dispatch")) {
             tripSheetStockViewHolder.mDispatchQuantity.setVisibility(View.VISIBLE);
@@ -102,6 +100,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
             tripSheetStockViewHolder.mDispatchIncrement.setVisibility(View.VISIBLE);
 
             if (currentStockList.getIsStockDispatched() == 0) {
+                tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", orderQuantity));
 
                 // Updating current stock in dispatch list
                 currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(orderQuantity));
@@ -149,6 +148,9 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                         }
                     }
                 });
+            } else {
+                Double dispatchedQuantity = Double.parseDouble(currentStockList.getmTripsheetStockDispatchQuantity());
+                tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", dispatchedQuantity));
             }
         }
 
@@ -158,6 +160,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
             tripSheetStockViewHolder.mVerifyIncrement.setVisibility(View.VISIBLE);
 
             if (currentStockList.getIsStockVerified() == 0) {
+                tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", orderQuantity));
 
                 // Updating current stock in verify list
                 currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(orderQuantity));
@@ -205,6 +208,9 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                         }
                     }
                 });
+            } else {
+                Double verifiedQuantity = Double.parseDouble(currentStockList.getmTripsheetStockVerifiedQuantity());
+                tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", verifiedQuantity));
             }
         }
 
