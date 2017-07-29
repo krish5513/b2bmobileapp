@@ -96,8 +96,8 @@ public class SyncSpecialPriceService extends Service {
                 JSONArray resArray = new JSONArray(mJsonObj);
                 int len = resArray.length();
                 for (int i = 0; i < len; i++) {
-                    if (resArray.get(i) != null) {
-                        if (resArray.getJSONObject(i) != null) {
+                    if (!resArray.get(i).toString().equals("null")) {
+                        if (resArray.getJSONObject(i).toString() != null) {
                             JSONObject jb = resArray.getJSONObject(i);
 
                             SpecialPriceBean specialPriceBean = new SpecialPriceBean();

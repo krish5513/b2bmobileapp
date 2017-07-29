@@ -16,6 +16,7 @@ import com.rightclickit.b2bsaleon.activities.TripSheetView;
 import com.rightclickit.b2bsaleon.activities.TripSheetsActivity;
 import com.rightclickit.b2bsaleon.activities.TripsheetDelivery;
 import com.rightclickit.b2bsaleon.activities.TripsheetDeliveryPreview;
+import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -36,21 +37,21 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
     LayoutInflater mInflater;
     private Activity activity;
     Context ctxt;
-    ArrayList<TripSheetDeliveriesBean> mTripSheetsDeliveries;
+    ArrayList<DeliverysBean> mTripSheetsDeliveries;
     private ImageLoader mImageLoader;
     private MMSharedPreferences mPreferences;
-    private ArrayList<TripSheetDeliveriesBean> arraylist;
+    private ArrayList<DeliverysBean> arraylist;
     private DBHelper mDBHelper;
 
 
-    public TripSheetDeliveriesAdapter(Context ctxt, TripsheetDelivery deliveryActivity, ArrayList<TripSheetDeliveriesBean> mdeliveriesBeanList) {
+    public TripSheetDeliveriesAdapter(Context ctxt, TripsheetDelivery deliveryActivity, ArrayList<DeliverysBean> mdeliveriesBeanList) {
         this.ctxt = ctxt;
         this.activity = deliveryActivity;
         this.mTripSheetsDeliveries = mdeliveriesBeanList;
 
         this.mInflater = LayoutInflater.from(activity);
         this.mPreferences = new MMSharedPreferences(activity);
-        this.arraylist = new ArrayList<TripSheetDeliveriesBean>();
+        this.arraylist = new ArrayList<DeliverysBean>();
         this.mDBHelper = new DBHelper(activity);
         this.arraylist.addAll(mTripSheetsDeliveries);
 
@@ -58,7 +59,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 10;
+        return mTripSheetsDeliveries.size();
     }
 
     @Override
@@ -92,17 +93,22 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
             mHolder = (TripSheetDeliveriesAdapter.ViewHolder) view.getTag();
         }
 
+        final double productRate = Double.parseDouble(mTripSheetsDeliveries.get(position).getProductAgentPrice().replace(",", ""));
+        float productTax = 0.0f;
 
-        mHolder.dProductName.setText(mTripSheetsDeliveries.get(position).getmTripsheetDeleveryName());
-        mHolder.dProductStatus.setText(mTripSheetsDeliveries.get(position).getmTripsheetDelivery_Status());
-        mHolder.dInStockAmount.setText(mTripSheetsDeliveries.get(position).getmTripsheetDeleveryInstockAmount());
-        mHolder.dProductPrice.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getmTripsheetDelivery_UnitPrice())));
-        mHolder.dProductTax.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getmTripsheetDelivery_TaxPercent())));
-        mHolder.dProductAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getmTripsheetDelivery_Amount())));
-        mHolder.dProductQuantity.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getmTripsheetDelivery_Quantity())));
+        if (mTripSheetsDeliveries.get(position).getProductvat() != null)
+            productTax = Float.parseFloat(mTripSheetsDeliveries.get(position).getProductvat());
+        else if (mTripSheetsDeliveries.get(position).getProductgst() != null)
+            productTax = Float.parseFloat(mTripSheetsDeliveries.get(position).getProductgst());
 
+        double taxAmount1 = ((productRate) * productTax) / 100;
+        double amount1 = productRate + taxAmount1;
 
-
+        mHolder.dProductName.setText(mTripSheetsDeliveries.get(position).getProductTitle());
+        mHolder.dInStockAmount.setText(String.valueOf(mTripSheetsDeliveries.get(position).getProductStock()));
+        mHolder.dProductPrice.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getProductAgentPrice())));
+        mHolder.dProductTax.setText(Utility.getFormattedCurrency(productTax));
+        mHolder.dProductAmount.setText(Utility.getFormattedCurrency(amount1));
 
         return view;
     }
@@ -117,7 +123,6 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         TextView dProductQuantity;
 
     }
-
 
 
 }

@@ -23,6 +23,9 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -105,7 +108,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
 
         mHolder.mAgentCode.setText(mTripSheetsList.get(position).getmTripshetSOAgentCode());
         mHolder.mSODate.setText(mTripSheetsList.get(position).getmTripshetSODate());
-        mHolder.mSOItemsCount.setText("");
+        mHolder.mSOItemsCount.setText(mTripSheetsList.get(position).getmTripshetSOProductsCount());
         mHolder.mSOAgentName.setText(mTripSheetsList.get(position).getmTripshetSOAgentFirstName());
         mHolder.mSOOrderedValue.setText(mTripSheetsList.get(position).getmTripshetSOValue());
         mHolder.mSOAgentDistance.setText(distance);
@@ -114,13 +117,21 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 ArrayList<String> productCodes = new ArrayList<String>();
-                for (int j = 0; j < mTripSheetsList.size(); j++) {
-                    productCodes.add(mTripSheetsList.get(j).getmTripshetSOProductCode());
+                String s = mTripSheetsList.get(position).getmTripshetSOProductCode();
+                try {
+                    JSONArray prodJsonArray = new JSONArray(s);
+                    for (int j = 0; j < prodJsonArray.length(); j++) {
+                        if (!prodJsonArray.get(j).toString().equals("null")) {
+                            productCodes.add(prodJsonArray.get(j).toString());
+                        }
+                    }
+                    Intent i = new Intent(activity, TripsheetDelivery.class);
+                    i.putStringArrayListExtra("productCodes", productCodes);
+                    activity.startActivity(i);
+                    activity.finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                Intent i = new Intent(activity, TripsheetDelivery.class);
-                i.putStringArrayListExtra("productCodes", productCodes);
-                activity.startActivity(i);
-                activity.finish();
             }
         });
 

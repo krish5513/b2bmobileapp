@@ -220,9 +220,4 @@ public class TripSheetDeliveriesBean {
     private String mTripsheetDeleveryInstockAmount;
 
 
-
-
-
-
-
 }

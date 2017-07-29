@@ -18,6 +18,7 @@ import android.widget.ListView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentTakeOrder_ViewAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
+import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -36,7 +37,7 @@ public class TripsheetDelivery extends AppCompatActivity {
 
     private ListView mAgentsList;
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
-    ArrayList deliveriesArraylist = new ArrayList();
+    ArrayList<DeliverysBean> deliveriesArraylist = new ArrayList<DeliverysBean>();
     private ArrayList<String> productCodesList;
 
     @Override
@@ -45,7 +46,10 @@ public class TripsheetDelivery extends AppCompatActivity {
         setContentView(R.layout.activity_tripsheet_delivery);
 
         productCodesList = this.getIntent().getStringArrayListExtra("productCodes");
-        System.out.println("SSSSSSSSSSSSSSSSSS" + productCodesList.size());
+//        System.out.println("SSSSSSSSSSSSSSSSSS" + productCodesList.size());
+//        for (int h = 0; h < productCodesList.size(); h++) {
+//            System.out.println("FFFFFFFFFFFFFFFFF " + productCodesList.get(h).toString());
+//        }
 
         this.getSupportActionBar().setTitle("DELIVERIES");
         this.getSupportActionBar().setSubtitle(null);
@@ -76,18 +80,17 @@ public class TripsheetDelivery extends AppCompatActivity {
 
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
 
-        for (int i = 0; i < 10; i++) {
-            TripSheetDeliveriesBean dBean = new TripSheetDeliveriesBean();
-            dBean.setmTripsheetDeleveryName("FCM 500ML");
-            dBean.setmTripsheetDelivery_Status("In Stock");
-            dBean.setmTripsheetDeleveryInstockAmount("00.000");
-            dBean.setmTripsheetDelivery_UnitPrice("50.00");
-            dBean.setmTripsheetDelivery_TaxPercent("00.00");
-            dBean.setmTripsheetDelivery_Amount("00.00");
-            dBean.setmTripsheetDelivery_Quantity("00.000");
-            deliveriesArraylist.add(dBean);
-        }
-        mAgentsList.setAdapter(new TripSheetDeliveriesAdapter(TripsheetDelivery.this, TripsheetDelivery.this, deliveriesArraylist));
+//        for (int i = 0; i < 10; i++) {
+//            TripSheetDeliveriesBean dBean = new TripSheetDeliveriesBean();
+//            dBean.setmTripsheetDeleveryName("FCM 500ML");
+//            dBean.setmTripsheetDelivery_Status("In Stock");
+//            dBean.setmTripsheetDeleveryInstockAmount("00.000");
+//            dBean.setmTripsheetDelivery_UnitPrice("50.00");
+//            dBean.setmTripsheetDelivery_TaxPercent("00.00");
+//            dBean.setmTripsheetDelivery_Amount("00.00");
+//            dBean.setmTripsheetDelivery_Quantity("00.000");
+//            deliveriesArraylist.add(dBean);
+//        }
 
         ret.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,15 +141,12 @@ public class TripsheetDelivery extends AppCompatActivity {
             }
         }
 
-//        for (int i = 0; i < productCodesList.size(); i++) {
-//            ProductsBean productsDetails = mDBHelper.fetchProductDetailsByProductCode(productCodesList.get(i).toString());
-//            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductId());
-//            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductTitle());
-//            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductAgentPrice());
-//            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductgst());
-//            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductvat());
-//        }
-
+        if (productCodesList.size() > 0) {
+            deliveriesArraylist = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(productCodesList);
+            if (deliveriesArraylist.size() > 0) {
+                mAgentsList.setAdapter(new TripSheetDeliveriesAdapter(TripsheetDelivery.this, TripsheetDelivery.this, deliveriesArraylist));
+            }
+        }
     }
 
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {

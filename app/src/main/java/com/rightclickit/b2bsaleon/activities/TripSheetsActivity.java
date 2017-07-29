@@ -259,6 +259,7 @@ public class TripSheetsActivity extends AppCompatActivity {
     }
 
     public void loadTripsData(ArrayList<TripsheetsList> tripsList) {
+        tripsList = mDBHelper.fetchTripsheetsList();
         if (mTripsListAdapter != null) {
             mTripsListAdapter = null;
         }
