@@ -56,13 +56,14 @@ public class SyncSpecialPriceService extends Service {
         return null;
     }
 
-    private void fetchAndSyncSpecialPriceData(){
+    private void fetchAndSyncSpecialPriceData() {
         try {
             new SyncSpecialPriceService.FetchAndSyncSpecialPriceDataAsyncTask().execute();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     /**
      * Class to perform background operations.
      */
@@ -83,28 +84,32 @@ public class SyncSpecialPriceService extends Service {
 
 //                mSpecialPriceList=mDBHelper.fetchAllRecordsFromSpecialPriceTable();
 //                System.out.println("BEFORE SERVICE:: "+ mSpecialPriceList.size());
-                if(mSpecialPriceList.size()>0){
+                if (mSpecialPriceList.size() > 0) {
                     mSpecialPriceList.clear();
                 }
-                String URL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_USER_PREVILEGES,Constants.SPECIAL_PRICE_SERVICE);
+                String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_USER_PREVILEGES, Constants.SPECIAL_PRICE_SERVICE);
 
                 JSONObject params1 = new JSONObject();
 
-                mJsonObj = new NetworkManager().makeHttpPostConnection(URL,params1);
-                System.out.println("Special Price Response Is::: "+ mJsonObj);
+                mJsonObj = new NetworkManager().makeHttpPostConnection(URL, params1);
+                System.out.println("Special Price Response Is::: " + mJsonObj);
                 JSONArray resArray = new JSONArray(mJsonObj);
                 int len = resArray.length();
-                for (int i = 0;i<len;i++){
-                    JSONObject jb = resArray.getJSONObject(i);
+                for (int i = 0; i < len; i++) {
+                    if (resArray.get(i) != null) {
+                        if (resArray.getJSONObject(i) != null) {
+                            JSONObject jb = resArray.getJSONObject(i);
 
-                    SpecialPriceBean specialPriceBean = new SpecialPriceBean();
-                    specialPriceBean.setSpecialUserId(jb.getString("user_id"));
-                    specialPriceBean.setSpecialProductId(jb.getString("prod_id"));
-                    specialPriceBean.setSpecialPrice(jb.getString("price"));
+                            SpecialPriceBean specialPriceBean = new SpecialPriceBean();
+                            specialPriceBean.setSpecialUserId(jb.getString("user_id"));
+                            specialPriceBean.setSpecialProductId(jb.getString("prod_id"));
+                            specialPriceBean.setSpecialPrice(jb.getString("price"));
 
-                    mSpecialPriceList.add(specialPriceBean);
+                            mSpecialPriceList.add(specialPriceBean);
+                        }
+                    }
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -115,6 +120,6 @@ public class SyncSpecialPriceService extends Service {
         protected void onPostExecute(Void aVoid) {
             stopSelf();
             mDBHelper.insertSpecialPriceDetails(mSpecialPriceList);
-     }
-}
+        }
+    }
 }

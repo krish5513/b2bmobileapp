@@ -103,6 +103,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private TripsheetsSOListAdapter mTripsheetSOAdapter;
     private String mTripSheetId = "", mTakeOrderPrivilege = "";
     private double mCurrentLocationLat = 0.0, mCurrentLocationLongitude = 0.0;
+    private double mDestinationLatitude = 0.0, mDestinationLongitude = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,14 +175,15 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 mapview.setVisibility(View.VISIBLE);
 
                 // Formatting Google Directions API URL
-                String destinationDirectionsURL = String.format(Constants.GOOGLE_DIRECTIONS_URL, mCurrentLocationLat, mCurrentLocationLongitude, "17.433740", "78.501596");
+                String destinationDirectionsURL = String.format(Constants.GOOGLE_DIRECTIONS_URL, mCurrentLocationLat, mCurrentLocationLongitude,
+                        mDestinationLatitude, mDestinationLongitude); // "17.433740", "78.501596"
                 new DownloadGoogleDirectionsTask().execute(destinationDirectionsURL);
-                LatLng destLatLng = new LatLng(Double.parseDouble("17.433740"), Double.parseDouble("78.501596"));
+                LatLng destLatLng = new LatLng(mDestinationLatitude, mDestinationLongitude);
                 destinationMarkerOptions = new MarkerOptions();
                 destinationMarkerOptions.position(destLatLng).icon(BitmapDescriptorFactory.defaultMarker());
 
                 destinationMarker = mMap.addMarker(destinationMarkerOptions);
-                destinationMarker.setTitle("Secunderabad RailwayStation");
+                //destinationMarker.setTitle("Destination");
 
 
             }
@@ -356,6 +358,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 //                }
 //            } else {
             //startService(new Intent(getApplicationContext(), SyncStakeHolderTypesService.class));
+            mTripSheetId = mPreferences.getString("TripId");
             mTripsheetsModel.getTripsheetsSoList(mTripSheetId);
 //            }
         } else {
@@ -368,10 +371,13 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     }
 
     public void loadTripsoData(ArrayList<TripsheetSOList> tripsSOList) {
+        mDestinationLatitude = Double.parseDouble(tripsSOList.get(0).getmTripshetSOAgentLatitude());
+        mDestinationLongitude = Double.parseDouble(tripsSOList.get(0).getmTripshetSOAgentLongitude());
         if (mTripsheetSOAdapter != null) {
             mTripsheetSOAdapter = null;
         }
-        mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripsSOList, mTakeOrderPrivilege);
+        mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripsSOList, mTakeOrderPrivilege
+                , mCurrentLocationLat, mCurrentLocationLongitude);
         mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
     }
 

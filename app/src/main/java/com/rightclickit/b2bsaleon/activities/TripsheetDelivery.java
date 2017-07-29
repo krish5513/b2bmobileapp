@@ -18,6 +18,7 @@ import android.widget.ListView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentTakeOrder_ViewAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -35,11 +36,16 @@ public class TripsheetDelivery extends AppCompatActivity {
 
     private ListView mAgentsList;
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
-    ArrayList deliveriesArraylist=new ArrayList();
+    ArrayList deliveriesArraylist = new ArrayList();
+    private ArrayList<String> productCodesList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripsheet_delivery);
+
+        productCodesList = this.getIntent().getStringArrayListExtra("productCodes");
+        System.out.println("SSSSSSSSSSSSSSSSSS" + productCodesList.size());
 
         this.getSupportActionBar().setTitle("DELIVERIES");
         this.getSupportActionBar().setSubtitle(null);
@@ -70,8 +76,8 @@ public class TripsheetDelivery extends AppCompatActivity {
 
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
 
-        for (int i=0;i<10;i++){
-            TripSheetDeliveriesBean dBean=new TripSheetDeliveriesBean();
+        for (int i = 0; i < 10; i++) {
+            TripSheetDeliveriesBean dBean = new TripSheetDeliveriesBean();
             dBean.setmTripsheetDeleveryName("FCM 500ML");
             dBean.setmTripsheetDelivery_Status("In Stock");
             dBean.setmTripsheetDeleveryInstockAmount("00.000");
@@ -81,12 +87,12 @@ public class TripsheetDelivery extends AppCompatActivity {
             dBean.setmTripsheetDelivery_Quantity("00.000");
             deliveriesArraylist.add(dBean);
         }
-        mAgentsList.setAdapter(new TripSheetDeliveriesAdapter(TripsheetDelivery.this,TripsheetDelivery.this,deliveriesArraylist));
+        mAgentsList.setAdapter(new TripSheetDeliveriesAdapter(TripsheetDelivery.this, TripsheetDelivery.this, deliveriesArraylist));
 
         ret.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(TripsheetDelivery.this,TripsheetReturns.class);
+                Intent i = new Intent(TripsheetDelivery.this, TripsheetReturns.class);
                 startActivity(i);
                 finish();
 
@@ -96,7 +102,7 @@ public class TripsheetDelivery extends AppCompatActivity {
         payments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(TripsheetDelivery.this,TripsheetPayments.class);
+                Intent i = new Intent(TripsheetDelivery.this, TripsheetPayments.class);
                 startActivity(i);
                 finish();
 
@@ -106,13 +112,13 @@ public class TripsheetDelivery extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAlertDialogWithCancelButton(TripsheetDelivery.this,"User Action!","Do you want to save data?");
+                showAlertDialogWithCancelButton(TripsheetDelivery.this, "User Action!", "Do you want to save data?");
             }
         });
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(TripsheetDelivery.this,TripsheetDeliveryPreview.class);
+                Intent i = new Intent(TripsheetDelivery.this, TripsheetDeliveryPreview.class);
                 startActivity(i);
                 finish();
 
@@ -121,8 +127,8 @@ public class TripsheetDelivery extends AppCompatActivity {
 
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
-        System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
-        for (int z = 0;z<privilegeActionsData.size();z++) {
+        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        for (int z = 0; z < privilegeActionsData.size(); z++) {
             System.out.println("Name::: " + privilegeActionsData.get(z).toString());
 
             if (privilegeActionsData.get(z).toString().equals("list_view_return")) {
@@ -130,15 +136,19 @@ public class TripsheetDelivery extends AppCompatActivity {
             } else if (privilegeActionsData.get(z).toString().equals("list_view_payment")) {
                 payments.setVisibility(View.VISIBLE);
             }
-
-
         }
 
-
-
-
+        for (int i = 0; i < productCodesList.size(); i++) {
+            ProductsBean productsDetails = mDBHelper.fetchProductDetailsByProductCode(productCodesList.get(i).toString());
+            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductId());
+            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductTitle());
+            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductAgentPrice());
+            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductgst());
+            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductvat());
+        }
 
     }
+
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {
         try {
             AlertDialog alertDialog = null;
@@ -148,12 +158,11 @@ public class TripsheetDelivery extends AppCompatActivity {
             alertDialogBuilder.setCancelable(false);
 
 
-
             alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Intent i =new Intent(TripsheetDelivery.this,TripsheetDelivery.class);
+                    Intent i = new Intent(TripsheetDelivery.this, TripsheetDelivery.class);
                     startActivity(i);
                     finish();
                 }
@@ -175,23 +184,22 @@ public class TripsheetDelivery extends AppCompatActivity {
                 cancelButton.setTextColor(ContextCompat.getColor(context, R.color.alert_dialog_color_accent));
 
 
-        }
-
-
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate( R.menu.menu_dashboard, menu);
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(TripsheetDelivery.this,TDCSalesListActivity.class);
+            Intent i = new Intent(TripsheetDelivery.this, TDCSalesListActivity.class);
             startActivity(i);
             finish();
             return true;
@@ -210,16 +218,17 @@ public class TripsheetDelivery extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
 
 
-        menu.findItem( R.id.notifications).setVisible(false);
-        menu.findItem( R.id.settings).setVisible(false);
-        menu.findItem( R.id.logout).setVisible(false);
-        menu.findItem( R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
+        menu.findItem(R.id.notifications).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(false);
+        menu.findItem(R.id.logout).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.Add).setVisible(false);
 
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

@@ -2560,20 +2560,17 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_TRANSPORTER_NAME, mTripsheetsList.get(i).getmTripshhetTrasnsporterName());
                 values.put(KEY_TRIPSHEET_VEHICLE_NUMBER, mTripsheetsList.get(i).getmTripshhetVehicleNumber());
                 values.put(KEY_TRIPSHEET_VERIFY_STATUS, mTripsheetsList.get(i).getmTripshhetVerifyStatus());
-//                int checkVal = checkSpecialPriceProductExistsOrNot(mSpecialPriceBeansList.get(i).getSpecialProductId()
-//                        , mSpecialPriceBeansList.get(i).getSpecialUserId());
-//                if (checkVal == 0) {
-//                    // insert row
-//                    db.insert(TABLE_SPECIALPRICE, null, values);
-//                    System.out.println("F*********** INSERTED***************88");
-//                } else {
-//                    // Update row
-//                    db.update(TABLE_SPECIALPRICE, values, KEY_PRODUCT_SPECIALID + " = ?" + " AND " + KEY_USER_SPECIALID + " = ? ",
-//                            new String[]{String.valueOf(mSpecialPriceBeansList.get(i).getSpecialProductId()),
-//                                    String.valueOf(mSpecialPriceBeansList.get(i).getSpecialUserId())});
-//                    System.out.println("F*********** UPDATED***************88");
-//                }
-                db.insert(TABLE_TRIPSHEETS_LIST, null, values);
+
+                int checkVal = checkTripsheetExistsOrNot(mTripsheetsList.get(i).getmTripshhetId());
+                if (checkVal == 0) {
+                    // insert row
+                    db.insert(TABLE_TRIPSHEETS_LIST, null, values);
+                } else {
+                    // Update row
+                    db.update(TABLE_TRIPSHEETS_LIST, values, KEY_TRIPSHEET_ID + " = ?",
+                            new String[]{String.valueOf(mTripsheetsList.get(i).getmTripshhetId())});
+                }
+
                 values.clear();
             }
         } catch (Exception e) {
@@ -3149,9 +3146,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
             if (c.moveToFirst()) {
                 do {
+                    System.out.println("+++++++ ITERATE++++++++++");
                     productsBean = new ProductsBean();
                     productsBean.setProductId((c.getString(c.getColumnIndex(KEY_PRODUCT_ID))));
                     productsBean.setProductTitle((c.getString(c.getColumnIndex(KEY_PRODUCT_TITLE))));
+                    productsBean.setProductAgentPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_AGENT_PRICE))));
+                    productsBean.setProductgst((c.getString(c.getColumnIndex(KEY_PRODUCT_GST_PRICE))));
+                    productsBean.setProductvat((c.getString(c.getColumnIndex(KEY_PRODUCT_VAT_PRICE))));
                 } while (c.moveToNext());
             }
 
@@ -3367,5 +3368,28 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         db.close();
+    }
+
+    /**
+     * Method to check weather the tripsheet exists or not using tripsheetid.
+     *
+     * @param tripsheetId
+     * @return integer value
+     */
+    public int checkTripsheetExistsOrNot(String tripsheetId) {
+        int maxID = 0;
+
+        String selectQuery = "SELECT  * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_ID + "='" + tripsheetId + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //System.out.println("DDDD::: "+ cursor.getCount());
+        if (cursor.moveToFirst()) {
+            do {
+                maxID = cursor.getInt(0);
+
+            } while (cursor.moveToNext());
+        }
+        //System.out.println("FGGHH::: "+maxID);
+        return maxID;
     }
 }
