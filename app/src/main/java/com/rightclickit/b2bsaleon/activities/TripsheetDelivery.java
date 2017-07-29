@@ -138,14 +138,14 @@ public class TripsheetDelivery extends AppCompatActivity {
             }
         }
 
-        for (int i = 0; i < productCodesList.size(); i++) {
-            ProductsBean productsDetails = mDBHelper.fetchProductDetailsByProductCode(productCodesList.get(i).toString());
-            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductId());
-            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductTitle());
-            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductAgentPrice());
-            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductgst());
-            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductvat());
-        }
+//        for (int i = 0; i < productCodesList.size(); i++) {
+//            ProductsBean productsDetails = mDBHelper.fetchProductDetailsByProductCode(productCodesList.get(i).toString());
+//            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductId());
+//            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductTitle());
+//            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductAgentPrice());
+//            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductgst());
+//            System.out.println("FFFFFFFFFFFFFFFFFFFFF" + i + "++++ ______ ++++" + productsDetails.getProductvat());
+//        }
 
     }
 

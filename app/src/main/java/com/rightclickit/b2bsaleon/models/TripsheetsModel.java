@@ -318,32 +318,34 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
                         if (productsLen > 0) {
                             for (int j = 0; j < productsLen; j++) {
-                                Map<String, String> latLangDetails = mDBHelper.getLatLangOfAgentByAgentId(agentData.getString("_id"));
-                                //System.out.println("AGENT LAT::: " + latLangDetails.get(agentData.getString("_id") + "_Lat"));
-                                //System.out.println("AGENT LANG::: " + latLangDetails.get(agentData.getString("_id") + "_Lang"));
+                                if (productCodesArray1.get(j).toString() != "null") {
+                                    Map<String, String> latLangDetails = mDBHelper.getLatLangOfAgentByAgentId(agentData.getString("_id"));
+                                    //System.out.println("AGENT LAT::: " + latLangDetails.get(agentData.getString("_id") + "_Lat"));
+                                    //System.out.println("AGENT LANG::: " + latLangDetails.get(agentData.getString("_id") + "_Lang"));
 
-                                TripsheetSOList tripStockBean = new TripsheetSOList();
+                                    TripsheetSOList tripStockBean = new TripsheetSOList();
 
-                                tripStockBean.setmTripshetSOId(jb.getString("_id"));
-                                tripStockBean.setmTripshetSOTripId(jb.getString("trip_id"));
-                                tripStockBean.setmTripshetSOAgentCode(jb.getString("agent_code"));
-                                tripStockBean.setmTripshetSOCode(jb.getString("sale_order_code"));
-                                tripStockBean.setmTripshetSODate(jb.getString("sale_order_date"));
-                                tripStockBean.setmTripshetSOValue(jb.getString("sale_order_value"));
-                                tripStockBean.setmTripshetSOOpAmount(jb.getString("op_amt"));
-                                tripStockBean.setmTripshetSOCBAmount(jb.getString("cb_amt"));
-                                tripStockBean.setmTripshetSOAgentId(agentData.getString("_id"));
-                                tripStockBean.setmTripshetSOAgentFirstName(agentData.getString("first_name"));
-                                tripStockBean.setmTripshetSOProductCode(productCodesArray1.get(j).toString());
-                                tripStockBean.setmTripshetSOProductOrderQuantity(orderQuantityArray1.get(j).toString());
-                                tripStockBean.setmTripshetSOProductValue(productValuearray.get(j).toString());
-                                tripStockBean.setmTripshetSOAgentLastName(agentData.getString("last_name"));
-                                tripStockBean.setmTripshetSOApprovedBy(jb.getString("approved_by"));
-                                tripStockBean.setmTripshetSOAgentLatitude(latLangDetails.get(agentData.getString("_id") + "_Lat"));
-                                tripStockBean.setmTripshetSOAgentLongitude(latLangDetails.get(agentData.getString("_id") + "_Lang"));
-                                tripStockBean.setmTripshetSOProductsCount(String.valueOf(productsLen));
+                                    tripStockBean.setmTripshetSOId(jb.getString("_id"));
+                                    tripStockBean.setmTripshetSOTripId(jb.getString("trip_id"));
+                                    tripStockBean.setmTripshetSOAgentCode(jb.getString("agent_code"));
+                                    tripStockBean.setmTripshetSOCode(jb.getString("sale_order_code"));
+                                    tripStockBean.setmTripshetSODate(jb.getString("sale_order_date"));
+                                    tripStockBean.setmTripshetSOValue(jb.getString("sale_order_value"));
+                                    tripStockBean.setmTripshetSOOpAmount(jb.getString("op_amt"));
+                                    tripStockBean.setmTripshetSOCBAmount(jb.getString("cb_amt"));
+                                    tripStockBean.setmTripshetSOAgentId(agentData.getString("_id"));
+                                    tripStockBean.setmTripshetSOAgentFirstName(agentData.getString("first_name"));
+                                    tripStockBean.setmTripshetSOProductCode(productCodesArray1.get(j).toString());
+                                    tripStockBean.setmTripshetSOProductOrderQuantity(orderQuantityArray1.get(j).toString());
+                                    tripStockBean.setmTripshetSOProductValue(productValuearray.get(j).toString());
+                                    tripStockBean.setmTripshetSOAgentLastName(agentData.getString("last_name"));
+                                    tripStockBean.setmTripshetSOApprovedBy(jb.getString("approved_by"));
+                                    tripStockBean.setmTripshetSOAgentLatitude(latLangDetails.get(agentData.getString("_id") + "_Lat"));
+                                    tripStockBean.setmTripshetSOAgentLongitude(latLangDetails.get(agentData.getString("_id") + "_Lang"));
+                                    tripStockBean.setmTripshetSOProductsCount(String.valueOf(productsLen));
 
-                                mTripsheetsSOList.add(tripStockBean);
+                                    mTripsheetsSOList.add(tripStockBean);
+                                }
                             }
                         }
                     }
