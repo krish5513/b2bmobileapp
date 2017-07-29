@@ -186,10 +186,10 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
             System.out.println("========= response = " + response);
             switch (calledApi) {
                 case 0:
-                    JSONObject responseObj = new JSONObject(response);
-                    if (responseObj.getInt("result_status") == 0) {
-                        mNotripsText.setText("No Trip Sheets Found.");
-                    } else {
+                  //  JSONObject responseObj = new JSONObject(response);
+                   // if (responseObj.getInt("result_status") == 0) {
+                     //   mNotripsText.setText("No Trip Sheets Found.");
+                   // } else {
                         JSONArray resArray = new JSONArray(response);
                         int len = resArray.length();
                         for (int i = 0; i < len; i++) {
@@ -235,7 +235,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                 mNotripsText.setText("No Tripsheets found.");
                             }
                         }
-                    }
+
                     break;
 
                 case 1:

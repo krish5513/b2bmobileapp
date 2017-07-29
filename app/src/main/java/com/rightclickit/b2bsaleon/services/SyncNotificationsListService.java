@@ -84,8 +84,8 @@ public class SyncNotificationsListService extends Service {
 
                 //System.out.println("The LENGTH IS:: "+ mJsonObj.toString());
                 //System.out.println("Notifications Response Is::: " + mJsonObj);
-                JSONObject responseObj = new JSONObject(mJsonObj);
-                if (responseObj.getInt("result_status") != 0) {
+               // JSONObject responseObj = new JSONObject(mJsonObj);
+                ///if (responseObj.getInt("result_status") != 0) {
                     JSONArray resArray = new JSONArray(mJsonObj);
                     int len = resArray.length();
                     for (int i = 0; i < len; i++) {
@@ -99,7 +99,7 @@ public class SyncNotificationsListService extends Service {
 
                         mNotificationsList.add(notificationsBean);
                     }
-                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
