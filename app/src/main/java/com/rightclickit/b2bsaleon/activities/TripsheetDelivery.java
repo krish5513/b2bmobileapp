@@ -25,6 +25,7 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TripsheetDelivery extends AppCompatActivity {
     LinearLayout ret;
@@ -39,17 +40,14 @@ public class TripsheetDelivery extends AppCompatActivity {
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
     ArrayList<DeliverysBean> deliveriesArraylist = new ArrayList<DeliverysBean>();
     private ArrayList<String> productCodesList;
+    private String mTripSheetId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripsheet_delivery);
 
-        productCodesList = this.getIntent().getStringArrayListExtra("productCodes");
-//        System.out.println("SSSSSSSSSSSSSSSSSS" + productCodesList.size());
-//        for (int h = 0; h < productCodesList.size(); h++) {
-//            System.out.println("FFFFFFFFFFFFFFFFF " + productCodesList.get(h).toString());
-//        }
+        mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
 
         this.getSupportActionBar().setTitle("DELIVERIES");
         this.getSupportActionBar().setSubtitle(null);
@@ -130,9 +128,9 @@ public class TripsheetDelivery extends AppCompatActivity {
 
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
-        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
         for (int z = 0; z < privilegeActionsData.size(); z++) {
-            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+            //System.out.println("Name::: " + privilegeActionsData.get(z).toString());
 
             if (privilegeActionsData.get(z).toString().equals("list_view_return")) {
                 ret.setVisibility(View.VISIBLE);
@@ -141,11 +139,11 @@ public class TripsheetDelivery extends AppCompatActivity {
             }
         }
 
-        if (productCodesList.size() > 0) {
-            deliveriesArraylist = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(productCodesList);
-            if (deliveriesArraylist.size() > 0) {
-                mAgentsList.setAdapter(new TripSheetDeliveriesAdapter(TripsheetDelivery.this, TripsheetDelivery.this, deliveriesArraylist));
-            }
+        deliveriesArraylist = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
+        System.out.println("ASSsDSDFdsfD:: " + deliveriesArraylist.size());
+
+        if (deliveriesArraylist.size() > 0) {
+            mAgentsList.setAdapter(new TripSheetDeliveriesAdapter(TripsheetDelivery.this, TripsheetDelivery.this, deliveriesArraylist));
         }
     }
 

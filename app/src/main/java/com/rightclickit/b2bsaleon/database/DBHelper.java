@@ -3405,42 +3405,41 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch all stock quantity from combination od products table and stock table
      *
-     * @param productCode
+     * @param tripsheetId
      */
-    public ArrayList<DeliverysBean> fetchAllRecordsFromProductsAndStockTableForDeliverys(ArrayList<String> productCode) {
-        ArrayList<DeliverysBean> allProductTrackRecords = new ArrayList<DeliverysBean>();
-        for (int j = 0; j < productCode.size(); j++) {
-            try {
-                String selectQuery = "SELECT  * FROM " + TABLE_TRIPSHEETS_STOCK_LIST + " tp LEFT JOIN " + TABLE_PRODUCTS + " top ON tp." + KEY_TRIPSHEET_STOCK_PRODUCT_CODE
-                        + "=top." + KEY_PRODUCT_CODE; // /*+ " AND top." + KEY_TO_AGENTID + "='" + agentId + "'"*/
+    public ArrayList<DeliverysBean> fetchAllRecordsFromProductsAndStockTableForDeliverys(String tripsheetId) {
+        ArrayList<DeliverysBean> deliverysBeanArrayList = new ArrayList<>();
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_TRIPSHEETS_STOCK_LIST + " s LEFT JOIN " + TABLE_PRODUCTS + " p ON s." + KEY_TRIPSHEET_STOCK_PRODUCT_CODE
+                    + "=p." + KEY_PRODUCT_CODE + " WHERE " + KEY_TRIPSHEET_STOCK_TRIPSHEET_ID + " = '" + tripsheetId + "'";
 
-                SQLiteDatabase db = this.getReadableDatabase();
-                Cursor c = db.rawQuery(selectQuery, null);
-                // looping through all rows and adding to list
-                if (c.moveToFirst()) {
-                    do {
-                        DeliverysBean productsBean = new DeliverysBean();
+            System.out.println("DEL Que:: " + selectQuery);
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    DeliverysBean productsBean = new DeliverysBean();
 
-                        productsBean.setProductId((c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_PRODUCT_ID))));
-                        productsBean.setProductCode((c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_PRODUCT_CODE))));
-                        productsBean.setProductTitle((c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_PRODUCT_NAME))));
-                        productsBean.setProductAgentPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_AGENT_PRICE))));
-                        productsBean.setProductConsumerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_CONSUMER_PRICE))));
-                        productsBean.setProductRetailerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_RETAILER_PRICE))));
-                        productsBean.setProductgst((c.getString(c.getColumnIndex(KEY_PRODUCT_GST_PRICE))));
-                        productsBean.setProductvat((c.getString(c.getColumnIndex(KEY_PRODUCT_VAT_PRICE))));
-                        productsBean.setProductStock(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY))));
+                    productsBean.setProductId((c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_PRODUCT_ID))));
+                    productsBean.setProductCode((c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_PRODUCT_CODE))));
+                    productsBean.setProductTitle((c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_PRODUCT_NAME))));
+                    productsBean.setProductAgentPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_AGENT_PRICE))));
+                    productsBean.setProductConsumerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_CONSUMER_PRICE))));
+                    productsBean.setProductRetailerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_RETAILER_PRICE))));
+                    productsBean.setProductgst((c.getString(c.getColumnIndex(KEY_PRODUCT_GST_PRICE))));
+                    productsBean.setProductvat((c.getString(c.getColumnIndex(KEY_PRODUCT_VAT_PRICE))));
+                    productsBean.setProductStock(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY))));
 
-                        allProductTrackRecords.add(productsBean);
-                    } while (c.moveToNext());
-                }
-                c.close();
-                db.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+                    deliverysBeanArrayList.add(productsBean);
+                } while (c.moveToNext());
             }
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return allProductTrackRecords;
+        return deliverysBeanArrayList;
     }
 }

@@ -126,7 +126,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
                         }
                     }
                     Intent i = new Intent(activity, TripsheetDelivery.class);
-                    i.putStringArrayListExtra("productCodes", productCodes);
+                    i.putExtra("tripsheetId", mTripSheetsList.get(position).getmTripshetSOTripId());
                     activity.startActivity(i);
                     activity.finish();
                 } catch (JSONException e) {
