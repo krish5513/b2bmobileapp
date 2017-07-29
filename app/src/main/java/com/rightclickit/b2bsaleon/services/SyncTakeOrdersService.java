@@ -145,14 +145,13 @@ public class SyncTakeOrdersService extends Service {
                 params1.put("created_on", timeStamp);
                 params1.put("updated_on", timeStamp);
                 params1.put("updated_by", mSessionManagement.getString("userId"));
-                // System.out.println("******::: "+ params1.toString());
+
+                //System.out.println("******::: " + params1.toString());
+                //System.out.println("The URL IS:: " + URL);
 
                 mJsonObj = new NetworkManager().makeHttpPostConnection(URL, params1);
-
                 JSONObject resultObj = new JSONObject(mJsonObj);
-//                System.out.println("The URL IS:: "+ URL);
-//               System.out.println("The LENGTH IS:: "+ resultObj.length());
-//                System.out.println("The LENGTH IS:: "+ mJsonObj.toString());
+                //System.out.println("The LENGTH IS:: " + resultObj.toString());
                 if (resultObj.has("result_status")) {
                     if (resultObj.getString("result_status").equals("1")) {
                         if (mTakeOrderBeansList.size() > 0) {

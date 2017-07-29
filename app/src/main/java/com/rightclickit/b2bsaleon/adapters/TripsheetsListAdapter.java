@@ -134,15 +134,15 @@ public class TripsheetsListAdapter extends BaseAdapter {
         mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // if (mTripSheetsList.get(position).getmTripshhetVerifyStatus().equals("1")) {
+                if (mTripSheetsList.get(position).getmTripshhetVerifyStatus().equals("1")) {
                     mPreferences.putString("TripId", mTripSheetsList.get(position).getmTripshhetId());
                     Intent stockIntent = new Intent(activity, TripSheetView.class);
                     stockIntent.putExtra("tripsheetId", mTripSheetsList.get(position).getmTripshhetId());
                     activity.startActivity(stockIntent);
                     activity.finish();
-//                } else {
-//                    Toast.makeText(ctxt, "This Trip Sheet is not yet verified.", Toast.LENGTH_LONG).show();
-//                }
+                } else {
+                    Toast.makeText(ctxt, "This Trip Sheet is not yet verified.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
