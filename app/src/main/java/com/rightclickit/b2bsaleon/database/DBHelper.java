@@ -3310,16 +3310,11 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch un uploaded trip sheets stock list
      */
-    public ArrayList<TripsheetsStockList> fetchUnUploadedTripSheetStockList(String actionType) {
-        ArrayList<TripsheetsStockList> tripsheetsStockLists = new ArrayList<TripsheetsStockList>();
+    public ArrayList<TripsheetsStockList> fetchUnUploadedTripSheetStockList(String stockId) {
+        ArrayList<TripsheetsStockList> tripsheetsStockLists = new ArrayList<>();
 
         try {
-            String selectQuery;
-
-            if (actionType.equals("dispatch"))
-                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_STOCK_LIST + " WHERE " + KEY_TRIPSHEET_STOCK_IS_DISPATCHED + " = 1 AND " + KEY_TRIPSHEET_STOCK_DISPATCHED_UPLOAD_STATUS + " = 0";
-            else // verify
-                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_STOCK_LIST + " WHERE " + KEY_TRIPSHEET_STOCK_IS_VERIFIED + " = 1 AND " + KEY_TRIPSHEET_STOCK_VERIFIED_UPLOAD_STATUS + " = 0";
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_STOCK_LIST + " WHERE " + KEY_TRIPSHEET_STOCK_ID + " = '" + stockId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -3413,7 +3408,6 @@ public class DBHelper extends SQLiteOpenHelper {
             String selectQuery = "SELECT  * FROM " + TABLE_TRIPSHEETS_STOCK_LIST + " s LEFT JOIN " + TABLE_PRODUCTS + " p ON s." + KEY_TRIPSHEET_STOCK_PRODUCT_CODE
                     + "=p." + KEY_PRODUCT_CODE + " WHERE " + KEY_TRIPSHEET_STOCK_TRIPSHEET_ID + " = '" + tripsheetId + "'";
 
-            System.out.println("DEL Que:: " + selectQuery);
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
             // looping through all rows and adding to list
@@ -3441,5 +3435,38 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return deliverysBeanArrayList;
+    }
+
+    /**
+     * Method to fetch un uploaded trip sheets stock list group by stock id
+     */
+    public ArrayList<String> fetchUnUploadedTripSheetUniqueStockIds(String actionType) {
+        ArrayList<String> stockIds = new ArrayList<>();
+
+        try {
+            String selectQuery;
+
+            if (actionType.equals("dispatch"))
+                selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_STOCK_ID + " FROM " + TABLE_TRIPSHEETS_STOCK_LIST + " WHERE " + KEY_TRIPSHEET_STOCK_IS_DISPATCHED + " = 1 AND " + KEY_TRIPSHEET_STOCK_DISPATCHED_UPLOAD_STATUS + " = 0";
+            else // verify
+                selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_STOCK_ID + " FROM " + TABLE_TRIPSHEETS_STOCK_LIST + " WHERE " + KEY_TRIPSHEET_STOCK_IS_VERIFIED + " = 1 AND " + KEY_TRIPSHEET_STOCK_VERIFIED_UPLOAD_STATUS + " = 0";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    stockIds.add(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_ID)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return stockIds;
     }
 }

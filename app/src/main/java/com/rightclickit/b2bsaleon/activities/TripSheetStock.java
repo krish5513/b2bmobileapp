@@ -256,7 +256,9 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
     }
 
     public void verifyTripSheetStock(View view) {
-        if (!isStockVerified)
+        if (!isStockDispatched)
+            Toast.makeText(activityContext, "This Trip Sheet Stock is not yet dispatched.", Toast.LENGTH_LONG).show();
+        else if (!isStockVerified)
             showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to verify?\n\nOnce you verified you can't edit.", "Verify");
     }
 

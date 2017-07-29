@@ -17,6 +17,7 @@ import com.rightclickit.b2bsaleon.util.Utility;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class SyncTripSheetsStockService extends Service {
     private DBHelper mDBHelper;
     private NetworkConnectionDetector connectionDetector;
     private String actionType;
-    private int unUploadedTripSheetsStockListsCount = 0;
+    private int unUploadedTripSheetsStockIdsCount = 0;
 
     @Override
     public void onCreate() {
@@ -58,25 +59,111 @@ public class SyncTripSheetsStockService extends Service {
         return null;
     }
 
+    private class TripSheetStockListWithProducts extends TripsheetsStockList {
+        JSONArray productCodesArray;
+        JSONArray quantityArray;
+        String actionType;
+        String action_by;
+        String date;
+
+        public JSONArray getProductCodesArray() {
+            return productCodesArray;
+        }
+
+        public void setProductCodesArray(JSONArray productCodesArray) {
+            this.productCodesArray = productCodesArray;
+        }
+
+        public JSONArray getQuantityArray() {
+            return quantityArray;
+        }
+
+        public void setQuantityArray(JSONArray quantityArray) {
+            this.quantityArray = quantityArray;
+        }
+
+        public String getActionType() {
+            return actionType;
+        }
+
+        public void setActionType(String actionType) {
+            this.actionType = actionType;
+        }
+
+        public String getAction_by() {
+            return action_by;
+        }
+
+        public void setAction_by(String action_by) {
+            this.action_by = action_by;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
+    }
+
     private void syncTripSheetStockListDataWithServer() {
         try {
-            List<TripsheetsStockList> unUploadedStockLists = mDBHelper.fetchUnUploadedTripSheetStockList(actionType);
-            unUploadedTripSheetsStockListsCount = unUploadedStockLists.size();
+            ArrayList<String> unUploadedStockIds = mDBHelper.fetchUnUploadedTripSheetUniqueStockIds(actionType);
+            unUploadedTripSheetsStockIdsCount = unUploadedStockIds.size();
 
-            for (TripsheetsStockList stockList : unUploadedStockLists) {
+            for (String stockId : unUploadedStockIds) {
+                List<TripsheetsStockList> unUploadedStockLists = mDBHelper.fetchUnUploadedTripSheetStockList(stockId);
+
+                TripSheetStockListWithProducts stockListWithProducts = null;
+                JSONArray productCodesArray = new JSONArray();
+                JSONArray quantitiesArray = new JSONArray();
+
+                for (int i = 0; i < unUploadedStockLists.size(); i++) {
+                    TripsheetsStockList currentStockDetails = unUploadedStockLists.get(i);
+                    System.out.println("stockList = " + currentStockDetails);
+
+                    if (i == 0) {
+                        stockListWithProducts = new TripSheetStockListWithProducts();
+                        stockListWithProducts.setmTripsheetStockId(currentStockDetails.getmTripsheetStockId());
+                        stockListWithProducts.setmTripsheetStockTripsheetId(currentStockDetails.getmTripsheetStockTripsheetId());
+                        stockListWithProducts.setActionType(actionType);
+                    }
+
+                    productCodesArray.put(currentStockDetails.getmTripsheetStockProductCode());
+
+                    if (actionType.equals("dispatch")) {
+                        if (i == 0) {
+                            stockListWithProducts.setAction_by(currentStockDetails.getmTripsheetStockDispatchBy());
+                            stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockDispatchDate()), Constants.TRIP_SHEETS_STOCK_UPDATE_DATE_FORMAT));
+                        }
+
+                        quantitiesArray.put(currentStockDetails.getmTripsheetStockDispatchQuantity());
+                    } else {
+                        if (i == 0) {
+                            stockListWithProducts.setAction_by(currentStockDetails.getmTripsheetStockVerifyBy());
+                            stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockVerifiedDate()), Constants.TRIP_SHEETS_STOCK_UPDATE_DATE_FORMAT));
+                        }
+                        quantitiesArray.put(currentStockDetails.getmTripsheetStockVerifiedQuantity());
+                    }
+                }
+
+                stockListWithProducts.setProductCodesArray(productCodesArray);
+                stockListWithProducts.setQuantityArray(quantitiesArray);
+
                 if (connectionDetector.isNetworkConnected())
-                    new SyncTripSheetStockAsyncTask().execute(stockList);
+                    new SyncTripSheetStockAsyncTask().execute(stockListWithProducts);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private class SyncTripSheetStockAsyncTask extends AsyncTask<TripsheetsStockList, Void, Void> {
-        private TripsheetsStockList currentStock;
+    private class SyncTripSheetStockAsyncTask extends AsyncTask<TripSheetStockListWithProducts, Void, Void> {
+        private TripSheetStockListWithProducts currentStock;
 
         @Override
-        protected Void doInBackground(TripsheetsStockList... stockList) {
+        protected Void doInBackground(TripSheetStockListWithProducts... stockList) {
             try {
                 currentStock = stockList[0];
 
@@ -86,24 +173,11 @@ public class SyncTripSheetsStockService extends Service {
                 JSONObject requestObj = new JSONObject();
                 requestObj.put("stock_id", currentStock.getmTripsheetStockId());
                 requestObj.put("trip_id", currentStock.getmTripsheetStockTripsheetId());
-                requestObj.put("product_codes", productCodesArray);
-                requestObj.put("action", actionType);
-
-                if (actionType.equals("dispatch")) {
-                    JSONArray quantityArray = new JSONArray();
-                    quantityArray.put(currentStock.getmTripsheetStockDispatchQuantity());
-
-                    requestObj.put("quantity", quantityArray);
-                    requestObj.put("action_by", currentStock.getmTripsheetStockDispatchBy());
-                    requestObj.put("date", Utility.formatTime(Long.parseLong(currentStock.getmTripsheetStockDispatchDate()), Constants.TRIP_SHEETS_STOCK_UPDATE_DATE_FORMAT));
-                } else {
-                    JSONArray quantityArray = new JSONArray();
-                    quantityArray.put(currentStock.getmTripsheetStockVerifiedQuantity());
-
-                    requestObj.put("quantity", quantityArray);
-                    requestObj.put("action_by", currentStock.getmTripsheetStockVerifyBy());
-                    requestObj.put("date", Utility.formatTime(Long.parseLong(currentStock.getmTripsheetStockVerifiedDate()), Constants.TRIP_SHEETS_STOCK_UPDATE_DATE_FORMAT));
-                }
+                requestObj.put("product_codes", currentStock.getProductCodesArray());
+                requestObj.put("quantity", currentStock.getQuantityArray());
+                requestObj.put("action", currentStock.getActionType());
+                requestObj.put("action_by", currentStock.getAction_by());
+                requestObj.put("date", currentStock.getDate());
 
                 String requestURL = String.format("%s%s%s/update", Constants.MAIN_URL, Constants.SYNC_TRIPSHEETS_PORT, Constants.GET_TRIPSHEETS_STOCK_LIST);
 
@@ -117,7 +191,7 @@ public class SyncTripSheetsStockService extends Service {
                         mDBHelper.updateTripSheetStockTable(currentStock.getmTripsheetStockId(), actionType);
                     }
 
-                    unUploadedTripSheetsStockListsCount--;
+                    unUploadedTripSheetsStockIdsCount--;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -128,7 +202,7 @@ public class SyncTripSheetsStockService extends Service {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            if (unUploadedTripSheetsStockListsCount == 0) {
+            if (unUploadedTripSheetsStockIdsCount == 0) {
                 stopSelf();
                 //System.out.println("Sync TDC Sales Order Service Stopped Automatically....");
             }
