@@ -121,7 +121,7 @@ public class SyncTDCCustomersService extends Service {
                 if (responseString != null) {
                     JSONObject resultObj = new JSONObject(responseString);
 
-                    if (resultObj.getInt("status") == 1) {
+                    if (resultObj.getInt("result_status") == 1) {
                         // if success, we are updating customer status as uploaded and customer user id (i.e. mongo db id) in local db.
                         mDBHelper.updateTDCCustomersUploadStatus(currentTDCCustomer.getId(), resultObj.getString("insert_id"));
 
