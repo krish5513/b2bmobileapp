@@ -21,6 +21,7 @@ public class TripsheetsStockList {
     private int isStockDispatched; // 0 means not dispatched & 1 means dispatched
     private int isStockVerified; // 0 means not verified & 1 means verified
     private String inStockQuantity;
+    private String extraQuantity; // this column contains product extra quantity delivered and also we will update this value after saving of returns if any.
 
     public String getmTripsheetStockTripsheetId() {
         return mTripsheetStockTripsheetId;
@@ -142,6 +143,14 @@ public class TripsheetsStockList {
         this.inStockQuantity = inStockQuantity;
     }
 
+    public String getExtraQuantity() {
+        return extraQuantity;
+    }
+
+    public void setExtraQuantity(String extraQuantity) {
+        this.extraQuantity = extraQuantity;
+    }
+
     @Override
     public String toString() {
         return "TripsheetsStockList{" +
@@ -158,6 +167,7 @@ public class TripsheetsStockList {
                 ", mTripsheetStockVerifiedDate='" + mTripsheetStockVerifiedDate + '\'' +
                 ", mTripsheetStockVerifiedQuantity='" + mTripsheetStockVerifiedQuantity + '\'' +
                 ", inStockQuantity='" + inStockQuantity + '\'' +
+                ", extraQuantity='" + extraQuantity + '\'' +
                 ", isStockDispatched='" + isStockDispatched + '\'' +
                 ", isStockVerified='" + isStockVerified + '\'' +
                 '}';

@@ -105,7 +105,8 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         double amount1 = productRate + taxAmount1;
 
         mHolder.dProductName.setText(mTripSheetsDeliveries.get(position).getProductTitle());
-        mHolder.dInStockAmount.setText(String.valueOf(mTripSheetsDeliveries.get(position).getProductStock()));
+        mHolder.dProductQuantity.setText(String.format("%.3f", mTripSheetsDeliveries.get(position).getProductOrderedQuantity()));
+        mHolder.dInStockAmount.setText(String.format("%.3f", mTripSheetsDeliveries.get(position).getProductOrderedQuantity() + mTripSheetsDeliveries.get(position).getProductExtraQuantity()));
         mHolder.dProductPrice.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsDeliveries.get(position).getProductAgentPrice())));
         mHolder.dProductTax.setText(Utility.getFormattedCurrency(productTax));
         mHolder.dProductAmount.setText(Utility.getFormattedCurrency(amount1));

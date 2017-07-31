@@ -15,8 +15,9 @@ public class DeliverysBean implements Serializable {
     private String productRetailerPrice;
     private String productgst;
     private String productvat;
+    private double productOrderedQuantity;
     private double productStock;
-
+    private double productExtraQuantity;
 
     public String getProductgst() {
         return productgst;
@@ -82,6 +83,14 @@ public class DeliverysBean implements Serializable {
         this.productRetailerPrice = productRetailerPrice;
     }
 
+    public double getProductOrderedQuantity() {
+        return productOrderedQuantity;
+    }
+
+    public void setProductOrderedQuantity(double productOrderedQuantity) {
+        this.productOrderedQuantity = productOrderedQuantity;
+    }
+
     public double getProductStock() {
         return productStock;
     }
@@ -90,6 +99,13 @@ public class DeliverysBean implements Serializable {
         this.productStock = productStock;
     }
 
+    public double getProductExtraQuantity() {
+        return productExtraQuantity;
+    }
+
+    public void setProductExtraQuantity(double productExtraQuantity) {
+        this.productExtraQuantity = productExtraQuantity;
+    }
 
     @Override
     public String toString() {
@@ -102,7 +118,9 @@ public class DeliverysBean implements Serializable {
                 ", productRetailerPrice='" + productRetailerPrice + '\'' +
                 ", productgst='" + productgst + '\'' +
                 ", productvat='" + productvat + '\'' +
+                ", productOrderedQuantity=" + productOrderedQuantity +
                 ", productStock=" + productStock +
+                ", productExtraQuantity=" + productExtraQuantity +
                 '}';
     }
 }

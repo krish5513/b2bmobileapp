@@ -1,19 +1,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/routes_ret"
-    tools:context="com.rightclickit.b2bsaleon.fragments.Routes_Return">
-
-    <!-- TODO: Update blank fragment layout -->
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/layout_background">
+        android:background="@color/layout_background"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,51 +19,52 @@
                 android:id="@+id/companyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="CUSTOMER INFO"
                 android:layout_gravity="center"
                 android:gravity="left"
-                android:textAllCaps="true"
                 android:padding="5dp"
+                android:text="CUSTOMER INFO"
+                android:textAllCaps="true"
                 android:textColor="@color/greydark"
-                />
+                android:textSize="16sp" />
+
             <TextView
                 android:id="@+id/companyId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="(223320221)"
                 android:layout_gravity="center"
                 android:gravity="left"
-                android:textAllCaps="true"
                 android:padding="5dp"
+                android:text="(223320221)"
+                android:textAllCaps="true"
                 android:textColor="@color/greydark"
-                />
+                android:textSize="16sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_gravity="end"
-                android:padding="10dp"
-                android:gravity="end">
+                android:gravity="end"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <Button
                     android:id="@+id/btn_navigation"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:textSize="10sp"
-                    android:textColor="@color/darkgrey"
                     android:background="@drawable/border_btn"
-                    android:drawableLeft="@drawable/ic_near_me_black_24dp"/>
+                    android:drawableLeft="@drawable/ic_near_me_black_24dp"
+                    android:textColor="@color/darkgrey"
+                    android:textSize="10sp" />
+
                 <Button
                     android:id="@+id/btn_call"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:textSize="10sp"
                     android:layout_marginLeft="10dp"
-                    android:textColor="@color/darkgrey"
                     android:background="@drawable/border_btn"
-                    android:drawableLeft="@drawable/ic_call_black_24dp"/>
+                    android:drawableLeft="@drawable/ic_call_black_24dp"
+                    android:textColor="@color/darkgrey"
+                    android:textSize="10sp" />
 
             </LinearLayout>
 
@@ -76,79 +73,26 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/view_line"/>
-        <!--  <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:padding="5dp"
-              android:orientation="horizontal">
-              <TextView
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="0.18"
-                  android:text="Product"
-                  android:layout_gravity="center"
-                  android:gravity="center"
-                  android:textSize="14sp"
-                  android:textColor="@color/greydark"/>
-              <TextView
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="0.22"
-                  android:text="UOM"
-                  android:textSize="14sp"
-                  android:textColor="@color/greydark"/>
-              <TextView
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="0.18"
-                  android:text="Quantity"
-                  android:textSize="14sp"
-                  android:layout_gravity="center"
-                  android:gravity="center"
-                  android:textColor="@color/greydark"/>
-
-              <TextView
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:layout_weight="0.18"
-                  android:text="Type"
-                  android:layout_gravity="center"
-                  android:gravity="center"
-                  android:textSize="14sp"
-                  android:textColor="@color/greydark"/>
-          </LinearLayout>-->
+            android:background="@color/view_line" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_above="@id/tpsBottomOptionsLayout"
             android:layout_alignParentStart="true"
-            android:layout_above="@id/tpsBottomOptionsLayout">
+            android:layout_alignParentTop="true">
 
             <ListView
-                android:id="@+id/AgentsList"
+                android:id="@+id/trip_sheet_return_products_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@android:color/transparent"
-                android:smoothScrollbar="true"
                 android:layout_marginBottom="60dp"
-                />
+                android:divider="@android:color/transparent"
+                android:smoothScrollbar="true" />
         </LinearLayout>
-        <!--<ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/scrollViewSearch"
-            android:layout_marginBottom="60dp"
-            android:scrollbars="none">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/cardList"
-                android:scrollbars="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-        </ScrollView>-->
+
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -156,10 +100,12 @@
         android:background="@color/white"
         android:gravity="end|center"
         android:orientation="vertical">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -169,9 +115,11 @@
                 android:id="@+id/rsave"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="0.25"
                 android:layout_gravity="center"
-                android:gravity="center">
+                android:layout_weight="0.25"
+                android:gravity="center"
+                android:onClick="saveTripSheetReturns">
+
                 <TextView
                     android:id="@+id/ts_dispatch_save"
                     android:layout_width="wrap_content"
@@ -182,90 +130,97 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 
-
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/rpreview"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="0.25"
                 android:layout_gravity="center"
-                android:gravity="center">
+                android:layout_weight="0.25"
+                android:gravity="center"
+                android:onClick="showTripSheetReturnsPreview">
+
                 <TextView
                     android:id="@+id/tv_receipt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
                     android:drawableTop="@drawable/ic_eye_green_24dp"
+                    android:gravity="center"
                     android:text="Preview"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 
-
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/rdelivery"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="0.25"
                 android:layout_gravity="center"
-                android:gravity="center">
+                android:layout_weight="0.25"
+                android:gravity="center"
+                android:onClick="openTripSheetDeliveries">
+
                 <TextView
                     android:id="@+id/tv_del"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
                     android:drawableTop="@drawable/delivery_green"
+                    android:gravity="center"
                     android:text="Delivery"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 
-
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/rLinear"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="0.25"
                 android:layout_gravity="center"
+                android:layout_weight="0.25"
                 android:gravity="center">
+
                 <TextView
                     android:id="@+id/tv_return"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
                     android:drawableTop="@drawable/ic_reply_orange_24dp"
+                    android:gravity="center"
                     android:text="@string/return_btm"
                     android:textColor="@color/colorAccent"
                     android:textSize="12sp" />
 
-
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/rpayment"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_weight="0.25"
                 android:layout_gravity="center"
-                android:gravity="center">
+                android:layout_weight="0.25"
+                android:gravity="center"
+                android:onClick="openTripSheetPayments">
+
                 <TextView
                     android:id="@+id/tv_pay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:gravity="center"
                     android:drawableTop="@drawable/payments_green"
+                    android:gravity="center"
                     android:text="Payment"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 
-
             </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
+
 </FrameLayout>

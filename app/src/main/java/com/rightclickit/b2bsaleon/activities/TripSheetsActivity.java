@@ -235,20 +235,8 @@ public class TripSheetsActivity extends AppCompatActivity {
         startService(new Intent(TripSheetsActivity.this, SyncNotificationsListService.class));
 
         if (new NetworkConnectionDetector(TripSheetsActivity.this).isNetworkConnected()) {
-//            if (mDBHelper.getTripsheetsTableCount() > 0) {
-//                ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList();
-//                if (tripsList.size() > 0) {
-//                    loadTripsData(tripsList);
-//                } else {
-//                    mNoTripsFoundText.setText("No Trips found.");
-//                }
-//            } else {
-//                //startService(new Intent(getApplicationContext(), SyncStakeHolderTypesService.class));
-//                mTripsheetsModel.getTripsheetsList(mNoTripsFoundText);
-//            }
             mTripsheetsModel.getTripsheetsList(mNoTripsFoundText);
         } else {
-            // System.out.println("ELSE::: ");
             ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList();
             if (tripsList.size() > 0) {
                 loadTripsData(tripsList);

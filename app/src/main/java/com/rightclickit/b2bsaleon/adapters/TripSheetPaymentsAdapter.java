@@ -26,7 +26,7 @@ import java.util.ArrayList;
  * Created by PPS on 7/17/2017.
  */
 
-public class TripSheetPaymentsAdapter extends BaseAdapter{
+public class TripSheetPaymentsAdapter extends BaseAdapter {
 
     LayoutInflater mInflater;
     private Activity activity;
@@ -53,7 +53,7 @@ public class TripSheetPaymentsAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return 10;
+        return 1;
     }
 
     @Override
@@ -77,7 +77,6 @@ public class TripSheetPaymentsAdapter extends BaseAdapter{
             mHolder.paymentsMOP = (Spinner) view.findViewById(R.id.paymentTypeSpinner);
 
 
-
             view.setTag(mHolder);
         } else {
             mHolder = (TripSheetPaymentsAdapter.ViewHolder) view.getTag();
@@ -85,10 +84,7 @@ public class TripSheetPaymentsAdapter extends BaseAdapter{
 
 
         mHolder.paymentsAmount.setText(mTripSheetsPayments.get(position).getmTripshhetPaymentsAmount());
-       // mHolder.paymentsMOP.setText(mTripSheetsPayments.get(position).getPaymentMOP());
-
-
-
+        // mHolder.paymentsMOP.setText(mTripSheetsPayments.get(position).getPaymentMOP());
 
 
         return view;
@@ -100,7 +96,6 @@ public class TripSheetPaymentsAdapter extends BaseAdapter{
 
 
     }
-
 
 
 }

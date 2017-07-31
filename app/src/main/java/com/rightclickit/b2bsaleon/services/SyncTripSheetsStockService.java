@@ -121,7 +121,6 @@ public class SyncTripSheetsStockService extends Service {
 
                 for (int i = 0; i < unUploadedStockLists.size(); i++) {
                     TripsheetsStockList currentStockDetails = unUploadedStockLists.get(i);
-                    System.out.println("stockList = " + currentStockDetails);
 
                     if (i == 0) {
                         stockListWithProducts = new TripSheetStockListWithProducts();

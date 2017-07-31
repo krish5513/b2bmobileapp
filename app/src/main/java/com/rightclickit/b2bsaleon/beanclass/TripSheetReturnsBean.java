@@ -5,18 +5,7 @@ package com.rightclickit.b2bsaleon.beanclass;
  */
 
 public class TripSheetReturnsBean {
-    public String getmTripsheetReturnsName() {
-        return mTripsheetReturnsName;
-    }
-
-    public void setmTripsheetReturnsName(String mTripsheetReturnsName) {
-        this.mTripsheetReturnsName = mTripsheetReturnsName;
-    }
-
     private String mTripsheetReturnsName;
-
-
-
     private String mTripshhetReturnsReturn_no;
     private String mTripshhetReturnsTrip_id;
     private String mTripshhetReturnsUser_id;
@@ -30,6 +19,24 @@ public class TripSheetReturnsBean {
     private String mTripshhetReturnsQuantity;
     private String mTripshhetReturnsAmount;
     private String mTripshhetReturnsTax_amount;
+    private String mTripshhetReturnsTax_total;
+    private String mTripshhetReturnsSale_value;
+    private String mTripshhetReturnsType;
+    private String mTripshhetReturnsStatus;
+    private String mTripshhetReturnsDelete;
+    private String mTripshhetReturnsCreated_by;
+    private String mTripshhetReturnsCreated_on;
+    private String mTripshhetReturnsUpdated_on;
+    private String mTripshhetReturnsUpdated_by;
+    private String mTripsheetReturnsIncAmount;
+    
+    public String getmTripsheetReturnsName() {
+        return mTripsheetReturnsName;
+    }
+
+    public void setmTripsheetReturnsName(String mTripsheetReturnsName) {
+        this.mTripsheetReturnsName = mTripsheetReturnsName;
+    }
 
     public String getmTripshhetReturnsReturn_no() {
         return mTripshhetReturnsReturn_no;
@@ -207,17 +214,6 @@ public class TripSheetReturnsBean {
         this.mTripshhetReturnsUpdated_by = mTripshhetReturnsUpdated_by;
     }
 
-    private String mTripshhetReturnsTax_total;
-    private String mTripshhetReturnsSale_value;
-    private String mTripshhetReturnsType;
-    private String mTripshhetReturnsStatus;
-    private String mTripshhetReturnsDelete;
-    private String mTripshhetReturnsCreated_by;
-    private String mTripshhetReturnsCreated_on;
-    private String mTripshhetReturnsUpdated_on;
-    private String mTripshhetReturnsUpdated_by;
-
-
     public String getmTripsheetReturnsIncAmount() {
         return mTripsheetReturnsIncAmount;
     }
@@ -225,7 +221,4 @@ public class TripSheetReturnsBean {
     public void setmTripsheetReturnsIncAmount(String mTripsheetReturnsIncAmount) {
         this.mTripsheetReturnsIncAmount = mTripsheetReturnsIncAmount;
     }
-
-    private String mTripsheetReturnsIncAmount;
-
 }

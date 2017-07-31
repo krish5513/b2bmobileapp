@@ -27,10 +27,11 @@ import java.util.List;
 
 /**
  * Created by PPS on 7/17/2017.
+ *
+ * Modified by Venkat
  */
 
-public class TripSheetReturnsAdapter extends BaseAdapter{
-
+public class TripSheetReturnsAdapter extends BaseAdapter {
     LayoutInflater mInflater;
     private Activity activity;
     Context ctxt;
@@ -40,23 +41,20 @@ public class TripSheetReturnsAdapter extends BaseAdapter{
     private ArrayList<TripSheetReturnsBean> arraylist;
     private DBHelper mDBHelper;
 
-
     public TripSheetReturnsAdapter(Context ctxt, TripsheetReturns returnsActivity, ArrayList<TripSheetReturnsBean> mreturnsBeanList) {
         this.ctxt = ctxt;
         this.activity = returnsActivity;
         this.mTripSheetsReturns = mreturnsBeanList;
-
         this.mInflater = LayoutInflater.from(activity);
         this.mPreferences = new MMSharedPreferences(activity);
         this.arraylist = new ArrayList<TripSheetReturnsBean>();
         this.mDBHelper = new DBHelper(activity);
         this.arraylist.addAll(mTripSheetsReturns);
-
     }
 
     @Override
     public int getCount() {
-        return 10;
+        return 2;
     }
 
     @Override
@@ -71,9 +69,10 @@ public class TripSheetReturnsAdapter extends BaseAdapter{
 
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
-        final TripSheetReturnsAdapter.ViewHolder mHolder;
+        final TripSheetReturnsViewHolder mHolder;
+
         if (view == null) {
-            mHolder = new TripSheetReturnsAdapter.ViewHolder();
+            mHolder = new TripSheetReturnsViewHolder();
             view = mInflater.inflate(R.layout.tripsheetreturns_custom, null);
 
             mHolder.dProductReturnName = (TextView) view.findViewById(R.id.productName);
@@ -81,34 +80,23 @@ public class TripSheetReturnsAdapter extends BaseAdapter{
             mHolder.dProductReturnTypr = (Spinner) view.findViewById(R.id.paymentTypeSpinner);
             mHolder.dProductIncAmount = (TextView) view.findViewById(R.id.productQt);
 
-
-
             view.setTag(mHolder);
         } else {
-            mHolder = (TripSheetReturnsAdapter.ViewHolder) view.getTag();
+            mHolder = (TripSheetReturnsViewHolder) view.getTag();
         }
-
 
         mHolder.dProductReturnName.setText(mTripSheetsReturns.get(position).getmTripsheetReturnsName());
         mHolder.dProductReturnAmount.setText(mTripSheetsReturns.get(position).getmTripshhetReturnsQuantity());
-      //  mHolder.dProductReturnTypr.setText(mTripSheetsReturns.get(position).getrProductReturnsType());
+        //  mHolder.dProductReturnTypr.setText(mTripSheetsReturns.get(position).getrProductReturnsType());
         mHolder.dProductIncAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsReturns.get(position).getmTripsheetReturnsIncAmount())));
-
-
-
-
 
         return view;
     }
 
-    public class ViewHolder {
+    public class TripSheetReturnsViewHolder {
         TextView dProductReturnName;
         TextView dProductReturnAmount;
         Spinner dProductReturnTypr;
         TextView dProductIncAmount;
-
     }
-
-
-
 }

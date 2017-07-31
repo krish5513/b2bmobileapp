@@ -31,7 +31,8 @@ public class TripsheetPayments extends AppCompatActivity {
     LinearLayout save;
     LinearLayout print;
     LinearLayout delivery;
-    ArrayList paymentsList=new ArrayList();
+    ArrayList paymentsList = new ArrayList();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +56,10 @@ public class TripsheetPayments extends AppCompatActivity {
         payments = (LinearLayout) findViewById(R.id.plinear);
         save = (LinearLayout) findViewById(R.id.slinear);
         print = (LinearLayout) findViewById(R.id.prelinear);
-        delivery=(LinearLayout) findViewById(R.id.dlinear) ;
+        delivery = (LinearLayout) findViewById(R.id.dlinear);
 
-        paymentListView=(ListView) findViewById(R.id.AgentsList);
-        for (int i=0;i<10;i++) {
+        paymentListView = (ListView) findViewById(R.id.AgentsList);
+        for (int i = 0; i < 1; i++) {
             TripSheetPaymentsBean pBean = new TripSheetPaymentsBean();
             pBean.setmTripshhetPaymentsAmount("0.00");
             pBean.getmTripshhetPaymentsType();
@@ -66,15 +67,13 @@ public class TripsheetPayments extends AppCompatActivity {
 
         }
 
-        paymentListView.setAdapter(new TripSheetPaymentsAdapter(TripsheetPayments.this,TripsheetPayments.this,paymentsList));
-
-
+        paymentListView.setAdapter(new TripSheetPaymentsAdapter(TripsheetPayments.this, TripsheetPayments.this, paymentsList));
 
 
         ret.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(TripsheetPayments.this,TripsheetReturns.class);
+                Intent i = new Intent(TripsheetPayments.this, TripsheetReturns.class);
                 startActivity(i);
 
             }
@@ -82,7 +81,7 @@ public class TripsheetPayments extends AppCompatActivity {
         delivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(TripsheetPayments.this,TripsheetDelivery.class);
+                Intent i = new Intent(TripsheetPayments.this, TripsheetDelivery.class);
                 startActivity(i);
 
             }
@@ -90,18 +89,19 @@ public class TripsheetPayments extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAlertDialogWithCancelButton(TripsheetPayments.this,"User Action!","Do you want to save data?");
+                showAlertDialogWithCancelButton(TripsheetPayments.this, "User Action!", "Do you want to save data?");
             }
         });
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(TripsheetPayments.this,TripsheetDeliveryPreview.class);
+                Intent i = new Intent(TripsheetPayments.this, TripsheetDeliveryPreview.class);
                 startActivity(i);
             }
         });
 
     }
+
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {
         try {
             AlertDialog alertDialog = null;
@@ -111,12 +111,11 @@ public class TripsheetPayments extends AppCompatActivity {
             alertDialogBuilder.setCancelable(false);
 
 
-
             alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Intent i =new Intent(TripsheetPayments.this,DashboardDelivery.class);
+                    Intent i = new Intent(TripsheetPayments.this, DashboardDelivery.class);
                     startActivity(i);
                     finish();
                 }
@@ -138,23 +137,22 @@ public class TripsheetPayments extends AppCompatActivity {
                 cancelButton.setTextColor(ContextCompat.getColor(context, R.color.alert_dialog_color_accent));
 
 
-        }
-
-
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate( R.menu.menu_dashboard, menu);
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(TripsheetPayments.this,TDCSalesListActivity.class);
+            Intent i = new Intent(TripsheetPayments.this, TDCSalesListActivity.class);
             startActivity(i);
             finish();
             return true;
@@ -173,15 +171,16 @@ public class TripsheetPayments extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
 
 
-        menu.findItem( R.id.notifications).setVisible(false);
-        menu.findItem( R.id.settings).setVisible(false);
-        menu.findItem( R.id.logout).setVisible(false);
-        menu.findItem( R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.notifications).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(false);
+        menu.findItem(R.id.logout).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.Add).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
