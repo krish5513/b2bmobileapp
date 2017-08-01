@@ -53,7 +53,8 @@ public class AgentsActivity extends AppCompatActivity {
 
     private TextView mNoDataText;
 
-    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen="";
+    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +80,7 @@ public class AgentsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(),"Clicked Customers Add",Toast.LENGTH_SHORT).show();
-                Intent i =new Intent(AgentsActivity.this,Agents_AddActivity.class);
+                Intent i = new Intent(AgentsActivity.this, Agents_AddActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -90,35 +91,35 @@ public class AgentsActivity extends AppCompatActivity {
         activityContext = AgentsActivity.this;
         mDBHelper = new DBHelper(AgentsActivity.this);
         mPreferences = new MMSharedPreferences(AgentsActivity.this);
-        agentsModel = new AgentsModel(activityContext,this);
+        agentsModel = new AgentsModel(activityContext, this);
 
         mNoDataText = (TextView) findViewById(R.id.NoDataText);
 
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
         mAgentsList.setVisibility(View.GONE);
-       // ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
+        // ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
         //System.out.println("ELSE::: "+a.size());
         if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
-            if(mDBHelper.getAgentsTableCount()>0){
+            if (mDBHelper.getAgentsTableCount() > 0) {
                 ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();
 
-                if(agentsBeanArrayList.size()>0){
+                if (agentsBeanArrayList.size() > 0) {
                     mNoDataText.setText("");
                     loadAgentsList(agentsBeanArrayList);
-                }else {
+                } else {
                     mNoDataText.setText("No Agents found.");
                 }
 
-            }else {
+            } else {
                 agentsModel.getAgentsList("agents");
             }
-        }else {
-           // System.out.println("ELSE::: ");
+        } else {
+            // System.out.println("ELSE::: ");
             ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();
-            if(agentsBeanArrayList.size()>0) {
+            if (agentsBeanArrayList.size() > 0) {
                 mNoDataText.setText("");
                 loadAgentsList(agentsBeanArrayList);
-            }else {
+            } else {
                 mNoDataText.setText("No Agents found.");
             }
 
@@ -129,10 +130,10 @@ public class AgentsActivity extends AppCompatActivity {
         mDashBoardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Toast.makeText(AgentsActivity.this, "Clicked on Dashboard", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(AgentsActivity.this, "Clicked on Dashboard", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mDashBoardLayout.startAnimation(animation1);
-                Intent i =new Intent(AgentsActivity.this,DashboardActivity.class);
+                Intent i = new Intent(AgentsActivity.this, DashboardActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -145,7 +146,7 @@ public class AgentsActivity extends AppCompatActivity {
                 //Toast.makeText(AgentsActivity.this, "Clicked on Tripsheets", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTripsheetsLayout.startAnimation(animation1);
-                Intent i =new Intent(AgentsActivity.this,TripSheetsActivity.class);
+                Intent i = new Intent(AgentsActivity.this, TripSheetsActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -155,10 +156,10 @@ public class AgentsActivity extends AppCompatActivity {
         mCustomersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //   Toast.makeText(AgentsActivity.this, "Clicked on Customers", Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(AgentsActivity.this, "Clicked on Customers", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mCustomersLayout.startAnimation(animation1);
-                Intent i =new Intent(AgentsActivity.this,AgentsActivity.class);
+                Intent i = new Intent(AgentsActivity.this, AgentsActivity.class);
                 startActivity(i);
                 finish();
             }
@@ -180,10 +181,10 @@ public class AgentsActivity extends AppCompatActivity {
         mProductsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Toast.makeText(AgentsActivity.this, "Clicked on Products", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(AgentsActivity.this, "Clicked on Products", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mProductsLayout.startAnimation(animation1);
-                Intent i =new Intent(AgentsActivity.this,Products_Activity.class);
+                Intent i = new Intent(AgentsActivity.this, Products_Activity.class);
                 startActivity(i);
                 finish();
             }
@@ -196,46 +197,44 @@ public class AgentsActivity extends AppCompatActivity {
                 //Toast.makeText(AgentsActivity.this, "Clicked on TDC", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 mTDCLayout.startAnimation(animation1);
-                Intent i =new Intent(AgentsActivity.this,TDCSalesActivity.class);
+                Intent i = new Intent(AgentsActivity.this, TDCSalesActivity.class);
                 startActivity(i);
                 finish();
             }
         });
-        HashMap<String,String> userMapData = mDBHelper.getUsersData();
+        HashMap<String, String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
-       // System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
-        for (int k = 0; k<privilegesData.size();k++){
-            if (privilegesData.get(k).toString().equals("Dashboard")){
+        // System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
+        for (int k = 0; k < privilegesData.size(); k++) {
+            if (privilegesData.get(k).toString().equals("Dashboard")) {
                 mDashBoardLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("TripSheets")){
+            } else if (privilegesData.get(k).toString().equals("TripSheets")) {
                 mTripsheetsLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("Customers")){
+            } else if (privilegesData.get(k).toString().equals("Customers")) {
                 mCustomersLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("Products")){
+            } else if (privilegesData.get(k).toString().equals("Products")) {
                 mProductsLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("TDC")){
+            } else if (privilegesData.get(k).toString().equals("TDC")) {
                 mTDCLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("Retailers")){
+            } else if (privilegesData.get(k).toString().equals("Retailers")) {
                 mRetailersLayout.setVisibility(View.VISIBLE);
             }
         }
 
         ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
         //System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
-        for (int z = 0;z<privilegeActionsData1.size();z++){
+        for (int z = 0; z < privilegeActionsData1.size(); z++) {
             //System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
 
-            if (privilegeActionsData1.get(z).toString().equals("List_View")){
+            if (privilegeActionsData1.get(z).toString().equals("List_View")) {
                 mAgentsList.setVisibility(View.VISIBLE);
-            }
-             else if (privilegeActionsData1.get(z).toString().equals("Add")){
+            } else if (privilegeActionsData1.get(z).toString().equals("Add")) {
                 fab.setVisibility(View.VISIBLE);
             }
         }
 
 
-
-        ArrayList<String> privilegeActionsData= mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("UserActivity"));
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("UserActivity"));
         System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
         for (int z = 0; z < privilegeActionsData.size(); z++) {
             System.out.println("Name::: " + privilegeActionsData.get(z).toString());
@@ -258,13 +257,14 @@ public class AgentsActivity extends AppCompatActivity {
 
     }
 
-    public void loadAgentsList(ArrayList<AgentsBean> mAgentsBeansList){
-        if(mAgentsAdapter!=null){
+    public void loadAgentsList(ArrayList<AgentsBean> mAgentsBeansList) {
+        if (mAgentsAdapter != null) {
             mAgentsAdapter = null;
         }
-        mAgentsAdapter = new AgentsAdapter(this,AgentsActivity.this,mAgentsBeansList);
+        mAgentsAdapter = new AgentsAdapter(this, AgentsActivity.this, mAgentsBeansList);
         mAgentsList.setAdapter(mAgentsAdapter);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
@@ -294,7 +294,7 @@ public class AgentsActivity extends AppCompatActivity {
         });
 
         // Get the search close button image view
-        ImageView closeButton = (ImageView)search.findViewById(R.id.search_close_btn);
+        ImageView closeButton = (ImageView) search.findViewById(R.id.search_close_btn);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -307,6 +307,7 @@ public class AgentsActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -329,9 +330,9 @@ public class AgentsActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                if(search.isIconified()) {
+                if (search.isIconified()) {
                     onBackPressed();
-                }else {
+                } else {
                     search.setQuery("", false);
                     search.clearFocus();
                     search.onActionViewCollapsed();
@@ -341,6 +342,7 @@ public class AgentsActivity extends AppCompatActivity {
                 return true;
         }
     }
+
     private void loadNotifications() {
         Intent navigationIntent = new Intent(AgentsActivity.this, NotificationsActivity.class);
         // mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -365,10 +367,11 @@ public class AgentsActivity extends AppCompatActivity {
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.notifications).setVisible(true);
 
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -376,20 +379,25 @@ public class AgentsActivity extends AppCompatActivity {
         Intent intent = null;
         if (mTdcHomeScreen.equals("tdc_home_screen")) {
             intent = new Intent(this, TDCSalesActivity.class);
+            startActivity(intent);
+            finish();
         } else if (mTripsHomeScreen.equals("Trips@Home")) {
             intent = new Intent(this, TripSheetsActivity.class);
+            startActivity(intent);
+            finish();
         } else if (mAgentsHomeScreen.equals("Agents@Home")) {
-            intent = new Intent(this, AgentsActivity.class);
+            //intent = new Intent(this, AgentsActivity.class);
+            finish();
         } else if (mRetailersHomeScreen.equals("Retailers@Home")) {
             intent = new Intent(this, RetailersActivity.class);
-
+            startActivity(intent);
+            finish();
         } else if (mDashboardHomeScreen.equals("Dashboard@Home")) {
             intent = new Intent(this, DashboardActivity.class);
+            startActivity(intent);
+            finish();
         } else {
             intent = new Intent(this, DashboardActivity.class);
         }
-
-        startActivity(intent);
-        finish();
     }
 }

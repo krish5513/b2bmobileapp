@@ -3527,7 +3527,6 @@ public class DBHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("***IS Privilege Exists === " + privilege);
         return privilege;
     }
 }
