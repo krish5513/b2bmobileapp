@@ -3503,4 +3503,31 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return stakeTypesList;
     }
+
+    /**
+     * Method to fetch user privile by user id and privilege name
+     */
+    public int getUserPrivilegeByUserIdAndPrivilegeName(String userId, String privilegeName) {
+        int privilege = 0;
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_PREVILEGES_USER_ACTIVITY + " WHERE " +
+                    KEY_USER_ACTIVITY_USER_ID + " = " + "'" + userId + "'" + " AND " + KEY_USER_ACTIVITY_TAG + " = " + "'"
+                    + privilegeName + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    privilege = c.getInt(0);
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("***IS Privilege Exists === " + privilege);
+        return privilege;
+    }
 }

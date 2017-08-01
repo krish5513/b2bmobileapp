@@ -28,6 +28,8 @@ import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
+import java.util.HashMap;
+
 /**
  * @author venkat
  *         <p/>
@@ -92,7 +94,6 @@ public class LoginActivity extends Activity {
                     return false;
                 }
             });
-
 
 
             logInButton = (Button) findViewById(R.id.login_btn);
@@ -239,7 +240,28 @@ public class LoginActivity extends Activity {
             loadSettings();
             //           }
         } else {
-            Intent mainActivityIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+            HashMap<String, String> userMapData = mDBHelper.getUsersData();
+            //System.out.println("PRIVILEGE======= " + mDBHelper.getUserPrivilegeByUserIdAndPrivilegeName(userMapData.get("user_id"), "TripSheets"));
+            Intent mainActivityIntent = null;
+            if (mDBHelper.getUserPrivilegeByUserIdAndPrivilegeName(userMapData.get("user_id"), "Dashboard") == 0) {
+                // Dashboard
+                mainActivityIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+            } else if (mDBHelper.getUserPrivilegeByUserIdAndPrivilegeName(userMapData.get("user_id"), "TripSheets") == 0) {
+                // Tripsheets
+                mainActivityIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+            } else if (mDBHelper.getUserPrivilegeByUserIdAndPrivilegeName(userMapData.get("user_id"), "Customers") == 0) {
+                // Customers
+                mainActivityIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+            } else if (mDBHelper.getUserPrivilegeByUserIdAndPrivilegeName(userMapData.get("user_id"), "Products") == 0) {
+                // Products
+                mainActivityIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+            } else if (mDBHelper.getUserPrivilegeByUserIdAndPrivilegeName(userMapData.get("user_id"), "TDC") == 0) {
+                // TDC
+                mainActivityIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+            } else if (mDBHelper.getUserPrivilegeByUserIdAndPrivilegeName(userMapData.get("user_id"), "Retailers") == 0) {
+                // Retailers
+                mainActivityIntent = new Intent(LoginActivity.this, DashboardActivity.class);
+            }
             mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(mainActivityIntent);
