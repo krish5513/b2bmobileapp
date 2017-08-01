@@ -257,14 +257,20 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                     canvas.drawText(currentDate, 200, 150, paint);
                     canvas.drawText(str_agentname, 5, 180, paint);
                     canvas.drawText(sharedPreferences.getString("agentCode"), 200, 180, paint);
-
-                    canvas.drawText("----------------------------------------------------", 5, 200, paint);
+                    paint.setTextSize(30);
+                    canvas.drawText("------------------------------------", 5, 200, paint);
+                    paint.setTextSize(20);
                     canvas.drawText("Product", 5, 220, paint);
+                    paint.setTextSize(20);
                     canvas.drawText("Qty", 100, 220, paint);
+                    paint.setTextSize(20);
                     canvas.drawText("Price", 160, 220, paint);
+                    paint.setTextSize(20);
                     canvas.drawText("Amount", 230, 220, paint);
+                    paint.setTextSize(20);
                     canvas.drawText("Tax", 320, 220, paint);
-                    canvas.drawText("----------------------------------------------------", 5, 235, paint);
+
+                    canvas.drawText("-------------------------------------", 5, 235, paint);
 
 
                     int st = 250;
@@ -275,17 +281,13 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                             //String[] temps = selectedList.get(i-1);
                             canvas.drawText(temps[0], 5, st, paint);
                             canvas.drawText(temps[1], 115, st, paint);
-
-
                             canvas.drawText(temps[2], 175, st, paint);
-
                             canvas.drawText(temps[3], 245, st, paint);
                             canvas.drawText(temps[4], 315, st, paint);
 
                             st = st + 30;
                             canvas.drawText(temps[5], 5, st, paint);
                             canvas.drawText(temps[6], 45, st, paint);
-
                             canvas.drawText(temps[7], 120, st, paint);
                             canvas.drawText("to" + " " + " " + temps[8], 230, st, paint);
 
@@ -298,6 +300,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 
 
                     }
+
                     canvas.drawText("----------------------------------------------------", 5, st, paint);
 
                     st = st + 20;
