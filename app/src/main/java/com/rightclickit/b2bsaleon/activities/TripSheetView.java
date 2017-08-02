@@ -700,7 +700,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             }
 
             // Drawing polyline in the Google Map for the i-th route
-            destinationPolyline = mMap.addPolyline(lineOptions);
+            if (lineOptions != null)
+                destinationPolyline = mMap.addPolyline(lineOptions);
 
         } catch (Exception e) {
             e.printStackTrace();

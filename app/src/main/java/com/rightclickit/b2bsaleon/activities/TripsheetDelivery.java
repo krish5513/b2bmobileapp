@@ -1,5 +1,6 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,179 +9,92 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentTakeOrder_ViewAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
-import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
-public class TripsheetDelivery extends AppCompatActivity {
-    LinearLayout ret;
-    LinearLayout payments;
-    LinearLayout save;
-    LinearLayout print;
-
-    private DBHelper mDBHelper;
+public class TripsheetDelivery extends AppCompatActivity implements TripSheetDeliveriesListener {
+    private Context activityContext;
     private MMSharedPreferences mPreferences;
+    private DBHelper mDBHelper;
 
-    private ListView mAgentsList;
+    private SearchView search;
+    private ListView ordered_products_list_view;
+    private TextView totalTaxAmountTextView, totalAmountTextView, subTotalAmountTextView;
+    private LinearLayout trip_sheet_deliveries_save, trip_sheet_deliveries_preview, trip_sheet_returns, trip_sheet_payments;
+
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
-    ArrayList<DeliverysBean> deliveriesArraylist = new ArrayList<DeliverysBean>();
-    private ArrayList<String> productCodesList;
-    private String mTripSheetId = "";
+    private ArrayList<DeliverysBean> deliveryProductsList = new ArrayList<>();
+    private Map<String, DeliverysBean> selectedDeliveryProductsHashMap;
+    private String mTripSheetId = "", loggedInUserId;
+    private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripsheet_delivery);
 
-        mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
-
-        this.getSupportActionBar().setTitle("DELIVERIES");
-        this.getSupportActionBar().setSubtitle(null);
-        this.getSupportActionBar().setLogo(R.drawable.route_white);
-        // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        this.getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-
-
-        ret = (LinearLayout) findViewById(R.id.linearreturn);
-        ret.setVisibility(View.GONE);
-        payments = (LinearLayout) findViewById(R.id.linearpayments);
-        payments.setVisibility(View.GONE);
-
-        save = (LinearLayout) findViewById(R.id.linearsave);
-        print = (LinearLayout) findViewById(R.id.linearpreview);
-
-
-        mDBHelper = new DBHelper(TripsheetDelivery.this);
-        mPreferences = new MMSharedPreferences(TripsheetDelivery.this);
-
-
-        mAgentsList = (ListView) findViewById(R.id.AgentsList);
-
-//        for (int i = 0; i < 10; i++) {
-//            TripSheetDeliveriesBean dBean = new TripSheetDeliveriesBean();
-//            dBean.setmTripsheetDeleveryName("FCM 500ML");
-//            dBean.setmTripsheetDelivery_Status("In Stock");
-//            dBean.setmTripsheetDeleveryInstockAmount("00.000");
-//            dBean.setmTripsheetDelivery_UnitPrice("50.00");
-//            dBean.setmTripsheetDelivery_TaxPercent("00.00");
-//            dBean.setmTripsheetDelivery_Amount("00.00");
-//            dBean.setmTripsheetDelivery_Quantity("00.000");
-//            deliveriesArraylist.add(dBean);
-//        }
-
-        ret.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(TripsheetDelivery.this, TripsheetReturns.class);
-                startActivity(i);
-                finish();
-
-
-            }
-        });
-        payments.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(TripsheetDelivery.this, TripsheetPayments.class);
-                startActivity(i);
-                finish();
-
-
-            }
-        });
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAlertDialogWithCancelButton(TripsheetDelivery.this, "User Action!", "Do you want to save data?");
-            }
-        });
-        print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(TripsheetDelivery.this, TripsheetDeliveryPreview.class);
-                startActivity(i);
-                finish();
-
-            }
-        });
-
-
-        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
-        //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
-        for (int z = 0; z < privilegeActionsData.size(); z++) {
-            //System.out.println("Name::: " + privilegeActionsData.get(z).toString());
-
-            if (privilegeActionsData.get(z).toString().equals("list_view_return")) {
-                ret.setVisibility(View.VISIBLE);
-            } else if (privilegeActionsData.get(z).toString().equals("list_view_payment")) {
-                payments.setVisibility(View.VISIBLE);
-            }
-        }
-
-        deliveriesArraylist = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
-        System.out.println("ASSsDSDFdsfD:: " + deliveriesArraylist.size());
-
-        if (deliveriesArraylist.size() > 0) {
-            mAgentsList.setAdapter(new TripSheetDeliveriesAdapter(TripsheetDelivery.this, TripsheetDelivery.this, deliveriesArraylist));
-        }
-    }
-
-    private void showAlertDialogWithCancelButton(Context context, String title, String message) {
         try {
-            AlertDialog alertDialog = null;
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
-            alertDialogBuilder.setTitle(title);
-            alertDialogBuilder.setMessage(message);
-            alertDialogBuilder.setCancelable(false);
+            this.getSupportActionBar().setTitle("DELIVERIES");
+            this.getSupportActionBar().setSubtitle(null);
+            this.getSupportActionBar().setLogo(R.drawable.route_white);
+            // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            this.getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+            final ActionBar actionBar = getSupportActionBar();
+            assert actionBar != null;
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    Intent i = new Intent(TripsheetDelivery.this, TripsheetDelivery.class);
-                    startActivity(i);
-                    finish();
+            ordered_products_list_view = (ListView) findViewById(R.id.ordered_products_list_view);
+            totalTaxAmountTextView = (TextView) findViewById(R.id.delivery_total_tax_amount);
+            totalAmountTextView = (TextView) findViewById(R.id.delivery_total_amount);
+            subTotalAmountTextView = (TextView) findViewById(R.id.delivery_sub_total_amount);
+            trip_sheet_deliveries_save = (LinearLayout) findViewById(R.id.trip_sheet_deliveries_save);
+            trip_sheet_deliveries_preview = (LinearLayout) findViewById(R.id.trip_sheet_deliveries_preview);
+            trip_sheet_returns = (LinearLayout) findViewById(R.id.trip_sheet_returns);
+            trip_sheet_payments = (LinearLayout) findViewById(R.id.trip_sheet_payments);
+
+            mDBHelper = new DBHelper(TripsheetDelivery.this);
+            mPreferences = new MMSharedPreferences(TripsheetDelivery.this);
+
+            mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
+            loggedInUserId = mPreferences.getString("userId");
+
+            ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
+            //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+            for (int z = 0; z < privilegeActionsData.size(); z++) {
+                if (privilegeActionsData.get(z).toString().equals("list_view_return")) {
+                    trip_sheet_returns.setVisibility(View.VISIBLE);
+                } else if (privilegeActionsData.get(z).toString().equals("list_view_payment")) {
+                    trip_sheet_payments.setVisibility(View.VISIBLE);
                 }
-            });
+            }
 
-            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            selectedDeliveryProductsHashMap = new HashMap<>();
+            deliveryProductsList = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
 
-            alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-
-
-            Button cancelButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-            if (cancelButton != null)
-                cancelButton.setTextColor(ContextCompat.getColor(context, R.color.alert_dialog_color_accent));
-
+            mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, deliveryProductsList);
+            ordered_products_list_view.setAdapter(mTripSheetDeliveriesAdapter);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -190,22 +104,56 @@ public class TripsheetDelivery extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+
+        try {
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+            search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            search.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String query) {
+                    mTripSheetDeliveriesAdapter.filter(query);
+                    return true;
+                }
+            });
+
+            // Get the search close button image view
+            ImageView closeButton = (ImageView) search.findViewById(R.id.search_close_btn);
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    search.setQuery("", false);
+                    search.clearFocus();
+                    search.onActionViewCollapsed();
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.Add) {
-            Intent i = new Intent(TripsheetDelivery.this, TDCSalesListActivity.class);
-            startActivity(i);
-            finish();
-            return true;
-        }
 
-        switch (item.getItemId()) {
+        switch (id) {
             case android.R.id.home:
-                onBackPressed();
+                if (search.isIconified()) {
+                    onBackPressed();
+                } else {
+                    search.setQuery("", false);
+                    search.clearFocus();
+                    search.onActionViewCollapsed();
+                }
                 return true;
             default:
                 return true;
@@ -214,14 +162,11 @@ public class TripsheetDelivery extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-
         menu.findItem(R.id.notifications).setVisible(false);
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.Add).setVisible(false);
-
         menu.findItem(R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
@@ -235,4 +180,64 @@ public class TripsheetDelivery extends AppCompatActivity {
         finish();
     }
 
+    public void saveTripSheetDeliveries(View v) {
+        showAlertDialogWithCancelButton(activityContext, "User Action!", "Do you want to save data?");
+    }
+
+    public void showTripSheetDeliveriesPreview(View v) {
+        Intent i = new Intent(activityContext, TripsheetDeliveryPreview.class);
+        startActivity(i);
+        finish();
+    }
+
+    public void openTripSheetReturns(View v) {
+        Intent i = new Intent(activityContext, TripsheetReturns.class);
+        startActivity(i);
+        finish();
+    }
+
+    public void openTripSheetPayments(View v) {
+        Intent i = new Intent(activityContext, TripsheetPayments.class);
+        startActivity(i);
+        finish();
+    }
+
+    private void showAlertDialogWithCancelButton(Context context, String title, String message) {
+        try {
+            AlertDialog alertDialog = null;
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button cancelButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            if (cancelButton != null)
+                cancelButton.setTextColor(ContextCompat.getColor(context, R.color.alert_dialog_color_accent));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateDeliveryProductsList(Map<String, DeliverysBean> deliveryProductsList) {
+
+    }
 }

@@ -46,7 +46,7 @@ public class TripsheetReturns extends AppCompatActivity {
 
             loggedInUserId = mmSharedPreferences.getString("userId");
 
-            this.getSupportActionBar().setTitle("RETURNS");
+            this.getSupportActionBar().setTitle("RETURNS (SPOIL)");
             this.getSupportActionBar().setSubtitle(null);
             this.getSupportActionBar().setLogo(R.drawable.route_white);
             // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
@@ -125,23 +125,23 @@ public class TripsheetReturns extends AppCompatActivity {
     }
 
     public void saveTripSheetReturns(View v) {
-        showAlertDialogWithCancelButton(TripsheetReturns.this, "User Action!", "Do you want to save data?");
+        showAlertDialogWithCancelButton(activityContext, "User Action!", "Do you want to save data?");
     }
 
     public void showTripSheetReturnsPreview(View v) {
-        Intent i = new Intent(TripsheetReturns.this, TripsheetDeliveryPreview.class);
+        Intent i = new Intent(activityContext, TripsheetDeliveryPreview.class);
         startActivity(i);
         finish();
     }
 
     public void openTripSheetDeliveries(View v) {
-        Intent i = new Intent(TripsheetReturns.this, TripsheetDelivery.class);
+        Intent i = new Intent(activityContext, TripsheetDelivery.class);
         startActivity(i);
         finish();
     }
 
     public void openTripSheetPayments(View v) {
-        Intent i = new Intent(TripsheetReturns.this, TripsheetPayments.class);
+        Intent i = new Intent(activityContext, TripsheetPayments.class);
         startActivity(i);
         finish();
     }
@@ -158,9 +158,6 @@ public class TripsheetReturns extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    Intent i = new Intent(TripsheetReturns.this, DashboardDelivery.class);
-                    startActivity(i);
-                    finish();
                 }
             });
 
