@@ -342,8 +342,14 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
             TripsheetsStockList currentStock = stockList.getValue();
             currentStock.setmTripsheetStockVerifyBy(loggedInUserId);
             currentStock.setmTripsheetStockVerifiedDate(String.valueOf(currentTimeStamp));
-            currentStock.setInStockQuantity(currentStock.getmTripsheetStockVerifiedQuantity());
-            currentStock.setExtraQuantity(String.valueOf(Double.parseDouble(currentStock.getmTripsheetStockVerifiedQuantity()) - Double.parseDouble(currentStock.getmTripsheetStockProductOrderQuantity())));
+            double extraQuantity = Double.parseDouble(currentStock.getmTripsheetStockVerifiedQuantity()) - Double.parseDouble(currentStock.getmTripsheetStockProductOrderQuantity());
+            if (extraQuantity > 0) {
+                currentStock.setInStockQuantity(currentStock.getmTripsheetStockProductOrderQuantity());
+                currentStock.setExtraQuantity(String.valueOf(extraQuantity));
+            } else {
+                currentStock.setInStockQuantity(currentStock.getmTripsheetStockVerifiedQuantity());
+                currentStock.setExtraQuantity(String.valueOf(0));
+            }
 
             // to update status as verified in trip sheet table, we are initializing trip sheet id.
             tripSheetId = currentStock.getmTripsheetStockTripsheetId();

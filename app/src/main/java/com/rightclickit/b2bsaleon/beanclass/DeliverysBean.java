@@ -18,6 +18,12 @@ public class DeliverysBean implements Serializable {
     private double productOrderedQuantity;
     private double productStock;
     private double productExtraQuantity;
+    private double productAllAvailableStock;
+    private double selectedQuantity;
+    private double taxAmount;
+    private double productAmount;
+    private double productRatePerUnit;
+    private double productTaxPerUnit;
 
     public String getProductgst() {
         return productgst;
@@ -107,9 +113,57 @@ public class DeliverysBean implements Serializable {
         this.productExtraQuantity = productExtraQuantity;
     }
 
+    public double getSelectedQuantity() {
+        return selectedQuantity;
+    }
+
+    public void setSelectedQuantity(double selectedQuantity) {
+        this.selectedQuantity = selectedQuantity;
+    }
+
+    public double getTaxAmount() {
+        return taxAmount;
+    }
+
+    public void setTaxAmount(double taxAmount) {
+        this.taxAmount = taxAmount;
+    }
+
+    public double getProductAmount() {
+        return productAmount;
+    }
+
+    public void setProductAmount(double productAmount) {
+        this.productAmount = productAmount;
+    }
+
+    public double getProductAllAvailableStock() {
+        return productAllAvailableStock;
+    }
+
+    public void setProductAllAvailableStock(double productAllAvailableStock) {
+        this.productAllAvailableStock = productAllAvailableStock;
+    }
+
+    public double getProductRatePerUnit() {
+        return productRatePerUnit;
+    }
+
+    public void setProductRatePerUnit(double productRatePerUnit) {
+        this.productRatePerUnit = productRatePerUnit;
+    }
+
+    public double getProductTaxPerUnit() {
+        return productTaxPerUnit;
+    }
+
+    public void setProductTaxPerUnit(double productTaxPerUnit) {
+        this.productTaxPerUnit = productTaxPerUnit;
+    }
+
     @Override
     public String toString() {
-        return "ProductsBean{" +
+        return "DeliverysBean{" +
                 "productId='" + productId + '\'' +
                 ", productCode='" + productCode + '\'' +
                 ", productTitle='" + productTitle + '\'' +
@@ -121,6 +175,10 @@ public class DeliverysBean implements Serializable {
                 ", productOrderedQuantity=" + productOrderedQuantity +
                 ", productStock=" + productStock +
                 ", productExtraQuantity=" + productExtraQuantity +
+                ", selectedQuantity=" + selectedQuantity +
+                ", taxAmount=" + taxAmount +
+                ", productAmount=" + productAmount +
+                ", productAllAvailableStock=" + productAllAvailableStock +
                 '}';
     }
 }
