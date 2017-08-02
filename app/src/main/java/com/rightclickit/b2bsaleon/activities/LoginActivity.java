@@ -161,18 +161,20 @@ public class LoginActivity extends Activity {
             // There was an error; don't attempt login and focus the first form field with an error.
             focusView.requestFocus();
         } else {
-            if (new NetworkConnectionDetector(LoginActivity.this).isNetworkConnected()) {
-                authenticateUser(emailId, password);
-            } else if (mDBHelper.getUserDetailsTableCount() > 0) {
+            if (mDBHelper.getUserDetailsTableCount() > 0) {
                 // Data is there and do actions..
                 String userId = mDBHelper.getUserId(emailId, Utility.getMd5String(password.trim()));
                 if (!userId.equals("")) {
                     // User exists and do actions..
                     loadDashboard();
+                } else if (new NetworkConnectionDetector(LoginActivity.this).isNetworkConnected()) {
+                    authenticateUser(emailId, password);
                 } else {
                     // The entered user is different...
                     LogInModel.displayNoNetworkError(LoginActivity.this);
                 }
+            } else if (new NetworkConnectionDetector(LoginActivity.this).isNetworkConnected()) {
+                authenticateUser(emailId, password);
             } else {
                 LogInModel.displayNoNetworkError(LoginActivity.this);
             }

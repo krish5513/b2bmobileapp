@@ -367,10 +367,12 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                         //bundle.putString("COMPANYNAME", companyName.getText().toString());
 
                         String dId = getDeviceId();
+
                         settingsmodel.saveDeviceDetails(dId, vehicleNo.getText().toString(), transporterName.getText().toString(), companyName.getText().toString());
-//                         long f = mDBHelper.updateUserDetails(sharedPreferences.getString("userId"),"",userName.getText().toString(),
-//                                 "",mobile.getText().toString(),"","","","","","","",dId,transporterName.getText().toString(),
-//                                 vehicleNo.getText().toString(),"","");
+
+                        long f = mDBHelper.updateUserDetails(mPreferences.getString("userId"), companyName.getText().toString(), "", userName.getText().toString(),
+                                "", mobile.getText().toString(), "", "", "", "", "", "", "", dId, transporterName.getText().toString(),
+                                vehicleNo.getText().toString(), "", "");
                         mPreferences.putString("companyname", companyName.getText().toString());
 
                         companyName.setCursorVisible(false);
@@ -542,9 +544,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             }
 
             ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
-           // System.out.println("F 11111 ***COUNT === " + privilegesData.size());
+            // System.out.println("F 11111 ***COUNT === " + privilegesData.size());
             for (int k = 0; k < privilegesData.size(); k++) {
-             //   System.out.println("F 11111 ***COUNT 4444 === " + privilegesData.get(k).toString());
+                //   System.out.println("F 11111 ***COUNT 4444 === " + privilegesData.get(k).toString());
                 if (privilegesData.get(k).toString().equals("Dashboard")) {
                     mDashboardLayout.setVisibility(View.VISIBLE);
                 } else if (privilegesData.get(k).toString().equals("TripSheets")) {
@@ -561,9 +563,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             }
 
             ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("UserActivity"));
-           // System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+            // System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
             for (int z = 0; z < privilegeActionsData.size(); z++) {
-             //   System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+                //   System.out.println("Name::: " + privilegeActionsData.get(z).toString());
                 if (privilegeActionsData.get(z).toString().equals("Notification")) {
                     mNotifications = privilegeActionsData.get(z).toString();
                 } else if (privilegeActionsData.get(z).toString().equals("tdc_home_screen")) {

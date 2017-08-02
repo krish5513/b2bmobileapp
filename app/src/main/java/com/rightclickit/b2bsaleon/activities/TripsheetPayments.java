@@ -24,19 +24,21 @@ import java.util.ArrayList;
 
 public class TripsheetPayments extends AppCompatActivity {
 
-    ListView paymentListView;
-    private TripSheetPaymentsAdapter mTripSheetPaymentsAdapter;
     LinearLayout ret;
     LinearLayout payments;
     LinearLayout save;
     LinearLayout print;
     LinearLayout delivery;
     ArrayList paymentsList = new ArrayList();
+    String mTripsheetId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripsheet_payments);
+
+        mTripsheetId = this.getIntent().getStringExtra("tripsheetId");
+        System.out.println("MAGNUM:::: "+ mTripsheetId);
 
         this.getSupportActionBar().setTitle("PAYMENTS");
         this.getSupportActionBar().setSubtitle(null);
@@ -57,18 +59,6 @@ public class TripsheetPayments extends AppCompatActivity {
         save = (LinearLayout) findViewById(R.id.slinear);
         print = (LinearLayout) findViewById(R.id.prelinear);
         delivery = (LinearLayout) findViewById(R.id.dlinear);
-
-        paymentListView = (ListView) findViewById(R.id.AgentsList);
-        for (int i = 0; i < 1; i++) {
-            TripSheetPaymentsBean pBean = new TripSheetPaymentsBean();
-            pBean.setmTripshhetPaymentsAmount("0.00");
-            pBean.getmTripshhetPaymentsType();
-            paymentsList.add(pBean);
-
-        }
-
-        paymentListView.setAdapter(new TripSheetPaymentsAdapter(TripsheetPayments.this, TripsheetPayments.this, paymentsList));
-
 
         ret.setOnClickListener(new View.OnClickListener() {
             @Override

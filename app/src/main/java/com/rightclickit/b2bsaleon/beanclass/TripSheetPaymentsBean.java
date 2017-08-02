@@ -22,6 +22,29 @@ public class TripSheetPaymentsBean {
     private String mTripshhetPaymentsAc_ca_no;
     private String mTripshhetPaymentsAccount_name;
 
+    private String mTripshhetPaymentsBank_name;
+    private String mTripshhetPaymentsTrans_date;
+    private String mTripshhetPaymentsTrans_clear_date;
+    private String mTripshhetPaymentsReceiver_name;
+    private String mTripshhetPaymentsTrans_status;
+
+    private String mTripshhetPaymentsProduct_ids;
+    private String mTripshhetPaymentsProduct_codes;
+    private String mTripshhetPaymentsTax_percent;
+    private String mTripshhetPaymentsUnit_price;
+    private String mTripshhetPaymentsQuantity;
+    private String mTripshhetPaymentsAmount;
+    private String mTripshhetPaymentsTax_amount;
+    private String mTripshhetPaymentsTax_total;
+    private String mTripshhetPaymentsSale_value;
+    private String mTripshhetPaymentsType;
+    private String mTripshhetPaymentsStatus;
+    private String mTripshhetPaymentsDelete;
+    private String mTripshhetPaymentsCreated_by;
+    private String mTripshhetPaymentsCreated_on;
+    private String mTripshhetPaymentsUpdated_on;
+    private String mTripshhetPaymentsUpdated_by;
+
     public String getmTripshhetPaymentsPayment_no() {
         return mTripshhetPaymentsPayment_no;
     }
@@ -261,31 +284,4 @@ public class TripSheetPaymentsBean {
     public void setmTripshhetPaymentsUpdated_by(String mTripshhetPaymentsUpdated_by) {
         this.mTripshhetPaymentsUpdated_by = mTripshhetPaymentsUpdated_by;
     }
-
-    private String mTripshhetPaymentsBank_name;
-    private String mTripshhetPaymentsTrans_date;
-    private String mTripshhetPaymentsTrans_clear_date;
-    private String mTripshhetPaymentsReceiver_name;
-    private String mTripshhetPaymentsTrans_status;
-
-
-
-    private String mTripshhetPaymentsProduct_ids;
-    private String mTripshhetPaymentsProduct_codes;
-    private String mTripshhetPaymentsTax_percent;
-    private String mTripshhetPaymentsUnit_price;
-    private String mTripshhetPaymentsQuantity;
-    private String mTripshhetPaymentsAmount;
-    private String mTripshhetPaymentsTax_amount;
-    private String mTripshhetPaymentsTax_total;
-    private String mTripshhetPaymentsSale_value;
-    private String mTripshhetPaymentsType;
-    private String mTripshhetPaymentsStatus;
-    private String mTripshhetPaymentsDelete;
-    private String mTripshhetPaymentsCreated_by;
-    private String mTripshhetPaymentsCreated_on;
-    private String mTripshhetPaymentsUpdated_on;
-    private String mTripshhetPaymentsUpdated_by;
-
-
 }

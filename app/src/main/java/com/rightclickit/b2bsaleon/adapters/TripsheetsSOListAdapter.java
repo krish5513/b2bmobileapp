@@ -127,6 +127,10 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
                     }
                     Intent i = new Intent(activity, TripsheetDelivery.class);
                     i.putExtra("tripsheetId", mTripSheetsList.get(position).getmTripshetSOTripId());
+                    i.putExtra("agentId", mTripSheetsList.get(position).getmTripshetSOAgentId());
+                    i.putExtra("agentCode", mTripSheetsList.get(position).getmTripshetSOAgentCode());
+                    i.putExtra("agentName", mTripSheetsList.get(position).getmTripshetSOAgentFirstName()+
+                            mTripSheetsList.get(position).getmTripshetSOAgentLastName());
                     activity.startActivity(i);
                     activity.finish();
                 } catch (JSONException e) {
