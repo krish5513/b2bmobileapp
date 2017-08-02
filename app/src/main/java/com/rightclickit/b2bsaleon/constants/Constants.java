@@ -71,6 +71,7 @@ public class Constants {
     /**
      * Port for agents list.
      */
+
     public static final String PORT_AGENTS_LIST = ":3004";
 
 
@@ -87,7 +88,7 @@ public class Constants {
     public static final String MAIN_URL = "http://111.93.17.13";
 
     //Development
-   // public static final String MAIN_URL = "http://52.10.51.54";
+    //public static final String MAIN_URL = "http://52.10.51.54";
 
     public static final String APP_TYPE = "A";
 

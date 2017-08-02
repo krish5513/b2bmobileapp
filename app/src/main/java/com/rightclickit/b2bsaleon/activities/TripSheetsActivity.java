@@ -328,20 +328,28 @@ public class TripSheetsActivity extends AppCompatActivity {
         Intent intent = null;
         if (mTdcHomeScreen.equals("tdc_home_screen")) {
             intent = new Intent(this, TDCSalesActivity.class);
+            startActivity(intent);
+            finish();
         } else if (mTripsHomeScreen.equals("Trips@Home")) {
-            intent = new Intent(this, TripSheetsActivity.class);
+            //intent = new Intent(this, TripSheetsActivity.class);
+
+            finish();
         } else if (mAgentsHomeScreen.equals("Agents@Home")) {
             intent = new Intent(this, AgentsActivity.class);
+            startActivity(intent);
+            finish();
         } else if (mRetailersHomeScreen.equals("Retailers@Home")) {
             intent = new Intent(this, RetailersActivity.class);
-
+            startActivity(intent);
+            finish();
         } else if (mDashboardHomeScreen.equals("Dashboard@Home")) {
             intent = new Intent(this, DashboardActivity.class);
+            startActivity(intent);
+            finish();
         } else {
             intent = new Intent(this, DashboardActivity.class);
         }
-        startActivity(intent);
-        finish();
+
     }
 }
 
