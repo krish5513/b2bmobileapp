@@ -3475,4 +3475,32 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return stockIds;
     }
+
+    /**
+     * Method to get stake type id by stake type
+     * <p>
+     * stake_type = 2 for Agents, 3 for Retailers & 4 for Consumer
+     */
+    public ArrayList<String> getStakeTypeIdByStakeTypeForAgents(String stakeType) {
+        ArrayList<String> stakeTypesList = new ArrayList<String>();
+        String stakeTypeId = "";
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_STAKEHOLDER_TYPES + " WHERE " + KEY_STAKEHOLDER_TYPE + " = " + "'" + stakeType + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    // stakeTypeId = c.getString(c.getColumnIndex(KEY_STAKEHOLDER_TYPE_ID));
+                    stakeTypesList.add(c.getString(c.getColumnIndex(KEY_STAKEHOLDER_TYPE_ID)));
+                } while (c.moveToNext());
+                c.close();
+                db.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return stakeTypesList;
+    }
 }

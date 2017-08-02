@@ -91,9 +91,12 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                 routesArray = routesJob.getJSONArray("routeArray");
                 String logInURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_LIST);
                 JSONObject job = new JSONObject();
-                String stakeHolderId = mDBHelper.getStakeTypeIdByStakeType("2");
+                ArrayList<String> stakeHolderId = mDBHelper.getStakeTypeIdByStakeTypeForAgents("2");
+                System.out.println("STAKES::::: "+ stakeHolderId);
                 JSONArray stakesArray = new JSONArray();
-                stakesArray.put(stakeHolderId);
+                for (int k = 0;k<stakeHolderId.size();k++){
+                    stakesArray.put(stakeHolderId.get(k));
+                }
                 job.put("route_ids", routesArray);
                 job.put("_ids", stakesArray);
 
