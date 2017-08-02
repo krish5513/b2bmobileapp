@@ -167,8 +167,6 @@ public class LoginActivity extends Activity {
                 if (!userId.equals("")) {
                     // User exists and do actions..
                     loadDashboard();
-                } else if (new NetworkConnectionDetector(LoginActivity.this).isNetworkConnected()) {
-                    authenticateUser(emailId, password);
                 } else {
                     // The entered user is different...
                     LogInModel.displayNoNetworkError(LoginActivity.this);

@@ -43,7 +43,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
     private ArrayList<DeliverysBean> deliveryProductsList = new ArrayList<>();
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap;
-    private String mTripSheetId = "", loggedInUserId,mAgentId = "",mAgentName = "",mAgentCode="";
+    private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "";
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
 
     @Override
@@ -79,9 +79,9 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
             mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
             loggedInUserId = mPreferences.getString("userId");
-            loggedInUserId = mPreferences.getString("userId");
-            loggedInUserId = mPreferences.getString("userId");
-            loggedInUserId = mPreferences.getString("userId");
+            mAgentId = this.getIntent().getStringExtra("agentId");
+            mAgentCode = this.getIntent().getStringExtra("agentCode");
+            mAgentName = this.getIntent().getStringExtra("agentName");
 
             ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
             //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
@@ -201,7 +201,10 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
     public void openTripSheetPayments(View v) {
         Intent i = new Intent(TripsheetDelivery.this, TripsheetPayments.class);
-        i.putExtra("tripsheetId",mTripSheetId);
+        i.putExtra("tripsheetId", mTripSheetId);
+        i.putExtra("agentId", mAgentId);
+        i.putExtra("agentCode", mAgentCode);
+        i.putExtra("agentName", mAgentName);
         startActivity(i);
         finish();
     }

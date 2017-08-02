@@ -136,18 +136,18 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                     }
                     synchronized (this) {
                         String dId = "", trasportName = "", vehicleNum = "";
-                        if (!mPreferences.getString("").equals("No Data found")
-                                || !mPreferences.getString("").equals("No Data Found")) {
-                            dId = mPreferences.getString("deviceId");
-                        }
-                        if (!mPreferences.getString("").equals("No Data found")
-                                || !mPreferences.getString("").equals("No Data Found")) {
-                            trasportName = mPreferences.getString("transporterName");
-                        }
-                        if (!mPreferences.getString("").equals("No Data found")
-                                || !mPreferences.getString("").equals("No Data Found")) {
-                            vehicleNum = mPreferences.getString("vehicleNumber");
-                        }
+//                        if (!mPreferences.getString("").equals("No Data found")
+//                                || !mPreferences.getString("").equals("No Data Found")) {
+//                            dId = mPreferences.getString("deviceId");
+//                        }
+//                        if (!mPreferences.getString("").equals("No Data found")
+//                                || !mPreferences.getString("").equals("No Data Found")) {
+//                            trasportName = mPreferences.getString("transporterName");
+//                        }
+//                        if (!mPreferences.getString("").equals("No Data found")
+//                                || !mPreferences.getString("").equals("No Data Found")) {
+//                            vehicleNum = mPreferences.getString("vehicleNumber");
+//                        }
                         mDBHelper.insertUserDetails(id, userCode, companyname, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp, routeArrayListString,
                                 dId, trasportName, vehicleNum, latitude, longitude, password);
                     }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
@@ -30,7 +31,7 @@ public class TripsheetPayments extends AppCompatActivity {
     LinearLayout print;
     LinearLayout delivery;
     ArrayList paymentsList = new ArrayList();
-    String mTripsheetId = "";
+    String mTripsheetId = "", mAgentId = "", mAgentCode = "", mAgentName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,9 @@ public class TripsheetPayments extends AppCompatActivity {
         setContentView(R.layout.activity_tripsheet_payments);
 
         mTripsheetId = this.getIntent().getStringExtra("tripsheetId");
-        System.out.println("MAGNUM:::: "+ mTripsheetId);
+        mAgentId = this.getIntent().getStringExtra("agentId");
+        mAgentCode = this.getIntent().getStringExtra("agentCode");
+        mAgentName = this.getIntent().getStringExtra("agentName");
 
         this.getSupportActionBar().setTitle("PAYMENTS");
         this.getSupportActionBar().setSubtitle(null);
@@ -52,6 +55,9 @@ public class TripsheetPayments extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
+        TextView agentName = (TextView) findViewById(R.id.companyName);
+        agentName.setText(mAgentName);
 
 
         ret = (LinearLayout) findViewById(R.id.rlinear);
