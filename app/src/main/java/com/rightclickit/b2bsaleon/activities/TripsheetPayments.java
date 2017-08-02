@@ -12,9 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
@@ -31,6 +33,7 @@ public class TripsheetPayments extends AppCompatActivity {
     LinearLayout print;
     LinearLayout delivery;
     ArrayList paymentsList = new ArrayList();
+    EditText mAmountText;
     String mTripsheetId = "", mAgentId = "", mAgentCode = "", mAgentName = "";
 
     @Override
@@ -65,6 +68,7 @@ public class TripsheetPayments extends AppCompatActivity {
         save = (LinearLayout) findViewById(R.id.slinear);
         print = (LinearLayout) findViewById(R.id.prelinear);
         delivery = (LinearLayout) findViewById(R.id.dlinear);
+        mAmountText = (EditText) findViewById(R.id.amount);
 
         ret.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +97,19 @@ public class TripsheetPayments extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(TripsheetPayments.this, TripsheetDeliveryPreview.class);
                 startActivity(i);
+            }
+        });
+
+        LinearLayout save = (LinearLayout) findViewById(R.id.slinear);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Double enteredAmount = Double.parseDouble(mAmountText.getText().toString());
+                if (enteredAmount > 0) {
+                    Toast.makeText(TripsheetPayments.this, "All good and save in db.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(TripsheetPayments.this, "Please enter recevied amount.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
