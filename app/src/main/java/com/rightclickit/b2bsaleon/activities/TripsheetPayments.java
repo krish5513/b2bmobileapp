@@ -30,6 +30,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.services.SyncTripSheetsPaymentsService;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -72,6 +73,8 @@ public class TripsheetPayments extends AppCompatActivity {
         mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
         mAgentSoId = this.getIntent().getStringExtra("agentSoId");
         mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
+        System.out.println("SO ID:: " + mAgentSoId);
+        System.out.println("SO CODE:: " + mAgentSoCode);
 
         this.getSupportActionBar().setTitle("PAYMENTS");
         this.getSupportActionBar().setSubtitle(null);
@@ -182,6 +185,9 @@ public class TripsheetPayments extends AppCompatActivity {
 //        System.out.println("SIZE:::: " + deliveryArrayList.size());
 //        System.out.println("SALE VALUE:::: " + deliveryArrayList.get(0).getmTripsheetDelivery_SaleValue());
 //        System.out.println("TAX AMOUNT:::: " + deliveryArrayList.get(0).getmTripsheetDelivery_TaxTotal());
+        if (deliveryArrayList.size() > 0) {
+            mAmountText.setText(deliveryArrayList.get(0).getmTripsheetDelivery_SaleValue());
+        }
 
     }
 
@@ -202,32 +208,40 @@ public class TripsheetPayments extends AppCompatActivity {
                         Double enteredAmount = Double.parseDouble(mAmountText.getText().toString());
                         if (enteredAmount > 0) {
                             Toast.makeText(TripsheetPayments.this, "All good and save in cash details in db.", Toast.LENGTH_SHORT).show();
+                            PaymentsBean paymentsBean = new PaymentsBean();
+                            synchronized (this) {
+                                paymentsBean.setPayments_tripsheetId(mTripSheetId);
+                                paymentsBean.setPayments_userId(mAgentId);
+                                paymentsBean.setPayments_userCodes(mAgentCode);
+                                paymentsBean.setPayments_routeId(mAgentRouteId);
+                                paymentsBean.setPayments_routeCodes(mAgentRouteCode);
+                                paymentsBean.setPayments_chequeNumber(mChequeNumber.getText().toString().trim());
+                                paymentsBean.setPayments_accountNumber("");
+                                paymentsBean.setPayments_accountName("");
+                                paymentsBean.setPayments_bankName(mBankName.getText().toString().trim());
+                                paymentsBean.setPayments_chequeDate(mChequeDate.getText().toString().trim());
+                                paymentsBean.setPayments_chequeClearDate("");
+                                paymentsBean.setPayments_receiverName(mAgentName);
+                                paymentsBean.setPayments_transActionStatus("A");
+                                paymentsBean.setPayments_taxTotal(Double.parseDouble(deliveryArrayList.get(0).getmTripsheetDelivery_TaxTotal()));
+                                paymentsBean.setPayments_saleValue(Double.parseDouble(deliveryArrayList.get(0).getmTripsheetDelivery_SaleValue()));
+                                paymentsBean.setPayments_receivedAmount(Double.parseDouble(mAmountText.getText().toString().trim()));
+                                paymentsBean.setPayments_type("0");
+                                paymentsBean.setPayments_status("A");
+                                paymentsBean.setPayments_delete("N");
+                                paymentsBean.setPayments_saleOrderId(mAgentSoId);
+                                paymentsBean.setPayments_saleOrderCode(mAgentSoCode);
+                            }
+
+                            synchronized (this) {
+                                mDBHelper.insertTripsheetsPaymentsListData(paymentsBean);
+                            }
+
+                            synchronized (this) {
+                                startService(new Intent(TripsheetPayments.this, SyncTripSheetsPaymentsService.class));
+                            }
                         } else {
                             Toast.makeText(TripsheetPayments.this, "Please enter recevied amount.", Toast.LENGTH_SHORT).show();
-                            PaymentsBean paymentsBean = new PaymentsBean();
-                            paymentsBean.setPayments_tripsheetId(mTripSheetId);
-                            paymentsBean.setPayments_userId(mAgentId);
-                            paymentsBean.setPayments_userCodes(mAgentCode);
-                            paymentsBean.setPayments_routeId(mAgentRouteId);
-                            paymentsBean.setPayments_routeCodes(mAgentRouteCode);
-                            paymentsBean.setPayments_chequeNumber(mChequeNumber.getText().toString().trim());
-                            paymentsBean.setPayments_accountNumber("");
-                            paymentsBean.setPayments_accountName("");
-                            paymentsBean.setPayments_bankName(mBankName.getText().toString().trim());
-                            paymentsBean.setPayments_chequeDate(mChequeDate.getText().toString().trim());
-                            paymentsBean.setPayments_chequeClearDate("");
-                            paymentsBean.setPayments_receiverName(mAgentName);
-                            paymentsBean.setPayments_transActionStatus("A");
-                            paymentsBean.setPayments_taxTotal(Double.parseDouble(deliveryArrayList.get(0).getmTripsheetDelivery_TaxTotal()));
-                            paymentsBean.setPayments_saleValue(Double.parseDouble(deliveryArrayList.get(0).getmTripsheetDelivery_SaleValue()));
-                            paymentsBean.setPayments_receivedAmount(Double.parseDouble(mAmountText.getText().toString().trim()));
-                            paymentsBean.setPayments_type("1");
-                            paymentsBean.setPayments_status("A");
-                            paymentsBean.setPayments_delete("N");
-                            paymentsBean.setPayments_saleOrderId(mAgentSoId);
-                            paymentsBean.setPayments_saleOrderCode(mAgentSoCode);
-
-                            mDBHelper.insertTripsheetsPaymentsListData(paymentsBean);
                         }
                     } else if (paymentTypeSpinner.getSelectedItem().toString().equals("Cheque")) {
                         cheqLinearLayout.setVisibility(View.VISIBLE);

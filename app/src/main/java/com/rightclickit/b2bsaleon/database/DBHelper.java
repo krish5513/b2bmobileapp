@@ -373,6 +373,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_PAYMENTS_DELETE = "tripshhet_payments_delete";
     private final String KEY_TRIPSHEET_PAYMENTS_SO_ID = "tripshhet_payments_so_id";
     private final String KEY_TRIPSHEET_PAYMENTS_SO_CODE = "tripshhet_payments_so_code";
+    private final String KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT = "tripshhet_payments_received_amount";
     private final String KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS = "tripshhet_payments_upload_status";
 
     // Column names for Tripsheets so List  Table
@@ -609,6 +610,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_PAYMENTS_DELETE + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_SO_ID + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_SO_CODE + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // Tripsheets SO Table Create Statements
@@ -2972,6 +2974,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TRIPSHEET_PAYMENTS_DELETE, paymentsBean.getPayments_delete());
             values.put(KEY_TRIPSHEET_PAYMENTS_SO_ID, paymentsBean.getPayments_saleOrderId());
             values.put(KEY_TRIPSHEET_PAYMENTS_SO_CODE, paymentsBean.getPayments_saleOrderCode());
+            values.put(KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT, paymentsBean.getPayments_receivedAmount());
 
             db.insert(TABLE_TRIPSHEETS_PAYMENTS_LIST, null, values);
             values.clear();
