@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class TripsheetDeliveryPreview extends AppCompatActivity {
     private ListView mAgentsList;
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
-    ArrayList customArraylist=new ArrayList();
+    ArrayList customArraylist = new ArrayList();
 
     TextView tv_companyName;
     TextView Route_Name;
@@ -57,6 +57,9 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
     String currentDate, str_routecode, str_enguiryid, str_agentname;
 
     ArrayList<String[]> selectedList;
+
+    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,10 +83,15 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         mDBHelper = new DBHelper(TripsheetDeliveryPreview.this);
         sharedPreferences = new MMSharedPreferences(TripsheetDeliveryPreview.this);
 
+        mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
+        mAgentId = this.getIntent().getStringExtra("agentId");
+        mAgentCode = this.getIntent().getStringExtra("agentCode");
+        mAgentName = this.getIntent().getStringExtra("agentName");
+
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
-        selectedList=new ArrayList<>(customArraylist.size());
-        for (int i=0;i<10;i++){
-            ProductsBean dBean=new ProductsBean();
+        selectedList = new ArrayList<>(customArraylist.size());
+        for (int i = 0; i < 10; i++) {
+            ProductsBean dBean = new ProductsBean();
             dBean.setProductTitle("FCM 500ML");
             dBean.setSelectedQuantity(0.00);
             dBean.setProductAgentPrice("00.000");
@@ -102,7 +110,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
             Log.i("takeordertemp", temp + "");
             customArraylist.add(dBean);
         }
-        mAgentsList.setAdapter(new TripSheetDeleveriesPreviewAdapter(TripsheetDeliveryPreview.this,TripsheetDeliveryPreview.this,customArraylist));
+        mAgentsList.setAdapter(new TripSheetDeleveriesPreviewAdapter(TripsheetDeliveryPreview.this, TripsheetDeliveryPreview.this, customArraylist));
 
 
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
@@ -192,7 +200,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                 int st = 250;
                 paint.setTextSize(17);
 //                    for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-                for (int i = 0; i <selectedList.size(); i++) {
+                for (int i = 0; i < selectedList.size(); i++) {
                     String[] temps = selectedList.get(i);
                     //String[] temps = selectedList.get(i-1);
                     canvas.drawText(temps[0], 5, st, paint);
@@ -205,13 +213,11 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                     canvas.drawText(temps[4], 315, st, paint);
 
 
-
                     // canvas.drawText("FROM:" + temps[7], 100, st, paint);
                     //canvas.drawText("TO:" + temps[8], 250, st, paint);
 
                     st = st + 30;
                     //  canvas.drawText("----------------------------------------------------", 5, st, paint);
-
 
 
                 }
@@ -229,21 +235,19 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         });
 
 
-
-
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate( R.menu.menu_dashboard, menu);
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i =new Intent(TripsheetDeliveryPreview.this,TDCSalesListActivity.class);
+            Intent i = new Intent(TripsheetDeliveryPreview.this, TDCSalesListActivity.class);
             startActivity(i);
             finish();
             return true;
@@ -262,20 +266,25 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
 
 
-        menu.findItem( R.id.notifications).setVisible(false);
-        menu.findItem( R.id.settings).setVisible(false);
-        menu.findItem( R.id.logout).setVisible(false);
-        menu.findItem( R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
+        menu.findItem(R.id.notifications).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(false);
+        menu.findItem(R.id.logout).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.Add).setVisible(false);
 
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, TripsheetDelivery.class);
+        intent.putExtra("tripsheetId", mTripSheetId);
+        intent.putExtra("agentId", mAgentId);
+        intent.putExtra("agentCode", mAgentCode);
+        intent.putExtra("agentName", mAgentName);
         startActivity(intent);
         finish();
     }

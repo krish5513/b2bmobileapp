@@ -50,7 +50,6 @@ public class TripSheetsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_sheets);
 
-
         this.getSupportActionBar().setTitle("TRIPSHEET");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.route_white);
@@ -58,7 +57,6 @@ public class TripSheetsActivity extends AppCompatActivity {
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
-
 
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -72,7 +70,6 @@ public class TripSheetsActivity extends AppCompatActivity {
         mTripsListview = (ListView) findViewById(R.id.TripsheetsListview);
         mTripsListview.setVisibility(View.GONE);
 
-
         mDBHelper = new DBHelper(TripSheetsActivity.this);
         mPreferences = new MMSharedPreferences(TripSheetsActivity.this);
 
@@ -81,10 +78,8 @@ public class TripSheetsActivity extends AppCompatActivity {
         tsDashBoardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //Toast.makeText(TripsheetsActivity.this, "Clicked on Dashboard", Toast.LENGTH_SHORT).show();
-                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.blink);
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 tsDashBoardLayout.startAnimation(animation1);
                 Intent i = new Intent(TripSheetsActivity.this, DashboardActivity.class);
                 startActivity(i);
@@ -96,10 +91,8 @@ public class TripSheetsActivity extends AppCompatActivity {
         tsTripsheetsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //Toast.makeText(TripSheetsActivity.this, "Clicked on Tripsheets", Toast.LENGTH_SHORT).show();
-                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.blink);
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 tsTripsheetsLayout.startAnimation(animation1);
 
             }
@@ -109,10 +102,8 @@ public class TripSheetsActivity extends AppCompatActivity {
         tsCustomersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 //Toast.makeText(Tripsheet_Activity.this, "Clicked on Customers", Toast.LENGTH_SHORT).show();
-                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.blink);
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 tsCustomersLayout.startAnimation(animation1);
                 Intent i = new Intent(TripSheetsActivity.this, AgentsActivity.class);
                 startActivity(i);
@@ -136,10 +127,8 @@ public class TripSheetsActivity extends AppCompatActivity {
         tsProductsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // Toast.makeText(Tripsheet_Activity.this, "Clicked on Products", Toast.LENGTH_SHORT).show();
-                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.blink);
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 tsProductsLayout.startAnimation(animation1);
                 Intent i = new Intent(TripSheetsActivity.this, Products_Activity.class);
                 startActivity(i);
@@ -152,40 +141,15 @@ public class TripSheetsActivity extends AppCompatActivity {
         tsTDCLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // Toast.makeText(Tripsheet_Activity.this, "Clicked on TDC", Toast.LENGTH_SHORT).show();
-                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.blink);
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                 tsTDCLayout.startAnimation(animation1);
                 Intent i = new Intent(TripSheetsActivity.this, TDCSalesActivity.class);
                 startActivity(i);
                 finish();
             }
         });
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-//                        R.anim.blink);
-//                tsTDCLayout.startAnimation(animation1);
-//                Intent i =new Intent(TripSheetsActivity.this,TripSheetView.class);
-//                startActivity(i);
-//                finish();
-//
-//           }
-//           });
-//        stock.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-//                        R.anim.blink);
-//                tsTDCLayout.startAnimation(animation1);
-//                Intent i =new Intent(TripSheetsActivity.this,TripSheetStock.class);
-//                startActivity(i);
-//                finish();
-//
-//            }
-//        });
+
         HashMap<String, String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
         for (int k = 0; k < privilegesData.size(); k++) {
@@ -241,7 +205,7 @@ public class TripSheetsActivity extends AppCompatActivity {
             if (tripsList.size() > 0) {
                 loadTripsData(tripsList);
             } else {
-                mNoTripsFoundText.setText("No Trips found.");
+                mNoTripsFoundText.setText("No Trip Sheets Found.");
             }
         }
     }
@@ -251,8 +215,8 @@ public class TripSheetsActivity extends AppCompatActivity {
         if (mTripsListAdapter != null) {
             mTripsListAdapter = null;
         }
-        mTripsListAdapter = new TripsheetsListAdapter(TripSheetsActivity.this, TripSheetsActivity.this,
-                tripsList, mTripSheetViewPrivilege, mTripSheetStockPrivilege);
+
+        mTripsListAdapter = new TripsheetsListAdapter(TripSheetsActivity.this, TripSheetsActivity.this, tripsList, mTripSheetViewPrivilege, mTripSheetStockPrivilege);
         mTripsListview.setAdapter(mTripsListAdapter);
     }
 
@@ -312,13 +276,12 @@ public class TripSheetsActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.settings).setVisible(true);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.notifications).setVisible(true);
-
         menu.findItem(R.id.autorenew).setVisible(true);
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -349,7 +312,6 @@ public class TripSheetsActivity extends AppCompatActivity {
         } else {
             intent = new Intent(this, DashboardActivity.class);
         }
-
     }
 }
 

@@ -40,19 +40,22 @@ public class NetworkConnectionDetector {
      */
     public boolean isNetworkConnected() {
         boolean status = false;
-        ConnectivityManager connectivity = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity != null) {
-            NetworkInfo[] info = connectivity.getAllNetworkInfo();
-            if (info != null)
-                for (int i = 0; i < info.length; i++)
-                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-                        status = true;
-                    }
+        ConnectivityManager connectivityManager = (ConnectivityManager) _context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (connectivityManager != null) {
+            NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+
+            if (activeNetwork != null) {
+                status = true;
+            } else {
+                // not connected to the internet
+                status = false;
+            }
         }
 
-//        if (!status) {
-//            displayNoNetworkError(_context);
-//        }
+        /*if (!status) {
+            displayNoNetworkError(context);
+        }*/
         return status;
     }
 

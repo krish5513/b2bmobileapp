@@ -2770,7 +2770,6 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             for (int i = 0; i < mTripsheetsDeliveriesList.size(); i++) {
                 ContentValues values = new ContentValues();
-                values.put(KEY_TRIPSHEET_DELIVERY_NO, mTripsheetsDeliveriesList.get(i).getmTripsheetDeliveryNo());
                 values.put(KEY_TRIPSHEET_DELIVERY_TRIP_ID, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_tripId());
                 values.put(KEY_TRIPSHEET_DELIVERY_USER_ID, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_userId());
                 values.put(KEY_TRIPSHEET_DELIVERY_USER_CODES, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_userCodes());

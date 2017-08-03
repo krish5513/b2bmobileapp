@@ -8,10 +8,10 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
-import com.rightclickit.b2bsaleon.beanclass.SpecialPriceBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.NetworkManager;
 
 import org.json.JSONArray;
@@ -54,7 +54,9 @@ public class SyncNotificationsListService extends Service {
 
     private void fetchAndSyncNotificationsData() {
         try {
-            new FetchAndSyncNotificationsDataAsyncTask().execute();
+            if (new NetworkConnectionDetector(this).isNetworkConnected()) {
+                new FetchAndSyncNotificationsDataAsyncTask().execute();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,10 +72,10 @@ public class SyncNotificationsListService extends Service {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-
                 if (mNotificationsList.size() > 0) {
                     mNotificationsList.clear();
                 }
+
                 String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_NOTIFICATIONS_PORT, Constants.GET_NOTIFICATIONS_LIST);
 
                 JSONObject params1 = new JSONObject();
@@ -84,8 +86,9 @@ public class SyncNotificationsListService extends Service {
 
                 //System.out.println("The LENGTH IS:: "+ mJsonObj.toString());
                 //System.out.println("Notifications Response Is::: " + mJsonObj);
-               // JSONObject responseObj = new JSONObject(mJsonObj);
+                // JSONObject responseObj = new JSONObject(mJsonObj);
                 ///if (responseObj.getInt("result_status") != 0) {
+                if (mJsonObj != null && !mJsonObj.equals("error")) {
                     JSONArray resArray = new JSONArray(mJsonObj);
                     int len = resArray.length();
                     for (int i = 0; i < len; i++) {
@@ -99,6 +102,7 @@ public class SyncNotificationsListService extends Service {
 
                         mNotificationsList.add(notificationsBean);
                     }
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();

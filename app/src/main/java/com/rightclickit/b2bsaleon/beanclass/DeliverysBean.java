@@ -18,7 +18,7 @@ public class DeliverysBean implements Serializable {
     private double productOrderedQuantity;
     private double productStock;
     private double productExtraQuantity;
-    private double productAllAvailableStock;
+    private double productAvailableStockForSpecificAgent;
     private double selectedQuantity;
     private double taxAmount;
     private double productAmount;
@@ -137,12 +137,12 @@ public class DeliverysBean implements Serializable {
         this.productAmount = productAmount;
     }
 
-    public double getProductAllAvailableStock() {
-        return productAllAvailableStock;
+    public double getProductAvailableStockForSpecificAgent() {
+        return productAvailableStockForSpecificAgent;
     }
 
-    public void setProductAllAvailableStock(double productAllAvailableStock) {
-        this.productAllAvailableStock = productAllAvailableStock;
+    public void setProductAvailableStockForSpecificAgent(double productAvailableStockForSpecificAgent) {
+        this.productAvailableStockForSpecificAgent = productAvailableStockForSpecificAgent;
     }
 
     public double getProductRatePerUnit() {
@@ -164,21 +164,16 @@ public class DeliverysBean implements Serializable {
     @Override
     public String toString() {
         return "DeliverysBean{" +
-                "productId='" + productId + '\'' +
-                ", productCode='" + productCode + '\'' +
-                ", productTitle='" + productTitle + '\'' +
-                ", productAgentPrice='" + productAgentPrice + '\'' +
-                ", productConsumerPrice='" + productConsumerPrice + '\'' +
-                ", productRetailerPrice='" + productRetailerPrice + '\'' +
-                ", productgst='" + productgst + '\'' +
-                ", productvat='" + productvat + '\'' +
-                ", productOrderedQuantity=" + productOrderedQuantity +
-                ", productStock=" + productStock +
-                ", productExtraQuantity=" + productExtraQuantity +
-                ", selectedQuantity=" + selectedQuantity +
+                ", Code='" + productCode + '\'' +
+                ", Title='" + productTitle + '\'' +
+                ", AgentPrice='" + productAgentPrice + '\'' +
+                ", OrderedQua=" + productOrderedQuantity +
+                ", Stock=" + productStock +
+                ", ExtraQua=" + productExtraQuantity +
+                ", selectedQua=" + selectedQuantity +
                 ", taxAmount=" + taxAmount +
-                ", productAmount=" + productAmount +
-                ", productAllAvailableStock=" + productAllAvailableStock +
+                ", Amount=" + productAmount +
+                ", AgentStock=" + productAvailableStockForSpecificAgent +
                 '}';
     }
 }

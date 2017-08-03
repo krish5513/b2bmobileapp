@@ -13,7 +13,22 @@ public class TripSheetDeliveriesBean {
     private String mTripsheetDelivery_routeCodes;
     private String mTripsheetDelivery_productId;
     private String mTripsheetDelivery_productCodes;
-
+    private String mTripsheetDelivery_TaxPercent;
+    private String mTripsheetDelivery_UnitPrice;
+    private String mTripsheetDelivery_Quantity;
+    private String mTripsheetDelivery_Amount;
+    private String mTripsheetDelivery_TaxAmount;
+    private String mTripsheetDelivery_TaxTotal;
+    private String mTripsheetDelivery_SaleValue;
+    private String mTripsheetDelivery_Status;
+    private String mTripsheetDelivery_Delete;
+    private String mTripsheetDelivery_CreatedBy;
+    private String mTripsheetDelivery_CreatedOn;
+    private String mTripsheetDelivery_UpdatedOn;
+    private String mTripsheetDelivery_UpdatedBy;
+    private String mTripsheetDeleveryName;
+    private String mTripsheetDeleveryInstockAmount;
+    
     public String getmTripsheetDeliveryNo() {
         return mTripsheetDeliveryNo;
     }
@@ -197,27 +212,4 @@ public class TripSheetDeliveriesBean {
     public void setmTripsheetDeleveryInstockAmount(String mTripsheetDeleveryInstockAmount) {
         this.mTripsheetDeleveryInstockAmount = mTripsheetDeleveryInstockAmount;
     }
-
-    private String mTripsheetDelivery_TaxPercent;
-    private String mTripsheetDelivery_UnitPrice;
-    private String mTripsheetDelivery_Quantity;
-    private String mTripsheetDelivery_Amount;
-    private String mTripsheetDelivery_TaxAmount;
-
-    private String mTripsheetDelivery_TaxTotal;
-
-    private String mTripsheetDelivery_SaleValue;
-    private String mTripsheetDelivery_Status;
-
-    private String mTripsheetDelivery_Delete;
-    private String mTripsheetDelivery_CreatedBy;
-    private String mTripsheetDelivery_CreatedOn;
-    private String mTripsheetDelivery_UpdatedOn;
-    private String mTripsheetDelivery_UpdatedBy;
-
-    private String mTripsheetDeleveryName;
-
-    private String mTripsheetDeleveryInstockAmount;
-
-
 }

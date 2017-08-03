@@ -33,6 +33,7 @@ public class TripsheetReturns extends AppCompatActivity {
     private TripSheetReturnsAdapter mTripSheetReturnsAdapter;
     ArrayList customArraylist = new ArrayList();
     private String loggedInUserId;
+    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +41,6 @@ public class TripsheetReturns extends AppCompatActivity {
         setContentView(R.layout.activity_tripsheet_returns);
 
         try {
-            activityContext = TripsheetReturns.this;
-            mmSharedPreferences = new MMSharedPreferences(activityContext);
-            mDBHelper = new DBHelper(activityContext);
-
-            loggedInUserId = mmSharedPreferences.getString("userId");
-
             this.getSupportActionBar().setTitle("RETURNS (SPOIL)");
             this.getSupportActionBar().setSubtitle(null);
             this.getSupportActionBar().setLogo(R.drawable.route_white);
@@ -60,6 +55,16 @@ public class TripsheetReturns extends AppCompatActivity {
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
             tripSheetReturnProductsList = (ListView) findViewById(R.id.trip_sheet_return_products_list_view);
+
+            activityContext = TripsheetReturns.this;
+            mmSharedPreferences = new MMSharedPreferences(activityContext);
+            mDBHelper = new DBHelper(activityContext);
+
+            mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
+            mAgentId = this.getIntent().getStringExtra("agentId");
+            mAgentCode = this.getIntent().getStringExtra("agentCode");
+            mAgentName = this.getIntent().getStringExtra("agentName");
+            loggedInUserId = mmSharedPreferences.getString("userId");
 
             for (int i = 0; i < 2; i++) {
                 TripSheetReturnsBean dBean = new TripSheetReturnsBean();
@@ -136,12 +141,20 @@ public class TripsheetReturns extends AppCompatActivity {
 
     public void openTripSheetDeliveries(View v) {
         Intent i = new Intent(activityContext, TripsheetDelivery.class);
+        i.putExtra("tripsheetId", mTripSheetId);
+        i.putExtra("agentId", mAgentId);
+        i.putExtra("agentCode", mAgentCode);
+        i.putExtra("agentName", mAgentName);
         startActivity(i);
         finish();
     }
 
     public void openTripSheetPayments(View v) {
         Intent i = new Intent(activityContext, TripsheetPayments.class);
+        i.putExtra("tripsheetId", mTripSheetId);
+        i.putExtra("agentId", mAgentId);
+        i.putExtra("agentCode", mAgentCode);
+        i.putExtra("agentName", mAgentName);
         startActivity(i);
         finish();
     }

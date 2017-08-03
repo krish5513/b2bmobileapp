@@ -14,14 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
-import com.rightclickit.b2bsaleon.adapters.TripSheetPaymentsAdapter;
-import com.rightclickit.b2bsaleon.beanclass.TripSheetPaymentsBean;
 
 import java.util.ArrayList;
 
@@ -34,14 +30,14 @@ public class TripsheetPayments extends AppCompatActivity {
     LinearLayout delivery;
     ArrayList paymentsList = new ArrayList();
     EditText mAmountText;
-    String mTripsheetId = "", mAgentId = "", mAgentCode = "", mAgentName = "";
+    String mTripSheetId = "", mAgentId = "", mAgentCode = "", mAgentName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripsheet_payments);
 
-        mTripsheetId = this.getIntent().getStringExtra("tripsheetId");
+        mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
         mAgentId = this.getIntent().getStringExtra("agentId");
         mAgentCode = this.getIntent().getStringExtra("agentCode");
         mAgentName = this.getIntent().getStringExtra("agentName");
@@ -74,6 +70,10 @@ public class TripsheetPayments extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TripsheetPayments.this, TripsheetReturns.class);
+                i.putExtra("tripsheetId", mTripSheetId);
+                i.putExtra("agentId", mAgentId);
+                i.putExtra("agentCode", mAgentCode);
+                i.putExtra("agentName", mAgentName);
                 startActivity(i);
 
             }
@@ -82,6 +82,10 @@ public class TripsheetPayments extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TripsheetPayments.this, TripsheetDelivery.class);
+                i.putExtra("tripsheetId", mTripSheetId);
+                i.putExtra("agentId", mAgentId);
+                i.putExtra("agentCode", mAgentCode);
+                i.putExtra("agentName", mAgentName);
                 startActivity(i);
 
             }
