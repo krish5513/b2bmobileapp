@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 
 public class PaymentsBean implements Serializable {
+
     private String Payments_paymentsNumber;
     private String Payments_tripsheetId;
     private String Payments_userId;
@@ -174,43 +175,12 @@ public class PaymentsBean implements Serializable {
         Payments_receivedAmount = payments_receivedAmount;
     }
 
-    @Override
-    public String toString() {
-        return "PaymentsBean{" +
-                "Payments_tripsheetId='" + Payments_tripsheetId + '\'' +
-                ", Payments_userId='" + Payments_userId + '\'' +
-                ", Payments_userCodes='" + Payments_userCodes + '\'' +
-                ", Payments_routeId='" + Payments_routeId + '\'' +
-                ", Payments_routeCodes='" + Payments_routeCodes + '\'' +
-                ", Payments_chequeNumber='" + Payments_chequeNumber + '\'' +
-                ", Payments_accountNumber='" + Payments_accountNumber + '\'' +
-                ", Payments_accountName='" + Payments_accountName + '\'' +
-                ", Payments_bankName=" + Payments_bankName +
-                ", Payments_chequeDate=" + Payments_chequeDate +
-                ", Payments_chequeClearDate=" + Payments_chequeClearDate +
-                ", Payments_receiverName=" + Payments_receiverName +
-                ", Payments_transActionStatus=" + Payments_transActionStatus +
-                ", Payments_taxTotal=" + Payments_taxTotal +
-                ", Payments_saleValue=" + Payments_saleValue +
-                ", Payments_status=" + Payments_status +
-                ", Payments_delete=" + Payments_delete +
-                '}';
-    }
-
     public String getPayments_type() {
         return Payments_type;
     }
 
     public void setPayments_type(String payments_type) {
         Payments_type = payments_type;
-    }
-
-    public String getPayments_paymentsNumber() {
-        return Payments_paymentsNumber;
-    }
-
-    public void setPayments_paymentsNumber(String payments_paymentsNumber) {
-        Payments_paymentsNumber = payments_paymentsNumber;
     }
 
     public String getPayments_saleOrderId() {
@@ -227,5 +197,13 @@ public class PaymentsBean implements Serializable {
 
     public void setPayments_saleOrderCode(String payments_saleOrderCode) {
         Payments_saleOrderCode = payments_saleOrderCode;
+    }
+
+    public String getPayments_paymentsNumber() {
+        return Payments_paymentsNumber;
+    }
+
+    public void setPayments_paymentsNumber(String payments_paymentsNumber) {
+        Payments_paymentsNumber = payments_paymentsNumber;
     }
 }

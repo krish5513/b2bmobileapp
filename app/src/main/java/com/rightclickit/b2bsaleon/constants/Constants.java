@@ -88,9 +88,6 @@ public class Constants {
     public static final String MAIN_URL = "http://111.93.17.13";
 
     //Development
-   // public static final String MAIN_URL = "http://52.10.51.54";
-
-
     public static final String APP_TYPE = "A";
 
     //Service Response Codes
@@ -141,4 +138,5 @@ public class Constants {
 
     // TripsheetsPaymentsURL
     public static final String TRIPSHEETS_PAYMENTS_URL = "/payment_orders/add";
+
 }
