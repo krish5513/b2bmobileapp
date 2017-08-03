@@ -289,6 +289,11 @@
             android:name=".services.SyncTripSheetsPaymentsService"
             android:enabled="true"
             android:exported="true" />
+        
+        <service
+            android:name=".services.SyncTripsheetDeliveriesService"
+            android:enabled="true"
+            android:exported="true" />
 
     </application>
 

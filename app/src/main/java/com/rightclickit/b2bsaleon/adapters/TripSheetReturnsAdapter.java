@@ -85,10 +85,10 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
             mHolder = (TripSheetReturnsViewHolder) view.getTag();
         }
 
-        mHolder.dProductReturnName.setText(mTripSheetsReturns.get(position).getmTripsheetReturnsName());
+        mHolder.dProductReturnName.setText(mTripSheetsReturns.get(position).getmTripshhetReturnsProduct_codes());
         mHolder.dProductReturnAmount.setText(mTripSheetsReturns.get(position).getmTripshhetReturnsQuantity());
         //  mHolder.dProductReturnTypr.setText(mTripSheetsReturns.get(position).getrProductReturnsType());
-        mHolder.dProductIncAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsReturns.get(position).getmTripsheetReturnsIncAmount())));
+        mHolder.dProductIncAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsReturns.get(position).getmTripshhetReturnsQuantity())));
 
         return view;
     }

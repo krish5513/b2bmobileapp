@@ -155,21 +155,11 @@ public class TripsheetsStockList {
     public String toString() {
         return "TripsheetsStockList{" +
                 "mTripsheetStockTripsheetId='" + mTripsheetStockTripsheetId + '\'' +
-                ", mTripsheetStockId='" + mTripsheetStockId + '\'' +
-                ", mTripsheetStockProductId='" + mTripsheetStockProductId + '\'' +
                 ", mTripsheetStockProductCode='" + mTripsheetStockProductCode + '\'' +
                 ", mTripsheetStockProductName='" + mTripsheetStockProductName + '\'' +
                 ", mTripsheetStockProductOrderQuantity='" + mTripsheetStockProductOrderQuantity + '\'' +
-                ", mTripsheetStockDispatchBy='" + mTripsheetStockDispatchBy + '\'' +
-                ", mTripsheetStockDispatchDate='" + mTripsheetStockDispatchDate + '\'' +
-                ", mTripsheetStockDispatchQuantity='" + mTripsheetStockDispatchQuantity + '\'' +
-                ", mTripsheetStockVerifyBy='" + mTripsheetStockVerifyBy + '\'' +
-                ", mTripsheetStockVerifiedDate='" + mTripsheetStockVerifiedDate + '\'' +
-                ", mTripsheetStockVerifiedQuantity='" + mTripsheetStockVerifiedQuantity + '\'' +
                 ", inStockQuantity='" + inStockQuantity + '\'' +
                 ", extraQuantity='" + extraQuantity + '\'' +
-                ", isStockDispatched='" + isStockDispatched + '\'' +
-                ", isStockVerified='" + isStockVerified + '\'' +
                 '}';
     }
 }
