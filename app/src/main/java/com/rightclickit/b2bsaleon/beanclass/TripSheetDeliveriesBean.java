@@ -28,7 +28,7 @@ public class TripSheetDeliveriesBean {
     private String mTripsheetDelivery_UpdatedBy;
     private String mTripsheetDeleveryName;
     private String mTripsheetDeleveryInstockAmount;
-    
+
     public String getmTripsheetDeliveryNo() {
         return mTripsheetDeliveryNo;
     }
@@ -211,5 +211,34 @@ public class TripSheetDeliveriesBean {
 
     public void setmTripsheetDeleveryInstockAmount(String mTripsheetDeleveryInstockAmount) {
         this.mTripsheetDeleveryInstockAmount = mTripsheetDeleveryInstockAmount;
+    }
+
+    @Override
+    public String toString() {
+        return "TripSheetDeliveriesBean{" +
+                "mTripsheetDeliveryNo='" + mTripsheetDeliveryNo + '\'' +
+                ", mTripsheetDelivery_tripId='" + mTripsheetDelivery_tripId + '\'' +
+                ", mTripsheetDelivery_userId='" + mTripsheetDelivery_userId + '\'' +
+                ", mTripsheetDelivery_userCodes='" + mTripsheetDelivery_userCodes + '\'' +
+                ", mTripsheetDelivery_routeId='" + mTripsheetDelivery_routeId + '\'' +
+                ", mTripsheetDelivery_routeCodes='" + mTripsheetDelivery_routeCodes + '\'' +
+                ", mTripsheetDelivery_productId='" + mTripsheetDelivery_productId + '\'' +
+                ", mTripsheetDelivery_productCodes='" + mTripsheetDelivery_productCodes + '\'' +
+                ", mTripsheetDelivery_TaxPercent='" + mTripsheetDelivery_TaxPercent + '\'' +
+                ", mTripsheetDelivery_UnitPrice='" + mTripsheetDelivery_UnitPrice + '\'' +
+                ", mTripsheetDelivery_Quantity='" + mTripsheetDelivery_Quantity + '\'' +
+                ", mTripsheetDelivery_Amount='" + mTripsheetDelivery_Amount + '\'' +
+                ", mTripsheetDelivery_TaxAmount='" + mTripsheetDelivery_TaxAmount + '\'' +
+                ", mTripsheetDelivery_TaxTotal='" + mTripsheetDelivery_TaxTotal + '\'' +
+                ", mTripsheetDelivery_SaleValue='" + mTripsheetDelivery_SaleValue + '\'' +
+                ", mTripsheetDelivery_Status='" + mTripsheetDelivery_Status + '\'' +
+                ", mTripsheetDelivery_Delete='" + mTripsheetDelivery_Delete + '\'' +
+                ", mTripsheetDelivery_CreatedBy='" + mTripsheetDelivery_CreatedBy + '\'' +
+                ", mTripsheetDelivery_CreatedOn='" + mTripsheetDelivery_CreatedOn + '\'' +
+                ", mTripsheetDelivery_UpdatedOn='" + mTripsheetDelivery_UpdatedOn + '\'' +
+                ", mTripsheetDelivery_UpdatedBy='" + mTripsheetDelivery_UpdatedBy + '\'' +
+                ", mTripsheetDeleveryName='" + mTripsheetDeleveryName + '\'' +
+                ", mTripsheetDeleveryInstockAmount='" + mTripsheetDeleveryInstockAmount + '\'' +
+                '}';
     }
 }

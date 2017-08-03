@@ -70,7 +70,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
             deliverysBean.setTaxAmount(taxAmount);
 
             selectedDeliveryProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
-            System.out.println("====" + deliverysBean);
+
             if (listener != null)
                 listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
         }
@@ -223,7 +223,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                     if (!hasFocus) {
                         EditText quantityEditText = (EditText) view;
                         Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
-                        System.out.println("======== enteredQuantity = " + enteredQuantity + " && a.Q" + currentDeliveryBean.getProductAvailableStockForSpecificAgent());
+
                         if (enteredQuantity > currentDeliveryBean.getProductAvailableStockForSpecificAgent()) {
                             quantityEditText.setText(zero_cost);
 
@@ -247,7 +247,6 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                                     .setIcon(android.R.drawable.ic_dialog_alert)
                                     .show();
                         } else {
-                            System.out.println("########### Q : " + enteredQuantity);
                             if (enteredQuantity > 0) {
                                 double amount = currentDeliveryBean.getProductRatePerUnit() * enteredQuantity;
                                 double taxAmount = (amount * currentDeliveryBean.getProductTaxPerUnit()) / 100;
@@ -255,7 +254,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                                 currentDeliveryBean.setSelectedQuantity(enteredQuantity);
                                 currentDeliveryBean.setProductAmount(amount);
                                 currentDeliveryBean.setTaxAmount(taxAmount);
-                                System.out.println("$$$$ 0 $$$$$$ taxAmount = " + currentDeliveryBean.getTaxAmount() + " && " + currentDeliveryBean.getProductAmount() + " && " + currentDeliveryBean.getSelectedQuantity());
+
                                 currentTripSheetDeliveriesViewHolder.tax.setText(Utility.getFormattedCurrency(currentDeliveryBean.getTaxAmount()));
                                 currentTripSheetDeliveriesViewHolder.amount.setText(Utility.getFormattedCurrency(currentDeliveryBean.getProductAmount()));
 
@@ -264,7 +263,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                                 currentDeliveryBean.setSelectedQuantity(0);
                                 currentDeliveryBean.setProductAmount(0);
                                 currentDeliveryBean.setTaxAmount(0);
-                                System.out.println("$$$$ 1 $$$$$$ taxAmount = " + currentDeliveryBean.getTaxAmount() + " && " + currentDeliveryBean.getProductAmount() + " && " + currentDeliveryBean.getSelectedQuantity());
+
                                 currentTripSheetDeliveriesViewHolder.tax.setText(Utility.getFormattedCurrency(0));
                                 currentTripSheetDeliveriesViewHolder.amount.setText(Utility.getFormattedCurrency(0));
 
@@ -287,7 +286,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                 selectedDeliveryProductsHashMap.remove(deliverysBean.getProductId());
 
             selectedDeliveryProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
-            System.out.println("====" + deliverysBean);
+
             if (listener != null)
                 listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
 

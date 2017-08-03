@@ -28,13 +28,16 @@ import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TripsheetDelivery extends AppCompatActivity implements TripSheetDeliveriesListener {
@@ -50,7 +53,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
     private ArrayList<DeliverysBean> deliveryProductsList = new ArrayList<>();
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap;
-    private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "";
+    private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "";
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
 
     @Override
@@ -92,6 +95,12 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             mAgentName = this.getIntent().getStringExtra("agentName");
             loggedInUserId = mPreferences.getString("userId");
 
+            if (mAgentId != null && mAgentId != "") {
+                List<String> agentRouteIds = mDBHelper.getAgentRouteId(mAgentId);
+                mAgentRouteId = agentRouteIds.get(0);
+                mAgentRouteCode = mDBHelper.getRouteCodeByRouteId(mAgentRouteId);
+            }
+
             companyName.setText(mAgentName);
 
             ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
@@ -103,16 +112,11 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                     trip_sheet_payments.setVisibility(View.VISIBLE);
                 }
             }
-            HashMap<String, String> userRouteIds = mDBHelper.getUserRouteIds();
-            JSONArray routesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
-            System.out.println("========== routesArray = " + routesArray);
-            String routeId = "";
-            if (routesArray.length() > 0)
-                routeId = routesArray.getString(0);
-            System.out.println("======== routeId = " + routeId + " && " + mDBHelper.getRouteCodeByRouteId(routeId));
 
             selectedDeliveryProductsHashMap = new HashMap<>();
             deliveryProductsList = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
+
+            ArrayList<TripSheetDeliveriesBean> previouslyDeliveredProductsData = mDBHelper.fetchAllTripsheetsDeliveriesList(mTripSheetId);
 
             mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, deliveryProductsList);
             ordered_products_list_view.setAdapter(mTripSheetDeliveriesAdapter);
@@ -247,6 +251,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
+                    saveTripSheetDeliveryProductsData();
                 }
             });
 
@@ -279,7 +284,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
         for (Map.Entry<String, DeliverysBean> deliverysBeanEntry : selectedDeliveryProductsHashMap.entrySet()) {
             DeliverysBean deliverysBean = deliverysBeanEntry.getValue();
-            System.out.println("******" + deliverysBean);
+
             totalAmount = totalAmount + deliverysBean.getProductAmount();
             totalTaxAmount = totalTaxAmount + deliverysBean.getTaxAmount();
             subTotal = totalAmount + totalTaxAmount;
@@ -293,17 +298,47 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
     public void saveTripSheetDeliveryProductsData() {
         try {
             if (selectedDeliveryProductsHashMap.size() > 0) {
-                //mTripSheetId
-                //mAgentId
-                //agentCode
+                long currentTimeStamp = System.currentTimeMillis();
 
                 ArrayList<TripSheetDeliveriesBean> mTripsheetsDeliveriesList = new ArrayList<>();
                 for (Map.Entry<String, DeliverysBean> deliverysBeanEntry : selectedDeliveryProductsHashMap.entrySet()) {
                     DeliverysBean deliverysBean = deliverysBeanEntry.getValue();
-                    System.out.println("******" + deliverysBean);
+
+                    TripSheetDeliveriesBean tripSheetDeliveriesBean = new TripSheetDeliveriesBean();
+                    tripSheetDeliveriesBean.setmTripsheetDeliveryNo("");
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_tripId(mTripSheetId);
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_userId(mAgentId);
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_userCodes(mAgentCode);
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_routeId(mAgentRouteId);
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_routeCodes(mAgentRouteCode);
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_productId(deliverysBean.getProductId());
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_productCodes(deliverysBean.getProductCode());
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_TaxPercent(String.valueOf(deliverysBean.getProductTaxPerUnit()));
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_UnitPrice(String.valueOf(deliverysBean.getProductRatePerUnit()));
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_Quantity(String.valueOf(deliverysBean.getSelectedQuantity()));
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_Amount(String.valueOf(deliverysBean.getProductAmount()));
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_TaxAmount(String.valueOf(deliverysBean.getTaxAmount()));
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_TaxTotal(String.valueOf(totalTaxAmount));
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_SaleValue(String.valueOf(subTotal));
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_Status("A");
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_Delete("N");
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_CreatedBy(loggedInUserId);
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_CreatedOn(String.valueOf(currentTimeStamp));
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_UpdatedBy(loggedInUserId);
+                    tripSheetDeliveriesBean.setmTripsheetDelivery_UpdatedOn(String.valueOf(currentTimeStamp));
+
+                    mTripsheetsDeliveriesList.add(tripSheetDeliveriesBean);
                 }
+
+                mDBHelper.insertTripsheetsDeliveriesListData(mTripsheetsDeliveriesList);
+
+                /*if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                    Intent syncTDCOrderServiceIntent = new Intent(activityContext, SyncTDCSalesOrderService.class);
+                    startService(syncTDCOrderServiceIntent);
+                }*/
+
             } else {
-                Toast.makeText(activityContext, "Please select at least one product.", Toast.LENGTH_LONG).show();
+                Toast.makeText(activityContext, "Please select at least one product to deliver.", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
             e.printStackTrace();

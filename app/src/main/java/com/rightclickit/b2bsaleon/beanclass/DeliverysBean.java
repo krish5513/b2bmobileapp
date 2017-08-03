@@ -164,16 +164,23 @@ public class DeliverysBean implements Serializable {
     @Override
     public String toString() {
         return "DeliverysBean{" +
-                ", Code='" + productCode + '\'' +
-                ", Title='" + productTitle + '\'' +
-                ", AgentPrice='" + productAgentPrice + '\'' +
-                ", OrderedQua=" + productOrderedQuantity +
-                ", Stock=" + productStock +
-                ", ExtraQua=" + productExtraQuantity +
-                ", selectedQua=" + selectedQuantity +
+                "productId='" + productId + '\'' +
+                ", productCode='" + productCode + '\'' +
+                ", productTitle='" + productTitle + '\'' +
+                ", productAgentPrice='" + productAgentPrice + '\'' +
+                ", productConsumerPrice='" + productConsumerPrice + '\'' +
+                ", productRetailerPrice='" + productRetailerPrice + '\'' +
+                ", productgst='" + productgst + '\'' +
+                ", productvat='" + productvat + '\'' +
+                ", productOrderedQuantity=" + productOrderedQuantity +
+                ", productStock=" + productStock +
+                ", productExtraQuantity=" + productExtraQuantity +
+                ", productAvailableStockForSpecificAgent=" + productAvailableStockForSpecificAgent +
+                ", selectedQuantity=" + selectedQuantity +
                 ", taxAmount=" + taxAmount +
-                ", Amount=" + productAmount +
-                ", AgentStock=" + productAvailableStockForSpecificAgent +
+                ", productAmount=" + productAmount +
+                ", productRatePerUnit=" + productRatePerUnit +
+                ", productTaxPerUnit=" + productTaxPerUnit +
                 '}';
     }
 }

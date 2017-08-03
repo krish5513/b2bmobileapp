@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -323,7 +324,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_DELIVERY_CREATEDON = "tripshhet_delivery_createdon";
     private final String KEY_TRIPSHEET_DELIVERY_UPDATEDON = "tripshhet_delivery_updatedon";
     private final String KEY_TRIPSHEET_DELIVERY_UPDATEDBY = "tripshhet_delivery_updatedby";
-
+    private final String KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS = "tripshhet_delivery_upload_status";
 
     // Column names for Tripsheets returns List  Table
     private final String KEY_TRIPSHEET_RETURNS_RETURN_NO = "tripsheet_returns_return_no";
@@ -348,7 +349,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_RETURNS_CREATED_ON = "tripshhet_returns_created_on";
     private final String KEY_TRIPSHEET_RETURNS_UPDATED_ON = "tripshhet_returns_updated_on";
     private final String KEY_TRIPSHEET_RETURNS_UPDATED_BY = "tripshhet_returns_updated_by";
-
+    private final String KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS = "tripshhet_returns_upload_status";
 
     // Column names for Tripsheets payments List  Table
     private final String KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO = "tripsheet_payments_payment_no";
@@ -381,6 +382,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_PAYMENTS_CREATED_ON = "tripshhet_payments_created_on";
     private final String KEY_TRIPSHEET_PAYMENTS_UPDATED_ON = "tripshhet_payments_updated_on";
     private final String KEY_TRIPSHEET_PAYMENTS_UPDATED_BY = "tripshhet_payments_updated_by";
+    private final String KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS = "tripshhet_payments_upload_status";
 
     // Column names for Tripsheets so List  Table
     private final String KEY_TRIPSHEET_SO_UNIQUE_ID = "tripsheet_so_unique_id";
@@ -565,7 +567,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_DELIVERY_CREATEDBY + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_CREATEDON + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_UPDATEDON + " VARCHAR,"
-            + KEY_TRIPSHEET_DELIVERY_UPDATEDBY + " VARCHAR)";
+            + KEY_TRIPSHEET_DELIVERY_UPDATEDBY + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // Tripsheets Returns list Table Create Statements
     private final String CREATE_TRIPSHEETS_RETURNS_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
@@ -590,8 +593,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_RETURNS_CREATED_BY + " VARCHAR,"
             + KEY_TRIPSHEET_RETURNS_CREATED_ON + " VARCHAR,"
             + KEY_TRIPSHEET_RETURNS_UPDATED_ON + " VARCHAR,"
-            + KEY_TRIPSHEET_RETURNS_UPDATED_BY + " VARCHAR)";
-
+            + KEY_TRIPSHEET_RETURNS_UPDATED_BY + " VARCHAR,"
+            + KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // Tripsheets Returns list Table Create Statements
     private final String CREATE_TRIPSHEETS_PAYMENTS_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
@@ -624,8 +627,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_PAYMENTS_CREATED_BY + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_CREATED_ON + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_UPDATED_ON + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_UPDATED_BY + " VARCHAR)";
-
+            + KEY_TRIPSHEET_PAYMENTS_UPDATED_BY + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // Tripsheets SO Table Create Statements
     private final String CREATE_TRIPSHEETS_SO_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
@@ -2567,17 +2570,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 int checkVal = checkTripsheetExistsOrNot(mTripsheetsList.get(i).getmTripshhetId());
                 if (checkVal == 0) {
-                    System.out.println("+++++++++++++++++++++++++=INSERTED++++++++++++++++++++++"
-                            + mTripsheetsList.get(i).getmTripshhetId());
+                    System.out.println("+++++++++++++++++++++++++=INSERTED++++++++++++++++++++++" + mTripsheetsList.get(i).getmTripshhetId());
                     values.put(KEY_TRIPSHEET_VERIFY_STATUS, "0");
                     // insert row
                     db.insert(TABLE_TRIPSHEETS_LIST, null, values);
                 } else {
-                    System.out.println("+++++++++++++++++++++++++=UPDATED++++++++++++++++++++++"
-                            + mTripsheetsList.get(i).getmTripshhetId());
+                    System.out.println("+++++++++++++++++++++++++=UPDATED++++++++++++++++++++++" + mTripsheetsList.get(i).getmTripshhetId());
                     // Update row
-                    db.update(TABLE_TRIPSHEETS_LIST, values, KEY_TRIPSHEET_ID + " = ?",
-                            new String[]{String.valueOf(mTripsheetsList.get(i).getmTripshhetId())});
+                    db.update(TABLE_TRIPSHEETS_LIST, values, KEY_TRIPSHEET_ID + " = ?", new String[]{String.valueOf(mTripsheetsList.get(i).getmTripshhetId())});
                 }
 
                 values.clear();
@@ -2767,37 +2767,53 @@ public class DBHelper extends SQLiteOpenHelper {
      */
     public void insertTripsheetsDeliveriesListData(ArrayList<TripSheetDeliveriesBean> mTripsheetsDeliveriesList) {
         SQLiteDatabase db = this.getWritableDatabase();
-        try {
-            for (int i = 0; i < mTripsheetsDeliveriesList.size(); i++) {
-                ContentValues values = new ContentValues();
-                values.put(KEY_TRIPSHEET_DELIVERY_TRIP_ID, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_tripId());
-                values.put(KEY_TRIPSHEET_DELIVERY_USER_ID, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_userId());
-                values.put(KEY_TRIPSHEET_DELIVERY_USER_CODES, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_userCodes());
-                values.put(KEY_TRIPSHEET_DELIVERY_ROUTE_ID, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_routeId());
-                values.put(KEY_TRIPSHEET_DELIVERY_ROUTE_CODES, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_routeCodes());
-                values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_productId());
-                values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_productCodes());
-                values.put(KEY_TRIPSHEET_DELIVERY_TAXPERCENT, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_TaxPercent());
-                values.put(KEY_TRIPSHEET_DELIVERY_UNITPRICE, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_UnitPrice());
-                values.put(KEY_TRIPSHEET_DELIVERY_QUANTITY, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_Quantity());
-                values.put(KEY_TRIPSHEET_DELIVERY_AMOUNT, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_Amount());
-                values.put(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_TaxAmount());
-                values.put(KEY_TRIPSHEET_DELIVERY_TAXTOTAL, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_TaxTotal());
-                values.put(KEY_TRIPSHEET_DELIVERY_SALEVALUE, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_SaleValue());
-                values.put(KEY_TRIPSHEET_DELIVERY_STATUS, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_Status());
-                values.put(KEY_TRIPSHEET_DELIVERY_DELETE, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_Delete());
-                values.put(KEY_TRIPSHEET_DELIVERY_CREATEDBY, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_CreatedBy());
-                values.put(KEY_TRIPSHEET_DELIVERY_CREATEDON, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_CreatedOn());
-                values.put(KEY_TRIPSHEET_DELIVERY_UPDATEDON, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_UpdatedOn());
-                values.put(KEY_TRIPSHEET_DELIVERY_UPDATEDBY, mTripsheetsDeliveriesList.get(i).getmTripsheetDelivery_UpdatedBy());
+        SQLiteDatabase rdb = this.getReadableDatabase();
 
-                db.insert(TABLE_TRIPSHEETS_DELIVERIES_LIST, null, values);
+        try {
+            for (TripSheetDeliveriesBean tripSheetDeliveriesBean : mTripsheetsDeliveriesList) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_TRIPSHEET_DELIVERY_TRIP_ID, tripSheetDeliveriesBean.getmTripsheetDelivery_tripId());
+                values.put(KEY_TRIPSHEET_DELIVERY_USER_ID, tripSheetDeliveriesBean.getmTripsheetDelivery_userId());
+                values.put(KEY_TRIPSHEET_DELIVERY_USER_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_userCodes());
+                values.put(KEY_TRIPSHEET_DELIVERY_ROUTE_ID, tripSheetDeliveriesBean.getmTripsheetDelivery_routeId());
+                values.put(KEY_TRIPSHEET_DELIVERY_ROUTE_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_routeCodes());
+                values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS, tripSheetDeliveriesBean.getmTripsheetDelivery_productId());
+                values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes());
+                values.put(KEY_TRIPSHEET_DELIVERY_TAXPERCENT, tripSheetDeliveriesBean.getmTripsheetDelivery_TaxPercent());
+                values.put(KEY_TRIPSHEET_DELIVERY_UNITPRICE, tripSheetDeliveriesBean.getmTripsheetDelivery_UnitPrice());
+                values.put(KEY_TRIPSHEET_DELIVERY_QUANTITY, tripSheetDeliveriesBean.getmTripsheetDelivery_Quantity());
+                values.put(KEY_TRIPSHEET_DELIVERY_AMOUNT, tripSheetDeliveriesBean.getmTripsheetDelivery_Amount());
+                values.put(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT, tripSheetDeliveriesBean.getmTripsheetDelivery_TaxAmount());
+                values.put(KEY_TRIPSHEET_DELIVERY_TAXTOTAL, tripSheetDeliveriesBean.getmTripsheetDelivery_TaxTotal());
+                values.put(KEY_TRIPSHEET_DELIVERY_SALEVALUE, tripSheetDeliveriesBean.getmTripsheetDelivery_SaleValue());
+                values.put(KEY_TRIPSHEET_DELIVERY_STATUS, tripSheetDeliveriesBean.getmTripsheetDelivery_Status());
+                values.put(KEY_TRIPSHEET_DELIVERY_DELETE, tripSheetDeliveriesBean.getmTripsheetDelivery_Delete());
+                values.put(KEY_TRIPSHEET_DELIVERY_CREATEDBY, tripSheetDeliveriesBean.getmTripsheetDelivery_CreatedBy());
+                values.put(KEY_TRIPSHEET_DELIVERY_CREATEDON, tripSheetDeliveriesBean.getmTripsheetDelivery_CreatedOn());
+                values.put(KEY_TRIPSHEET_DELIVERY_UPDATEDON, tripSheetDeliveriesBean.getmTripsheetDelivery_UpdatedOn());
+                values.put(KEY_TRIPSHEET_DELIVERY_UPDATEDBY, tripSheetDeliveriesBean.getmTripsheetDelivery_UpdatedBy());
+                values.put(KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS, 0);
+
+                int noOfRecordsExisted = checkProductExistsInTripSheetDeliveryTable(tripSheetDeliveriesBean.getmTripsheetDelivery_tripId(), tripSheetDeliveriesBean.getmTripsheetDelivery_productId());
+                long status;
+                if (noOfRecordsExisted == 0) {
+                    status = db.insert(TABLE_TRIPSHEETS_DELIVERIES_LIST, null, values);
+                } else {
+                    status = db.update(TABLE_TRIPSHEETS_DELIVERIES_LIST, values, KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + " = ?", new String[]{tripSheetDeliveriesBean.getmTripsheetDelivery_tripId(), tripSheetDeliveriesBean.getmTripsheetDelivery_productId()});
+                }
+
+                if (status > 0) {
+                    //updateProductStockInTripSheetStockTable(tripSheetDeliveriesBean.getmTripsheetDelivery_tripId(), tripSheetDeliveriesBean.getmTripsheetDelivery_tripId(), tripSheetDeliveriesBean.getmTripsheetDelivery_Quantity(), tripSheetDeliveriesBean.getmTripsheetDelivery_Quantity());
+                }
+
                 values.clear();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         db.close();
+        rdb.close();
     }
 
     /**
@@ -3527,5 +3543,68 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
         return privilege;
+    }
+
+    public List<String> getAgentRouteId(String agentId) {
+        List<String> routeIdsList = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT " + KEY_AGENT_ROUTE_ID + " FROM " + TABLE_AGENTS + " WHERE " + KEY_AGENT_ID + "='" + agentId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    String routeId = c.getString(c.getColumnIndex(KEY_AGENT_ROUTE_ID));
+                    routeId = routeId.replace("[\"", "").replace("\"]", "");
+                    routeIdsList = new ArrayList<>(Arrays.asList(routeId.split(",")));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return routeIdsList;
+    }
+
+    public int checkProductExistsInTripSheetDeliveryTable(String tripSheetId, String productId) {
+        int noOfRecords = 0;
+        try {
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_NO + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + "='" + tripSheetId + "' AND " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + " ='" + productId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfRecords = cursor.getCount();
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return noOfRecords;
+    }
+
+    public void updateProductStockInTripSheetStockTable(String tripSheetId, String productCode, String inStockQuantity, String extraQuantity) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY, inStockQuantity);
+            values.put(KEY_TRIPSHEET_STOCK_EXTRA_QUANTITY, extraQuantity);
+
+            int status = db.update(TABLE_TRIPSHEETS_STOCK_LIST, values, KEY_TRIPSHEET_STOCK_TRIPSHEET_ID + " = ? AND " + KEY_TRIPSHEET_STOCK_PRODUCT_CODE + " = ?", new String[]{tripSheetId, productCode});
+
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
     }
 }
