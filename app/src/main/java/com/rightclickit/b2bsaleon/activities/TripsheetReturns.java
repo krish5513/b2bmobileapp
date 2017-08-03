@@ -33,7 +33,8 @@ public class TripsheetReturns extends AppCompatActivity {
     private TripSheetReturnsAdapter mTripSheetReturnsAdapter;
     ArrayList customArraylist = new ArrayList();
     private String loggedInUserId;
-    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "";
+    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "",
+            mAgentSoId = "", mAgentSoCode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,10 @@ public class TripsheetReturns extends AppCompatActivity {
             mAgentCode = this.getIntent().getStringExtra("agentCode");
             mAgentName = this.getIntent().getStringExtra("agentName");
             loggedInUserId = mmSharedPreferences.getString("userId");
+            mAgentRouteId = this.getIntent().getStringExtra("agentRouteId");
+            mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
+            mAgentSoId = this.getIntent().getStringExtra("agentSoId");
+            mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
 
             for (int i = 0; i < 2; i++) {
                 TripSheetReturnsBean dBean = new TripSheetReturnsBean();
@@ -145,6 +150,8 @@ public class TripsheetReturns extends AppCompatActivity {
         i.putExtra("agentId", mAgentId);
         i.putExtra("agentCode", mAgentCode);
         i.putExtra("agentName", mAgentName);
+        i.putExtra("agentSoId", mAgentSoId);
+        i.putExtra("agentSoCode", mAgentSoCode);
         startActivity(i);
         finish();
     }
@@ -155,6 +162,10 @@ public class TripsheetReturns extends AppCompatActivity {
         i.putExtra("agentId", mAgentId);
         i.putExtra("agentCode", mAgentCode);
         i.putExtra("agentName", mAgentName);
+        i.putExtra("agentRouteId", mAgentRouteId);
+        i.putExtra("agentRouteCode", mAgentRouteCode);
+        i.putExtra("agentSoId", mAgentSoId);
+        i.putExtra("agentSoCode", mAgentSoCode);
         startActivity(i);
         finish();
     }

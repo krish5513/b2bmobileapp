@@ -53,7 +53,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
     private ArrayList<DeliverysBean> deliveryProductsList = new ArrayList<>();
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap;
-    private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "";
+    private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
 
     @Override
@@ -93,6 +93,8 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             mAgentId = this.getIntent().getStringExtra("agentId");
             mAgentCode = this.getIntent().getStringExtra("agentCode");
             mAgentName = this.getIntent().getStringExtra("agentName");
+            mAgentSoId = this.getIntent().getStringExtra("agentSoId");
+            mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
             loggedInUserId = mPreferences.getString("userId");
 
             if (mAgentId != null && mAgentId != "") {
@@ -225,6 +227,10 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
         i.putExtra("agentId", mAgentId);
         i.putExtra("agentCode", mAgentCode);
         i.putExtra("agentName", mAgentName);
+        i.putExtra("agentRouteId", mAgentRouteId);
+        i.putExtra("agentRouteCode", mAgentRouteCode);
+        i.putExtra("agentSoId", mAgentSoId);
+        i.putExtra("agentSoCode", mAgentSoCode);
         startActivity(i);
         finish();
     }
@@ -235,6 +241,10 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
         i.putExtra("agentId", mAgentId);
         i.putExtra("agentCode", mAgentCode);
         i.putExtra("agentName", mAgentName);
+        i.putExtra("agentRouteId", mAgentRouteId);
+        i.putExtra("agentRouteCode", mAgentRouteCode);
+        i.putExtra("agentSoId", mAgentSoId);
+        i.putExtra("agentSoCode", mAgentSoCode);
         startActivity(i);
         finish();
     }

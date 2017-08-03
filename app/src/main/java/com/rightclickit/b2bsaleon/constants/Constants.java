@@ -138,4 +138,7 @@ public class Constants {
 
     //Get Notifications List  URL
     public static final String GET_NOTIFICATIONS_LIST = "/notification/list/";
+
+    // TripsheetsPaymentsURL
+    public static final String TRIPSHEETS_PAYMENTS_URL = "/payment_orders/add";
 }

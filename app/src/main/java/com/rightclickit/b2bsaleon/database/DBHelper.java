@@ -11,6 +11,7 @@ import android.util.Log;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
+import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.SpecialPriceBean;
 import com.rightclickit.b2bsaleon.beanclass.StakeHolderTypes;
@@ -150,7 +151,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public final String KEY_PRODUCT_IMAGE_URL = "product_image_url";
     public final String KEY_PRODUCT_RETURNABLE = "product_returnable";
     public final String KEY_PRODUCT_MOQ = "product_moq";
-    public final String KEY_PRODUCT_UOM="product_uom";
+    public final String KEY_PRODUCT_UOM = "product_uom";
     public final String KEY_PRODUCT_AGENT_PRICE = "product_agent_price";
     public final String KEY_PRODUCT_CONSUMER_PRICE = "product_consumer_price";
     public final String KEY_PRODUCT_RETAILER_PRICE = "product_retailer_price";
@@ -367,22 +368,13 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_PAYMENTS_TRANS_CLEAR_DATE = "tripshhet_payments_trans_clear_date";
     private final String KEY_TRIPSHEET_PAYMENTS_RECEIVER_NAME = "tripshhet_payments_receiver_name";
     private final String KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS = "tripshhet_payments_trans_status";
-    private final String KEY_TRIPSHEET_PAYMENTS_PRODUCTS_IDS = "tripshhet_payments_product_ids";
-    private final String KEY_TRIPSHEET_PAYMENTS_PRODUCT_CODES = "tripshhet_payments_product_codes";
-    private final String KEY_TRIPSHEET_PAYMENTS_TAX_PERCENT = "tripshhet_payments_tax_percent";
-    private final String KEY_TRIPSHEET_PAYMENTS_UNIT_PRICE = "tripshhet_payments_unit_price";
-    private final String KEY_TRIPSHEET_PAYMENTS_QUANTITY = "tripshhet_payments_quantity";
-    private final String KEY_TRIPSHEET_PAYMENTS_AMOUNT = "tripshhet_payments_amount";
-    private final String KEY_TRIPSHEET_PAYMENTS_TAX_AMOUNT = "tripshhet_payments_tax_amount";
     private final String KEY_TRIPSHEET_PAYMENTS_TAX_TOTAL = "tripshhet_payments_tax_total";
     private final String KEY_TRIPSHEET_PAYMENTS_SALE_VALUE = "tripshhet_payments_sale_value";
     private final String KEY_TRIPSHEET_PAYMENTS_TYPE = "tripshhet_payments_type";
     private final String KEY_TRIPSHEET_PAYMENTS_STATUS = "tripshhet_payments_status";
     private final String KEY_TRIPSHEET_PAYMENTS_DELETE = "tripshhet_payments_delete";
-    private final String KEY_TRIPSHEET_PAYMENTS_CREATED_BY = "tripshhet_payments_created_by";
-    private final String KEY_TRIPSHEET_PAYMENTS_CREATED_ON = "tripshhet_payments_created_on";
-    private final String KEY_TRIPSHEET_PAYMENTS_UPDATED_ON = "tripshhet_payments_updated_on";
-    private final String KEY_TRIPSHEET_PAYMENTS_UPDATED_BY = "tripshhet_payments_updated_by";
+    private final String KEY_TRIPSHEET_PAYMENTS_SO_ID = "tripshhet_payments_so_id";
+    private final String KEY_TRIPSHEET_PAYMENTS_SO_CODE = "tripshhet_payments_so_code";
     private final String KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS = "tripshhet_payments_upload_status";
 
     // Column names for Tripsheets so List  Table
@@ -614,22 +606,13 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_PAYMENTS_TRANS_CLEAR_DATE + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_RECEIVER_NAME + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_PRODUCTS_IDS + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_PRODUCT_CODES + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_TAX_PERCENT + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_UNIT_PRICE + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_QUANTITY + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_AMOUNT + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_TAX_AMOUNT + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_TAX_TOTAL + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_SALE_VALUE + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_TYPE + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_STATUS + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_DELETE + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_CREATED_BY + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_CREATED_ON + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_UPDATED_ON + " VARCHAR,"
-            + KEY_TRIPSHEET_PAYMENTS_UPDATED_BY + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_SO_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_SO_CODE + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // Tripsheets SO Table Create Statements
@@ -2972,52 +2955,37 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to insert the mTripsheetsPaymentsList.
      *
-     * @param mTripsheetsPaymentsList
+     * @param paymentsBean
      */
-    public void insertTripsheetsPaymentsListData(ArrayList<TripSheetPaymentsBean> mTripsheetsPaymentsList) {
+    public void insertTripsheetsPaymentsListData(PaymentsBean paymentsBean) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            for (int i = 0; i < mTripsheetsPaymentsList.size(); i++) {
-                ContentValues values = new ContentValues();
-                values.put(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsPayment_no());
+            ContentValues values = new ContentValues();
+            values.put(KEY_TRIPSHEET_PAYMENTS_TRIP_ID, paymentsBean.getPayments_tripsheetId());
+            values.put(KEY_TRIPSHEET_PAYMENTS_USER_ID, paymentsBean.getPayments_userId());
+            values.put(KEY_TRIPSHEET_PAYMENTS_USER_CODES, paymentsBean.getPayments_userCodes());
+            values.put(KEY_TRIPSHEET_PAYMENTS_ROUTE_ID, paymentsBean.getPayments_routeId());
+            values.put(KEY_TRIPSHEET_PAYMENTS_ROUTE_CODES, paymentsBean.getPayments_routeCodes());
 
-                values.put(KEY_TRIPSHEET_PAYMENTS_TRIP_ID, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTrip_id());
-                values.put(KEY_TRIPSHEET_PAYMENTS_USER_ID, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsUser_id());
-                values.put(KEY_TRIPSHEET_PAYMENTS_USER_CODES, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsUser_codes());
-                values.put(KEY_TRIPSHEET_PAYMENTS_ROUTE_ID, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsRoute_id());
-                values.put(KEY_TRIPSHEET_PAYMENTS_ROUTE_CODES, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsRoute_codes());
+            values.put(KEY_TRIPSHEET_PAYMENTS_CHE_TRANS_ID, paymentsBean.getPayments_chequeNumber());
+            values.put(KEY_TRIPSHEET_PAYMENTS_AC_CA_NO, paymentsBean.getPayments_accountNumber());
+            values.put(KEY_TRIPSHEET_PAYMENTS_ACOUNT_NAME, paymentsBean.getPayments_accountName());
+            values.put(KEY_TRIPSHEET_PAYMENTS_BANK_NAME, paymentsBean.getPayments_bankName());
+            values.put(KEY_TRIPSHEET_PAYMENTS_TRANS_DATE, paymentsBean.getPayments_chequeDate());
+            values.put(KEY_TRIPSHEET_PAYMENTS_TRANS_CLEAR_DATE, paymentsBean.getPayments_chequeClearDate());
+            values.put(KEY_TRIPSHEET_PAYMENTS_RECEIVER_NAME, paymentsBean.getPayments_receiverName());
+            values.put(KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS, paymentsBean.getPayments_transActionStatus());
 
-                values.put(KEY_TRIPSHEET_PAYMENTS_CHE_TRANS_ID, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsChe_trans_id());
-                values.put(KEY_TRIPSHEET_PAYMENTS_AC_CA_NO, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsAc_ca_no());
-                values.put(KEY_TRIPSHEET_PAYMENTS_ACOUNT_NAME, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsAccount_name());
-                values.put(KEY_TRIPSHEET_PAYMENTS_BANK_NAME, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsBank_name());
-                values.put(KEY_TRIPSHEET_PAYMENTS_TRANS_DATE, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTrans_date());
-                values.put(KEY_TRIPSHEET_PAYMENTS_TRANS_CLEAR_DATE, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTrans_clear_date());
-                values.put(KEY_TRIPSHEET_PAYMENTS_RECEIVER_NAME, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsReceiver_name());
-                values.put(KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTrans_status());
+            values.put(KEY_TRIPSHEET_PAYMENTS_TAX_TOTAL, paymentsBean.getPayments_taxTotal());
+            values.put(KEY_TRIPSHEET_PAYMENTS_SALE_VALUE, paymentsBean.getPayments_saleValue());
+            values.put(KEY_TRIPSHEET_PAYMENTS_TYPE, paymentsBean.getPayments_type());
+            values.put(KEY_TRIPSHEET_PAYMENTS_STATUS, paymentsBean.getPayments_status());
+            values.put(KEY_TRIPSHEET_PAYMENTS_DELETE, paymentsBean.getPayments_delete());
+            values.put(KEY_TRIPSHEET_PAYMENTS_SO_ID, paymentsBean.getPayments_saleOrderId());
+            values.put(KEY_TRIPSHEET_PAYMENTS_SO_CODE, paymentsBean.getPayments_saleOrderCode());
 
-
-                values.put(KEY_TRIPSHEET_PAYMENTS_PRODUCTS_IDS, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsProduct_ids());
-                values.put(KEY_TRIPSHEET_PAYMENTS_PRODUCT_CODES, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsProduct_codes());
-                values.put(KEY_TRIPSHEET_PAYMENTS_TAX_PERCENT, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTax_percent());
-                values.put(KEY_TRIPSHEET_PAYMENTS_UNIT_PRICE, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsUnit_price());
-                values.put(KEY_TRIPSHEET_PAYMENTS_QUANTITY, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsQuantity());
-                values.put(KEY_TRIPSHEET_PAYMENTS_AMOUNT, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsAmount());
-                values.put(KEY_TRIPSHEET_PAYMENTS_TAX_AMOUNT, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTax_amount());
-                values.put(KEY_TRIPSHEET_PAYMENTS_TAX_TOTAL, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsTax_total());
-                values.put(KEY_TRIPSHEET_PAYMENTS_SALE_VALUE, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsSale_value());
-                values.put(KEY_TRIPSHEET_PAYMENTS_TYPE, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsType());
-                values.put(KEY_TRIPSHEET_PAYMENTS_STATUS, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsStatus());
-                values.put(KEY_TRIPSHEET_PAYMENTS_DELETE, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsDelete());
-                values.put(KEY_TRIPSHEET_PAYMENTS_CREATED_BY, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsCreated_by());
-                values.put(KEY_TRIPSHEET_PAYMENTS_CREATED_ON, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsCreated_on());
-                values.put(KEY_TRIPSHEET_PAYMENTS_UPDATED_ON, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsUpdated_on());
-                values.put(KEY_TRIPSHEET_PAYMENTS_UPDATED_BY, mTripsheetsPaymentsList.get(i).getmTripshhetPaymentsUpdated_by());
-
-
-                db.insert(TABLE_TRIPSHEETS_PAYMENTS_LIST, null, values);
-                values.clear();
-            }
+            db.insert(TABLE_TRIPSHEETS_PAYMENTS_LIST, null, values);
+            values.clear();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -3027,53 +2995,41 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch all tripsheets payments list baed on tripsheet id from Tripsheets payments list table
      */
-    public ArrayList<TripSheetPaymentsBean> fetchAllTripsheetsPaymentsList(String tripsheetId) {
-        ArrayList<TripSheetPaymentsBean> alltripsheetsPayments = new ArrayList<TripSheetPaymentsBean>();
+    public ArrayList<PaymentsBean> fetchAllTripsheetsPaymentsList() {
+        ArrayList<PaymentsBean> alltripsheetsPayments = new ArrayList<PaymentsBean>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = " + "'" + tripsheetId + "'";
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS + " = " + "'" + "0" + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
 
             if (c.moveToFirst()) {
                 do {
-                    TripSheetPaymentsBean tripPaymentsBean = new TripSheetPaymentsBean();
+                    PaymentsBean tripPaymentsBean = new PaymentsBean();
 
-                    tripPaymentsBean.setmTripshhetPaymentsPayment_no(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO)));
+                    tripPaymentsBean.setPayments_paymentsNumber(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO)));
 
-                    tripPaymentsBean.setmTripshhetPaymentsTrip_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRIP_ID)));
-                    tripPaymentsBean.setmTripshhetPaymentsUser_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_USER_ID)));
-                    tripPaymentsBean.setmTripshhetPaymentsUser_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_USER_CODES)));
-                    tripPaymentsBean.setmTripshhetPaymentsRoute_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_ROUTE_ID)));
-                    tripPaymentsBean.setmTripshhetPaymentsRoute_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_ROUTE_CODES)));
+                    tripPaymentsBean.setPayments_tripsheetId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRIP_ID)));
+                    tripPaymentsBean.setPayments_userId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_USER_ID)));
+                    tripPaymentsBean.setPayments_userCodes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_USER_CODES)));
+                    tripPaymentsBean.setPayments_routeId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_ROUTE_ID)));
+                    tripPaymentsBean.setPayments_routeCodes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_ROUTE_CODES)));
 
-                    tripPaymentsBean.setmTripshhetPaymentsChe_trans_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_CHE_TRANS_ID)));
-                    tripPaymentsBean.setmTripshhetPaymentsAc_ca_no(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_AC_CA_NO)));
-                    tripPaymentsBean.setmTripshhetPaymentsAccount_name(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_ACOUNT_NAME)));
-                    tripPaymentsBean.setmTripshhetPaymentsBank_name(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_BANK_NAME)));
-                    tripPaymentsBean.setmTripshhetPaymentsTrans_date(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_DATE)));
-                    tripPaymentsBean.setmTripshhetPaymentsTrans_clear_date(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_CLEAR_DATE)));
-                    tripPaymentsBean.setmTripshhetPaymentsReceiver_name(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_RECEIVER_NAME)));
-                    tripPaymentsBean.setmTripshhetPaymentsTrans_status(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS)));
+                    tripPaymentsBean.setPayments_chequeNumber(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_CHE_TRANS_ID)));
+                    tripPaymentsBean.setPayments_accountNumber(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_AC_CA_NO)));
+                    tripPaymentsBean.setPayments_accountName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_ACOUNT_NAME)));
+                    tripPaymentsBean.setPayments_bankName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_BANK_NAME)));
+                    tripPaymentsBean.setPayments_chequeDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_DATE)));
+                    tripPaymentsBean.setPayments_chequeClearDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_CLEAR_DATE)));
+                    tripPaymentsBean.setPayments_receiverName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_RECEIVER_NAME)));
+                    tripPaymentsBean.setPayments_transActionStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS)));
 
-
-                    tripPaymentsBean.setmTripshhetPaymentsProduct_ids(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_PRODUCTS_IDS)));
-                    tripPaymentsBean.setmTripshhetPaymentsProduct_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_PRODUCT_CODES)));
-                    tripPaymentsBean.setmTripshhetPaymentsTax_percent(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TAX_PERCENT)));
-                    tripPaymentsBean.setmTripshhetPaymentsUnit_price(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_UNIT_PRICE)));
-                    tripPaymentsBean.setmTripshhetPaymentsQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_QUANTITY)));
-                    tripPaymentsBean.setmTripshhetPaymentsAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_AMOUNT)));
-                    tripPaymentsBean.setmTripshhetPaymentsTax_amount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TAX_AMOUNT)));
-                    tripPaymentsBean.setmTripshhetPaymentsTax_total(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TAX_TOTAL)));
-                    tripPaymentsBean.setmTripshhetPaymentsSale_value(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_SALE_VALUE)));
-                    tripPaymentsBean.setmTripshhetPaymentsType(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TYPE)));
-                    tripPaymentsBean.setmTripshhetPaymentsStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_STATUS)));
-                    tripPaymentsBean.setmTripshhetPaymentsDelete(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_DELETE)));
-                    tripPaymentsBean.setmTripshhetPaymentsCreated_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_CREATED_BY)));
-                    tripPaymentsBean.setmTripshhetPaymentsCreated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_CREATED_ON)));
-                    tripPaymentsBean.setmTripshhetPaymentsUpdated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_UPDATED_ON)));
-                    tripPaymentsBean.setmTripshhetPaymentsUpdated_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_UPDATED_BY)));
+                    tripPaymentsBean.setPayments_taxTotal(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TAX_TOTAL))));
+                    tripPaymentsBean.setPayments_saleValue(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_SALE_VALUE))));
+                    tripPaymentsBean.setPayments_type(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TYPE)));
+                    tripPaymentsBean.setPayments_status(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_STATUS)));
+                    tripPaymentsBean.setPayments_delete(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_DELETE)));
 
                     alltripsheetsPayments.add(tripPaymentsBean);
 
@@ -3143,19 +3099,20 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_SO_APPROVEDBY, mTripsheetsList.get(i).getmTripshetSOApprovedBy());
                 values.put(KEY_TRIPSHEET_SO_AGENTLATITUDE, mTripsheetsList.get(i).getmTripshetSOAgentLatitude());
                 values.put(KEY_TRIPSHEET_SO_AGENTLONGITUDE, mTripsheetsList.get(i).getmTripshetSOAgentLongitude());
-//                int checkVal = checkSpecialPriceProductExistsOrNot(mSpecialPriceBeansList.get(i).getSpecialProductId()
-//                        , mSpecialPriceBeansList.get(i).getSpecialUserId());
-//                if (checkVal == 0) {
-//                    // insert row
-//                    db.insert(TABLE_SPECIALPRICE, null, values);
-//                    System.out.println("F*********** INSERTED***************88");
-//                } else {
-//                    // Update row
-//                    db.update(TABLE_SPECIALPRICE, values, KEY_PRODUCT_SPECIALID + " = ?" + " AND " + KEY_USER_SPECIALID + " = ? ",
-//                            new String[]{String.valueOf(mSpecialPriceBeansList.get(i).getSpecialProductId()),
-//                                    String.valueOf(mSpecialPriceBeansList.get(i).getSpecialUserId())});
-//                    System.out.println("F*********** UPDATED***************88");
-//                }
+
+                int checkVal = checkTripsheetSOExistsOrNot(mTripsheetsList.get(i).getmTripshetSOTripId()
+                        , mTripsheetsList.get(i).getmTripshetSOId());
+                if (checkVal == 0) {
+                    // insert row
+                    db.insert(TABLE_TRIPSHEETS_SO_LIST, null, values);
+                    System.out.println("F*********** INSERTED***************88");
+                } else {
+                    // Update row
+                    db.update(TABLE_TRIPSHEETS_SO_LIST, values, KEY_TRIPSHEET_SO_TRIPID + " = ? AND " + KEY_TRIPSHEET_SO_ID + " = ?", new String[]{mTripsheetsList.get(i).getmTripshetSOTripId(),
+                            mTripsheetsList.get(i).getmTripshetSOId()});
+                    System.out.println("F*********** UPDATED***************88");
+                }
+
                 db.insert(TABLE_TRIPSHEETS_SO_LIST, null, values);
                 values.clear();
             }
@@ -3603,6 +3560,51 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TRIPSHEET_STOCK_EXTRA_QUANTITY, extraQuantity);
 
             int status = db.update(TABLE_TRIPSHEETS_STOCK_LIST, values, KEY_TRIPSHEET_STOCK_TRIPSHEET_ID + " = ? AND " + KEY_TRIPSHEET_STOCK_PRODUCT_CODE + " = ?", new String[]{tripSheetId, productCode});
+
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    /**
+     * Method to check weather the tripsheet Sale order exists or not using tripsheetid and so id.
+     *
+     * @param tripsheetId
+     * @return integer value
+     */
+    public int checkTripsheetSOExistsOrNot(String tripsheetId, String soId) {
+        int maxID = 0;
+
+        String selectQuery = "SELECT  * FROM " + TABLE_TRIPSHEETS_SO_LIST + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + "='" + tripsheetId + "'"
+                + " AND " + KEY_TRIPSHEET_SO_ID + "='" + soId + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                maxID = cursor.getInt(0);
+
+            } while (cursor.moveToNext());
+        }
+        return maxID;
+    }
+
+    /**
+     * Method to update tripsheet payments upload status 1 after updating to the server.
+     *
+     * @param tripsheetId
+     */
+    public void updateTripsheetsPaymentsUploadStatus(String tripsheetId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS, "1");
+
+            int status = db.update(TABLE_TRIPSHEETS_PAYMENTS_LIST, values, KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " = ?", new String[]{String.valueOf(tripsheetId)});
 
             values.clear();
 
