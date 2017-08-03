@@ -11,10 +11,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +63,7 @@ public class TripsheetPayments extends AppCompatActivity {
 
         TextView agentName = (TextView) findViewById(R.id.companyName);
         agentName.setText(mAgentName);
-
+        final LinearLayout chequeLinearLayout=(LinearLayout) findViewById(R.id.chequeLinearLayout);
 
         ret = (LinearLayout) findViewById(R.id.rlinear);
         payments = (LinearLayout) findViewById(R.id.plinear);
@@ -111,6 +113,27 @@ public class TripsheetPayments extends AppCompatActivity {
                     Toast.makeText(TripsheetPayments.this, "Please enter recevied amount.", Toast.LENGTH_SHORT).show();
                 }
             }
+        });
+
+        final Spinner paymentTypeSpinner=(Spinner) findViewById(R.id.paymentTypeSpinner);
+        paymentTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                String selected = paymentTypeSpinner.getSelectedItem().toString();
+                if(selected.equals("Cheque")){
+                    chequeLinearLayout.setVisibility(View.VISIBLE);
+                }
+                else{
+                    chequeLinearLayout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+
         });
 
     }
