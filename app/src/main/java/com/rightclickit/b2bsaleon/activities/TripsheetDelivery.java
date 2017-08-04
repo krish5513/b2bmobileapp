@@ -94,7 +94,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             mAgentSoId = this.getIntent().getStringExtra("agentSoId");
             mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
             loggedInUserId = mPreferences.getString("userId");
-            System.out.println("====== 0 ======== mTripSheetId = " + mTripSheetId);
+
             if (mAgentId != null && mAgentId != "") {
                 List<String> agentRouteIds = mDBHelper.getAgentRouteId(mAgentId);
                 mAgentRouteId = agentRouteIds.get(0);

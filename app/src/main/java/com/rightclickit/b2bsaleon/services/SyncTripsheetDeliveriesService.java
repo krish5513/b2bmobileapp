@@ -154,14 +154,9 @@ public class SyncTripsheetDeliveriesService extends Service {
                 requestObj.put("updated_on", Utility.formatTime(Long.parseLong(currentDeliveryBean.getmTripsheetDelivery_UpdatedOn()), Constants.TRIP_SHEETS_DELIVERY_ADD_DATE_FORMAT));
                 requestObj.put("updated_by", currentDeliveryBean.getmTripsheetDelivery_UpdatedBy());
 
-                String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TRIPSHEETS_PORT, Constants.TRIPSHEETS_DELIVERIES_URL);
+                String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TAKE_ORDERS_PORT, Constants.TRIPSHEETS_DELIVERIES_URL);
 
                 String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
-
-                System.out.println("************* SyncTripsheetDeliveriesService *************");
-                System.out.println("======= requestObj = " + requestObj);
-                System.out.println("======== requestURL = " + requestURL);
-                System.out.println("========= responseString = " + responseString);
 
                 if (responseString != null && !(responseString == "error" || responseString == "failure")) {
                     JSONObject resultObj = new JSONObject(responseString);

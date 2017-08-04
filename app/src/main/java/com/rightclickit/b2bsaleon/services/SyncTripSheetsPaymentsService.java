@@ -29,6 +29,7 @@ public class SyncTripSheetsPaymentsService extends Service {
     private String mJsonObj;
     private MMSharedPreferences mSessionManagement;
     private NetworkConnectionDetector connectionDetector;
+    private int unUploadedPaymentsTripSheetIdsCount = 0;
 
     @Override
     public void onCreate() {
@@ -60,6 +61,7 @@ public class SyncTripSheetsPaymentsService extends Service {
     private void fetchAndSyncTripsheetsPaymentsData() {
         try {
             ArrayList<PaymentsBean> paymentsBeanArrayList = mDBHelper.fetchAllTripsheetsPaymentsList();
+            unUploadedPaymentsTripSheetIdsCount = paymentsBeanArrayList.size();
             System.out.println("Size::: " + paymentsBeanArrayList.size());
             if (paymentsBeanArrayList.size() > 0) {
                 for (PaymentsBean paymentsBe : paymentsBeanArrayList) {
@@ -119,8 +121,14 @@ public class SyncTripSheetsPaymentsService extends Service {
                 System.out.println("URL::: " + URL);
                 System.out.println("INPUT::: " + params1.toString());
                 mJsonObj = new NetworkManager().makeHttpPostConnection(URL, params1);
-                // System.out.println("Tripsheets payments list Response Is::: " + mJsonObj);
-
+                System.out.println("Tripsheets payments list Response Is::: " + mJsonObj);
+                if (mJsonObj != null && !(mJsonObj == "error" || mJsonObj == "failure")) {
+                    JSONObject resultObj = new JSONObject(mJsonObj);
+                    if (resultObj.getInt("result_status") == 1) {
+                        mDBHelper.updateTripsheetsPaymentsUploadStatus(paymentBean.getPayments_tripsheetId());
+                    }
+                }
+                unUploadedPaymentsTripSheetIdsCount--;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -130,8 +138,9 @@ public class SyncTripSheetsPaymentsService extends Service {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            stopSelf();
-            // mDBHelper.insertTripsheetsListData(mTripsheetsList);
+            if (unUploadedPaymentsTripSheetIdsCount == 0) {
+                stopSelf();
+            }
         }
     }
 }

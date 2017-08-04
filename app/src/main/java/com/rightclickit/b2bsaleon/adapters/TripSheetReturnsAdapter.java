@@ -38,10 +38,11 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
     private ArrayList<DeliverysBean> allProductsList, filteredProductsList;
     private Map<String, DeliverysBean> selectedProductsHashMap; // Hash Map Key = Product Id
     private Map<String, String> previouslyReturnedProductsHashMap;
+    private Map<String, String> deliveredProductsHashMap;
     private boolean isReturnsInEditingMode = false;
     private final String zero_cost = "0.000";
 
-    public TripSheetReturnsAdapter(Context ctxt, TripsheetReturns returnsActivity, TripSheetReturnsListener tripSheetReturnsListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyProducts) {
+    public TripSheetReturnsAdapter(Context ctxt, TripsheetReturns returnsActivity, TripSheetReturnsListener tripSheetReturnsListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyProducts, Map<String, String> productsDeliveryDetails) {
         this.ctxt = ctxt;
         this.activity = returnsActivity;
         this.listener = tripSheetReturnsListener;
@@ -51,6 +52,7 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
         this.filteredProductsList.addAll(allProductsList);
         this.selectedProductsHashMap = new HashMap<>();
         this.previouslyReturnedProductsHashMap = previouslyProducts;
+        this.deliveredProductsHashMap = productsDeliveryDetails;
 
         if (!previouslyReturnedProductsHashMap.isEmpty()) {
             isReturnsInEditingMode = true;
@@ -60,7 +62,7 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
     public class TripSheetReturnsViewHolder {
         TextView productName;
         Spinner returnType;
-        EditText product_quantity;
+        EditText product_quantity, deliveredQuantity;
         ImageView product_quantity_decrement, product_quantity_increment;
     }
 
@@ -88,6 +90,7 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
 
             tripSheetReturnsViewHolder = new TripSheetReturnsViewHolder();
             tripSheetReturnsViewHolder.productName = (TextView) view.findViewById(R.id.productName);
+            tripSheetReturnsViewHolder.deliveredQuantity = (EditText) view.findViewById(R.id.deliveredQuantity);
             tripSheetReturnsViewHolder.returnType = (Spinner) view.findViewById(R.id.returnTypeSpinner);
             tripSheetReturnsViewHolder.product_quantity = (EditText) view.findViewById(R.id.productQt);
             tripSheetReturnsViewHolder.product_quantity_decrement = (ImageView) view.findViewById(R.id.productQtDec);
@@ -98,11 +101,20 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
             tripSheetReturnsViewHolder = (TripSheetReturnsViewHolder) view.getTag();
         }
 
+        tripSheetReturnsViewHolder.deliveredQuantity.setEnabled(false);
+        tripSheetReturnsViewHolder.deliveredQuantity.setFocusable(false);
+        tripSheetReturnsViewHolder.deliveredQuantity.setClickable(true);
+
         final TripSheetReturnsViewHolder currentTripSheetReturnsViewHolder = tripSheetReturnsViewHolder;
 
         final DeliverysBean currentDeliveryBean = getItem(position);
 
         tripSheetReturnsViewHolder.productName.setText(String.format("%s", currentDeliveryBean.getProductTitle()));
+
+        if (deliveredProductsHashMap.containsKey(currentDeliveryBean.getProductId()))
+            tripSheetReturnsViewHolder.deliveredQuantity.setText(deliveredProductsHashMap.get(currentDeliveryBean.getProductId()));
+        else
+            tripSheetReturnsViewHolder.deliveredQuantity.setText(zero_cost);
 
         if (previouslyReturnedProductsHashMap.containsKey(currentDeliveryBean.getProductId()))
             tripSheetReturnsViewHolder.product_quantity.setText(previouslyReturnedProductsHashMap.get(currentDeliveryBean.getProductId()));

@@ -137,14 +137,9 @@ public class SyncTripsheetReturnsService extends Service {
                 requestObj.put("updated_on", Utility.formatTime(Long.parseLong(currentProduct.getmTripshhetReturnsUpdated_on()), Constants.TRIP_SHEETS_DELIVERY_ADD_DATE_FORMAT));
                 requestObj.put("updated_by", currentProduct.getmTripshhetReturnsUpdated_by());
 
-                String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TRIPSHEETS_PORT, Constants.TRIPSHEETS_RETURNS_URL);
+                String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TAKE_ORDERS_PORT, Constants.TRIPSHEETS_RETURNS_URL);
 
                 String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
-
-                System.out.println("************* SyncTripsheetReturnsService *************");
-                System.out.println("======= requestObj = " + requestObj);
-                System.out.println("======== requestURL = " + requestURL);
-                System.out.println("========= responseString = " + responseString);
 
                 if (responseString != null && !(responseString == "error" || responseString == "failure")) {
                     JSONObject resultObj = new JSONObject(responseString);

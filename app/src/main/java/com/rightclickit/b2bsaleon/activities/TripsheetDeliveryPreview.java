@@ -91,8 +91,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
         mAgentSoId = this.getIntent().getStringExtra("agentSoId");
         mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
-        System.out.println("====== 0 ======== mTripSheetId = " + mTripSheetId);
-        
+
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
         selectedList = new ArrayList<>(customArraylist.size());
         for (int i = 0; i < 10; i++) {
