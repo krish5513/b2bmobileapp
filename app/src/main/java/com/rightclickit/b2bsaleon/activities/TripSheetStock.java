@@ -244,10 +244,14 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
     public void showTripSheetStockPreview(View view) {
         Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
         ts_stock_preview.startAnimation(animation1);
-        Intent i = new Intent(TripSheetStock.this, TripsheetStockPreview.class);
-        i.putExtra("tripSheetId", mTripSheetId);
-        startActivity(i);
-        finish();
+        if (!isStockDispatched)
+            Toast.makeText(activityContext, "This Preview is unavailable untill the tripsheetsheet stock  is verified", Toast.LENGTH_LONG).show();
+        else {
+            Intent i = new Intent(TripSheetStock.this, TripsheetStockPreview.class);
+            i.putExtra("tripSheetId", mTripSheetId);
+            startActivity(i);
+            finish();
+        }
     }
 
     public void saveTripSheetStock(View view) {

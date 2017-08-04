@@ -150,6 +150,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public final String KEY_PRODUCT_IMAGE_URL = "product_image_url";
     public final String KEY_PRODUCT_RETURNABLE = "product_returnable";
     public final String KEY_PRODUCT_MOQ = "product_moq";
+    public final String KEY_PRODUCT_UOM="product_uom";
     public final String KEY_PRODUCT_AGENT_PRICE = "product_agent_price";
     public final String KEY_PRODUCT_CONSUMER_PRICE = "product_consumer_price";
     public final String KEY_PRODUCT_RETAILER_PRICE = "product_retailer_price";
@@ -455,8 +456,9 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String CREATE_PRODUCTS_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_PRODUCTS + "(" + KEY_PRODUCT_ID + " VARCHAR,"
             + KEY_PRODUCT_CODE + " VARCHAR," + KEY_PRODUCT_TITLE + " VARCHAR,"
-            + KEY_PRODUCT_DESCRIPTION + " VARCHAR," + KEY_PRODUCT_IMAGE_URL + " VARCHAR," + KEY_PRODUCT_RETURNABLE + " VARCHAR," +
-            KEY_PRODUCT_MOQ + " VARCHAR," + KEY_PRODUCT_AGENT_PRICE + " VARCHAR," + KEY_PRODUCT_CONSUMER_PRICE + " VARCHAR,"
+            + KEY_PRODUCT_DESCRIPTION + " VARCHAR," + KEY_PRODUCT_IMAGE_URL + " VARCHAR," + KEY_PRODUCT_RETURNABLE + " VARCHAR,"
+            + KEY_PRODUCT_MOQ + " VARCHAR," + KEY_PRODUCT_AGENT_PRICE + " VARCHAR," + KEY_PRODUCT_CONSUMER_PRICE + " VARCHAR,"
+            + KEY_PRODUCT_UOM + " VARCHAR,"
             + KEY_PRODUCT_RETAILER_PRICE + " VARCHAR," + KEY_PRODUCT_GST_PRICE + " VARCHAR,"
             + KEY_PRODUCT_VAT_PRICE + " VARCHAR)";
 
@@ -881,7 +883,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_USER_CODE, userCode);
             values.put(KEY_COMPANYNAME, companyname);
             values.put(KEY_NAME, userName);
-            values.put(KEY_EMAIL, email.toLowerCase());
+            values.put(KEY_EMAIL, email);
             values.put(KEY_PHONE_NUMBER, phone);
             values.put(KEY_AVATAR, profilrPic);
             values.put(KEY_STAKEHOLDER_ID, stakeHolder);
@@ -1494,6 +1496,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_PRODUCT_IMAGE_URL, mProductsBeansList.get(i).getProductImageUrl());
                 values.put(KEY_PRODUCT_RETURNABLE, mProductsBeansList.get(i).getProductReturnable());
                 values.put(KEY_PRODUCT_MOQ, mProductsBeansList.get(i).getProductMOQ());
+                values.put(KEY_PRODUCT_UOM, mProductsBeansList.get(i).getProductUOM());
                 values.put(KEY_PRODUCT_AGENT_PRICE, mProductsBeansList.get(i).getProductAgentPrice());
                 values.put(KEY_PRODUCT_CONSUMER_PRICE, mProductsBeansList.get(i).getProductConsumerPrice());
                 values.put(KEY_PRODUCT_RETAILER_PRICE, mProductsBeansList.get(i).getProductRetailerPrice());
@@ -1535,6 +1538,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     productsBean.setProductImageUrl((c.getString(c.getColumnIndex(KEY_PRODUCT_IMAGE_URL))));
                     productsBean.setProductReturnable((c.getString(c.getColumnIndex(KEY_PRODUCT_RETURNABLE))));
                     productsBean.setProductMOQ((c.getString(c.getColumnIndex(KEY_PRODUCT_MOQ))));
+                    productsBean.setProductUOM((c.getString(c.getColumnIndex(KEY_PRODUCT_UOM))));
                     productsBean.setProductAgentPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_AGENT_PRICE))));
                     productsBean.setProductConsumerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_CONSUMER_PRICE))));
                     productsBean.setProductRetailerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_RETAILER_PRICE))));
@@ -1580,6 +1584,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     productsBean.setProductImageUrl((c.getString(c.getColumnIndex(KEY_PRODUCT_IMAGE_URL))));
                     productsBean.setProductReturnable((c.getString(c.getColumnIndex(KEY_PRODUCT_RETURNABLE))));
                     productsBean.setProductMOQ((c.getString(c.getColumnIndex(KEY_PRODUCT_MOQ))));
+                    productsBean.setProductUOM((c.getString(c.getColumnIndex(KEY_PRODUCT_UOM))));
                     productsBean.setProductAgentPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_AGENT_PRICE))));
                     productsBean.setProductConsumerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_CONSUMER_PRICE))));
                     productsBean.setProductRetailerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_RETAILER_PRICE))));

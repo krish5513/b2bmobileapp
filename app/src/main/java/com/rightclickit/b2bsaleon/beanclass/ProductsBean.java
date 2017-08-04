@@ -16,6 +16,16 @@ public class ProductsBean implements Serializable {
     private String productImageUrl;
     private String productReturnable;
     private String productMOQ;
+
+    public String getProductUOM() {
+        return productUOM;
+    }
+
+    public void setProductUOM(String productUOM) {
+        this.productUOM = productUOM;
+    }
+
+    private String productUOM;
     private String productAgentPrice;
     private String productConsumerPrice;
     private String productRetailerPrice;

@@ -4,189 +4,214 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rightclickit.b2bsaleon.activities.TripsheetStockPreview">
+    tools:context="com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginBottom="60dp">
+        android:background="@color/layout_background"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tdc_sales_company_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:text="Company name"
+            android:textAllCaps="true"
+            android:textColor="@color/greydark"
+            android:textSize="16sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
-            android:background="@color/layout_background"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
             <TextView
-                android:id="@+id/tv_companyName"
-                android:layout_width="match_parent"
+                android:id="@+id/tdc_sales_route_code"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="thirumala milk products pvt ltd"
                 android:gravity="left"
-                android:textAllCaps="true"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
-                android:textColor="@color/greydark"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="TIN No"
-                    android:gravity="left"
-                    android:paddingTop="5dp"
-                    android:textAllCaps="true"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/greydark"
-                    android:id="@+id/tv_tinNo" />
-
-                <TextView
-                    android:id="@+id/tv_salesOfc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="Sales Office"
-                    android:gravity="left"
-                    android:paddingTop="5dp"
-                    android:textAllCaps="true"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/greydark"
-                    />
-                <TextView
-                    android:id="@+id/tv_routeNo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="Route"
-                    android:gravity="left"
-                    android:paddingTop="5dp"
-                    android:textAllCaps="true"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/greydark"
-                    />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="TripSheet stock info"
-                android:gravity="left"
+                android:text="routecode"
                 android:textAllCaps="true"
-                android:padding="10dp"
                 android:textColor="@color/greydark"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="5dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="908915"
-                    android:gravity="left"
-                    android:textAllCaps="true"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/greydark"
-                    />
-                <TextView
-                    android:id="@+id/tv_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="Date"
-                    android:gravity="left"
-                    android:textAllCaps="true"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/greydark"
-                    />
-                <TextView
-                    android:id="@+id/user_Name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="Raj Kumar "
-                    android:gravity="left"
-                    android:paddingLeft="10dp"
-                    android:textColor="@color/greydark"
-                    />
-            </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@color/layout_background"
-            android:padding="5dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.17"
-                android:text="Product"
-                android:textSize="14sp"
-                android:textColor="@color/greydark"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.22"
-                android:text="Order"
-                android:layout_gravity="center|end"
-                android:gravity="center|end"
-                android:textSize="14sp"
-                android:textColor="@color/greydark"/>
+                android:textSize="14sp" />
+
+
 
             <TextView
+                android:id="@+id/tdc_sales_route_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.17"
-                android:text="Dispatch"
-                android:layout_gravity="center|end"
-                android:gravity="center|end"
-                android:textSize="14sp"
-                android:textColor="@color/greydark"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.17"
-                android:text="verify"
-                android:layout_marginRight="7dp"
-                android:layout_gravity="center|end"
-                android:gravity="center|end"
-                android:textSize="14sp"
-                android:textColor="@color/greydark"/>
+                android:gravity="left"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="Routename"
 
+                android:textAllCaps="true"
+                android:textColor="@color/greydark"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:background="@color/view_line"/>
+            android:layout_height="1dp"
+            android:background="@color/view_line" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/scrollViewSearch"
-                android:scrollbars="none">
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/cardList"
-                    android:scrollbars="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-            </ScrollView>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:gravity="left"
+                android:paddingLeft="10dp"
+                android:text="Route stock "
+                android:textAllCaps="true"
+                android:textColor="@color/greydark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tdc_sales_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="2"
+                android:gravity="right"
+                android:paddingLeft="10dp"
+                android:text="login User name "
+                android:textAllCaps="true"
+                android:textColor="@color/greydark"
+                android:textSize="14sp" />
+
         </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp">
+
+            <TextView
+                android:id="@+id/tripsheet_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:paddingLeft="10dp"
+                android:text="Tripsheet No"
+                android:textAllCaps="true"
+                android:textColor="@color/greydark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tdc_sales_date_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:paddingLeft="10dp"
+                android:text="28/06/2017"
+                android:textAllCaps="true"
+                android:textColor="@color/greydark"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_weight="0.17"
+                android:gravity="center|left"
+                android:text="Product"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.19"
+                android:gravity="center"
+                android:text="UOM"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_weight="0.17"
+                android:gravity="center"
+                android:text="Order"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_weight="0.18"
+                android:gravity="center"
+                android:text="Dispatch"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_weight="0.19"
+                android:gravity="center|end"
+                android:paddingRight="3dp"
+                android:text="Verify"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_line" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="60dp"
+            android:orientation="vertical">
+
+            <ListView
+                android:id="@+id/tdc_sales_products_list_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -195,23 +220,27 @@
         android:background="@color/white"
         android:gravity="end|center"
         android:orientation="vertical">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_weight="0.25"
                 android:layout_gravity="center"
+                android:layout_weight="0.5"
                 android:gravity="center">
+
                 <TextView
-                    android:id="@+id/tv_print"
+                    android:id="@+id/tdc_sales_print"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -220,9 +249,7 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
 
-
             </LinearLayout>
-
 
         </LinearLayout>
 

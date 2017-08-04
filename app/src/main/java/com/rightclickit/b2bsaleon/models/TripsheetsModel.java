@@ -9,6 +9,7 @@ import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
 import com.rightclickit.b2bsaleon.activities.TripSheetView;
 import com.rightclickit.b2bsaleon.activities.TripSheetsActivity;
+import com.rightclickit.b2bsaleon.activities.TripsheetStockPreview;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
@@ -44,6 +45,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
     private TripSheetsActivity activity;
     private TripSheetStock activity1;
     private TripSheetView activity2;
+    private TripsheetStockPreview activity3;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private TextView mNotripsText;
@@ -70,6 +72,17 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
     public TripsheetsModel(TripSheetStock context, TripSheetStock tripSheetStock) {
         this.context = context;
         this.activity1 = tripSheetStock;
+        this.mPreferences = new MMSharedPreferences(context);
+        this.mDBHelper = new DBHelper(context);
+
+        // Calendar cal = Calendar.getInstance();
+        //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        currentDate = Utility.formatDate(new Date(), "yyyy-MM-dd");
+    }
+
+    public TripsheetsModel(TripsheetStockPreview context, TripsheetStockPreview tripSheetStock) {
+        this.context = context;
+        this.activity3 = tripSheetStock;
         this.mPreferences = new MMSharedPreferences(context);
         this.mDBHelper = new DBHelper(context);
 

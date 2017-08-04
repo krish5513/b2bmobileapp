@@ -114,7 +114,9 @@ public class TripsheetsListAdapter extends BaseAdapter {
         }
 
         mHolder.mTripsheetCode.setText(mTripSheetsList.get(position).getmTripshhetCode());
+        mPreferences.putString("TripCode",mTripSheetsList.get(position).getmTripshhetCode());
         mHolder.mTripsheetDate.setText(mTripSheetsList.get(position).getmTripshhetDate());
+        mPreferences.putString("TripDate",mTripSheetsList.get(position).getmTripshhetDate());
         mHolder.mTripsheetStatus.setText(mTripSheetsList.get(position).getmTripshhetStatus());
         mHolder.mTripsheetOBAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetOBAmount())));
         mHolder.mTripsheetOrderedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetDueAmount())));

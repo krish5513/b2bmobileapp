@@ -1,42 +1,232 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.TripsheetStockPreviewAdapter;
+import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
+import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.models.TripsheetsModel;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+import com.rightclickit.b2bsaleon.util.Utility;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.rightclickit.b2bsaleon.R.*;
 
 public class TripsheetStockPreview extends AppCompatActivity {
     private String tripSheetId;
 
+    private Context applicationContext, activityContext;
+    private MMSharedPreferences mmSharedPreferences;
+
+    private TextView tripsheet_no_text_view, sale_date_time_text_view, total_tax_amount_text_view, total_amount_text_view, sub_total_amount_text_view;
+    private String loggedInUserId, loggedInUserName;
+    private DBHelper mDBHelper;
+
+    String  str_routecode, str_Tripcode, str_Tripdate,str_ProductName,str_ProductCode,str_Uom,str_Order,str_Dispatch,str_Verify;
+    TextView company_name, route_name, route_code, user_name, sales_print;
+    private ListView tdc_products_list_preview;
+    private LinearLayout tdc_sales_save_layout;
+
+    ArrayList<String[]> selectedList;
+
+    private TripsheetsModel mTripsheetsModel;
+    private TripsheetStockPreviewAdapter mTripsheetsStockPreviewAdapter;
+    private Map<String, TripsheetsStockList> productsDispatchListHashMap, productsVerifyListHashMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tripsheet_stock_preview);
-
-        this.getSupportActionBar().setTitle("ROUTE STOCK VALUE");
-        this.getSupportActionBar().setSubtitle(null);
-        this.getSupportActionBar().setLogo(R.drawable.route_white);
-        // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        this.getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setContentView(layout.activity_tripsheet_stock_preview);
 
 
-        final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        try {
+            applicationContext = getApplicationContext();
+            activityContext = TripsheetStockPreview.this;
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null)
-            tripSheetId = bundle.getString("tripSheetId");
+            mmSharedPreferences = new MMSharedPreferences(applicationContext);
+            loggedInUserId = mmSharedPreferences.getString("userId");
+            loggedInUserName = mmSharedPreferences.getString("loginusername");
+            str_routecode = (mmSharedPreferences.getString("routecode") + ",");
+
+            str_Tripcode=mmSharedPreferences.getString("TripCode");
+            str_Tripdate=mmSharedPreferences.getString("TripDate");
+
+            mDBHelper = new DBHelper(TripsheetStockPreview.this);
+
+            this.getSupportActionBar().setTitle("ROUTE STOCK VALUE");
+            this.getSupportActionBar().setSubtitle(null);
+            this.getSupportActionBar().setLogo(drawable.route_white);
+            // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            this.getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+            final ActionBar actionBar = getSupportActionBar();
+            assert actionBar != null;
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(drawable.ic_arrow_back_black_24dp);
+
+            productsDispatchListHashMap = new HashMap<>();
+            productsVerifyListHashMap = new HashMap<>();
+
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null)
+                tripSheetId = bundle.getString("tripSheetId");
+
+            sales_print = (TextView) findViewById(id.tdc_sales_print);
+            company_name = (TextView) findViewById(id.tdc_sales_company_name);
+            user_name = (TextView) findViewById(id.tdc_sales_user_name);
+            route_name = (TextView) findViewById(id.tdc_sales_route_name);
+            route_code = (TextView) findViewById(id.tdc_sales_route_code);
+            tripsheet_no_text_view = (TextView) findViewById(id.tripsheet_no);
+            sale_date_time_text_view = (TextView) findViewById(id.tdc_sales_date_time);
+
+            tdc_products_list_preview = (ListView) findViewById(id.tdc_sales_products_list_preview);
+
+            company_name.setText(mmSharedPreferences.getString("companyname"));
+            user_name.setText("by " + loggedInUserName);
+            route_name.setText(mmSharedPreferences.getString("routename"));
+            route_code.setText(str_routecode);
+            tripsheet_no_text_view.setText(str_Tripcode +",");
+            sale_date_time_text_view.setText(str_Tripdate);
+
+            mTripsheetsModel = new TripsheetsModel(this, TripsheetStockPreview.this);
+            ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
+            selectedList = new ArrayList<>(tripsheetsStockLists.size());
+            for( int i=0;i<tripsheetsStockLists.size();i++){
+
+                str_ProductName=tripsheetsStockLists.get(i).getmTripsheetStockProductName();
+                str_ProductCode=tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
+                str_Order=tripsheetsStockLists.get(i).getmTripsheetStockProductOrderQuantity();
+                str_Dispatch=tripsheetsStockLists.get(i).getmTripsheetStockDispatchQuantity();
+                str_Verify = tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity();
+                String[] temp = new String[6];
+                temp[0] = str_ProductName;
+                temp[1] = ("0");
+                temp[2] = str_Order;
+                temp[3] = str_Dispatch;
+                temp[4] = str_Verify;
+                temp[5] = str_ProductCode;
+
+                selectedList.add(temp);
+            }
+
+
+
+            if (tripsheetsStockLists.size() > 0) {
+
+
+                loadTripsData(tripsheetsStockLists);
+            } else {
+                if (new NetworkConnectionDetector(TripsheetStockPreview.this).isNetworkConnected()) {
+                    mTripsheetsModel.getTripsheetsStockList(tripSheetId);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        sales_print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pageheight = 300 + selectedList.size() * 60;
+                Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
+                Canvas canvas = new Canvas(bmOverlay);
+                canvas.drawColor(Color.WHITE);
+                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                paint.setAntiAlias(true);
+                paint.setFilterBitmap(true);
+                paint.setDither(true);
+                paint.setColor(Color.parseColor("#000000"));
+                paint.setTextSize(26);
+
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
+                paint.setTextSize(20);
+                canvas.drawText(str_routecode, 5, 80, paint);
+                canvas.drawText(mmSharedPreferences.getString("routename"), 200, 80, paint);
+                canvas.drawText("ROUTE STOCK,", 5, 120, paint);
+                canvas.drawText("by " + mmSharedPreferences.getString("loginusername"), 200, 120, paint);
+                canvas.drawText(str_Tripcode, 5, 150, paint);
+                canvas.drawText(str_Tripdate, 170, 150, paint);
+                //  canvas.drawText(str_agentname, 5, 180, paint);
+                //  canvas.drawText(mmSharedPreferences.getString("agentCode"), 200, 180, paint);
+
+                canvas.drawText("----------------------------------------------------", 5, 180, paint);
+                canvas.drawText("Product", 5, 220, paint);
+                canvas.drawText("UOM", 110, 220, paint);
+                canvas.drawText("Order", 160, 220, paint);
+                canvas.drawText("Dispatch", 230, 220, paint);
+                canvas.drawText("Verify", 330, 220, paint);
+                canvas.drawText("----------------------------------------------------", 5, 235, paint);
+
+                int st = 250;
+                paint.setTextSize(17);
+                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+
+                for (int i = 0; i < selectedList.size(); i++) {
+                    String[] temps = selectedList.get(i);
+                    canvas.drawText(temps[0], 5, st, paint);
+                    canvas.drawText(temps[1], 115, st, paint);
+                    canvas.drawText(temps[2], 175, st, paint);
+                    canvas.drawText(temps[3], 245, st, paint);
+                    canvas.drawText(temps[4], 315, st, paint);
+
+                    st = st + 40;
+                    canvas.drawText(temps[5], 5, st, paint);
+                    // canvas.drawText("FROM:" + temps[7], 100, st, paint);
+                    //canvas.drawText("TO:" + temps[8], 250, st, paint);
+
+
+                    //  canvas.drawText("----------------------------------------------------", 5, st, paint);
+                }
+
+
+                st = st + 20;
+                canvas.drawText("--------X---------", 100, st, paint);
+                com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+            }
+        });
     }
 
-    @Override
+
+
+
+    public void loadTripsData(ArrayList<TripsheetsStockList> tripsStockList) {
+        if (mTripsheetsStockPreviewAdapter != null) {
+            mTripsheetsStockPreviewAdapter = null;
+        }
+
+        mTripsheetsStockPreviewAdapter = new TripsheetStockPreviewAdapter(this, TripsheetStockPreview.this, this, tripsStockList);
+        tdc_products_list_preview.setAdapter(mTripsheetsStockPreviewAdapter);
+    }
+
+        @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
@@ -63,13 +253,13 @@ public class TripsheetStockPreview extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
 
 
-        menu.findItem(R.id.notifications).setVisible(false);
-        menu.findItem(R.id.settings).setVisible(false);
-        menu.findItem(R.id.logout).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem(R.id.Add).setVisible(false);
+        menu.findItem(id.notifications).setVisible(false);
+        menu.findItem(id.settings).setVisible(false);
+        menu.findItem(id.logout).setVisible(false);
+        menu.findItem(id.action_search).setVisible(true);
+        menu.findItem(id.Add).setVisible(false);
 
-        menu.findItem(R.id.autorenew).setVisible(true);
+        menu.findItem(id.autorenew).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
 
