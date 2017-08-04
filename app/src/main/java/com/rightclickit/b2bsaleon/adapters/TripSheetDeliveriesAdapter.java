@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,9 +34,11 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
     private TripSheetDeliveriesListener listener;
     private ArrayList<DeliverysBean> allDeliveryProductsList, filteredDeliveryProductsList;
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap; // Hash Map Key = Product Id
+    private Map<String, String> previouslyDeliveredProductsHashMap;
     private final String zero_cost = "0.000";
+    private boolean isDeliveryInEditingMode = false;
 
-    public TripSheetDeliveriesAdapter(Context ctxt, TripsheetDelivery deliveryActivity, TripSheetDeliveriesListener deliveriesListener, ArrayList<DeliverysBean> mdeliveriesBeanList) {
+    public TripSheetDeliveriesAdapter(Context ctxt, TripsheetDelivery deliveryActivity, TripSheetDeliveriesListener deliveriesListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyDeliveredProducts) {
         this.ctxt = ctxt;
         this.activity = deliveryActivity;
         this.mInflater = LayoutInflater.from(activity);
@@ -46,16 +47,25 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         this.filteredDeliveryProductsList = new ArrayList<>();
         this.filteredDeliveryProductsList.addAll(allDeliveryProductsList);
         this.selectedDeliveryProductsHashMap = new HashMap<>();
+        this.previouslyDeliveredProductsHashMap = previouslyDeliveredProducts;
+
+        if (!previouslyDeliveredProductsHashMap.isEmpty()) {
+            isDeliveryInEditingMode = true;
+        }
 
         // in order to update total amount's at the time of initial loading.
         for (DeliverysBean deliverysBean : filteredDeliveryProductsList) {
             final double productRatePerUnit = Double.parseDouble(deliverysBean.getProductAgentPrice().replace(",", ""));
             float productTax = 0.0f;
 
-            if (deliverysBean.getProductvat() != null)
-                productTax = Float.parseFloat(deliverysBean.getProductvat());
-            else if (deliverysBean.getProductgst() != null)
+            if (previouslyDeliveredProductsHashMap.containsKey(deliverysBean.getProductId())) {
+                deliverysBean.setProductOrderedQuantity(Double.parseDouble(previouslyDeliveredProductsHashMap.get(deliverysBean.getProductId())));
+            }
+
+            if (deliverysBean.getProductgst() != null)
                 productTax = Float.parseFloat(deliverysBean.getProductgst());
+            else if (deliverysBean.getProductvat() != null)
+                productTax = Float.parseFloat(deliverysBean.getProductvat());
 
             double orderQuantity = deliverysBean.getProductOrderedQuantity();
             double taxAmountPerUnit = ((productRatePerUnit) * productTax) / 100;
@@ -65,9 +75,13 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
             deliverysBean.setSelectedQuantity(orderQuantity);
             deliverysBean.setProductRatePerUnit(productRatePerUnit);
             deliverysBean.setProductTaxPerUnit(productTax);
-            deliverysBean.setProductAvailableStockForSpecificAgent(deliverysBean.getProductOrderedQuantity() + deliverysBean.getProductExtraQuantity());
             deliverysBean.setProductAmount(amount);
             deliverysBean.setTaxAmount(taxAmount);
+
+            if (isDeliveryInEditingMode)
+                deliverysBean.setProductAvailableStockForSpecificAgent(orderQuantity + deliverysBean.getProductStock() + deliverysBean.getProductExtraQuantity());
+            else
+                deliverysBean.setProductAvailableStockForSpecificAgent(deliverysBean.getProductOrderedQuantity() + deliverysBean.getProductExtraQuantity());
 
             selectedDeliveryProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
 

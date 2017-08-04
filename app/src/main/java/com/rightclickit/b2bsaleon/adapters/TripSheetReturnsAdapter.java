@@ -1,102 +1,209 @@
 package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.TripsheetDelivery;
-import com.rightclickit.b2bsaleon.activities.TripsheetDeliveryPreview;
-import com.rightclickit.b2bsaleon.activities.TripsheetPayments;
 import com.rightclickit.b2bsaleon.activities.TripsheetReturns;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
-import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
-import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
-import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
-import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
+import com.rightclickit.b2bsaleon.interfaces.TripSheetReturnsListener;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by PPS on 7/17/2017.
- *
+ * <p>
  * Modified by Venkat
  */
 
 public class TripSheetReturnsAdapter extends BaseAdapter {
-    LayoutInflater mInflater;
+    private LayoutInflater mInflater;
+    private Context ctxt;
     private Activity activity;
-    Context ctxt;
-    ArrayList<TripSheetReturnsBean> mTripSheetsReturns;
-    private ImageLoader mImageLoader;
-    private MMSharedPreferences mPreferences;
-    private ArrayList<TripSheetReturnsBean> arraylist;
-    private DBHelper mDBHelper;
+    private TripSheetReturnsListener listener;
+    private ArrayList<DeliverysBean> allProductsList, filteredProductsList;
+    private Map<String, DeliverysBean> selectedProductsHashMap; // Hash Map Key = Product Id
+    private Map<String, String> previouslyReturnedProductsHashMap;
+    private boolean isReturnsInEditingMode = false;
+    private final String zero_cost = "0.000";
 
-    public TripSheetReturnsAdapter(Context ctxt, TripsheetReturns returnsActivity, ArrayList<TripSheetReturnsBean> mreturnsBeanList) {
+    public TripSheetReturnsAdapter(Context ctxt, TripsheetReturns returnsActivity, TripSheetReturnsListener tripSheetReturnsListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyProducts) {
         this.ctxt = ctxt;
         this.activity = returnsActivity;
-        this.mTripSheetsReturns = mreturnsBeanList;
+        this.listener = tripSheetReturnsListener;
         this.mInflater = LayoutInflater.from(activity);
-        this.mPreferences = new MMSharedPreferences(activity);
-        this.arraylist = new ArrayList<TripSheetReturnsBean>();
-        this.mDBHelper = new DBHelper(activity);
-        this.arraylist.addAll(mTripSheetsReturns);
+        this.allProductsList = mdeliveriesBeanList;
+        this.filteredProductsList = new ArrayList<>();
+        this.filteredProductsList.addAll(allProductsList);
+        this.selectedProductsHashMap = new HashMap<>();
+        this.previouslyReturnedProductsHashMap = previouslyProducts;
+
+        if (!previouslyReturnedProductsHashMap.isEmpty()) {
+            isReturnsInEditingMode = true;
+        }
+    }
+
+    public class TripSheetReturnsViewHolder {
+        TextView productName;
+        Spinner returnType;
+        EditText product_quantity;
+        ImageView product_quantity_decrement, product_quantity_increment;
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return filteredProductsList.size();
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public DeliverysBean getItem(int i) {
+        return filteredProductsList.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
-        final TripSheetReturnsViewHolder mHolder;
+        final TripSheetReturnsViewHolder tripSheetReturnsViewHolder;
 
         if (view == null) {
-            mHolder = new TripSheetReturnsViewHolder();
             view = mInflater.inflate(R.layout.tripsheetreturns_custom, null);
 
-            mHolder.dProductReturnName = (TextView) view.findViewById(R.id.productName);
-            mHolder.dProductReturnAmount = (TextView) view.findViewById(R.id.D_QTY);
-            mHolder.dProductReturnTypr = (Spinner) view.findViewById(R.id.paymentTypeSpinner);
-            mHolder.dProductIncAmount = (TextView) view.findViewById(R.id.productQt);
+            tripSheetReturnsViewHolder = new TripSheetReturnsViewHolder();
+            tripSheetReturnsViewHolder.productName = (TextView) view.findViewById(R.id.productName);
+            tripSheetReturnsViewHolder.returnType = (Spinner) view.findViewById(R.id.returnTypeSpinner);
+            tripSheetReturnsViewHolder.product_quantity = (EditText) view.findViewById(R.id.productQt);
+            tripSheetReturnsViewHolder.product_quantity_decrement = (ImageView) view.findViewById(R.id.productQtDec);
+            tripSheetReturnsViewHolder.product_quantity_increment = (ImageView) view.findViewById(R.id.productQtInc);
 
-            view.setTag(mHolder);
+            view.setTag(tripSheetReturnsViewHolder);
         } else {
-            mHolder = (TripSheetReturnsViewHolder) view.getTag();
+            tripSheetReturnsViewHolder = (TripSheetReturnsViewHolder) view.getTag();
         }
 
-        mHolder.dProductReturnName.setText(mTripSheetsReturns.get(position).getmTripsheetReturnsName());
-        mHolder.dProductReturnAmount.setText(mTripSheetsReturns.get(position).getmTripshhetReturnsQuantity());
-        //  mHolder.dProductReturnTypr.setText(mTripSheetsReturns.get(position).getrProductReturnsType());
-        mHolder.dProductIncAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsReturns.get(position).getmTripsheetReturnsIncAmount())));
+        final TripSheetReturnsViewHolder currentTripSheetReturnsViewHolder = tripSheetReturnsViewHolder;
+
+        final DeliverysBean currentDeliveryBean = getItem(position);
+
+        tripSheetReturnsViewHolder.productName.setText(String.format("%s", currentDeliveryBean.getProductTitle()));
+
+        if (previouslyReturnedProductsHashMap.containsKey(currentDeliveryBean.getProductId()))
+            tripSheetReturnsViewHolder.product_quantity.setText(previouslyReturnedProductsHashMap.get(currentDeliveryBean.getProductId()));
+        else
+            tripSheetReturnsViewHolder.product_quantity.setText(zero_cost);
+
+        tripSheetReturnsViewHolder.product_quantity_decrement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Double presentQuantity = Double.parseDouble(currentTripSheetReturnsViewHolder.product_quantity.getText().toString());
+
+                    if (presentQuantity > 0) {
+                        presentQuantity--;
+
+                        currentDeliveryBean.setSelectedQuantity(presentQuantity);
+
+                        if (presentQuantity == 0) {
+                            currentTripSheetReturnsViewHolder.product_quantity.setText(zero_cost);
+                            updateSelectedProductsList(currentDeliveryBean);
+                        } else {
+                            currentTripSheetReturnsViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
+                            updateSelectedProductsList(currentDeliveryBean);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        tripSheetReturnsViewHolder.product_quantity_increment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Double presentQuantity = Double.parseDouble(currentTripSheetReturnsViewHolder.product_quantity.getText().toString());
+                    presentQuantity++;
+
+                    currentDeliveryBean.setSelectedQuantity(presentQuantity);
+                    currentTripSheetReturnsViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
+                    updateSelectedProductsList(currentDeliveryBean);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        tripSheetReturnsViewHolder.product_quantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                try {
+                    if (!hasFocus) {
+                        EditText quantityEditText = (EditText) view;
+                        Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
+
+                        currentDeliveryBean.setSelectedQuantity(enteredQuantity);
+                        updateSelectedProductsList(currentDeliveryBean);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         return view;
     }
 
-    public class TripSheetReturnsViewHolder {
-        TextView dProductReturnName;
-        TextView dProductReturnAmount;
-        Spinner dProductReturnTypr;
-        TextView dProductIncAmount;
+    public void updateSelectedProductsList(DeliverysBean deliverysBean) {
+        try {
+            if (selectedProductsHashMap.containsKey(deliverysBean.getProductId()))
+                selectedProductsHashMap.remove(deliverysBean.getProductId());
+
+            selectedProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
+
+            if (listener != null)
+                listener.updateSelectedProductsList(selectedProductsHashMap);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Filter Class
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+
+        filteredProductsList.clear();
+
+        if (charText.length() == 0) {
+            filteredProductsList.addAll(allProductsList);
+        } else {
+            for (DeliverysBean deliverysBean : allProductsList) {
+                if (deliverysBean.getProductTitle().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    filteredProductsList.add(deliverysBean);
+                } else if (deliverysBean.getProductCode().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    filteredProductsList.add(deliverysBean);
+                }
+            }
+        }
+
+        notifyDataSetChanged();
     }
 }

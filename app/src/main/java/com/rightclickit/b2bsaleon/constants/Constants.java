@@ -39,6 +39,7 @@ public class Constants {
     public static final String TDC_SALES_ORDER_DATE_SAVE_FORMAT = "yyyy-MM-dd";
     public static final String CUSTOMER_ADD_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String TRIP_SHEETS_STOCK_UPDATE_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String TRIP_SHEETS_DELIVERY_ADD_DATE_FORMAT = "dd/MM/yyyy HH:mm:ss";
 
     public static final String GOOGLE_DIRECTIONS_URL = "https://maps.googleapis.com/maps/api/directions/json?origin=%s,%s&destination=%s,%s";
 
@@ -88,7 +89,7 @@ public class Constants {
     public static final String MAIN_URL = "http://111.93.17.13";
 
     //Development
-   // public static final String MAIN_URL = "http://52.10.51.54";
+    //public static final String MAIN_URL = "http://52.10.51.54";
 
 
     public static final String APP_TYPE = "A";
@@ -138,4 +139,13 @@ public class Constants {
 
     //Get Notifications List  URL
     public static final String GET_NOTIFICATIONS_LIST = "/notification/list/";
+
+    // TripsheetsPaymentsURL
+    public static final String TRIPSHEETS_PAYMENTS_URL = "/payment_orders/add";
+
+    // Tripsheets Deliveries URL
+    public static final String TRIPSHEETS_DELIVERIES_URL = "/delivery_orders/add/";
+
+    // Tripsheets Returns URL
+    public static final String TRIPSHEETS_RETURNS_URL = "/return_orders/add";
 }

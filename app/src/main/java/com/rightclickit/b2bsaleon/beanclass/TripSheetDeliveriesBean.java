@@ -7,6 +7,8 @@ package com.rightclickit.b2bsaleon.beanclass;
 public class TripSheetDeliveriesBean {
     private String mTripsheetDeliveryNo;
     private String mTripsheetDelivery_tripId;
+    private String mTripsheetDelivery_so_id;
+    private String mTripsheetDelivery_so_code;
     private String mTripsheetDelivery_userId;
     private String mTripsheetDelivery_userCodes;
     private String mTripsheetDelivery_routeId;
@@ -26,8 +28,8 @@ public class TripSheetDeliveriesBean {
     private String mTripsheetDelivery_CreatedOn;
     private String mTripsheetDelivery_UpdatedOn;
     private String mTripsheetDelivery_UpdatedBy;
-    private String mTripsheetDeleveryName;
-    private String mTripsheetDeleveryInstockAmount;
+    private String productRemainingInStock;
+    private String productRemainingExtraStock;
 
     public String getmTripsheetDeliveryNo() {
         return mTripsheetDeliveryNo;
@@ -43,6 +45,22 @@ public class TripSheetDeliveriesBean {
 
     public void setmTripsheetDelivery_tripId(String mTripsheetDelivery_tripId) {
         this.mTripsheetDelivery_tripId = mTripsheetDelivery_tripId;
+    }
+
+    public String getmTripsheetDelivery_so_id() {
+        return mTripsheetDelivery_so_id;
+    }
+
+    public void setmTripsheetDelivery_so_id(String mTripsheetDelivery_so_id) {
+        this.mTripsheetDelivery_so_id = mTripsheetDelivery_so_id;
+    }
+
+    public String getmTripsheetDelivery_so_code() {
+        return mTripsheetDelivery_so_code;
+    }
+
+    public void setmTripsheetDelivery_so_code(String mTripsheetDelivery_so_code) {
+        this.mTripsheetDelivery_so_code = mTripsheetDelivery_so_code;
     }
 
     public String getmTripsheetDelivery_userId() {
@@ -197,48 +215,29 @@ public class TripSheetDeliveriesBean {
         this.mTripsheetDelivery_UpdatedBy = mTripsheetDelivery_UpdatedBy;
     }
 
-    public String getmTripsheetDeleveryName() {
-        return mTripsheetDeleveryName;
+    public String getProductRemainingInStock() {
+        return productRemainingInStock;
     }
 
-    public void setmTripsheetDeleveryName(String mTripsheetDeleveryName) {
-        this.mTripsheetDeleveryName = mTripsheetDeleveryName;
+    public void setProductRemainingInStock(String productRemainingInStock) {
+        this.productRemainingInStock = productRemainingInStock;
     }
 
-    public String getmTripsheetDeleveryInstockAmount() {
-        return mTripsheetDeleveryInstockAmount;
+    public String getProductRemainingExtraStock() {
+        return productRemainingExtraStock;
     }
 
-    public void setmTripsheetDeleveryInstockAmount(String mTripsheetDeleveryInstockAmount) {
-        this.mTripsheetDeleveryInstockAmount = mTripsheetDeleveryInstockAmount;
+    public void setProductRemainingExtraStock(String productRemainingExtraStock) {
+        this.productRemainingExtraStock = productRemainingExtraStock;
     }
 
     @Override
     public String toString() {
-        return "TripSheetDeliveriesBean{" +
-                "mTripsheetDeliveryNo='" + mTripsheetDeliveryNo + '\'' +
-                ", mTripsheetDelivery_tripId='" + mTripsheetDelivery_tripId + '\'' +
-                ", mTripsheetDelivery_userId='" + mTripsheetDelivery_userId + '\'' +
-                ", mTripsheetDelivery_userCodes='" + mTripsheetDelivery_userCodes + '\'' +
-                ", mTripsheetDelivery_routeId='" + mTripsheetDelivery_routeId + '\'' +
-                ", mTripsheetDelivery_routeCodes='" + mTripsheetDelivery_routeCodes + '\'' +
-                ", mTripsheetDelivery_productId='" + mTripsheetDelivery_productId + '\'' +
-                ", mTripsheetDelivery_productCodes='" + mTripsheetDelivery_productCodes + '\'' +
-                ", mTripsheetDelivery_TaxPercent='" + mTripsheetDelivery_TaxPercent + '\'' +
-                ", mTripsheetDelivery_UnitPrice='" + mTripsheetDelivery_UnitPrice + '\'' +
-                ", mTripsheetDelivery_Quantity='" + mTripsheetDelivery_Quantity + '\'' +
-                ", mTripsheetDelivery_Amount='" + mTripsheetDelivery_Amount + '\'' +
-                ", mTripsheetDelivery_TaxAmount='" + mTripsheetDelivery_TaxAmount + '\'' +
-                ", mTripsheetDelivery_TaxTotal='" + mTripsheetDelivery_TaxTotal + '\'' +
-                ", mTripsheetDelivery_SaleValue='" + mTripsheetDelivery_SaleValue + '\'' +
-                ", mTripsheetDelivery_Status='" + mTripsheetDelivery_Status + '\'' +
-                ", mTripsheetDelivery_Delete='" + mTripsheetDelivery_Delete + '\'' +
-                ", mTripsheetDelivery_CreatedBy='" + mTripsheetDelivery_CreatedBy + '\'' +
-                ", mTripsheetDelivery_CreatedOn='" + mTripsheetDelivery_CreatedOn + '\'' +
-                ", mTripsheetDelivery_UpdatedOn='" + mTripsheetDelivery_UpdatedOn + '\'' +
-                ", mTripsheetDelivery_UpdatedBy='" + mTripsheetDelivery_UpdatedBy + '\'' +
-                ", mTripsheetDeleveryName='" + mTripsheetDeleveryName + '\'' +
-                ", mTripsheetDeleveryInstockAmount='" + mTripsheetDeleveryInstockAmount + '\'' +
+        return "\n TripSheetDeliveriesBean{" +
+                ", productCodes='" + mTripsheetDelivery_productCodes + '\'' +
+                ", Sel.Quantity='" + mTripsheetDelivery_Quantity + '\'' +
+                ", productRemainingInStock='" + productRemainingInStock + '\'' +
+                ", productRemainingExtraStock='" + productRemainingExtraStock + '\'' +
                 '}';
     }
 }

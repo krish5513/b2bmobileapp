@@ -5,38 +5,25 @@ package com.rightclickit.b2bsaleon.beanclass;
  */
 
 public class TripSheetReturnsBean {
-    private String mTripsheetReturnsName;
     private String mTripshhetReturnsReturn_no;
     private String mTripshhetReturnsTrip_id;
+    private String mTripshhetReturns_so_id;
+    private String mTripshhetReturns_so_code;
     private String mTripshhetReturnsUser_id;
     private String mTripshhetReturnsUser_codes;
     private String mTripshhetReturnsRoute_id;
     private String mTripshhetReturnsRoute_codes;
+    private String mTripshhetReturns_productTitle;
     private String mTripshhetReturnsProduct_ids;
     private String mTripshhetReturnsProduct_codes;
-    private String mTripshhetReturnsTax_percent;
-    private String mTripshhetReturnsUnit_price;
     private String mTripshhetReturnsQuantity;
-    private String mTripshhetReturnsAmount;
-    private String mTripshhetReturnsTax_amount;
-    private String mTripshhetReturnsTax_total;
-    private String mTripshhetReturnsSale_value;
-    private String mTripshhetReturnsType;
+    private String mTripshhetReturnsType;// either L or R
     private String mTripshhetReturnsStatus;
     private String mTripshhetReturnsDelete;
     private String mTripshhetReturnsCreated_by;
     private String mTripshhetReturnsCreated_on;
     private String mTripshhetReturnsUpdated_on;
     private String mTripshhetReturnsUpdated_by;
-    private String mTripsheetReturnsIncAmount;
-    
-    public String getmTripsheetReturnsName() {
-        return mTripsheetReturnsName;
-    }
-
-    public void setmTripsheetReturnsName(String mTripsheetReturnsName) {
-        this.mTripsheetReturnsName = mTripsheetReturnsName;
-    }
 
     public String getmTripshhetReturnsReturn_no() {
         return mTripshhetReturnsReturn_no;
@@ -52,6 +39,22 @@ public class TripSheetReturnsBean {
 
     public void setmTripshhetReturnsTrip_id(String mTripshhetReturnsTrip_id) {
         this.mTripshhetReturnsTrip_id = mTripshhetReturnsTrip_id;
+    }
+
+    public String getmTripshhetReturns_so_id() {
+        return mTripshhetReturns_so_id;
+    }
+
+    public void setmTripshhetReturns_so_id(String mTripshhetReturns_so_id) {
+        this.mTripshhetReturns_so_id = mTripshhetReturns_so_id;
+    }
+
+    public String getmTripshhetReturns_so_code() {
+        return mTripshhetReturns_so_code;
+    }
+
+    public void setmTripshhetReturns_so_code(String mTripshhetReturns_so_code) {
+        this.mTripshhetReturns_so_code = mTripshhetReturns_so_code;
     }
 
     public String getmTripshhetReturnsUser_id() {
@@ -102,20 +105,12 @@ public class TripSheetReturnsBean {
         this.mTripshhetReturnsProduct_codes = mTripshhetReturnsProduct_codes;
     }
 
-    public String getmTripshhetReturnsTax_percent() {
-        return mTripshhetReturnsTax_percent;
+    public String getmTripshhetReturns_productTitle() {
+        return mTripshhetReturns_productTitle;
     }
 
-    public void setmTripshhetReturnsTax_percent(String mTripshhetReturnsTax_percent) {
-        this.mTripshhetReturnsTax_percent = mTripshhetReturnsTax_percent;
-    }
-
-    public String getmTripshhetReturnsUnit_price() {
-        return mTripshhetReturnsUnit_price;
-    }
-
-    public void setmTripshhetReturnsUnit_price(String mTripshhetReturnsUnit_price) {
-        this.mTripshhetReturnsUnit_price = mTripshhetReturnsUnit_price;
+    public void setmTripshhetReturns_productTitle(String mTripshhetReturns_productTitle) {
+        this.mTripshhetReturns_productTitle = mTripshhetReturns_productTitle;
     }
 
     public String getmTripshhetReturnsQuantity() {
@@ -124,38 +119,6 @@ public class TripSheetReturnsBean {
 
     public void setmTripshhetReturnsQuantity(String mTripshhetReturnsQuantity) {
         this.mTripshhetReturnsQuantity = mTripshhetReturnsQuantity;
-    }
-
-    public String getmTripshhetReturnsAmount() {
-        return mTripshhetReturnsAmount;
-    }
-
-    public void setmTripshhetReturnsAmount(String mTripshhetReturnsAmount) {
-        this.mTripshhetReturnsAmount = mTripshhetReturnsAmount;
-    }
-
-    public String getmTripshhetReturnsTax_amount() {
-        return mTripshhetReturnsTax_amount;
-    }
-
-    public void setmTripshhetReturnsTax_amount(String mTripshhetReturnsTax_amount) {
-        this.mTripshhetReturnsTax_amount = mTripshhetReturnsTax_amount;
-    }
-
-    public String getmTripshhetReturnsTax_total() {
-        return mTripshhetReturnsTax_total;
-    }
-
-    public void setmTripshhetReturnsTax_total(String mTripshhetReturnsTax_total) {
-        this.mTripshhetReturnsTax_total = mTripshhetReturnsTax_total;
-    }
-
-    public String getmTripshhetReturnsSale_value() {
-        return mTripshhetReturnsSale_value;
-    }
-
-    public void setmTripshhetReturnsSale_value(String mTripshhetReturnsSale_value) {
-        this.mTripshhetReturnsSale_value = mTripshhetReturnsSale_value;
     }
 
     public String getmTripshhetReturnsType() {
@@ -214,11 +177,27 @@ public class TripSheetReturnsBean {
         this.mTripshhetReturnsUpdated_by = mTripshhetReturnsUpdated_by;
     }
 
-    public String getmTripsheetReturnsIncAmount() {
-        return mTripsheetReturnsIncAmount;
-    }
-
-    public void setmTripsheetReturnsIncAmount(String mTripsheetReturnsIncAmount) {
-        this.mTripsheetReturnsIncAmount = mTripsheetReturnsIncAmount;
+    @Override
+    public String toString() {
+        return "TripSheetReturnsBean{" +
+                "mTripshhetReturnsReturn_no='" + mTripshhetReturnsReturn_no + '\'' +
+                ", mTripshhetReturnsTrip_id='" + mTripshhetReturnsTrip_id + '\'' +
+                ", mTripshhetReturns_so_id='" + mTripshhetReturns_so_id + '\'' +
+                ", mTripshhetReturns_so_code='" + mTripshhetReturns_so_code + '\'' +
+                ", mTripshhetReturnsUser_id='" + mTripshhetReturnsUser_id + '\'' +
+                ", mTripshhetReturnsUser_codes='" + mTripshhetReturnsUser_codes + '\'' +
+                ", mTripshhetReturnsRoute_id='" + mTripshhetReturnsRoute_id + '\'' +
+                ", mTripshhetReturnsRoute_codes='" + mTripshhetReturnsRoute_codes + '\'' +
+                ", mTripshhetReturnsProduct_ids='" + mTripshhetReturnsProduct_ids + '\'' +
+                ", mTripshhetReturnsProduct_codes='" + mTripshhetReturnsProduct_codes + '\'' +
+                ", mTripshhetReturnsQuantity='" + mTripshhetReturnsQuantity + '\'' +
+                ", mTripshhetReturnsType='" + mTripshhetReturnsType + '\'' +
+                ", mTripshhetReturnsStatus='" + mTripshhetReturnsStatus + '\'' +
+                ", mTripshhetReturnsDelete='" + mTripshhetReturnsDelete + '\'' +
+                ", mTripshhetReturnsCreated_by='" + mTripshhetReturnsCreated_by + '\'' +
+                ", mTripshhetReturnsCreated_on='" + mTripshhetReturnsCreated_on + '\'' +
+                ", mTripshhetReturnsUpdated_on='" + mTripshhetReturnsUpdated_on + '\'' +
+                ", mTripshhetReturnsUpdated_by='" + mTripshhetReturnsUpdated_by + '\'' +
+                '}';
     }
 }

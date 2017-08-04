@@ -58,7 +58,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
 
     ArrayList<String[]> selectedList;
 
-    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "";
+    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +87,12 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         mAgentId = this.getIntent().getStringExtra("agentId");
         mAgentCode = this.getIntent().getStringExtra("agentCode");
         mAgentName = this.getIntent().getStringExtra("agentName");
-
+        mAgentRouteId = this.getIntent().getStringExtra("agentRouteId");
+        mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
+        mAgentSoId = this.getIntent().getStringExtra("agentSoId");
+        mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
+        System.out.println("====== 0 ======== mTripSheetId = " + mTripSheetId);
+        
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
         selectedList = new ArrayList<>(customArraylist.size());
         for (int i = 0; i < 10; i++) {
@@ -285,6 +290,10 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         intent.putExtra("agentId", mAgentId);
         intent.putExtra("agentCode", mAgentCode);
         intent.putExtra("agentName", mAgentName);
+        intent.putExtra("agentRouteId", mAgentRouteId);
+        intent.putExtra("agentRouteCode", mAgentRouteCode);
+        intent.putExtra("agentSoId", mAgentSoId);
+        intent.putExtra("agentSoCode", mAgentSoCode);
         startActivity(intent);
         finish();
     }

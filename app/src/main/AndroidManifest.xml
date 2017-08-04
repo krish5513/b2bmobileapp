@@ -284,6 +284,22 @@
             android:enabled="true"
             android:exported="true" />
 
+        <!-- TripSheets Payments Sync Service -->
+        <service
+            android:name=".services.SyncTripSheetsPaymentsService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".services.SyncTripsheetDeliveriesService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service
+            android:name=".services.SyncTripsheetReturnsService"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>
