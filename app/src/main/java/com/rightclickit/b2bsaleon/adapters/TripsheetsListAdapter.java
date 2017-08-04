@@ -114,9 +114,9 @@ public class TripsheetsListAdapter extends BaseAdapter {
         }
 
         mHolder.mTripsheetCode.setText(mTripSheetsList.get(position).getmTripshhetCode());
-        mPreferences.putString("TripCode",mTripSheetsList.get(position).getmTripshhetCode());
+
         mHolder.mTripsheetDate.setText(mTripSheetsList.get(position).getmTripshhetDate());
-        mPreferences.putString("TripDate",mTripSheetsList.get(position).getmTripshhetDate());
+
         mHolder.mTripsheetStatus.setText(mTripSheetsList.get(position).getmTripshhetStatus());
         mHolder.mTripsheetOBAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetOBAmount())));
         mHolder.mTripsheetOrderedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetDueAmount())));
@@ -128,6 +128,8 @@ public class TripsheetsListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Intent stockIntent = new Intent(activity, TripSheetStock.class);
                 stockIntent.putExtra("tripsheetId", mTripSheetsList.get(position).getmTripshhetId());
+                stockIntent.putExtra("tripsheetCode", mTripSheetsList.get(position).getmTripshhetCode());
+                stockIntent.putExtra("tripsheetDate", mTripSheetsList.get(position).getmTripshhetDate());
                 activity.startActivity(stockIntent);
                 activity.finish();
             }

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -52,7 +53,7 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
     private ArrayList<String> privilegeActionsData;
     private TripsheetsModel mTripsheetsModel;
     private TripsheetsStockListAdapter mTripsheetsStockAdapter;
-    private String mTripSheetId;
+    private String mTripSheetId,mTripSheetCode,mTripSheetDate;
     private Map<String, TripsheetsStockList> productsDispatchListHashMap, productsVerifyListHashMap; // Hash Map Key = Product Id
     private String loggedInUserId;
     private boolean isStockDispatched = false, isStockVerified = false;
@@ -86,6 +87,13 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+            Bundle bundle = this.getIntent().getExtras();
+            if (bundle != null) {
+                mTripSheetId = bundle.getString("tripsheetId");
+                mTripSheetCode=bundle.getString("tripsheetCode");
+                mTripSheetDate=bundle.getString("tripsheetDate");
+            }
+
             dispatchTitle = (TextView) findViewById(R.id.dispatchTitle);
             verifyTitle = (TextView) findViewById(R.id.verifyTitle);
             mTripsheetsStockListView = (ListView) findViewById(R.id.tripsheetStockListView);
@@ -95,6 +103,8 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
             tps_stock_save_layout = (LinearLayout) findViewById(R.id.tps_stock_save_layout);
             tps_stock_verify_layout = (LinearLayout) findViewById(R.id.tps_stock_verify_layout);
             tps_stock_preview_layout = (LinearLayout) findViewById(R.id.tps_stock_preview_layout);
+
+            ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList();
 
             privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("TripSheets"));
             //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
@@ -115,10 +125,7 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
                 tps_stock_preview_layout.setVisibility(View.VISIBLE);
             }
 
-            Bundle bundle = this.getIntent().getExtras();
-            if (bundle != null) {
-                mTripSheetId = bundle.getString("tripsheetId");
-            }
+
 
             mTripsheetsModel = new TripsheetsModel(this, TripSheetStock.this);
             ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
@@ -249,6 +256,9 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
         else {
             Intent i = new Intent(TripSheetStock.this, TripsheetStockPreview.class);
             i.putExtra("tripSheetId", mTripSheetId);
+            i.putExtra("tripsheetCode", mTripSheetCode);
+            i.putExtra("tripsheetDate", mTripSheetDate);
+
             startActivity(i);
             finish();
         }

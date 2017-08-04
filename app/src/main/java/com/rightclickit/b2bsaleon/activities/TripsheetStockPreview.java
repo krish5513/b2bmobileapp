@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetStockPreviewAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
@@ -34,10 +35,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.rightclickit.b2bsaleon.R.*;
+
 
 public class TripsheetStockPreview extends AppCompatActivity {
     private String tripSheetId;
+
+    ArrayList<ProductsBean> myList ;
 
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
@@ -60,10 +63,10 @@ public class TripsheetStockPreview extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(layout.activity_tripsheet_stock_preview);
+        setContentView(R.layout.activity_tripsheet_stock_preview);
 
 
-        try {
+
             applicationContext = getApplicationContext();
             activityContext = TripsheetStockPreview.this;
 
@@ -72,14 +75,15 @@ public class TripsheetStockPreview extends AppCompatActivity {
             loggedInUserName = mmSharedPreferences.getString("loginusername");
             str_routecode = (mmSharedPreferences.getString("routecode") + ",");
 
-            str_Tripcode=mmSharedPreferences.getString("TripCode");
-            str_Tripdate=mmSharedPreferences.getString("TripDate");
-
+        myList=new ArrayList<ProductsBean>();
             mDBHelper = new DBHelper(TripsheetStockPreview.this);
 
-            this.getSupportActionBar().setTitle("ROUTE STOCK VALUE");
+        myList= mDBHelper.fetchAllRecordsFromProductsTable();
+
+
+        this.getSupportActionBar().setTitle("ROUTE STOCK VALUE");
             this.getSupportActionBar().setSubtitle(null);
-            this.getSupportActionBar().setLogo(drawable.route_white);
+            this.getSupportActionBar().setLogo(R.drawable.route_white);
             // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
             this.getSupportActionBar().setDisplayUseLogoEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -89,24 +93,29 @@ public class TripsheetStockPreview extends AppCompatActivity {
             final ActionBar actionBar = getSupportActionBar();
             assert actionBar != null;
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(drawable.ic_arrow_back_black_24dp);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
             productsDispatchListHashMap = new HashMap<>();
             productsVerifyListHashMap = new HashMap<>();
 
+            myList=mDBHelper.fetchAllRecordsFromProductsTable();
+
             Bundle bundle = getIntent().getExtras();
             if (bundle != null)
                 tripSheetId = bundle.getString("tripSheetId");
+                 str_Tripcode=bundle.getString("tripsheetCode");
+                 str_Tripdate=bundle.getString("tripsheetDate");
 
-            sales_print = (TextView) findViewById(id.tdc_sales_print);
-            company_name = (TextView) findViewById(id.tdc_sales_company_name);
-            user_name = (TextView) findViewById(id.tdc_sales_user_name);
-            route_name = (TextView) findViewById(id.tdc_sales_route_name);
-            route_code = (TextView) findViewById(id.tdc_sales_route_code);
-            tripsheet_no_text_view = (TextView) findViewById(id.tripsheet_no);
-            sale_date_time_text_view = (TextView) findViewById(id.tdc_sales_date_time);
 
-            tdc_products_list_preview = (ListView) findViewById(id.tdc_sales_products_list_preview);
+            sales_print = (TextView) findViewById(R.id.stock_print);
+            company_name = (TextView) findViewById(R.id.tdc_sales_company_name);
+            user_name = (TextView) findViewById(R.id.tdc_sales_user_name);
+            route_name = (TextView) findViewById(R.id.tdc_sales_route_name);
+            route_code = (TextView) findViewById(R.id.tdc_sales_route_code);
+            tripsheet_no_text_view = (TextView) findViewById(R.id.tripsheet_no);
+            sale_date_time_text_view = (TextView) findViewById(R.id.tdc_sales_date_time);
+
+            tdc_products_list_preview = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
 
             company_name.setText(mmSharedPreferences.getString("companyname"));
             user_name.setText("by " + loggedInUserName);
@@ -114,6 +123,10 @@ public class TripsheetStockPreview extends AppCompatActivity {
             route_code.setText(str_routecode);
             tripsheet_no_text_view.setText(str_Tripcode +",");
             sale_date_time_text_view.setText(str_Tripdate);
+
+            for (int i=0;i<myList.size();i++){
+                str_Uom=myList.get(i).getProductUOM();
+            }
 
             mTripsheetsModel = new TripsheetsModel(this, TripsheetStockPreview.this);
             ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
@@ -125,9 +138,10 @@ public class TripsheetStockPreview extends AppCompatActivity {
                 str_Order=tripsheetsStockLists.get(i).getmTripsheetStockProductOrderQuantity();
                 str_Dispatch=tripsheetsStockLists.get(i).getmTripsheetStockDispatchQuantity();
                 str_Verify = tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity();
+               // str_Uom=mmSharedPreferences.getString("UOM");
                 String[] temp = new String[6];
                 temp[0] = str_ProductName;
-                temp[1] = ("0");
+                temp[1] = str_Uom;
                 temp[2] = str_Order;
                 temp[3] = str_Dispatch;
                 temp[4] = str_Verify;
@@ -147,9 +161,7 @@ public class TripsheetStockPreview extends AppCompatActivity {
                     mTripsheetsModel.getTripsheetsStockList(tripSheetId);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
         sales_print.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,8 +209,9 @@ public class TripsheetStockPreview extends AppCompatActivity {
                     canvas.drawText(temps[3], 245, st, paint);
                     canvas.drawText(temps[4], 315, st, paint);
 
-                    st = st + 40;
+                    st = st + 30;
                     canvas.drawText(temps[5], 5, st, paint);
+                    st = st + 30;
                     // canvas.drawText("FROM:" + temps[7], 100, st, paint);
                     //canvas.drawText("TO:" + temps[8], 250, st, paint);
 
@@ -253,13 +266,13 @@ public class TripsheetStockPreview extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
 
 
-        menu.findItem(id.notifications).setVisible(false);
-        menu.findItem(id.settings).setVisible(false);
-        menu.findItem(id.logout).setVisible(false);
-        menu.findItem(id.action_search).setVisible(true);
-        menu.findItem(id.Add).setVisible(false);
+        menu.findItem(R.id.notifications).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(false);
+        menu.findItem(R.id.logout).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.Add).setVisible(false);
 
-        menu.findItem(id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
 

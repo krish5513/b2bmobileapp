@@ -18,10 +18,13 @@ import com.rightclickit.b2bsaleon.activities.TDCSalesListActivity;
 import com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
 import com.rightclickit.b2bsaleon.activities.TripsheetStockPreview;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetStockListener;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
@@ -38,7 +41,10 @@ public class TripsheetStockPreviewAdapter extends BaseAdapter {
     private Context ctxt;
     private Activity activity;
     private TripSheetStockListener listener;
+    private MMSharedPreferences mPreferences;
     private LayoutInflater mInflater;
+    ArrayList<ProductsBean> myList ;
+    DBHelper mDBHelper;
     private ArrayList<TripsheetsStockList> allTripSheetStockList, filteredTripSheetStockList;
     private ArrayList<String> privilegeActionsData;
     private Map<String, TripsheetsStockList> dispatchProductsListHashMap, verifyProductsListHashMap;
@@ -48,14 +54,15 @@ public class TripsheetStockPreviewAdapter extends BaseAdapter {
     public TripsheetStockPreviewAdapter(Context ctxt, TripsheetStockPreview agentsActivity, TripsheetStockPreview tripSheetStockListener, ArrayList<TripsheetsStockList> tripSheetStockList) {
         this.ctxt = ctxt;
         this.activity = agentsActivity;
-
+       // this.myList=tripSheetStockListener;
         this.mInflater = LayoutInflater.from(activity);
         this.allTripSheetStockList = tripSheetStockList;
         this.filteredTripSheetStockList = new ArrayList<>();
         this.filteredTripSheetStockList.addAll(allTripSheetStockList);
-
+        this.mPreferences = new MMSharedPreferences(activity);
         this.dispatchProductsListHashMap = new HashMap<>();
         this.verifyProductsListHashMap = new HashMap<>();
+        mDBHelper=new DBHelper(activity);
     }
 
     @Override
@@ -97,11 +104,14 @@ public class TripsheetStockPreviewAdapter extends BaseAdapter {
         }
 
         final TripsheetsStockList currentStockList = getItem(position);
-
+       // final ProductsBean pBean = getItem(position);
+        myList= mDBHelper.fetchAllRecordsFromProductsTable();
         Double orderQuantity = Double.parseDouble(currentStockList.getmTripsheetStockProductOrderQuantity());
 
         tripSheetStockViewHolder.mProductName.setText(currentStockList.getmTripsheetStockProductName());
         tripSheetStockViewHolder.mProductCode.setText(currentStockList.getmTripsheetStockProductCode());
+
+        tripSheetStockViewHolder.mProductUom.setText(myList.get(position).getProductUOM());
         tripSheetStockViewHolder.mOrder.setText(String.format("%.3f", orderQuantity));
 
 

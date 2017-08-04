@@ -119,6 +119,7 @@ public class ProductsAdapter extends BaseAdapter {
 
             holder.gst = (EditText) convertView.findViewById(R.id.GST);
             holder.vat = (EditText) convertView.findViewById(R.id.VAT);
+            holder.materialUOM=(EditText)convertView.findViewById(R.id.UOM);
             convertView.setTag(holder);
         } else {
             holder = (MyViewHolder) convertView.getTag();
@@ -200,6 +201,17 @@ public class ProductsAdapter extends BaseAdapter {
             holder.vat.setText("-");
         }
 
+
+        if (mProductsBeansList1.get(position).getProductUOM() != null) {
+            if (mProductsBeansList1.get(position).getProductUOM().length() == 0) {
+                holder.materialUOM.setText("-");
+            } else {
+                holder.materialUOM.setText(mProductsBeansList1.get(position).getProductUOM());
+            }
+        } else {
+            holder.materialUOM.setText("-");
+        }
+
         //System.out.println("URL===== "+mProductsBeansList1.get(position).getProductImageUrl());
         if (mProductsBeansList1.get(position).getProductImageUrl() != null) {
             if (!mProductsBeansList1.get(position).getProductImageUrl().equals("")) {
@@ -238,6 +250,7 @@ public class ProductsAdapter extends BaseAdapter {
                 bundle.putString("CONSUMER", mProductsBeansList1.get(position).getProductConsumerPrice());
                 bundle.putString("GST", mProductsBeansList1.get(position).getProductgst());
                 bundle.putString("VAT", mProductsBeansList1.get(position).getProductvat());
+                bundle.putString("UOM", mProductsBeansList1.get(position).getProductUOM());
                 intent.putExtra("IMAGE", mProductsBeansList1.get(position).getProductImageUrl());
                 holder.productImage.buildDrawingCache();
                 Bitmap image = holder.productImage.getDrawingCache();
@@ -292,6 +305,7 @@ public class ProductsAdapter extends BaseAdapter {
         public TextView materialMOQ, materialMOQUnit;
         public TextView materialConsumer, materialConsumerUnit;
         public TextView materialReturnable;
+        public TextView materialUOM;
         public Button viewbtn;
 
         public Button stockbtn;

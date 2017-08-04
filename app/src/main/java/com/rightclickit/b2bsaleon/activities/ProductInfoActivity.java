@@ -28,7 +28,7 @@ public class ProductInfoActivity extends AppCompatActivity {
     EditText retailer;
     EditText consumer;
     EditText gst;
-    EditText vat;
+    EditText vat,uom;
     ImageView image;
     private MMSharedPreferences mPreference;
      DBHelper dbHelper;
@@ -65,6 +65,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         image=(ImageView)findViewById(R.id.productimageview) ;
         gst=(EditText)findViewById(R.id.GST);
         vat=(EditText)findViewById(R.id.VAT);
+        uom=(EditText)findViewById(R.id.UOM);
 
         code.setText(bundle.getString("CODE"));
         description.setText(bundle.getString("TITLE"));
@@ -75,6 +76,7 @@ public class ProductInfoActivity extends AppCompatActivity {
         consumer.setText(bundle.getString("CONSUMER"));
         gst.setText(bundle.getString("GST"));
         vat.setText(bundle.getString("VAT"));
+        uom.setText(bundle.getString("UOM"));
 
         Bundle extras = getIntent().getExtras();
         Bitmap bmp = (Bitmap) extras.getParcelable("imagebitmap");

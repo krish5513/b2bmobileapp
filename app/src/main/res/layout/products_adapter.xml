@@ -326,4 +326,26 @@
             android:textSize="14sp" />
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:visibility="gone">
+
+        <EditText
+
+            android:id="@+id/UOM"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.20"
+            android:hint="UOM"
+            android:editable="false"
+            android:clickable="false"
+            android:longClickable="false"
+            android:paddingTop="20dp"
+            android:textColor="@color/greydark"
+            android:textSize="14sp" />
+    </android.support.design.widget.TextInputLayout>
+
+
 </LinearLayout>
