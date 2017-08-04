@@ -9,13 +9,13 @@ import java.io.Serializable;
  */
 
 public class TripSheetDeliveriesBeanWithProducts extends TripSheetDeliveriesBean implements Serializable {
-    JSONArray productIdsArray;
-    JSONArray productCodesArray;
-    JSONArray taxPercentArray;
-    JSONArray unitPriceArray;
-    JSONArray quantityArray;
-    JSONArray amountArray;
-    JSONArray taxAmountArray;
+    private JSONArray productIdsArray;
+    private JSONArray productCodesArray;
+    private JSONArray taxPercentArray;
+    private JSONArray unitPriceArray;
+    private JSONArray quantityArray;
+    private JSONArray amountArray;
+    private JSONArray taxAmountArray;
 
     public JSONArray getProductIdsArray() {
         return productIdsArray;

@@ -79,9 +79,8 @@
 
 
     <string-array name="return_type">
-
         <item>Sale Return</item>
-        <item>Leakage</item>
+        <!--<item>Leakage</item>-->
     </string-array>
 
 

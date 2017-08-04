@@ -24,7 +24,6 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
-import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.services.SyncTripsheetDeliveriesService;
@@ -95,7 +94,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             mAgentSoId = this.getIntent().getStringExtra("agentSoId");
             mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
             loggedInUserId = mPreferences.getString("userId");
-
+            System.out.println("====== 0 ======== mTripSheetId = " + mTripSheetId);
             if (mAgentId != null && mAgentId != "") {
                 List<String> agentRouteIds = mDBHelper.getAgentRouteId(mAgentId);
                 mAgentRouteId = agentRouteIds.get(0);
@@ -118,6 +117,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             previouslyDeliveredProductsHashMap = new HashMap<>();
             deliveryProductsList = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
 
+            // In order to pre populate when you came back to this screen.
             ArrayList<TripSheetDeliveriesBean> previouslyDeliveredProductsData = mDBHelper.fetchAllTripsheetsDeliveriesList(mTripSheetId);
             for (TripSheetDeliveriesBean deliveriesBean : previouslyDeliveredProductsData) {
                 previouslyDeliveredProductsHashMap.put(deliveriesBean.getmTripsheetDelivery_productId(), deliveriesBean.getmTripsheetDelivery_Quantity());
@@ -216,12 +216,16 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
     }
 
     public void showTripSheetDeliveriesPreview(View v) {
-        if (isDeliveryDataSaved) {
+        if (isDeliveryDataSaved || isDeliveryInEditingMode) {
             Intent i = new Intent(activityContext, TripsheetDeliveryPreview.class);
             i.putExtra("tripsheetId", mTripSheetId);
             i.putExtra("agentId", mAgentId);
             i.putExtra("agentCode", mAgentCode);
             i.putExtra("agentName", mAgentName);
+            i.putExtra("agentRouteId", mAgentRouteId);
+            i.putExtra("agentRouteCode", mAgentRouteCode);
+            i.putExtra("agentSoId", mAgentSoId);
+            i.putExtra("agentSoCode", mAgentSoCode);
             startActivity(i);
             finish();
         } else {
@@ -343,9 +347,10 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                     long currentTimeStamp = System.currentTimeMillis();
 
                     ArrayList<TripSheetDeliveriesBean> mTripsheetsDeliveriesList = new ArrayList<>();
+
                     for (Map.Entry<String, DeliverysBean> deliverysBeanEntry : selectedDeliveryProductsHashMap.entrySet()) {
                         DeliverysBean deliverysBean = deliverysBeanEntry.getValue();
-                        System.out.println(deliverysBean);
+
                         double remainingInStock, remainingExtraStock, totalAvailableStock;
 
                         if (isDeliveryInEditingMode)

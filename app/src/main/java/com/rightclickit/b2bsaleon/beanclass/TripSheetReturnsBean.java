@@ -13,6 +13,7 @@ public class TripSheetReturnsBean {
     private String mTripshhetReturnsUser_codes;
     private String mTripshhetReturnsRoute_id;
     private String mTripshhetReturnsRoute_codes;
+    private String mTripshhetReturns_productTitle;
     private String mTripshhetReturnsProduct_ids;
     private String mTripshhetReturnsProduct_codes;
     private String mTripshhetReturnsQuantity;
@@ -102,6 +103,14 @@ public class TripSheetReturnsBean {
 
     public void setmTripshhetReturnsProduct_codes(String mTripshhetReturnsProduct_codes) {
         this.mTripshhetReturnsProduct_codes = mTripshhetReturnsProduct_codes;
+    }
+
+    public String getmTripshhetReturns_productTitle() {
+        return mTripshhetReturns_productTitle;
+    }
+
+    public void setmTripshhetReturns_productTitle(String mTripshhetReturns_productTitle) {
+        this.mTripshhetReturns_productTitle = mTripshhetReturns_productTitle;
     }
 
     public String getmTripshhetReturnsQuantity() {

@@ -1,5 +1,6 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,28 +14,39 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetReturnsAdapter;
+import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.interfaces.TripSheetReturnsListener;
+import com.rightclickit.b2bsaleon.services.SyncTripsheetReturnsService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class TripsheetReturns extends AppCompatActivity {
+public class TripsheetReturns extends AppCompatActivity implements TripSheetReturnsListener {
     private Context activityContext;
     private MMSharedPreferences mmSharedPreferences;
     private DBHelper mDBHelper;
 
     private SearchView search;
+    private TextView companyName;
     private ListView tripSheetReturnProductsList;
     private TripSheetReturnsAdapter mTripSheetReturnsAdapter;
-    ArrayList customArraylist = new ArrayList();
-    private String loggedInUserId;
-    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "",
-            mAgentSoId = "", mAgentSoCode = "";
+    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "", loggedInUserId;
+    private boolean isReturnsDataSaved = false, isReturnsInEditingMode = false;
+    private ArrayList<DeliverysBean> deliveryProductsList = new ArrayList<>();
+    private Map<String, DeliverysBean> selectedProductsHashMap;
+    private Map<String, String> previouslyReturnedProductsHashMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +54,7 @@ public class TripsheetReturns extends AppCompatActivity {
         setContentView(R.layout.activity_tripsheet_returns);
 
         try {
-            this.getSupportActionBar().setTitle("RETURNS (SPOIL)");
+            this.getSupportActionBar().setTitle("RETURNS");
             this.getSupportActionBar().setSubtitle(null);
             this.getSupportActionBar().setLogo(R.drawable.route_white);
             // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
@@ -55,6 +67,7 @@ public class TripsheetReturns extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+            companyName = (TextView) findViewById(R.id.companyName);
             tripSheetReturnProductsList = (ListView) findViewById(R.id.trip_sheet_return_products_list_view);
 
             activityContext = TripsheetReturns.this;
@@ -71,17 +84,21 @@ public class TripsheetReturns extends AppCompatActivity {
             mAgentSoId = this.getIntent().getStringExtra("agentSoId");
             mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
 
-            for (int i = 0; i < 2; i++) {
-                TripSheetReturnsBean dBean = new TripSheetReturnsBean();
-                dBean.setmTripshhetReturnsProduct_codes("FCM 500ML");
-                dBean.setmTripshhetReturnsQuantity("000.00");
-                dBean.setmTripshhetReturnsType("  ");
-                //dBean.setmTripsheetReturnsIncAmount("000.00");
+            companyName.setText(mAgentName);
 
-                customArraylist.add(dBean);
+            selectedProductsHashMap = new HashMap<>();
+            previouslyReturnedProductsHashMap = new HashMap<>();
+
+            // In order to pre populate when you came back to this screen.
+            ArrayList<TripSheetReturnsBean> previouslyReturnedProductsData = mDBHelper.fetchAllTripsheetsReturnsList(mTripSheetId);
+            for (TripSheetReturnsBean tripSheetReturnsBean : previouslyReturnedProductsData) {
+                previouslyReturnedProductsHashMap.put(tripSheetReturnsBean.getmTripshhetReturnsProduct_ids(), tripSheetReturnsBean.getmTripshhetReturnsQuantity());
+                isReturnsInEditingMode = true;
             }
 
-            mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(TripsheetReturns.this, TripsheetReturns.this, customArraylist);
+            deliveryProductsList = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
+
+            mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, deliveryProductsList, previouslyReturnedProductsHashMap);
             tripSheetReturnProductsList.setAdapter(mTripSheetReturnsAdapter);
 
         } catch (Exception e) {
@@ -92,22 +109,56 @@ public class TripsheetReturns extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+
+        try {
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+            search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            search.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String query) {
+                    mTripSheetReturnsAdapter.filter(query);
+                    return true;
+                }
+            });
+
+            // Get the search close button image view
+            ImageView closeButton = (ImageView) search.findViewById(R.id.search_close_btn);
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    search.setQuery("", false);
+                    search.clearFocus();
+                    search.onActionViewCollapsed();
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.Add) {
-            Intent i = new Intent(TripsheetReturns.this, TDCSalesListActivity.class);
-            startActivity(i);
-            finish();
-            return true;
-        }
 
-        switch (item.getItemId()) {
+        switch (id) {
             case android.R.id.home:
-                onBackPressed();
+                if (search.isIconified()) {
+                    onBackPressed();
+                } else {
+                    search.setQuery("", false);
+                    search.clearFocus();
+                    search.onActionViewCollapsed();
+                }
                 return true;
             default:
                 return true;
@@ -139,9 +190,21 @@ public class TripsheetReturns extends AppCompatActivity {
     }
 
     public void showTripSheetReturnsPreview(View v) {
-        Intent i = new Intent(activityContext, TripsheetDeliveryPreview.class);
-        startActivity(i);
-        finish();
+        if (isReturnsDataSaved || isReturnsInEditingMode) {
+            Intent i = new Intent(activityContext, TripsheetDeliveryPreview.class);
+            i.putExtra("tripsheetId", mTripSheetId);
+            i.putExtra("agentId", mAgentId);
+            i.putExtra("agentCode", mAgentCode);
+            i.putExtra("agentName", mAgentName);
+            i.putExtra("agentRouteId", mAgentRouteId);
+            i.putExtra("agentRouteCode", mAgentRouteCode);
+            i.putExtra("agentSoId", mAgentSoId);
+            i.putExtra("agentSoCode", mAgentSoCode);
+            startActivity(i);
+            finish();
+        } else {
+            Toast.makeText(activityContext, "This Preview is unavailable untill you saved the tripsheet returns data.", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void openTripSheetDeliveries(View v) {
@@ -150,6 +213,8 @@ public class TripsheetReturns extends AppCompatActivity {
         i.putExtra("agentId", mAgentId);
         i.putExtra("agentCode", mAgentCode);
         i.putExtra("agentName", mAgentName);
+        i.putExtra("agentRouteId", mAgentRouteId);
+        i.putExtra("agentRouteCode", mAgentRouteCode);
         i.putExtra("agentSoId", mAgentSoId);
         i.putExtra("agentSoCode", mAgentSoCode);
         startActivity(i);
@@ -182,6 +247,7 @@ public class TripsheetReturns extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
+                    saveTripSheetReturnsProductsData();
                 }
             });
 
@@ -200,6 +266,61 @@ public class TripsheetReturns extends AppCompatActivity {
                 cancelButton.setTextColor(ContextCompat.getColor(context, R.color.alert_dialog_color_accent));
 
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateSelectedProductsList(Map<String, DeliverysBean> productsList) {
+        selectedProductsHashMap = productsList;
+        isReturnsDataSaved = false;
+    }
+
+    public void saveTripSheetReturnsProductsData() {
+        try {
+            if (selectedProductsHashMap.size() > 0) {
+                long currentTimeStamp = System.currentTimeMillis();
+
+                ArrayList<TripSheetReturnsBean> mTripsheetsReturnsList = new ArrayList<>();
+
+                for (Map.Entry<String, DeliverysBean> deliverysBeanEntry : selectedProductsHashMap.entrySet()) {
+                    DeliverysBean deliverysBean = deliverysBeanEntry.getValue();
+
+                    TripSheetReturnsBean tripSheetReturnsBean = new TripSheetReturnsBean();
+                    tripSheetReturnsBean.setmTripshhetReturnsReturn_no("");
+                    tripSheetReturnsBean.setmTripshhetReturnsTrip_id(mTripSheetId);
+                    tripSheetReturnsBean.setmTripshhetReturns_so_id(mAgentSoId);
+                    tripSheetReturnsBean.setmTripshhetReturns_so_code(mAgentSoCode);
+                    tripSheetReturnsBean.setmTripshhetReturnsUser_id(mAgentId);
+                    tripSheetReturnsBean.setmTripshhetReturnsUser_codes(mAgentCode);
+                    tripSheetReturnsBean.setmTripshhetReturnsRoute_id(mAgentRouteId);
+                    tripSheetReturnsBean.setmTripshhetReturnsRoute_codes(mAgentRouteCode);
+                    tripSheetReturnsBean.setmTripshhetReturnsProduct_ids(deliverysBean.getProductId());
+                    tripSheetReturnsBean.setmTripshhetReturnsProduct_codes(deliverysBean.getProductCode());
+                    tripSheetReturnsBean.setmTripshhetReturnsQuantity(String.valueOf(deliverysBean.getSelectedQuantity()));
+                    tripSheetReturnsBean.setmTripshhetReturnsType("R");
+                    tripSheetReturnsBean.setmTripshhetReturnsStatus("A");
+                    tripSheetReturnsBean.setmTripshhetReturnsDelete("N");
+                    tripSheetReturnsBean.setmTripshhetReturnsCreated_by(loggedInUserId);
+                    tripSheetReturnsBean.setmTripshhetReturnsCreated_on(String.valueOf(currentTimeStamp));
+                    tripSheetReturnsBean.setmTripshhetReturnsUpdated_on(String.valueOf(currentTimeStamp));
+                    tripSheetReturnsBean.setmTripshhetReturnsUpdated_by(loggedInUserId);
+
+                    mTripsheetsReturnsList.add(tripSheetReturnsBean);
+                }
+
+                mDBHelper.insertTripsheetsReturnsListData(mTripsheetsReturnsList);
+                isReturnsDataSaved = true;
+                Toast.makeText(activityContext, "Delivery Data Saved Successfully.", Toast.LENGTH_LONG).show();
+
+                if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                    Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncTripsheetReturnsService.class);
+                    startService(syncTripSheetDeliveriesServiceIntent);
+                }
+            } else {
+                Toast.makeText(activityContext, "Please select at least one product to save.", Toast.LENGTH_LONG).show();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

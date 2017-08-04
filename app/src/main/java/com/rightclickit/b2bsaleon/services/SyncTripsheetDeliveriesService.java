@@ -158,6 +158,7 @@ public class SyncTripsheetDeliveriesService extends Service {
 
                 String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
 
+                System.out.println("************* SyncTripsheetDeliveriesService *************");
                 System.out.println("======= requestObj = " + requestObj);
                 System.out.println("======== requestURL = " + requestURL);
                 System.out.println("========= responseString = " + responseString);
@@ -167,7 +168,7 @@ public class SyncTripsheetDeliveriesService extends Service {
 
                     if (resultObj.getInt("result_status") == 1) {
                         // if success, we are updating stock status as uploaded in local db.
-                        mDBHelper.updateTripSheetDeliveriesTable(currentDeliveryBean.getmTripsheetDelivery_tripId(), currentDeliveryBean.getmTripsheetDelivery_productId());
+                        mDBHelper.updateTripSheetDeliveriesTable(currentDeliveryBean.getmTripsheetDelivery_tripId());
                     }
 
                     unUploadedDeliveryTripSheetIdsCount--;

@@ -177,6 +177,14 @@ public class TripsheetPayments extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(TripsheetPayments.this, TripsheetDeliveryPreview.class);
+                i.putExtra("tripsheetId", mTripSheetId);
+                i.putExtra("agentId", mAgentId);
+                i.putExtra("agentCode", mAgentCode);
+                i.putExtra("agentName", mAgentName);
+                i.putExtra("agentRouteId", mAgentRouteId);
+                i.putExtra("agentRouteCode", mAgentRouteCode);
+                i.putExtra("agentSoId", mAgentSoId);
+                i.putExtra("agentSoCode", mAgentSoCode);
                 startActivity(i);
             }
         });

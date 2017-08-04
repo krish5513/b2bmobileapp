@@ -2861,8 +2861,6 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param mTripsheetsReturnsList
      */
     public void insertTripsheetsReturnsListData(ArrayList<TripSheetReturnsBean> mTripsheetsReturnsList) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
         try {
             for (TripSheetReturnsBean tripSheetReturnsBean : mTripsheetsReturnsList) {
                 ContentValues values = new ContentValues();
@@ -2884,14 +2882,27 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_RETURNS_UPDATED_ON, tripSheetReturnsBean.getmTripshhetReturnsUpdated_on());
                 values.put(KEY_TRIPSHEET_RETURNS_UPDATED_BY, tripSheetReturnsBean.getmTripshhetReturnsUpdated_by());
 
-                db.insert(TABLE_TRIPSHEETS_RETURNS_LIST, null, values);
+                int noOfRecordsExisted = checkProductExistsInTripSheetReturnsTable(tripSheetReturnsBean.getmTripshhetReturnsTrip_id(), tripSheetReturnsBean.getmTripshhetReturnsProduct_ids());
+
+                SQLiteDatabase db = this.getWritableDatabase();
+
+                long status;
+
+                if (noOfRecordsExisted == 0) {
+                    status = db.insert(TABLE_TRIPSHEETS_RETURNS_LIST, null, values);
+                } else {
+                    status = db.update(TABLE_TRIPSHEETS_RETURNS_LIST, values, KEY_TRIPSHEET_RETURNS_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = ?", new String[]{tripSheetReturnsBean.getmTripshhetReturnsTrip_id(), tripSheetReturnsBean.getmTripshhetReturnsProduct_ids()});
+                }
+
+                values.clear();
+                db.close();
+
 
                 values.clear();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        db.close();
     }
 
     /**
@@ -2901,7 +2912,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<TripSheetReturnsBean> alltripsheetsReturns = new ArrayList<>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = " + "'" + tripsheetId + "'";
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = " + "'" + tripsheetId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -3632,14 +3643,78 @@ public class DBHelper extends SQLiteOpenHelper {
         return tripSheetIds;
     }
 
-    public void updateTripSheetDeliveriesTable(String tripSheetId, String productId) {
+    public void updateTripSheetDeliveriesTable(String tripSheetId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try {
             ContentValues values = new ContentValues();
             values.put(KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS, 1);
 
-            int status = db.update(TABLE_TRIPSHEETS_DELIVERIES_LIST, values, KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + " = ?", new String[]{tripSheetId, productId});
+            int status = db.update(TABLE_TRIPSHEETS_DELIVERIES_LIST, values, KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = ?", new String[]{tripSheetId});
+
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    public int checkProductExistsInTripSheetReturnsTable(String tripSheetId, String productId) {
+        int noOfRecords = 0;
+
+        try {
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_RETURN_NO + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_TRIP_ID + "='" + tripSheetId + "' AND " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " ='" + productId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfRecords = cursor.getCount();
+                cursor.close();
+            }
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return noOfRecords;
+    }
+
+    public ArrayList<String> fetchUnUploadedUniqueReturnsTripSheetIds() {
+        ArrayList<String> tripSheetIds = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS + " = 0";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    tripSheetIds.add(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TRIP_ID)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return tripSheetIds;
+    }
+
+    public void updateTripSheetReturnsTable(String tripSheetId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS, 1);
+
+            int status = db.update(TABLE_TRIPSHEETS_RETURNS_LIST, values, KEY_TRIPSHEET_RETURNS_TRIP_ID + " = ?", new String[]{tripSheetId});
 
             values.clear();
 
