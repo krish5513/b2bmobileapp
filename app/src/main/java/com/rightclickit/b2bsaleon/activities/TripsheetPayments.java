@@ -216,29 +216,9 @@ public class TripsheetPayments extends AppCompatActivity {
                         Double enteredAmount = Double.parseDouble(mAmountText.getText().toString());
                         if (enteredAmount > 0) {
                             Toast.makeText(TripsheetPayments.this, "All good and save in cash details in db.", Toast.LENGTH_SHORT).show();
-                            PaymentsBean paymentsBean = new PaymentsBean();
+                            PaymentsBean paymentsBean = null;
                             synchronized (this) {
-                                paymentsBean.setPayments_tripsheetId(mTripSheetId);
-                                paymentsBean.setPayments_userId(mAgentId);
-                                paymentsBean.setPayments_userCodes(mAgentCode);
-                                paymentsBean.setPayments_routeId(mAgentRouteId);
-                                paymentsBean.setPayments_routeCodes(mAgentRouteCode);
-                                paymentsBean.setPayments_chequeNumber(mChequeNumber.getText().toString().trim());
-                                paymentsBean.setPayments_accountNumber("");
-                                paymentsBean.setPayments_accountName("");
-                                paymentsBean.setPayments_bankName(mBankName.getText().toString().trim());
-                                paymentsBean.setPayments_chequeDate(mChequeDate.getText().toString().trim());
-                                paymentsBean.setPayments_chequeClearDate("");
-                                paymentsBean.setPayments_receiverName(mAgentName);
-                                paymentsBean.setPayments_transActionStatus("A");
-                                paymentsBean.setPayments_taxTotal(Double.parseDouble(deliveryArrayList.get(0).getmTripsheetDelivery_TaxTotal()));
-                                paymentsBean.setPayments_saleValue(Double.parseDouble(deliveryArrayList.get(0).getmTripsheetDelivery_SaleValue()));
-                                paymentsBean.setPayments_receivedAmount(Double.parseDouble(mAmountText.getText().toString().trim()));
-                                paymentsBean.setPayments_type("0");
-                                paymentsBean.setPayments_status("A");
-                                paymentsBean.setPayments_delete("N");
-                                paymentsBean.setPayments_saleOrderId(mAgentSoId);
-                                paymentsBean.setPayments_saleOrderCode(mAgentSoCode);
+                                paymentsBean = formAPIData(0);
                             }
 
                             synchronized (this) {
@@ -408,6 +388,79 @@ public class TripsheetPayments extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    /**
+     * Method to form API Data
+     * Type: 0 is for Cash
+     * 1 is for Cheque
+     *
+     * @param i
+     */
+    private PaymentsBean formAPIData(int type) {
+        PaymentsBean paymentsBean = new PaymentsBean();
+        if (mTripSheetId != null) {
+            paymentsBean.setPayments_tripsheetId(mTripSheetId);
+        } else {
+            paymentsBean.setPayments_tripsheetId("");
+        }
+        if (mAgentId != null) {
+            paymentsBean.setPayments_userId(mAgentId);
+        } else {
+            paymentsBean.setPayments_userId("");
+        }
+        if (mAgentCode != null) {
+            paymentsBean.setPayments_userCodes(mAgentCode);
+        } else {
+            paymentsBean.setPayments_userCodes("");
+        }
+        if (mAgentRouteId != null) {
+            paymentsBean.setPayments_routeId(mAgentRouteId);
+        } else {
+            paymentsBean.setPayments_routeId("");
+        }
+        if (mAgentRouteCode != null) {
+            paymentsBean.setPayments_routeCodes(mAgentRouteCode);
+        } else {
+            paymentsBean.setPayments_routeCodes("");
+        }
+        if (type == 0) {
+            paymentsBean.setPayments_chequeNumber("");
+        } else if (type == 1) {
+            paymentsBean.setPayments_chequeNumber(mChequeNumber.getText().toString().trim());
+        }
+        paymentsBean.setPayments_accountNumber("");
+        paymentsBean.setPayments_accountName("");
+        if (type == 0) {
+            paymentsBean.setPayments_bankName("");
+        } else if (type == 1) {
+            paymentsBean.setPayments_bankName(mBankName.getText().toString().trim());
+        }
+        if (type == 0) {
+            paymentsBean.setPayments_chequeDate("");
+        } else if (type == 1) {
+            paymentsBean.setPayments_chequeDate(mChequeDate.getText().toString().trim());
+        }
+        paymentsBean.setPayments_chequeClearDate("");
+        paymentsBean.setPayments_receiverName(""); // Company name
+        paymentsBean.setPayments_transActionStatus("A");
+        paymentsBean.setPayments_taxTotal(Double.parseDouble(deliveryArrayList.get(0).getmTripsheetDelivery_TaxTotal()));
+        paymentsBean.setPayments_saleValue(Double.parseDouble(deliveryArrayList.get(0).getmTripsheetDelivery_SaleValue()));
+        paymentsBean.setPayments_receivedAmount(Double.parseDouble(mAmountText.getText().toString().trim()));
+        paymentsBean.setPayments_type(String.valueOf(type));
+        paymentsBean.setPayments_status("A");
+        paymentsBean.setPayments_delete("N");
+        if (mAgentId != null) {
+            paymentsBean.setPayments_saleOrderId(mAgentSoId);
+        } else {
+            paymentsBean.setPayments_saleOrderId("");
+        }
+        if (mAgentSoCode != null) {
+            paymentsBean.setPayments_saleOrderCode(mAgentSoCode);
+        } else {
+            paymentsBean.setPayments_saleOrderCode("");
+        }
+        return paymentsBean;
     }
 
 }

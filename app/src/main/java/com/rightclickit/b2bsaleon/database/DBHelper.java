@@ -2881,6 +2881,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_RETURNS_CREATED_ON, tripSheetReturnsBean.getmTripshhetReturnsCreated_on());
                 values.put(KEY_TRIPSHEET_RETURNS_UPDATED_ON, tripSheetReturnsBean.getmTripshhetReturnsUpdated_on());
                 values.put(KEY_TRIPSHEET_RETURNS_UPDATED_BY, tripSheetReturnsBean.getmTripshhetReturnsUpdated_by());
+                values.put(KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS, 0);
 
                 int noOfRecordsExisted = checkProductExistsInTripSheetReturnsTable(tripSheetReturnsBean.getmTripshhetReturnsTrip_id(), tripSheetReturnsBean.getmTripshhetReturnsProduct_ids());
 
@@ -2987,7 +2988,12 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TRIPSHEET_PAYMENTS_SO_CODE, paymentsBean.getPayments_saleOrderCode());
             values.put(KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT, paymentsBean.getPayments_receivedAmount());
 
-            db.insert(TABLE_TRIPSHEETS_PAYMENTS_LIST, null, values);
+            int noOfRecordsExisted = checkTripsheetPaymentsRecordExistsOrNot(paymentsBean.getPayments_tripsheetId());
+            if (noOfRecordsExisted == 0) {
+                db.insert(TABLE_TRIPSHEETS_PAYMENTS_LIST, null, values);
+            } else {
+                db.update(TABLE_TRIPSHEETS_PAYMENTS_LIST, values, KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " = ? ", new String[]{paymentsBean.getPayments_tripsheetId()});
+            }
             values.clear();
         } catch (Exception e) {
             e.printStackTrace();
@@ -3033,6 +3039,9 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripPaymentsBean.setPayments_type(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TYPE)));
                     tripPaymentsBean.setPayments_status(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_STATUS)));
                     tripPaymentsBean.setPayments_delete(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_DELETE)));
+                    tripPaymentsBean.setPayments_saleOrderId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_SO_ID)));
+                    tripPaymentsBean.setPayments_saleOrderCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_SO_CODE)));
+                    tripPaymentsBean.setPayments_receivedAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT))));
 
                     alltripsheetsPayments.add(tripPaymentsBean);
 
@@ -3723,5 +3732,49 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         db.close();
+    }
+
+    /**
+     * Method to check weather the tripsheet payments record exists or not using tripsheetid.
+     *
+     * @param tripsheetId
+     * @return integer value
+     */
+    public int checkTripsheetPaymentsRecordExistsOrNot(String tripsheetId) {
+        int maxID = 0;
+        String selectQuery = "SELECT  * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_TRIP_ID + "='" + tripsheetId + "'"
+                + " AND " + KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS + "='" + "0" + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                maxID = cursor.getInt(0);
+
+            } while (cursor.moveToNext());
+        }
+        return maxID;
+    }
+
+    public Map<String, String> fetchDeliveriesListByTripSheetId(String tripsheetId) {
+        Map<String, String> tripsheetsDeliveries = new HashMap<>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    tripsheetsDeliveries.put(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)), c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_QUANTITY)));
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return tripsheetsDeliveries;
     }
 }

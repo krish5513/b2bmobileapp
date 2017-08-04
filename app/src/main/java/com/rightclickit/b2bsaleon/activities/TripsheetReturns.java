@@ -96,9 +96,11 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
                 isReturnsInEditingMode = true;
             }
 
+            Map<String, String> deliveredProductsHashMap = mDBHelper.fetchDeliveriesListByTripSheetId(mTripSheetId);
+
             deliveryProductsList = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
 
-            mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, deliveryProductsList, previouslyReturnedProductsHashMap);
+            mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, deliveryProductsList, previouslyReturnedProductsHashMap, deliveredProductsHashMap);
             tripSheetReturnProductsList.setAdapter(mTripSheetReturnsAdapter);
 
         } catch (Exception e) {

@@ -64,8 +64,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="0.18"
                     android:gravity="end"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -76,13 +75,17 @@
                         android:textSize="10sp" />
 
                     <EditText
-                        android:id="@+id/D_QTY"
+                        android:id="@+id/deliveredQuantity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:layout_weight="0.25"
+                        android:gravity="center"
                         android:hint="000.00"
+                        android:inputType="numberDecimal"
+                        android:longClickable="false"
                         android:textColor="@color/greydark"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 

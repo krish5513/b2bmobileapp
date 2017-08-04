@@ -86,7 +86,7 @@
 
     <string-array name="mop_type">
         <item>Cash</item>
-        <item>Card</item>
+        <!--<item>Card</item>-->
         <item>Cheque</item>
     </string-array>
 
