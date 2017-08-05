@@ -44,6 +44,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
     private DBHelper mDBHelper;
     private String mTakeOrderPrivilege = "", mStockVerifyPrivilege = "";
     private double currentLat = 0.0, currentLong = 0.0;
+    String distance;
 
     public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege
             , double mCurrentLocationLat, double mCurrentLocationLongitude) {
@@ -102,9 +103,12 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         if (mTakeOrderPrivilege.equals("list_view_takeorder")) {
             mHolder.mSOTakeOrder.setVisibility(View.VISIBLE);
         }
-        String distance = getDistanceBetweenLocations(currentLat, currentLong,
-                Double.parseDouble(mTripSheetsList.get(position).getmTripshetSOAgentLatitude())
-                , Double.parseDouble(mTripSheetsList.get(position).getmTripshetSOAgentLongitude()));
+        if(mTripSheetsList.get(position).getmTripshetSOAgentLatitude()!=null && !mTripSheetsList.get(position).getmTripshetSOAgentLatitude().equals("") && mTripSheetsList.get(position).getmTripshetSOAgentLongitude()!=null &&  !mTripSheetsList.get(position).getmTripshetSOAgentLongitude().equals(""))
+        {
+             distance = getDistanceBetweenLocations(currentLat, currentLong,
+                    Double.parseDouble(mTripSheetsList.get(position).getmTripshetSOAgentLatitude())
+                    , Double.parseDouble(mTripSheetsList.get(position).getmTripshetSOAgentLongitude()));
+        }
 
         mHolder.mAgentCode.setText(mTripSheetsList.get(position).getmTripshetSOAgentCode());
         mHolder.mSODate.setText(mTripSheetsList.get(position).getmTripshetSODate());
@@ -112,7 +116,6 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         mHolder.mSOAgentName.setText(mTripSheetsList.get(position).getmTripshetSOAgentFirstName());
         mHolder.mSOOrderedValue.setText(mTripSheetsList.get(position).getmTripshetSOValue());
         mHolder.mSOAgentDistance.setText(distance);
-
         mHolder.mSOMapIconParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

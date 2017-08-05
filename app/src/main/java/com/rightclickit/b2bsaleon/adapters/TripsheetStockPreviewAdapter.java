@@ -43,15 +43,16 @@ public class TripsheetStockPreviewAdapter extends BaseAdapter {
     private TripSheetStockListener listener;
     private MMSharedPreferences mPreferences;
     private LayoutInflater mInflater;
-    ArrayList<ProductsBean> myList ;
+    String myList ;
     DBHelper mDBHelper;
     private ArrayList<TripsheetsStockList> allTripSheetStockList, filteredTripSheetStockList;
     private ArrayList<String> privilegeActionsData;
     private Map<String, TripsheetsStockList> dispatchProductsListHashMap, verifyProductsListHashMap;
 
     private final String zero_cost = "0.000";
+    String unit=" ";
 
-    public TripsheetStockPreviewAdapter(Context ctxt, TripsheetStockPreview agentsActivity, TripsheetStockPreview tripSheetStockListener, ArrayList<TripsheetsStockList> tripSheetStockList) {
+    public TripsheetStockPreviewAdapter(Context ctxt, TripsheetStockPreview agentsActivity, String tripSheetStockListener, ArrayList<TripsheetsStockList> tripSheetStockList) {
         this.ctxt = ctxt;
         this.activity = agentsActivity;
        // this.myList=tripSheetStockListener;
@@ -105,13 +106,15 @@ public class TripsheetStockPreviewAdapter extends BaseAdapter {
 
         final TripsheetsStockList currentStockList = getItem(position);
        // final ProductsBean pBean = getItem(position);
-        myList= mDBHelper.fetchAllRecordsFromProductsTable();
+        myList= mDBHelper.getProductUnitByProductCode(currentStockList.getmTripsheetStockProductCode());
+
+
         Double orderQuantity = Double.parseDouble(currentStockList.getmTripsheetStockProductOrderQuantity());
 
         tripSheetStockViewHolder.mProductName.setText(currentStockList.getmTripsheetStockProductName());
         tripSheetStockViewHolder.mProductCode.setText(currentStockList.getmTripsheetStockProductCode());
 
-        tripSheetStockViewHolder.mProductUom.setText(myList.get(position).getProductUOM());
+        tripSheetStockViewHolder.mProductUom.setText(myList);
         tripSheetStockViewHolder.mOrder.setText(String.format("%.3f", orderQuantity));
 
 
@@ -205,31 +208,7 @@ public class TripsheetStockPreviewAdapter extends BaseAdapter {
         }
     }
 
-    /*public void removeProductFromDispatchList(TripsheetsStockList tripsheetsStockList) {
-        try {
-            if (dispatchProductsListHashMap.containsKey(tripsheetsStockList.getmTripsheetStockProductId()))
-                dispatchProductsListHashMap.remove(tripsheetsStockList.getmTripsheetStockProductId());
 
-            if (listener != null)
-                listener.updateProductsDispatchList(dispatchProductsListHashMap);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void removeProductFromVerifyList(TripsheetsStockList tripsheetsStockList) {
-        try {
-            if (dispatchProductsListHashMap.containsKey(tripsheetsStockList.getmTripsheetStockProductId()))
-                dispatchProductsListHashMap.remove(tripsheetsStockList.getmTripsheetStockProductId());
-            System.out.println("==== 1 ===== verifyProductsListHashMap = " + verifyProductsListHashMap.size() + " && Pro. Id - " + tripsheetsStockList.getmTripsheetStockProductId());
-            if (listener != null)
-                listener.updateProductsVerifyList(verifyProductsListHashMap);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 }
 
 

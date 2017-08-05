@@ -370,9 +370,25 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         }
     }
 
-    public void loadTripsoData(ArrayList<TripsheetSOList> tripsSOList) {
+   /* public void loadTripsoData(ArrayList<TripsheetSOList> tripsSOList) {
         mDestinationLatitude = Double.parseDouble(tripsSOList.get(0).getmTripshetSOAgentLatitude());
         mDestinationLongitude = Double.parseDouble(tripsSOList.get(0).getmTripshetSOAgentLongitude());
+        if (mTripsheetSOAdapter != null) {
+            mTripsheetSOAdapter = null;
+        }
+        mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripsSOList, mTakeOrderPrivilege
+                , mCurrentLocationLat, mCurrentLocationLongitude);
+        mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
+    }*/
+
+
+    public void loadTripsoData(ArrayList<TripsheetSOList> tripsSOList) {
+        if (tripsSOList.get(0).getmTripshetSOAgentLatitude() != null && !tripsSOList.get(0).getmTripshetSOAgentLatitude().equals("")) {
+            mDestinationLatitude = Double.parseDouble(tripsSOList.get(0).getmTripshetSOAgentLatitude());
+        }
+        if (tripsSOList.get(0).getmTripshetSOAgentLongitude() != null && !tripsSOList.get(0).getmTripshetSOAgentLongitude().equals("")) {
+            mDestinationLongitude = Double.parseDouble(tripsSOList.get(0).getmTripshetSOAgentLongitude());
+        }
         if (mTripsheetSOAdapter != null) {
             mTripsheetSOAdapter = null;
         }

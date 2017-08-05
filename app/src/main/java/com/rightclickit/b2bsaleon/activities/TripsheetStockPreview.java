@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,7 +41,7 @@ import java.util.Map;
 public class TripsheetStockPreview extends AppCompatActivity {
     private String tripSheetId;
 
-    ArrayList<ProductsBean> myList ;
+    String myList ;
 
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
@@ -75,10 +76,10 @@ public class TripsheetStockPreview extends AppCompatActivity {
             loggedInUserName = mmSharedPreferences.getString("loginusername");
             str_routecode = (mmSharedPreferences.getString("routecode") + ",");
 
-        myList=new ArrayList<ProductsBean>();
+      //  myList= new ProductsBean();
             mDBHelper = new DBHelper(TripsheetStockPreview.this);
 
-        myList= mDBHelper.fetchAllRecordsFromProductsTable();
+       // myList= mDBHelper.fetchAllRecordsFromProductsTable();
 
 
         this.getSupportActionBar().setTitle("ROUTE STOCK VALUE");
@@ -98,7 +99,9 @@ public class TripsheetStockPreview extends AppCompatActivity {
             productsDispatchListHashMap = new HashMap<>();
             productsVerifyListHashMap = new HashMap<>();
 
-            myList=mDBHelper.fetchAllRecordsFromProductsTable();
+        ArrayList<ProductsBean> pbean=new ArrayList<ProductsBean>();
+
+
 
             Bundle bundle = getIntent().getExtras();
             if (bundle != null)
@@ -124,17 +127,29 @@ public class TripsheetStockPreview extends AppCompatActivity {
             tripsheet_no_text_view.setText(str_Tripcode +",");
             sale_date_time_text_view.setText(str_Tripdate);
 
-            for (int i=0;i<myList.size();i++){
-                str_Uom=myList.get(i).getProductUOM();
-            }
+           // for (int i=0;i<myList.size();i++){
+               // Log.i("UOM",myList.get(i)+"");
+
+                //String str_Pro_id=myList.get(i).getProductId();
+              //Log.i("UOM",str_Uom);
+                //Log.i("PRODUCT_ID::",str_Pro_id);
+                //test[str_Pro_id] =str_Uom;
+
+
 
             mTripsheetsModel = new TripsheetsModel(this, TripsheetStockPreview.this);
             ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
             selectedList = new ArrayList<>(tripsheetsStockLists.size());
+        //Log.i("tripsheetSize", tripsheetsStockLists.size()+"");
+      //  Log.i("mylistSize", myList.size()+"");
             for( int i=0;i<tripsheetsStockLists.size();i++){
+               Log.i("tripsheetSize", tripsheetsStockLists.get(i).toString());
 
                 str_ProductName=tripsheetsStockLists.get(i).getmTripsheetStockProductName();
                 str_ProductCode=tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
+
+                myList=mDBHelper.getProductUnitByProductCode(str_ProductCode);
+                str_Uom=myList;
                 str_Order=tripsheetsStockLists.get(i).getmTripsheetStockProductOrderQuantity();
                 str_Dispatch=tripsheetsStockLists.get(i).getmTripsheetStockDispatchQuantity();
                 str_Verify = tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity();
@@ -181,20 +196,31 @@ public class TripsheetStockPreview extends AppCompatActivity {
                 canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
                 paint.setTextSize(20);
                 canvas.drawText(str_routecode, 5, 80, paint);
+                paint.setTextSize(20);
                 canvas.drawText(mmSharedPreferences.getString("routename"), 200, 80, paint);
+                paint.setTextSize(20);
                 canvas.drawText("ROUTE STOCK,", 5, 120, paint);
+                paint.setTextSize(20);
                 canvas.drawText("by " + mmSharedPreferences.getString("loginusername"), 200, 120, paint);
+                paint.setTextSize(20);
                 canvas.drawText(str_Tripcode, 5, 150, paint);
+                paint.setTextSize(20);
                 canvas.drawText(str_Tripdate, 170, 150, paint);
+                paint.setTextSize(20);
                 //  canvas.drawText(str_agentname, 5, 180, paint);
                 //  canvas.drawText(mmSharedPreferences.getString("agentCode"), 200, 180, paint);
 
                 canvas.drawText("----------------------------------------------------", 5, 180, paint);
                 canvas.drawText("Product", 5, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("UOM", 110, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("Order", 160, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("Dispatch", 230, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("Verify", 330, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("----------------------------------------------------", 5, 235, paint);
 
                 int st = 250;
@@ -235,7 +261,7 @@ public class TripsheetStockPreview extends AppCompatActivity {
             mTripsheetsStockPreviewAdapter = null;
         }
 
-        mTripsheetsStockPreviewAdapter = new TripsheetStockPreviewAdapter(this, TripsheetStockPreview.this, this, tripsStockList);
+        mTripsheetsStockPreviewAdapter = new TripsheetStockPreviewAdapter(this, TripsheetStockPreview.this, myList, tripsStockList);
         tdc_products_list_preview.setAdapter(mTripsheetsStockPreviewAdapter);
     }
 

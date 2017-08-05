@@ -1590,6 +1590,31 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Method to get product unit by productcode
+     */
+    public String getProductUnitByProductCode(String productCode) {
+        String productUnit = "";
+        try {
+           String selectQuery = "SELECT  * FROM " + TABLE_PRODUCTS + " WHERE " + KEY_PRODUCT_CODE + " = " + "'" + productCode + "'";
+         //   String selectQuery = "SELECT  * FROM " + TABLE_PRODUCTS;
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    productUnit = c.getString(c.getColumnIndex(KEY_PRODUCT_UOM));
+                } while (c.moveToNext());
+                c.close();
+                db.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return productUnit;
+    }
+
+    /**
      * Method to insert take order product details
      */
 
