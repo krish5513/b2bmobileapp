@@ -44,7 +44,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
     private TripSheetReturnsAdapter mTripSheetReturnsAdapter;
     private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "", loggedInUserId;
     private boolean isReturnsDataSaved = false, isReturnsInEditingMode = false;
-    private ArrayList<DeliverysBean> deliveryProductsList = new ArrayList<>();
+    private ArrayList<DeliverysBean> allProductsListFromStock = new ArrayList<>();
     private Map<String, DeliverysBean> selectedProductsHashMap;
     private Map<String, String> previouslyReturnedProductsHashMap;
 
@@ -90,17 +90,15 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
             previouslyReturnedProductsHashMap = new HashMap<>();
 
             // In order to pre populate when you came back to this screen.
-            ArrayList<TripSheetReturnsBean> previouslyReturnedProductsData = mDBHelper.fetchAllTripsheetsReturnsList(mTripSheetId);
-            for (TripSheetReturnsBean tripSheetReturnsBean : previouslyReturnedProductsData) {
-                previouslyReturnedProductsHashMap.put(tripSheetReturnsBean.getmTripshhetReturnsProduct_ids(), tripSheetReturnsBean.getmTripshhetReturnsQuantity());
+            previouslyReturnedProductsHashMap = mDBHelper.getAgentPreviouslyReturnsProductsList(mTripSheetId, mAgentSoId, mAgentId);
+            if (previouslyReturnedProductsHashMap.size() > 0)
                 isReturnsInEditingMode = true;
-            }
 
             Map<String, String> deliveredProductsHashMap = mDBHelper.fetchDeliveriesListByTripSheetId(mTripSheetId);
 
-            deliveryProductsList = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
+            allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
 
-            mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, deliveryProductsList, previouslyReturnedProductsHashMap, deliveredProductsHashMap);
+            mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, allProductsListFromStock, previouslyReturnedProductsHashMap, deliveredProductsHashMap);
             tripSheetReturnProductsList.setAdapter(mTripSheetReturnsAdapter);
 
         } catch (Exception e) {
@@ -314,7 +312,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
 
                 mDBHelper.insertTripsheetsReturnsListData(mTripsheetsReturnsList);
                 isReturnsDataSaved = true;
-                Toast.makeText(activityContext, "Delivery Data Saved Successfully.", Toast.LENGTH_LONG).show();
+                Toast.makeText(activityContext, "Return Products Data Saved Successfully.", Toast.LENGTH_LONG).show();
 
                 if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
                     Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncTripsheetReturnsService.class);

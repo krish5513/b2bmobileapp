@@ -1,10 +1,8 @@
 package com.rightclickit.b2bsaleon.models;
 
-import android.app.Activity;
 import android.content.Context;
 import android.widget.TextView;
 
-import com.google.gson.JsonObject;
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
 import com.rightclickit.b2bsaleon.activities.TripSheetView;
@@ -242,11 +240,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                         }
                     }
                     synchronized (this) {
-                        if (mTripsheetsList.size() > 0) {
-                            activity.loadTripsData(mTripsheetsList);
-                        } else {
-                            mNotripsText.setText("No Trip Sheets Found.");
-                        }
+                        activity.loadTripSheetsData();
                     }
 
                     break;
@@ -341,7 +335,12 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                             tripStockBean.setmTripshetSOAgentCode(jb.getString("agent_code"));
                             tripStockBean.setmTripshetSOCode(jb.getString("sale_order_code"));
                             tripStockBean.setmTripshetSODate(jb.getString("sale_order_date"));
-                            tripStockBean.setmTripshetSOValue(jb.getString("sale_order_value"));
+
+                            if (jb.getString("sale_order_value").length() > 0)
+                                tripStockBean.setmTripshetSOValue(jb.getString("sale_order_value"));
+                            else
+                                tripStockBean.setmTripshetSOValue("0.00");
+
                             tripStockBean.setmTripshetSOOpAmount(jb.getString("op_amt"));
                             tripStockBean.setmTripshetSOCBAmount(jb.getString("cb_amt"));
                             tripStockBean.setmTripshetSOAgentId(agentData.getString("_id"));
@@ -366,9 +365,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                         }
                     }
                     synchronized (this) {
-                        if (mTripsheetsSOList.size() > 0) {
-                            activity2.loadTripsoData(mTripsheetsSOList);
-                        }
+                        activity2.loadTripSheetSaleOrderData();
                     }
                     break;
             }

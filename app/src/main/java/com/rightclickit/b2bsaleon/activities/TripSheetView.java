@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -45,15 +44,15 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsSOListAdapter;
-import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
-import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.NetworkManager;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONObject;
 
@@ -70,6 +69,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     LinearLayout tsProductsLayout;
     LinearLayout tsTDCLayout;
     LinearLayout tsRetailersLayout;
+    private TextView ts_ob_amount, ts_order_value, ts_total_received, ts_total_due;
     private Location mLastLocation, startingLocation, endingLocation;
 
     // Google client to interact with Google API
@@ -102,8 +102,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private TripsheetsModel mTripsheetsModel;
     private TripsheetsSOListAdapter mTripsheetSOAdapter;
     private String mTripSheetId = "", mTakeOrderPrivilege = "";
-    private double mCurrentLocationLat = 0.0, mCurrentLocationLongitude = 0.0;
-    private double mDestinationLatitude = 0.0, mDestinationLongitude = 0.0;
+    public static double mCurrentLocationLat = 0.0, mCurrentLocationLongitude = 0.0;
+    public static double mDestinationLatitude = 0.0, mDestinationLongitude = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +136,11 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         }
         mDBHelper = new DBHelper(TripSheetView.this);
         mPreferences = new MMSharedPreferences(TripSheetView.this);
+
+        ts_ob_amount = (TextView) findViewById(R.id.ts_ob_amount);
+        ts_order_value = (TextView) findViewById(R.id.ts_order_value);
+        ts_total_received = (TextView) findViewById(R.id.ts_total_received);
+        ts_total_due = (TextView) findViewById(R.id.ts_total_due);
 
         mTripsheetsSOListView = (ListView) findViewById(R.id.TripsheetsSOListView);
 
@@ -327,14 +332,10 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 //            } else if (privilegeActionsData.get(z).toString().equals("list_view_delivery")) {
 //                delivery.setVisibility(View.VISIBLE);
 //            }
-
-
         }
-
 
         mLatitude = userMapData.get("latitude");
         mLongitude = userMapData.get("longitude");
-
 
         fab = (FloatingActionButton) findViewById(R.id.productfab);
         fab.setVisibility(View.VISIBLE);
@@ -351,22 +352,18 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         });
 
         if (new NetworkConnectionDetector(TripSheetView.this).isNetworkConnected()) {
-//            if (mDBHelper.getTripsheetsStockTableCount() > 0) {
-//                ArrayList<TripsheetsStockList> tripsList = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
-//                if (tripsList.size() > 0) {
-//                    loadTripsData(tripsList);
-//                }
-//            } else {
-            //startService(new Intent(getApplicationContext(), SyncStakeHolderTypesService.class));
             mTripSheetId = mPreferences.getString("TripId");
             mTripsheetsModel.getTripsheetsSoList(mTripSheetId);
-//            }
         } else {
-            // System.out.println("ELSE::: ");
-            ArrayList<TripsheetsStockList> tripsList = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
-            if (tripsList.size() > 0) {
-                //loadTripsoData(tripsList);
-            }
+            loadTripSheetSaleOrderData();
+        }
+
+        TripsheetsList currentTripSheetDetails = mDBHelper.fetchTripSheetDetails(mTripSheetId);
+        if (currentTripSheetDetails != null) {
+            ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount())));
+            ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount())));
+            ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())));
+            ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())));
         }
     }
 
@@ -382,19 +379,23 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     }*/
 
 
-    public void loadTripsoData(ArrayList<TripsheetSOList> tripsSOList) {
-        if (tripsSOList.get(0).getmTripshetSOAgentLatitude() != null && !tripsSOList.get(0).getmTripshetSOAgentLatitude().equals("")) {
-            mDestinationLatitude = Double.parseDouble(tripsSOList.get(0).getmTripshetSOAgentLatitude());
+    public void loadTripSheetSaleOrderData() {
+        ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
+
+        if (tripSheetSOList.size() > 0) {
+            if (tripSheetSOList.get(0).getmTripshetSOAgentLatitude() != null && !tripSheetSOList.get(0).getmTripshetSOAgentLatitude().equals("")) {
+                mDestinationLatitude = Double.parseDouble(tripSheetSOList.get(0).getmTripshetSOAgentLatitude());
+            }
+            if (tripSheetSOList.get(0).getmTripshetSOAgentLongitude() != null && !tripSheetSOList.get(0).getmTripshetSOAgentLongitude().equals("")) {
+                mDestinationLongitude = Double.parseDouble(tripSheetSOList.get(0).getmTripshetSOAgentLongitude());
+            }
+            if (mTripsheetSOAdapter != null) {
+                mTripsheetSOAdapter = null;
+            }
+
+            mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege);
+            mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
         }
-        if (tripsSOList.get(0).getmTripshetSOAgentLongitude() != null && !tripsSOList.get(0).getmTripshetSOAgentLongitude().equals("")) {
-            mDestinationLongitude = Double.parseDouble(tripsSOList.get(0).getmTripshetSOAgentLongitude());
-        }
-        if (mTripsheetSOAdapter != null) {
-            mTripsheetSOAdapter = null;
-        }
-        mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripsSOList, mTakeOrderPrivilege
-                , mCurrentLocationLat, mCurrentLocationLongitude);
-        mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
     }
 
     @Override
@@ -599,6 +600,10 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
             // Showing the current location in Google Map by Zooming it
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+
+            // to update distance value in list after getting current location details.
+            if (mTripsheetSOAdapter != null)
+                mTripsheetSOAdapter.notifyDataSetChanged();
 
         } catch (Exception e) {
             e.printStackTrace();

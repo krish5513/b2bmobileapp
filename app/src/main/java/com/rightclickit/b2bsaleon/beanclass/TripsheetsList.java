@@ -19,6 +19,7 @@ public class TripsheetsList {
     private String mTripshhetTrasnsporterName;
     private String mTripshhetVehicleNumber;
     private String mTripshhetVerifyStatus;
+    private int isTripshhetClosed;
 
     public String getmTripshhetId() {
         return mTripshhetId;
@@ -122,5 +123,24 @@ public class TripsheetsList {
 
     public void setmTripshhetVerifyStatus(String mTripshhetVerifyStatus) {
         this.mTripshhetVerifyStatus = mTripshhetVerifyStatus;
+    }
+
+    public int getIsTripshhetClosed() {
+        return isTripshhetClosed;
+    }
+
+    public void setIsTripshhetClosed(int isTripshhetClosed) {
+        this.isTripshhetClosed = isTripshhetClosed;
+    }
+
+    @Override
+    public String toString() {
+        return "TripsheetsList{" +
+                "mTripshhetId='" + mTripshhetId + '\'' +
+                ", mTripshhetOBAmount='" + mTripshhetOBAmount + '\'' +
+                ", mTripshhetOrderedAmount='" + mTripshhetOrderedAmount + '\'' +
+                ", mTripshhetReceivedAmount='" + mTripshhetReceivedAmount + '\'' +
+                ", mTripshhetDueAmount='" + mTripshhetDueAmount + '\'' +
+                '}';
     }
 }

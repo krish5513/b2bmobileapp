@@ -51,8 +51,7 @@ public class TripsheetsListAdapter extends BaseAdapter {
     private DBHelper mDBHelper;
     private String mViewPrivilege = "", mStockPrivilege = "";
 
-    public TripsheetsListAdapter(Context ctxt, TripSheetsActivity agentsActivity, ArrayList<TripsheetsList> mAgentsBeansList,
-                                 String mTripSheetViewPrivilege, String mTripSheetStockPrivilege) {
+    public TripsheetsListAdapter(Context ctxt, TripSheetsActivity agentsActivity, ArrayList<TripsheetsList> mAgentsBeansList, String mTripSheetViewPrivilege, String mTripSheetStockPrivilege) {
         this.ctxt = ctxt;
         this.activity = agentsActivity;
         this.mTripSheetsList = mAgentsBeansList;
@@ -72,13 +71,13 @@ public class TripsheetsListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public TripsheetsList getItem(int i) {
+        return mTripSheetsList.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
@@ -113,23 +112,28 @@ public class TripsheetsListAdapter extends BaseAdapter {
             mHolder.stockbtn.setVisibility(View.VISIBLE);
         }
 
-        mHolder.mTripsheetCode.setText(mTripSheetsList.get(position).getmTripshhetCode());
+        final TripsheetsList currentTripSheet = getItem(position);
 
-        mHolder.mTripsheetDate.setText(mTripSheetsList.get(position).getmTripshhetDate());
+        mHolder.mTripsheetCode.setText(currentTripSheet.getmTripshhetCode());
+        mHolder.mTripsheetDate.setText(currentTripSheet.getmTripshhetDate());
 
-        mHolder.mTripsheetStatus.setText(mTripSheetsList.get(position).getmTripshhetStatus());
-        mHolder.mTripsheetOBAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetOBAmount())));
-        mHolder.mTripsheetOrderedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetDueAmount())));
-        mHolder.mTripsheetReceivedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetReceivedAmount())));
-        mHolder.mTripsheetDueAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(mTripSheetsList.get(position).getmTripshhetDueAmount())));
+        if (currentTripSheet.getIsTripshhetClosed() == 0)
+            mHolder.mTripsheetStatus.setText("In Transit");
+        else
+            mHolder.mTripsheetStatus.setText("Closed");
+
+        mHolder.mTripsheetOBAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetOBAmount())));
+        mHolder.mTripsheetOrderedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetOrderedAmount())));
+        mHolder.mTripsheetReceivedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetReceivedAmount())));
+        mHolder.mTripsheetDueAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetDueAmount())));
 
         mHolder.stockbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent stockIntent = new Intent(activity, TripSheetStock.class);
-                stockIntent.putExtra("tripsheetId", mTripSheetsList.get(position).getmTripshhetId());
-                stockIntent.putExtra("tripsheetCode", mTripSheetsList.get(position).getmTripshhetCode());
-                stockIntent.putExtra("tripsheetDate", mTripSheetsList.get(position).getmTripshhetDate());
+                stockIntent.putExtra("tripsheetId", currentTripSheet.getmTripshhetId());
+                stockIntent.putExtra("tripsheetCode", currentTripSheet.getmTripshhetCode());
+                stockIntent.putExtra("tripsheetDate", currentTripSheet.getmTripshhetDate());
                 activity.startActivity(stockIntent);
                 activity.finish();
             }
@@ -138,10 +142,10 @@ public class TripsheetsListAdapter extends BaseAdapter {
         mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mTripSheetsList.get(position).getmTripshhetVerifyStatus().equals("1")) {
-                    mPreferences.putString("TripId", mTripSheetsList.get(position).getmTripshhetId());
+                if (currentTripSheet.getmTripshhetVerifyStatus().equals("1")) {
+                    mPreferences.putString("TripId", currentTripSheet.getmTripshhetId());
                     Intent stockIntent = new Intent(activity, TripSheetView.class);
-                    stockIntent.putExtra("tripsheetId", mTripSheetsList.get(position).getmTripshhetId());
+                    stockIntent.putExtra("tripsheetId", currentTripSheet.getmTripshhetId());
                     activity.startActivity(stockIntent);
                     activity.finish();
                 } else {

@@ -201,25 +201,24 @@ public class TripSheetsActivity extends AppCompatActivity {
         if (new NetworkConnectionDetector(TripSheetsActivity.this).isNetworkConnected()) {
             mTripsheetsModel.getTripsheetsList(mNoTripsFoundText);
         } else {
-            ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList();
-            if (tripsList.size() > 0) {
-                loadTripsData(tripsList);
-            } else {
-                mNoTripsFoundText.setText("No Trip Sheets Found.");
+            loadTripSheetsData();
+        }
+    }
+
+    public void loadTripSheetsData() {
+        ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList();
+
+        if (tripsList.size() > 0) {
+            if (mTripsListAdapter != null) {
+                mTripsListAdapter = null;
             }
+
+            mTripsListAdapter = new TripsheetsListAdapter(TripSheetsActivity.this, TripSheetsActivity.this, tripsList, mTripSheetViewPrivilege, mTripSheetStockPrivilege);
+            mTripsListview.setAdapter(mTripsListAdapter);
+        } else {
+            mNoTripsFoundText.setText("No Trip Sheets Found.");
         }
     }
-
-    public void loadTripsData(ArrayList<TripsheetsList> tripsList) {
-        tripsList = mDBHelper.fetchTripsheetsList();
-        if (mTripsListAdapter != null) {
-            mTripsListAdapter = null;
-        }
-
-        mTripsListAdapter = new TripsheetsListAdapter(TripSheetsActivity.this, TripSheetsActivity.this, tripsList, mTripSheetViewPrivilege, mTripSheetStockPrivilege);
-        mTripsListview.setAdapter(mTripsListAdapter);
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -35,10 +35,11 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
     private ArrayList<DeliverysBean> allDeliveryProductsList, filteredDeliveryProductsList;
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap; // Hash Map Key = Product Id
     private Map<String, String> previouslyDeliveredProductsHashMap;
+    private Map<String, String> productOrderQuantitiesHashMap;
     private final String zero_cost = "0.000";
     private boolean isDeliveryInEditingMode = false;
 
-    public TripSheetDeliveriesAdapter(Context ctxt, TripsheetDelivery deliveryActivity, TripSheetDeliveriesListener deliveriesListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyDeliveredProducts) {
+    public TripSheetDeliveriesAdapter(Context ctxt, TripsheetDelivery deliveryActivity, TripSheetDeliveriesListener deliveriesListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyDeliveredProducts, Map<String, String> productOrderQuantities) {
         this.ctxt = ctxt;
         this.activity = deliveryActivity;
         this.mInflater = LayoutInflater.from(activity);
@@ -48,6 +49,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         this.filteredDeliveryProductsList.addAll(allDeliveryProductsList);
         this.selectedDeliveryProductsHashMap = new HashMap<>();
         this.previouslyDeliveredProductsHashMap = previouslyDeliveredProducts;
+        this.productOrderQuantitiesHashMap = productOrderQuantities;
 
         if (!previouslyDeliveredProductsHashMap.isEmpty()) {
             isDeliveryInEditingMode = true;
@@ -58,8 +60,13 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
             final double productRatePerUnit = Double.parseDouble(deliverysBean.getProductAgentPrice().replace(",", ""));
             float productTax = 0.0f;
 
-            if (previouslyDeliveredProductsHashMap.containsKey(deliverysBean.getProductId())) {
+            if (isDeliveryInEditingMode && previouslyDeliveredProductsHashMap.containsKey(deliverysBean.getProductId())) {
                 deliverysBean.setProductOrderedQuantity(Double.parseDouble(previouslyDeliveredProductsHashMap.get(deliverysBean.getProductId())));
+            } else {
+                if (productOrderQuantitiesHashMap.containsKey(deliverysBean.getProductCode()))
+                    deliverysBean.setProductOrderedQuantity(Double.parseDouble(productOrderQuantitiesHashMap.get(deliverysBean.getProductCode())));
+                else
+                    deliverysBean.setProductOrderedQuantity(0);
             }
 
             if (deliverysBean.getProductgst() != null)
@@ -80,8 +87,10 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
             if (isDeliveryInEditingMode)
                 deliverysBean.setProductAvailableStockForSpecificAgent(orderQuantity + deliverysBean.getProductStock() + deliverysBean.getProductExtraQuantity());
-            else
-                deliverysBean.setProductAvailableStockForSpecificAgent(deliverysBean.getProductOrderedQuantity() + deliverysBean.getProductExtraQuantity());
+            else {
+                //deliverysBean.setProductAvailableStockForSpecificAgent(deliverysBean.getProductOrderedQuantity() + deliverysBean.getProductExtraQuantity());
+                deliverysBean.setProductAvailableStockForSpecificAgent(deliverysBean.getProductStock() + deliverysBean.getProductExtraQuantity());
+            }
 
             selectedDeliveryProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
 

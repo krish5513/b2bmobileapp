@@ -55,9 +55,10 @@ public class TripsheetPayments extends AppCompatActivity {
     ImageView imageview;
     DBHelper mDBHelper;
     ArrayList<TripSheetDeliveriesBean> deliveryArrayList;
-    String mTripSheetId = "", mAgentId = "", mAgentCode = "", mAgentName = "", currentDate = "", mAgentRouteId = "", mAgentRouteCode = "",
-            mAgentSoId = "", mAgentSoCode = "";
+    String mTripSheetId = "", mAgentId = "", mAgentCode = "", mAgentName = "", currentDate = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
     private static final int ACTION_TAKE_PHOTO_A = 1;
+    private TripSheetDeliveriesBean currentDeliveriesBean = null;
+    private double receivedAmount = 0.0, remainingAmount = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +74,6 @@ public class TripsheetPayments extends AppCompatActivity {
         mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
         mAgentSoId = this.getIntent().getStringExtra("agentSoId");
         mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
-        System.out.println("SO ID:: " + mAgentSoId);
-        System.out.println("SO CODE:: " + mAgentSoCode);
 
         this.getSupportActionBar().setTitle("PAYMENTS");
         this.getSupportActionBar().setSubtitle(null);
@@ -123,7 +122,6 @@ public class TripsheetPayments extends AppCompatActivity {
         paymentTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                System.out.println("Selected Item Str:: " + paymentTypeSpinner.getSelectedItem().toString());
                 if (paymentTypeSpinner.getSelectedItem().toString().equals("Cash")) {
                     cheqLinearLayout.setVisibility(View.GONE);
                 } else if (paymentTypeSpinner.getSelectedItem().toString().equals("Cheque")) {
@@ -189,14 +187,24 @@ public class TripsheetPayments extends AppCompatActivity {
             }
         });
 
-        deliveryArrayList = mDBHelper.fetchAllTripsheetsDeliveriesList(mTripSheetId);
-//        System.out.println("SIZE:::: " + deliveryArrayList.size());
-//        System.out.println("SALE VALUE:::: " + deliveryArrayList.get(0).getmTripsheetDelivery_SaleValue());
-//        System.out.println("TAX AMOUNT:::: " + deliveryArrayList.get(0).getmTripsheetDelivery_TaxTotal());
+        deliveryArrayList = mDBHelper.fetchOrderPaymentFromDeliveriesTable(mTripSheetId, mAgentSoId, mAgentId);
+
         if (deliveryArrayList.size() > 0) {
-            mAmountText.setText(deliveryArrayList.get(0).getmTripsheetDelivery_SaleValue());
+            currentDeliveriesBean = deliveryArrayList.get(0);
+        } else {
+            currentDeliveriesBean = new TripSheetDeliveriesBean();
+            currentDeliveriesBean.setmTripsheetDelivery_SaleValue("0.0");
+            currentDeliveriesBean.setmTripsheetDelivery_TaxTotal("0.0");
         }
 
+        receivedAmount = mDBHelper.fetchTripSheetSaleOrderReceivedAmount(mTripSheetId, mAgentSoId);
+        remainingAmount = Double.parseDouble(currentDeliveriesBean.getmTripsheetDelivery_SaleValue()) - receivedAmount;
+
+        if (remainingAmount > 0)
+            mAmountText.setText(String.format("%.2f", remainingAmount));
+        else
+            mAmountText.setText("0.00");
+        //mAmountText.setText(currentDeliveriesBean.getmTripsheetDelivery_SaleValue());
     }
 
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {
@@ -444,8 +452,8 @@ public class TripsheetPayments extends AppCompatActivity {
         paymentsBean.setPayments_chequeClearDate("");
         paymentsBean.setPayments_receiverName(""); // Company name
         paymentsBean.setPayments_transActionStatus("A");
-        paymentsBean.setPayments_taxTotal(Double.parseDouble(deliveryArrayList.get(0).getmTripsheetDelivery_TaxTotal()));
-        paymentsBean.setPayments_saleValue(Double.parseDouble(deliveryArrayList.get(0).getmTripsheetDelivery_SaleValue()));
+        paymentsBean.setPayments_taxTotal(Double.parseDouble(currentDeliveriesBean.getmTripsheetDelivery_TaxTotal()));
+        paymentsBean.setPayments_saleValue(Double.parseDouble(currentDeliveriesBean.getmTripsheetDelivery_SaleValue()));
         paymentsBean.setPayments_receivedAmount(Double.parseDouble(mAmountText.getText().toString().trim()));
         paymentsBean.setPayments_type(String.valueOf(type));
         paymentsBean.setPayments_status("A");

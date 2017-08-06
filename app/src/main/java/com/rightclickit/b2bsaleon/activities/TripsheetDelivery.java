@@ -31,6 +31,8 @@ import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,9 +49,10 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
     private LinearLayout trip_sheet_deliveries_save, trip_sheet_deliveries_preview, trip_sheet_returns, trip_sheet_payments;
 
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
-    private ArrayList<DeliverysBean> deliveryProductsList = new ArrayList<>();
+    private ArrayList<DeliverysBean> allProductsListFromStock = new ArrayList<>();
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap;
     private Map<String, String> previouslyDeliveredProductsHashMap; // this hash map contains previously delivered product quantity. key = product id & value = previously delivered quantity
+    private Map<String, String> productOrderQuantitiesHashMap; // this hash map contains product codes & it's order quantity fetched from sale oder table.
     private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
     private boolean isDeliveryDataSaved = false, isDeliveryInEditingMode = false;
@@ -104,7 +107,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             companyName.setText(mAgentName);
 
             ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
-            //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+
             for (int z = 0; z < privilegeActionsData.size(); z++) {
                 if (privilegeActionsData.get(z).toString().equals("list_view_return")) {
                     trip_sheet_returns.setVisibility(View.VISIBLE);
@@ -115,16 +118,33 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
             selectedDeliveryProductsHashMap = new HashMap<>();
             previouslyDeliveredProductsHashMap = new HashMap<>();
-            deliveryProductsList = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
+            productOrderQuantitiesHashMap = new HashMap<>();
+            allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
 
             // In order to pre populate when you came back to this screen.
-            ArrayList<TripSheetDeliveriesBean> previouslyDeliveredProductsData = mDBHelper.fetchAllTripsheetsDeliveriesList(mTripSheetId);
-            for (TripSheetDeliveriesBean deliveriesBean : previouslyDeliveredProductsData) {
-                previouslyDeliveredProductsHashMap.put(deliveriesBean.getmTripsheetDelivery_productId(), deliveriesBean.getmTripsheetDelivery_Quantity());
+            previouslyDeliveredProductsHashMap = mDBHelper.getAgentPreviouslyDeliveredProductsList(mTripSheetId, mAgentSoId, mAgentId);
+            if (previouslyDeliveredProductsHashMap.size() > 0)
                 isDeliveryInEditingMode = true;
+
+            ArrayList<String> productOrderQuantities = mDBHelper.getAgentOrderedProductsQuantityFromSaleOrderTable(mTripSheetId, mAgentSoId, mAgentId);
+            if (productOrderQuantities.size() > 0) {
+                JSONArray productCodes = new JSONArray(productOrderQuantities.get(0));
+                JSONArray orderQuantities = new JSONArray(productOrderQuantities.get(1));
+
+                for (int i = 0; i < productCodes.length(); i++) {
+                    productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
+                }
             }
 
-            mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, deliveryProductsList, previouslyDeliveredProductsHashMap);
+            // fetching & checking weather Agent have any special prices.
+            Map<String, String> agentSpecialPricesHashMap = mDBHelper.fetchSpecialPricesForUserId(mAgentId);
+
+            for (DeliverysBean deliverysBean : allProductsListFromStock) {
+                if (agentSpecialPricesHashMap.containsKey(deliverysBean.getProductId()))
+                    deliverysBean.setProductAgentPrice(agentSpecialPricesHashMap.get(deliverysBean.getProductId()));
+            }
+
+            mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap);
             ordered_products_list_view.setAdapter(mTripSheetDeliveriesAdapter);
 
         } catch (Exception e) {

@@ -49,7 +49,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_address"
+                        android:id="@+id/ts_ob_amount_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="OB Amt: "
@@ -57,10 +57,10 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/tv_address"
+                        android:id="@+id/ts_ob_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rs.11,63,692.00"
+                        android:text="Rs.0.00"
                         android:textColor="@color/greydark"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -72,7 +72,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_address"
+                        android:id="@+id/ts_order_value_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Order value: "
@@ -80,10 +80,10 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/tv_address"
+                        android:id="@+id/ts_order_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rs.46,385.60"
+                        android:text="Rs.0.00"
                         android:textColor="@color/greydark"
                         android:textSize="12sp" />
 
@@ -104,18 +104,18 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_address"
+                        android:id="@+id/ts_total_received_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total Amt: "
+                        android:text="Total Received: "
                         android:textColor="@color/black"
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/tv_address"
+                        android:id="@+id/ts_total_received"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rs.24,275.00"
+                        android:text="Rs.0.00"
                         android:textColor="@color/greydark"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -127,7 +127,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_address"
+                        android:id="@+id/ts_total_due_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Total Due: "
@@ -135,13 +135,14 @@
                         android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/tv_address"
+                        android:id="@+id/ts_total_due"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rs.11,85,803.52"
+                        android:text="Rs.0.00"
                         android:textColor="@color/red"
                         android:textSize="12sp" />
                 </LinearLayout>
+                
             </LinearLayout>
 
 

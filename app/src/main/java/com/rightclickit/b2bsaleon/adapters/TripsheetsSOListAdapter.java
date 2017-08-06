@@ -22,6 +22,7 @@ import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,11 +44,9 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
     private ArrayList<TripsheetSOList> arraylist;
     private DBHelper mDBHelper;
     private String mTakeOrderPrivilege = "", mStockVerifyPrivilege = "";
-    private double currentLat = 0.0, currentLong = 0.0;
     String distance;
 
-    public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege
-            , double mCurrentLocationLat, double mCurrentLocationLongitude) {
+    public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege) {
         this.activity = tripSheetView;
         this.mTripSheetsList = tripsSOList;
         this.mInflater = LayoutInflater.from(activity);
@@ -56,8 +55,6 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         this.mDBHelper = new DBHelper(activity);
         this.arraylist.addAll(mTripSheetsList);
         this.mTakeOrderPrivilege = mTakeOrderPrivilege;
-        this.currentLat = mCurrentLocationLat;
-        this.currentLong = mCurrentLocationLongitude;
     }
 
 
@@ -67,13 +64,13 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public TripsheetSOList getItem(int i) {
+        return mTripSheetsList.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
@@ -103,24 +100,28 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         if (mTakeOrderPrivilege.equals("list_view_takeorder")) {
             mHolder.mSOTakeOrder.setVisibility(View.VISIBLE);
         }
-        if(mTripSheetsList.get(position).getmTripshetSOAgentLatitude()!=null && !mTripSheetsList.get(position).getmTripshetSOAgentLatitude().equals("") && mTripSheetsList.get(position).getmTripshetSOAgentLongitude()!=null &&  !mTripSheetsList.get(position).getmTripshetSOAgentLongitude().equals(""))
-        {
-             distance = getDistanceBetweenLocations(currentLat, currentLong,
-                    Double.parseDouble(mTripSheetsList.get(position).getmTripshetSOAgentLatitude())
-                    , Double.parseDouble(mTripSheetsList.get(position).getmTripshetSOAgentLongitude()));
+
+        final TripsheetSOList currentSaleOrder = getItem(position);
+
+        if (currentSaleOrder.getmTripshetSOAgentLatitude() != null && !currentSaleOrder.getmTripshetSOAgentLatitude().equals("") && currentSaleOrder.getmTripshetSOAgentLongitude() != null && !currentSaleOrder.getmTripshetSOAgentLongitude().equals("")) {
+            distance = getDistanceBetweenLocations(TripSheetView.mCurrentLocationLat, TripSheetView.mCurrentLocationLongitude,
+                    Double.parseDouble(currentSaleOrder.getmTripshetSOAgentLatitude()), Double.parseDouble(currentSaleOrder.getmTripshetSOAgentLongitude()));
         }
 
-        mHolder.mAgentCode.setText(mTripSheetsList.get(position).getmTripshetSOAgentCode());
-        mHolder.mSODate.setText(mTripSheetsList.get(position).getmTripshetSODate());
-        mHolder.mSOItemsCount.setText(mTripSheetsList.get(position).getmTripshetSOProductsCount());
-        mHolder.mSOAgentName.setText(mTripSheetsList.get(position).getmTripshetSOAgentFirstName());
-        mHolder.mSOOrderedValue.setText(mTripSheetsList.get(position).getmTripshetSOValue());
+        mHolder.mAgentCode.setText(currentSaleOrder.getmTripshetSOAgentCode());
+        mHolder.mSODate.setText(currentSaleOrder.getmTripshetSODate());
+        mHolder.mSOItemsCount.setText(currentSaleOrder.getmTripshetSOProductsCount());
+        mHolder.mSOAgentName.setText(currentSaleOrder.getmTripshetSOAgentFirstName());
+        mHolder.mSOOrderedValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOValue())));
+        mHolder.mSOReceivedValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOReceivedAmount())));
+        mHolder.mSODueValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSODueAmount())));
         mHolder.mSOAgentDistance.setText(distance);
+
         mHolder.mSOMapIconParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ArrayList<String> productCodes = new ArrayList<String>();
-                String s = mTripSheetsList.get(position).getmTripshetSOProductCode();
+                String s = currentSaleOrder.getmTripshetSOProductCode();
                 try {
                     JSONArray prodJsonArray = new JSONArray(s);
                     for (int j = 0; j < prodJsonArray.length(); j++) {
@@ -129,13 +130,12 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
                         }
                     }
                     Intent i = new Intent(activity, TripsheetDelivery.class);
-                    i.putExtra("tripsheetId", mTripSheetsList.get(position).getmTripshetSOTripId());
-                    i.putExtra("agentId", mTripSheetsList.get(position).getmTripshetSOAgentId());
-                    i.putExtra("agentCode", mTripSheetsList.get(position).getmTripshetSOAgentCode());
-                    i.putExtra("agentSoId", mTripSheetsList.get(position).getmTripshetSOId());
-                    i.putExtra("agentSoCode", mTripSheetsList.get(position).getmTripshetSOCode());
-                    i.putExtra("agentName", mTripSheetsList.get(position).getmTripshetSOAgentFirstName() +
-                            mTripSheetsList.get(position).getmTripshetSOAgentLastName());
+                    i.putExtra("tripsheetId", currentSaleOrder.getmTripshetSOTripId());
+                    i.putExtra("agentId", currentSaleOrder.getmTripshetSOAgentId());
+                    i.putExtra("agentCode", currentSaleOrder.getmTripshetSOAgentCode());
+                    i.putExtra("agentSoId", currentSaleOrder.getmTripshetSOId());
+                    i.putExtra("agentSoCode", currentSaleOrder.getmTripshetSOCode());
+                    i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName() + currentSaleOrder.getmTripshetSOAgentLastName());
                     activity.startActivity(i);
                     activity.finish();
                 } catch (JSONException e) {
