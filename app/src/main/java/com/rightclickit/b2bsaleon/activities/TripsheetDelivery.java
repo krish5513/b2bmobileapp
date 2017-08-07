@@ -53,7 +53,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap;
     private Map<String, String> previouslyDeliveredProductsHashMap; // this hash map contains previously delivered product quantity. key = product id & value = previously delivered quantity
     private Map<String, String> productOrderQuantitiesHashMap; // this hash map contains product codes & it's order quantity fetched from sale oder table.
-    private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
+    private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "",mAgentSoDate;
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
     private boolean isDeliveryDataSaved = false, isDeliveryInEditingMode = false;
 
@@ -96,6 +96,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             mAgentName = this.getIntent().getStringExtra("agentName");
             mAgentSoId = this.getIntent().getStringExtra("agentSoId");
             mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
+            mAgentSoDate=this.getIntent().getStringExtra("agentSoDate");
             loggedInUserId = mPreferences.getString("userId");
 
             if (mAgentId != null && mAgentId != "") {
@@ -246,6 +247,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             i.putExtra("agentRouteCode", mAgentRouteCode);
             i.putExtra("agentSoId", mAgentSoId);
             i.putExtra("agentSoCode", mAgentSoCode);
+            i.putExtra("agentSoDate",mAgentSoDate);
             startActivity(i);
             finish();
         } else {

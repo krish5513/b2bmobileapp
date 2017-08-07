@@ -101,7 +101,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private ListView mTripsheetsSOListView;
     private TripsheetsModel mTripsheetsModel;
     private TripsheetsSOListAdapter mTripsheetSOAdapter;
-    private String mTripSheetId = "", mTakeOrderPrivilege = "";
+    private String mTripSheetId = "", mTakeOrderPrivilege = "",mTripSheetCode="",mTripSheetDate="";
     public static double mCurrentLocationLat = 0.0, mCurrentLocationLongitude = 0.0;
     public static double mDestinationLatitude = 0.0, mDestinationLongitude = 0.0;
 
@@ -133,6 +133,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         Bundle bundle = this.getIntent().getExtras();
         if (bundle != null) {
             mTripSheetId = bundle.getString("tripsheetId");
+            mTripSheetCode=bundle.getString("tripsheetCode");
+            mTripSheetDate=bundle.getString("tripsheetDate");
         }
         mDBHelper = new DBHelper(TripSheetView.this);
         mPreferences = new MMSharedPreferences(TripSheetView.this);
