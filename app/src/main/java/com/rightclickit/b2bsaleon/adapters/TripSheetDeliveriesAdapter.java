@@ -119,7 +119,9 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
         return deliverysBean;
     }
-
+    public Map<String, DeliverysBean> getData(){
+        return selectedDeliveryProductsHashMap;
+    }
     @Override
     public long getItemId(int i) {
         return i;

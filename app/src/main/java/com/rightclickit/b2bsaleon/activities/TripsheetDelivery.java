@@ -33,6 +33,7 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -248,6 +249,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             i.putExtra("agentSoId", mAgentSoId);
             i.putExtra("agentSoCode", mAgentSoCode);
             i.putExtra("agentSoDate",mAgentSoDate);
+            i.putExtra("data", (Serializable) mTripSheetDeliveriesAdapter.getData());
             startActivity(i);
             finish();
         } else {

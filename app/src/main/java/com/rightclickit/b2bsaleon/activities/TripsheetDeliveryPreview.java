@@ -12,9 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -39,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.rightclickit.b2bsaleon.R.id.arrow_icon;
 import static com.rightclickit.b2bsaleon.R.id.ordered_products_list_view;
 
 public class TripsheetDeliveryPreview extends AppCompatActivity implements TripSheetDeliveriesListener {
@@ -116,79 +122,94 @@ public class TripsheetDeliveryPreview extends AppCompatActivity implements TripS
         mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
         mAgentSoId = this.getIntent().getStringExtra("agentSoId");
         mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
-
+        Map<String, DeliverysBean> mData=(Map<String, DeliverysBean>)this.getIntent().getSerializableExtra("data");
+//
        // mAgentSoDate=this.getIntent().getStringExtra("agentSoDate");
+        ArrayList<String[]> arList = new ArrayList<String[]>();
 
+        for (Map.Entry<String, DeliverysBean> entry : mData.entrySet())
+        {
+            DeliverysBean  d=entry.getValue();
+            String[] temp=new String[5];
+            temp[0]=d.getProductTitle();
+            temp[1]= String.valueOf(d.getProductOrderedQuantity());
+            temp[2]=d.getProductAgentPrice();
+            temp[4]= String.valueOf(d.getTaxAmount());
+            temp[3]= String.valueOf(d.getProductAmount());
+            arList.add(temp);
+        }
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
 
-        List<TripSheetDeliveriesBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesList(mTripSheetId);
-
-        for (int i = 0; i < unUploadedDeliveries.size(); i++) {
-            TripSheetDeliveriesBean currentDelivery = unUploadedDeliveries.get(i);
-            str_deliveryNo=currentDelivery.getmTripsheetDeliveryNo();
-            str_deliveryDate= Utility.formatTime(Long.parseLong(currentDelivery.getmTripsheetDelivery_CreatedOn()), Constants.TRIP_SHEETS_DELIVERY_ADD_DATE_FORMAT);
-        }
-
-
-        ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
-        for (int i = 0; i < tripSheetSOList.size(); i++) {
-            TripsheetSOList currentDelivery = tripSheetSOList.get(i);
-            mAgentSoCode = currentDelivery.getmTripshetSOCode();
-            Log.i("fdgjhujgf",mAgentSoCode);
-            mAgentSoDate = currentDelivery.getmTripshetSODate();
-            Log.i("fdgjhujgf",mAgentSoDate);
-
-        }
-
-        selectedDeliveryProductsHashMap = new HashMap<>();
-        previouslyDeliveredProductsHashMap = new HashMap<>();
-        productOrderQuantitiesHashMap = new HashMap<>();
-        allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
-
-        // In order to pre populate when you came back to this screen.
-        previouslyDeliveredProductsHashMap = mDBHelper.getAgentPreviouslyDeliveredProductsList(mTripSheetId, mAgentSoId, mAgentId);
-        if (previouslyDeliveredProductsHashMap.size() > 0)
-            isDeliveryInEditingMode = true;
-
-        ArrayList<String> productOrderQuantities = mDBHelper.getAgentOrderedProductsQuantityFromSaleOrderTable(mTripSheetId, mAgentSoId, mAgentId);
-        if (productOrderQuantities.size() > 0) {
-            JSONArray productCodes = null;
-            try {
-                productCodes = new JSONArray(productOrderQuantities.get(0));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            JSONArray orderQuantities = null;
-            try {
-                orderQuantities = new JSONArray(productOrderQuantities.get(1));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            for (int i = 0; i < productCodes.length(); i++) {
-                try {
-                    productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        // fetching & checking weather Agent have any special prices.
-        Map<String, String> agentSpecialPricesHashMap = mDBHelper.fetchSpecialPricesForUserId(mAgentId);
-
-        for (DeliverysBean deliverysBean : allProductsListFromStock) {
-            if (agentSpecialPricesHashMap.containsKey(deliverysBean.getProductId()))
-                deliverysBean.setProductAgentPrice(agentSpecialPricesHashMap.get(deliverysBean.getProductId()));
-        }
-
-        mTripSheetDeliveriesPreviewAdapter = new TripSheetDeleveriesPreviewAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap);
-        mAgentsList.setAdapter(mTripSheetDeliveriesPreviewAdapter);
-
-
-
-
-
+        CustomListView adapter = new CustomListView(arList,this);
+        mAgentsList.setAdapter(adapter);
+//        List<TripSheetDeliveriesBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesList(mTripSheetId);
+//
+//        for (int i = 0; i < unUploadedDeliveries.size(); i++) {
+//            TripSheetDeliveriesBean currentDelivery = unUploadedDeliveries.get(i);
+//            str_deliveryNo=currentDelivery.getmTripsheetDeliveryNo();
+//            str_deliveryDate= Utility.formatTime(Long.parseLong(currentDelivery.getmTripsheetDelivery_CreatedOn()), Constants.TRIP_SHEETS_DELIVERY_ADD_DATE_FORMAT);
+//        }
+//
+//
+//        ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
+//        for (int i = 0; i < tripSheetSOList.size(); i++) {
+//            TripsheetSOList currentDelivery = tripSheetSOList.get(i);
+//            mAgentSoCode = currentDelivery.getmTripshetSOCode();
+//            Log.i("fdgjhujgf",mAgentSoCode);
+//            mAgentSoDate = currentDelivery.getmTripshetSODate();
+//            Log.i("fdgjhujgf",mAgentSoDate);
+//
+//        }
+//
+//        selectedDeliveryProductsHashMap = new HashMap<>();
+//        previouslyDeliveredProductsHashMap = new HashMap<>();
+//        productOrderQuantitiesHashMap = new HashMap<>();
+//        allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
+//
+//        // In order to pre populate when you came back to this screen.
+//        previouslyDeliveredProductsHashMap = mDBHelper.getAgentPreviouslyDeliveredProductsList(mTripSheetId, mAgentSoId, mAgentId);
+//        if (previouslyDeliveredProductsHashMap.size() > 0)
+//            isDeliveryInEditingMode = true;
+//
+//        ArrayList<String> productOrderQuantities = mDBHelper.getAgentOrderedProductsQuantityFromSaleOrderTable(mTripSheetId, mAgentSoId, mAgentId);
+//        if (productOrderQuantities.size() > 0) {
+//            JSONArray productCodes = null;
+//            try {
+//                productCodes = new JSONArray(productOrderQuantities.get(0));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            JSONArray orderQuantities = null;
+//            try {
+//                orderQuantities = new JSONArray(productOrderQuantities.get(1));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//            for (int i = 0; i < productCodes.length(); i++) {
+//                try {
+//                    productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//
+//        // fetching & checking weather Agent have any special prices.
+//        Map<String, String> agentSpecialPricesHashMap = mDBHelper.fetchSpecialPricesForUserId(mAgentId);
+//
+//        for (DeliverysBean deliverysBean : allProductsListFromStock) {
+//            if (agentSpecialPricesHashMap.containsKey(deliverysBean.getProductId()))
+//                deliverysBean.setProductAgentPrice(agentSpecialPricesHashMap.get(deliverysBean.getProductId()));
+//        }
+//
+//        mTripSheetDeliveriesPreviewAdapter = new TripSheetDeleveriesPreviewAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap);
+////        mAgentsList.setAdapter(mTripSheetDeliveriesPreviewAdapter);
+//
+//
+//
+//
+//
 
 
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
@@ -206,7 +227,8 @@ public class TripsheetDeliveryPreview extends AppCompatActivity implements TripS
 
 
         sale_orderNo = (TextView) findViewById(R.id.order_no);
-      if(sale_orderNo!=null) {
+
+        if(sale_orderNo!=null) {
        sale_orderNo.setText(mAgentSoCode);
              }else {
             sale_orderNo.setText("-");
@@ -230,14 +252,13 @@ public class TripsheetDeliveryPreview extends AppCompatActivity implements TripS
 
 
         taxprice = (TextView) findViewById(R.id.taxAmount);
-        //taxprice.setText(Utility.getFormattedCurrency(mTotalProductsTax));
+
 
 
         tv_amount = (TextView) findViewById(R.id.Amount);
-       // tv_amount.setText(Utility.getFormattedCurrency(mProductsPriceAmountSum));
 
         totalprice = (TextView) findViewById(R.id.totalAmount);
-        //totalprice.setText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
+
 
         sharedPreferences.putString("totalprice", Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
 
@@ -396,5 +417,56 @@ public class TripsheetDeliveryPreview extends AppCompatActivity implements TripS
         tv_amount.setText(Utility.getFormattedCurrency(totalAmount));
         totalprice.setText(Utility.getFormattedCurrency(subTotal));
         isDeliveryDataSaved = false;
+    }
+    class CustomListView extends BaseAdapter implements ListAdapter {
+        private ArrayList<String[]> list = new ArrayList<String[]>();
+        private Context context;
+
+
+        public CustomListView(ArrayList<String[]> list, Context context) {
+            this.list = list;
+            this.context = context;
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int pos) {
+            return list.get(pos);
+        }
+
+        @Override
+        public long getItemId(int pos) {
+            return 0;
+            //just return 0 if your list items do not have an Id variable.
+        }
+
+
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.tdc_sales_preview_adapter, null);
+            }
+            String[] temp=list.get(position);
+            TextView order_preview_product_name = (TextView) view.findViewById(R.id.order_preview_product_name);
+            TextView order_preview_quantity = (TextView) view.findViewById(R.id.order_preview_quantity);
+            TextView order_preview_mrp = (TextView) view.findViewById(R.id.order_preview_mrp);
+            TextView order_preview_amount = (TextView) view.findViewById(R.id.order_preview_amount);
+            TextView order_preview_tax = (TextView) view.findViewById(R.id.order_preview_tax);
+            order_preview_product_name.setText(temp[0]);
+            order_preview_quantity.setText(temp[1]);
+            order_preview_mrp.setText(temp[2]);
+            order_preview_amount.setText(temp[3]);
+            order_preview_tax.setText(temp[4]);
+
+
+            return view;
+        }
     }
 }

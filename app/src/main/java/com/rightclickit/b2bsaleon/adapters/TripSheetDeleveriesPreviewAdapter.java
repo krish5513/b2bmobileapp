@@ -61,7 +61,7 @@ public class TripSheetDeleveriesPreviewAdapter extends BaseAdapter {
 
 
 
-      /*  if (!previouslyDeliveredProductsHashMap.isEmpty()) {
+       if (!previouslyDeliveredProductsHashMap.isEmpty()) {
             isDeliveryInEditingMode = true;
         }
 
@@ -101,7 +101,7 @@ public class TripSheetDeleveriesPreviewAdapter extends BaseAdapter {
             if (listener != null)
                 listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
         }
-        */
+
     }
 
         public class TripSheetDeliveriesViewHolder {
@@ -158,20 +158,6 @@ public class TripSheetDeleveriesPreviewAdapter extends BaseAdapter {
         return view;
     }
 
-    public void updateSelectedProductsList(DeliverysBean deliverysBean) {
-        try {
-            if (selectedDeliveryProductsHashMap.containsKey(deliverysBean.getProductId()))
-                selectedDeliveryProductsHashMap.remove(deliverysBean.getProductId());
-
-            selectedDeliveryProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
-
-            if (listener != null)
-                listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 
 }
