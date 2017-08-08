@@ -75,7 +75,7 @@ public class TripsheetPayments extends AppCompatActivity {
         mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
         mAgentSoId = this.getIntent().getStringExtra("agentSoId");
         mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
-        Log.i("fdgjhujgf",mAgentSoCode);
+        Log.i("fdgjhujgf", mAgentSoCode);
 
         this.getSupportActionBar().setTitle("PAYMENTS");
         this.getSupportActionBar().setSubtitle(null);
@@ -225,7 +225,7 @@ public class TripsheetPayments extends AppCompatActivity {
                     if (paymentTypeSpinner.getSelectedItem().toString().equals("Cash")) {
                         Double enteredAmount = Double.parseDouble(mAmountText.getText().toString());
                         if (enteredAmount > 0) {
-                            Toast.makeText(TripsheetPayments.this, "All good and save in cash details in db.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TripsheetPayments.this, "Payment Details Saved Successfully.", Toast.LENGTH_SHORT).show();
                             PaymentsBean paymentsBean = null;
                             synchronized (this) {
                                 paymentsBean = formAPIData(0);
@@ -307,8 +307,6 @@ public class TripsheetPayments extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-
         menu.findItem(R.id.notifications).setVisible(false);
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
@@ -323,6 +321,7 @@ public class TripsheetPayments extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, TripSheetView.class);
+        intent.putExtra("tripsheetId", mTripSheetId);
         startActivity(intent);
         finish();
     }

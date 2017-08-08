@@ -231,6 +231,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, TripSheetView.class);
+        intent.putExtra("tripsheetId", mTripSheetId);
         startActivity(intent);
         finish();
     }

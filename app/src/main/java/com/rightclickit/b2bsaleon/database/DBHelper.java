@@ -4003,7 +4003,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     saleOrderBean.setmTripshetSOProductsCount(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_PRODUCTS_COUNT)));
 
                     double receivedAmount = fetchTripSheetSaleOrderReceivedAmount(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_TRIPID)), cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_ID)));
-                    double dueAmount = Double.parseDouble(saleOrderBean.getmTripshetSOOpAmount()) - receivedAmount;
+                    double dueAmount = (Double.parseDouble(saleOrderBean.getmTripshetSOOpAmount()) + Double.parseDouble(saleOrderBean.getmTripshetSOValue())) - receivedAmount;
 
                     saleOrderBean.setmTripshetSOReceivedAmount(String.valueOf(receivedAmount));
                     saleOrderBean.setmTripshetSODueAmount(String.valueOf(dueAmount));

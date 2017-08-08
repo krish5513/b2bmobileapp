@@ -1,6 +1,7 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.Manifest;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +24,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -44,6 +47,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsSOListAdapter;
+import com.rightclickit.b2bsaleon.beanclass.AgentLatLong;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.constants.Constants;
@@ -57,11 +61,15 @@ import com.rightclickit.b2bsaleon.util.Utility;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
 public class TripSheetView extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
+    private Context activityContext;
+    private SearchView search;
     FloatingActionButton fab;
     LinearLayout tsDashBoardLayout;
     LinearLayout tsTripsheetsLayout;
@@ -101,50 +109,59 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private ListView mTripsheetsSOListView;
     private TripsheetsModel mTripsheetsModel;
     private TripsheetsSOListAdapter mTripsheetSOAdapter;
-    private String mTripSheetId = "", mTakeOrderPrivilege = "",mTripSheetCode="",mTripSheetDate="";
-    public static double mCurrentLocationLat = 0.0, mCurrentLocationLongitude = 0.0;
-    public static double mDestinationLatitude = 0.0, mDestinationLongitude = 0.0;
+    private String mTripSheetId = "", mTakeOrderPrivilege = "", mTripSheetCode = "", mTripSheetDate = "";
+    private double mCurrentLocationLat = 0.0, mCurrentLocationLongitude = 0.0;
+    private ArrayList<TripsheetSOList> tripSheetSOList = new ArrayList<>();
+    private ArrayList<AgentLatLong> agentsLatLongList = new ArrayList<>(); // this list contains all valid agents lat long details
+    private NetworkConnectionDetector networkConnectionDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_sheet_view);
-        mRequestingLocationUpdates = false;
 
-        if (lm == null)
-            lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        try {
+            activityContext = TripSheetView.this;
 
-        gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            mRequestingLocationUpdates = false;
 
-        mTripsheetsModel = new TripsheetsModel(this, TripSheetView.this);
-        this.getSupportActionBar().setTitle("TRIPSHEET PREVIEW");
-        this.getSupportActionBar().setSubtitle(null);
-        this.getSupportActionBar().setLogo(R.drawable.route_white);
-        // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        this.getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+            if (lm == null)
+                lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+            mTripsheetsModel = new TripsheetsModel(this, TripSheetView.this);
+            this.getSupportActionBar().setTitle("TRIPSHEET PREVIEW");
+            this.getSupportActionBar().setSubtitle(null);
+            this.getSupportActionBar().setLogo(R.drawable.route_white);
+            // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            this.getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-        final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        Bundle bundle = this.getIntent().getExtras();
-        if (bundle != null) {
-            mTripSheetId = bundle.getString("tripsheetId");
-            mTripSheetCode=bundle.getString("tripsheetCode");
-            mTripSheetDate=bundle.getString("tripsheetDate");
-        }
-        mDBHelper = new DBHelper(TripSheetView.this);
-        mPreferences = new MMSharedPreferences(TripSheetView.this);
+            final ActionBar actionBar = getSupportActionBar();
+            assert actionBar != null;
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        ts_ob_amount = (TextView) findViewById(R.id.ts_ob_amount);
-        ts_order_value = (TextView) findViewById(R.id.ts_order_value);
-        ts_total_received = (TextView) findViewById(R.id.ts_total_received);
-        ts_total_due = (TextView) findViewById(R.id.ts_total_due);
+            Bundle bundle = this.getIntent().getExtras();
+            if (bundle != null) {
+                mTripSheetId = bundle.getString("tripsheetId");
+                //mTripSheetCode = bundle.getString("tripsheetCode");
+                //mTripSheetDate = bundle.getString("tripsheetDate");
+            }
 
-        mTripsheetsSOListView = (ListView) findViewById(R.id.TripsheetsSOListView);
+            mDBHelper = new DBHelper(TripSheetView.this);
+            mPreferences = new MMSharedPreferences(TripSheetView.this);
+            networkConnectionDetector = new NetworkConnectionDetector(activityContext);
+
+            ts_ob_amount = (TextView) findViewById(R.id.ts_ob_amount);
+            ts_order_value = (TextView) findViewById(R.id.ts_order_value);
+            ts_total_received = (TextView) findViewById(R.id.ts_total_received);
+            ts_total_due = (TextView) findViewById(R.id.ts_total_due);
+
+            mTripsheetsSOListView = (ListView) findViewById(R.id.TripsheetsSOListView);
 
 //        taleorder = (Button) findViewById(R.id.btn_sale_ord1);
 //        taleorder.setVisibility(View.GONE);
@@ -152,271 +169,281 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 //        delivery.setVisibility(View.GONE);
 
 
-        listView = (TextView) findViewById(R.id.tv_listView);
-        mapView = (TextView) findViewById(R.id.tv_mapView);
-        // listview = (LinearLayout) findViewById(R.id.ll_listview);
-        mapview = (LinearLayout) findViewById(R.id.ll_mapview);
+            listView = (TextView) findViewById(R.id.tv_listView);
+            mapView = (TextView) findViewById(R.id.tv_mapView);
+            // listview = (LinearLayout) findViewById(R.id.ll_listview);
+            mapview = (LinearLayout) findViewById(R.id.ll_mapview);
 
-        listView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delivery_orange, 0, 0, 0);
-                mapView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mapview_grey, 0, 0, 0);
+            listView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delivery_orange, 0, 0, 0);
+                    mapView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mapview_grey, 0, 0, 0);
 //                line1.setBackgroundColor(Color.parseColor("#e99e3b"));
 //                line2.setBackgroundColor(Color.parseColor("#dbd7d7"));
-                //               linelist.setBackgroundColor(Color.parseColor("#e99e3b"));
-                //               lllist.addView(v);
-                mTripsheetsSOListView.setVisibility(View.VISIBLE);
-                mapview.setVisibility(View.GONE);
+                    //               linelist.setBackgroundColor(Color.parseColor("#e99e3b"));
+                    //               lllist.addView(v);
+                    mTripsheetsSOListView.setVisibility(View.VISIBLE);
+                    mapview.setVisibility(View.GONE);
 
-            }
-        });
-        mapView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delivery_grey, 0, 0, 0);
-                mapView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mapview_orange, 0, 0, 0);
+                }
+            });
+            mapView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delivery_grey, 0, 0, 0);
+                    mapView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mapview_orange, 0, 0, 0);
 //                line2.setBackgroundColor(0xe99e3b);
 //                line1.setBackgroundColor(0xdbd7d7);
-                mTripsheetsSOListView.setVisibility(View.GONE);
-                mapview.setVisibility(View.VISIBLE);
+                    mTripsheetsSOListView.setVisibility(View.GONE);
+                    mapview.setVisibility(View.VISIBLE);
 
-                // Formatting Google Directions API URL
-                String destinationDirectionsURL = String.format(Constants.GOOGLE_DIRECTIONS_URL, mCurrentLocationLat, mCurrentLocationLongitude,
-                        mDestinationLatitude, mDestinationLongitude); // "17.433740", "78.501596"
-                new DownloadGoogleDirectionsTask().execute(destinationDirectionsURL);
-                LatLng destLatLng = new LatLng(mDestinationLatitude, mDestinationLongitude);
-                destinationMarkerOptions = new MarkerOptions();
-                destinationMarkerOptions.position(destLatLng).icon(BitmapDescriptorFactory.defaultMarker());
+                    loadSaleOrderMapView();
+                }
+            });
+            tsDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
+            tsDashBoardLayout.setVisibility(View.GONE);
+            tsDashBoardLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(TripsheetsActivity.this, "Clicked on Dashboard", Toast.LENGTH_SHORT).show();
+                    Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
+                            R.anim.blink);
+                    tsDashBoardLayout.startAnimation(animation1);
+                    Intent i = new Intent(TripSheetView.this, DashboardActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
+            tsTripsheetsLayout = (LinearLayout) findViewById(R.id.TripSheetsLayout);
+            tsTripsheetsLayout.setVisibility(View.GONE);
+            tsTripsheetsLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(TripSheetsActivity.this, "Clicked on Tripsheets", Toast.LENGTH_SHORT).show();
+                    Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
+                            R.anim.blink);
+                    tsTripsheetsLayout.startAnimation(animation1);
 
-                destinationMarker = mMap.addMarker(destinationMarkerOptions);
-                //destinationMarker.setTitle("Destination");
+                }
+            });
 
+            tsCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
+            tsCustomersLayout.setVisibility(View.GONE);
+            tsCustomersLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Toast.makeText(Tripsheet_Activity.this, "Clicked on Customers", Toast.LENGTH_SHORT).show();
+                    Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
+                            R.anim.blink);
+                    tsCustomersLayout.startAnimation(animation1);
+                    Intent i = new Intent(TripSheetView.this, AgentsActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
 
-            }
-        });
-        tsDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
-        tsDashBoardLayout.setVisibility(View.GONE);
-        tsDashBoardLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(TripsheetsActivity.this, "Clicked on Dashboard", Toast.LENGTH_SHORT).show();
-                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.blink);
-                tsDashBoardLayout.startAnimation(animation1);
-                Intent i = new Intent(TripSheetView.this, DashboardActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        tsTripsheetsLayout = (LinearLayout) findViewById(R.id.TripSheetsLayout);
-        tsTripsheetsLayout.setVisibility(View.GONE);
-        tsTripsheetsLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(TripSheetsActivity.this, "Clicked on Tripsheets", Toast.LENGTH_SHORT).show();
-                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.blink);
-                tsTripsheetsLayout.startAnimation(animation1);
+            tsRetailersLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
+            tsRetailersLayout.setVisibility(View.GONE);
+            tsRetailersLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
+                    tsRetailersLayout.startAnimation(animation1);
+                    Intent i = new Intent(TripSheetView.this, RetailersActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
+            tsProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
+            tsProductsLayout.setVisibility(View.GONE);
+            tsProductsLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Toast.makeText(Tripsheet_Activity.this, "Clicked on Products", Toast.LENGTH_SHORT).show();
+                    Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
+                            R.anim.blink);
+                    tsProductsLayout.startAnimation(animation1);
+                    Intent i = new Intent(TripSheetView.this, Products_Activity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
+            tsTDCLayout = (LinearLayout) findViewById(R.id.TDCLayout);
+            tsTDCLayout.setVisibility(View.GONE);
+            tsTDCLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Toast.makeText(Tripsheet_Activity.this, "Clicked on TDC", Toast.LENGTH_SHORT).show();
+                    Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
+                            R.anim.blink);
+                    tsTDCLayout.startAnimation(animation1);
+                    Intent i = new Intent(TripSheetView.this, TDCSalesActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
 
-            }
-        });
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
 
-        tsCustomersLayout = (LinearLayout) findViewById(R.id.CustomersLayout);
-        tsCustomersLayout.setVisibility(View.GONE);
-        tsCustomersLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Toast.makeText(Tripsheet_Activity.this, "Clicked on Customers", Toast.LENGTH_SHORT).show();
-                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.blink);
-                tsCustomersLayout.startAnimation(animation1);
-                Intent i = new Intent(TripSheetView.this, AgentsActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-
-        tsRetailersLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
-        tsRetailersLayout.setVisibility(View.GONE);
-        tsRetailersLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
-                tsRetailersLayout.startAnimation(animation1);
-                Intent i = new Intent(TripSheetView.this, RetailersActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        tsProductsLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
-        tsProductsLayout.setVisibility(View.GONE);
-        tsProductsLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Toast.makeText(Tripsheet_Activity.this, "Clicked on Products", Toast.LENGTH_SHORT).show();
-                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.blink);
-                tsProductsLayout.startAnimation(animation1);
-                Intent i = new Intent(TripSheetView.this, Products_Activity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        tsTDCLayout = (LinearLayout) findViewById(R.id.TDCLayout);
-        tsTDCLayout.setVisibility(View.GONE);
-        tsTDCLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Toast.makeText(Tripsheet_Activity.this, "Clicked on TDC", Toast.LENGTH_SHORT).show();
-                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
-                        R.anim.blink);
-                tsTDCLayout.startAnimation(animation1);
-                Intent i = new Intent(TripSheetView.this, TDCSalesActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
-
-//        taleorder.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(TripSheetView.this, TripsheetTakeorder.class);
-//                startActivity(i);
-//                finish();
-//            }
-//        });
-//        delivery.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent i = new Intent(TripSheetView.this, TripsheetDelivery.class);
-//                startActivity(i);
-//                finish();
-//            }
-//        });
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-        HashMap<String, String> userMapData = mDBHelper.getUsersData();
-        ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
-        //System.out.println("F 11111 ***COUNT === " + privilegesData.size());
-        for (int k = 0; k < privilegesData.size(); k++) {
-            if (privilegesData.get(k).toString().equals("Dashboard")) {
-                tsDashBoardLayout.setVisibility(View.VISIBLE);
-            } else if (privilegesData.get(k).toString().equals("TripSheets")) {
-                tsTripsheetsLayout.setVisibility(View.VISIBLE);
-            } else if (privilegesData.get(k).toString().equals("Customers")) {
-                tsCustomersLayout.setVisibility(View.VISIBLE);
-            } else if (privilegesData.get(k).toString().equals("Products")) {
-                tsProductsLayout.setVisibility(View.VISIBLE);
-            } else if (privilegesData.get(k).toString().equals("TDC")) {
-                tsTDCLayout.setVisibility(View.VISIBLE);
-            } else if (privilegesData.get(k).toString().equals("Retailers")) {
-                tsRetailersLayout.setVisibility(View.VISIBLE);
-            }
-        }
-
-
-        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
-        //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
-        for (int z = 0; z < privilegeActionsData.size(); z++) {
-            //    System.out.println("Name::: " + privilegeActionsData.get(z).toString());
-
-            if (privilegeActionsData.get(z).toString().equals("list_view_takeorder")) {
-                mTakeOrderPrivilege = privilegeActionsData.get(z).toString();
+            HashMap<String, String> userMapData = mDBHelper.getUsersData();
+            ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
+            //System.out.println("F 11111 ***COUNT === " + privilegesData.size());
+            for (int k = 0; k < privilegesData.size(); k++) {
+                if (privilegesData.get(k).toString().equals("Dashboard")) {
+                    tsDashBoardLayout.setVisibility(View.VISIBLE);
+                } else if (privilegesData.get(k).toString().equals("TripSheets")) {
+                    tsTripsheetsLayout.setVisibility(View.VISIBLE);
+                } else if (privilegesData.get(k).toString().equals("Customers")) {
+                    tsCustomersLayout.setVisibility(View.VISIBLE);
+                } else if (privilegesData.get(k).toString().equals("Products")) {
+                    tsProductsLayout.setVisibility(View.VISIBLE);
+                } else if (privilegesData.get(k).toString().equals("TDC")) {
+                    tsTDCLayout.setVisibility(View.VISIBLE);
+                } else if (privilegesData.get(k).toString().equals("Retailers")) {
+                    tsRetailersLayout.setVisibility(View.VISIBLE);
+                }
             }
 
 
-//            if (privilegeActionsData.get(z).toString().equals("list_view_takeorder")) {
-//                taleorder.setVisibility(View.VISIBLE);
-//            } else if (privilegeActionsData.get(z).toString().equals("list_view_delivery")) {
-//                delivery.setVisibility(View.VISIBLE);
-//            }
-        }
+            ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
+            //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+            for (int z = 0; z < privilegeActionsData.size(); z++) {
+                //    System.out.println("Name::: " + privilegeActionsData.get(z).toString());
 
-        mLatitude = userMapData.get("latitude");
-        mLongitude = userMapData.get("longitude");
-
-        fab = (FloatingActionButton) findViewById(R.id.productfab);
-        fab.setVisibility(View.VISIBLE);
-        fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_eye_white_24dp));
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Clicked Tripsheet Preview", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(TripSheetView.this, TripSheetViewPreview.class);
-                startActivity(i);
-                finish();
+                if (privilegeActionsData.get(z).toString().equals("list_view_takeorder")) {
+                    mTakeOrderPrivilege = privilegeActionsData.get(z).toString();
+                }
             }
-        });
 
-        if (new NetworkConnectionDetector(TripSheetView.this).isNetworkConnected()) {
-            mTripSheetId = mPreferences.getString("TripId");
-            mTripsheetsModel.getTripsheetsSoList(mTripSheetId);
-        } else {
-            loadTripSheetSaleOrderData();
-        }
+            mLatitude = userMapData.get("latitude");
+            mLongitude = userMapData.get("longitude");
 
-        TripsheetsList currentTripSheetDetails = mDBHelper.fetchTripSheetDetails(mTripSheetId);
-        if (currentTripSheetDetails != null) {
-            ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount())));
-            ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount())));
-            ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())));
-            ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())));
-        }
-    }
+            fab = (FloatingActionButton) findViewById(R.id.productfab);
+            fab.setVisibility(View.VISIBLE);
+            fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_eye_white_24dp));
 
-   /* public void loadTripsoData(ArrayList<TripsheetSOList> tripsSOList) {
-        mDestinationLatitude = Double.parseDouble(tripsSOList.get(0).getmTripshetSOAgentLatitude());
-        mDestinationLongitude = Double.parseDouble(tripsSOList.get(0).getmTripshetSOAgentLongitude());
-        if (mTripsheetSOAdapter != null) {
-            mTripsheetSOAdapter = null;
-        }
-        mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripsSOList, mTakeOrderPrivilege
-                , mCurrentLocationLat, mCurrentLocationLongitude);
-        mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
-    }*/
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getApplicationContext(), "Clicked Tripsheet Preview", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(TripSheetView.this, TripSheetViewPreview.class);
+                    startActivity(i);
+                    finish();
+                }
+            });
 
-
-    public void loadTripSheetSaleOrderData() {
-        ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
-
-        if (tripSheetSOList.size() > 0) {
-            if (tripSheetSOList.get(0).getmTripshetSOAgentLatitude() != null && !tripSheetSOList.get(0).getmTripshetSOAgentLatitude().equals("")) {
-                mDestinationLatitude = Double.parseDouble(tripSheetSOList.get(0).getmTripshetSOAgentLatitude());
-            }
-            if (tripSheetSOList.get(0).getmTripshetSOAgentLongitude() != null && !tripSheetSOList.get(0).getmTripshetSOAgentLongitude().equals("")) {
-                mDestinationLongitude = Double.parseDouble(tripSheetSOList.get(0).getmTripshetSOAgentLongitude());
-            }
-            if (mTripsheetSOAdapter != null) {
-                mTripsheetSOAdapter = null;
+            // Updating Trip Sheet values in header
+            TripsheetsList currentTripSheetDetails = mDBHelper.fetchTripSheetDetails(mTripSheetId);
+            if (currentTripSheetDetails != null) {
+                ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount())));
+                ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount())));
+                ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())));
+                ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())));
             }
 
             mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege);
             mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
+
+            if (networkConnectionDetector.isNetworkConnected()) {
+                mTripsheetsModel.getTripsheetsSoList(mTripSheetId);
+            } else {
+                loadTripSheetSaleOrderData();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadTripSheetSaleOrderData() {
+        tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
+
+        if (tripSheetSOList.size() > 0) {
+            mTripsheetSOAdapter.setAllSaleOrdersList(tripSheetSOList);
+            mTripsheetSOAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void loadSaleOrderMapView() {
+        if (networkConnectionDetector.isNetworkConnected()) {
+            for (int i = 0; i < agentsLatLongList.size(); i++) {
+                AgentLatLong agentLatLong = agentsLatLongList.get(i);
+                LatLng destLatLng = new LatLng(agentLatLong.getLatitude(), agentLatLong.getLongitude());
+
+                destinationMarkerOptions = new MarkerOptions();
+                destinationMarkerOptions.position(destLatLng).icon(BitmapDescriptorFactory.defaultMarker()).title(agentLatLong.getAgentName());
+                destinationMarker = mMap.addMarker(destinationMarkerOptions);
+            }
+
+            // Drawing route directions to nearest agent.
+            if (agentsLatLongList.size() > 0) {
+                AgentLatLong nearestAgent = agentsLatLongList.get(0);
+
+                // Formatting Google Directions API URL
+                String destinationDirectionsURL = String.format(Constants.GOOGLE_DIRECTIONS_URL, mCurrentLocationLat, mCurrentLocationLongitude, nearestAgent.getLatitude(), nearestAgent.getLongitude()); // "17.433740", "78.501596"
+                new DownloadGoogleDirectionsTask().execute(destinationDirectionsURL);
+            }
+        } else {
+            Toast.makeText(activityContext, getResources().getString(R.string.error_no_internet), Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+
+        try {
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+            search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            search.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String query) {
+                    mTripsheetSOAdapter.filter(query);
+                    return true;
+                }
+            });
+
+            // Get the search close button image view
+            ImageView closeButton = (ImageView) search.findViewById(R.id.search_close_btn);
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    search.setQuery("", false);
+                    search.clearFocus();
+                    search.onActionViewCollapsed();
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_search) {
 
-            return true;
-        }
-
-        switch (item.getItemId()) {
+        switch (id) {
             case android.R.id.home:
-                onBackPressed();
+                if (search.isIconified()) {
+                    onBackPressed();
+                } else {
+                    search.setQuery("", false);
+                    search.clearFocus();
+                    search.onActionViewCollapsed();
+                }
                 return true;
             default:
                 return true;
@@ -425,8 +452,6 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-
         menu.findItem(R.id.notifications).setVisible(false);
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
@@ -579,8 +604,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
      */
     private void addMarkerOnMap(double latitude, double longitude) {
         try {
-            System.out.println("LAT::: " + latitude);
-            System.out.println("LONG::: " + longitude);
+            //System.out.println("LAT::: " + latitude);
+            //System.out.println("LONG::: " + longitude);
             mCurrentLocationLat = latitude;
             mCurrentLocationLongitude = longitude;
             if (markerOptions == null)
@@ -588,7 +613,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
             // Creating a LatLng object for the current / new location
             LatLng currentLatLng = new LatLng(latitude, longitude);
-            markerOptions.position(currentLatLng).icon(BitmapDescriptorFactory.defaultMarker());
+            markerOptions.position(currentLatLng).icon(BitmapDescriptorFactory.defaultMarker()).title("Current Location");
 
             if (mapMarker != null)
                 mapMarker.remove();
@@ -603,10 +628,51 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             // Showing the current location in Google Map by Zooming it
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
 
-            // to update distance value in list after getting current location details.
-            if (mTripsheetSOAdapter != null)
-                mTripsheetSOAdapter.notifyDataSetChanged();
+            for (TripsheetSOList saleOrder : tripSheetSOList) {
+                AgentLatLong agentLatLong = new AgentLatLong();
+                double distance;
 
+                // We are calculating distance b/w current location and agent location if lat long are not empty
+                if (saleOrder.getmTripshetSOAgentLatitude() != null && !saleOrder.getmTripshetSOAgentLatitude().equals("") && saleOrder.getmTripshetSOAgentLongitude() != null && !saleOrder.getmTripshetSOAgentLongitude().equals("")) {
+                    double agentLatitude = Double.parseDouble(saleOrder.getmTripshetSOAgentLatitude());
+                    double agentLongitude = Double.parseDouble(saleOrder.getmTripshetSOAgentLongitude());
+
+                    distance = getDistanceBetweenLocationsInMeters(mCurrentLocationLat, mCurrentLocationLongitude, agentLatitude, agentLongitude);
+
+                    agentLatLong.setAgentName(saleOrder.getmTripshetSOAgentFirstName());
+                    agentLatLong.setLatitude(agentLatitude);
+                    agentLatLong.setLongitude(agentLongitude);
+                    agentLatLong.setDistance(distance);
+
+                    agentsLatLongList.add(agentLatLong);
+
+                } else {
+                    distance = 0.0;
+                }
+
+                saleOrder.setDistance(Math.round(distance / 1000));
+            }
+
+            // Sorting by distance in descending order i.e. nearest destination
+            Collections.sort(agentsLatLongList, new Comparator<AgentLatLong>() {
+                @Override
+                public int compare(AgentLatLong o1, AgentLatLong o2) {
+                    return o1.getDistance().compareTo(o2.getDistance());
+                }
+            });
+
+            Collections.sort(tripSheetSOList, new Comparator<TripsheetSOList>() {
+                @Override
+                public int compare(TripsheetSOList o1, TripsheetSOList o2) {
+                    return o1.getDistance().compareTo(o2.getDistance());
+                }
+            });
+
+            // to update distance value in list after getting current location details.
+            if (mTripsheetSOAdapter != null) {
+                mTripsheetSOAdapter.setAllSaleOrdersList(tripSheetSOList);
+                mTripsheetSOAdapter.notifyDataSetChanged();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -729,5 +795,18 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // Method to calculate distance between two locations using HAVERSINE FORMULA
+    private double getDistanceBetweenLocationsInMeters(double sourceLat, double sourceLong, double destLat, double destLong) {
+        String distanceStr = "";
+        double R = 6371000f; // Default Radius of the earth in meters
+        double dLat = (sourceLat - destLat) * Math.PI / 180f;
+        double dLon = (sourceLong - destLong) * Math.PI / 180f;
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(dLat) * Math.cos(dLon) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2f * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c;
+        System.out.println("DISTANCE IN METERS::: " + Math.round(distance));
+        return distance;
     }
 }
