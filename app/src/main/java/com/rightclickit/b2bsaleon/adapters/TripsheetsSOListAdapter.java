@@ -91,11 +91,19 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
             mHolder.mSOTakeOrder.setVisibility(View.GONE);
             mHolder.mSOMapIconParent = (LinearLayout) view.findViewById(R.id.gotoCustomer);
             mHolder.mSOAgentDistance = (TextView) view.findViewById(R.id.tv_km);
+            mHolder.mEmptyLayout = (LinearLayout) view.findViewById(R.id.EmptyView);
 
             view.setTag(mHolder);
         } else {
             mHolder = (ViewHolder) view.getTag();
         }
+
+        if(position == mTripSheetsList.size()-1){
+            mHolder.mEmptyLayout.setVisibility(View.VISIBLE);
+        }else {
+            mHolder.mEmptyLayout.setVisibility(View.GONE);
+        }
+
 
         if (mTakeOrderPrivilege.equals("list_view_takeorder")) {
             mHolder.mSOTakeOrder.setVisibility(View.VISIBLE);
@@ -160,6 +168,8 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         Button mSOTakeOrder;
         LinearLayout mSOMapIconParent;
         TextView mSOAgentDistance;
+        LinearLayout mEmptyLayout;
+
     }
 
     // Filter Class

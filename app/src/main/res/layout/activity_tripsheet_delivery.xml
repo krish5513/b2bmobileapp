@@ -53,6 +53,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:background="@drawable/border_btn"
+
                     android:drawableLeft="@drawable/ic_near_me_black_24dp"
                     android:textColor="@color/darkgrey"
                     android:textSize="10sp" />
@@ -87,9 +88,9 @@
                 android:id="@+id/ordered_products_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="95dp"
                 android:divider="@android:color/transparent"
-                android:smoothScrollbar="true" />
+                android:smoothScrollbar="true"
+                android:background="@color/white"/>
 
         </LinearLayout>
 

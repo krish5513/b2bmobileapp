@@ -250,6 +250,9 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             i.putExtra("agentSoCode", mAgentSoCode);
             i.putExtra("agentSoDate",mAgentSoDate);
             i.putExtra("data", (Serializable) mTripSheetDeliveriesAdapter.getData());
+            i.putExtra("totalAmount",String.valueOf(totalAmount));
+            i.putExtra("totalTaxAmount",String.valueOf(totalTaxAmount));
+            i.putExtra("subTotal",String.valueOf(subTotal));
             startActivity(i);
             finish();
         } else {

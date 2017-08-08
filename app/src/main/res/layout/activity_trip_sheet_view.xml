@@ -7,6 +7,7 @@
     tools:context="com.rightclickit.b2bsaleon.activities.TripSheetView">
 
     <LinearLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="60dp"
@@ -226,8 +227,10 @@
         <ListView
             android:id="@+id/TripsheetsSOListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible" />
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:smoothScrollbar="true"
+            />
 
         <LinearLayout
             android:id="@+id/ll_mapview"

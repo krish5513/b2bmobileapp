@@ -222,20 +222,33 @@ public class AgentsTDC_View extends AppCompatActivity {
                 canvas.drawText(sharedPreferences.getString("companyname"), 5, 50, paint);
                 paint.setTextSize(20);
                 canvas.drawText(str_routecode, 5, 80, paint);
+                paint.setTextSize(20);
                 canvas.drawText(sharedPreferences.getString("routename"), 200, 80, paint);
+                paint.setTextSize(20);
                 canvas.drawText("ORDER,", 5, 120, paint);
+                paint.setTextSize(20);
                 canvas.drawText("by " + sharedPreferences.getString("loginusername"), 200, 120, paint);
+                paint.setTextSize(20);
                 canvas.drawText(str_enguiryid, 5, 150, paint);
+                paint.setTextSize(20);
                 canvas.drawText(currentDate, 200, 150, paint);
+                paint.setTextSize(20);
                 canvas.drawText(str_agentname, 5, 180, paint);
+                paint.setTextSize(20);
                 canvas.drawText(sharedPreferences.getString("agentCode"), 200, 180, paint);
+                paint.setTextSize(20);
 
                 canvas.drawText("----------------------------------------------------", 5, 200, paint);
                 canvas.drawText("Product", 5, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("Qty", 100, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("Price", 160, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("Amount", 230, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("Tax", 320, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("----------------------------------------------------", 5, 235, paint);
 
 

@@ -214,20 +214,31 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
                 paint.setTextSize(20);
                 canvas.drawText(str_routecode, 5, 80, paint);
+                paint.setTextSize(20);
                 canvas.drawText(mmSharedPreferences.getString("routename"), 200, 80, paint);
+                paint.setTextSize(20);
                 canvas.drawText("BILL,", 5, 120, paint);
+                paint.setTextSize(20);
                 canvas.drawText("by " + mmSharedPreferences.getString("loginusername"), 200, 120, paint);
+                paint.setTextSize(20);
                 canvas.drawText(currentOrderId, 5, 150, paint);
+                paint.setTextSize(20);
                 canvas.drawText(currentDate, 170, 150, paint);
+                paint.setTextSize(20);
                 //  canvas.drawText(str_agentname, 5, 180, paint);
                 //  canvas.drawText(mmSharedPreferences.getString("agentCode"), 200, 180, paint);
 
                 canvas.drawText("----------------------------------------------------", 5, 180, paint);
                 canvas.drawText("Product", 5, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("Qty", 110, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("Price", 160, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("Amount", 230, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("Tax", 330, 220, paint);
+                paint.setTextSize(20);
                 canvas.drawText("----------------------------------------------------", 5, 235, paint);
 
                 int st = 250;
