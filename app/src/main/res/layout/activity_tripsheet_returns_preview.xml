@@ -1,0 +1,271 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.rightclickit.b2bsaleon.activities.TripsheetDeliveryPreview">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/layout_background">
+        <TextView
+            android:id="@+id/tv_companyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Company Name"
+            android:gravity="left"
+            android:textAllCaps="true"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:textColor="@color/greydark"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_routecode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="routecode"
+                android:gravity="left"
+                android:paddingTop="5dp"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:textColor="@color/greydark"
+                />
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/sales_ofc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="Sales Office"
+                android:gravity="left"
+                android:paddingTop="5dp"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:textColor="@color/greydark"
+                />
+            <TextView
+                android:id="@+id/route_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="Routename"
+                android:gravity="left"
+                android:paddingTop="5dp"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:textColor="@color/greydark"
+                />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_line" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="Return "
+                android:gravity="left"
+                android:textAllCaps="true"
+                android:layout_weight="0.8"
+                android:paddingLeft="10dp"
+                android:textColor="@color/greydark"
+                />
+            <TextView
+                android:id="@+id/tv_user_Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="login User name "
+                android:layout_marginLeft="40dp"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:gravity="right"
+                android:layout_weight="2"
+                android:textColor="@color/greydark"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/return_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="Return No"
+                android:gravity="left"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:textColor="@color/greydark"
+                />
+            <TextView
+                android:id="@+id/return_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="ReturnDate"
+                android:gravity="left"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:textColor="@color/greydark"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_line" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:layout_weight="0.17"
+                android:gravity="center|left"
+                android:text="Product"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_weight="0.17"
+                android:gravity="center"
+                android:text="UOM"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.19"
+                android:gravity="center"
+                android:text="QTY"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_weight="0.18"
+                android:gravity="center"
+                android:text="Return Type"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_line" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <ListView
+                android:id="@+id/AgentsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="60dp"
+                android:divider="@android:color/transparent"
+                android:smoothScrollbar="true" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        android:gravity="end|center"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="@color/colorPrimary"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_weight="0.25"
+                android:layout_gravity="center"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tv_print"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableTop="@drawable/print_green"
+                    android:text="Print"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

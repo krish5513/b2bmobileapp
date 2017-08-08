@@ -102,10 +102,11 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
             if (mAgentId != null && mAgentId != "") {
                 List<String> agentRouteIds = mDBHelper.getAgentRouteId(mAgentId);
-                mAgentRouteId = agentRouteIds.get(0);
-                mAgentRouteCode = mDBHelper.getRouteCodeByRouteId(mAgentRouteId);
+                if (mAgentRouteId != null) {
+                    mAgentRouteId = agentRouteIds.get(0);
+                    mAgentRouteCode = mDBHelper.getRouteCodeByRouteId(mAgentRouteId);
+                }
             }
-
             companyName.setText(mAgentName);
 
             ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("TripSheets"));
@@ -121,8 +122,9 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             selectedDeliveryProductsHashMap = new HashMap<>();
             previouslyDeliveredProductsHashMap = new HashMap<>();
             productOrderQuantitiesHashMap = new HashMap<>();
-            allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
-
+            if(allProductsListFromStock.size()>0) {
+                allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
+            }
             // In order to pre populate when you came back to this screen.
             previouslyDeliveredProductsHashMap = mDBHelper.getAgentPreviouslyDeliveredProductsList(mTripSheetId, mAgentSoId, mAgentId);
             if (previouslyDeliveredProductsHashMap.size() > 0)
