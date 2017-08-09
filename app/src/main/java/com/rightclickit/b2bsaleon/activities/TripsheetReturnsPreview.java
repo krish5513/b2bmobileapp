@@ -10,7 +10,6 @@ import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,38 +17,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeleveriesPreviewAdapter;
-import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import static com.rightclickit.b2bsaleon.R.id.arrow_icon;
-import static com.rightclickit.b2bsaleon.R.id.ordered_products_list_view;
-
-public class TripsheetDeliveryPreview extends AppCompatActivity {
+public class TripsheetReturnsPreview extends AppCompatActivity {
     private ListView mAgentsList;
     private TripSheetDeleveriesPreviewAdapter mTripSheetDeliveriesPreviewAdapter;
     ArrayList customArraylist = new ArrayList();
@@ -74,9 +63,9 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
     private Map<String, String> previouslyDeliveredProductsHashMap; // this hash map contains previously delivered product quantity. key = product id & value = previously delivered quantity
     private Map<String, String> productOrderQuantitiesHashMap; // this hash map contains product codes & it's order quantity fetched from sale oder table.
 
-    private String totalAmount = "";
-    private String totalTaxAmount = "";
-    private String subTotal = "";
+    private String totalAmount ="";
+    private String totalTaxAmount="";
+    private String subTotal="";
     private boolean isDeliveryDataSaved = false, isDeliveryInEditingMode = false;
 
     double amount, subtotal;
@@ -89,13 +78,16 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
     String currentDate, str_routecode, str_deliveryDate, str_deliveryNo;
 
 
-    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDate;
+
+    String myList,str_ProductCode,str_Uom ;
+
+
+    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode,mAgentSoDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tripsheet_delivery_preview);
-
+        setContentView(R.layout.activity_tripsheet_returns_preview);
 
         this.getSupportActionBar().setTitle("PREVIEW");
         this.getSupportActionBar().setSubtitle(null);
@@ -111,8 +103,8 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
 
-        mDBHelper = new DBHelper(TripsheetDeliveryPreview.this);
-        sharedPreferences = new MMSharedPreferences(TripsheetDeliveryPreview.this);
+        mDBHelper = new DBHelper(TripsheetReturnsPreview.this);
+        sharedPreferences = new MMSharedPreferences(TripsheetReturnsPreview.this);
 
         mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
         mAgentId = this.getIntent().getStringExtra("agentId");
@@ -122,45 +114,36 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
         mAgentSoId = this.getIntent().getStringExtra("agentSoId");
         mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
-        totalAmount = this.getIntent().getStringExtra("totalAmount");
-        totalTaxAmount = this.getIntent().getStringExtra("totalTaxAmount");
-        subTotal = this.getIntent().getStringExtra("subTotal");
-
-
-        taxprice = (TextView) findViewById(R.id.taxAmount);
-        if (totalTaxAmount != null)
-            taxprice.setText(Utility.getFormattedCurrency(Double.parseDouble(totalTaxAmount)));
-
-
-        tv_amount = (TextView) findViewById(R.id.Amount);
-        tv_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(totalAmount)));
-
-        totalprice = (TextView) findViewById(R.id.totalAmount);
-        totalprice.setText(Utility.getFormattedCurrency(Double.parseDouble(subTotal)));
+        totalAmount= this.getIntent().getStringExtra("totalAmount");
+        totalTaxAmount=this.getIntent().getStringExtra("totalTaxAmount");
+        subTotal= this.getIntent().getStringExtra("subTotal");
 
 
 
-        Map<String, DeliverysBean> mData = (Map<String, DeliverysBean>) this.getIntent().getSerializableExtra("data");
+        myList=mDBHelper.getProductUnitByProductCode(str_ProductCode);
+        str_Uom=myList;
+        Map<String, DeliverysBean> mData=(Map<String, DeliverysBean>)this.getIntent().getSerializableExtra("data");
         final ArrayList<String[]> arList = new ArrayList<String[]>();
-        SortedSet<String> keys = new TreeSet<String>(mData.keySet());
-        for (String key : keys) {
-            //String value = mData.get(key);
-            // do something
+        if(mData!=null) {
+            SortedSet<String> keys = new TreeSet<String>(mData.keySet());
+            for (String key : keys) {
+                //String value = mData.get(key);
+                // do something
 
-            DeliverysBean d = mData.get(key);
-            String[] temp = new String[5];
-            temp[0] = d.getProductTitle();
-            temp[1] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(d.getProductOrderedQuantity())));
-            temp[2] = Utility.getFormattedCurrency(Double.parseDouble(d.getProductAgentPrice()));
-            temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(d.getTaxAmount())));
-            temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(d.getProductAmount())));
-            arList.add(temp);
-
+                DeliverysBean d = mData.get(key);
+                String[] temp = new String[4];
+                temp[0] = d.getProductTitle();
+                temp[1] = str_Uom;
+                temp[2] = Utility.getFormattedCurrency(Double.parseDouble(d.getProductId()));
+                temp[3] = "Sale Return";
+                arList.add(temp);
+            }
         }
         // mAgentSoDate=this.getIntent().getStringExtra("agentSoDate");
 
-        for (int i = 0; i < arList.size(); i++) {
-            String[] temp = arList.get(i);
+        for (int i=0;i<arList.size();i++)
+        {
+            String[] temp=arList.get(i);
         }
        /* for (Map.Entry<String, DeliverysBean> entry : mData.entrySet())
         {
@@ -175,26 +158,16 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         }*/
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
 
-        CustomListView adapter = new CustomListView(arList, this);
+        TripsheetReturnsPreview.CustomListView adapter = new TripsheetReturnsPreview.CustomListView(arList,this);
         mAgentsList.setAdapter(adapter);
-        List<TripSheetDeliveriesBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesList(mTripSheetId);
-
+        List<TripSheetReturnsBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsReturnsList(mTripSheetId);
         for (int i = 0; i < unUploadedDeliveries.size(); i++) {
-            TripSheetDeliveriesBean currentDelivery = unUploadedDeliveries.get(i);
-            str_deliveryNo = currentDelivery.getmTripsheetDeliveryNo();
-            str_deliveryDate = Utility.formatTime(Long.parseLong(currentDelivery.getmTripsheetDelivery_CreatedOn()), Constants.TRIP_SHEETS_DELIVERY_ADD_DATE_FORMAT);
+            TripSheetReturnsBean currentDelivery = unUploadedDeliveries.get(i);
+            str_deliveryNo=currentDelivery.getmTripshhetReturnsReturn_no();
+            str_deliveryDate= Utility.formatTime(Long.parseLong(currentDelivery.getmTripshhetReturnsCreated_on()), Constants.TRIP_SHEETS_DELIVERY_ADD_DATE_FORMAT);
         }
 
 
-        ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
-        for (int i = 0; i < tripSheetSOList.size(); i++) {
-            TripsheetSOList currentDelivery = tripSheetSOList.get(i);
-            mAgentSoCode = currentDelivery.getmTripshetSOCode();
-            Log.i("fdgjhujgf", mAgentSoCode);
-            mAgentSoDate = currentDelivery.getmTripshetSODate();
-            Log.i("fdgjhujgf", mAgentSoDate);
-
-        }
 
 
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
@@ -211,28 +184,17 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         RouteCode.setText(str_routecode);
 
 
-        sale_orderNo = (TextView) findViewById(R.id.order_no);
-
-        if (sale_orderNo != null) {
-            sale_orderNo.setText(mAgentSoCode);
-        } else {
-            sale_orderNo.setText("-");
-        }
-        sale_orderDate = (TextView) findViewById(R.id.tv_date);
-
-        if (sale_orderDate != null) {
-            sale_orderDate.setText(str_deliveryDate);
-        } else {
-            sale_orderDate.setText("-");
-        }
 
 
-        deliveryNo = (TextView) findViewById(R.id.agentname);
+        deliveryNo = (TextView) findViewById(R.id.return_date);
 
         deliveryNo.setText(str_deliveryNo);
 
-        deliveryDate = (TextView) findViewById(R.id.tv_AgentCode);
+        deliveryDate = (TextView) findViewById(R.id.return_date);
         deliveryDate.setText(str_deliveryDate);
+
+
+
 
 
         print = (TextView) findViewById(R.id.tv_print);
@@ -263,8 +225,6 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText("by " + sharedPreferences.getString("loginusername"), 200, 120, paint);
                 paint.setTextSize(20);
-                canvas.drawText("1", 5, 150, paint);
-                canvas.drawText("2017-6-8", 200, 150, paint);
                 canvas.drawText(str_deliveryNo, 5, 180, paint);
                 paint.setTextSize(20);
                 canvas.drawText(str_deliveryDate, 200, 180, paint);
@@ -273,13 +233,13 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                 canvas.drawText("----------------------------------------------------", 5, 200, paint);
                 canvas.drawText("Product", 5, 220, paint);
                 paint.setTextSize(20);
-                canvas.drawText("Qty", 100, 220, paint);
+                canvas.drawText("UOM", 100, 220, paint);
                 paint.setTextSize(20);
-                canvas.drawText("Price", 160, 220, paint);
+                canvas.drawText("Qty", 160, 220, paint);
                 paint.setTextSize(20);
-                canvas.drawText("Amount", 230, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Tax", 320, 220, paint);
+                canvas.drawText("Return Type", 230, 220, paint);
+
+
                 canvas.drawText("----------------------------------------------------", 5, 235, paint);
 
 
@@ -296,7 +256,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                     canvas.drawText(temps[2], 175, st, paint);
 
                     canvas.drawText(temps[3], 245, st, paint);
-                    canvas.drawText(temps[4], 315, st, paint);
+                  //  canvas.drawText(temps[4], 315, st, paint);
 
 
                     // canvas.drawText("FROM:" + temps[7], 100, st, paint);
@@ -309,11 +269,11 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                 }
                 canvas.drawText("----------------------------------------------------", 5, st, paint);
 
-                st = st + 20;
-                canvas.drawText("Total:", 5, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(totalTaxAmount)), 70, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(totalAmount)), 170, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(subTotal)), 280, st, paint);
+               // st = st + 20;
+                //canvas.drawText("Total:", 5, st, paint);
+                //canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(totalTaxAmount)), 70, st, paint);
+               // canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(totalAmount)), 170, st, paint);
+               // canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(subTotal)), 280, st, paint);
                 st = st + 20;
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
@@ -333,7 +293,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.Add) {
-            Intent i = new Intent(TripsheetDeliveryPreview.this, TDCSalesListActivity.class);
+            Intent i = new Intent(TripsheetReturnsPreview.this, TDCSalesListActivity.class);
             startActivity(i);
             finish();
             return true;
@@ -407,24 +367,25 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         }
 
 
+
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             View view = convertView;
             if (view == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.tdc_sales_preview_adapter, null);
+                view = inflater.inflate(R.layout.tripsheetreturnspreview_custom, null);
             }
-            String[] temp = list.get(position);
-            TextView order_preview_product_name = (TextView) view.findViewById(R.id.order_preview_product_name);
-            TextView order_preview_quantity = (TextView) view.findViewById(R.id.order_preview_quantity);
-            TextView order_preview_mrp = (TextView) view.findViewById(R.id.order_preview_mrp);
-            TextView order_preview_amount = (TextView) view.findViewById(R.id.order_preview_amount);
-            TextView order_preview_tax = (TextView) view.findViewById(R.id.order_preview_tax);
-            order_preview_product_name.setText(temp[0]);
-            order_preview_quantity.setText(temp[1]);
-            order_preview_mrp.setText(temp[2]);
-            order_preview_amount.setText(temp[3]);
-            order_preview_tax.setText(temp[4]);
+            String[] temp=list.get(position);
+            TextView return_preview_product_name = (TextView) view.findViewById(R.id.productName);
+            TextView return_uom = (TextView) view.findViewById(R.id.uom);
+            TextView return_qty= (TextView) view.findViewById(R.id.productQt);
+            TextView returnType = (TextView) view.findViewById(R.id.returnType);
+
+            return_preview_product_name.setText(temp[0]);
+            return_uom.setText(temp[1]);
+            return_qty.setText(temp[2]);
+            returnType.setText(temp[3]);
+
 
 
             return view;

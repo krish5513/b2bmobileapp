@@ -80,7 +80,9 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
     public long getItemId(int i) {
         return i;
     }
-
+    public Map<String, DeliverysBean> getData(){
+        return selectedProductsHashMap;
+    }
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
         final TripSheetReturnsViewHolder tripSheetReturnsViewHolder;

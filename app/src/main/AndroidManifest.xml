@@ -276,7 +276,7 @@
         <service
             android:name=".services.SyncNotificationsListService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <!-- TripSheets Stock Sync Service -->
         <service
@@ -289,17 +289,17 @@
             android:name=".services.SyncTripSheetsPaymentsService"
             android:enabled="true"
             android:exported="true" />
-
         <service
             android:name=".services.SyncTripsheetDeliveriesService"
             android:enabled="true"
             android:exported="true" />
-
         <service
             android:name=".services.SyncTripsheetReturnsService"
             android:enabled="true"
             android:exported="true" />
 
+        <activity android:name=".activities.TripsheetReturnsPreview" />
+        <activity android:name=".activities.TripsheetPaymentsPreview"></activity>
     </application>
 
 </manifest>

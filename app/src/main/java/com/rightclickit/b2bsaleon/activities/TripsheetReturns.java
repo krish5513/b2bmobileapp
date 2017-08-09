@@ -29,6 +29,7 @@ import com.rightclickit.b2bsaleon.services.SyncTripsheetReturnsService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,12 +96,12 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
                 isReturnsInEditingMode = true;
 
             Map<String, String> deliveredProductsHashMap = mDBHelper.fetchDeliveriesListByTripSheetId(mTripSheetId);
+if(allProductsListFromStock.size()>0) {
+    allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
 
-            allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
-
-            mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, allProductsListFromStock, previouslyReturnedProductsHashMap, deliveredProductsHashMap);
-            tripSheetReturnProductsList.setAdapter(mTripSheetReturnsAdapter);
-
+    mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, allProductsListFromStock, previouslyReturnedProductsHashMap, deliveredProductsHashMap);
+    tripSheetReturnProductsList.setAdapter(mTripSheetReturnsAdapter);
+}
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -192,7 +193,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
 
     public void showTripSheetReturnsPreview(View v) {
         if (isReturnsDataSaved || isReturnsInEditingMode) {
-            Intent i = new Intent(activityContext, TripsheetDeliveryPreview.class);
+            Intent i = new Intent(activityContext, TripsheetReturnsPreview.class);
             i.putExtra("tripsheetId", mTripSheetId);
             i.putExtra("agentId", mAgentId);
             i.putExtra("agentCode", mAgentCode);
@@ -201,6 +202,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
             i.putExtra("agentRouteCode", mAgentRouteCode);
             i.putExtra("agentSoId", mAgentSoId);
             i.putExtra("agentSoCode", mAgentSoCode);
+            i.putExtra("data", (Serializable) mTripSheetReturnsAdapter.getData());
             startActivity(i);
             finish();
         } else {
