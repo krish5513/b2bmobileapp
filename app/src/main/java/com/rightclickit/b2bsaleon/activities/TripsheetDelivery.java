@@ -122,9 +122,9 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             selectedDeliveryProductsHashMap = new HashMap<>();
             previouslyDeliveredProductsHashMap = new HashMap<>();
             productOrderQuantitiesHashMap = new HashMap<>();
-            if(allProductsListFromStock.size()>0) {
-                allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
-            }
+
+            allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
+
             // In order to pre populate when you came back to this screen.
             previouslyDeliveredProductsHashMap = mDBHelper.getAgentPreviouslyDeliveredProductsList(mTripSheetId, mAgentSoId, mAgentId);
             if (previouslyDeliveredProductsHashMap.size() > 0)

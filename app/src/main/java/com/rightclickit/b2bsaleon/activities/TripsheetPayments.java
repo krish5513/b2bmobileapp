@@ -177,7 +177,7 @@ public class TripsheetPayments extends AppCompatActivity {
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(TripsheetPayments.this, TripsheetDeliveryPreview.class);
+                Intent i = new Intent(TripsheetPayments.this, TripsheetPaymentsPreview.class);
                 i.putExtra("tripsheetId", mTripSheetId);
                 i.putExtra("agentId", mAgentId);
                 i.putExtra("agentCode", mAgentCode);

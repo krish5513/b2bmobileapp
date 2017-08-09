@@ -88,6 +88,7 @@
                 android:id="@+id/ordered_products_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="100dp"
                 android:divider="@android:color/transparent"
                 android:smoothScrollbar="true"
                 android:background="@color/white"/>
@@ -102,6 +103,7 @@
         android:layout_gravity="bottom"
         android:layout_marginBottom="60dp"
         android:background="@color/white"
+
         android:gravity="end|center"
         android:orientation="vertical">
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/layout_background"
-    tools:context="com.rightclickit.b2bsaleon.activities.Tripsheet_View_PreviewActivity">
+    tools:context="com.rightclickit.b2bsaleon.activities.TripSheetViewPreview">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,105 +16,119 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/tv_companyName"
+                android:id="@+id/tdc_sales_company_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="thirumala milk products pvt ltd"
                 android:gravity="left"
-                android:textAllCaps="true"
                 android:paddingLeft="10dp"
                 android:paddingTop="5dp"
+                android:text="Company name"
+                android:textAllCaps="true"
                 android:textColor="@color/greydark"
-                />
+                android:textSize="16sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <TextView
-                    android:id="@+id/tv_tinNo"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tdc_sales_route_code"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="TIN No"
                     android:gravity="left"
-                    android:paddingTop="5dp"
-                    android:textAllCaps="true"
                     android:paddingLeft="10dp"
+                    android:paddingTop="5dp"
+                    android:text="routecode"
+                    android:textAllCaps="true"
                     android:textColor="@color/greydark"
-                    />
+                    android:textSize="14sp" />
+
+
+
                 <TextView
-                    android:id="@+id/tv_salesofc"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tdc_sales_route_name"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="Sales Office"
                     android:gravity="left"
-                    android:paddingTop="5dp"
-                    android:textAllCaps="true"
                     android:paddingLeft="10dp"
-                    android:textColor="@color/greydark"
-                    />
-                <TextView
-                    android:id="@+id/route_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="Route"
-                    android:gravity="left"
                     android:paddingTop="5dp"
+                    android:text="Routename"
+
                     android:textAllCaps="true"
-                    android:paddingLeft="10dp"
                     android:textColor="@color/greydark"
-                    />
+                    android:textSize="14sp" />
             </LinearLayout>
 
-            <TextView
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="Trip sheet summary"
-                android:gravity="left"
-                android:textAllCaps="true"
-                android:padding="10dp"
-                android:textColor="@color/greydark"
-                />
+                android:layout_height="1dp"
+                android:background="@color/view_line" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="5dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="5dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="908915"
+                    android:layout_weight="0.8"
                     android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="Summary"
                     android:textAllCaps="true"
-                    android:paddingLeft="10dp"
                     android:textColor="@color/greydark"
-                    />
+                    android:textSize="14sp" />
+
                 <TextView
-                    android:id="@+id/tv_date"
+                    android:id="@+id/tdc_sales_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="Date"
-                    android:gravity="left"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:paddingLeft="10dp"
+                    android:text="login User name "
                     android:textAllCaps="true"
-                    android:paddingLeft="10dp"
                     android:textColor="@color/greydark"
-                    />
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp">
+
                 <TextView
-                    android:id="@+id/user_Name"
+                    android:id="@+id/tripsheet_no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="Raj Kumar"
                     android:gravity="left"
                     android:paddingLeft="10dp"
+                    android:text="Tripsheet No"
+                    android:textAllCaps="true"
                     android:textColor="@color/greydark"
-                    />
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tdc_sales_date_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="28/06/2017"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
             </LinearLayout>
         </LinearLayout>
         <TextView
@@ -237,7 +251,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:text="Agents"
+            android:text="Agents/Customers"
             android:gravity="left"
             android:padding="5dp"
             android:textAllCaps="true"
@@ -254,6 +268,18 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:text="Name"
+                android:gravity="left"
+                android:layout_weight="0.25"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:textColor="@color/greydark"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="OB"
                 android:gravity="left"
                 android:layout_weight="0.25"
                 android:textAllCaps="true"
@@ -277,7 +303,7 @@
                 android:textSize="14sp"
                 android:text="Received"
                 android:gravity="left"
-                android:layout_weight="0.25"
+                android:layout_weight="0.23"
                 android:textAllCaps="true"
                 android:paddingLeft="10dp"
                 android:textColor="@color/greydark"
@@ -288,111 +314,26 @@
                 android:textSize="14sp"
                 android:text="Due"
                 android:gravity="left"
-                android:layout_weight="0.25"
+                android:layout_weight="0.27"
                 android:textAllCaps="true"
                 android:paddingLeft="10dp"
                 android:textColor="@color/greydark"
                 />
         </LinearLayout>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none"
-            android:layout_marginBottom="90dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/cardList"
-                    android:scrollbars="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="bottom"
-        android:background="@color/white"
-        android:gravity="end|center"
-        android:layout_marginBottom="50dp"
-        android:orientation="vertical">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.1dp"
-            android:background="@color/colorPrimary"/>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="60dp"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <ListView
+                android:id="@+id/tdc_sales_products_list_preview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content" />
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:text="Total Value"
-                        android:gravity="left"
-                        android:layout_weight="0.25"
-                        android:paddingLeft="10dp"
-                        android:textColor="@color/greydark"
-                        />
-                    <TextView
-                        android:id="@+id/ordered_total"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:text="0.00"
-                        android:gravity="left"
-                        android:layout_weight="0.25"
-                        android:textAllCaps="true"
-                        android:paddingLeft="10dp"
-                        android:textColor="@color/greydark"
-                        />
-                    <TextView
-                        android:id="@+id/received_total"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:text="0.00"
-                        android:gravity="left"
-                        android:layout_weight="0.25"
-                        android:textAllCaps="true"
-                        android:paddingLeft="10dp"
-                        android:textColor="@color/greydark"
-                        />
-                    <TextView
-                        android:id="@+id/due_total"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:text="0.00"
-                        android:gravity="left"
-                        android:layout_weight="0.25"
-                        android:textAllCaps="true"
-                        android:paddingLeft="10dp"
-                        android:textColor="@color/greydark"
-                        />
-                </LinearLayout>
-            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -413,7 +354,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_weight="0.25"
                 android:gravity="center">

@@ -204,15 +204,18 @@ public class NotificationsActivity extends AppCompatActivity {
 
         if (new NetworkConnectionDetector(NotificationsActivity.this).isNetworkConnected()) {
 
-
-            ArrayList<NotificationBean> notificationsList = mDBHelper.fetchAllNotificationsList();
-            Log.e("received",notificationsList.size()+"");
-            if (notificationsList.size() > 0) {
-                loadNotificationsData(notificationsList);
-            } else {
-                mNotificationsFoundText.setText("No Notifications found.");
-            }
+            startService(new Intent(NotificationsActivity.this, SyncNotificationsListService.class));
         }
+            else {
+                ArrayList<NotificationBean> notificationsList = mDBHelper.fetchAllNotificationsList();
+                Log.e("received", notificationsList.size() + "");
+                if (notificationsList.size() > 0) {
+                    loadNotificationsData(notificationsList);
+                } else {
+                    mNotificationsFoundText.setText("No Notifications found.");
+                }
+            }
+
     }
 
 

@@ -27,6 +27,7 @@ import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -119,12 +120,14 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
         subTotal= this.getIntent().getStringExtra("subTotal");
 
 
+        ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
 
-        myList=mDBHelper.getProductUnitByProductCode(str_ProductCode);
-        str_Uom=myList;
+
+
         Map<String, DeliverysBean> mData=(Map<String, DeliverysBean>)this.getIntent().getSerializableExtra("data");
+
         final ArrayList<String[]> arList = new ArrayList<String[]>();
-        if(mData!=null) {
+
             SortedSet<String> keys = new TreeSet<String>(mData.keySet());
             for (String key : keys) {
                 //String value = mData.get(key);
@@ -132,13 +135,19 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
 
                 DeliverysBean d = mData.get(key);
                 String[] temp = new String[4];
+
+                for( int i=0;i<tripsheetsStockLists.size();i++){
+                    str_ProductCode=tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
+                    myList=mDBHelper.getProductUnitByProductCode(str_ProductCode);
+                    str_Uom=myList;
+                }
                 temp[0] = d.getProductTitle();
                 temp[1] = str_Uom;
-                temp[2] = Utility.getFormattedCurrency(Double.parseDouble(d.getProductId()));
+                temp[2] = String.valueOf(d.getSelectedQuantity());
                 temp[3] = "Sale Return";
                 arList.add(temp);
             }
-        }
+
         // mAgentSoDate=this.getIntent().getStringExtra("agentSoDate");
 
         for (int i=0;i<arList.size();i++)
@@ -216,27 +225,27 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
 
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                 canvas.drawText(sharedPreferences.getString("companyname"), 5, 50, paint);
-                paint.setTextSize(20);
+                paint.setTextSize(22);
                 canvas.drawText(str_routecode, 5, 80, paint);
-                paint.setTextSize(20);
+                paint.setTextSize(22);
                 canvas.drawText(sharedPreferences.getString("routename"), 200, 80, paint);
-                paint.setTextSize(20);
+                paint.setTextSize(22);
                 canvas.drawText("ROUTE DELEVERY,", 5, 120, paint);
-                paint.setTextSize(20);
+                paint.setTextSize(22);
                 canvas.drawText("by " + sharedPreferences.getString("loginusername"), 200, 120, paint);
-                paint.setTextSize(20);
+                paint.setTextSize(22);
                 canvas.drawText(str_deliveryNo, 5, 180, paint);
-                paint.setTextSize(20);
+                paint.setTextSize(22);
                 canvas.drawText(str_deliveryDate, 200, 180, paint);
-                paint.setTextSize(20);
+                paint.setTextSize(22);
 
                 canvas.drawText("----------------------------------------------------", 5, 200, paint);
                 canvas.drawText("Product", 5, 220, paint);
-                paint.setTextSize(20);
+                paint.setTextSize(22);
                 canvas.drawText("UOM", 100, 220, paint);
-                paint.setTextSize(20);
+                paint.setTextSize(22);
                 canvas.drawText("Qty", 160, 220, paint);
-                paint.setTextSize(20);
+                paint.setTextSize(22);
                 canvas.drawText("Return Type", 230, 220, paint);
 
 
@@ -326,7 +335,7 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, TripsheetDelivery.class);
+        Intent intent = new Intent(this, TripsheetReturns.class);
         intent.putExtra("tripsheetId", mTripSheetId);
         intent.putExtra("agentId", mAgentId);
         intent.putExtra("agentCode", mAgentCode);

@@ -143,7 +143,6 @@ public class TripsheetStockPreview extends AppCompatActivity {
         //Log.i("tripsheetSize", tripsheetsStockLists.size()+"");
       //  Log.i("mylistSize", myList.size()+"");
             for( int i=0;i<tripsheetsStockLists.size();i++){
-               Log.i("tripsheetSize", tripsheetsStockLists.get(i).toString());
 
                 str_ProductName=tripsheetsStockLists.get(i).getmTripsheetStockProductName();
                 str_ProductCode=tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
