@@ -32,6 +32,7 @@ import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.services.SyncTripSheetsPaymentsService;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -222,40 +223,8 @@ public class TripsheetPayments extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    if (paymentTypeSpinner.getSelectedItem().toString().equals("Cash")) {
-                        Double enteredAmount = Double.parseDouble(mAmountText.getText().toString());
-                        if (enteredAmount > 0) {
-                            Toast.makeText(TripsheetPayments.this, "Payment Details Saved Successfully.", Toast.LENGTH_SHORT).show();
-                            PaymentsBean paymentsBean = null;
-                            synchronized (this) {
-                                paymentsBean = formAPIData(0);
-                            }
 
-                            synchronized (this) {
-                                mDBHelper.insertTripsheetsPaymentsListData(paymentsBean);
-                            }
-
-                            synchronized (this) {
-                                startService(new Intent(TripsheetPayments.this, SyncTripSheetsPaymentsService.class));
-                            }
-                        } else {
-                            Toast.makeText(TripsheetPayments.this, "Please enter recevied amount.", Toast.LENGTH_SHORT).show();
-                        }
-                    } else if (paymentTypeSpinner.getSelectedItem().toString().equals("Cheque")) {
-                        cheqLinearLayout.setVisibility(View.VISIBLE);
-                        if (mChequeNumber.getText().toString().trim().length() == 0) {
-                            Toast.makeText(TripsheetPayments.this, "Please enter cheque number.", Toast.LENGTH_SHORT).show();
-                        } else if (mBankName.getText().toString().trim().length() == 0) {
-                            Toast.makeText(TripsheetPayments.this, "Please enter bank name.", Toast.LENGTH_SHORT).show();
-                        } else if (mChequeDate.getText().toString().trim().length() == 0) {
-                            Toast.makeText(TripsheetPayments.this, "Please enter cheque date.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(TripsheetPayments.this, "All good and save in cheque details in db.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-//                    Intent i = new Intent(TripsheetPayments.this, TripSheetsActivity.class);
-//                    startActivity(i);
-//                    finish();
+                    savePaymentDetails();
                 }
             });
 
@@ -472,5 +441,47 @@ public class TripsheetPayments extends AppCompatActivity {
         return paymentsBean;
     }
 
+    public void savePaymentDetails() {
+        Double enteredAmount = Double.parseDouble(mAmountText.getText().toString());
+        if (enteredAmount > 0) {
+            PaymentsBean paymentsBean = null;
+
+            if (paymentTypeSpinner.getSelectedItem().toString().equals("Cash")) {
+                synchronized (this) {
+                    paymentsBean = formAPIData(0);
+                }
+
+            } else if (paymentTypeSpinner.getSelectedItem().toString().equals("Cheque")) {
+                cheqLinearLayout.setVisibility(View.VISIBLE);
+
+                if (mChequeNumber.getText().toString().trim().length() == 0) {
+                    Toast.makeText(TripsheetPayments.this, "Please enter cheque number.", Toast.LENGTH_SHORT).show();
+                } else if (mBankName.getText().toString().trim().length() == 0) {
+                    Toast.makeText(TripsheetPayments.this, "Please enter bank name.", Toast.LENGTH_SHORT).show();
+                } else if (mChequeDate.getText().toString().trim().length() == 0) {
+                    Toast.makeText(TripsheetPayments.this, "Please enter cheque date.", Toast.LENGTH_SHORT).show();
+                } else {
+                    synchronized (this) {
+                        paymentsBean = formAPIData(1);
+                    }
+                }
+            }
+
+            synchronized (this) {
+                mDBHelper.insertTripsheetsPaymentsListData(paymentsBean);
+            }
+
+            Toast.makeText(TripsheetPayments.this, "Payment Details Saved Successfully.", Toast.LENGTH_SHORT).show();
+
+            synchronized (this) {
+                if (new NetworkConnectionDetector(TripsheetPayments.this).isNetworkConnected()) {
+                    startService(new Intent(TripsheetPayments.this, SyncTripSheetsPaymentsService.class));
+                }
+            }
+
+        } else {
+            Toast.makeText(TripsheetPayments.this, "Please enter received amount.", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
 
