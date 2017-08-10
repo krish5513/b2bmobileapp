@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
 import com.rightclickit.b2bsaleon.activities.TripSheetView;
+import com.rightclickit.b2bsaleon.activities.TripSheetViewPreview;
 import com.rightclickit.b2bsaleon.activities.TripSheetsActivity;
 import com.rightclickit.b2bsaleon.activities.TripsheetStockPreview;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
@@ -43,6 +44,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
     private TripSheetsActivity activity;
     private TripSheetStock activity1;
     private TripSheetView activity2;
+    private TripSheetViewPreview activity4;
     private TripsheetStockPreview activity3;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
@@ -99,7 +101,16 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
         //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         currentDate = Utility.formatDate(new Date(), "yyyy-MM-dd");
     }
+  /*  public TripsheetsModel(TripSheetViewPreview context, TripSheetViewPreview tripSheetStock) {
+        this.context = context;
+        this.activity4 = tripSheetStock;
+        this.mPreferences = new MMSharedPreferences(context);
+        this.mDBHelper = new DBHelper(context);
 
+        // Calendar cal = Calendar.getInstance();
+        //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        currentDate = Utility.formatDate(new Date(), "yyyy-MM-dd");
+    }*/
     /**
      * Method to get tripsheets list
      *
@@ -366,6 +377,8 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     }
                     synchronized (this) {
                         activity2.loadTripSheetSaleOrderData();
+                      //  activity4.loadTripSheetSaleOrderPreviewData();
+
                     }
                     break;
             }

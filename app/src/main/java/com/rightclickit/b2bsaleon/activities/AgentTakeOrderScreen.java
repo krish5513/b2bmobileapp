@@ -39,12 +39,22 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
     private LinearLayout mReturnsLayout;
     private LinearLayout mTDCorderLayout;
 
+
+
+    private LinearLayout tpsBottomOptionsLayout;
+
+
+
     public static LinearLayout mPaymentsLayout;
 
     public static FloatingActionButton fab;
     private SearchView search;
 
     private ArrayList<ProductsBean> productsList;
+
+    public String Agents;
+    public String TroipsTakeorder="",tripSheetId="";
+
 
 
     @Override
@@ -66,6 +76,15 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle != null) {
+            TroipsTakeorder = bundle.getString("From");
+            tripSheetId=bundle.getString("tripsheetId");
+        }
+
+
+
         mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("no", mPreference.getString("agentId"));
         productsList = mDBHelper.fetchAllRecordsFromProductsTableForTakeOrders(mPreference.getString("agentId"));
         System.out.println("The TO LIST IS::: "+ productsList.size());
@@ -79,6 +98,10 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
 //            System.out.println("FFFFF PAGE ID:: "+mTakeOrderBeansList.get(k).getmAgentId());
 //            System.out.println("GGGGG PENQ ID:: "+mTakeOrderBeansList.get(k).getmEnquiryId());
 //        }
+
+
+
+
 
 
         mTakeOrdersLayout=(LinearLayout)findViewById(R.id.takeorder) ;
@@ -154,6 +177,23 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
             }
         });
 
+        mTakeOrdersLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
+                        R.anim.blink);
+                mPaymentsLayout.startAnimation(animation1);
+
+                Intent i =new Intent(AgentTakeOrderScreen.this,AgentTakeOrderScreen.class);
+                i.putExtra("From","Agents");
+
+                startActivity(i);
+                finish();
+
+            }
+        });
+
+
 
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -179,6 +219,18 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
 
 
         }
+
+
+        tpsBottomOptionsLayout=(LinearLayout)findViewById(R.id.tpsBottomOptionsLayout) ;
+        if(TroipsTakeorder.equals("Tripsheet")) {
+            tpsBottomOptionsLayout.setVisibility(View.GONE);
+
+        }else {
+            tpsBottomOptionsLayout.setVisibility(View.VISIBLE);
+
+        }
+
+
 
     }
 
@@ -264,9 +316,16 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, AgentsActivity.class);
-        startActivity(intent);
-        finish();
+        if(TroipsTakeorder.equals("Tripsheet")) {
+            Intent intent = new Intent(this, TripSheetView.class);
+            intent.putExtra("tripsheetId", tripSheetId);
+            startActivity(intent);
+            finish();
+        }else {
+            Intent intent = new Intent(this, AgentsActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
 

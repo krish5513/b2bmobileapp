@@ -144,6 +144,8 @@ public class TripsheetsListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 if (currentTripSheet.getmTripshhetVerifyStatus().equals("1")) {
                     mPreferences.putString("TripId", currentTripSheet.getmTripshhetId());
+                    mPreferences.putString("tripsheetCode", currentTripSheet.getmTripshhetCode());
+                    mPreferences.putString("tripsheetDate", currentTripSheet.getmTripshhetDate());
                     Intent stockIntent = new Intent(activity, TripSheetView.class);
                     stockIntent.putExtra("tripsheetId", currentTripSheet.getmTripshhetId());
                     stockIntent.putExtra("tripsheetCode", currentTripSheet.getmTripshhetCode());

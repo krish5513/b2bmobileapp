@@ -11,8 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.activities.AgentTakeOrderScreen;
 import com.rightclickit.b2bsaleon.activities.TripSheetView;
 import com.rightclickit.b2bsaleon.activities.TripsheetDelivery;
+import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
@@ -24,6 +26,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by Sekhar Kuppa
@@ -65,7 +68,9 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
     public long getItemId(int i) {
         return i;
     }
-
+    public  ArrayList<TripsheetSOList> getData(){
+        return allSaleOrdersList;
+    }
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
         final ViewHolder mHolder;
@@ -74,9 +79,12 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
             view = mInflater.inflate(R.layout.tripsheets_so_list_custom, null);
 
             mHolder.mAgentCode = (TextView) view.findViewById(R.id.tv_agent_code);
-            mHolder.mSODate = (TextView) view.findViewById(R.id.tv_so_date);
+           // mHolder.mSODate = (TextView) view.findViewById(R.id.tv_so_date);
             mHolder.mSOItemsCount = (TextView) view.findViewById(R.id.tv_itemsQty);
             mHolder.mSOAgentName = (TextView) view.findViewById(R.id.companyName);
+
+            mHolder.mSOOBamtValue = (TextView) view.findViewById(R.id.tv_ObamtValue);
+
             mHolder.mSOOrderedValue = (TextView) view.findViewById(R.id.tv_orderValue);
             mHolder.mSOReceivedValue = (TextView) view.findViewById(R.id.tv_receivedValue);
             mHolder.mSODueValue = (TextView) view.findViewById(R.id.tv_dueValue);
@@ -105,9 +113,10 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         final TripsheetSOList currentSaleOrder = getItem(position);
 
         mHolder.mAgentCode.setText(currentSaleOrder.getmTripshetSOAgentCode());
-        mHolder.mSODate.setText(currentSaleOrder.getmTripshetSODate());
+        //mHolder.mSODate.setText(currentSaleOrder.getmTripshetSODate());
         mHolder.mSOItemsCount.setText(currentSaleOrder.getmTripshetSOProductsCount());
         mHolder.mSOAgentName.setText(currentSaleOrder.getmTripshetSOAgentFirstName());
+        mHolder.mSOOBamtValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOOpAmount())));
         mHolder.mSOOrderedValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOValue())));
         mHolder.mSOReceivedValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOReceivedAmount())));
         mHolder.mSODueValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSODueAmount())));
@@ -142,6 +151,19 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
             }
         });
 
+
+
+        mHolder.mSOTakeOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =new Intent(activity,AgentTakeOrderScreen.class);
+                i.putExtra("tripsheetId", currentSaleOrder.getmTripshetSOTripId());
+                i.putExtra("From","Tripsheet");
+                activity.startActivity(i);
+                activity.finish();
+            }
+        });
+
         return view;
     }
 
@@ -150,6 +172,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         TextView mSODate;
         TextView mSOItemsCount;
         TextView mSOAgentName;
+        TextView mSOOBamtValue;
         TextView mSOOrderedValue;
         TextView mSOReceivedValue;
         TextView mSODueValue;

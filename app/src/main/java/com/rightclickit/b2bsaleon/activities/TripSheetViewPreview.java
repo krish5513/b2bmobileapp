@@ -10,28 +10,38 @@ import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.TripSheetSoListPreviewAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripsheetStockPreviewAdapter;
+import com.rightclickit.b2bsaleon.adapters.TripsheetsSOListAdapter;
+import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TripSheetViewPreview extends AppCompatActivity {
-    private String tripSheetId;
+    private String tripSheetId,mTripSheetCode = "", mTripSheetDate = "",mTakeOrderPrivilege = "";
 
     String myList ;
 
@@ -42,17 +52,23 @@ public class TripSheetViewPreview extends AppCompatActivity {
     private String loggedInUserId, loggedInUserName;
     private DBHelper mDBHelper;
 
-    String  str_routecode, str_Tripcode, str_Tripdate,str_ProductName,str_ProductCode,str_Uom,str_Order,str_Dispatch,str_Verify;
+    String  str_routecode, str_Tripcode, str_Tripdate,str_AgentName,str_AgentCode,str_OB,str_Order,str_Received,str_Due;
     TextView company_name, route_name, route_code, user_name, sales_print;
     private ListView tdc_products_list_preview;
     private LinearLayout tdc_sales_save_layout;
 
     ArrayList<String[]> selectedList;
+    private TextView ts_ob_amount, ts_order_value, ts_total_received, ts_total_due;
 
     private TripsheetsModel mTripsheetsModel;
     private TripsheetStockPreviewAdapter mTripsheetsStockPreviewAdapter;
     private Map<String, TripsheetsStockList> productsDispatchListHashMap, productsVerifyListHashMap;
+    ListView listView;
+    private ArrayList<TripsheetSOList> tripSheetSOList = new ArrayList<>();
 
+    private TripSheetSoListPreviewAdapter mTripsheetSOAdapter;
+    private NetworkConnectionDetector networkConnectionDetector;
+    TripsheetsList currentTripSheetDetails;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,11 +82,13 @@ public class TripSheetViewPreview extends AppCompatActivity {
         loggedInUserId = mmSharedPreferences.getString("userId");
         loggedInUserName = mmSharedPreferences.getString("loginusername");
         str_routecode = (mmSharedPreferences.getString("routecode") + ",");
+        str_Tripcode=mmSharedPreferences.getString("tripsheetCode");
+        str_Tripdate=mmSharedPreferences.getString("tripsheetDate");
 
-        //  myList= new ProductsBean();
         mDBHelper = new DBHelper(TripSheetViewPreview.this);
+        networkConnectionDetector = new NetworkConnectionDetector(activityContext);
+        listView = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
 
-        // myList= mDBHelper.fetchAllRecordsFromProductsTable();
 
 
         this.getSupportActionBar().setTitle("DAILY TRIPSHEET");
@@ -90,18 +108,17 @@ public class TripSheetViewPreview extends AppCompatActivity {
         productsDispatchListHashMap = new HashMap<>();
         productsVerifyListHashMap = new HashMap<>();
 
-        ArrayList<ProductsBean> pbean=new ArrayList<ProductsBean>();
 
 
 
-   /*     Bundle bundle = getIntent().getExtras();
+
+        Bundle bundle = getIntent().getExtras();
         if (bundle != null)
             tripSheetId = bundle.getString("tripSheetId");
-        str_Tripcode=bundle.getString("tripsheetCode");
-        str_Tripdate=bundle.getString("tripsheetDate");
-*/
+        //str_Tripcode=bundle.getString("tripsheetCode");
+        //str_Tripdate=bundle.getString("tripsheetDate");
 
-       // sales_print = (TextView) findViewById(R.id.stock_print);
+        sales_print = (TextView) findViewById(R.id.tv_print);
         company_name = (TextView) findViewById(R.id.tdc_sales_company_name);
         user_name = (TextView) findViewById(R.id.tdc_sales_user_name);
         route_name = (TextView) findViewById(R.id.tdc_sales_route_name);
@@ -118,57 +135,49 @@ public class TripSheetViewPreview extends AppCompatActivity {
         tripsheet_no_text_view.setText(str_Tripcode +",");
         sale_date_time_text_view.setText(str_Tripdate);
 
-        // for (int i=0;i<myList.size();i++){
-        // Log.i("UOM",myList.get(i)+"");
+        ts_ob_amount = (TextView) findViewById(R.id.ob_amount);
+        ts_order_value = (TextView) findViewById(R.id.order_amount);
+        ts_total_received = (TextView) findViewById(R.id.received_amount);
+        ts_total_due = (TextView) findViewById(R.id.due_amount);
 
-        //String str_Pro_id=myList.get(i).getProductId();
-        //Log.i("UOM",str_Uom);
-        //Log.i("PRODUCT_ID::",str_Pro_id);
-        //test[str_Pro_id] =str_Uom;
-
-
-
-       // mTripsheetsModel = new TripsheetsModel(this, TripsheetStockPreview.this);
-        ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
-        selectedList = new ArrayList<>(tripsheetsStockLists.size());
-        //Log.i("tripsheetSize", tripsheetsStockLists.size()+"");
-        //  Log.i("mylistSize", myList.size()+"");
-        for( int i=0;i<tripsheetsStockLists.size();i++){
-
-            str_ProductName=tripsheetsStockLists.get(i).getmTripsheetStockProductName();
-            str_ProductCode=tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
-
-            myList=mDBHelper.getProductUnitByProductCode(str_ProductCode);
-            str_Uom=myList;
-            str_Order=tripsheetsStockLists.get(i).getmTripsheetStockProductOrderQuantity();
-            str_Dispatch=tripsheetsStockLists.get(i).getmTripsheetStockDispatchQuantity();
-            str_Verify = tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity();
-            // str_Uom=mmSharedPreferences.getString("UOM");
-            String[] temp = new String[6];
-            temp[0] = str_ProductName;
-            temp[1] = str_Uom;
-            temp[2] = str_Order;
-            temp[3] = str_Dispatch;
-            temp[4] = str_Verify;
-            temp[5] = str_ProductCode;
-
-            selectedList.add(temp);
+         currentTripSheetDetails = mDBHelper.fetchTripSheetDetails(tripSheetId);
+        if (currentTripSheetDetails != null) {
+            ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount())));
+            ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount())));
+            ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())));
+            ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())));
         }
 
+      tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(tripSheetId);
+        selectedList = new ArrayList<>(tripSheetSOList.size());
 
 
-        /*if (tripsheetsStockLists.size() > 0) {
+               for (int i=0;i<tripSheetSOList.size();i++){
+                       str_AgentName=tripSheetSOList.get(i).getmTripshetSOAgentFirstName();
+                       str_AgentCode=tripSheetSOList.get(i).getmTripshetSOAgentCode();
+                       str_OB=tripSheetSOList.get(i).getmTripshetSOOpAmount();
+                       str_Order=tripSheetSOList.get(i).getmTripshetSOValue();
+                       str_Received=tripSheetSOList.get(i).getmTripshetSOReceivedAmount();
+                       str_Due=tripSheetSOList.get(i).getmTripshetSODueAmount();
+
+                   String[] temp = new String[6];
+                   temp[0] = str_AgentName;
+                   temp[1] = str_OB;
+                   temp[2] = str_Order;
+                   temp[3] = str_Received;
+                   temp[4] = str_Due;
+                   temp[5] = str_AgentCode;
+
+                   selectedList.add(temp);
+              }
 
 
-            loadTripsData(tripsheetsStockLists);
-        } else {
-            if (new NetworkConnectionDetector(TripSheetViewPreview.this).isNetworkConnected()) {
-                mTripsheetsModel.getTripsheetsStockList(tripSheetId);
-            }
-        }
-*/
 
-       /* sales_print.setOnClickListener(new View.OnClickListener() {
+        TripSheetViewPreview.CustomListView adapter = new TripSheetViewPreview.CustomListView(selectedList, this);
+        listView.setAdapter(adapter);
+
+
+        sales_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int pageheight = 300 + selectedList.size() * 60;
@@ -189,7 +198,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText(mmSharedPreferences.getString("routename"), 200, 80, paint);
                 paint.setTextSize(20);
-                canvas.drawText("ROUTE STOCK,", 5, 120, paint);
+                canvas.drawText("TRIPSHEET SUMMARY,", 5, 120, paint);
                 paint.setTextSize(20);
                 canvas.drawText("by " + mmSharedPreferences.getString("loginusername"), 200, 120, paint);
                 paint.setTextSize(20);
@@ -197,23 +206,38 @@ public class TripSheetViewPreview extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText(str_Tripdate, 170, 150, paint);
                 paint.setTextSize(20);
-                //  canvas.drawText(str_agentname, 5, 180, paint);
-                //  canvas.drawText(mmSharedPreferences.getString("agentCode"), 200, 180, paint);
 
-                canvas.drawText("----------------------------------------------------", 5, 180, paint);
-                canvas.drawText("Product", 5, 220, paint);
+                 canvas.drawText("OB", 5, 180, paint);
                 paint.setTextSize(20);
-                canvas.drawText("UOM", 110, 220, paint);
+                 canvas.drawText("Order", 120, 180, paint);
                 paint.setTextSize(20);
-                canvas.drawText("Order", 160, 220, paint);
+                 canvas.drawText("Received", 210, 180, paint);
                 paint.setTextSize(20);
-                canvas.drawText("Dispatch", 230, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Verify", 330, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("----------------------------------------------------", 5, 235, paint);
+                 canvas.drawText("Due", 300, 180, paint);
 
-                int st = 250;
+                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount())), 5, 210, paint);
+                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount())), 120, 210, paint);
+                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())), 210, 210, paint);
+                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())), 300, 210, paint);
+
+                paint.setTextSize(22);
+                canvas.drawText("Aents/Customers", 5, 240, paint);
+                paint.setTextSize(20);
+
+                canvas.drawText("----------------------------------------------------", 5, 270, paint);
+                canvas.drawText("Name", 5, 300, paint);
+                paint.setTextSize(20);
+                canvas.drawText("OB", 110, 300, paint);
+                paint.setTextSize(20);
+                canvas.drawText("Order", 160, 300, paint);
+                paint.setTextSize(20);
+                canvas.drawText("Received", 230, 300, paint);
+                paint.setTextSize(20);
+                canvas.drawText("Due", 330, 300, paint);
+                paint.setTextSize(20);
+                canvas.drawText("----------------------------------------------------", 5, 330, paint);
+
+                int st = 360;
                 paint.setTextSize(17);
                 // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
 
@@ -240,19 +264,8 @@ public class TripSheetViewPreview extends AppCompatActivity {
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
             }
-        });*/
-    }
+        });
 
-
-
-
-    public void loadTripsData(ArrayList<TripsheetsStockList> tripsStockList) {
-        if (mTripsheetsStockPreviewAdapter != null) {
-            mTripsheetsStockPreviewAdapter = null;
-        }
-
-      //  mTripsheetsStockPreviewAdapter = new TripsheetStockPreviewAdapter(this, TripSheetViewPreview.this, myList, tripsStockList);
-        tdc_products_list_preview.setAdapter(mTripsheetsStockPreviewAdapter);
     }
 
     @Override
@@ -297,8 +310,62 @@ public class TripSheetViewPreview extends AppCompatActivity {
         super.onBackPressed();
         Intent intent = new Intent(this, TripSheetView.class);
         intent.putExtra("tripsheetId", tripSheetId);
+       // intent.putExtra("tripsheetCode", mTripSheetCode);
+        //intent.putExtra("tripsheetDate", mTripSheetDate);
         startActivity(intent);
         finish();
 
+    }
+
+    class CustomListView extends BaseAdapter implements ListAdapter {
+        private ArrayList<String[]> list = new ArrayList<String[]>();
+        private Context context;
+
+
+        public CustomListView(ArrayList<String[]> list, Context context) {
+            this.list = list;
+            this.context = context;
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int pos) {
+            return list.get(pos);
+        }
+
+        @Override
+        public long getItemId(int pos) {
+            return 0;
+            //just return 0 if your list items do not have an Id variable.
+        }
+
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            View view = convertView;
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.tripsheetsummary_preview, null);
+            }
+            String[] temp = list.get(position);
+            TextView mAgentCode = (TextView) view.findViewById(R.id.agentCode);
+            TextView mOBValue = (TextView) view.findViewById(R.id.OB);
+            TextView mSOAgentName = (TextView) view.findViewById(R.id.AgentName);
+            TextView mSOOrderedValue = (TextView) view.findViewById(R.id.order);
+            TextView mSOReceivedValue = (TextView) view.findViewById(R.id.received);
+            TextView mSODueValue = (TextView) view.findViewById(R.id.due);
+            mAgentCode.setText(temp[5]);
+            mOBValue.setText(temp[1]);
+            mSOAgentName.setText(temp[0]);
+            mSOOrderedValue.setText(temp[2]);
+            mSOReceivedValue.setText(temp[3]);
+            mSODueValue.setText(temp[4]);
+
+            return view;
+        }
     }
 }

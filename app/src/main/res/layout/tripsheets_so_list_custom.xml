@@ -54,21 +54,11 @@
                                 android:textColor="@color/black"
                                 android:textSize="12sp" />
 
-                            <TextView
-                                android:id="@+id/tv_so_date"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="5dp"
-                                android:gravity="center"
-                                android:text="21/01/2017"
-                                android:textColor="@color/greydark"
-                                android:textSize="10sp" />
 
                             <TextView
                                 android:id="@+id/tv_status"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
                                 android:gravity="center"
                                 android:text="In Process"
                                 android:textColor="@color/colorPrimary"
@@ -99,6 +89,18 @@
                                     android:textColor="@color/greydark"
                                     android:textSize="12sp" />
                             </LinearLayout>
+
+                            <Button
+                                android:id="@+id/btn_sale_ord1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="25dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/border_orange_btn"
+                                android:drawableLeft="@drawable/pricon_10dp"
+                                android:text="@string/order_btn"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="10sp" />
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -164,6 +166,30 @@
                                         android:orientation="vertical">
 
                                         <TextView
+                                            android:id="@+id/tv_OBamt"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="OB amt: "
+                                            android:textColor="@color/black"
+                                            android:textSize="12sp" />
+
+                                        <TextView
+                                            android:id="@+id/tv_ObamtValue"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Rs.3000.00"
+                                            android:textColor="@color/greydark"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
+
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.5"
+                                        android:orientation="vertical">
+
+                                        <TextView
                                             android:id="@+id/tv_order"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
@@ -180,6 +206,14 @@
                                             android:textSize="12sp" />
 
                                     </LinearLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="horizontal">
 
                                     <LinearLayout
                                         android:layout_width="wrap_content"
@@ -203,13 +237,7 @@
                                             android:textColor="@color/greydark"
                                             android:textSize="12sp" />
                                     </LinearLayout>
-                                </LinearLayout>
 
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
-                                    android:orientation="horizontal">
 
                                     <LinearLayout
                                         android:layout_width="wrap_content"
@@ -234,27 +262,6 @@
                                             android:textSize="12sp" />
                                     </LinearLayout>
 
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginBottom="8dp"
-                                        android:layout_marginTop="5dp"
-                                        android:layout_weight="0.5"
-                                        android:orientation="horizontal">
-
-                                        <Button
-                                            android:id="@+id/btn_sale_ord1"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="25dp"
-                                            android:background="@drawable/border_orange_btn"
-                                            android:drawableLeft="@drawable/pricon_10dp"
-                                            android:padding="5dp"
-                                            android:text="@string/order_btn"
-                                            android:textColor="@color/colorAccent"
-                                            android:textSize="10sp" />
-
-
-                                    </LinearLayout>
                                 </LinearLayout>
 
 
@@ -279,7 +286,6 @@
                                 android:layout_height="30dp"
                                 android:layout_gravity="center"
                                 android:drawableTop="@drawable/ic_location"
-
                                 android:textColor="@color/colorPrimary"
                                 android:textSize="12sp" />
 
@@ -317,10 +323,11 @@
 
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
+            android:id="@+id/EmptyView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/EmptyView">
+            android:layout_height="wrap_content">
             <!--  <View
                   android:layout_width="match_parent"
                   android:layout_height="1dp"

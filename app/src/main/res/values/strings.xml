@@ -52,6 +52,7 @@
     <string name="orders_btm">Take Orders</string>
     <string name="tpcorders_btm">Orders</string>
     <string name="print_btm">Print</string>
+    <string name="closeTrip_btm">Close Trips</string>
     <string name="payment_btm">Payment</string>
     <string name="delivery_btm">Deliveries</string>
     <string name="return_btm">Return</string>

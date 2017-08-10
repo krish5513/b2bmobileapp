@@ -60,6 +60,7 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -148,8 +149,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             Bundle bundle = this.getIntent().getExtras();
             if (bundle != null) {
                 mTripSheetId = bundle.getString("tripsheetId");
-                //mTripSheetCode = bundle.getString("tripsheetCode");
-                //mTripSheetDate = bundle.getString("tripsheetDate");
+              // mTripSheetCode = bundle.getString("tripsheetCode");
+              // mTripSheetDate = bundle.getString("tripsheetDate");
             }
 
             mDBHelper = new DBHelper(TripSheetView.this);
@@ -328,8 +329,12 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getApplicationContext(), "Clicked Tripsheet Preview", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Clicked Tripsheet Preview", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(TripSheetView.this, TripSheetViewPreview.class);
+                    i.putExtra("tripSheetId",mTripSheetId);
+                  //  i.putExtra("tripsheetCode",mTripSheetCode);
+                  //  i.putExtra("tripsheetDate",mTripSheetDate);
+                 //   i.putExtra("data", (Serializable) mTripsheetSOAdapter.getData());
                     startActivity(i);
                     finish();
                 }
