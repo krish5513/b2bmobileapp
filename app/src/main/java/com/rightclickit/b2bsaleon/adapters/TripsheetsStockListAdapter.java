@@ -101,57 +101,58 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
 
             if (currentStockList.getIsStockDispatched() == 0) {
                 tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", orderQuantity));
-
-                // Updating current stock in dispatch list
                 currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(orderQuantity));
-                updateProductsDispatchList(currentStockList);
-
-                tripSheetStockViewHolder.mDispatchDecrement.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        try {
-                            Double presentQuantity = Double.parseDouble(tripSheetStockViewHolder.mDispatchQuantity.getText().toString());
-
-                            if (presentQuantity > 0) {
-                                presentQuantity--;
-
-                                currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(presentQuantity));
-                                updateProductsDispatchList(currentStockList);
-
-                                if (presentQuantity == 0) {
-                                    tripSheetStockViewHolder.mDispatchQuantity.setText(zero_cost);
-                                    //removeProductFromDispatchList(currentStockList);
-                                } else {
-                                    tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", presentQuantity));
-
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-                tripSheetStockViewHolder.mDispatchIncrement.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        try {
-                            Double presentQuantity = Double.parseDouble(tripSheetStockViewHolder.mDispatchQuantity.getText().toString());
-                            presentQuantity++;
-
-                            currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(presentQuantity));
-                            tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", presentQuantity));
-                            updateProductsDispatchList(currentStockList);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
             } else {
                 Double dispatchedQuantity = Double.parseDouble(currentStockList.getmTripsheetStockDispatchQuantity());
                 tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", dispatchedQuantity));
+                currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(dispatchedQuantity));
             }
+
+            // Updating current stock in dispatch list
+            updateProductsDispatchList(currentStockList);
+
+            tripSheetStockViewHolder.mDispatchDecrement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Double presentQuantity = Double.parseDouble(tripSheetStockViewHolder.mDispatchQuantity.getText().toString());
+
+                        if (presentQuantity > 0) {
+                            presentQuantity--;
+
+                            currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(presentQuantity));
+                            updateProductsDispatchList(currentStockList);
+
+                            if (presentQuantity == 0) {
+                                tripSheetStockViewHolder.mDispatchQuantity.setText(zero_cost);
+                                //removeProductFromDispatchList(currentStockList);
+                            } else {
+                                tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", presentQuantity));
+
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            tripSheetStockViewHolder.mDispatchIncrement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Double presentQuantity = Double.parseDouble(tripSheetStockViewHolder.mDispatchQuantity.getText().toString());
+                        presentQuantity++;
+
+                        currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(presentQuantity));
+                        tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", presentQuantity));
+                        updateProductsDispatchList(currentStockList);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
 
         if (privilegeActionsData.contains("Stock_Verify")) {
@@ -161,57 +162,58 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
 
             if (currentStockList.getIsStockVerified() == 0) {
                 tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", orderQuantity));
-
-                // Updating current stock in verify list
                 currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(orderQuantity));
-                updateProductsVerifyList(currentStockList);
-
-                tripSheetStockViewHolder.mVerifyDecrement.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        try {
-                            Double presentQuantity = Double.parseDouble(tripSheetStockViewHolder.mVerifyQuantity.getText().toString());
-
-                            if (presentQuantity > 0) {
-                                presentQuantity--;
-
-                                currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(presentQuantity));
-                                updateProductsVerifyList(currentStockList);
-
-                                if (presentQuantity == 0) {
-                                    tripSheetStockViewHolder.mVerifyQuantity.setText(zero_cost);
-                                    //removeProductFromVerifyList(currentStockList);
-                                } else {
-                                    tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", presentQuantity));
-
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-                tripSheetStockViewHolder.mVerifyIncrement.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        try {
-                            Double presentQuantity = Double.parseDouble(tripSheetStockViewHolder.mVerifyQuantity.getText().toString());
-                            presentQuantity++;
-
-                            currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(presentQuantity));
-                            tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", presentQuantity));
-                            updateProductsVerifyList(currentStockList);
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
             } else {
                 Double verifiedQuantity = Double.parseDouble(currentStockList.getmTripsheetStockVerifiedQuantity());
                 tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", verifiedQuantity));
+                currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(verifiedQuantity));
             }
+
+            // Updating current stock in verify list
+            updateProductsVerifyList(currentStockList);
+
+            tripSheetStockViewHolder.mVerifyDecrement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Double presentQuantity = Double.parseDouble(tripSheetStockViewHolder.mVerifyQuantity.getText().toString());
+
+                        if (presentQuantity > 0) {
+                            presentQuantity--;
+
+                            currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(presentQuantity));
+                            updateProductsVerifyList(currentStockList);
+
+                            if (presentQuantity == 0) {
+                                tripSheetStockViewHolder.mVerifyQuantity.setText(zero_cost);
+                                //removeProductFromVerifyList(currentStockList);
+                            } else {
+                                tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", presentQuantity));
+
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            tripSheetStockViewHolder.mVerifyIncrement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Double presentQuantity = Double.parseDouble(tripSheetStockViewHolder.mVerifyQuantity.getText().toString());
+                        presentQuantity++;
+
+                        currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(presentQuantity));
+                        tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", presentQuantity));
+                        updateProductsVerifyList(currentStockList);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
 
         return view;

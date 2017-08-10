@@ -30,6 +30,8 @@ public class PaymentsBean implements Serializable {
     private String Payments_type;
     private String Payments_saleOrderId;
     private String Payments_saleOrderCode;
+    private String Payments_cheque_image_path;
+    private int Payments_cheque_upload_status;
 
     public String getPayments_tripsheetId() {
         return Payments_tripsheetId;
@@ -205,5 +207,21 @@ public class PaymentsBean implements Serializable {
 
     public void setPayments_paymentsNumber(String payments_paymentsNumber) {
         Payments_paymentsNumber = payments_paymentsNumber;
+    }
+
+    public String getPayments_cheque_image_path() {
+        return Payments_cheque_image_path;
+    }
+
+    public void setPayments_cheque_image_path(String payments_cheque_image_path) {
+        this.Payments_cheque_image_path = payments_cheque_image_path;
+    }
+
+    public int getPayments_cheque_upload_status() {
+        return Payments_cheque_upload_status;
+    }
+
+    public void setPayments_cheque_upload_status(int payments_cheque_upload_status) {
+        Payments_cheque_upload_status = payments_cheque_upload_status;
     }
 }

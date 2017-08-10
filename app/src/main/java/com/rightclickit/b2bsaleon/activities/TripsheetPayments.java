@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Environment;
@@ -14,7 +13,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,184 +28,202 @@ import android.widget.Toast;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
+import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.services.SyncTripSheetsPaymentsService;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class TripsheetPayments extends AppCompatActivity {
+    private Context activityContext;
 
-    LinearLayout ret;
-    LinearLayout payments;
-    LinearLayout save;
-    LinearLayout print;
-    LinearLayout delivery;
-    LinearLayout cheqLinearLayout, captureChequeLayout;
-    Spinner paymentTypeSpinner;
-    ArrayList paymentsList = new ArrayList();
-    EditText mAmountText, mChequeNumber, mBankName, mChequeDate;
-    ImageView imageview;
-    DBHelper mDBHelper;
-    ArrayList<TripSheetDeliveriesBean> deliveryArrayList;
-    String mTripSheetId = "", mAgentId = "", mAgentCode = "", mAgentName = "", currentDate = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
+    private LinearLayout ret, payments, save, print, delivery, cheqLinearLayout, captureChequeLayout;
+    private TextView tps_opening_balance, tps_sale_order_value, tps_total_amount, tps_received_amount, tps_due_amount;
+    private Spinner paymentTypeSpinner;
+    private EditText mAmountText, mChequeNumber, mBankName, mChequeDate;
+    private ImageView imageview;
+    private DBHelper mDBHelper;
+    private ArrayList<TripSheetDeliveriesBean> deliveryArrayList;
+    private String mTripSheetId = "", mAgentId = "", mAgentCode = "", mAgentName = "", currentDate = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
     private static final int ACTION_TAKE_PHOTO_A = 1;
     private TripSheetDeliveriesBean currentDeliveriesBean = null;
-    private double receivedAmount = 0.0, remainingAmount = 0.0;
+    private double openingBalance = 0.0, saleOrderValue = 0.0, totalAmount = 0.0, receivedAmount = 0.0, dueAmount = 0.0;
+    private String cheque_image_path = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripsheet_payments);
-        mDBHelper = new DBHelper(TripsheetPayments.this);
 
-        mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
-        mAgentId = this.getIntent().getStringExtra("agentId");
-        mAgentCode = this.getIntent().getStringExtra("agentCode");
-        mAgentName = this.getIntent().getStringExtra("agentName");
-        mAgentRouteId = this.getIntent().getStringExtra("agentRouteId");
-        mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
-        mAgentSoId = this.getIntent().getStringExtra("agentSoId");
-        mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
-        Log.i("fdgjhujgf", mAgentSoCode);
+        try {
+            activityContext = TripsheetPayments.this;
+            mDBHelper = new DBHelper(activityContext);
 
-        this.getSupportActionBar().setTitle("PAYMENTS");
-        this.getSupportActionBar().setSubtitle(null);
-        this.getSupportActionBar().setLogo(R.drawable.route_white);
-        // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        this.getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+            mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
+            mAgentId = this.getIntent().getStringExtra("agentId");
+            mAgentCode = this.getIntent().getStringExtra("agentCode");
+            mAgentName = this.getIntent().getStringExtra("agentName");
+            mAgentRouteId = this.getIntent().getStringExtra("agentRouteId");
+            mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
+            mAgentSoId = this.getIntent().getStringExtra("agentSoId");
+            mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
 
-        final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            this.getSupportActionBar().setTitle("PAYMENTS");
+            this.getSupportActionBar().setSubtitle(null);
+            this.getSupportActionBar().setLogo(R.drawable.route_white);
+            // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            this.getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        TextView agentName = (TextView) findViewById(R.id.companyName);
-        agentName.setText(mAgentName);
+            final ActionBar actionBar = getSupportActionBar();
+            assert actionBar != null;
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+            TextView agentName = (TextView) findViewById(R.id.companyName);
+            agentName.setText(mAgentName);
 
-        ret = (LinearLayout) findViewById(R.id.rlinear);
-        payments = (LinearLayout) findViewById(R.id.plinear);
-        save = (LinearLayout) findViewById(R.id.slinear);
-        print = (LinearLayout) findViewById(R.id.prelinear);
-        delivery = (LinearLayout) findViewById(R.id.dlinear);
-        mAmountText = (EditText) findViewById(R.id.amount);
-        cheqLinearLayout = (LinearLayout) findViewById(R.id.chequeLinearLayout);
-        paymentTypeSpinner = (Spinner) findViewById(R.id.paymentTypeSpinner);
-        captureChequeLayout = (LinearLayout) findViewById(R.id.CaptureChequeLayout);
-        imageview = (ImageView) findViewById(R.id.image);
-        mChequeNumber = (EditText) findViewById(R.id.chequeNo);
-        mBankName = (EditText) findViewById(R.id.bankName);
-        mChequeDate = (EditText) findViewById(R.id.date);
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        currentDate = df.format(cal.getTime());
-        mChequeDate.setText(currentDate);
+            ret = (LinearLayout) findViewById(R.id.rlinear);
+            payments = (LinearLayout) findViewById(R.id.plinear);
+            save = (LinearLayout) findViewById(R.id.slinear);
+            print = (LinearLayout) findViewById(R.id.prelinear);
+            delivery = (LinearLayout) findViewById(R.id.dlinear);
+            mAmountText = (EditText) findViewById(R.id.amount);
+            cheqLinearLayout = (LinearLayout) findViewById(R.id.chequeLinearLayout);
+            paymentTypeSpinner = (Spinner) findViewById(R.id.paymentTypeSpinner);
+            captureChequeLayout = (LinearLayout) findViewById(R.id.CaptureChequeLayout);
+            imageview = (ImageView) findViewById(R.id.image);
+            mChequeNumber = (EditText) findViewById(R.id.chequeNo);
+            mBankName = (EditText) findViewById(R.id.bankName);
+            mChequeDate = (EditText) findViewById(R.id.date);
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+            currentDate = df.format(cal.getTime());
+            mChequeDate.setText(currentDate);
 //        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
 //        currentDate = df1.format(cal.getTime());
 
-        captureChequeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectImage();
-            }
-        });
+            tps_opening_balance = (TextView) findViewById(R.id.tps_opening_balance);
+            tps_sale_order_value = (TextView) findViewById(R.id.tps_sale_order_value);
+            tps_total_amount = (TextView) findViewById(R.id.tps_total_amount);
+            tps_received_amount = (TextView) findViewById(R.id.tps_received_amount);
+            tps_due_amount = (TextView) findViewById(R.id.tps_due_amount);
 
-        paymentTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (paymentTypeSpinner.getSelectedItem().toString().equals("Cash")) {
-                    cheqLinearLayout.setVisibility(View.GONE);
-                } else if (paymentTypeSpinner.getSelectedItem().toString().equals("Cheque")) {
-                    cheqLinearLayout.setVisibility(View.VISIBLE);
+            captureChequeLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectImage();
                 }
+            });
+
+            paymentTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    if (paymentTypeSpinner.getSelectedItem().toString().equals("Cash")) {
+                        cheqLinearLayout.setVisibility(View.GONE);
+                    } else if (paymentTypeSpinner.getSelectedItem().toString().equals("Cheque")) {
+                        cheqLinearLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+            ret.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(TripsheetPayments.this, TripsheetReturns.class);
+                    i.putExtra("tripsheetId", mTripSheetId);
+                    i.putExtra("agentId", mAgentId);
+                    i.putExtra("agentCode", mAgentCode);
+                    i.putExtra("agentName", mAgentName);
+                    i.putExtra("agentRouteId", mAgentRouteId);
+                    i.putExtra("agentRouteCode", mAgentRouteCode);
+                    i.putExtra("agentSoId", mAgentSoId);
+                    i.putExtra("agentSoCode", mAgentSoCode);
+                    startActivity(i);
+
+                }
+            });
+            delivery.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(TripsheetPayments.this, TripsheetDelivery.class);
+                    i.putExtra("tripsheetId", mTripSheetId);
+                    i.putExtra("agentId", mAgentId);
+                    i.putExtra("agentCode", mAgentCode);
+                    i.putExtra("agentName", mAgentName);
+                    i.putExtra("agentSoId", mAgentSoId);
+                    i.putExtra("agentSoCode", mAgentSoCode);
+                    startActivity(i);
+
+                }
+            });
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showAlertDialogWithCancelButton(TripsheetPayments.this, "User Action!", "Do you want to save data?");
+                }
+            });
+            print.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(TripsheetPayments.this, TripsheetPaymentsPreview.class);
+                    i.putExtra("tripsheetId", mTripSheetId);
+                    i.putExtra("agentId", mAgentId);
+                    i.putExtra("agentCode", mAgentCode);
+                    i.putExtra("agentName", mAgentName);
+                    i.putExtra("agentRouteId", mAgentRouteId);
+                    i.putExtra("agentRouteCode", mAgentRouteCode);
+                    i.putExtra("agentSoId", mAgentSoId);
+                    i.putExtra("agentSoCode", mAgentSoCode);
+                    startActivity(i);
+                }
+            });
+
+            deliveryArrayList = mDBHelper.fetchOrderPaymentFromDeliveriesTable(mTripSheetId, mAgentSoId, mAgentId);
+
+            if (deliveryArrayList.size() > 0) {
+                currentDeliveriesBean = deliveryArrayList.get(0); // We are saving trip sheet sale value in all objects so we are considering first object.
+            } else {
+                currentDeliveriesBean = new TripSheetDeliveriesBean();
+                currentDeliveriesBean.setmTripsheetDelivery_SaleValue("0.0");
+                currentDeliveriesBean.setmTripsheetDelivery_TaxTotal("0.0");
             }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            openingBalance = mDBHelper.fetchTripSheetSaleOrderOpeningBalance(mTripSheetId, mAgentSoId);
+            saleOrderValue = Double.parseDouble(currentDeliveriesBean.getmTripsheetDelivery_SaleValue());
+            receivedAmount = mDBHelper.fetchTripSheetSaleOrderReceivedAmount(mTripSheetId, mAgentSoId);
+            totalAmount = openingBalance + saleOrderValue;
+            dueAmount = totalAmount - receivedAmount;
 
-            }
-        });
+            tps_opening_balance.setText(Utility.getFormattedCurrency(openingBalance));
+            tps_sale_order_value.setText(Utility.getFormattedCurrency(saleOrderValue));
+            tps_total_amount.setText(Utility.getFormattedCurrency(totalAmount));
+            tps_received_amount.setText(Utility.getFormattedCurrency(receivedAmount));
+            tps_due_amount.setText(Utility.getFormattedCurrency(dueAmount));
 
-        ret.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(TripsheetPayments.this, TripsheetReturns.class);
-                i.putExtra("tripsheetId", mTripSheetId);
-                i.putExtra("agentId", mAgentId);
-                i.putExtra("agentCode", mAgentCode);
-                i.putExtra("agentName", mAgentName);
-                i.putExtra("agentRouteId", mAgentRouteId);
-                i.putExtra("agentRouteCode", mAgentRouteCode);
-                i.putExtra("agentSoId", mAgentSoId);
-                i.putExtra("agentSoCode", mAgentSoCode);
-                startActivity(i);
-
-            }
-        });
-        delivery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(TripsheetPayments.this, TripsheetDelivery.class);
-                i.putExtra("tripsheetId", mTripSheetId);
-                i.putExtra("agentId", mAgentId);
-                i.putExtra("agentCode", mAgentCode);
-                i.putExtra("agentName", mAgentName);
-                i.putExtra("agentSoId", mAgentSoId);
-                i.putExtra("agentSoCode", mAgentSoCode);
-                startActivity(i);
-
-            }
-        });
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showAlertDialogWithCancelButton(TripsheetPayments.this, "User Action!", "Do you want to save data?");
-            }
-        });
-        print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(TripsheetPayments.this, TripsheetPaymentsPreview.class);
-                i.putExtra("tripsheetId", mTripSheetId);
-                i.putExtra("agentId", mAgentId);
-                i.putExtra("agentCode", mAgentCode);
-                i.putExtra("agentName", mAgentName);
-                i.putExtra("agentRouteId", mAgentRouteId);
-                i.putExtra("agentRouteCode", mAgentRouteCode);
-                i.putExtra("agentSoId", mAgentSoId);
-                i.putExtra("agentSoCode", mAgentSoCode);
-                startActivity(i);
-            }
-        });
-
-        deliveryArrayList = mDBHelper.fetchOrderPaymentFromDeliveriesTable(mTripSheetId, mAgentSoId, mAgentId);
-
-        if (deliveryArrayList.size() > 0) {
-            currentDeliveriesBean = deliveryArrayList.get(0);
-        } else {
-            currentDeliveriesBean = new TripSheetDeliveriesBean();
-            currentDeliveriesBean.setmTripsheetDelivery_SaleValue("0.0");
-            currentDeliveriesBean.setmTripsheetDelivery_TaxTotal("0.0");
+            if (dueAmount > 0)
+                mAmountText.setText(String.format("%.2f", dueAmount));
+            else
+                mAmountText.setText("0.00");
+            //mAmountText.setText(currentDeliveriesBean.getmTripsheetDelivery_SaleValue());
+            
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        receivedAmount = mDBHelper.fetchTripSheetSaleOrderReceivedAmount(mTripSheetId, mAgentSoId);
-        remainingAmount = Double.parseDouble(currentDeliveriesBean.getmTripsheetDelivery_SaleValue()) - receivedAmount;
-
-        if (remainingAmount > 0)
-            mAmountText.setText(String.format("%.2f", remainingAmount));
-        else
-            mAmountText.setText("0.00");
-        //mAmountText.setText(currentDeliveriesBean.getmTripsheetDelivery_SaleValue());
     }
 
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {
@@ -279,9 +295,9 @@ public class TripsheetPayments extends AppCompatActivity {
         menu.findItem(R.id.notifications).setVisible(false);
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
-        menu.findItem(R.id.action_search).setVisible(true);
+        menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.Add).setVisible(false);
-        menu.findItem(R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(false);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -306,9 +322,9 @@ public class TripsheetPayments extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("Capture Cheque")) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(Environment.getExternalStorageDirectory(), "temp.jpg");
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                    startActivityForResult(intent, ACTION_TAKE_PHOTO_A);
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(intent, ACTION_TAKE_PHOTO_A);
+                    }
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
@@ -322,38 +338,28 @@ public class TripsheetPayments extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == ACTION_TAKE_PHOTO_A) {
-                File f = new File(Environment.getExternalStorageDirectory().toString());
-                for (File temp : f.listFiles()) {
-                    if (temp.getName().equals("temp.jpg")) {
-                        f = temp;
-                        break;
-                    }
-                }
                 try {
-                    Bitmap bitmap;
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-                            bitmapOptions);
-
+                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                     BitmapDrawable d = new BitmapDrawable(this.getResources(), bitmap);
-                    imageview.setBackgroundDrawable(null);
-                    imageview.setBackgroundDrawable(d);
+                    imageview.setBackground(null);
+                    imageview.setBackground(d);
 
-                    //  mPicImage.setImageBitmap(bitmap);
+                    File shopImagesDir = new File(Constants.TripSheetPaymentChequesPath);
+                    if (!shopImagesDir.exists()) {
+                        shopImagesDir.mkdirs();
+                    }
 
-                    String path = Environment
-                            .getExternalStorageDirectory()
-                            + File.separator
-                            + File.separator + "default";
-                    f.delete();
-                    OutputStream outFile = null;
-                    File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
+                    String fileName = String.valueOf(System.currentTimeMillis()) + ".jpg";
+                    File outputFile = new File(shopImagesDir, fileName);
+
                     try {
-                        outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
-                        outFile.flush();
-                        outFile.close();
+                        FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream);
+                        fileOutputStream.flush();
+                        fileOutputStream.close();
+
+                        cheque_image_path = outputFile.getAbsolutePath();
+
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -363,6 +369,14 @@ public class TripsheetPayments extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+
+                File f = new File(Environment.getExternalStorageDirectory().toString());
+                for (File temp : f.listFiles()) {
+                    if (temp.getName().equals("temp.jpg")) {
+                        f = temp;
+                        break;
+                    }
                 }
             }
         }
@@ -416,8 +430,12 @@ public class TripsheetPayments extends AppCompatActivity {
         }
         if (type == 0) {
             paymentsBean.setPayments_chequeDate("");
+            paymentsBean.setPayments_cheque_image_path("");
+            paymentsBean.setPayments_cheque_upload_status(1);
         } else if (type == 1) {
             paymentsBean.setPayments_chequeDate(mChequeDate.getText().toString().trim());
+            paymentsBean.setPayments_cheque_image_path(cheque_image_path);
+            paymentsBean.setPayments_cheque_upload_status(0);
         }
         paymentsBean.setPayments_chequeClearDate("");
         paymentsBean.setPayments_receiverName(""); // Company name
@@ -460,6 +478,8 @@ public class TripsheetPayments extends AppCompatActivity {
                     Toast.makeText(TripsheetPayments.this, "Please enter bank name.", Toast.LENGTH_SHORT).show();
                 } else if (mChequeDate.getText().toString().trim().length() == 0) {
                     Toast.makeText(TripsheetPayments.this, "Please enter cheque date.", Toast.LENGTH_SHORT).show();
+                } else if (cheque_image_path.length() == 0) {
+                    Toast.makeText(TripsheetPayments.this, "Please capture cheque.", Toast.LENGTH_SHORT).show();
                 } else {
                     synchronized (this) {
                         paymentsBean = formAPIData(1);

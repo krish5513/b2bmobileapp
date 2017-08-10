@@ -95,12 +95,12 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
             if (previouslyReturnedProductsHashMap.size() > 0)
                 isReturnsInEditingMode = true;
 
-            Map<String, String> deliveredProductsHashMap = mDBHelper.fetchDeliveriesListByTripSheetId(mTripSheetId);
+            Map<String, String> deliveredProductsHashMap = mDBHelper.fetchDeliveriesListByTripSheetId(mTripSheetId, mAgentSoId, mAgentId);
 
-    allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
+            allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
 
-    mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, allProductsListFromStock, previouslyReturnedProductsHashMap, deliveredProductsHashMap);
-    tripSheetReturnProductsList.setAdapter(mTripSheetReturnsAdapter);
+            mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, allProductsListFromStock, previouslyReturnedProductsHashMap, deliveredProductsHashMap);
+            tripSheetReturnProductsList.setAdapter(mTripSheetReturnsAdapter);
 
         } catch (Exception e) {
             e.printStackTrace();

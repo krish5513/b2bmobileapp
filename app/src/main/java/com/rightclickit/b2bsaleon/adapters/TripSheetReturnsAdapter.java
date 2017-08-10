@@ -80,9 +80,11 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
     public long getItemId(int i) {
         return i;
     }
-    public Map<String, DeliverysBean> getData(){
+
+    public Map<String, DeliverysBean> getData() {
         return selectedProductsHashMap;
     }
+
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
         final TripSheetReturnsViewHolder tripSheetReturnsViewHolder;
@@ -113,10 +115,13 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
 
         tripSheetReturnsViewHolder.productName.setText(String.format("%s", currentDeliveryBean.getProductTitle()));
 
-        if (deliveredProductsHashMap.containsKey(currentDeliveryBean.getProductId()))
+        if (deliveredProductsHashMap.containsKey(currentDeliveryBean.getProductId())) {
             tripSheetReturnsViewHolder.deliveredQuantity.setText(deliveredProductsHashMap.get(currentDeliveryBean.getProductId()));
-        else
+            currentDeliveryBean.setDeliveredQuantity(Double.parseDouble(deliveredProductsHashMap.get(currentDeliveryBean.getProductId())));
+        } else {
             tripSheetReturnsViewHolder.deliveredQuantity.setText(zero_cost);
+            currentDeliveryBean.setDeliveredQuantity(0);
+        }
 
         if (previouslyReturnedProductsHashMap.containsKey(currentDeliveryBean.getProductId()))
             tripSheetReturnsViewHolder.product_quantity.setText(previouslyReturnedProductsHashMap.get(currentDeliveryBean.getProductId()));
@@ -136,10 +141,10 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
 
                         if (presentQuantity == 0) {
                             currentTripSheetReturnsViewHolder.product_quantity.setText(zero_cost);
-                            updateSelectedProductsList(currentDeliveryBean);
+                            updateSelectedReturnProductsList(currentDeliveryBean);
                         } else {
                             currentTripSheetReturnsViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
-                            updateSelectedProductsList(currentDeliveryBean);
+                            updateSelectedReturnProductsList(currentDeliveryBean);
                         }
                     }
                 } catch (Exception e) {
@@ -153,11 +158,14 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
             public void onClick(View view) {
                 try {
                     Double presentQuantity = Double.parseDouble(currentTripSheetReturnsViewHolder.product_quantity.getText().toString());
-                    presentQuantity++;
 
-                    currentDeliveryBean.setSelectedQuantity(presentQuantity);
-                    currentTripSheetReturnsViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
-                    updateSelectedProductsList(currentDeliveryBean);
+                    if (presentQuantity < currentDeliveryBean.getDeliveredQuantity()) {
+                        presentQuantity++;
+
+                        currentDeliveryBean.setSelectedQuantity(presentQuantity);
+                        currentTripSheetReturnsViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
+                        updateSelectedReturnProductsList(currentDeliveryBean);
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -171,10 +179,32 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
                 try {
                     if (!hasFocus) {
                         EditText quantityEditText = (EditText) view;
-                        Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
 
-                        currentDeliveryBean.setSelectedQuantity(enteredQuantity);
-                        updateSelectedProductsList(currentDeliveryBean);
+                        if (quantityEditText.getText().length() > 0) {
+                            Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
+
+                            if (enteredQuantity > currentDeliveryBean.getDeliveredQuantity()) {
+                                quantityEditText.setText(zero_cost);
+                                currentDeliveryBean.setSelectedQuantity(0);
+
+                                updateSelectedReturnProductsList(currentDeliveryBean);
+
+                                new AlertDialog.Builder(activity)
+                                        .setTitle("Alert..!")
+                                        .setMessage("Quantity should not be greater than delivered quantity.")
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+
+                            } else {
+                                currentDeliveryBean.setSelectedQuantity(enteredQuantity);
+                                updateSelectedReturnProductsList(currentDeliveryBean);
+                            }
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -185,7 +215,7 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
         return view;
     }
 
-    public void updateSelectedProductsList(DeliverysBean deliverysBean) {
+    public void updateSelectedReturnProductsList(DeliverysBean deliverysBean) {
         try {
             if (selectedProductsHashMap.containsKey(deliverysBean.getProductId()))
                 selectedProductsHashMap.remove(deliverysBean.getProductId());

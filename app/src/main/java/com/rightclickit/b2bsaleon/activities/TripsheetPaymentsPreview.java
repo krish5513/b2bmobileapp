@@ -11,5 +11,11 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripsheet_payments_preview);
+
+        try {
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

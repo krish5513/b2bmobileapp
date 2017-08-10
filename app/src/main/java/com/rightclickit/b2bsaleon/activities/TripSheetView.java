@@ -806,7 +806,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(dLat) * Math.cos(dLon) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2f * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = R * c;
-        System.out.println("DISTANCE IN METERS::: " + Math.round(distance));
+        //System.out.println("DISTANCE IN METERS::: " + Math.round(distance));
         return distance;
     }
 }

@@ -24,6 +24,7 @@ public class DeliverysBean implements Serializable {
     private double productAmount;
     private double productRatePerUnit;
     private double productTaxPerUnit;
+    private double deliveredQuantity;
 
     public String getProductgst() {
         return productgst;
@@ -161,15 +162,11 @@ public class DeliverysBean implements Serializable {
         this.productTaxPerUnit = productTaxPerUnit;
     }
 
-    @Override
-    public String toString() {
-        return "\n DeliverysBean{" +
-                ", Code='" + productCode + '\'' +
-                ", OrderedQuantity=" + productOrderedQuantity +
-                ", In.Stock=" + productStock +
-                ", ExtraQuantity=" + productExtraQuantity +
-                ", AgentAvailableStock=" + productAvailableStockForSpecificAgent +
-                ", selectedQuantity=" + selectedQuantity +
-                '}';
+    public double getDeliveredQuantity() {
+        return deliveredQuantity;
+    }
+
+    public void setDeliveredQuantity(double deliveredQuantity) {
+        this.deliveredQuantity = deliveredQuantity;
     }
 }

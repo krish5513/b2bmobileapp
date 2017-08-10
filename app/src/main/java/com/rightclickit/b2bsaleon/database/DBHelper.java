@@ -20,7 +20,6 @@ import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.beanclass.TDCSalesOrderProductBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
-import com.rightclickit.b2bsaleon.beanclass.TripSheetPaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
@@ -376,6 +375,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_PAYMENTS_SO_CODE = "tripsheet_payments_so_code";
     private final String KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT = "tripsheet_payments_received_amount";
     private final String KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS = "tripsheet_payments_upload_status";
+    private final String KEY_TRIPSHEET_PAYMENTS_CHEQUE_PATH = "tripsheet_payments_cheque_path";
+    private final String KEY_TRIPSHEET_PAYMENTS_CHEQUE_UPLOAD_STATUS = "tripsheet_payments_cheque_upload_status";
 
     // Column names for Tripsheets so List  Table
     private final String KEY_TRIPSHEET_SO_UNIQUE_ID = "tripsheet_so_unique_id";
@@ -613,6 +614,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_PAYMENTS_SO_ID + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_SO_CODE + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_CHEQUE_PATH + " VARCHAR,"
+            + KEY_TRIPSHEET_PAYMENTS_CHEQUE_UPLOAD_STATUS + " INTEGER DEFAULT 0,"
             + KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // Tripsheets SO Table Create Statements
@@ -2926,7 +2929,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 if (noOfRecordsExisted == 0) {
                     status = db.insert(TABLE_TRIPSHEETS_RETURNS_LIST, null, values);
                 } else {
-                    status = db.update(TABLE_TRIPSHEETS_RETURNS_LIST, values, KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_RETURNS_SO_ID + " = ? AND " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = ?", new String[]{tripSheetReturnsBean.getmTripshhetReturnsTrip_id(), tripSheetReturnsBean.getmTripshhetReturns_so_id(), tripSheetReturnsBean.getmTripshhetReturnsProduct_ids()});
+                    status = db.update(TABLE_TRIPSHEETS_RETURNS_LIST, values, KEY_TRIPSHEET_RETURNS_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_RETURNS_SO_ID + " = ? AND " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = ?", new String[]{tripSheetReturnsBean.getmTripshhetReturnsTrip_id(), tripSheetReturnsBean.getmTripshhetReturns_so_id(), tripSheetReturnsBean.getmTripshhetReturnsProduct_ids()});
                 }
 
                 values.clear();
@@ -3020,6 +3023,8 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TRIPSHEET_PAYMENTS_SO_ID, paymentsBean.getPayments_saleOrderId());
             values.put(KEY_TRIPSHEET_PAYMENTS_SO_CODE, paymentsBean.getPayments_saleOrderCode());
             values.put(KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT, paymentsBean.getPayments_receivedAmount());
+            values.put(KEY_TRIPSHEET_PAYMENTS_CHEQUE_PATH, paymentsBean.getPayments_cheque_image_path());
+            values.put(KEY_TRIPSHEET_PAYMENTS_CHEQUE_UPLOAD_STATUS, paymentsBean.getPayments_cheque_upload_status());
 
             //int noOfRecordsExisted = checkTripsheetPaymentsRecordExistsOrNot(paymentsBean.getPayments_tripsheetId(), paymentsBean.getPayments_saleOrderId());
 
@@ -3048,7 +3053,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<PaymentsBean> alltripsheetsPayments = new ArrayList<PaymentsBean>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS + " = " + "'" + "0" + "'";
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS + " = 0";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -3071,6 +3076,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripPaymentsBean.setPayments_bankName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_BANK_NAME)));
                     tripPaymentsBean.setPayments_chequeDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_DATE)));
                     tripPaymentsBean.setPayments_chequeClearDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_CLEAR_DATE)));
+                    tripPaymentsBean.setPayments_cheque_image_path(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_CHEQUE_PATH)));
                     tripPaymentsBean.setPayments_receiverName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_RECEIVER_NAME)));
                     tripPaymentsBean.setPayments_transActionStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS)));
 
@@ -3082,6 +3088,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripPaymentsBean.setPayments_saleOrderId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_SO_ID)));
                     tripPaymentsBean.setPayments_saleOrderCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_SO_CODE)));
                     tripPaymentsBean.setPayments_receivedAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT))));
+                    tripPaymentsBean.setPayments_cheque_upload_status(c.getInt(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_CHEQUE_UPLOAD_STATUS)));
 
                     alltripsheetsPayments.add(tripPaymentsBean);
 
@@ -3285,6 +3292,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TRIPSHEET_STOCK_DISPATCH_DATE, currentStock.getmTripsheetStockDispatchDate());
             values.put(KEY_TRIPSHEET_STOCK_DISPATCH_BY, currentStock.getmTripsheetStockDispatchBy());
             values.put(KEY_TRIPSHEET_STOCK_IS_DISPATCHED, 1);
+            values.put(KEY_TRIPSHEET_STOCK_DISPATCHED_UPLOAD_STATUS, 0);
 
             int status = db.update(TABLE_TRIPSHEETS_STOCK_LIST, values, KEY_TRIPSHEET_STOCK_ID + " = ? AND " + KEY_TRIPSHEET_STOCK_PRODUCT_CODE + " = ?", new String[]{currentStock.getmTripsheetStockId(), currentStock.getmTripsheetStockProductCode()});
 
@@ -3307,6 +3315,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY, currentStock.getInStockQuantity());
             values.put(KEY_TRIPSHEET_STOCK_EXTRA_QUANTITY, currentStock.getExtraQuantity());
             values.put(KEY_TRIPSHEET_STOCK_IS_VERIFIED, 1);
+            values.put(KEY_TRIPSHEET_STOCK_VERIFIED_UPLOAD_STATUS, 0);
 
             int status = db.update(TABLE_TRIPSHEETS_STOCK_LIST, values, KEY_TRIPSHEET_STOCK_ID + " = ? AND " + KEY_TRIPSHEET_STOCK_PRODUCT_CODE + " = ?", new String[]{currentStock.getmTripsheetStockId(), currentStock.getmTripsheetStockProductCode()});
 
@@ -3816,11 +3825,11 @@ public class DBHelper extends SQLiteOpenHelper {
         return noOfRecords;
     }
 
-    public Map<String, String> fetchDeliveriesListByTripSheetId(String tripsheetId) {
+    public Map<String, String> fetchDeliveriesListByTripSheetId(String tripsheetId, String saleOrderId, String agentId) {
         Map<String, String> tripsheetsDeliveries = new HashMap<>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "'";
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "' AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + agentId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -4002,6 +4011,11 @@ public class DBHelper extends SQLiteOpenHelper {
                     saleOrderBean.setmTripshetSOAgentLongitude(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_AGENTLONGITUDE)));
                     saleOrderBean.setmTripshetSOProductsCount(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_PRODUCTS_COUNT)));
 
+                    double saleOrderValue = fetchTripSheetSaleOrderValueForAgentId(tripSheetId, cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_ID)), cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_AGENTID)));
+
+                    if (saleOrderValue > 0)
+                        saleOrderBean.setmTripshetSOValue(String.valueOf(saleOrderValue));
+
                     double receivedAmount = fetchTripSheetSaleOrderReceivedAmount(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_TRIPID)), cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_ID)));
                     double dueAmount = (Double.parseDouble(saleOrderBean.getmTripshetSOOpAmount()) + Double.parseDouble(saleOrderBean.getmTripshetSOValue())) - receivedAmount;
 
@@ -4086,5 +4100,51 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return tripSheetDetails;
+    }
+
+    public double fetchTripSheetSaleOrderValueForAgentId(String tripSheetId, String saleOrderId, String agentId) {
+        double saleOrderValue = 0.0;
+
+        try {
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_SALEVALUE + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = '" + tripSheetId + "' AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + agentId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                saleOrderValue = Double.parseDouble(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SALEVALUE)));
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return saleOrderValue;
+    }
+
+    public double fetchTripSheetSaleOrderOpeningBalance(String tripSheetId, String saleOrderId) {
+        double openingBalance = 0.0;
+
+        try {
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_SO_OPAMOUNT + " FROM " + TABLE_TRIPSHEETS_SO_LIST + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = '" + tripSheetId + "' AND " + KEY_TRIPSHEET_SO_ID + " = '" + saleOrderId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                openingBalance = Double.parseDouble(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_OPAMOUNT)));
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return openingBalance;
     }
 }

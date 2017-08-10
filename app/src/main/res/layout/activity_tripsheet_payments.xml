@@ -5,8 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -73,17 +71,18 @@
             </LinearLayout>
 
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/view_line"/>
+            android:background="@color/view_line" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_above="@id/tpsBottomOptionsLayout"
             android:layout_alignParentStart="true"
-            android:layout_above="@id/tpsBottomOptionsLayout">
+            android:layout_alignParentTop="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -102,10 +101,174 @@
                         android:layout_gravity="top"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="8dp"
-                        android:layout_weight="0.7"
+                        android:layout_weight="0.5"
                         android:gravity="center"
                         android:orientation="vertical">
 
+                        <TextView
+                            android:id="@+id/tps_opening_balance_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:gravity="left"
+                            android:text="Opening Balance"
+                            android:textColor="@color/greydark"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tps_sale_order_value_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:gravity="left"
+                            android:text="Sale Order Value"
+                            android:textColor="@color/greydark"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tps_total_amount_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:gravity="left"
+                            android:text="Total Amount"
+                            android:textColor="@color/greydark"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tps_received_amount_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:gravity="left"
+                            android:text="Received Amount"
+                            android:textColor="@color/greydark"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tps_due_amount_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="15dp"
+                            android:gravity="left"
+                            android:text="Due Amount"
+                            android:textColor="@color/greydark"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="8dp"
+                            android:layout_marginLeft="7dp"
+                            android:background="#dbd7d7" />
+
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:background="@drawable/ic_circle_green"
+                            android:src="@drawable/ic_arrow_downward_white_24dp" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="7dp"
+                            android:background="#dbd7d7" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tps_opening_balance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:paddingLeft="10dp"
+                            android:text="\u20B9 0.00"
+                            android:textColor="@color/greydark"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tps_sale_order_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="13dp"
+                            android:paddingLeft="10dp"
+                            android:text="\u20B9 0.00"
+                            android:textColor="@color/greydark"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tps_total_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:paddingLeft="10dp"
+                            android:text="\u20B9 0.00"
+                            android:textColor="@color/greydark"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tps_received_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:paddingLeft="10dp"
+                            android:text="\u20B9 0.00"
+                            android:textColor="@color/greydark"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tps_due_amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="13dp"
+                            android:paddingLeft="10dp"
+                            android:text="\u20B9 0.00"
+                            android:textColor="@color/red"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#dbd7d7" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_amount"
@@ -117,12 +280,11 @@
                             android:textColor="@color/greydark"
                             android:textSize="12sp" />
 
-
                         <TextView
                             android:id="@+id/tv_mop"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="20dp"
                             android:gravity="left"
                             android:text="MOP"
                             android:textColor="@color/greydark"
@@ -153,6 +315,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginLeft="7dp"
                             android:background="#dbd7d7" />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -168,12 +331,11 @@
                             android:background="@drawable/border_btn"
                             android:orientation="horizontal">
 
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="10dp"
-                                android:text="RS. "
+                                android:text="\u20B9"
                                 android:textColor="@color/greydark"
                                 android:textSize="14sp" />
 
@@ -185,7 +347,7 @@
                                 android:inputType="numberDecimal"
                                 android:longClickable="false"
                                 android:padding="5dp"
-                                android:text=" 1,000"
+                                android:text="0.00"
                                 android:textColor="@color/greydark"
                                 android:textSize="14sp" />
 
@@ -200,7 +362,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="8dp"
-                                android:layout_marginTop="5dp"
+                                android:layout_marginTop="10dp"
                                 android:background="@drawable/border_btn">
 
                                 <Spinner
@@ -208,25 +370,24 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:entries="@array/mop_type" />
+
                             </LinearLayout>
 
                         </LinearLayout>
 
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-
-
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
-
-
                         android:background="#dbd7d7" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -234,7 +395,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/cheque_label"

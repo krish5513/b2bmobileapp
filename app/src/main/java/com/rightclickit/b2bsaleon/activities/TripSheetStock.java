@@ -53,7 +53,7 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
     private ArrayList<String> privilegeActionsData;
     private TripsheetsModel mTripsheetsModel;
     private TripsheetsStockListAdapter mTripsheetsStockAdapter;
-    private String mTripSheetId,mTripSheetCode,mTripSheetDate;
+    private String mTripSheetId, mTripSheetCode, mTripSheetDate;
     private Map<String, TripsheetsStockList> productsDispatchListHashMap, productsVerifyListHashMap; // Hash Map Key = Product Id
     private String loggedInUserId;
     private boolean isStockDispatched = false, isStockVerified = false;
@@ -90,8 +90,8 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
             Bundle bundle = this.getIntent().getExtras();
             if (bundle != null) {
                 mTripSheetId = bundle.getString("tripsheetId");
-                mTripSheetCode=bundle.getString("tripsheetCode");
-                mTripSheetDate=bundle.getString("tripsheetDate");
+                mTripSheetCode = bundle.getString("tripsheetCode");
+                mTripSheetDate = bundle.getString("tripsheetDate");
             }
 
             dispatchTitle = (TextView) findViewById(R.id.dispatchTitle);
@@ -125,7 +125,9 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
                 tps_stock_preview_layout.setVisibility(View.VISIBLE);
             }
 
-
+            if (privilegeActionsData.contains("Stock_Verify") && !privilegeActionsData.contains("Stock_Save")) {
+                isStockDispatched = true;
+            }
 
             mTripsheetsModel = new TripsheetsModel(this, TripSheetStock.this);
             ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
@@ -158,12 +160,12 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
             TripsheetsStockList stockList = tripsStockList.get(0);
 
             if (stockList.getIsStockDispatched() == 1) {
-                tps_stock_save_layout.setVisibility(View.GONE);
+                //tps_stock_save_layout.setVisibility(View.GONE);
                 isStockDispatched = true;
             }
 
             if (stockList.getIsStockVerified() == 1) {
-                tps_stock_verify_layout.setVisibility(View.GONE);
+                //tps_stock_verify_layout.setVisibility(View.GONE);
                 isStockVerified = true;
             }
         }
@@ -265,14 +267,14 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
     }
 
     public void saveTripSheetStock(View view) {
-        if (!isStockDispatched)
-            showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to save?\n\nOnce you saved you can't edit.", "Save");
+        //if (!isStockDispatched)
+        showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to save?\n\nOnce you saved you can't edit.", "Save");
     }
 
     public void verifyTripSheetStock(View view) {
         if (!isStockDispatched)
             Toast.makeText(activityContext, "This Trip Sheet Stock is not yet dispatched.", Toast.LENGTH_LONG).show();
-        else if (!isStockVerified)
+        else //if (!isStockVerified)
             showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to verify?\n\nOnce you verified you can't edit.", "Verify");
     }
 
@@ -339,7 +341,7 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
         }
 
         isStockDispatched = true;
-        Toast.makeText(activityContext, "Stock Saved Successfully.", Toast.LENGTH_LONG).show();
+        Toast.makeText(activityContext, "Stock Dispatched Successfully.", Toast.LENGTH_LONG).show();
 
         if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
             Intent syncTripSheetsStockServiceIntent = new Intent(activityContext, SyncTripSheetsStockService.class);

@@ -37,11 +37,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-
 public class TripsheetStockPreview extends AppCompatActivity {
     private String tripSheetId;
 
-    String myList ;
+    String myList;
 
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
@@ -50,7 +49,7 @@ public class TripsheetStockPreview extends AppCompatActivity {
     private String loggedInUserId, loggedInUserName;
     private DBHelper mDBHelper;
 
-    String  str_routecode, str_Tripcode, str_Tripdate,str_ProductName,str_ProductCode,str_Uom,str_Order,str_Dispatch,str_Verify;
+    String str_routecode, str_Tripcode, str_Tripdate, str_ProductName, str_ProductCode, str_Uom, str_Order, str_Dispatch, str_Verify;
     TextView company_name, route_name, route_code, user_name, sales_print;
     private ListView tdc_products_list_preview;
     private LinearLayout tdc_sales_save_layout;
@@ -66,8 +65,7 @@ public class TripsheetStockPreview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tripsheet_stock_preview);
 
-
-
+        try {
             applicationContext = getApplicationContext();
             activityContext = TripsheetStockPreview.this;
 
@@ -76,13 +74,13 @@ public class TripsheetStockPreview extends AppCompatActivity {
             loggedInUserName = mmSharedPreferences.getString("loginusername");
             str_routecode = (mmSharedPreferences.getString("routecode") + ",");
 
-      //  myList= new ProductsBean();
+            //  myList= new ProductsBean();
             mDBHelper = new DBHelper(TripsheetStockPreview.this);
 
-       // myList= mDBHelper.fetchAllRecordsFromProductsTable();
+            // myList= mDBHelper.fetchAllRecordsFromProductsTable();
 
 
-        this.getSupportActionBar().setTitle("ROUTE STOCK VALUE");
+            this.getSupportActionBar().setTitle("ROUTE STOCK VALUE");
             this.getSupportActionBar().setSubtitle(null);
             this.getSupportActionBar().setLogo(R.drawable.route_white);
             // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
@@ -99,16 +97,14 @@ public class TripsheetStockPreview extends AppCompatActivity {
             productsDispatchListHashMap = new HashMap<>();
             productsVerifyListHashMap = new HashMap<>();
 
-        ArrayList<ProductsBean> pbean=new ArrayList<ProductsBean>();
-
-
+            ArrayList<ProductsBean> pbean = new ArrayList<ProductsBean>();
 
             Bundle bundle = getIntent().getExtras();
-            if (bundle != null)
+            if (bundle != null) {
                 tripSheetId = bundle.getString("tripSheetId");
-                 str_Tripcode=bundle.getString("tripsheetCode");
-                 str_Tripdate=bundle.getString("tripsheetDate");
-
+                str_Tripcode = bundle.getString("tripsheetCode");
+                str_Tripdate = bundle.getString("tripsheetDate");
+            }
 
             sales_print = (TextView) findViewById(R.id.stock_print);
             company_name = (TextView) findViewById(R.id.tdc_sales_company_name);
@@ -124,35 +120,39 @@ public class TripsheetStockPreview extends AppCompatActivity {
             user_name.setText("by " + loggedInUserName);
             route_name.setText(mmSharedPreferences.getString("routename"));
             route_code.setText(str_routecode);
-            tripsheet_no_text_view.setText(str_Tripcode +",");
+
+            if (str_Tripcode != null && str_Tripcode.length() > 0)
+                tripsheet_no_text_view.setText(str_Tripcode + ",");
+            else
+                tripsheet_no_text_view.setText(" - ");
+
             sale_date_time_text_view.setText(str_Tripdate);
 
-           // for (int i=0;i<myList.size();i++){
-               // Log.i("UOM",myList.get(i)+"");
+            // for (int i=0;i<myList.size();i++){
+            // Log.i("UOM",myList.get(i)+"");
 
-                //String str_Pro_id=myList.get(i).getProductId();
-              //Log.i("UOM",str_Uom);
-                //Log.i("PRODUCT_ID::",str_Pro_id);
-                //test[str_Pro_id] =str_Uom;
-
+            //String str_Pro_id=myList.get(i).getProductId();
+            //Log.i("UOM",str_Uom);
+            //Log.i("PRODUCT_ID::",str_Pro_id);
+            //test[str_Pro_id] =str_Uom;
 
 
             mTripsheetsModel = new TripsheetsModel(this, TripsheetStockPreview.this);
             ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
             selectedList = new ArrayList<>(tripsheetsStockLists.size());
-        //Log.i("tripsheetSize", tripsheetsStockLists.size()+"");
-      //  Log.i("mylistSize", myList.size()+"");
-            for( int i=0;i<tripsheetsStockLists.size();i++){
+            //Log.i("tripsheetSize", tripsheetsStockLists.size()+"");
+            //  Log.i("mylistSize", myList.size()+"");
+            for (int i = 0; i < tripsheetsStockLists.size(); i++) {
 
-                str_ProductName=tripsheetsStockLists.get(i).getmTripsheetStockProductName();
-                str_ProductCode=tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
+                str_ProductName = tripsheetsStockLists.get(i).getmTripsheetStockProductName();
+                str_ProductCode = tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
 
-                myList=mDBHelper.getProductUnitByProductCode(str_ProductCode);
-                str_Uom=myList;
-                str_Order=tripsheetsStockLists.get(i).getmTripsheetStockProductOrderQuantity();
-                str_Dispatch=tripsheetsStockLists.get(i).getmTripsheetStockDispatchQuantity();
+                myList = mDBHelper.getProductUnitByProductCode(str_ProductCode);
+                str_Uom = myList;
+                str_Order = tripsheetsStockLists.get(i).getmTripsheetStockProductOrderQuantity();
+                str_Dispatch = tripsheetsStockLists.get(i).getmTripsheetStockDispatchQuantity();
                 str_Verify = tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity();
-               // str_Uom=mmSharedPreferences.getString("UOM");
+                // str_Uom=mmSharedPreferences.getString("UOM");
                 String[] temp = new String[6];
                 temp[0] = str_ProductName;
                 temp[1] = str_Uom;
@@ -163,7 +163,6 @@ public class TripsheetStockPreview extends AppCompatActivity {
 
                 selectedList.add(temp);
             }
-
 
 
             if (tripsheetsStockLists.size() > 0) {
@@ -177,82 +176,83 @@ public class TripsheetStockPreview extends AppCompatActivity {
             }
 
 
-        sales_print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int pageheight = 300 + selectedList.size() * 60;
-                Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
-                Canvas canvas = new Canvas(bmOverlay);
-                canvas.drawColor(Color.WHITE);
-                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                paint.setAntiAlias(true);
-                paint.setFilterBitmap(true);
-                paint.setDither(true);
-                paint.setColor(Color.parseColor("#000000"));
-                paint.setTextSize(26);
+            sales_print.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pageheight = 300 + selectedList.size() * 60;
+                    Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
+                    Canvas canvas = new Canvas(bmOverlay);
+                    canvas.drawColor(Color.WHITE);
+                    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                    paint.setAntiAlias(true);
+                    paint.setFilterBitmap(true);
+                    paint.setDither(true);
+                    paint.setColor(Color.parseColor("#000000"));
+                    paint.setTextSize(26);
 
-                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
-                paint.setTextSize(20);
-                canvas.drawText(str_routecode, 5, 80, paint);
-                paint.setTextSize(20);
-                canvas.drawText(mmSharedPreferences.getString("routename"), 200, 80, paint);
-                paint.setTextSize(20);
-                canvas.drawText("ROUTE STOCK,", 5, 120, paint);
-                paint.setTextSize(20);
-                canvas.drawText("by " + mmSharedPreferences.getString("loginusername"), 200, 120, paint);
-                paint.setTextSize(20);
-                canvas.drawText(str_Tripcode, 5, 150, paint);
-                paint.setTextSize(20);
-                canvas.drawText(str_Tripdate, 170, 150, paint);
-                paint.setTextSize(20);
-                //  canvas.drawText(str_agentname, 5, 180, paint);
-                //  canvas.drawText(mmSharedPreferences.getString("agentCode"), 200, 180, paint);
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(str_routecode, 5, 80, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(mmSharedPreferences.getString("routename"), 200, 80, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("ROUTE STOCK,", 5, 120, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("by " + mmSharedPreferences.getString("loginusername"), 200, 120, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(str_Tripcode, 5, 150, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(str_Tripdate, 170, 150, paint);
+                    paint.setTextSize(20);
+                    //  canvas.drawText(str_agentname, 5, 180, paint);
+                    //  canvas.drawText(mmSharedPreferences.getString("agentCode"), 200, 180, paint);
 
-                canvas.drawText("----------------------------------------------------", 5, 180, paint);
-                canvas.drawText("Product", 5, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("UOM", 110, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Order", 160, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Dispatch", 230, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Verify", 330, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("----------------------------------------------------", 5, 235, paint);
+                    canvas.drawText("----------------------------------------------------", 5, 180, paint);
+                    canvas.drawText("Product", 5, 220, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("UOM", 110, 220, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("Order", 160, 220, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("Dispatch", 230, 220, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("Verify", 330, 220, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("----------------------------------------------------", 5, 235, paint);
 
-                int st = 250;
-                paint.setTextSize(17);
-                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                    int st = 250;
+                    paint.setTextSize(17);
+                    // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
 
-                for (int i = 0; i < selectedList.size(); i++) {
-                    String[] temps = selectedList.get(i);
-                    canvas.drawText(temps[0], 5, st, paint);
-                    canvas.drawText(temps[1], 115, st, paint);
-                    canvas.drawText(temps[2], 175, st, paint);
-                    canvas.drawText(temps[3], 245, st, paint);
-                    canvas.drawText(temps[4], 315, st, paint);
+                    for (int i = 0; i < selectedList.size(); i++) {
+                        String[] temps = selectedList.get(i);
+                        canvas.drawText(temps[0], 5, st, paint);
+                        canvas.drawText(temps[1], 115, st, paint);
+                        canvas.drawText(temps[2], 175, st, paint);
+                        canvas.drawText(temps[3], 245, st, paint);
+                        canvas.drawText(temps[4], 315, st, paint);
 
-                    st = st + 30;
-                    canvas.drawText(temps[5], 5, st, paint);
-                    st = st + 30;
-                    // canvas.drawText("FROM:" + temps[7], 100, st, paint);
-                    //canvas.drawText("TO:" + temps[8], 250, st, paint);
+                        st = st + 30;
+                        canvas.drawText(temps[5], 5, st, paint);
+                        st = st + 30;
+                        // canvas.drawText("FROM:" + temps[7], 100, st, paint);
+                        //canvas.drawText("TO:" + temps[8], 250, st, paint);
 
 
-                    //  canvas.drawText("----------------------------------------------------", 5, st, paint);
+                        //  canvas.drawText("----------------------------------------------------", 5, st, paint);
+                    }
+
+
+                    st = st + 20;
+                    canvas.drawText("--------X---------", 100, st, paint);
+                    com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
                 }
-
-
-                st = st + 20;
-                canvas.drawText("--------X---------", 100, st, paint);
-                com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
-            }
-        });
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-
 
 
     public void loadTripsData(ArrayList<TripsheetsStockList> tripsStockList) {
@@ -264,7 +264,7 @@ public class TripsheetStockPreview extends AppCompatActivity {
         tdc_products_list_preview.setAdapter(mTripsheetsStockPreviewAdapter);
     }
 
-        @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
@@ -289,15 +289,13 @@ public class TripsheetStockPreview extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-
         menu.findItem(R.id.notifications).setVisible(false);
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.Add).setVisible(false);
-
         menu.findItem(R.id.autorenew).setVisible(true);
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -308,6 +306,5 @@ public class TripsheetStockPreview extends AppCompatActivity {
         intent.putExtra("tripsheetId", tripSheetId);
         startActivity(intent);
         finish();
-
     }
 }

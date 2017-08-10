@@ -132,7 +132,8 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
                     i.putExtra("agentSoId", currentSaleOrder.getmTripshetSOId());
                     i.putExtra("agentSoCode", currentSaleOrder.getmTripshetSOCode());
                     i.putExtra("agentSoDate", currentSaleOrder.getmTripshetSODate());
-                    i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName() + currentSaleOrder.getmTripshetSOAgentLastName());
+                    i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName());
+                    //i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName() + currentSaleOrder.getmTripshetSOAgentLastName());
                     activity.startActivity(i);
                     activity.finish();
                 } catch (JSONException e) {
