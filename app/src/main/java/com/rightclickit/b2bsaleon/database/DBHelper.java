@@ -4217,7 +4217,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     deliveredProduct.setSubTotal(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SALEVALUE)));
                     deliveredProduct.setCreatedTime(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
 
-                    deliveredProductsList.add(deliveredProduct);
+                    if (Double.parseDouble(deliveredProduct.getQuantity()) > 0)
+                        deliveredProductsList.add(deliveredProduct);
 
                 } while (c.moveToNext());
             }
@@ -4301,5 +4302,23 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return paymentsBean;
+    }
+
+    public void updateTripSheetStatus(String tripSheetId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_TRIPSHEET_STATUS, 1);
+
+            int status = db.update(TABLE_TRIPSHEETS_LIST, values, KEY_TRIPSHEET_ID + " = ?", new String[]{tripSheetId});
+
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
     }
 }

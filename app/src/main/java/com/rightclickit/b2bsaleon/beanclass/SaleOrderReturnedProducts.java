@@ -70,4 +70,17 @@ public class SaleOrderReturnedProducts implements Serializable {
     public void setClosingBalance(String closingBalance) {
         this.closingBalance = closingBalance;
     }
+
+    @Override
+    public String toString() {
+        return "SaleOrderReturnedProducts{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", openingBalance='" + openingBalance + '\'' +
+                ", delivered='" + delivered + '\'' +
+                ", returned='" + returned + '\'' +
+                ", closingBalance='" + closingBalance + '\'' +
+                '}';
+    }
 }

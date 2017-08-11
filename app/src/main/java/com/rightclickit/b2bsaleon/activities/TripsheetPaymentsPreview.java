@@ -9,6 +9,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.TripSheetsPaymentPreviewDeliveredProductsAdapter;
+import com.rightclickit.b2bsaleon.adapters.TripSheetsPaymentPreviewReturnedProductsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderDeliveredProducts;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderReturnedProducts;
@@ -36,6 +38,8 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
     private ArrayList<SaleOrderReturnedProducts> returnedProductsList;
     private PaymentsBean paymentsDetails = null;
     private double totalAmount = 0.0;
+    private TripSheetsPaymentPreviewDeliveredProductsAdapter tripSheetsPaymentPreviewDeliveredProductsAdapter;
+    private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,12 +113,12 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
             if (saleOrdersDetails != null) {
                 if (saleOrdersDetails.getmTripshetSOCode().isEmpty())
-                    tv_sale_order_no.setText("-");
+                    tv_sale_order_no.setText("Sale # -");
                 else
                     tv_sale_order_no.setText(String.format("Sale # %s", saleOrdersDetails.getmTripshetSOCode()));
 
                 if (saleOrdersDetails.getmTripshetSODate().isEmpty())
-                    tv_sale_order_date.setText("Sale # -");
+                    tv_sale_order_date.setText("-");
                 else
                     tv_sale_order_date.setText(saleOrdersDetails.getmTripshetSODate());
 
@@ -135,6 +139,9 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 tax_total_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())));
                 price_total.setText(Utility.getFormattedCurrency(totalAmount));
                 sub_total.setText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())));
+
+                tripSheetsPaymentPreviewDeliveredProductsAdapter = new TripSheetsPaymentPreviewDeliveredProductsAdapter(activityContext, this, deliveredProductsList);
+                delivered_products_list_view.setAdapter(tripSheetsPaymentPreviewDeliveredProductsAdapter);
             }
 
             if (paymentsDetails != null) {
@@ -144,6 +151,10 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 bank_name.setText(paymentsDetails.getPayments_bankName());
             }
 
+            if (returnedProductsList.size() > 0) {
+                tripSheetsPaymentPreviewReturnedProductsAdapter = new TripSheetsPaymentPreviewReturnedProductsAdapter(activityContext, this, returnedProductsList);
+                returned_products_list_view.setAdapter(tripSheetsPaymentPreviewReturnedProductsAdapter);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

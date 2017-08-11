@@ -115,4 +115,22 @@ public class SaleOrderDeliveredProducts implements Serializable {
     public void setCreatedTime(String createdTime) {
         this.createdTime = createdTime;
     }
+
+    @Override
+    public String toString() {
+        return "SaleOrderDeliveredProducts{" +
+                "deliveryNo=" + deliveryNo +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", quantity='" + quantity + '\'' +
+                ", unitRate='" + unitRate + '\'' +
+                ", productTax='" + productTax + '\'' +
+                ", productAmount='" + productAmount + '\'' +
+                ", totalTax='" + totalTax + '\'' +
+                ", totalAmount='" + totalAmount + '\'' +
+                ", subTotal='" + subTotal + '\'' +
+                ", createdTime='" + createdTime + '\'' +
+                '}';
+    }
 }

@@ -251,20 +251,20 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.22"
-                        android:gravity="center"
-                        android:text="Tax"
+                        android:layout_gravity="center|end"
+                        android:layout_weight="0.2"
+                        android:gravity="center|end"
+                        android:text="Amount"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center|end"
-                        android:layout_weight="0.2"
-                        android:gravity="center|end"
-                        android:text="Amount"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.22"
+                        android:gravity="center"
+                        android:text="Tax"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
 
@@ -280,6 +280,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:divider="@android:color/transparent"
+                    android:minHeight="500dp"
                     android:smoothScrollbar="true" />
 
                 <View
@@ -639,6 +640,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:divider="@android:color/transparent"
+                    android:minHeight="500dp"
                     android:smoothScrollbar="true" />
 
                 <View
