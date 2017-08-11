@@ -297,7 +297,7 @@ public class TripsheetPayments extends AppCompatActivity {
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.Add).setVisible(false);
-        menu.findItem(R.id.autorenew).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(true);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -387,7 +387,7 @@ public class TripsheetPayments extends AppCompatActivity {
      * Type: 0 is for Cash
      * 1 is for Cheque
      *
-     * @param i
+     * @param
      */
     private PaymentsBean formAPIData(int type) {
         PaymentsBean paymentsBean = new PaymentsBean();

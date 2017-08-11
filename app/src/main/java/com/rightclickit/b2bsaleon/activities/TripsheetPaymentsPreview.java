@@ -1,16 +1,29 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetsPaymentPreviewDeliveredProductsAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripSheetsPaymentPreviewReturnedProductsAdapter;
+import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderDeliveredProducts;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderReturnedProducts;
@@ -40,7 +53,10 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
     private double totalAmount = 0.0;
     private TripSheetsPaymentPreviewDeliveredProductsAdapter tripSheetsPaymentPreviewDeliveredProductsAdapter;
     private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
+    TextView print;
 
+    ArrayList<String[]> selectedList;
+    SaleOrderDeliveredProducts deliveredProduct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +78,8 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             activityContext = TripsheetPaymentsPreview.this;
             mDBHelper = new DBHelper(activityContext);
             mmSharedPreferences = new MMSharedPreferences(activityContext);
+
+            print=(TextView) findViewById(R.id.tv_print_print);
 
             tv_companyName = (TextView) findViewById(R.id.tv_companyName);
             tv_routecode = (TextView) findViewById(R.id.tv_routecode);
@@ -127,15 +145,23 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 received_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOReceivedAmount())));
                 closing_balance.setText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOCBAmount())));
             }
-
+            selectedList=new ArrayList<>(deliveredProductsList.size());
             if (deliveredProductsList.size() > 0) {
                 for (SaleOrderDeliveredProducts products : deliveredProductsList)
                     totalAmount = totalAmount + Double.parseDouble(products.getProductAmount());
 
-                SaleOrderDeliveredProducts deliveredProduct = deliveredProductsList.get(0);
+                 deliveredProduct = deliveredProductsList.get(0);
                 tv_delivery_no.setText(String.format("Delivery # RD%03d", deliveredProduct.getDeliveryNo()));
                 tv_delivery_date.setText(Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT));
 
+                String[] temp = new String[6];
+                temp[0] = deliveredProduct.getName();
+                temp[1] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(deliveredProduct.getQuantity())));
+                temp[2] = Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getUnitRate()));
+                temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(deliveredProduct.getProductTax())));
+                temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(deliveredProduct.getProductAmount())));
+                temp[5] = deliveredProduct.getCode();
+                selectedList.add(temp);
                 tax_total_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())));
                 price_total.setText(Utility.getFormattedCurrency(totalAmount));
                 sub_total.setText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())));
@@ -158,7 +184,167 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "print", Toast.LENGTH_LONG).show();
+                int pageheight = 300 + selectedList.size() * 60;
+                Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
+                Canvas canvas = new Canvas(bmOverlay);
+                canvas.drawColor(Color.WHITE);
+                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                paint.setAntiAlias(true);
+                paint.setFilterBitmap(true);
+                paint.setDither(true);
+                paint.setColor(Color.parseColor("#000000"));
+                paint.setTextSize(26);
+
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                canvas.drawText(companyName, 5, 50, paint);
+                paint.setTextSize(20);
+                canvas.drawText(routeCode, 5, 80, paint);
+                canvas.drawText(routeName, 200, 80, paint);
+                canvas.drawText("PAYMENT INFO,", 5, 120, paint);
+                canvas.drawText("by " + loggedInUserName, 200, 120, paint);
+                canvas.drawText(String.format("Sale # %s", saleOrdersDetails.getmTripshetSOCode()), 5, 150, paint);
+                canvas.drawText(saleOrdersDetails.getmTripshetSODate(), 200, 150, paint);
+                canvas.drawText(String.format("Delivery # RD%03d", deliveredProduct.getDeliveryNo()), 5, 180, paint);
+                canvas.drawText(Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT), 200, 180, paint);
+                paint.setTextSize(30);
+                canvas.drawText("------------------------------------", 5, 200, paint);
+                paint.setTextSize(20);
+                canvas.drawText("Product", 5, 220, paint);
+                paint.setTextSize(20);
+                canvas.drawText("Qty", 100, 220, paint);
+                paint.setTextSize(20);
+                canvas.drawText("Price", 160, 220, paint);
+                paint.setTextSize(20);
+                canvas.drawText("Amount", 230, 220, paint);
+                paint.setTextSize(20);
+                canvas.drawText("Tax", 320, 220, paint);
+
+                canvas.drawText("-------------------------------------", 5, 235, paint);
+
+
+                int st = 250;
+                paint.setTextSize(17);
+//                    for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                for (int i = 0; i < selectedList.size(); i++) {
+                    String[] temps = selectedList.get(i);
+                    //String[] temps = selectedList.get(i-1);
+                    canvas.drawText(temps[0], 5, st, paint);
+                    canvas.drawText(temps[1], 115, st, paint);
+                    canvas.drawText(temps[2], 175, st, paint);
+                    canvas.drawText(temps[3], 245, st, paint);
+                    canvas.drawText(temps[4], 315, st, paint);
+
+                    st = st + 30;
+                    canvas.drawText(temps[5], 5, st, paint);
+
+
+                    st = st + 30;
+                    //  canvas.drawText("----------------------------------------------------", 5, st, paint);
+
+
+                }
+
+                canvas.drawText("----------------------------------------------------", 5, st, paint);
+
+                st = st + 20;
+                canvas.drawText("Total:", 5, st, paint);
+                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())), 70, st, paint);
+                canvas.drawText(Utility.getFormattedCurrency(totalAmount), 170, st, paint);
+                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())), 280, st, paint);
+                st = st + 20;
+                canvas.drawText("PAYMENT INFO", 5, st, paint);
+                st = st + 20;
+                if (paymentsDetails.getPayments_type().equals("0")) {
+                    canvas.drawText("MOP", 5, st, paint);
+                    canvas.drawText("Cash Paid", 60, st, paint);
+                    st = st + 20;
+                }
+                else {
+                    canvas.drawText("MOP", 5, st, paint);
+                    canvas.drawText("Cheque", 60, st, paint);
+                    st = st + 20;
+                    canvas.drawText(paymentsDetails.getPayments_chequeNumber(), 5, st, paint);
+                    canvas.drawText(paymentsDetails.getPayments_chequeDate(), 120, st, paint);
+                    canvas.drawText(paymentsDetails.getPayments_bankName(), 250, st, paint);
+                }
+                    st=st+30;
+                canvas.drawText("OB", 5, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText("S.Order", 120, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText("Received", 210, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText("CB", 300, st, paint);
+                  st=st+30;
+                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOOpAmount())), 5, st, paint);
+                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOValue())), 120, st, paint);
+                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOReceivedAmount())), 210, st, paint);
+                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOCBAmount())), 300, st, paint);
+                 st=st+30;
+                canvas.drawText("CRATES", 5, st, paint);
+                st=st+30;
+                canvas.drawText("Product", 5, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText("OB", 100, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText("Delivery", 160, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText("Return", 230, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText("CB", 320, st, paint);
+                st=st+30;
+                canvas.drawText("--------X---------", 100, st, paint);
+                com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+            }
+        });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.Add) {
+            Intent i = new Intent(TripsheetPaymentsPreview.this, TDCSalesListActivity.class);
+            startActivity(i);
+            finish();
+            return true;
+        }
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return true;
+        }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+
+        menu.findItem(R.id.notifications).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(false);
+        menu.findItem(R.id.logout).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.Add).setVisible(false);
+
+        menu.findItem(R.id.autorenew).setVisible(true);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
 
     @Override
     public void onBackPressed() {

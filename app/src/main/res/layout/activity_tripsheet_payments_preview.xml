@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/layout_background"
+        android:layout_marginBottom="50dp"
         android:orientation="vertical">
 
         <TextView
@@ -83,7 +84,7 @@
                 android:layout_weight="0.8"
                 android:gravity="left"
                 android:paddingLeft="10dp"
-                android:text="Delivery Info"
+                android:text="Payment Info"
                 android:textAllCaps="true"
                 android:textColor="@color/greydark"
                 android:textSize="16sp" />
@@ -200,11 +201,13 @@
             android:layout_height="1dp"
             android:background="@color/view_line" />
 
+
+
+
         <ScrollView
-            android:id="@+id/scrollViewSearch"
+            android:id="@+id/scrollViewSearchmain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="60dp"
             android:scrollbars="none">
 
             <LinearLayout
@@ -224,6 +227,7 @@
                         android:layout_gravity="left"
                         android:layout_weight="0.19"
                         android:gravity="left"
+                        android:textStyle="bold"
                         android:text="Product"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
@@ -235,6 +239,7 @@
                         android:layout_weight="0.2"
                         android:gravity="center"
                         android:text="Quantity"
+                        android:textStyle="bold"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
 
@@ -245,6 +250,7 @@
                         android:layout_weight="0.21"
                         android:gravity="center"
                         android:text="Price"
+                        android:textStyle="bold"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
 
@@ -255,6 +261,7 @@
                         android:layout_weight="0.2"
                         android:gravity="center|end"
                         android:text="Amount"
+                        android:textStyle="bold"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
 
@@ -265,6 +272,7 @@
                         android:layout_weight="0.22"
                         android:gravity="center"
                         android:text="Tax"
+                        android:textStyle="bold"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
 
@@ -278,16 +286,14 @@
                 <ListView
                     android:id="@+id/delivered_products_list_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
                     android:divider="@android:color/transparent"
-                    android:minHeight="500dp"
                     android:smoothScrollbar="true" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/view_line" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -302,7 +308,7 @@
                         android:layout_weight="0.25"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:padding="10dp">
+                        >
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -346,288 +352,301 @@
                             android:textSize="14sp" />
 
                     </LinearLayout>
+                </LinearLayout>
 
-                    <View
+                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="@color/view_line" />
 
+                <ScrollView
+                    android:id="@+id/scrollViewSearch1"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:scrollbars="none">
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal">
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:padding="5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="7dp"
+                                    android:gravity="left"
+                                    android:text="Payment Info"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/greydark"
+                                    android:textSize="16sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:orientation="horizontal"
+                                >
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:gravity="center"
+                                    android:text="MOP: "
+                                    android:textColor="@color/greydark"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/mode_of_payment"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:background="@drawable/border_btn"
+                                    android:gravity="center"
+                                    android:padding="5dp"
+                                    android:text="cheque"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/cheque_number"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_marginLeft="5dp"
+                                    android:gravity="end"
+                                    android:padding="3dp"
+                                    android:text="cheque no "
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/cheque_date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_marginLeft="5dp"
+                                    android:gravity="end"
+                                    android:padding="3dp"
+                                    android:text="10/08/2017"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/bank_name"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_marginLeft="5dp"
+                                    android:gravity="end"
+                                    android:padding="3dp"
+                                    android:text="HDFC"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="5dp">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="OB"
+                                android:textColor="@color/greydark"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="S.Order"
+                                android:textColor="@color/greydark"
+                                android:textSize="14sp" />
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Received"
+                                android:textColor="@color/greydark"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="CB"
+                                android:textColor="@color/greydark"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="horizontal"
+                            android:padding="5dp">
+
+                            <TextView
+                                android:id="@+id/opening_balance"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="\u20B9 2000.00"
+                                android:textColor="@color/greydark"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/sale_order_amount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="\u20B9 3000.00"
+                                android:textColor="@color/greydark"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/received_amount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="\u20B9 1500.00"
+                                android:textColor="@color/greydark"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/closing_balance"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="\u20B9 3500.00"
+                                android:textColor="@color/greydark"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="7dp"
                             android:gravity="left"
-                            android:text="Payment Info"
+                            android:padding="10dp"
+                            android:text="Crates"
                             android:textAllCaps="true"
                             android:textColor="@color/greydark"
                             android:textSize="16sp" />
 
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:orientation="horizontal"
-                        android:padding="3dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:gravity="center"
-                            android:text="MOP: "
-                            android:textColor="@color/greydark"
-                            android:textSize="14sp" />
+                            android:orientation="horizontal"
+                            android:padding="5dp">
 
-                        <TextView
-                            android:id="@+id/mode_of_payment"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="5dp"
-                            android:background="@drawable/border_btn"
-                            android:gravity="center"
-                            android:padding="5dp"
-                            android:text="cheque"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Product"
+                                android:textColor="@color/greydark"
+                                android:textSize="14sp" />
 
-                    </LinearLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="OB"
+                                android:textColor="@color/greydark"
+                                android:textSize="14sp" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Delivery"
+                                android:textColor="@color/greydark"
+                                android:textSize="14sp" />
 
-                        <TextView
-                            android:id="@+id/cheque_number"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_marginLeft="5dp"
-                            android:gravity="end"
-                            android:padding="3dp"
-                            android:text="cheque no "
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="Return"
+                                android:textColor="@color/greydark"
+                                android:textSize="14sp" />
 
-                        <TextView
-                            android:id="@+id/cheque_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_marginLeft="5dp"
-                            android:gravity="end"
-                            android:padding="3dp"
-                            android:text="10/08/2017"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_weight="0.25"
+                                android:gravity="center"
+                                android:text="CB"
+                                android:textColor="@color/greydark"
+                                android:textSize="14sp" />
 
-                        <TextView
-                            android:id="@+id/bank_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:layout_marginLeft="5dp"
-                            android:gravity="end"
-                            android:padding="3dp"
-                            android:text="HDFC"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:padding="10dp"
-                    android:text="Payment"
-                    android:textAllCaps="true"
-                    android:textColor="@color/greydark"
-                    android:textSize="16sp"
-                    android:visibility="gone" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="OB"
-                        android:textColor="@color/greydark"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="S.Order"
-                        android:textColor="@color/greydark"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="Received"
-                        android:textColor="@color/greydark"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="CB"
-                        android:textColor="@color/greydark"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="horizontal"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:id="@+id/opening_balance"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="\u20B9 2000.00"
-                        android:textColor="@color/greydark"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/sale_order_amount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="\u20B9 3000.00"
-                        android:textColor="@color/greydark"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/received_amount"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="\u20B9 1500.00"
-                        android:textColor="@color/greydark"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/closing_balance"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="\u20B9 3500.00"
-                        android:textColor="@color/greydark"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:padding="10dp"
-                    android:text="Crates"
-                    android:textAllCaps="true"
-                    android:textColor="@color/greydark"
-                    android:textSize="16sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="Product"
-                        android:textColor="@color/greydark"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="OB"
-                        android:textColor="@color/greydark"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="Delivery"
-                        android:textColor="@color/greydark"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="Return"
-                        android:textColor="@color/greydark"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.25"
-                        android:gravity="center"
-                        android:text="CB"
-                        android:textColor="@color/greydark"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
+                </ScrollView>
 
                 <View
                     android:layout_width="match_parent"
@@ -640,7 +659,6 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:divider="@android:color/transparent"
-                    android:minHeight="500dp"
                     android:smoothScrollbar="true" />
 
                 <View
@@ -648,13 +666,23 @@
                     android:layout_height="1dp"
                     android:background="@color/view_line" />
 
+
+<!--
+                <ScrollView
+                    android:id="@+id/scrollViewSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="60dp"
+                    android:visibility="gone"
+                    android:scrollbars="none">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:orientation="horizontal"
                     android:padding="5dp"
-                    android:visibility="gone">
+                   >
 
                     <TextView
                         android:layout_width="match_parent"
@@ -707,9 +735,10 @@
                         android:textSize="14sp" />
 
                 </LinearLayout>
+              </ScrollView>
+-->
 
-            </LinearLayout>
-
+         </LinearLayout>
         </ScrollView>
 
     </LinearLayout>
@@ -729,7 +758,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_weight="0.25"
             android:gravity="center">
