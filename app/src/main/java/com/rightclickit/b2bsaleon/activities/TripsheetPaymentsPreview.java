@@ -114,7 +114,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     tv_sale_order_no.setText(String.format("Sale # %s", saleOrdersDetails.getmTripshetSOCode()));
 
                 if (saleOrdersDetails.getmTripshetSODate().isEmpty())
-                    tv_sale_order_date.setText("-");
+                    tv_sale_order_date.setText("Sale # -");
                 else
                     tv_sale_order_date.setText(saleOrdersDetails.getmTripshetSODate());
 
