@@ -366,6 +366,6 @@ public class TripSheetViewPreview extends AppCompatActivity {
     }
 
     public void closeTripSheet(View v) {
-        //mDBHelper.updateTripSheetStatus(mTripSheetCode);
+        mDBHelper.updateTripSheetStatus(tripSheetId);
     }
 }
