@@ -106,7 +106,7 @@ public class TripsheetPayments extends AppCompatActivity {
             mBankName = (EditText) findViewById(R.id.bankName);
             mChequeDate = (EditText) findViewById(R.id.date);
             Calendar cal = Calendar.getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
             currentDate = df.format(cal.getTime());
             mChequeDate.setText(currentDate);
 //        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -220,7 +220,7 @@ public class TripsheetPayments extends AppCompatActivity {
             else
                 mAmountText.setText("0.00");
             //mAmountText.setText(currentDeliveriesBean.getmTripsheetDelivery_SaleValue());
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }

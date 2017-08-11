@@ -13,6 +13,8 @@ import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
 import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.beanclass.SaleOrderDeliveredProducts;
+import com.rightclickit.b2bsaleon.beanclass.SaleOrderReturnedProducts;
 import com.rightclickit.b2bsaleon.beanclass.SpecialPriceBean;
 import com.rightclickit.b2bsaleon.beanclass.StakeHolderTypes;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
@@ -3829,7 +3831,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Map<String, String> tripsheetsDeliveries = new HashMap<>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "' AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + agentId + "'";
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + ", " + KEY_TRIPSHEET_DELIVERY_QUANTITY + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "' AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + agentId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -4146,5 +4148,158 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return openingBalance;
+    }
+
+    public TripsheetSOList fetchTripSheetSaleOrderDetails(String tripSheetId, String saleOrderId, String agentId) {
+        TripsheetSOList saleOrdersDetails = null;
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_SO_LIST + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = '" + tripSheetId + "' AND " + KEY_TRIPSHEET_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_SO_AGENTID + " = '" + agentId + "'";
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    saleOrdersDetails = new TripsheetSOList();
+                    saleOrdersDetails.setmTripshetSOCode(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_CODE)));
+                    saleOrdersDetails.setmTripshetSODate(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_DATE)));
+                    //saleOrdersDetails.setmTripshetSOValue(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_VALUE)));
+                    saleOrdersDetails.setmTripshetSOOpAmount(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_OPAMOUNT)));
+                    //saleOrdersDetails.setmTripshetSOCBAmount(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_CBAMOUNT)));
+
+                    double saleOrderValue = fetchTripSheetSaleOrderValueForAgentId(tripSheetId, saleOrderId, agentId);
+                    double receivedAmount = fetchTripSheetSaleOrderReceivedAmount(tripSheetId, saleOrderId);
+                    double dueAmount = (Double.parseDouble(saleOrdersDetails.getmTripshetSOOpAmount()) + saleOrderValue) - receivedAmount;
+
+                    saleOrdersDetails.setmTripshetSOValue(String.valueOf(saleOrderValue));
+                    saleOrdersDetails.setmTripshetSOReceivedAmount(String.valueOf(receivedAmount));
+                    saleOrdersDetails.setmTripshetSODueAmount(String.valueOf(dueAmount));
+                    saleOrdersDetails.setmTripshetSOCBAmount(String.valueOf(dueAmount));
+
+                } while (cursor.moveToNext());
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return saleOrdersDetails;
+    }
+
+    public ArrayList<SaleOrderDeliveredProducts> getDeliveredProductsListForSaleOrder(String tripSheetId, String saleOrderId, String agentId) {
+        ArrayList<SaleOrderDeliveredProducts> deliveredProductsList = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_NO + ", " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES + ", "
+                    + KEY_TRIPSHEET_DELIVERY_QUANTITY + ", " + KEY_TRIPSHEET_DELIVERY_UNITPRICE + ", " + KEY_TRIPSHEET_DELIVERY_TAXAMOUNT + ", " + KEY_TRIPSHEET_DELIVERY_AMOUNT + ", "
+                    + KEY_TRIPSHEET_DELIVERY_TAXTOTAL + ", " + KEY_TRIPSHEET_DELIVERY_SALEVALUE + ", " + KEY_TRIPSHEET_DELIVERY_CREATEDON
+                    + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " D LEFT JOIN " + TABLE_PRODUCTS + " P ON D." + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + " = P." + KEY_PRODUCT_ID
+                    + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = '" + tripSheetId + "' AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + agentId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    SaleOrderDeliveredProducts deliveredProduct = new SaleOrderDeliveredProducts();
+                    deliveredProduct.setDeliveryNo(c.getInt(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NO)));
+                    deliveredProduct.setId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)));
+                    deliveredProduct.setName(c.getString(c.getColumnIndex(KEY_PRODUCT_TITLE)));
+                    deliveredProduct.setCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES)));
+                    deliveredProduct.setQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_QUANTITY)));
+                    deliveredProduct.setUnitRate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UNITPRICE)));
+                    deliveredProduct.setProductTax(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT)));
+                    deliveredProduct.setProductAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_AMOUNT)));
+                    deliveredProduct.setTotalTax(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXTOTAL)));
+                    deliveredProduct.setSubTotal(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SALEVALUE)));
+                    deliveredProduct.setCreatedTime(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
+
+                    deliveredProductsList.add(deliveredProduct);
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return deliveredProductsList;
+    }
+
+    public ArrayList<SaleOrderReturnedProducts> getReturnsProductsListForSaleOrder(String tripSheetId, String saleOrderId, String agentId) {
+        ArrayList<SaleOrderReturnedProducts> returnedProductsList = new ArrayList<>();
+
+        try {
+            Map<String, String> deliveredProductsHashMap = fetchDeliveriesListByTripSheetId(tripSheetId, saleOrderId, agentId);
+
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY
+                    + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " R LEFT JOIN " + TABLE_PRODUCTS + " P ON R." + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = P." + KEY_PRODUCT_ID
+                    + " WHERE P." + KEY_PRODUCT_RETURNABLE + " = 'Y' AND " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = '" + tripSheetId + "' AND " + KEY_TRIPSHEET_RETURNS_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + agentId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    SaleOrderReturnedProducts returnedProduct = new SaleOrderReturnedProducts();
+                    returnedProduct.setId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)));
+                    returnedProduct.setName(c.getString(c.getColumnIndex(KEY_PRODUCT_TITLE)));
+                    returnedProduct.setCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
+                    returnedProduct.setOpeningBalance("0");
+                    returnedProduct.setReturned(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY)));
+                    returnedProduct.setDelivered(deliveredProductsHashMap.get(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS))));
+
+                    double closingBalance = Double.parseDouble(returnedProduct.getOpeningBalance()) + Double.parseDouble(returnedProduct.getDelivered()) - Double.parseDouble(returnedProduct.getReturned());
+                    returnedProduct.setClosingBalance(String.valueOf(closingBalance));
+
+                    returnedProductsList.add(returnedProduct);
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return returnedProductsList;
+    }
+
+    public PaymentsBean getSaleOrderPaymentDetails(String tripSheetId, String saleOrderId) {
+        PaymentsBean paymentsBean = null;
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " = '" + tripSheetId + "' AND " + KEY_TRIPSHEET_PAYMENTS_SO_ID + " = '" + saleOrderId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    paymentsBean = new PaymentsBean();
+                    paymentsBean.setPayments_type(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TYPE)));
+                    paymentsBean.setPayments_chequeNumber(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_CHE_TRANS_ID)));
+                    paymentsBean.setPayments_chequeDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_DATE)));
+                    paymentsBean.setPayments_bankName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_BANK_NAME)));
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return paymentsBean;
     }
 }

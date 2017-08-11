@@ -52,7 +52,7 @@
                 android:visibility="gone" />
 
             <TextView
-                android:id="@+id/route_name"
+                android:id="@+id/tv_route_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="left"
@@ -67,6 +67,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
             android:background="@color/view_line" />
 
         <LinearLayout
@@ -81,19 +83,20 @@
                 android:layout_weight="0.8"
                 android:gravity="left"
                 android:paddingLeft="10dp"
-                android:text="PAYMENT INFO "
+                android:text="Delivery Info"
                 android:textAllCaps="true"
                 android:textColor="@color/greydark"
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tv_user_Name"
+                android:id="@+id/tv_delivered_user_Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
                 android:layout_weight="2"
                 android:gravity="right"
                 android:paddingLeft="10dp"
+                android:paddingRight="2dp"
                 android:text="login User name "
                 android:textAllCaps="true"
                 android:textColor="@color/greydark"
@@ -104,7 +107,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="5dp">
+            android:paddingBottom="5dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/order_no"
@@ -137,25 +141,28 @@
             android:paddingBottom="5dp">
 
             <TextView
+                android:id="@+id/tv_sale_order_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:paddingLeft="10dp"
-                android:text="SO:NO"
+                android:text="-"
                 android:textAllCaps="true"
                 android:textColor="@color/greydark"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/tv_Sodate"
+                android:id="@+id/tv_sale_order_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="70dp"
                 android:gravity="left"
                 android:paddingLeft="10dp"
                 android:text="Date"
                 android:textAllCaps="true"
                 android:textColor="@color/greydark"
                 android:textSize="14sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -165,19 +172,21 @@
             android:paddingBottom="5dp">
 
             <TextView
+                android:id="@+id/tv_delivery_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:paddingLeft="10dp"
-                android:text="Delivery No"
+                android:text="Delivery # RD01"
                 android:textAllCaps="true"
                 android:textColor="@color/greydark"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/tv_paymentdate"
+                android:id="@+id/tv_delivery_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
                 android:gravity="left"
                 android:paddingLeft="10dp"
                 android:text="Date"
@@ -258,6 +267,7 @@
                         android:text="Amount"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
+
                 </LinearLayout>
 
                 <View
@@ -266,7 +276,7 @@
                     android:background="@color/view_line" />
 
                 <ListView
-                    android:id="@+id/AgentsList"
+                    android:id="@+id/delivered_products_list_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:divider="@android:color/transparent"
@@ -276,7 +286,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/view_line" />
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -298,48 +307,42 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Total Value"
+                            android:text="Total"
                             android:textColor="@color/greydark"
                             android:textSize="14sp" />
 
                         <TextView
-
-                            android:id="@+id/taxAmount"
+                            android:id="@+id/tax_total_amount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end|center"
                             android:layout_weight="1"
                             android:gravity="end|center"
-                            android:text="Rs. 0.00"
+                            android:text="\u20B9 0.00"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
                         <TextView
-
-                            android:id="@+id/Amount"
+                            android:id="@+id/price_total"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end|center"
                             android:layout_weight="1"
                             android:gravity="end|center"
-
-                            android:text="Rs. 0.00"
+                            android:text="\u20B9 10.00"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
                         <TextView
-
-                            android:id="@+id/totalAmount"
+                            android:id="@+id/sub_total"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end|center"
                             android:layout_weight="1"
                             android:gravity="end|center"
-
-                            android:text="Rs. 0.00"
+                            android:text="\u20B9 0.00"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
-
 
                     </LinearLayout>
 
@@ -349,7 +352,6 @@
                         android:background="@color/view_line" />
 
                     <LinearLayout
-                        android:id="@+id/ll_cash"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -360,16 +362,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="7dp"
                             android:gravity="left"
-                            android:text="Payment INFO"
+                            android:text="Payment Info"
                             android:textAllCaps="true"
                             android:textColor="@color/greydark"
                             android:textSize="16sp" />
 
                     </LinearLayout>
 
-
                     <LinearLayout
-                        android:id="@+id/ll_cheque"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
@@ -387,14 +387,14 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/spinnerText2"
+                            android:id="@+id/mode_of_payment"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="5dp"
                             android:background="@drawable/border_btn"
                             android:gravity="center"
-                            android:padding="3dp"
+                            android:padding="5dp"
                             android:text="cheque"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
@@ -402,16 +402,13 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/cheque"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/white"
-
                         android:orientation="horizontal">
 
-
                         <TextView
-                            android:id="@+id/cheque_No"
+                            android:id="@+id/cheque_number"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
@@ -423,30 +420,30 @@
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/chequeDate"
+                            android:id="@+id/cheque_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
                             android:layout_marginLeft="5dp"
                             android:gravity="end"
                             android:padding="3dp"
-                            android:text="00/00/00"
+                            android:text="10/08/2017"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/bankName"
+                            android:id="@+id/bank_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
                             android:layout_marginLeft="5dp"
                             android:gravity="end"
                             android:padding="3dp"
-                            android:text="hdfc"
+                            android:text="HDFC"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
-                    </LinearLayout>
 
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -458,7 +455,8 @@
                     android:text="Payment"
                     android:textAllCaps="true"
                     android:textColor="@color/greydark"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:visibility="gone" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -482,7 +480,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="0.25"
                         android:gravity="center"
-                        android:text="Order"
+                        android:text="S.Order"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
 
@@ -502,7 +500,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="0.25"
                         android:gravity="center"
-                        android:text="Due"
+                        android:text="CB"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
 
@@ -516,42 +514,46 @@
                     android:padding="5dp">
 
                     <TextView
+                        android:id="@+id/opening_balance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0.25"
                         android:gravity="center"
-                        android:text="2000.00"
+                        android:text="\u20B9 2000.00"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/sale_order_amount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0.25"
                         android:gravity="center"
-                        android:text="2000.00"
+                        android:text="\u20B9 3000.00"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/received_amount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0.25"
                         android:gravity="center"
-                        android:text="3000.00"
+                        android:text="\u20B9 1500.00"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
 
                     <TextView
+                        android:id="@+id/closing_balance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="0.25"
                         android:gravity="center"
-                        android:text="1000.00"
+                        android:text="\u20B9 3500.00"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
 
@@ -572,6 +574,16 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.25"
+                        android:gravity="center"
+                        android:text="Product"
+                        android:textColor="@color/greydark"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -616,12 +628,41 @@
 
                 </LinearLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/view_line" />
+
+                <ListView
+                    android:id="@+id/returned_products_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:divider="@android:color/transparent"
+                    android:smoothScrollbar="true" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/view_line" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:orientation="horizontal"
-                    android:padding="5dp">
+                    android:padding="5dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.25"
+                        android:gravity="center"
+                        android:text="50"
+                        android:textColor="@color/greydark"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -665,9 +706,10 @@
 
                 </LinearLayout>
 
-
             </LinearLayout>
+
         </ScrollView>
+
     </LinearLayout>
 
     <LinearLayout
