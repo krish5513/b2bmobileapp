@@ -8,10 +8,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +37,10 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class TripsheetPaymentsPreview extends AppCompatActivity {
     private Context activityContext;
@@ -55,7 +62,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
     private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
     TextView print;
 
-    ArrayList<String[]> selectedList;
+    ArrayList<String[]> selectedList,cratesList;
     SaleOrderDeliveredProducts deliveredProduct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,21 +154,22 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             }
             selectedList=new ArrayList<>(deliveredProductsList.size());
             if (deliveredProductsList.size() > 0) {
-                for (SaleOrderDeliveredProducts products : deliveredProductsList)
+                for (SaleOrderDeliveredProducts products : deliveredProductsList) {
                     totalAmount = totalAmount + Double.parseDouble(products.getProductAmount());
-
-                 deliveredProduct = deliveredProductsList.get(0);
+                    String[] temp = new String[6];
+                    temp[0] = products.getName();
+                    temp[1] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(products.getQuantity())));
+                    temp[2] = Utility.getFormattedCurrency(Double.parseDouble(products.getUnitRate()));
+                    temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(products.getProductTax())));
+                    temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(products.getProductAmount())));
+                    temp[5] = products.getCode();
+                    selectedList.add(temp);
+                }
+                deliveredProduct = deliveredProductsList.get(0);
                 tv_delivery_no.setText(String.format("Delivery # RD%03d", deliveredProduct.getDeliveryNo()));
                 tv_delivery_date.setText(Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT));
 
-                String[] temp = new String[6];
-                temp[0] = deliveredProduct.getName();
-                temp[1] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(deliveredProduct.getQuantity())));
-                temp[2] = Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getUnitRate()));
-                temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(deliveredProduct.getProductTax())));
-                temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(deliveredProduct.getProductAmount())));
-                temp[5] = deliveredProduct.getCode();
-                selectedList.add(temp);
+
                 tax_total_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())));
                 price_total.setText(Utility.getFormattedCurrency(totalAmount));
                 sub_total.setText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())));
@@ -176,8 +184,20 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 cheque_date.setText(paymentsDetails.getPayments_chequeDate());
                 bank_name.setText(paymentsDetails.getPayments_bankName());
             }
-
+            cratesList=new ArrayList<>(returnedProductsList.size());
             if (returnedProductsList.size() > 0) {
+
+                for (SaleOrderReturnedProducts crates : returnedProductsList) {
+
+                    String[] temp = new String[6];
+                    temp[0] = crates.getName();
+                    temp[1] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getOpeningBalance())));
+                    temp[2] = Utility.getFormattedCurrency(Double.parseDouble(crates.getDelivered()));
+                    temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getReturned())));
+                    temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getOpeningBalance())));
+                    temp[5] = crates.getCode();
+                    cratesList.add(temp);
+                }
                 tripSheetsPaymentPreviewReturnedProductsAdapter = new TripSheetsPaymentPreviewReturnedProductsAdapter(activityContext, this, returnedProductsList);
                 returned_products_list_view.setAdapter(tripSheetsPaymentPreviewReturnedProductsAdapter);
             }
@@ -190,7 +210,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "print", Toast.LENGTH_LONG).show();
-                int pageheight = 300 + selectedList.size() * 60;
+                int pageheight = 600 + selectedList.size() * 60;
                 Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawColor(Color.WHITE);
@@ -257,9 +277,9 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())), 70, st, paint);
                 canvas.drawText(Utility.getFormattedCurrency(totalAmount), 170, st, paint);
                 canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())), 280, st, paint);
-                st = st + 20;
+                st = st + 30;
                 canvas.drawText("PAYMENT INFO", 5, st, paint);
-                st = st + 20;
+                st = st + 30;
                 if (paymentsDetails.getPayments_type().equals("0")) {
                     canvas.drawText("MOP", 5, st, paint);
                     canvas.drawText("Cash Paid", 60, st, paint);
@@ -280,7 +300,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText("Received", 210, st, paint);
                 paint.setTextSize(20);
-                canvas.drawText("CB", 300, st, paint);
+                canvas.drawText("CB", 330, st, paint);
                   st=st+30;
                 canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOOpAmount())), 5, st, paint);
                 canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOValue())), 120, st, paint);
@@ -299,12 +319,65 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText("CB", 320, st, paint);
                 st=st+30;
+                paint.setTextSize(17);
+//                    for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                for (int i = 0; i < cratesList.size(); i++) {
+                    String[] temps = cratesList.get(i);
+                    //String[] temps = selectedList.get(i-1);
+                    canvas.drawText(temps[0], 5, st, paint);
+                    canvas.drawText(temps[1], 115, st, paint);
+                    canvas.drawText(temps[2], 175, st, paint);
+                    canvas.drawText(temps[3], 245, st, paint);
+                    canvas.drawText(temps[4], 315, st, paint);
+
+                    st = st + 30;
+                    canvas.drawText(temps[5], 5, st, paint);
+
+
+                    st = st + 30;
+                }
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+                saveBitmap(bmOverlay);
             }
         });
     }
+    public void saveBitmap(Bitmap bm){
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/b2bprintimages");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 100000;
+        n = generator.nextInt(n);
+//        String fname = "Image-" + n + ".jpg";
+        String fname = "print.jpg";
+        File file = new File(myDir, fname);
+        Log.i("saving bitmap", "" + file);
+        if (file.exists())
+            file.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                Intent mediaScanIntent = new Intent(
+                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                Uri contentUri = Uri.fromFile(file);
+                mediaScanIntent.setData(contentUri);
+                this.sendBroadcast(mediaScanIntent);
+            } else {
+                sendBroadcast(new Intent(
+                        Intent.ACTION_MEDIA_MOUNTED,
+                        Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+            }
+//            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
