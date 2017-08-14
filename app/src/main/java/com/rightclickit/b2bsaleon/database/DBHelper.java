@@ -4304,14 +4304,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return paymentsBean;
     }
 
-    public void updateTripSheetStatus(String tripSheetId) {
+    public int updateTripSheetClosingStatus(String tripSheetId) {
         SQLiteDatabase db = this.getWritableDatabase();
+        int status = 0;
 
         try {
             ContentValues values = new ContentValues();
-            values.put(KEY_TRIPSHEET_STATUS, 1);
+            values.put(KEY_TRIPSHEET_IS_TRIP_SHEET_CLOSED, 1);
 
-            int status = db.update(TABLE_TRIPSHEETS_LIST, values, KEY_TRIPSHEET_ID + " = ?", new String[]{tripSheetId});
+            status = db.update(TABLE_TRIPSHEETS_LIST, values, KEY_TRIPSHEET_ID + " = ?", new String[]{tripSheetId});
 
             values.clear();
 
@@ -4320,5 +4321,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         db.close();
+
+        return status;
     }
 }

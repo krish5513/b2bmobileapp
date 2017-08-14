@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBeanWithProducts;
-import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
@@ -150,8 +149,8 @@ public class SyncTripsheetDeliveriesService extends Service {
                 requestObj.put("status", "A");
                 requestObj.put("delete", "N");
                 requestObj.put("created_by", currentDeliveryBean.getmTripsheetDelivery_CreatedBy());
-                requestObj.put("created_on", Utility.formatTime(Long.parseLong(currentDeliveryBean.getmTripsheetDelivery_CreatedOn()), Constants.TRIP_SHEETS_DELIVERY_ADD_DATE_FORMAT));
-                requestObj.put("updated_on", Utility.formatTime(Long.parseLong(currentDeliveryBean.getmTripsheetDelivery_UpdatedOn()), Constants.TRIP_SHEETS_DELIVERY_ADD_DATE_FORMAT));
+                requestObj.put("created_on", Utility.formatTime(Long.parseLong(currentDeliveryBean.getmTripsheetDelivery_CreatedOn()), Constants.SEND_DATA_TO_SERVICE_DATE_TIME_FORMAT));
+                requestObj.put("updated_on", Utility.formatTime(Long.parseLong(currentDeliveryBean.getmTripsheetDelivery_UpdatedOn()), Constants.SEND_DATA_TO_SERVICE_DATE_TIME_FORMAT));
                 requestObj.put("updated_by", currentDeliveryBean.getmTripsheetDelivery_UpdatedBy());
 
                 String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TAKE_ORDERS_PORT, Constants.TRIPSHEETS_DELIVERIES_URL);

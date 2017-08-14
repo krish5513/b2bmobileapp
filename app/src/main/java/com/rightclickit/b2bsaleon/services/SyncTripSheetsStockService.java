@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.rightclickit.b2bsaleon.beanclass.TDCSalesOrderProductBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -18,7 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -134,14 +132,14 @@ public class SyncTripSheetsStockService extends Service {
                     if (actionType.equals("dispatch")) {
                         if (i == 0) {
                             stockListWithProducts.setAction_by(currentStockDetails.getmTripsheetStockDispatchBy());
-                            stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockDispatchDate()), Constants.TRIP_SHEETS_STOCK_UPDATE_DATE_FORMAT));
+                            stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockDispatchDate()), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
                         }
 
                         quantitiesArray.put(currentStockDetails.getmTripsheetStockDispatchQuantity());
                     } else {
                         if (i == 0) {
                             stockListWithProducts.setAction_by(currentStockDetails.getmTripsheetStockVerifyBy());
-                            stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockVerifiedDate()), Constants.TRIP_SHEETS_STOCK_UPDATE_DATE_FORMAT));
+                            stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockVerifiedDate()), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
                         }
                         quantitiesArray.put(currentStockDetails.getmTripsheetStockVerifiedQuantity());
                     }

@@ -10,7 +10,6 @@ import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,36 +17,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeleveriesPreviewAdapter;
-import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import static com.rightclickit.b2bsaleon.R.id.arrow_icon;
-import static com.rightclickit.b2bsaleon.R.id.ordered_products_list_view;
 
 public class TripsheetDeliveryPreview extends AppCompatActivity {
     private ListView mAgentsList;
@@ -182,7 +170,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         for (int i = 0; i < unUploadedDeliveries.size(); i++) {
             TripSheetDeliveriesBean currentDelivery = unUploadedDeliveries.get(i);
             str_deliveryNo = currentDelivery.getmTripsheetDeliveryNo();
-            str_deliveryDate = Utility.formatTime(Long.parseLong(currentDelivery.getmTripsheetDelivery_CreatedOn()), Constants.TRIP_SHEETS_DELIVERY_ADD_DATE_FORMAT);
+            str_deliveryDate = Utility.formatTime(Long.parseLong(currentDelivery.getmTripsheetDelivery_CreatedOn()), Constants.TRIP_SHEETS_DELIVERY_DATE_FORMAT);
         }
 
 

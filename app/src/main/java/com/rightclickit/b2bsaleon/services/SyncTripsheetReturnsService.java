@@ -133,8 +133,8 @@ public class SyncTripsheetReturnsService extends Service {
                 requestObj.put("status", "A");
                 requestObj.put("delete", "N");
                 requestObj.put("created_by", currentProduct.getmTripshhetReturnsCreated_by());
-                requestObj.put("created_on", Utility.formatTime(Long.parseLong(currentProduct.getmTripshhetReturnsCreated_on()), Constants.TRIP_SHEETS_DELIVERY_ADD_DATE_FORMAT));
-                requestObj.put("updated_on", Utility.formatTime(Long.parseLong(currentProduct.getmTripshhetReturnsUpdated_on()), Constants.TRIP_SHEETS_DELIVERY_ADD_DATE_FORMAT));
+                requestObj.put("created_on", Utility.formatTime(Long.parseLong(currentProduct.getmTripshhetReturnsCreated_on()), Constants.SEND_DATA_TO_SERVICE_DATE_TIME_FORMAT));
+                requestObj.put("updated_on", Utility.formatTime(Long.parseLong(currentProduct.getmTripshhetReturnsUpdated_on()), Constants.SEND_DATA_TO_SERVICE_DATE_TIME_FORMAT));
                 requestObj.put("updated_by", currentProduct.getmTripshhetReturnsUpdated_by());
 
                 String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TAKE_ORDERS_PORT, Constants.TRIPSHEETS_RETURNS_URL);

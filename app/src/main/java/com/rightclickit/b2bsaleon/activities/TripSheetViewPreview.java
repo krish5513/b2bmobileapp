@@ -1,13 +1,16 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,17 +19,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetSoListPreviewAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripsheetStockPreviewAdapter;
-import com.rightclickit.b2bsaleon.adapters.TripsheetsSOListAdapter;
-import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
@@ -273,8 +275,8 @@ public class TripSheetViewPreview extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_search) {
 
+        if (id == R.id.action_search) {
             return true;
         }
 
@@ -289,15 +291,13 @@ public class TripSheetViewPreview extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-
         menu.findItem(R.id.notifications).setVisible(false);
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.Add).setVisible(false);
-
         menu.findItem(R.id.autorenew).setVisible(true);
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -310,7 +310,6 @@ public class TripSheetViewPreview extends AppCompatActivity {
         //intent.putExtra("tripsheetDate", mTripSheetDate);
         startActivity(intent);
         finish();
-
     }
 
     class CustomListView extends BaseAdapter implements ListAdapter {
@@ -366,6 +365,49 @@ public class TripSheetViewPreview extends AppCompatActivity {
     }
 
     public void closeTripSheet(View v) {
-        mDBHelper.updateTripSheetStatus(tripSheetId);
+        try {
+            AlertDialog alertDialog = null;
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle("User Action!");
+            alertDialogBuilder.setMessage("Are you sure you want to close this trip sheet?");
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+
+                    int status = mDBHelper.updateTripSheetClosingStatus(tripSheetId);
+
+                    if (status > 0) {
+                        Toast.makeText(activityContext, "Trip sheet closed successfully.", Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(activityContext, TripSheetsActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(activityContext, "Trip sheet closing failed.", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button cancelButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            if (cancelButton != null)
+                cancelButton.setTextColor(ContextCompat.getColor(activityContext, R.color.alert_dialog_color_accent));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

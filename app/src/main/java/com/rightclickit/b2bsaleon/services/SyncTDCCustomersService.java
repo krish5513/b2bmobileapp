@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.NetworkManager;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -30,15 +29,28 @@ public class SyncTDCCustomersService extends Service {
     private NetworkConnectionDetector connectionDetector;
     private String retailerStakeTypeId, consumerStakeTypeId;
     private int unUploadedTDCCustomersCount = 0;
+    private String createdBy;
+    private JSONArray routeCodesArray;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        mDBHelper = new DBHelper(this);
-        connectionDetector = new NetworkConnectionDetector(this);
 
-        retailerStakeTypeId = mDBHelper.getStakeTypeIdByStakeType("3");
-        consumerStakeTypeId = mDBHelper.getStakeTypeIdByStakeType("4");
+        try {
+            mDBHelper = new DBHelper(this);
+            connectionDetector = new NetworkConnectionDetector(this);
+
+            retailerStakeTypeId = mDBHelper.getStakeTypeIdByStakeType("3");
+            consumerStakeTypeId = mDBHelper.getStakeTypeIdByStakeType("4");
+
+            HashMap<String, String> userRouteIds = mDBHelper.getUserRouteIds();
+            createdBy = userRouteIds.get("user_id");
+
+            routeCodesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -81,20 +93,13 @@ public class SyncTDCCustomersService extends Service {
             try {
                 currentTDCCustomer = tdcCustomers[0];
 
-                HashMap<String, String> userRouteIds = mDBHelper.getUserRouteIds();
-                JSONArray routesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
-                String routeId = "";
-                if (routesArray.length() > 0)
-                    routeId = routesArray.getString(0);
-
-                String createdBy = userRouteIds.get("user_id");
-                String createdTime = Utility.formatDate(new Date(), Constants.CUSTOMER_ADD_DATE_FORMAT);
+                String createdTime = Utility.formatDate(new Date(), Constants.SEND_DATA_TO_SERVICE_DATE_TIME_FORMAT);
 
                 JSONObject requestObj = new JSONObject();
-                requestObj.put("route_id", routeId);
+                requestObj.put("route_id", routeCodesArray);
                 requestObj.put("stakeholder_id", (currentTDCCustomer.getCustomerType() == 1 ? retailerStakeTypeId : consumerStakeTypeId));
-                requestObj.put("first_name", currentTDCCustomer.getBusinessName());
-                requestObj.put("last_name", currentTDCCustomer.getName());
+                requestObj.put("first_name", currentTDCCustomer.getName());
+                requestObj.put("last_name", currentTDCCustomer.getBusinessName());
                 requestObj.put("phone", currentTDCCustomer.getMobileNo());
                 requestObj.put("email", "");
                 requestObj.put("password", Utility.getMd5String("123456789"));

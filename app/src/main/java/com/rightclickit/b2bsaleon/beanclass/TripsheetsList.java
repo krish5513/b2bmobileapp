@@ -141,6 +141,7 @@ public class TripsheetsList {
                 ", mTripshhetOrderedAmount='" + mTripshhetOrderedAmount + '\'' +
                 ", mTripshhetReceivedAmount='" + mTripshhetReceivedAmount + '\'' +
                 ", mTripshhetDueAmount='" + mTripshhetDueAmount + '\'' +
+                ", isTripshhetClosed='" + isTripshhetClosed + '\'' +
                 '}';
     }
 }

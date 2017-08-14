@@ -10,7 +10,6 @@ import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,9 +23,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeleveriesPreviewAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
-import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
-import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -173,7 +170,7 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
         for (int i = 0; i < unUploadedDeliveries.size(); i++) {
             TripSheetReturnsBean currentDelivery = unUploadedDeliveries.get(i);
             str_deliveryNo=currentDelivery.getmTripshhetReturnsReturn_no();
-            str_deliveryDate= Utility.formatTime(Long.parseLong(currentDelivery.getmTripshhetReturnsCreated_on()), Constants.TRIP_SHEETS_DELIVERY_ADD_DATE_FORMAT);
+            str_deliveryDate= Utility.formatTime(Long.parseLong(currentDelivery.getmTripshhetReturnsCreated_on()), Constants.TRIP_SHEETS_DELIVERY_DATE_FORMAT);
         }
 
 
