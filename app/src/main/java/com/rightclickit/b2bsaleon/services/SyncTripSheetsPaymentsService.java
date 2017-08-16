@@ -14,6 +14,7 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.NetworkManager;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -26,7 +27,6 @@ public class SyncTripSheetsPaymentsService extends Service {
     private Runnable runnable;
     private Handler handler;
     private DBHelper mDBHelper;
-    private String mJsonObj;
     private MMSharedPreferences mSessionManagement;
     private NetworkConnectionDetector connectionDetector;
     private int unUploadedPaymentsTripSheetIdsCount = 0;
@@ -62,7 +62,7 @@ public class SyncTripSheetsPaymentsService extends Service {
         try {
             ArrayList<PaymentsBean> paymentsBeanArrayList = mDBHelper.fetchAllTripsheetsPaymentsList();
             unUploadedPaymentsTripSheetIdsCount = paymentsBeanArrayList.size();
-            System.out.println("Size::: " + paymentsBeanArrayList.size());
+
             if (paymentsBeanArrayList.size() > 0) {
                 for (PaymentsBean paymentsBe : paymentsBeanArrayList) {
                     if (connectionDetector.isNetworkConnected())
@@ -78,54 +78,53 @@ public class SyncTripSheetsPaymentsService extends Service {
      * Class to perform background operations.
      */
     private class FetchAndSyncTripsheetsPaymentsDataAsyncTask extends AsyncTask<PaymentsBean, Void, Void> {
-
         private PaymentsBean paymentBean;
-        private ArrayList<TripsheetsList> mTripsheetsList = new ArrayList<TripsheetsList>();
-        String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
+        String timeStamp = Utility.formatDate(new Date(), Constants.SEND_DATA_TO_SERVICE_DATE_TIME_FORMAT);
 
         @Override
         protected Void doInBackground(PaymentsBean... params) {
             try {
                 paymentBean = params[0];
-                System.out.println("F111::: " + paymentBean.getPayments_saleOrderId());
-                System.out.println("F222::: " + paymentBean.getPayments_saleOrderCode());
-                String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TAKE_ORDERS_PORT, Constants.TRIPSHEETS_PAYMENTS_URL);
 
-                JSONObject params1 = new JSONObject();
-                params1.put("payment_no", "");
-                params1.put("trip_id", paymentBean.getPayments_tripsheetId());
-                params1.put("user_id", paymentBean.getPayments_userId());
-                params1.put("agent_code", paymentBean.getPayments_userCodes());
-                params1.put("sale_order_id", paymentBean.getPayments_saleOrderId());
-                params1.put("sale_order_code", paymentBean.getPayments_saleOrderCode());
-                params1.put("route_id", paymentBean.getPayments_routeId());
-                params1.put("route_code", paymentBean.getPayments_routeCodes());
-                params1.put("che_trans_id", paymentBean.getPayments_chequeNumber()); // Cheque Number
-                params1.put("ac_ca_no", "");
-                params1.put("account_name", "");
-                params1.put("bank_name", paymentBean.getPayments_bankName());
-                params1.put("trans_date", paymentBean.getPayments_chequeDate()); // Cheque Date
-                params1.put("trans_clear_date", "");
-                params1.put("receiver_name", ""); // Company name
-                params1.put("trans_status", paymentBean.getPayments_transActionStatus());
-                params1.put("recieved_amt", String.valueOf(paymentBean.getPayments_receivedAmount()));
-                params1.put("type", paymentBean.getPayments_type());
-                params1.put("status", paymentBean.getPayments_status());
-                params1.put("delete", paymentBean.getPayments_delete());
-                params1.put("created_by", mSessionManagement.getString("userId"));
-                params1.put("created_on", timeStamp);
-                params1.put("updated_on", timeStamp);
-                params1.put("updated_by", mSessionManagement.getString("userId"));
+                JSONObject requestObj = new JSONObject();
+                //requestObj.put("payment_no", "");
+                requestObj.put("trip_id", paymentBean.getPayments_tripsheetId());
+                requestObj.put("user_id", paymentBean.getPayments_userId());
+                requestObj.put("agent_code", paymentBean.getPayments_userCodes());
+                requestObj.put("sale_order_id", paymentBean.getPayments_saleOrderId());
+                requestObj.put("sale_order_code", paymentBean.getPayments_saleOrderCode());
+                requestObj.put("route_id", paymentBean.getPayments_routeId());
+                requestObj.put("route_code", paymentBean.getPayments_routeCodes());
+                requestObj.put("che_trans_id", paymentBean.getPayments_chequeNumber()); // Cheque Number
+                requestObj.put("ac_ca_no", "");
+                requestObj.put("account_name", "");
+                requestObj.put("bank_name", paymentBean.getPayments_bankName());
+                requestObj.put("trans_date", paymentBean.getPayments_chequeDate()); // Cheque Date
+                requestObj.put("trans_clear_date", "");
+                requestObj.put("receiver_name", ""); // Company name
+                requestObj.put("trans_status", paymentBean.getPayments_transActionStatus());
+                requestObj.put("recieved_amt", String.valueOf(paymentBean.getPayments_receivedAmount()));
+                requestObj.put("type", paymentBean.getPayments_type());
+                requestObj.put("status", paymentBean.getPayments_status());
+                requestObj.put("delete", paymentBean.getPayments_delete());
+                requestObj.put("created_by", mSessionManagement.getString("userId"));
+                requestObj.put("created_on", timeStamp);
+                requestObj.put("updated_on", timeStamp);
+                requestObj.put("updated_by", mSessionManagement.getString("userId"));
 
-                System.out.println("URL::: " + URL);
-                System.out.println("INPUT::: " + params1.toString());
-                mJsonObj = new NetworkManager().makeHttpPostConnection(URL, params1);
-                System.out.println("Tripsheets payments list Response Is::: " + mJsonObj);
-                if (mJsonObj != null && !(mJsonObj == "error" || mJsonObj == "failure")) {
-                    JSONObject resultObj = new JSONObject(mJsonObj);
+                String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TAKE_ORDERS_PORT, Constants.TRIPSHEETS_PAYMENTS_URL);
+
+                String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
+
+                System.out.println("requestObj = " + requestObj);
+                System.out.println("requestURL = " + requestURL);
+                System.out.println("responseString = " + responseString);
+
+                if (responseString != null && !(responseString == "error" || responseString == "failure")) {
+                    JSONObject resultObj = new JSONObject(responseString);
+
                     if (resultObj.getInt("result_status") == 1) {
-                        mDBHelper.updateTripsheetsPaymentsUploadStatus(paymentBean.getPayments_tripsheetId());
+                        mDBHelper.updateTripsheetsPaymentsUploadStatus(resultObj.getString("insert_no"), paymentBean.getPayments_tripsheetId(), paymentBean.getPayments_saleOrderId(), paymentBean.getPayments_paymentsNo());
                     }
                 }
                 unUploadedPaymentsTripSheetIdsCount--;

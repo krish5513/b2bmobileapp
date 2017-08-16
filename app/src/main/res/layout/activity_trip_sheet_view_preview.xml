@@ -11,10 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tdc_sales_company_name"
                 android:layout_width="match_parent"
@@ -43,7 +45,6 @@
                     android:textAllCaps="true"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
-
 
 
                 <TextView
@@ -99,8 +100,6 @@
             </LinearLayout>
 
 
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -131,199 +130,200 @@
 
             </LinearLayout>
         </LinearLayout>
-      <!--  <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="Summary"
-            android:gravity="left"
-            android:textAllCaps="true"
-            android:paddingLeft="10dp"
-            android:textColor="@color/greydark"
-            />-->
+        <!--  <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="14sp"
+              android:text="Summary"
+              android:gravity="left"
+              android:textAllCaps="true"
+              android:paddingLeft="10dp"
+              android:textColor="@color/greydark"
+              />-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
+                    android:layout_weight="0.25"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
                     android:text="OB"
-                    android:gravity="left"
-                    android:layout_weight="0.25"
                     android:textAllCaps="true"
-                    android:paddingLeft="10dp"
                     android:textColor="@color/greydark"
-                    />
+                    android:textSize="14sp" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
+                    android:layout_weight="0.25"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
                     android:text="ORDER"
-                    android:gravity="left"
-                    android:layout_weight="0.25"
                     android:textAllCaps="true"
-                    android:paddingLeft="10dp"
                     android:textColor="@color/greydark"
-                    />
+                    android:textSize="14sp" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
+                    android:layout_weight="0.25"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
                     android:text="Received"
-                    android:gravity="left"
-                    android:layout_weight="0.25"
                     android:textAllCaps="true"
-                    android:paddingLeft="10dp"
                     android:textColor="@color/greydark"
-                    />
+                    android:textSize="14sp" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="Due"
-                    android:gravity="left"
                     android:layout_weight="0.25"
-                    android:textAllCaps="true"
+                    android:gravity="left"
                     android:paddingLeft="10dp"
+                    android:text="Due"
+                    android:textAllCaps="true"
                     android:textColor="@color/greydark"
-                    />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:padding="5dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp">
+
                 <TextView
                     android:id="@+id/ob_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:text="0.00"
-                    android:gravity="left"
                     android:layout_weight="0.25"
+                    android:gravity="left"
                     android:paddingLeft="10dp"
+                    android:text="0.00"
                     android:textColor="@color/greydark"
-                    />
+                    android:textSize="12sp" />
+
                 <TextView
                     android:id="@+id/order_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:text="0.00"
-                    android:gravity="left"
                     android:layout_weight="0.25"
+                    android:gravity="left"
                     android:paddingLeft="10dp"
+                    android:text="0.00"
                     android:textColor="@color/greydark"
-                    />
+                    android:textSize="12sp" />
+
                 <TextView
                     android:id="@+id/received_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:text="0.00"
-                    android:gravity="left"
                     android:layout_weight="0.25"
+                    android:gravity="left"
                     android:paddingLeft="10dp"
+                    android:text="0.00"
                     android:textColor="@color/greydark"
-                    />
+                    android:textSize="12sp" />
+
                 <TextView
                     android:id="@+id/due_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:text="0.00"
-                    android:gravity="left"
                     android:layout_weight="0.25"
+                    android:gravity="left"
                     android:paddingLeft="10dp"
+                    android:text="0.00"
                     android:textColor="@color/greydark"
-                    />
+                    android:textSize="12sp" />
             </LinearLayout>
 
         </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="Agents/Customers"
             android:gravity="left"
             android:padding="5dp"
-            android:textAllCaps="true"
             android:paddingLeft="10dp"
+            android:text="Agents/Customers"
+            android:textAllCaps="true"
             android:textColor="@color/greydark"
-            />
+            android:textSize="14sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="Name"
-                android:gravity="left"
-                android:layout_weight="0.25"
-                android:textAllCaps="true"
-                android:paddingLeft="10dp"
-                android:textColor="@color/greydark"
-                />
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="OB"
+                android:layout_weight="0.25"
+                android:gravity="left"
+                android:paddingLeft="10dp"
+                android:text="Name"
+                android:textAllCaps="true"
+                android:textColor="@color/greydark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
                 android:gravity="center"
-                android:layout_weight="0.25"
-                android:textAllCaps="true"
                 android:paddingLeft="10dp"
+                android:text="OB"
+                android:textAllCaps="true"
                 android:textColor="@color/greydark"
-                />
+                android:textSize="14sp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:layout_weight="0.25"
+                android:gravity="left"
+                android:paddingLeft="10dp"
                 android:text="ORDER"
-                android:gravity="left"
-                android:layout_weight="0.25"
                 android:textAllCaps="true"
-                android:paddingLeft="10dp"
                 android:textColor="@color/greydark"
-                />
+                android:textSize="14sp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="Received"
-                android:gravity="left"
                 android:layout_weight="0.23"
-                android:textAllCaps="true"
+                android:gravity="left"
                 android:paddingLeft="10dp"
+                android:text="Received"
+                android:textAllCaps="true"
                 android:textColor="@color/greydark"
-                />
+                android:textSize="14sp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="Due"
-                android:gravity="left"
                 android:layout_weight="0.27"
-                android:textAllCaps="true"
+                android:gravity="left"
                 android:paddingLeft="10dp"
+                android:text="Due"
+                android:textAllCaps="true"
                 android:textColor="@color/greydark"
-                />
+                android:textSize="14sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -345,15 +345,15 @@
         android:background="@color/white"
         android:gravity="end|center"
         android:orientation="vertical">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.1dp"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorPrimary" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.25"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -376,6 +376,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/close_trip_layout"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
@@ -387,8 +388,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:onClick="closeTripSheet"
                     android:drawableTop="@drawable/ic_close_green_24dp"
+                    android:onClick="closeTripSheet"
                     android:text="@string/closeTrip_btm"
                     android:textColor="@color/colorPrimary"
                     android:textSize="12sp" />
@@ -396,7 +397,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
 
     </LinearLayout>
 

@@ -129,7 +129,7 @@ public class SyncTripsheetDeliveriesService extends Service {
                 currentDeliveryBean = stockList[0];
 
                 JSONObject requestObj = new JSONObject();
-                requestObj.put("delivery_no", "");
+                //requestObj.put("delivery_no", "");
                 requestObj.put("trip_id", currentDeliveryBean.getmTripsheetDelivery_tripId());
                 requestObj.put("user_id", currentDeliveryBean.getmTripsheetDelivery_userId());
                 requestObj.put("user_codes", currentDeliveryBean.getmTripsheetDelivery_userCodes());
@@ -157,12 +157,16 @@ public class SyncTripsheetDeliveriesService extends Service {
 
                 String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
 
+                System.out.println("requestObj = " + requestObj);
+                System.out.println("requestURL = " + requestURL);
+                System.out.println("responseString = " + responseString);
+
                 if (responseString != null && !(responseString == "error" || responseString == "failure")) {
                     JSONObject resultObj = new JSONObject(responseString);
 
                     if (resultObj.getInt("result_status") == 1) {
                         // if success, we are updating stock status as uploaded in local db.
-                        mDBHelper.updateTripSheetDeliveriesTable(currentDeliveryBean.getmTripsheetDelivery_tripId());
+                        mDBHelper.updateTripSheetDeliveriesTable(resultObj.getString("insert_no"), currentDeliveryBean.getmTripsheetDelivery_tripId(), currentDeliveryBean.getmTripsheetDelivery_so_id(), currentDeliveryBean.getmTripsheetDelivery_userId());
                     }
 
                     unUploadedDeliveryTripSheetIdsCount--;

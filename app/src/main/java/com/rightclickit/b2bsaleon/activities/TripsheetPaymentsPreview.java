@@ -51,7 +51,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             mode_of_payment, cheque_number, cheque_date, bank_name, opening_balance, sale_order_amount, received_amount, closing_balance;
     ListView delivered_products_list_view, returned_products_list_view;
 
-    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "", mAgentSoDate;
+    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
     private String loggedInUserId, loggedInUserName, companyName, routeCode, routeName, currentDate;
     private TripsheetSOList saleOrdersDetails = null;
     private ArrayList<SaleOrderDeliveredProducts> deliveredProductsList;
@@ -62,8 +62,9 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
     private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
     TextView print;
 
-    ArrayList<String[]> selectedList,cratesList;
+    ArrayList<String[]> selectedList, cratesList;
     SaleOrderDeliveredProducts deliveredProduct;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +87,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             mDBHelper = new DBHelper(activityContext);
             mmSharedPreferences = new MMSharedPreferences(activityContext);
 
-            print=(TextView) findViewById(R.id.tv_print_print);
+            print = (TextView) findViewById(R.id.tv_print_print);
 
             tv_companyName = (TextView) findViewById(R.id.tv_companyName);
             tv_routecode = (TextView) findViewById(R.id.tv_routecode);
@@ -114,9 +115,10 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             mAgentId = this.getIntent().getStringExtra("agentId");
             mAgentCode = this.getIntent().getStringExtra("agentCode");
             mAgentName = this.getIntent().getStringExtra("agentName");
+            mAgentRouteId = this.getIntent().getStringExtra("agentRouteId");
+            mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
             mAgentSoId = this.getIntent().getStringExtra("agentSoId");
             mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
-            mAgentSoDate = this.getIntent().getStringExtra("agentSoDate");
 
             loggedInUserId = mmSharedPreferences.getString("userId");
             loggedInUserName = mmSharedPreferences.getString("loginusername");
@@ -152,7 +154,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 received_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOReceivedAmount())));
                 closing_balance.setText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOCBAmount())));
             }
-            selectedList=new ArrayList<>(deliveredProductsList.size());
+            selectedList = new ArrayList<>(deliveredProductsList.size());
             if (deliveredProductsList.size() > 0) {
                 for (SaleOrderDeliveredProducts products : deliveredProductsList) {
                     totalAmount = totalAmount + Double.parseDouble(products.getProductAmount());
@@ -184,7 +186,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 cheque_date.setText(paymentsDetails.getPayments_chequeDate());
                 bank_name.setText(paymentsDetails.getPayments_bankName());
             }
-            cratesList=new ArrayList<>(returnedProductsList.size());
+            cratesList = new ArrayList<>(returnedProductsList.size());
             if (returnedProductsList.size() > 0) {
 
                 for (SaleOrderReturnedProducts crates : returnedProductsList) {
@@ -284,8 +286,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     canvas.drawText("MOP", 5, st, paint);
                     canvas.drawText("Cash Paid", 60, st, paint);
                     st = st + 20;
-                }
-                else {
+                } else {
                     canvas.drawText("MOP", 5, st, paint);
                     canvas.drawText("Cheque", 60, st, paint);
                     st = st + 20;
@@ -293,7 +294,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     canvas.drawText(paymentsDetails.getPayments_chequeDate(), 120, st, paint);
                     canvas.drawText(paymentsDetails.getPayments_bankName(), 250, st, paint);
                 }
-                    st=st+30;
+                st = st + 30;
                 canvas.drawText("OB", 5, st, paint);
                 paint.setTextSize(20);
                 canvas.drawText("S.Order", 120, st, paint);
@@ -301,14 +302,14 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 canvas.drawText("Received", 210, st, paint);
                 paint.setTextSize(20);
                 canvas.drawText("CB", 330, st, paint);
-                  st=st+30;
+                st = st + 30;
                 canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOOpAmount())), 5, st, paint);
                 canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOValue())), 120, st, paint);
                 canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOReceivedAmount())), 210, st, paint);
                 canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOCBAmount())), 300, st, paint);
-                 st=st+30;
+                st = st + 30;
                 canvas.drawText("CRATES", 5, st, paint);
-                st=st+30;
+                st = st + 30;
                 canvas.drawText("Product", 5, st, paint);
                 paint.setTextSize(20);
                 canvas.drawText("OB", 100, st, paint);
@@ -318,7 +319,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 canvas.drawText("Return", 230, st, paint);
                 paint.setTextSize(20);
                 canvas.drawText("CB", 320, st, paint);
-                st=st+30;
+                st = st + 30;
                 paint.setTextSize(17);
 //                    for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
                 for (int i = 0; i < cratesList.size(); i++) {
@@ -342,7 +343,8 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             }
         });
     }
-    public void saveBitmap(Bitmap bm){
+
+    public void saveBitmap(Bitmap bm) {
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/b2bprintimages");
         myDir.mkdirs();
@@ -378,6 +380,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
         }
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);

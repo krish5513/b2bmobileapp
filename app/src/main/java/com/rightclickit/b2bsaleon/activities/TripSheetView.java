@@ -115,6 +115,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private ArrayList<TripsheetSOList> tripSheetSOList = new ArrayList<>();
     private ArrayList<AgentLatLong> agentsLatLongList = new ArrayList<>(); // this list contains all valid agents lat long details
     private NetworkConnectionDetector networkConnectionDetector;
+    private boolean isTripSheetClosed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,8 +150,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             Bundle bundle = this.getIntent().getExtras();
             if (bundle != null) {
                 mTripSheetId = bundle.getString("tripsheetId");
-              // mTripSheetCode = bundle.getString("tripsheetCode");
-              // mTripSheetDate = bundle.getString("tripsheetDate");
+                // mTripSheetCode = bundle.getString("tripsheetCode");
+                // mTripSheetDate = bundle.getString("tripsheetDate");
             }
 
             mDBHelper = new DBHelper(TripSheetView.this);
@@ -331,10 +332,10 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 public void onClick(View view) {
                     //Toast.makeText(getApplicationContext(), "Clicked Tripsheet Preview", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(TripSheetView.this, TripSheetViewPreview.class);
-                    i.putExtra("tripSheetId",mTripSheetId);
-                  //  i.putExtra("tripsheetCode",mTripSheetCode);
-                  //  i.putExtra("tripsheetDate",mTripSheetDate);
-                 //   i.putExtra("data", (Serializable) mTripsheetSOAdapter.getData());
+                    i.putExtra("tripSheetId", mTripSheetId);
+                    //  i.putExtra("tripsheetCode",mTripSheetCode);
+                    //  i.putExtra("tripsheetDate",mTripSheetDate);
+                    //   i.putExtra("data", (Serializable) mTripsheetSOAdapter.getData());
                     startActivity(i);
                     finish();
                 }
@@ -349,7 +350,9 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())));
             }
 
-            mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege);
+            isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
+
+            mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege, isTripSheetClosed);
             mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
 
             if (networkConnectionDetector.isNetworkConnected()) {

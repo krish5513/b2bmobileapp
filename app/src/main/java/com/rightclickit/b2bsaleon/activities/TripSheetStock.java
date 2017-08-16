@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
-import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -56,7 +55,7 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
     private String mTripSheetId, mTripSheetCode, mTripSheetDate;
     private Map<String, TripsheetsStockList> productsDispatchListHashMap, productsVerifyListHashMap; // Hash Map Key = Product Id
     private String loggedInUserId;
-    private boolean isStockDispatched = false, isStockVerified = false;
+    private boolean isStockDispatched = false, isStockVerified = false, isTripSheetClosed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +93,8 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
                 mTripSheetDate = bundle.getString("tripsheetDate");
             }
 
+            isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
+
             dispatchTitle = (TextView) findViewById(R.id.dispatchTitle);
             verifyTitle = (TextView) findViewById(R.id.verifyTitle);
             mTripsheetsStockListView = (ListView) findViewById(R.id.tripsheetStockListView);
@@ -103,8 +104,6 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
             tps_stock_save_layout = (LinearLayout) findViewById(R.id.tps_stock_save_layout);
             tps_stock_verify_layout = (LinearLayout) findViewById(R.id.tps_stock_verify_layout);
             tps_stock_preview_layout = (LinearLayout) findViewById(R.id.tps_stock_preview_layout);
-
-            ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList();
 
             privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("TripSheets"));
             //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
@@ -127,6 +126,11 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
             if (privilegeActionsData.contains("Stock_Verify") && !privilegeActionsData.contains("Stock_Save")) {
                 isStockDispatched = true;
+            }
+
+            if (isTripSheetClosed) {
+                tps_stock_save_layout.setVisibility(View.GONE);
+                tps_stock_verify_layout.setVisibility(View.GONE);
             }
 
             mTripsheetsModel = new TripsheetsModel(this, TripSheetStock.this);
@@ -160,12 +164,10 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
             TripsheetsStockList stockList = tripsStockList.get(0);
 
             if (stockList.getIsStockDispatched() == 1) {
-                //tps_stock_save_layout.setVisibility(View.GONE);
                 isStockDispatched = true;
             }
 
             if (stockList.getIsStockVerified() == 1) {
-                //tps_stock_verify_layout.setVisibility(View.GONE);
                 isStockVerified = true;
             }
         }
@@ -268,14 +270,18 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
     public void saveTripSheetStock(View view) {
         //if (!isStockDispatched)
-        showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to save?\n\nOnce you saved you can't edit.", "Save");
+        //showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to save?\n\nOnce you saved you can't edit.", "Save");
+        showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to save?", "Save");
     }
 
     public void verifyTripSheetStock(View view) {
         if (!isStockDispatched)
             Toast.makeText(activityContext, "This Trip Sheet Stock is not yet dispatched.", Toast.LENGTH_LONG).show();
-        else //if (!isStockVerified)
-            showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to verify?\n\nOnce you verified you can't edit.", "Verify");
+        else {
+            //if (!isStockVerified)
+            //showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to verify?\n\nOnce you verified you can't edit.", "Verify");
+            showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to verify?", "Verify");
+        }
     }
 
     private void showAlertDialogWithCancelButton(Context context, String title, String message, final String actionType) {

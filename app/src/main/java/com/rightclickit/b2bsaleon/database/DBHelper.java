@@ -308,6 +308,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Column names for Tripsheets deliveries List  Table
     private final String KEY_TRIPSHEET_DELIVERY_NO = "tripsheet_delivery_no";
+    private final String KEY_TRIPSHEET_DELIVERY_NUMBER = "tripsheet_delivery_number";
     private final String KEY_TRIPSHEET_DELIVERY_TRIP_ID = "tripsheet_delivery_trip_id";
     private final String KEY_TRIPSHEET_DELIVERY_SO_ID = "tripsheet_delivery_so_id";
     private final String KEY_TRIPSHEET_DELIVERY_SO_CODE = "tripsheet_delivery_so_code";
@@ -334,6 +335,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Column names for Tripsheets returns List  Table
     private final String KEY_TRIPSHEET_RETURNS_RETURN_NO = "tripsheet_returns_return_no";
+    private final String KEY_TRIPSHEET_RETURNS_RETURN_NUMBER = "tripsheet_returns_return_number";
     private final String KEY_TRIPSHEET_RETURNS_TRIP_ID = "tripsheet_returns_trip_id";
     private final String KEY_TRIPSHEET_RETURNS_SO_ID = "tripsheet_returns_so_id";
     private final String KEY_TRIPSHEET_RETURNS_SO_CODE = "tripsheet_returns_so_code";
@@ -355,6 +357,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Column names for Tripsheets payments List  Table
     private final String KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO = "tripsheet_payments_payment_no";
+    private final String KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER = "tripsheet_payments_payment_number";
     private final String KEY_TRIPSHEET_PAYMENTS_TRIP_ID = "tripsheet_payments_trip_id";
     private final String KEY_TRIPSHEET_PAYMENTS_USER_ID = "tripsheet_payments_user_id";
     private final String KEY_TRIPSHEET_PAYMENTS_USER_CODES = "tripsheet_payments_user_codes";
@@ -546,6 +549,7 @@ public class DBHelper extends SQLiteOpenHelper {
     // Tripsheets Deliveries list Table Create Statements
     private final String CREATE_TRIPSHEETS_DELIVERIES_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_TRIPSHEETS_DELIVERIES_LIST + "(" + KEY_TRIPSHEET_DELIVERY_NO + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_TRIPSHEET_DELIVERY_NUMBER + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_SO_ID + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_SO_CODE + " VARCHAR,"
@@ -573,6 +577,7 @@ public class DBHelper extends SQLiteOpenHelper {
     // Tripsheets Returns list Table Create Statements
     private final String CREATE_TRIPSHEETS_RETURNS_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_TRIPSHEETS_RETURNS_LIST + "(" + KEY_TRIPSHEET_RETURNS_RETURN_NO + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_TRIPSHEET_RETURNS_RETURN_NUMBER + " VARCHAR,"
             + KEY_TRIPSHEET_RETURNS_TRIP_ID + " VARCHAR,"
             + KEY_TRIPSHEET_RETURNS_SO_ID + " VARCHAR,"
             + KEY_TRIPSHEET_RETURNS_SO_CODE + " VARCHAR,"
@@ -592,9 +597,10 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_RETURNS_UPDATED_BY + " VARCHAR,"
             + KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
-    // Tripsheets Returns list Table Create Statements
+    // Tripsheets Payments list Table Create Statements
     private final String CREATE_TRIPSHEETS_PAYMENTS_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_TRIPSHEETS_PAYMENTS_LIST + "(" + KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_USER_ID + " VARCHAR,"
             + KEY_TRIPSHEET_PAYMENTS_USER_CODES + " VARCHAR,"
@@ -2858,6 +2864,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     TripSheetDeliveriesBean tripDeliveriesBean = new TripSheetDeliveriesBean();
 
                     tripDeliveriesBean.setmTripsheetDeliveryNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NO)));
+                    tripDeliveriesBean.setmTripsheetDeliveryNumber(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NUMBER)));
                     tripDeliveriesBean.setmTripsheetDelivery_tripId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TRIP_ID)));
                     tripDeliveriesBean.setmTripsheetDelivery_so_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SO_ID)));
                     tripDeliveriesBean.setmTripsheetDelivery_so_code(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SO_CODE)));
@@ -2962,6 +2969,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     TripSheetReturnsBean tripReturnsBean = new TripSheetReturnsBean();
 
                     tripReturnsBean.setmTripshhetReturnsReturn_no(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NO)));
+                    tripReturnsBean.setmTripshhetReturnsReturn_number(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER)));
                     tripReturnsBean.setmTripshhetReturnsTrip_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TRIP_ID)));
                     tripReturnsBean.setmTripshhetReturns_so_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_SO_ID)));
                     tripReturnsBean.setmTripshhetReturns_so_code(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_SO_CODE)));
@@ -3032,7 +3040,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             SQLiteDatabase db = this.getWritableDatabase();
 
-            db.insert(TABLE_TRIPSHEETS_PAYMENTS_LIST, null, values);
+            long insertedId = db.insert(TABLE_TRIPSHEETS_PAYMENTS_LIST, null, values);
 
             /*if (noOfRecordsExisted == 0) {
                 db.insert(TABLE_TRIPSHEETS_PAYMENTS_LIST, null, values);
@@ -3063,8 +3071,8 @@ public class DBHelper extends SQLiteOpenHelper {
             if (c.moveToFirst()) {
                 do {
                     PaymentsBean tripPaymentsBean = new PaymentsBean();
-
-                    tripPaymentsBean.setPayments_paymentsNumber(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO)));
+                    tripPaymentsBean.setPayments_paymentsNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO)));
+                    tripPaymentsBean.setPayments_paymentsNumber(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER)));
 
                     tripPaymentsBean.setPayments_tripsheetId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRIP_ID)));
                     tripPaymentsBean.setPayments_userId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_USER_ID)));
@@ -3666,17 +3674,16 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to update tripsheet payments upload status 1 after updating to the server.
-     *
-     * @param tripsheetId
      */
-    public void updateTripsheetsPaymentsUploadStatus(String tripsheetId) {
+    public void updateTripsheetsPaymentsUploadStatus(String paymentNumber, String tripSheetId, String saleOrderId, String paymentNo) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try {
             ContentValues values = new ContentValues();
+            values.put(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER, paymentNumber);
             values.put(KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS, "1");
 
-            int status = db.update(TABLE_TRIPSHEETS_PAYMENTS_LIST, values, KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " = ?", new String[]{String.valueOf(tripsheetId)});
+            int status = db.update(TABLE_TRIPSHEETS_PAYMENTS_LIST, values, KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_PAYMENTS_SO_ID + " = ? AND " + KEY_TRIPSHEET_PAYMENTS_PAYMENT_NO + " = ?", new String[]{tripSheetId, saleOrderId, paymentNo});
 
             values.clear();
 
@@ -3712,14 +3719,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return tripSheetIds;
     }
 
-    public void updateTripSheetDeliveriesTable(String tripSheetId) {
+    public void updateTripSheetDeliveriesTable(String deliveryNumber, String tripSheetId, String saleOrderId, String agentId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try {
             ContentValues values = new ContentValues();
+            values.put(KEY_TRIPSHEET_DELIVERY_NUMBER, deliveryNumber);
             values.put(KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS, 1);
 
-            int status = db.update(TABLE_TRIPSHEETS_DELIVERIES_LIST, values, KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = ?", new String[]{tripSheetId});
+            int status = db.update(TABLE_TRIPSHEETS_DELIVERIES_LIST, values, KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + " = ? AND " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = ?", new String[]{tripSheetId, saleOrderId, agentId});
 
             values.clear();
 
@@ -3779,14 +3787,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return tripSheetIds;
     }
 
-    public void updateTripSheetReturnsTable(String tripSheetId) {
+    public void updateTripSheetReturnsTable(String returnNumber, String tripSheetId, String saleOrderId, String agentId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try {
             ContentValues values = new ContentValues();
+            values.put(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER, returnNumber);
             values.put(KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS, 1);
 
-            int status = db.update(TABLE_TRIPSHEETS_RETURNS_LIST, values, KEY_TRIPSHEET_RETURNS_TRIP_ID + " = ?", new String[]{tripSheetId});
+            int status = db.update(TABLE_TRIPSHEETS_RETURNS_LIST, values, KEY_TRIPSHEET_RETURNS_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_RETURNS_SO_ID + " = ? AND " + KEY_TRIPSHEET_RETURNS_USER_ID + " = ?", new String[]{tripSheetId, saleOrderId, agentId});
 
             values.clear();
 
@@ -4323,5 +4332,28 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
 
         return status;
+    }
+
+    public boolean isTripSheetClosed(String tripSheetId) {
+        boolean isTripSheetClosed = false;
+
+        try {
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_IS_TRIP_SHEET_CLOSED + " FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_ID + " = '" + tripSheetId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                isTripSheetClosed = (cursor.getInt(cursor.getColumnIndex(KEY_TRIPSHEET_IS_TRIP_SHEET_CLOSED)) == 0) ? false : true;
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return isTripSheetClosed;
     }
 }

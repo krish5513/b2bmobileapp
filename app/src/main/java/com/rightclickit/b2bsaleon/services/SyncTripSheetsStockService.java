@@ -180,7 +180,11 @@ public class SyncTripSheetsStockService extends Service {
 
                 String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
 
-                if (responseString != null) {
+                System.out.println("requestObj = " + requestObj);
+                System.out.println("requestURL = " + requestURL);
+                System.out.println("responseString = " + responseString);
+
+                if (responseString != null && !(responseString == "error" || responseString == "failure")) {
                     JSONObject resultObj = new JSONObject(responseString);
 
                     if (resultObj.getInt("result_status") == 1) {

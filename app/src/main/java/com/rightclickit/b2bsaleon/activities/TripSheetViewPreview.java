@@ -57,7 +57,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
     String str_routecode, str_Tripcode, str_Tripdate, str_AgentName, str_AgentCode, str_OB, str_Order, str_Received, str_Due;
     TextView company_name, route_name, route_code, user_name, sales_print;
     private ListView tdc_products_list_preview;
-    private LinearLayout tdc_sales_save_layout;
+    private LinearLayout close_trip_layout;
 
     ArrayList<String[]> selectedList;
     private TextView ts_ob_amount, ts_order_value, ts_total_received, ts_total_due;
@@ -71,199 +71,205 @@ public class TripSheetViewPreview extends AppCompatActivity {
     private TripSheetSoListPreviewAdapter mTripsheetSOAdapter;
     private NetworkConnectionDetector networkConnectionDetector;
     TripsheetsList currentTripSheetDetails;
+    private boolean isTripSheetClosed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_sheet_view_preview);
 
+        try {
+            applicationContext = getApplicationContext();
+            activityContext = TripSheetViewPreview.this;
 
-        applicationContext = getApplicationContext();
-        activityContext = TripSheetViewPreview.this;
+            mmSharedPreferences = new MMSharedPreferences(applicationContext);
+            loggedInUserId = mmSharedPreferences.getString("userId");
+            loggedInUserName = mmSharedPreferences.getString("loginusername");
+            str_routecode = (mmSharedPreferences.getString("routecode") + ",");
+            str_Tripcode = mmSharedPreferences.getString("tripsheetCode");
+            str_Tripdate = mmSharedPreferences.getString("tripsheetDate");
 
-        mmSharedPreferences = new MMSharedPreferences(applicationContext);
-        loggedInUserId = mmSharedPreferences.getString("userId");
-        loggedInUserName = mmSharedPreferences.getString("loginusername");
-        str_routecode = (mmSharedPreferences.getString("routecode") + ",");
-        str_Tripcode = mmSharedPreferences.getString("tripsheetCode");
-        str_Tripdate = mmSharedPreferences.getString("tripsheetDate");
+            mDBHelper = new DBHelper(TripSheetViewPreview.this);
+            networkConnectionDetector = new NetworkConnectionDetector(activityContext);
+            listView = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
 
-        mDBHelper = new DBHelper(TripSheetViewPreview.this);
-        networkConnectionDetector = new NetworkConnectionDetector(activityContext);
-        listView = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
+            this.getSupportActionBar().setTitle("DAILY TRIPSHEET");
+            this.getSupportActionBar().setSubtitle(null);
+            this.getSupportActionBar().setLogo(R.drawable.route_white);
+            // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            this.getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+            final ActionBar actionBar = getSupportActionBar();
+            assert actionBar != null;
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        this.getSupportActionBar().setTitle("DAILY TRIPSHEET");
-        this.getSupportActionBar().setSubtitle(null);
-        this.getSupportActionBar().setLogo(R.drawable.route_white);
-        // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        this.getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+            productsDispatchListHashMap = new HashMap<>();
+            productsVerifyListHashMap = new HashMap<>();
 
-
-        final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-
-        productsDispatchListHashMap = new HashMap<>();
-        productsVerifyListHashMap = new HashMap<>();
-
-
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null)
-            tripSheetId = bundle.getString("tripSheetId");
-        //str_Tripcode=bundle.getString("tripsheetCode");
-        //str_Tripdate=bundle.getString("tripsheetDate");
-
-        sales_print = (TextView) findViewById(R.id.tv_print);
-        company_name = (TextView) findViewById(R.id.tdc_sales_company_name);
-        user_name = (TextView) findViewById(R.id.tdc_sales_user_name);
-        route_name = (TextView) findViewById(R.id.tdc_sales_route_name);
-        route_code = (TextView) findViewById(R.id.tdc_sales_route_code);
-        tripsheet_no_text_view = (TextView) findViewById(R.id.tripsheet_no);
-        sale_date_time_text_view = (TextView) findViewById(R.id.tdc_sales_date_time);
-
-        tdc_products_list_preview = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
-
-        company_name.setText(mmSharedPreferences.getString("companyname"));
-        user_name.setText("by " + loggedInUserName);
-        route_name.setText(mmSharedPreferences.getString("routename"));
-        route_code.setText(str_routecode);
-        tripsheet_no_text_view.setText(str_Tripcode + ",");
-        sale_date_time_text_view.setText(str_Tripdate);
-
-        ts_ob_amount = (TextView) findViewById(R.id.ob_amount);
-        ts_order_value = (TextView) findViewById(R.id.order_amount);
-        ts_total_received = (TextView) findViewById(R.id.received_amount);
-        ts_total_due = (TextView) findViewById(R.id.due_amount);
-
-        currentTripSheetDetails = mDBHelper.fetchTripSheetDetails(tripSheetId);
-        if (currentTripSheetDetails != null) {
-            ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount())));
-            ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount())));
-            ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())));
-            ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())));
-        }
-
-        tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(tripSheetId);
-        selectedList = new ArrayList<>(tripSheetSOList.size());
-
-
-        for (int i = 0; i < tripSheetSOList.size(); i++) {
-            str_AgentName = tripSheetSOList.get(i).getmTripshetSOAgentFirstName();
-            str_AgentCode = tripSheetSOList.get(i).getmTripshetSOAgentCode();
-            str_OB = tripSheetSOList.get(i).getmTripshetSOOpAmount();
-            str_Order = tripSheetSOList.get(i).getmTripshetSOValue();
-            str_Received = tripSheetSOList.get(i).getmTripshetSOReceivedAmount();
-            str_Due = tripSheetSOList.get(i).getmTripshetSODueAmount();
-
-            String[] temp = new String[6];
-            temp[0] = str_AgentName;
-            temp[1] = str_OB;
-            temp[2] = str_Order;
-            temp[3] = str_Received;
-            temp[4] = str_Due;
-            temp[5] = str_AgentCode;
-
-            selectedList.add(temp);
-        }
-
-
-        TripSheetViewPreview.CustomListView adapter = new TripSheetViewPreview.CustomListView(selectedList, this);
-        listView.setAdapter(adapter);
-
-
-        sales_print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int pageheight = 300 + selectedList.size() * 60;
-                Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
-                Canvas canvas = new Canvas(bmOverlay);
-                canvas.drawColor(Color.WHITE);
-                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                paint.setAntiAlias(true);
-                paint.setFilterBitmap(true);
-                paint.setDither(true);
-                paint.setColor(Color.parseColor("#000000"));
-                paint.setTextSize(26);
-
-                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
-                paint.setTextSize(20);
-                canvas.drawText(str_routecode, 5, 80, paint);
-                paint.setTextSize(20);
-                canvas.drawText(mmSharedPreferences.getString("routename"), 200, 80, paint);
-                paint.setTextSize(20);
-                canvas.drawText("TRIPSHEET SUMMARY,", 5, 120, paint);
-                paint.setTextSize(20);
-                canvas.drawText("by " + mmSharedPreferences.getString("loginusername"), 200, 120, paint);
-                paint.setTextSize(20);
-                canvas.drawText(str_Tripcode, 5, 150, paint);
-                paint.setTextSize(20);
-                canvas.drawText(str_Tripdate, 170, 150, paint);
-                paint.setTextSize(20);
-
-                canvas.drawText("OB", 5, 180, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Order", 120, 180, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Received", 210, 180, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Due", 300, 180, paint);
-
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount())), 5, 210, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount())), 120, 210, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())), 210, 210, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())), 300, 210, paint);
-
-                paint.setTextSize(22);
-                canvas.drawText("Aents/Customers", 5, 240, paint);
-                paint.setTextSize(20);
-
-                canvas.drawText("----------------------------------------------------", 5, 270, paint);
-                canvas.drawText("Name", 5, 300, paint);
-                paint.setTextSize(20);
-                canvas.drawText("OB", 110, 300, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Order", 160, 300, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Received", 230, 300, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Due", 330, 300, paint);
-                paint.setTextSize(20);
-                canvas.drawText("----------------------------------------------------", 5, 330, paint);
-
-                int st = 360;
-                paint.setTextSize(17);
-                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-
-                for (int i = 0; i < selectedList.size(); i++) {
-                    String[] temps = selectedList.get(i);
-                    canvas.drawText(temps[0], 5, st, paint);
-                    canvas.drawText(temps[1], 115, st, paint);
-                    canvas.drawText(temps[2], 175, st, paint);
-                    canvas.drawText(temps[3], 245, st, paint);
-                    canvas.drawText(temps[4], 315, st, paint);
-
-                    st = st + 30;
-                    canvas.drawText(temps[5], 5, st, paint);
-                    st = st + 30;
-                    // canvas.drawText("FROM:" + temps[7], 100, st, paint);
-                    //canvas.drawText("TO:" + temps[8], 250, st, paint);
-
-
-                    //  canvas.drawText("----------------------------------------------------", 5, st, paint);
-                }
-
-
-                st = st + 20;
-                canvas.drawText("--------X---------", 100, st, paint);
-                com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+                tripSheetId = bundle.getString("tripSheetId");
+                //str_Tripcode=bundle.getString("tripsheetCode");
+                //str_Tripdate=bundle.getString("tripsheetDate");
             }
-        });
 
+            sales_print = (TextView) findViewById(R.id.tv_print);
+            company_name = (TextView) findViewById(R.id.tdc_sales_company_name);
+            user_name = (TextView) findViewById(R.id.tdc_sales_user_name);
+            route_name = (TextView) findViewById(R.id.tdc_sales_route_name);
+            route_code = (TextView) findViewById(R.id.tdc_sales_route_code);
+            tripsheet_no_text_view = (TextView) findViewById(R.id.tripsheet_no);
+            sale_date_time_text_view = (TextView) findViewById(R.id.tdc_sales_date_time);
+            tdc_products_list_preview = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
+            close_trip_layout = (LinearLayout) findViewById(R.id.close_trip_layout);
+
+            company_name.setText(mmSharedPreferences.getString("companyname"));
+            user_name.setText("by " + loggedInUserName);
+            route_name.setText(mmSharedPreferences.getString("routename"));
+            route_code.setText(str_routecode);
+            tripsheet_no_text_view.setText(str_Tripcode + ",");
+            sale_date_time_text_view.setText(str_Tripdate);
+
+            ts_ob_amount = (TextView) findViewById(R.id.ob_amount);
+            ts_order_value = (TextView) findViewById(R.id.order_amount);
+            ts_total_received = (TextView) findViewById(R.id.received_amount);
+            ts_total_due = (TextView) findViewById(R.id.due_amount);
+
+            isTripSheetClosed = mDBHelper.isTripSheetClosed(tripSheetId);
+
+            if (isTripSheetClosed) {
+                close_trip_layout.setVisibility(View.GONE);
+            }
+
+            currentTripSheetDetails = mDBHelper.fetchTripSheetDetails(tripSheetId);
+
+            if (currentTripSheetDetails != null) {
+                ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount())));
+                ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount())));
+                ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())));
+                ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())));
+            }
+
+            tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(tripSheetId);
+            selectedList = new ArrayList<>(tripSheetSOList.size());
+
+            for (int i = 0; i < tripSheetSOList.size(); i++) {
+                str_AgentName = tripSheetSOList.get(i).getmTripshetSOAgentFirstName();
+                str_AgentCode = tripSheetSOList.get(i).getmTripshetSOAgentCode();
+                str_OB = tripSheetSOList.get(i).getmTripshetSOOpAmount();
+                str_Order = tripSheetSOList.get(i).getmTripshetSOValue();
+                str_Received = tripSheetSOList.get(i).getmTripshetSOReceivedAmount();
+                str_Due = tripSheetSOList.get(i).getmTripshetSODueAmount();
+
+                String[] temp = new String[6];
+                temp[0] = str_AgentName;
+                temp[1] = str_OB;
+                temp[2] = str_Order;
+                temp[3] = str_Received;
+                temp[4] = str_Due;
+                temp[5] = str_AgentCode;
+
+                selectedList.add(temp);
+            }
+
+            TripSheetViewPreview.CustomListView adapter = new TripSheetViewPreview.CustomListView(selectedList, this);
+            listView.setAdapter(adapter);
+
+            sales_print.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pageheight = 300 + selectedList.size() * 60;
+                    Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
+                    Canvas canvas = new Canvas(bmOverlay);
+                    canvas.drawColor(Color.WHITE);
+                    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                    paint.setAntiAlias(true);
+                    paint.setFilterBitmap(true);
+                    paint.setDither(true);
+                    paint.setColor(Color.parseColor("#000000"));
+                    paint.setTextSize(26);
+
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(str_routecode, 5, 80, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(mmSharedPreferences.getString("routename"), 200, 80, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("TRIPSHEET SUMMARY,", 5, 120, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("by " + mmSharedPreferences.getString("loginusername"), 200, 120, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(str_Tripcode, 5, 150, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(str_Tripdate, 170, 150, paint);
+                    paint.setTextSize(20);
+
+                    canvas.drawText("OB", 5, 180, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("Order", 120, 180, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("Received", 210, 180, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("Due", 300, 180, paint);
+
+                    canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount())), 5, 210, paint);
+                    canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount())), 120, 210, paint);
+                    canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())), 210, 210, paint);
+                    canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())), 300, 210, paint);
+
+                    paint.setTextSize(22);
+                    canvas.drawText("Aents/Customers", 5, 240, paint);
+                    paint.setTextSize(20);
+
+                    canvas.drawText("----------------------------------------------------", 5, 270, paint);
+                    canvas.drawText("Name", 5, 300, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("OB", 110, 300, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("Order", 160, 300, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("Received", 230, 300, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("Due", 330, 300, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("----------------------------------------------------", 5, 330, paint);
+
+                    int st = 360;
+                    paint.setTextSize(17);
+                    // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+
+                    for (int i = 0; i < selectedList.size(); i++) {
+                        String[] temps = selectedList.get(i);
+                        canvas.drawText(temps[0], 5, st, paint);
+                        canvas.drawText(temps[1], 115, st, paint);
+                        canvas.drawText(temps[2], 175, st, paint);
+                        canvas.drawText(temps[3], 245, st, paint);
+                        canvas.drawText(temps[4], 315, st, paint);
+
+                        st = st + 30;
+                        canvas.drawText(temps[5], 5, st, paint);
+                        st = st + 30;
+                        // canvas.drawText("FROM:" + temps[7], 100, st, paint);
+                        //canvas.drawText("TO:" + temps[8], 250, st, paint);
+
+
+                        //  canvas.drawText("----------------------------------------------------", 5, st, paint);
+                    }
+
+
+                    st = st + 20;
+                    canvas.drawText("--------X---------", 100, st, paint);
+                    com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

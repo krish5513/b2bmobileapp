@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 
 public class PaymentsBean implements Serializable {
-
+    private String Payments_paymentsNo;
     private String Payments_paymentsNumber;
     private String Payments_tripsheetId;
     private String Payments_userId;
@@ -32,6 +32,14 @@ public class PaymentsBean implements Serializable {
     private String Payments_saleOrderCode;
     private String Payments_cheque_image_path;
     private int Payments_cheque_upload_status;
+
+    public String getPayments_paymentsNo() {
+        return Payments_paymentsNo;
+    }
+
+    public void setPayments_paymentsNo(String payments_paymentsNo) {
+        Payments_paymentsNo = payments_paymentsNo;
+    }
 
     public String getPayments_tripsheetId() {
         return Payments_tripsheetId;
@@ -223,5 +231,36 @@ public class PaymentsBean implements Serializable {
 
     public void setPayments_cheque_upload_status(int payments_cheque_upload_status) {
         Payments_cheque_upload_status = payments_cheque_upload_status;
+    }
+
+    @Override
+    public String toString() {
+        return "PaymentsBean{" +
+                "Payments_paymentsNo='" + Payments_paymentsNo + '\'' +
+                "Payments_paymentsNumber='" + Payments_paymentsNumber + '\'' +
+                ", Payments_tripsheetId='" + Payments_tripsheetId + '\'' +
+                ", Payments_userId='" + Payments_userId + '\'' +
+                ", Payments_userCodes='" + Payments_userCodes + '\'' +
+                ", Payments_routeId='" + Payments_routeId + '\'' +
+                ", Payments_routeCodes='" + Payments_routeCodes + '\'' +
+                ", Payments_chequeNumber='" + Payments_chequeNumber + '\'' +
+                ", Payments_accountNumber='" + Payments_accountNumber + '\'' +
+                ", Payments_accountName='" + Payments_accountName + '\'' +
+                ", Payments_bankName='" + Payments_bankName + '\'' +
+                ", Payments_chequeDate='" + Payments_chequeDate + '\'' +
+                ", Payments_chequeClearDate='" + Payments_chequeClearDate + '\'' +
+                ", Payments_receiverName='" + Payments_receiverName + '\'' +
+                ", Payments_transActionStatus='" + Payments_transActionStatus + '\'' +
+                ", Payments_taxTotal=" + Payments_taxTotal +
+                ", Payments_saleValue=" + Payments_saleValue +
+                ", Payments_status='" + Payments_status + '\'' +
+                ", Payments_delete='" + Payments_delete + '\'' +
+                ", Payments_receivedAmount=" + Payments_receivedAmount +
+                ", Payments_type='" + Payments_type + '\'' +
+                ", Payments_saleOrderId='" + Payments_saleOrderId + '\'' +
+                ", Payments_saleOrderCode='" + Payments_saleOrderCode + '\'' +
+                ", Payments_cheque_image_path='" + Payments_cheque_image_path + '\'' +
+                ", Payments_cheque_upload_status=" + Payments_cheque_upload_status +
+                '}';
     }
 }

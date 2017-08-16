@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,12 +43,14 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
     private SearchView search;
     private TextView companyName;
     private ListView tripSheetReturnProductsList;
+    private LinearLayout trip_sheet_returns_save, trip_sheet_returns_preview;
     private TripSheetReturnsAdapter mTripSheetReturnsAdapter;
     private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "", loggedInUserId;
     private boolean isReturnsDataSaved = false, isReturnsInEditingMode = false;
     private ArrayList<DeliverysBean> allProductsListFromStock = new ArrayList<>();
     private Map<String, DeliverysBean> selectedProductsHashMap;
     private Map<String, String> previouslyReturnedProductsHashMap;
+    private boolean isTripSheetClosed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,8 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
 
             companyName = (TextView) findViewById(R.id.companyName);
             tripSheetReturnProductsList = (ListView) findViewById(R.id.trip_sheet_return_products_list_view);
+            trip_sheet_returns_save = (LinearLayout) findViewById(R.id.trip_sheet_returns_save);
+            trip_sheet_returns_preview = (LinearLayout) findViewById(R.id.trip_sheet_returns_preview);
 
             activityContext = TripsheetReturns.this;
             mmSharedPreferences = new MMSharedPreferences(activityContext);
@@ -86,6 +91,12 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
             mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
 
             companyName.setText(mAgentName);
+
+            isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
+
+            if (isTripSheetClosed) {
+                trip_sheet_returns_save.setVisibility(View.GONE);
+            }
 
             selectedProductsHashMap = new HashMap<>();
             previouslyReturnedProductsHashMap = new HashMap<>();

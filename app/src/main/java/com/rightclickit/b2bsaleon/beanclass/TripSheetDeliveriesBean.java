@@ -6,6 +6,7 @@ package com.rightclickit.b2bsaleon.beanclass;
 
 public class TripSheetDeliveriesBean {
     private String mTripsheetDeliveryNo;
+    private String mTripsheetDeliveryNumber;
     private String mTripsheetDelivery_tripId;
     private String mTripsheetDelivery_so_id;
     private String mTripsheetDelivery_so_code;
@@ -37,6 +38,14 @@ public class TripSheetDeliveriesBean {
 
     public void setmTripsheetDeliveryNo(String mTripsheetDeliveryNo) {
         this.mTripsheetDeliveryNo = mTripsheetDeliveryNo;
+    }
+
+    public String getmTripsheetDeliveryNumber() {
+        return mTripsheetDeliveryNumber;
+    }
+
+    public void setmTripsheetDeliveryNumber(String mTripsheetDeliveryNumber) {
+        this.mTripsheetDeliveryNumber = mTripsheetDeliveryNumber;
     }
 
     public String getmTripsheetDelivery_tripId() {
@@ -235,6 +244,7 @@ public class TripSheetDeliveriesBean {
     public String toString() {
         return "TripSheetDeliveriesBean{" +
                 "mTripsheetDeliveryNo='" + mTripsheetDeliveryNo + '\'' +
+                "mTripsheetDeliveryNumber='" + mTripsheetDeliveryNumber + '\'' +
                 ", mTripsheetDelivery_tripId='" + mTripsheetDelivery_tripId + '\'' +
                 ", mTripsheetDelivery_so_id='" + mTripsheetDelivery_so_id + '\'' +
                 ", mTripsheetDelivery_so_code='" + mTripsheetDelivery_so_code + '\'' +

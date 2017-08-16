@@ -14,11 +14,8 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentTakeOrderScreen;
 import com.rightclickit.b2bsaleon.activities.TripSheetView;
 import com.rightclickit.b2bsaleon.activities.TripsheetDelivery;
-import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
-import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
-import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
@@ -26,7 +23,6 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Created by Sekhar Kuppa
@@ -35,14 +31,15 @@ import java.util.Map;
 public class TripsheetsSOListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Activity activity;
-    private ImageLoader mImageLoader;
     private ArrayList<TripsheetSOList> allSaleOrdersList, filteredSaleOrdersList;
     private String mTakeOrderPrivilege = "", mStockVerifyPrivilege = "";
+    private boolean isTripSheetClosed;
 
-    public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege) {
+    public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege, boolean isTripSheetClosed) {
         this.activity = tripSheetView;
         this.mInflater = LayoutInflater.from(activity);
         this.mTakeOrderPrivilege = mTakeOrderPrivilege;
+        this.isTripSheetClosed = isTripSheetClosed;
         this.allSaleOrdersList = tripsSOList;
         this.filteredSaleOrdersList = new ArrayList<>();
         this.filteredSaleOrdersList.addAll(allSaleOrdersList);
@@ -68,23 +65,24 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
     public long getItemId(int i) {
         return i;
     }
-    public  ArrayList<TripsheetSOList> getData(){
+
+    public ArrayList<TripsheetSOList> getData() {
         return allSaleOrdersList;
     }
+
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
         final ViewHolder mHolder;
+
         if (view == null) {
-            mHolder = new ViewHolder();
             view = mInflater.inflate(R.layout.tripsheets_so_list_custom, null);
 
+            mHolder = new ViewHolder();
             mHolder.mAgentCode = (TextView) view.findViewById(R.id.tv_agent_code);
-           // mHolder.mSODate = (TextView) view.findViewById(R.id.tv_so_date);
-            mHolder.mSOItemsCount = (TextView) view.findViewById(R.id.tv_itemsQty);
+            //mHolder.mSODate = (TextView) view.findViewById(R.id.tv_so_date);
+            //mHolder.mSOItemsCount = (TextView) view.findViewById(R.id.tv_itemsQty);
             mHolder.mSOAgentName = (TextView) view.findViewById(R.id.companyName);
-
             mHolder.mSOOBamtValue = (TextView) view.findViewById(R.id.tv_ObamtValue);
-
             mHolder.mSOOrderedValue = (TextView) view.findViewById(R.id.tv_orderValue);
             mHolder.mSOReceivedValue = (TextView) view.findViewById(R.id.tv_receivedValue);
             mHolder.mSODueValue = (TextView) view.findViewById(R.id.tv_dueValue);
@@ -93,6 +91,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
             mHolder.mSOMapIconParent = (LinearLayout) view.findViewById(R.id.gotoCustomer);
             mHolder.mSOAgentDistance = (TextView) view.findViewById(R.id.tv_km);
             mHolder.mEmptyLayout = (LinearLayout) view.findViewById(R.id.EmptyView);
+            mHolder.so_status = (TextView) view.findViewById(R.id.tv_status);
 
             view.setTag(mHolder);
         } else {
@@ -105,7 +104,6 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
             mHolder.mEmptyLayout.setVisibility(View.GONE);
         }
 
-
         if (mTakeOrderPrivilege.equals("list_view_takeorder")) {
             mHolder.mSOTakeOrder.setVisibility(View.VISIBLE);
         }
@@ -114,13 +112,18 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
 
         mHolder.mAgentCode.setText(currentSaleOrder.getmTripshetSOAgentCode());
         //mHolder.mSODate.setText(currentSaleOrder.getmTripshetSODate());
-        mHolder.mSOItemsCount.setText(currentSaleOrder.getmTripshetSOProductsCount());
+        //mHolder.mSOItemsCount.setText(currentSaleOrder.getmTripshetSOProductsCount());
         mHolder.mSOAgentName.setText(currentSaleOrder.getmTripshetSOAgentFirstName());
         mHolder.mSOOBamtValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOOpAmount())));
         mHolder.mSOOrderedValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOValue())));
         mHolder.mSOReceivedValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOReceivedAmount())));
         mHolder.mSODueValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSODueAmount())));
         mHolder.mSOAgentDistance.setText(currentSaleOrder.getDistance() + " KM");
+
+        if (isTripSheetClosed)
+            mHolder.so_status.setText("Closed");
+        else
+            mHolder.so_status.setText("In Process");
 
         mHolder.mSOMapIconParent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,13 +155,12 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         });
 
 
-
         mHolder.mSOTakeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i =new Intent(activity,AgentTakeOrderScreen.class);
+                Intent i = new Intent(activity, AgentTakeOrderScreen.class);
                 i.putExtra("tripsheetId", currentSaleOrder.getmTripshetSOTripId());
-                i.putExtra("From","Tripsheet");
+                i.putExtra("From", "Tripsheet");
                 activity.startActivity(i);
                 activity.finish();
             }
@@ -180,6 +182,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         LinearLayout mSOMapIconParent;
         TextView mSOAgentDistance;
         LinearLayout mEmptyLayout;
+        TextView so_status;
     }
 
     // Filter Class

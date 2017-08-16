@@ -112,7 +112,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/rsave"
+                android:id="@+id/trip_sheet_returns_save"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
@@ -133,7 +133,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/rpreview"
+                android:id="@+id/trip_sheet_returns_preview"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center"

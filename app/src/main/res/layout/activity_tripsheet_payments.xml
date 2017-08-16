@@ -512,7 +512,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/slinear"
+                android:id="@+id/trip_sheet_payments_save"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center"
@@ -533,7 +533,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/prelinear"
+                android:id="@+id/trip_sheet_payments_preview"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="center"

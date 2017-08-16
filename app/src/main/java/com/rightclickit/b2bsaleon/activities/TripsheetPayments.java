@@ -41,11 +41,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class TripsheetPayments extends AppCompatActivity {
     private Context activityContext;
 
-    private LinearLayout ret, payments, save, print, delivery, cheqLinearLayout, captureChequeLayout;
+    private LinearLayout trip_sheet_payments_save, trip_sheet_payments_preview, ret, delivery, cheqLinearLayout, captureChequeLayout;
     private TextView tps_opening_balance, tps_sale_order_value, tps_total_amount, tps_received_amount, tps_due_amount;
     private Spinner paymentTypeSpinner;
     private EditText mAmountText, mChequeNumber, mBankName, mChequeDate;
@@ -57,6 +58,7 @@ public class TripsheetPayments extends AppCompatActivity {
     private TripSheetDeliveriesBean currentDeliveriesBean = null;
     private double openingBalance = 0.0, saleOrderValue = 0.0, totalAmount = 0.0, receivedAmount = 0.0, dueAmount = 0.0;
     private String cheque_image_path = "";
+    private boolean isTripSheetClosed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,10 +94,9 @@ public class TripsheetPayments extends AppCompatActivity {
             TextView agentName = (TextView) findViewById(R.id.companyName);
             agentName.setText(mAgentName);
 
+            trip_sheet_payments_save = (LinearLayout) findViewById(R.id.trip_sheet_payments_save);
+            trip_sheet_payments_preview = (LinearLayout) findViewById(R.id.trip_sheet_payments_preview);
             ret = (LinearLayout) findViewById(R.id.rlinear);
-            payments = (LinearLayout) findViewById(R.id.plinear);
-            save = (LinearLayout) findViewById(R.id.slinear);
-            print = (LinearLayout) findViewById(R.id.prelinear);
             delivery = (LinearLayout) findViewById(R.id.dlinear);
             mAmountText = (EditText) findViewById(R.id.amount);
             cheqLinearLayout = (LinearLayout) findViewById(R.id.chequeLinearLayout);
@@ -105,12 +106,8 @@ public class TripsheetPayments extends AppCompatActivity {
             mChequeNumber = (EditText) findViewById(R.id.chequeNo);
             mBankName = (EditText) findViewById(R.id.bankName);
             mChequeDate = (EditText) findViewById(R.id.date);
-            Calendar cal = Calendar.getInstance();
-            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-            currentDate = df.format(cal.getTime());
+            currentDate = Utility.formatDate(new Date(), "dd/MM/yyyy");
             mChequeDate.setText(currentDate);
-//        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
-//        currentDate = df1.format(cal.getTime());
 
             tps_opening_balance = (TextView) findViewById(R.id.tps_opening_balance);
             tps_sale_order_value = (TextView) findViewById(R.id.tps_sale_order_value);
@@ -171,13 +168,13 @@ public class TripsheetPayments extends AppCompatActivity {
 
                 }
             });
-            save.setOnClickListener(new View.OnClickListener() {
+            trip_sheet_payments_save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showAlertDialogWithCancelButton(TripsheetPayments.this, "User Action!", "Do you want to save data?");
+                    validatePaymentDetails();
                 }
             });
-            print.setOnClickListener(new View.OnClickListener() {
+            trip_sheet_payments_preview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent i = new Intent(TripsheetPayments.this, TripsheetPaymentsPreview.class);
@@ -192,6 +189,12 @@ public class TripsheetPayments extends AppCompatActivity {
                     startActivity(i);
                 }
             });
+
+            isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
+
+            if (isTripSheetClosed) {
+                trip_sheet_payments_save.setVisibility(View.GONE);
+            }
 
             deliveryArrayList = mDBHelper.fetchOrderPaymentFromDeliveriesTable(mTripSheetId, mAgentSoId, mAgentId);
 
@@ -459,48 +462,51 @@ public class TripsheetPayments extends AppCompatActivity {
         return paymentsBean;
     }
 
-    public void savePaymentDetails() {
+    public void validatePaymentDetails() {
         Double enteredAmount = Double.parseDouble(mAmountText.getText().toString());
         if (enteredAmount > 0) {
-            PaymentsBean paymentsBean = null;
-
-            if (paymentTypeSpinner.getSelectedItem().toString().equals("Cash")) {
-                synchronized (this) {
-                    paymentsBean = formAPIData(0);
-                }
-
-            } else if (paymentTypeSpinner.getSelectedItem().toString().equals("Cheque")) {
-                cheqLinearLayout.setVisibility(View.VISIBLE);
-
+            if (paymentTypeSpinner.getSelectedItem().toString().equals("Cheque")) {
                 if (mChequeNumber.getText().toString().trim().length() == 0) {
                     Toast.makeText(TripsheetPayments.this, "Please enter cheque number.", Toast.LENGTH_SHORT).show();
                 } else if (mBankName.getText().toString().trim().length() == 0) {
                     Toast.makeText(TripsheetPayments.this, "Please enter bank name.", Toast.LENGTH_SHORT).show();
                 } else if (mChequeDate.getText().toString().trim().length() == 0) {
                     Toast.makeText(TripsheetPayments.this, "Please enter cheque date.", Toast.LENGTH_SHORT).show();
-                } else if (cheque_image_path.length() == 0) {
+                } /*else if (cheque_image_path.length() == 0) {
                     Toast.makeText(TripsheetPayments.this, "Please capture cheque.", Toast.LENGTH_SHORT).show();
-                } else {
-                    synchronized (this) {
-                        paymentsBean = formAPIData(1);
-                    }
+                } */ else {
+                    showAlertDialogWithCancelButton(TripsheetPayments.this, "User Action!", "Do you want to save data?");
                 }
+
+            } else {
+                showAlertDialogWithCancelButton(TripsheetPayments.this, "User Action!", "Do you want to save data?");
             }
+        } else {
+            Toast.makeText(TripsheetPayments.this, "Please enter received amount.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void savePaymentDetails() {
+        Double enteredAmount = Double.parseDouble(mAmountText.getText().toString());
+        if (enteredAmount > 0) {
+            PaymentsBean paymentsBean = null;
+
+            if (paymentTypeSpinner.getSelectedItem().toString().equals("Cash"))
+                paymentsBean = formAPIData(0);
+            else
+                paymentsBean = formAPIData(1);
 
             synchronized (this) {
                 mDBHelper.insertTripsheetsPaymentsListData(paymentsBean);
             }
 
-            Toast.makeText(TripsheetPayments.this, "Payment Details Saved Successfully.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TripsheetPayments.this, "Payment details saved successfully.", Toast.LENGTH_SHORT).show();
 
             synchronized (this) {
                 if (new NetworkConnectionDetector(TripsheetPayments.this).isNetworkConnected()) {
                     startService(new Intent(TripsheetPayments.this, SyncTripSheetsPaymentsService.class));
                 }
             }
-
-        } else {
-            Toast.makeText(TripsheetPayments.this, "Please enter received amount.", Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -6,6 +6,7 @@ package com.rightclickit.b2bsaleon.beanclass;
 
 public class TripSheetReturnsBean {
     private String mTripshhetReturnsReturn_no;
+    private String mTripshhetReturnsReturn_number;
     private String mTripshhetReturnsTrip_id;
     private String mTripshhetReturns_so_id;
     private String mTripshhetReturns_so_code;
@@ -31,6 +32,14 @@ public class TripSheetReturnsBean {
 
     public void setmTripshhetReturnsReturn_no(String mTripshhetReturnsReturn_no) {
         this.mTripshhetReturnsReturn_no = mTripshhetReturnsReturn_no;
+    }
+
+    public String getmTripshhetReturnsReturn_number() {
+        return mTripshhetReturnsReturn_number;
+    }
+
+    public void setmTripshhetReturnsReturn_number(String mTripshhetReturnsReturn_number) {
+        this.mTripshhetReturnsReturn_number = mTripshhetReturnsReturn_number;
     }
 
     public String getmTripshhetReturnsTrip_id() {
@@ -181,6 +190,7 @@ public class TripSheetReturnsBean {
     public String toString() {
         return "TripSheetReturnsBean{" +
                 "mTripshhetReturnsReturn_no='" + mTripshhetReturnsReturn_no + '\'' +
+                "mTripshhetReturnsReturn_number='" + mTripshhetReturnsReturn_number + '\'' +
                 ", mTripshhetReturnsTrip_id='" + mTripshhetReturnsTrip_id + '\'' +
                 ", mTripshhetReturns_so_id='" + mTripshhetReturns_so_id + '\'' +
                 ", mTripshhetReturns_so_code='" + mTripshhetReturns_so_code + '\'' +
