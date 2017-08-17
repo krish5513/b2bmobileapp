@@ -59,6 +59,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by Sekhar Kuppa
@@ -134,7 +135,8 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     }
 
     @Override
-    public Object getItem(int i) {
+    public Object getItem(int position) {
+
         return null;
     }
 
@@ -317,23 +319,30 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                 if (!hasFocus) {
                     try {
 
-                        EditText quantityEditText = (EditText) view;
-                        Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
-                        if (enteredQuantity >0) {
-                            View childView = mList.getChildAt(position - mList.getFirstVisiblePosition());
-                            EditText quanity11 = (EditText) childView.findViewById(R.id.productQt);
-                            TextView prodName = (TextView) childView.findViewById(R.id.productName);
-                            EditText fromDate = (EditText) childView.findViewById(R.id.from_date);
-                            EditText toDate = (EditText) childView.findViewById(R.id.to_date);
-                            String presentValStr = quanity11.getText().toString();
-                            Double presentIntVal = Double.parseDouble(presentValStr);
-                            quanity11.setText(String.format("%.3f", presentIntVal));
+
+//                        EditText quantityEditText = (EditText) view;
+//                        Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
+//                        if (enteredQuantity >0) {
+                        View childView = mList.getChildAt(position - mList.getFirstVisiblePosition());
+                        EditText quanity11 = (EditText) childView.findViewById(R.id.productQt);
+                        TextView prodName = (TextView) childView.findViewById(R.id.productName);
+                        EditText fromDate = (EditText) childView.findViewById(R.id.from_date);
+                        EditText toDate = (EditText) childView.findViewById(R.id.to_date);
+                        String presentValStr = quanity11.getText().toString();
+                        Double presentIntVal = Double.parseDouble(presentValStr);
+                        //quanity11.setText(String.format("%.3f", presentIntVal));
+                        if (!AgentTakeOrderScreen.isCloseClicked && presentIntVal > 0) {
+                            AgentTakeOrderScreen.isCloseClicked = true;
                             quantityList.put(mTakeOrderBeansList1.get(position).getProductId(), String.format("%.3f", presentIntVal));
                             producttitle.put(mTakeOrderBeansList1.get(position).getProductId(), prodName.getText().toString().trim());
                             fromDatesList.put(mTakeOrderBeansList1.get(position).getProductId(), fromDate.getText().toString().trim());
                             toDatesList.put(mTakeOrderBeansList1.get(position).getProductId(), toDate.getText().toString().trim());
                             mProductIdsList.put(mTakeOrderBeansList1.get(position).getProductId().toString(), mTakeOrderBeansList1.get(position).getProductId().toString());
+//                            System.out.println("Q LIST:::: " + quantityList.size());
+//                            System.out.println("POS LIST:::: " + position);
+//                            System.out.println(" P ID LIST:::: " + mTakeOrderBeansList1.get(position).getProductId());
                             //}
+                            // }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -484,6 +493,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         public ImageButton productQuantityDecrement;
         public ImageView productArrow;
         LinearLayout mEmptyLayout;
+        TextWatcher mTextWatcher;
     }
 
     // Filter Class

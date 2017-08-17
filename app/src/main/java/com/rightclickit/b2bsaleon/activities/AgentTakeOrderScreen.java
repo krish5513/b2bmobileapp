@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -17,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TakeOrdersAdapter;
@@ -40,9 +42,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
     private LinearLayout mTDCorderLayout;
 
 
-
     private LinearLayout tpsBottomOptionsLayout;
-
 
 
     public static LinearLayout mPaymentsLayout;
@@ -53,9 +53,11 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
     private ArrayList<ProductsBean> productsList;
 
     public String Agents;
-    public String TroipsTakeorder="",tripSheetId="";
+    public String TroipsTakeorder = "", tripSheetId = "";
 
-
+    public static boolean isCloseClicked;
+    Runnable rr;
+    Handler h = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,15 +82,14 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
         Bundle bundle = this.getIntent().getExtras();
         if (bundle != null) {
             TroipsTakeorder = bundle.getString("From");
-            tripSheetId=bundle.getString("tripsheetId");
+            tripSheetId = bundle.getString("tripsheetId");
         }
-
 
 
         mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("no", mPreference.getString("agentId"));
         productsList = mDBHelper.fetchAllRecordsFromProductsTableForTakeOrders(mPreference.getString("agentId"));
-        System.out.println("The TO LIST IS::: "+ productsList.size());
-        System.out.println("The TO LIST 111 IS::: "+ mTakeOrderBeansList.size());
+        System.out.println("The TO LIST IS::: " + productsList.size());
+        System.out.println("The TO LIST 111 IS::: " + mTakeOrderBeansList.size());
 //        for (int k = 0; k<productsList.size();k++){
 //            System.out.println("AAAA FROM:: "+mTakeOrderBeansList.get(k).getmProductFromDate());
 //            System.out.println("BBBBB QUA:: "+mTakeOrderBeansList.get(k).getmProductQuantity());
@@ -100,16 +101,12 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
 //        }
 
 
-
-
-
-
-        mTakeOrdersLayout=(LinearLayout)findViewById(R.id.takeorder) ;
+        mTakeOrdersLayout = (LinearLayout) findViewById(R.id.takeorder);
         mTakeOrdersLayout.setVisibility(View.GONE);
 
         mTakeOrderListView = (ListView) findViewById(R.id.TakeOrdersList);
-        if(productsList.size()>0){
-            mTakeOrderAdapter = new TakeOrdersAdapter(this,productsList,mTakeOrderListView,mPreference.getString("agentId"),mTakeOrderBeansList);
+        if (productsList.size() > 0) {
+            mTakeOrderAdapter = new TakeOrdersAdapter(this, productsList, mTakeOrderListView, mPreference.getString("agentId"), mTakeOrderBeansList);
             mTakeOrderListView.setAdapter(mTakeOrderAdapter);
         }
 
@@ -123,7 +120,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 mTDCorderLayout.startAnimation(animation1);
-                Intent i =new Intent(AgentTakeOrderScreen.this,AgentTDC_Order.class);
+                Intent i = new Intent(AgentTakeOrderScreen.this, AgentTDC_Order.class);
                 startActivity(i);
                 finish();
 
@@ -140,7 +137,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
                         R.anim.blink);
                 mDeliveriesLayout.startAnimation(animation1);
 
-                Intent i =new Intent(AgentTakeOrderScreen.this,AgentDeliveries.class);
+                Intent i = new Intent(AgentTakeOrderScreen.this, AgentDeliveries.class);
                 startActivity(i);
                 finish();
 
@@ -155,7 +152,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
                         R.anim.blink);
                 mReturnsLayout.startAnimation(animation1);
 
-                Intent i =new Intent(AgentTakeOrderScreen.this,AgentReturns.class);
+                Intent i = new Intent(AgentTakeOrderScreen.this, AgentReturns.class);
                 startActivity(i);
                 finish();
 
@@ -170,7 +167,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
                         R.anim.blink);
                 mPaymentsLayout.startAnimation(animation1);
 
-                Intent i =new Intent(AgentTakeOrderScreen.this,AgentPayments.class);
+                Intent i = new Intent(AgentTakeOrderScreen.this, AgentPayments.class);
                 startActivity(i);
                 finish();
 
@@ -184,16 +181,14 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
                         R.anim.blink);
                 mPaymentsLayout.startAnimation(animation1);
 
-                Intent i =new Intent(AgentTakeOrderScreen.this,AgentTakeOrderScreen.class);
-                i.putExtra("From","Agents");
+                Intent i = new Intent(AgentTakeOrderScreen.this, AgentTakeOrderScreen.class);
+                i.putExtra("From", "Agents");
 
                 startActivity(i);
                 finish();
 
             }
         });
-
-
 
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -221,21 +216,21 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
         }
 
 
-        tpsBottomOptionsLayout=(LinearLayout)findViewById(R.id.tpsBottomOptionsLayout) ;
-        if(TroipsTakeorder.equals("Tripsheet")) {
+        tpsBottomOptionsLayout = (LinearLayout) findViewById(R.id.tpsBottomOptionsLayout);
+        if (TroipsTakeorder.equals("Tripsheet")) {
             tpsBottomOptionsLayout.setVisibility(View.GONE);
 
-        }else {
+        } else {
             tpsBottomOptionsLayout.setVisibility(View.VISIBLE);
 
         }
-
 
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
@@ -252,9 +247,15 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String query) {
-
                 mTakeOrderAdapter.filter(query);
-
+                rr = new Runnable() {
+                    @Override
+                    public void run() {
+                        h.removeCallbacks(rr);
+                        isCloseClicked = false;
+                    }
+                };
+                h.postDelayed(rr, 2000);
                 return true;
 
             }
@@ -262,7 +263,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
         });
 
         // Get the search close button image view
-        ImageView closeButton = (ImageView)search.findViewById(R.id.search_close_btn);
+        ImageView closeButton = (ImageView) search.findViewById(R.id.search_close_btn);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -273,10 +274,9 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
         });
 
 
-
-
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -287,9 +287,9 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                if(search.isIconified()) {
+                if (search.isIconified()) {
                     onBackPressed();
-                }else {
+                } else {
                     search.setQuery("", false);
                     search.clearFocus();
                     search.onActionViewCollapsed();
@@ -308,29 +308,26 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
+        menu.findItem(R.id.Add).setVisible(false);
 
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(TroipsTakeorder.equals("Tripsheet")) {
+        if (TroipsTakeorder.equals("Tripsheet")) {
             Intent intent = new Intent(this, TripSheetView.class);
             intent.putExtra("tripsheetId", tripSheetId);
             startActivity(intent);
             finish();
-        }else {
+        } else {
             Intent intent = new Intent(this, AgentsActivity.class);
             startActivity(intent);
             finish();
         }
     }
-
-
-
-
 
 
 }
