@@ -3,6 +3,10 @@ package com.rightclickit.b2bsaleon.util;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.security.MessageDigest;
@@ -156,6 +160,36 @@ public class Utility {
         NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("en", "IN"));
         return formatter.format(number);
     }
-    
 
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        try {
+            ListAdapter listAdapter = listView.getAdapter();
+            if (listAdapter == null) {
+                return;
+            }
+
+            int totalHeight = listView.getPaddingTop() + listView.getPaddingBottom();
+            for (int i = 0; i < listAdapter.getCount(); i++) {
+                View listItem = listAdapter.getView(i, null, listView);
+                if (listItem instanceof ViewGroup) {
+                    listItem.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                }
+                listItem.measure(0, 0);
+                totalHeight += listItem.getMeasuredHeight();
+            }
+
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+
+            int height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+            if (height < 200)
+                height = 200;
+            params.height = height;
+
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

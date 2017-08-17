@@ -239,7 +239,8 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.TripsheetDeliveryPreview"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.TripsheetPayments"
             android:screenOrientation="portrait"
@@ -298,8 +299,14 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".activities.TripsheetReturnsPreview" />
-        <activity android:name=".activities.TripsheetPaymentsPreview"></activity>
+        <activity
+            android:name=".activities.TripsheetReturnsPreview"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.TripsheetPaymentsPreview"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

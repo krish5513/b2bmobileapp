@@ -154,7 +154,9 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 received_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOReceivedAmount())));
                 closing_balance.setText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOCBAmount())));
             }
+
             selectedList = new ArrayList<>(deliveredProductsList.size());
+
             if (deliveredProductsList.size() > 0) {
                 for (SaleOrderDeliveredProducts products : deliveredProductsList) {
                     totalAmount = totalAmount + Double.parseDouble(products.getProductAmount());
@@ -178,15 +180,25 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
                 tripSheetsPaymentPreviewDeliveredProductsAdapter = new TripSheetsPaymentPreviewDeliveredProductsAdapter(activityContext, this, deliveredProductsList);
                 delivered_products_list_view.setAdapter(tripSheetsPaymentPreviewDeliveredProductsAdapter);
+                Utility.setListViewHeightBasedOnChildren(delivered_products_list_view);
             }
 
             if (paymentsDetails != null) {
                 mode_of_payment.setText(paymentsDetails.getPayments_type().equals("0") ? "Cash" : "Cheque");
-                cheque_number.setText(paymentsDetails.getPayments_chequeNumber());
-                cheque_date.setText(paymentsDetails.getPayments_chequeDate());
-                bank_name.setText(paymentsDetails.getPayments_bankName());
+
+                if (paymentsDetails.getPayments_type().equals("1")) {
+                    cheque_number.setText("Cheque #" + paymentsDetails.getPayments_chequeNumber());
+                    cheque_date.setText("Date : " + paymentsDetails.getPayments_chequeDate());
+                    bank_name.setText(paymentsDetails.getPayments_bankName() + " Bank");
+                } else {
+                    cheque_number.setVisibility(View.GONE);
+                    cheque_date.setVisibility(View.GONE);
+                    bank_name.setVisibility(View.GONE);
+                }
             }
+
             cratesList = new ArrayList<>(returnedProductsList.size());
+
             if (returnedProductsList.size() > 0) {
 
                 for (SaleOrderReturnedProducts crates : returnedProductsList) {
@@ -200,8 +212,10 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     temp[5] = crates.getCode();
                     cratesList.add(temp);
                 }
+
                 tripSheetsPaymentPreviewReturnedProductsAdapter = new TripSheetsPaymentPreviewReturnedProductsAdapter(activityContext, this, returnedProductsList);
                 returned_products_list_view.setAdapter(tripSheetsPaymentPreviewReturnedProductsAdapter);
+                Utility.setListViewHeightBasedOnChildren(returned_products_list_view);
             }
         } catch (Exception e) {
             e.printStackTrace();

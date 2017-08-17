@@ -4248,7 +4248,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             Map<String, String> deliveredProductsHashMap = fetchDeliveriesListByTripSheetId(tripSheetId, saleOrderId, agentId);
 
-            String selectQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY + ", " + KEY_PRODUCT_RETURNABLE
                     + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " R LEFT JOIN " + TABLE_PRODUCTS + " P ON R." + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = P." + KEY_PRODUCT_ID
                     + " WHERE P." + KEY_PRODUCT_RETURNABLE + " = 'Y' AND " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = '" + tripSheetId + "' AND " + KEY_TRIPSHEET_RETURNS_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + agentId + "'";
 
