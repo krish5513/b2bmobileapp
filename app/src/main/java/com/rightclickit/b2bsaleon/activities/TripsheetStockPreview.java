@@ -102,6 +102,7 @@ public class TripsheetStockPreview extends AppCompatActivity {
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 tripSheetId = bundle.getString("tripSheetId");
+
                 str_Tripcode = bundle.getString("tripsheetCode");
                 str_Tripdate = bundle.getString("tripsheetDate");
             }

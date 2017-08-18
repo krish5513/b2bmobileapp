@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.activities.AgentPaymentsView;
 import com.rightclickit.b2bsaleon.activities.TripsheetPaymentsPreview;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderDeliveredProducts;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderReturnedProducts;
@@ -27,6 +28,12 @@ public class TripSheetsPaymentPreviewReturnedProductsAdapter extends BaseAdapter
     private ArrayList<SaleOrderReturnedProducts> returnedProductsList;
 
     public TripSheetsPaymentPreviewReturnedProductsAdapter(Context ctxt, TripsheetPaymentsPreview activity, ArrayList<SaleOrderReturnedProducts> productsList) {
+        this.ctxt = ctxt;
+        this.activity = activity;
+        this.mInflater = LayoutInflater.from(activity);
+        this.returnedProductsList = productsList;
+    }
+    public TripSheetsPaymentPreviewReturnedProductsAdapter(Context ctxt, AgentPaymentsView activity, ArrayList<SaleOrderReturnedProducts> productsList) {
         this.ctxt = ctxt;
         this.activity = activity;
         this.mInflater = LayoutInflater.from(activity);

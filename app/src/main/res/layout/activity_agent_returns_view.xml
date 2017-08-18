@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.rightclickit.b2bsaleon.activities.AgentReturnsView">
+    tools:context="com.rightclickit.b2bsaleon.activities.TripsheetDeliveryPreview">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="thirumala milk products pvt ltd"
+            android:text="Company Name"
             android:gravity="left"
             android:textAllCaps="true"
             android:paddingLeft="10dp"
@@ -24,14 +23,15 @@
             android:textColor="@color/greydark"
             />
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_routecode"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:text="2541526325"
+                android:text="routecode"
                 android:gravity="left"
                 android:paddingTop="5dp"
                 android:textAllCaps="true"
@@ -39,6 +39,7 @@
                 android:textColor="@color/greydark"
                 />
             <TextView
+                android:visibility="gone"
                 android:id="@+id/sales_ofc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -52,10 +53,10 @@
                 />
             <TextView
                 android:id="@+id/route_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:text="Route"
+                android:text="Routename"
                 android:gravity="left"
                 android:paddingTop="5dp"
                 android:textAllCaps="true"
@@ -63,17 +64,10 @@
                 android:textColor="@color/greydark"
                 />
         </LinearLayout>
-
-        <TextView
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:text="Return info"
-            android:gravity="left"
-            android:textAllCaps="true"
-            android:padding="10dp"
-            android:textColor="@color/greydark"
-            />
+            android:layout_height="1dp"
+            android:background="@color/view_line" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,96 +76,158 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="125362"
+                android:textSize="16sp"
+                android:text="Return "
                 android:gravity="left"
                 android:textAllCaps="true"
+                android:layout_weight="0.8"
                 android:paddingLeft="10dp"
                 android:textColor="@color/greydark"
                 />
             <TextView
-                android:id="@+id/tv_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="Date"
-                android:gravity="left"
-                android:textAllCaps="true"
-                android:paddingLeft="10dp"
-                android:textColor="@color/greydark"
-                />
-            <TextView
-                android:id="@+id/user_Name"
+                android:id="@+id/tv_user_Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:text="login User name "
+                android:layout_marginLeft="40dp"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:gravity="right"
+                android:layout_weight="2"
+                android:textColor="@color/greydark"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/return_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="Return No"
                 android:gravity="left"
                 android:textAllCaps="true"
                 android:paddingLeft="10dp"
                 android:textColor="@color/greydark"
                 />
+            <TextView
+                android:id="@+id/return_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="ReturnDate"
+                android:gravity="left"
+                android:textAllCaps="true"
+                android:paddingLeft="10dp"
+                android:textColor="@color/greydark"
+                />
+
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_line" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.15"
-                android:text="Product"
-                android:layout_gravity="left"
-                android:gravity="left"
-                android:textSize="14sp"
-                android:textColor="@color/greydark"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.21"
-                android:text="UOM"
-                android:layout_gravity="left"
-                android:gravity="left"
-                android:textSize="14sp"
-                android:textColor="@color/greydark"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
                 android:layout_weight="0.17"
-                android:text="Quantity"
+                android:gravity="center|left"
+                android:text="Product"
+                android:textColor="@color/greydark"
                 android:textSize="14sp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="@color/greydark"/>
+                android:textStyle="bold" />
 
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.18"
-                android:text="Return type"
-                android:layout_gravity="center"
+                android:layout_gravity="center|end"
+                android:layout_weight="0.17"
                 android:gravity="center"
+                android:text="UOM"
+                android:textColor="@color/greydark"
                 android:textSize="14sp"
-                android:textColor="@color/greydark"/>
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.19"
+                android:gravity="center"
+                android:text="QTY"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_weight="0.18"
+                android:gravity="center"
+                android:text="Return Type"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+
         </LinearLayout>
-        <ScrollView
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_line" />
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/scrollViewSearch"
-            android:scrollbars="none"
-            android:layout_marginBottom="60dp">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/cardList"
-                android:scrollbars="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
+            android:orientation="vertical">
 
-        </ScrollView>
+
+            <ListView
+                android:id="@+id/AgentsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="60dp"
+                android:divider="@android:color/transparent"
+                android:smoothScrollbar="true" />
+
+
+        </LinearLayout>
 
     </LinearLayout>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -195,7 +251,7 @@
                 android:layout_gravity="center"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/ts_stock_preview"
+                    android:id="@+id/tv_print"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

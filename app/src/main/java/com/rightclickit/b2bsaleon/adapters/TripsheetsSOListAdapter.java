@@ -16,6 +16,7 @@ import com.rightclickit.b2bsaleon.activities.TripSheetView;
 import com.rightclickit.b2bsaleon.activities.TripsheetDelivery;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
@@ -34,6 +35,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
     private ArrayList<TripsheetSOList> allSaleOrdersList, filteredSaleOrdersList;
     private String mTakeOrderPrivilege = "", mStockVerifyPrivilege = "";
     private boolean isTripSheetClosed;
+    private MMSharedPreferences mPreferences;
 
     public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege, boolean isTripSheetClosed) {
         this.activity = tripSheetView;
@@ -43,6 +45,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         this.allSaleOrdersList = tripsSOList;
         this.filteredSaleOrdersList = new ArrayList<>();
         this.filteredSaleOrdersList.addAll(allSaleOrdersList);
+        this.mPreferences = new MMSharedPreferences(activity);
     }
 
     public void setAllSaleOrdersList(ArrayList<TripsheetSOList> saleOrdersList) {
@@ -137,6 +140,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
                             productCodes.add(prodJsonArray.get(j).toString());
                         }
                     }
+
                     Intent i = new Intent(activity, TripsheetDelivery.class);
                     i.putExtra("tripsheetId", currentSaleOrder.getmTripshetSOTripId());
                     i.putExtra("agentId", currentSaleOrder.getmTripshetSOAgentId());

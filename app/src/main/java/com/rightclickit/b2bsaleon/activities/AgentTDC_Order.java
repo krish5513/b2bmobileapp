@@ -51,7 +51,7 @@ public class AgentTDC_Order extends AppCompatActivity {
     private ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
     double amount, subtotal;
     double taxAmount;
-    String name;
+    String name,agentId="";
     private double mProductsPriceAmountSum = 0.0, mTotalProductsPriceAmountSum = 0.0, mTotalProductsTax = 0.0;
 
     String enquiryId;
@@ -104,6 +104,13 @@ public class AgentTDC_Order extends AppCompatActivity {
         mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("",mSessionManagement.getString("agentId"));
 
         Log.i("takeorderlist", String.valueOf(mTakeOrderBeansList.size()));
+
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle != null) {
+            agentId = bundle.getString("AGENTID");
+
+        }
+
 
         if(mTakeOrderBeansList.size()>0) {
 
@@ -187,6 +194,7 @@ public class AgentTDC_Order extends AppCompatActivity {
                 deliveries.startAnimation(animation1);
 
                 Intent i =new Intent(AgentTDC_Order.this,AgentDeliveries.class);
+                i.putExtra("agentID",agentId);
                 startActivity(i);
                 finish();
 

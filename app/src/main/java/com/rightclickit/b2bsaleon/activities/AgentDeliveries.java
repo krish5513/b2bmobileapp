@@ -11,13 +11,19 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.AgentDeliveriesAdapter;
+import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AgentDeliveries extends AppCompatActivity {
     LinearLayout sales;
@@ -28,6 +34,10 @@ public class AgentDeliveries extends AppCompatActivity {
     Button view;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
+    ArrayList<TripsheetSOList> tripsheetsoList;
+    String tripsheetId,agentId="";
+    AgentDeliveriesAdapter deliveriesAdapter;
+    ListView deliveriesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +72,25 @@ public class AgentDeliveries extends AppCompatActivity {
         orders.setVisibility(View.GONE);
 
 
-        view = (Button) findViewById(R.id.btn_view1);
-
+        deliveriesList=(ListView)findViewById(R.id.ordered_products_list_view) ;
         mDBHelper = new DBHelper(AgentDeliveries.this);
         mPreferences = new MMSharedPreferences(AgentDeliveries.this);
+
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            agentId = bundle.getString("agentID");
+
+        }
+
+
+
+        ArrayList<AgentDeliveriesBean> unUploadedDeliveries = mDBHelper.getdeliveryDetails(agentId);
+
+        if(unUploadedDeliveries.size()>0){
+            loadDeliveries(unUploadedDeliveries);
+        }
+
 
         sales.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,16 +153,7 @@ public class AgentDeliveries extends AppCompatActivity {
                 finish();
             }
         });
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-
-                Intent i = new Intent(AgentDeliveries.this, AgentDeliveriesView.class);
-                startActivity(i);
-                finish();
-            }
-        });
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
         System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
@@ -164,8 +180,15 @@ public class AgentDeliveries extends AppCompatActivity {
 
     }
 
+    private void loadDeliveries(ArrayList<AgentDeliveriesBean> unUploadedDeliveries) {
 
+        if (deliveriesAdapter != null) {
+            deliveriesAdapter = null;
+        }
+        deliveriesAdapter = new AgentDeliveriesAdapter(this, AgentDeliveries.this, unUploadedDeliveries);
+        deliveriesList.setAdapter(deliveriesAdapter);
 
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);

@@ -152,10 +152,12 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 mTripSheetId = bundle.getString("tripsheetId");
                 // mTripSheetCode = bundle.getString("tripsheetCode");
                 // mTripSheetDate = bundle.getString("tripsheetDate");
+
             }
 
             mDBHelper = new DBHelper(TripSheetView.this);
             mPreferences = new MMSharedPreferences(TripSheetView.this);
+           // mPreferences.putString("tripId",mTripSheetId);
             networkConnectionDetector = new NetworkConnectionDetector(activityContext);
 
             ts_ob_amount = (TextView) findViewById(R.id.ts_ob_amount);

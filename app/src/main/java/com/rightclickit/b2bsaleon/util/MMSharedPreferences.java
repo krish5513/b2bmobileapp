@@ -47,14 +47,14 @@ public class MMSharedPreferences {
 
     /**
      * Method to store the inputs to shared preference
-     *
-     * @param key   Stored key
+     *  @param key   Stored key
      * @param value Stored value
      */
-    public void putString(String key, String value) {
+    public String putString(String key, String value) {
         this.editor = this.sp.edit();
         this.editor.putString(key, value);
         this.editor.commit();
+        return key;
     }
 
     /**

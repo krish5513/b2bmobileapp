@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 
+import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
@@ -4355,5 +4356,36 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return isTripSheetClosed;
+    }
+
+    public ArrayList<AgentDeliveriesBean> getdeliveryDetails(String userId) {
+        ArrayList<AgentDeliveriesBean> deliveriesBean = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + userId + "' AND " + KEY_TRIPSHEET_PAYMENTS_SO_ID + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    AgentDeliveriesBean returndeliveriesBean = new AgentDeliveriesBean();
+                    returndeliveriesBean.setTripNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NO)));
+                    returndeliveriesBean.setTripDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
+                    returndeliveriesBean.setDeliverdstatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_STATUS)));
+                    returndeliveriesBean.setDeliveredItems(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SALEVALUE)));
+                    returndeliveriesBean.setDeliveredBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDBY)));
+                   deliveriesBean.add(returndeliveriesBean);
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return deliveriesBean;
     }
 }
