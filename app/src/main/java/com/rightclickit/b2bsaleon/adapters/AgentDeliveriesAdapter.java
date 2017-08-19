@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +24,13 @@ import com.rightclickit.b2bsaleon.activities.TripsheetDelivery;
 import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -46,12 +51,13 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
     private Map<String, String> productOrderQuantitiesHashMap;
     private final String zero_cost = "0.000";
     private boolean isDeliveryInEditingMode = false;
+    DBHelper mdbhelper;
 
     public AgentDeliveriesAdapter(Context ctxt, AgentDeliveries deliveryActivity, ArrayList<AgentDeliveriesBean> mdeliveriesBeanList) {
         this.ctxt = ctxt;
         this.activity = deliveryActivity;
         this.mInflater = LayoutInflater.from(activity);
-
+        mdbhelper=new DBHelper(ctxt);
         this.allDeliveryProductsList = mdeliveriesBeanList;
         this.filteredDeliveryProductsList = new ArrayList<>();
         this.filteredDeliveryProductsList.addAll(allDeliveryProductsList);
@@ -105,13 +111,13 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
 
         final AgentDeliveriesAdapter.TripSheetDeliveriesViewHolder currentTripSheetDeliveriesViewHolder = tripSheetDeliveriesViewHolder;
 
-        final AgentDeliveriesBean currentDeliveryBean = (AgentDeliveriesBean) getItem(position);
+        final AgentDeliveriesBean currentDeliveryBean = allDeliveryProductsList.get(position);
 
-        tripSheetDeliveriesViewHolder.Delivery_no.setText(String.format("%s", currentDeliveryBean.getTripNo()));
-        tripSheetDeliveriesViewHolder.Delivery_date.setText(String.format(currentDeliveryBean.getTripDate()));
+        tripSheetDeliveriesViewHolder.Delivery_no.setText(currentDeliveryBean.getTripNo());
+        tripSheetDeliveriesViewHolder.Delivery_date.setText(getDate(currentDeliveryBean.getTripDate(),"dd-MM-yyyy"));
         tripSheetDeliveriesViewHolder.delivery_status.setText(currentDeliveryBean.getDeliverdstatus());
-        tripSheetDeliveriesViewHolder.items_count.setText("5");
-        tripSheetDeliveriesViewHolder.deliverd_by.setText(currentDeliveryBean.getDeliveredBy());
+        tripSheetDeliveriesViewHolder.items_count.setText(currentDeliveryBean.getDeliveredItems());
+        tripSheetDeliveriesViewHolder.deliverd_by.setText(mdbhelper.getDeliveryName(currentDeliveryBean.getDeliveredBy()));
 
         tripSheetDeliveriesViewHolder.View.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,8 +129,16 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
         return view;
 
     }
-
-
+    public  String getDate(String time, String format) {
+        try {
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(Long.parseLong(time));
+            return DateFormat.format(format, cal).toString();
+        }
+        catch (Exception e){
+            return "XX-XX-XXXX";
+        }
+    }
     public void updateSelectedProductsList(DeliverysBean deliverysBean) {
         try {
             if (selectedDeliveryProductsHashMap.containsKey(deliverysBean.getProductId()))

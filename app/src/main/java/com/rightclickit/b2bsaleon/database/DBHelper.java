@@ -4358,27 +4358,73 @@ public class DBHelper extends SQLiteOpenHelper {
         return isTripSheetClosed;
     }
 
+    public String getDeliveryName(String userId) {
+        String username = "";
+
+        try {
+            String selectQuery = "SELECT  *  FROM " + TABLE_USERDETAILS + " WHERE " + KEY_USER_ID + " = '" + userId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                username = (cursor.getString(cursor.getColumnIndex(KEY_NAME)));
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return username;
+    }
+
     public ArrayList<AgentDeliveriesBean> getdeliveryDetails(String userId) {
         ArrayList<AgentDeliveriesBean> deliveriesBean = new ArrayList<>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + userId + "' AND " + KEY_TRIPSHEET_PAYMENTS_SO_ID + "'";
+            String selectQuery = "SELECT DISTINCT(tripsheet_delivery_number) AS Tripsheet_Delivery_Number" +
+                    ", COUNT(tripsheet_delivery_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + userId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
-
+            HashMap<String,String> records=new HashMap<>();
             if (c.moveToFirst()) {
                 do {
-                    AgentDeliveriesBean returndeliveriesBean = new AgentDeliveriesBean();
-                    returndeliveriesBean.setTripNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NO)));
-                    returndeliveriesBean.setTripDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
-                    returndeliveriesBean.setDeliverdstatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_STATUS)));
-                    returndeliveriesBean.setDeliveredItems(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SALEVALUE)));
-                    returndeliveriesBean.setDeliveredBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDBY)));
-                   deliveriesBean.add(returndeliveriesBean);
+                    records.put(c.getString(c.getColumnIndex("Tripsheet_Delivery_Number")),c.getString(c.getColumnIndex("Total_COUNT")));
+//                    AgentDeliveriesBean returndeliveriesBean = new AgentDeliveriesBean();
+//                    returndeliveriesBean.setTripNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NUMBER)));
+//                    returndeliveriesBean.setTripDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
+//                    returndeliveriesBean.setDeliverdstatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_STATUS)));
+//                    returndeliveriesBean.setDeliveredItems(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SALEVALUE)));
+//                    returndeliveriesBean.setDeliveredBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDBY)));
+//                    deliveriesBean.add(returndeliveriesBean);
                 } while (c.moveToNext());
             }
+            for(Map.Entry<String, String> entry : records.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE tripsheet_delivery_number  = '" + key + "'";
+                c = db.rawQuery(selectQuery, null);
+                boolean rerun=true;
+                if (c.moveToFirst()) {
+                    do {
+                        if(rerun) {
+                            AgentDeliveriesBean returndeliveriesBean = new AgentDeliveriesBean();
+                            returndeliveriesBean.setTripNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NUMBER)));
+                            returndeliveriesBean.setTripDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
+                            returndeliveriesBean.setDeliverdstatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_STATUS)));
+                            returndeliveriesBean.setDeliveredItems(value);
+                            returndeliveriesBean.setDeliveredBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDBY)));
+                            deliveriesBean.add(returndeliveriesBean);
+                            rerun =false;
+                        }
+                    } while (c.moveToNext());
+                }
 
+            }
             c.close();
             db.close();
 
@@ -4388,4 +4434,5 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return deliveriesBean;
     }
+
 }
