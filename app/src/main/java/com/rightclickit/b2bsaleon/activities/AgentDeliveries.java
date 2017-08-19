@@ -181,9 +181,6 @@ public class AgentDeliveries extends AppCompatActivity {
 
         }
 
-
-
-
     }
 
     private void loadDeliveries(ArrayList<AgentDeliveriesBean> unUploadedDeliveries) {
