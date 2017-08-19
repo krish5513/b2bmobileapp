@@ -7,6 +7,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,9 +35,12 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -62,13 +69,13 @@ public class AgentDeliveriesView extends AppCompatActivity {
     private Map<String, String> previouslyDeliveredProductsHashMap; // this hash map contains previously delivered product quantity. key = product id & value = previously delivered quantity
     private Map<String, String> productOrderQuantitiesHashMap; // this hash map contains product codes & it's order quantity fetched from sale oder table.
 
-    private String totalAmount = "";
-    private String totalTaxAmount = "";
-    private String subTotal = "";
+    private double totalAmount=0 ;
+    private double totalTaxAmount =0;
+    private double subTotal=0 ;
     private boolean isDeliveryDataSaved = false, isDeliveryInEditingMode = false;
 
-    double amount, subtotal;
-    double taxAmount;
+   // double amount, subtotal;
+   // double taxAmount;
     String name;
 
     private MMSharedPreferences sharedPreferences;
@@ -77,7 +84,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
     String currentDate, str_routecode, str_deliveryDate, str_deliveryNo;
 
 
-    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDate;
+    private String mDeliveryNo = "", mDeliverydate = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,89 +108,28 @@ public class AgentDeliveriesView extends AppCompatActivity {
         mDBHelper = new DBHelper(AgentDeliveriesView.this);
         sharedPreferences = new MMSharedPreferences(AgentDeliveriesView.this);
 
-        mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
-        mAgentId = this.getIntent().getStringExtra("agentId");
-        mAgentCode = this.getIntent().getStringExtra("agentCode");
-        mAgentName = this.getIntent().getStringExtra("agentName");
-        mAgentRouteId = this.getIntent().getStringExtra("agentRouteId");
-        mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
-        mAgentSoId = this.getIntent().getStringExtra("agentSoId");
-        mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
-        totalAmount = this.getIntent().getStringExtra("totalAmount");
-        totalTaxAmount = this.getIntent().getStringExtra("totalTaxAmount");
-        subTotal = this.getIntent().getStringExtra("subTotal");
-
-
-        taxprice = (TextView) findViewById(R.id.taxAmount);
-        if (totalTaxAmount != null)
-            taxprice.setText(Utility.getFormattedCurrency(Double.parseDouble(totalTaxAmount)));
-
-
-        tv_amount = (TextView) findViewById(R.id.Amount);
-        if (totalAmount != null)
-        tv_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(totalAmount)));
-
-        totalprice = (TextView) findViewById(R.id.totalAmount);
-        if (subTotal != null)
-        totalprice.setText(Utility.getFormattedCurrency(Double.parseDouble(subTotal)));
-
-
-
-        Map<String, DeliverysBean> mData = (Map<String, DeliverysBean>) this.getIntent().getSerializableExtra("data");
-        final ArrayList<String[]> arList = new ArrayList<String[]>();
-        SortedSet<String> keys = new TreeSet<String>(mData.keySet());
-        for (String key : keys) {
-            //String value = mData.get(key);
-            // do something
-
-            DeliverysBean d = mData.get(key);
-            String[] temp = new String[5];
-            temp[0] = d.getProductTitle();
-            temp[1] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(d.getProductOrderedQuantity())));
-            temp[2] = Utility.getFormattedCurrency(Double.parseDouble(d.getProductAgentPrice()));
-            temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(d.getTaxAmount())));
-            temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(d.getProductAmount())));
-            arList.add(temp);
-
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mDeliveryNo= bundle.getString("DeliveryNo");
+            mDeliverydate=bundle.getString("Deliverydate");
         }
-        // mAgentSoDate=this.getIntent().getStringExtra("agentSoDate");
 
-        for (int i = 0; i < arList.size(); i++) {
-            String[] temp = arList.get(i);
-        }
-       /* for (Map.Entry<String, DeliverysBean> entry : mData.entrySet())
-        {
-            DeliverysBean  d=entry.getValue();
-            String[] temp=new String[5];
-            temp[0]=d.getProductTitle();
-            temp[1]= String.valueOf(d.getProductOrderedQuantity());
-            temp[2]=d.getProductAgentPrice();
-            temp[4]= String.valueOf(d.getTaxAmount());
-            temp[3]= String.valueOf(d.getProductAmount());
-            arList.add(temp);
-        }*/
+
+        final ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(mDeliveryNo);
+
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
 
         AgentDeliveriesView.CustomListView adapter = new AgentDeliveriesView.CustomListView(arList, this);
         mAgentsList.setAdapter(adapter);
-        List<TripSheetDeliveriesBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesList(mTripSheetId);
 
-        for (int i = 0; i < unUploadedDeliveries.size(); i++) {
-            TripSheetDeliveriesBean currentDelivery = unUploadedDeliveries.get(i);
-            str_deliveryNo = currentDelivery.getmTripsheetDeliveryNo();
-            str_deliveryDate = Utility.formatTime(Long.parseLong(currentDelivery.getmTripsheetDelivery_CreatedOn()), Constants.TRIP_SHEETS_DELIVERY_DATE_FORMAT);
-        }
+        taxprice = (TextView) findViewById(R.id.taxAmount);
 
 
-        ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
-        for (int i = 0; i < tripSheetSOList.size(); i++) {
-            TripsheetSOList currentDelivery = tripSheetSOList.get(i);
-            mAgentSoCode = currentDelivery.getmTripshetSOCode();
-            Log.i("fdgjhujgf", mAgentSoCode);
-            mAgentSoDate = currentDelivery.getmTripshetSODate();
-            Log.i("fdgjhujgf", mAgentSoDate);
+        tv_amount = (TextView) findViewById(R.id.Amount);
+        tv_amount.setText(Utility.getFormattedCurrency(totalAmount));
 
-        }
+        totalprice = (TextView) findViewById(R.id.totalAmount);
+
 
 
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
@@ -202,7 +148,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
 
         sale_orderNo = (TextView) findViewById(R.id.order_no);
 
-        if (sale_orderNo != null) {
+       if (sale_orderNo != null) {
             sale_orderNo.setText(mAgentSoCode);
         } else {
             sale_orderNo.setText("-");
@@ -210,7 +156,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
         sale_orderDate = (TextView) findViewById(R.id.tv_date);
 
         if (sale_orderDate != null) {
-            sale_orderDate.setText(str_deliveryDate);
+            sale_orderDate.setText(mDeliverydate);
         } else {
             sale_orderDate.setText("-");
         }
@@ -218,10 +164,10 @@ public class AgentDeliveriesView extends AppCompatActivity {
 
         deliveryNo = (TextView) findViewById(R.id.agentname);
 
-        deliveryNo.setText(str_deliveryNo);
+        deliveryNo.setText(mDeliveryNo);
 
         deliveryDate = (TextView) findViewById(R.id.tv_AgentCode);
-        deliveryDate.setText(str_deliveryDate);
+        deliveryDate.setText(mDeliverydate);
 
 
         print = (TextView) findViewById(R.id.tv_print);
@@ -252,11 +198,11 @@ public class AgentDeliveriesView extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText("by " + sharedPreferences.getString("loginusername"), 200, 120, paint);
                 paint.setTextSize(20);
-                canvas.drawText("1", 5, 150, paint);
-                canvas.drawText("2017-6-8", 200, 150, paint);
-                canvas.drawText(str_deliveryNo, 5, 180, paint);
+                canvas.drawText("-", 5, 150, paint);
+                canvas.drawText(mDeliverydate, 200, 150, paint);
+                canvas.drawText(mDeliveryNo, 5, 180, paint);
                 paint.setTextSize(20);
-                canvas.drawText(str_deliveryDate, 200, 180, paint);
+                canvas.drawText(mDeliverydate, 200, 180, paint);
                 paint.setTextSize(20);
 
                 canvas.drawText("----------------------------------------------------", 5, 200, paint);
@@ -300,17 +246,64 @@ public class AgentDeliveriesView extends AppCompatActivity {
 
                 st = st + 20;
                 canvas.drawText("Total:", 5, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(totalTaxAmount)), 70, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(totalAmount)), 170, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(subTotal)), 280, st, paint);
+                canvas.drawText(Utility.getFormattedCurrency(totalTaxAmount), 70, st, paint);
+                canvas.drawText(Utility.getFormattedCurrency(totalAmount), 170, st, paint);
+                canvas.drawText(Utility.getFormattedCurrency(subTotal), 280, st, paint);
                 st = st + 20;
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+                saveBitmap(bmOverlay);
             }
         });
-
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                totalprice.setText(Utility.getFormattedCurrency(subTotal));
+                tv_amount.setText(Utility.getFormattedCurrency(totalAmount));
+                taxprice.setText(Utility.getFormattedCurrency(totalTaxAmount));
+            }
+        }, 100);
 
     }
+
+    public void saveBitmap(Bitmap bm) {
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/b2bprintimages");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 100000;
+        n = generator.nextInt(n);
+//        String fname = "Image-" + n + ".jpg";
+        String fname = "print.jpg";
+        File file = new File(myDir, fname);
+        Log.i("saving bitmap", "" + file);
+        if (file.exists())
+            file.delete();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                Intent mediaScanIntent = new Intent(
+                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                Uri contentUri = Uri.fromFile(file);
+                mediaScanIntent.setData(contentUri);
+                this.sendBroadcast(mediaScanIntent);
+            } else {
+                sendBroadcast(new Intent(
+                        Intent.ACTION_MEDIA_MOUNTED,
+                        Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+            }
+//            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -356,14 +349,8 @@ public class AgentDeliveriesView extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, AgentDeliveries.class);
-        intent.putExtra("tripsheetId", mTripSheetId);
-        intent.putExtra("agentId", mAgentId);
-        intent.putExtra("agentCode", mAgentCode);
-        intent.putExtra("agentName", mAgentName);
-        intent.putExtra("agentRouteId", mAgentRouteId);
-        intent.putExtra("agentRouteCode", mAgentRouteCode);
-        intent.putExtra("agentSoId", mAgentSoId);
-        intent.putExtra("agentSoCode", mAgentSoCode);
+        //intent.putExtra("DeliveryId", mDeliveryNo);
+
         startActivity(intent);
         finish();
     }
@@ -411,10 +398,12 @@ public class AgentDeliveriesView extends AppCompatActivity {
             TextView order_preview_tax = (TextView) view.findViewById(R.id.order_preview_tax);
             order_preview_product_name.setText(temp[0]);
             order_preview_quantity.setText(temp[1]);
-            order_preview_mrp.setText(temp[2]);
-            order_preview_amount.setText(temp[3]);
-            order_preview_tax.setText(temp[4]);
-
+            order_preview_mrp.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[2])));
+            order_preview_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[3])));
+            order_preview_tax.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[4])));
+            totalAmount= totalAmount+Double.parseDouble(temp[3]);
+            totalTaxAmount=totalTaxAmount+ Double.parseDouble(temp[4]);
+            subTotal=totalAmount+totalTaxAmount;
 
             return view;
         }

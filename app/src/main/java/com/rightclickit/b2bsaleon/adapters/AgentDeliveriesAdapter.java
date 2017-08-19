@@ -26,6 +26,7 @@ import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
     private final String zero_cost = "0.000";
     private boolean isDeliveryInEditingMode = false;
     DBHelper mdbhelper;
+    private MMSharedPreferences mPreferences;
 
     public AgentDeliveriesAdapter(Context ctxt, AgentDeliveries deliveryActivity, ArrayList<AgentDeliveriesBean> mdeliveriesBeanList) {
         this.ctxt = ctxt;
@@ -62,7 +64,7 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
         this.filteredDeliveryProductsList = new ArrayList<>();
         this.filteredDeliveryProductsList.addAll(allDeliveryProductsList);
         this.selectedDeliveryProductsHashMap = new HashMap<>();
-
+        this.mPreferences = new MMSharedPreferences(activity);
 
     }
 
@@ -122,7 +124,11 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
         tripSheetDeliveriesViewHolder.View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.startActivity(new Intent(activity,AgentDeliveriesView.class));
+                //mPreferences.putString("DeliveryNo",currentDeliveryBean.getTripNo());
+                Intent i=new Intent(activity,AgentDeliveriesView.class);
+                i.putExtra("DeliveryNo",currentDeliveryBean.getTripNo());
+                i.putExtra("Deliverydate",getDate(currentDeliveryBean.getTripDate(),"dd-MM-yyyy"));
+                activity.startActivity(i);
                 activity.finish();
             }
         });
@@ -139,20 +145,7 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
             return "XX-XX-XXXX";
         }
     }
-    public void updateSelectedProductsList(DeliverysBean deliverysBean) {
-        try {
-            if (selectedDeliveryProductsHashMap.containsKey(deliverysBean.getProductId()))
-                selectedDeliveryProductsHashMap.remove(deliverysBean.getProductId());
 
-            selectedDeliveryProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
-
-            if (listener != null)
-                listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     // Filter Class
     public void filter(String charText) {

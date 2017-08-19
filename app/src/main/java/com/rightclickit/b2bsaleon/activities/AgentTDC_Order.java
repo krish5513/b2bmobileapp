@@ -105,11 +105,11 @@ public class AgentTDC_Order extends AppCompatActivity {
 
         Log.i("takeorderlist", String.valueOf(mTakeOrderBeansList.size()));
 
-        Bundle bundle = this.getIntent().getExtras();
-        if (bundle != null) {
-            agentId = bundle.getString("AGENTID");
+       // Bundle bundle = this.getIntent().getExtras();
+        //if (bundle != null) {
+            agentId = mPreferences.getString("agentId");
 
-        }
+
 
 
         if(mTakeOrderBeansList.size()>0) {
@@ -194,7 +194,7 @@ public class AgentTDC_Order extends AppCompatActivity {
                 deliveries.startAnimation(animation1);
 
                 Intent i =new Intent(AgentTDC_Order.this,AgentDeliveries.class);
-                i.putExtra("agentID",agentId);
+               // i.putExtra("agentID",agentId);
                 startActivity(i);
                 finish();
 

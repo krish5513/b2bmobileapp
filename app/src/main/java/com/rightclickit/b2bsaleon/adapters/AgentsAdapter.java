@@ -136,7 +136,7 @@ public class AgentsAdapter extends BaseAdapter {
                 mPreferences.putString("enqId",String.valueOf(position+1));
                 mPreferences.putString("agentCode",mAgentsBeansList1.get(position).getmAgentCode());
                 Intent i=new Intent(activity,AgentTDC_Order.class);
-                i.putExtra("AGENTID",mAgentsBeansList1.get(position).getmAgentId());
+               // i.putExtra("AGENTID",mAgentsBeansList1.get(position).getmAgentId());
                 activity.startActivity(i);
 
                 activity.finish();

@@ -1,15 +1,19 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +42,8 @@ public class AgentDeliveries extends AppCompatActivity {
     String tripsheetId,agentId="";
     AgentDeliveriesAdapter deliveriesAdapter;
     ListView deliveriesList;
+    private SearchView search;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,11 +83,11 @@ public class AgentDeliveries extends AppCompatActivity {
         mPreferences = new MMSharedPreferences(AgentDeliveries.this);
 
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            agentId = bundle.getString("agentID");
+        //Bundle bundle = getIntent().getExtras();
+        //if (bundle != null) {
+            agentId = mPreferences.getString("agentId");
 
-        }
+
 
 
 
@@ -192,6 +198,40 @@ public class AgentDeliveries extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+
+        try {
+            SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+            search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+            search.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+            search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String query) {
+                    deliveriesAdapter.filter(query);
+                    return true;
+                }
+            });
+
+            // Get the search close button image view
+            ImageView closeButton = (ImageView) search.findViewById(R.id.search_close_btn);
+            closeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    search.setQuery("", false);
+                    search.clearFocus();
+                    search.onActionViewCollapsed();
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
     @Override

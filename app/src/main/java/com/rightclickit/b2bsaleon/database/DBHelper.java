@@ -31,11 +31,14 @@ import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.R.attr.key;
 
 
 /**
@@ -4380,6 +4383,28 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return username;
     }
+    public String getProductName(String productId) {
+        String productname = "";
+
+        try {
+            String selectQuery = "SELECT  *  FROM " + TABLE_PRODUCTS + " WHERE " + KEY_PRODUCT_ID + " = '" + productId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                productname = (cursor.getString(cursor.getColumnIndex(KEY_PRODUCT_TITLE)));
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return productname;
+    }
 
     public ArrayList<AgentDeliveriesBean> getdeliveryDetails(String userId) {
         ArrayList<AgentDeliveriesBean> deliveriesBean = new ArrayList<>();
@@ -4434,5 +4459,38 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return deliveriesBean;
     }
+    public ArrayList<String[]> getdeliveryDetailsPreview(String userId) {
 
+         ArrayList<String[]> arList=null ;
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE tripsheet_delivery_number  = '" + userId + "'";
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+            arList=new ArrayList<>(c.getCount());
+           // c = db.rawQuery(selectQuery, null);
+           // boolean rerun=true;
+            if (c.moveToFirst()) {
+                do {
+                    String[] temp=new String[5];
+                    temp[0]=getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)));
+                    temp[1]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_QUANTITY));
+                    temp[2]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UNITPRICE));
+                    temp[3]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_AMOUNT));
+                    temp[4]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT));
+                       arList.add(temp);
+
+
+                } while (c.moveToNext());
+            }
+
+
+        c.close();
+        db.close();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+        return arList;
+}
 }
