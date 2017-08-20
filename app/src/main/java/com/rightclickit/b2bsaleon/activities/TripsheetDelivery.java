@@ -102,7 +102,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
             if (mAgentId != null && mAgentId != "") {
                 List<String> agentRouteIds = mDBHelper.getAgentRouteId(mAgentId);
-                if (mAgentRouteId != null) {
+                if (mAgentRouteId != null && agentRouteIds.size() > 0) {
                     mAgentRouteId = agentRouteIds.get(0);
                     mAgentRouteCode = mDBHelper.getRouteCodeByRouteId(mAgentRouteId);
                 }
@@ -435,7 +435,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                     mDBHelper.insertTripsheetsDeliveriesListData(mTripsheetsDeliveriesList);
                     isDeliveryDataSaved = true;
                     Toast.makeText(activityContext, "Delivery Data Saved Successfully.", Toast.LENGTH_LONG).show();
-
+                    Utility.isDeliveryFirstTime = true;
                     if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
                         Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncTripsheetDeliveriesService.class);
                         startService(syncTripSheetDeliveriesServiceIntent);

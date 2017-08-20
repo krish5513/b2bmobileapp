@@ -14,7 +14,9 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentTakeOrderScreen;
 import com.rightclickit.b2bsaleon.activities.TripSheetView;
 import com.rightclickit.b2bsaleon.activities.TripsheetDelivery;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -36,6 +38,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
     private String mTakeOrderPrivilege = "", mStockVerifyPrivilege = "";
     private boolean isTripSheetClosed;
     private MMSharedPreferences mPreferences;
+    private DBHelper mDBHelper;
 
     public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege, boolean isTripSheetClosed) {
         this.activity = tripSheetView;
@@ -46,6 +49,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         this.filteredSaleOrdersList = new ArrayList<>();
         this.filteredSaleOrdersList.addAll(allSaleOrdersList);
         this.mPreferences = new MMSharedPreferences(activity);
+        this.mDBHelper = new DBHelper(activity);
     }
 
     public void setAllSaleOrdersList(ArrayList<TripsheetSOList> saleOrdersList) {
@@ -131,6 +135,13 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         mHolder.mSOMapIconParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ArrayList<TripSheetDeliveriesBean> alltripsheetsDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesListCombo(currentSaleOrder.getmTripshetSOTripId(),
+                        currentSaleOrder.getmTripshetSOAgentId(), currentSaleOrder.getmTripshetSOId());
+                if (alltripsheetsDeliveries.size() == 0) {
+                    Utility.isDeliveryFirstTime = false;
+                } else {
+                    Utility.isDeliveryFirstTime = true;
+                }
                 ArrayList<String> productCodes = new ArrayList<String>();
                 String s = currentSaleOrder.getmTripshetSOProductCode();
                 try {

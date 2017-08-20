@@ -38,6 +38,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
     private Map<String, String> productOrderQuantitiesHashMap;
     private final String zero_cost = "0.000";
     private boolean isDeliveryInEditingMode = false;
+    private Map<String, DeliverysBean> selectedDeliveryProductsHashMapTemp;
 
     public TripSheetDeliveriesAdapter(Context ctxt, TripsheetDelivery deliveryActivity, TripSheetDeliveriesListener deliveriesListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyDeliveredProducts, Map<String, String> productOrderQuantities) {
         this.ctxt = ctxt;
@@ -50,7 +51,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         this.selectedDeliveryProductsHashMap = new HashMap<>();
         this.previouslyDeliveredProductsHashMap = previouslyDeliveredProducts;
         this.productOrderQuantitiesHashMap = productOrderQuantities;
-
+        this.selectedDeliveryProductsHashMapTemp = new HashMap<>();
         if (!previouslyDeliveredProductsHashMap.isEmpty()) {
             isDeliveryInEditingMode = true;
         }
@@ -94,8 +95,10 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
             selectedDeliveryProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
 
-            if (listener != null)
-                listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
+            if (!Utility.isDeliveryFirstTime) {
+                if (listener != null)
+                    listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
+            }
         }
     }
 
@@ -119,9 +122,11 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
         return deliverysBean;
     }
-    public Map<String, DeliverysBean> getData(){
+
+    public Map<String, DeliverysBean> getData() {
         return selectedDeliveryProductsHashMap;
     }
+
     @Override
     public long getItemId(int i) {
         return i;
@@ -307,13 +312,23 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
     public void updateSelectedProductsList(DeliverysBean deliverysBean) {
         try {
-            if (selectedDeliveryProductsHashMap.containsKey(deliverysBean.getProductId()))
-                selectedDeliveryProductsHashMap.remove(deliverysBean.getProductId());
+            if (!Utility.isDeliveryFirstTime) {
+                if (selectedDeliveryProductsHashMap.containsKey(deliverysBean.getProductId()))
+                    selectedDeliveryProductsHashMap.remove(deliverysBean.getProductId());
 
-            selectedDeliveryProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
+                selectedDeliveryProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
 
-            if (listener != null)
-                listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
+                if (listener != null)
+                    listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
+            } else {
+                if (selectedDeliveryProductsHashMapTemp.containsKey(deliverysBean.getProductId()))
+                    selectedDeliveryProductsHashMapTemp.remove(deliverysBean.getProductId());
+
+                selectedDeliveryProductsHashMapTemp.put(deliverysBean.getProductId(), deliverysBean);
+
+                if (listener != null)
+                    listener.updateDeliveryProductsList(selectedDeliveryProductsHashMapTemp);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
