@@ -4552,7 +4552,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return alltripsheetsDeliveries;
     }
-}
 
 
     public ArrayList<AgentReturnsBean> getreturnsDetails(String userId) {
