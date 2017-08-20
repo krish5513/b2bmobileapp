@@ -9,6 +9,7 @@ import android.util.Log;
 
 
 import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
+import com.rightclickit.b2bsaleon.beanclass.AgentReturnsBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
@@ -1623,8 +1624,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 do {
                     productUnit = c.getString(c.getColumnIndex(KEY_PRODUCT_UOM));
                 } while (c.moveToNext());
-                c.close();
-                db.close();
+                //c.close();
+                //db.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -4384,8 +4385,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return username;
     }
-
-    public String getProductName(String productId) {
+    public String getProductName(String productId,String type ) {
         String productname = "";
 
         try {
@@ -4395,7 +4395,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery(selectQuery, null);
 
             if (cursor != null && cursor.moveToFirst()) {
-                productname = (cursor.getString(cursor.getColumnIndex(KEY_PRODUCT_TITLE)));
+                productname = (cursor.getString(cursor.getColumnIndex(type)));
             }
 
             cursor.close();
@@ -4474,13 +4474,13 @@ public class DBHelper extends SQLiteOpenHelper {
             // boolean rerun=true;
             if (c.moveToFirst()) {
                 do {
-                    String[] temp = new String[5];
-                    temp[0] = getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)));
-                    temp[1] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_QUANTITY));
-                    temp[2] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UNITPRICE));
-                    temp[3] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_AMOUNT));
-                    temp[4] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT));
-                    arList.add(temp);
+                    String[] temp=new String[5];
+                    temp[0]=getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)),KEY_PRODUCT_TITLE);
+                    temp[1]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_QUANTITY));
+                    temp[2]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UNITPRICE));
+                    temp[3]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_AMOUNT));
+                    temp[4]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT));
+                       arList.add(temp);
 
 
                 } while (c.moveToNext());
@@ -4551,5 +4551,95 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return alltripsheetsDeliveries;
+    }
+}
+
+
+    public ArrayList<AgentReturnsBean> getreturnsDetails(String userId) {
+        ArrayList<AgentReturnsBean> agentsreturnsBean = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT DISTINCT(tripsheet_returns_return_number) AS Tripsheet_Return_Number" +
+                    ", COUNT(tripsheet_returns_return_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + userId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+            HashMap<String,String> records=new HashMap<>();
+            if (c.moveToFirst()) {
+                do {
+                    records.put(c.getString(c.getColumnIndex("Tripsheet_Return_Number")),c.getString(c.getColumnIndex("Total_COUNT")));
+//                    AgentDeliveriesBean returndeliveriesBean = new AgentDeliveriesBean();
+//                    returndeliveriesBean.setTripNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NUMBER)));
+//                    returndeliveriesBean.setTripDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
+//                    returndeliveriesBean.setDeliverdstatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_STATUS)));
+//                    returndeliveriesBean.setDeliveredItems(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SALEVALUE)));
+//                    returndeliveriesBean.setDeliveredBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDBY)));
+//                    deliveriesBean.add(returndeliveriesBean);
+                } while (c.moveToNext());
+            }
+            for(Map.Entry<String, String> entry : records.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + key + "'";
+                c = db.rawQuery(selectQuery, null);
+                boolean rerun=true;
+                if (c.moveToFirst()) {
+                    do {
+                        if(rerun) {
+                            AgentReturnsBean returnsBean = new AgentReturnsBean();
+                            returnsBean.setReturnNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER)));
+                            returnsBean.setReturnDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_ON)));
+                            returnsBean.setReturnStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_STATUS)));
+                            returnsBean.setReturnedItems(value);
+                            returnsBean.setReturnedBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_BY)));
+                            agentsreturnsBean.add(returnsBean);
+                            rerun =false;
+                        }
+                    } while (c.moveToNext());
+                }
+
+            }
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return agentsreturnsBean;
+    }
+    public ArrayList<String[]> getreturnDetailsPreview(String userId) {
+
+        ArrayList<String[]> arList=null ;
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + userId + "'";
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+            arList=new ArrayList<>(c.getCount());
+            // c = db.rawQuery(selectQuery, null);
+            // boolean rerun=true;
+            if (c.moveToFirst()) {
+                do {
+                    String[] temp=new String[4];
+                    temp[0]=getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)),KEY_PRODUCT_TITLE);
+                    temp[1]=getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)),KEY_PRODUCT_UOM);
+                    temp[2]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY));
+                    temp[3]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TYPE));
+
+                    arList.add(temp);
+
+
+                } while (c.moveToNext());
+            }
+
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return arList;
     }
 }

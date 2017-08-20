@@ -252,7 +252,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
                 st = st + 20;
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
-                saveBitmap(bmOverlay);
+
             }
         });
         final Handler handler = new Handler();
@@ -267,42 +267,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
 
     }
 
-    public void saveBitmap(Bitmap bm) {
-        String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/b2bprintimages");
-        myDir.mkdirs();
-        Random generator = new Random();
-        int n = 100000;
-        n = generator.nextInt(n);
-//        String fname = "Image-" + n + ".jpg";
-        String fname = "print.jpg";
-        File file = new File(myDir, fname);
-        Log.i("saving bitmap", "" + file);
-        if (file.exists())
-            file.delete();
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Intent mediaScanIntent = new Intent(
-                        Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                Uri contentUri = Uri.fromFile(file);
-                mediaScanIntent.setData(contentUri);
-                this.sendBroadcast(mediaScanIntent);
-            } else {
-                sendBroadcast(new Intent(
-                        Intent.ACTION_MEDIA_MOUNTED,
-                        Uri.parse("file://" + Environment.getExternalStorageDirectory())));
-            }
-//            sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://" + Environment.getExternalStorageDirectory())));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
 
     @Override

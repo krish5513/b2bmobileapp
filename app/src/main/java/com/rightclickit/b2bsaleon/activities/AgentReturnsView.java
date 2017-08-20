@@ -47,9 +47,9 @@ public class AgentReturnsView extends AppCompatActivity {
     TextView sale_orderNo;
     TextView sale_orderDate;
     TextView user_Name;
-    TextView deliveryNo;
+    TextView returnNo;
 
-    TextView deliveryDate;
+    TextView returnDate;
     TextView taxprice;
     TextView tv_amount;
     TextView totalprice;
@@ -80,7 +80,7 @@ public class AgentReturnsView extends AppCompatActivity {
     String myList,str_ProductCode,str_Uom ;
 
 
-    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode,mAgentSoDate;
+    private String mReturnNo = "", mReturndate = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode,mAgentSoDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,75 +103,21 @@ public class AgentReturnsView extends AppCompatActivity {
 
         mDBHelper = new DBHelper(AgentReturnsView.this);
         sharedPreferences = new MMSharedPreferences(AgentReturnsView.this);
-
-        mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
-        mAgentId = this.getIntent().getStringExtra("agentId");
-        mAgentCode = this.getIntent().getStringExtra("agentCode");
-        mAgentName = this.getIntent().getStringExtra("agentName");
-        mAgentRouteId = this.getIntent().getStringExtra("agentRouteId");
-        mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
-        mAgentSoId = this.getIntent().getStringExtra("agentSoId");
-        mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
-        totalAmount= this.getIntent().getStringExtra("totalAmount");
-        totalTaxAmount=this.getIntent().getStringExtra("totalTaxAmount");
-        subTotal= this.getIntent().getStringExtra("subTotal");
-
-
-        ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
-
-
-
-        Map<String, DeliverysBean> mData=(Map<String, DeliverysBean>)this.getIntent().getSerializableExtra("data");
-
-        final ArrayList<String[]> arList = new ArrayList<String[]>();
-
-        SortedSet<String> keys = new TreeSet<String>(mData.keySet());
-        for (String key : keys) {
-            //String value = mData.get(key);
-            // do something
-
-            DeliverysBean d = mData.get(key);
-            String[] temp = new String[4];
-
-            for( int i=0;i<tripsheetsStockLists.size();i++){
-                str_ProductCode=tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
-                myList=mDBHelper.getProductUnitByProductCode(str_ProductCode);
-                str_Uom=myList;
-            }
-            temp[0] = d.getProductTitle();
-            temp[1] = str_Uom;
-            temp[2] = String.valueOf(d.getSelectedQuantity());
-            temp[3] = "Sale Return";
-            arList.add(temp);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mReturnNo= bundle.getString("ReturnNo");
+            mReturndate=bundle.getString("Returndate");
         }
 
-        // mAgentSoDate=this.getIntent().getStringExtra("agentSoDate");
 
-        for (int i=0;i<arList.size();i++)
-        {
-            String[] temp=arList.get(i);
-        }
-       /* for (Map.Entry<String, DeliverysBean> entry : mData.entrySet())
-        {
-            DeliverysBean  d=entry.getValue();
-            String[] temp=new String[5];
-            temp[0]=d.getProductTitle();
-            temp[1]= String.valueOf(d.getProductOrderedQuantity());
-            temp[2]=d.getProductAgentPrice();
-            temp[4]= String.valueOf(d.getTaxAmount());
-            temp[3]= String.valueOf(d.getProductAmount());
-            arList.add(temp);
-        }*/
+        final ArrayList<String[]> arList = mDBHelper.getreturnDetailsPreview(mReturnNo);
+
+
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
 
         AgentReturnsView.CustomListView adapter = new AgentReturnsView.CustomListView(arList,this);
         mAgentsList.setAdapter(adapter);
-        List<TripSheetReturnsBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsReturnsList(mTripSheetId);
-        for (int i = 0; i < unUploadedDeliveries.size(); i++) {
-            TripSheetReturnsBean currentDelivery = unUploadedDeliveries.get(i);
-            str_deliveryNo=currentDelivery.getmTripshhetReturnsReturn_no();
-            str_deliveryDate= Utility.formatTime(Long.parseLong(currentDelivery.getmTripshhetReturnsCreated_on()), Constants.TRIP_SHEETS_DELIVERY_DATE_FORMAT);
-        }
+
 
 
 
@@ -192,12 +138,12 @@ public class AgentReturnsView extends AppCompatActivity {
 
 
 
-        deliveryNo = (TextView) findViewById(R.id.return_date);
+        returnNo = (TextView) findViewById(R.id.return_no);
 
-        deliveryNo.setText(str_deliveryNo);
+        returnNo.setText(mReturnNo);
 
-        deliveryDate = (TextView) findViewById(R.id.return_date);
-        deliveryDate.setText(str_deliveryDate);
+        returnDate = (TextView) findViewById(R.id.return_date);
+        returnDate.setText(mReturndate);
 
 
 
@@ -231,9 +177,9 @@ public class AgentReturnsView extends AppCompatActivity {
                 paint.setTextSize(22);
                 canvas.drawText("by " + sharedPreferences.getString("loginusername"), 200, 120, paint);
                 paint.setTextSize(22);
-                canvas.drawText(str_deliveryNo, 5, 180, paint);
+                canvas.drawText(mReturnNo, 5, 180, paint);
                 paint.setTextSize(22);
-                canvas.drawText(str_deliveryDate, 200, 180, paint);
+                canvas.drawText(mReturndate, 200, 180, paint);
                 paint.setTextSize(22);
 
                 canvas.drawText("----------------------------------------------------", 5, 200, paint);
@@ -333,14 +279,7 @@ public class AgentReturnsView extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, AgentReturns.class);
-        intent.putExtra("tripsheetId", mTripSheetId);
-        intent.putExtra("agentId", mAgentId);
-        intent.putExtra("agentCode", mAgentCode);
-        intent.putExtra("agentName", mAgentName);
-        intent.putExtra("agentRouteId", mAgentRouteId);
-        intent.putExtra("agentRouteCode", mAgentRouteCode);
-        intent.putExtra("agentSoId", mAgentSoId);
-        intent.putExtra("agentSoCode", mAgentSoCode);
+
         startActivity(intent);
         finish();
     }

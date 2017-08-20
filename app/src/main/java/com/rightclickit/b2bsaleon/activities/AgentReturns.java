@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,9 +12,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.AgentDeliveriesAdapter;
+import com.rightclickit.b2bsaleon.adapters.AgentReturnsAdapter;
+import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
+import com.rightclickit.b2bsaleon.beanclass.AgentReturnsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
@@ -28,6 +34,10 @@ public class AgentReturns extends AppCompatActivity {
     Button view;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
+    String tripsheetId,agentId="";
+    AgentReturnsAdapter returnsAdapter;
+    ListView deliveriesList;
+    private SearchView search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +55,26 @@ public class AgentReturns extends AppCompatActivity {
         orders = (LinearLayout) findViewById(R.id.linear_orders);
         orders.setVisibility(View.GONE);
 
-        view=(Button)findViewById(R.id.btn_view1);
 
 
+        deliveriesList=(ListView)findViewById(R.id.ordered_products_list_view) ;
+        mDBHelper = new DBHelper(AgentReturns.this);
+        mPreferences = new MMSharedPreferences(AgentReturns.this);
+
+
+        //Bundle bundle = getIntent().getExtras();
+        //if (bundle != null) {
+        agentId = mPreferences.getString("agentId");
+
+
+
+
+
+        ArrayList<AgentReturnsBean> unUploadedDeliveries = mDBHelper.getreturnsDetails(agentId);
+
+        if(unUploadedDeliveries.size()>0){
+            loadReturns(unUploadedDeliveries);
+        }
         this.getSupportActionBar().setTitle("RETURNS");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
@@ -130,17 +157,6 @@ public class AgentReturns extends AppCompatActivity {
             }
         });
 
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Toast.makeText(Agents_ReturnsActivity.this, "Clicked on orders", Toast.LENGTH_SHORT).show();
-
-
-                Intent i =new Intent(AgentReturns.this,AgentReturnsView.class);
-                startActivity(i);
-                finish();
-            }
-        });
 
 
 
@@ -165,6 +181,15 @@ public class AgentReturns extends AppCompatActivity {
 
         }
 
+
+    }
+
+    private void loadReturns(ArrayList<AgentReturnsBean> unUploadedDeliveries) {
+        if (returnsAdapter != null) {
+            returnsAdapter = null;
+        }
+        returnsAdapter = new AgentReturnsAdapter(this, AgentReturns.this, unUploadedDeliveries);
+        deliveriesList.setAdapter(returnsAdapter);
 
     }
 
