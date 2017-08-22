@@ -135,13 +135,13 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         mHolder.mSOMapIconParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<TripSheetDeliveriesBean> alltripsheetsDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesListCombo(currentSaleOrder.getmTripshetSOTripId(),
-                        currentSaleOrder.getmTripshetSOAgentId(), currentSaleOrder.getmTripshetSOId());
-                if (alltripsheetsDeliveries.size() == 0) {
-                    Utility.isDeliveryFirstTime = false;
-                } else {
-                    Utility.isDeliveryFirstTime = true;
-                }
+//                ArrayList<TripSheetDeliveriesBean> alltripsheetsDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesListCombo(currentSaleOrder.getmTripshetSOTripId(),
+//                        currentSaleOrder.getmTripshetSOAgentId(), currentSaleOrder.getmTripshetSOId());
+//                if (alltripsheetsDeliveries.size() == 0) {
+//                    Utility.isDeliveryFirstTime = false;
+//                } else {
+//                    Utility.isDeliveryFirstTime = true;
+//                }
                 ArrayList<String> productCodes = new ArrayList<String>();
                 String s = currentSaleOrder.getmTripshetSOProductCode();
                 try {

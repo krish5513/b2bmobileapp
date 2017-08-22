@@ -95,10 +95,10 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
             selectedDeliveryProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
 
-            if (!Utility.isDeliveryFirstTime) {
+           // if (!Utility.isDeliveryFirstTime) {
                 if (listener != null)
                     listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
-            }
+           // }
         }
     }
 
@@ -312,7 +312,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
     public void updateSelectedProductsList(DeliverysBean deliverysBean) {
         try {
-            if (!Utility.isDeliveryFirstTime) {
+           // if (!Utility.isDeliveryFirstTime) {
                 if (selectedDeliveryProductsHashMap.containsKey(deliverysBean.getProductId()))
                     selectedDeliveryProductsHashMap.remove(deliverysBean.getProductId());
 
@@ -320,15 +320,16 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
                 if (listener != null)
                     listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
-            } else {
-                if (selectedDeliveryProductsHashMapTemp.containsKey(deliverysBean.getProductId()))
-                    selectedDeliveryProductsHashMapTemp.remove(deliverysBean.getProductId());
-
-                selectedDeliveryProductsHashMapTemp.put(deliverysBean.getProductId(), deliverysBean);
-
-                if (listener != null)
-                    listener.updateDeliveryProductsList(selectedDeliveryProductsHashMapTemp);
-            }
+           // }
+//            else {
+//                if (selectedDeliveryProductsHashMapTemp.containsKey(deliverysBean.getProductId()))
+//                    selectedDeliveryProductsHashMapTemp.remove(deliverysBean.getProductId());
+//
+//                selectedDeliveryProductsHashMapTemp.put(deliverysBean.getProductId(), deliverysBean);
+//
+//                if (listener != null)
+//                    listener.updateDeliveryProductsList(selectedDeliveryProductsHashMapTemp);
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();

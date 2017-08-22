@@ -1488,6 +1488,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void insertProductDetails(ArrayList<ProductsBean> mProductsBeansList) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
+            long effectedRows=0;
             for (int i = 0; i < mProductsBeansList.size(); i++) {
                 ContentValues values = new ContentValues();
                 values.put(KEY_PRODUCT_ID, mProductsBeansList.get(i).getProductId());
@@ -1504,9 +1505,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_PRODUCT_GST_PRICE, mProductsBeansList.get(i).getProductgst());
                 values.put(KEY_PRODUCT_VAT_PRICE, mProductsBeansList.get(i).getProductvat());
 
-                // insert row
-                db.insert(TABLE_PRODUCTS, null, values);
-                System.out.println("F*********** INSERTED***************88");
+                int productExists = checkProductIsExistsOrNot(mProductsBeansList.get(i).getProductId());
+                if(productExists == 0) {
+                    // Insert row
+                    effectedRows = db.insert(TABLE_PRODUCTS, null, values);
+                }else {
+                    // Update row
+                    effectedRows = db.update(TABLE_PRODUCTS, values, KEY_PRODUCT_ID + " = ?" ,
+                            new String[]{String.valueOf(mProductsBeansList.get(i).getProductId())});
+                }
                 values.clear();
             }
         } catch (Exception e) {
@@ -4691,5 +4698,25 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return paymentsBean;
+    }
+
+    /**
+     * This method is used to check the product exists or not.
+     * @param productId
+     * @return
+     */
+    public int checkProductIsExistsOrNot(String productId) {
+        int maxID = 0;
+
+        String selectQuery = "SELECT  * FROM " + TABLE_PRODUCTS + " WHERE " + KEY_PRODUCT_ID + "='" + productId + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                maxID = cursor.getInt(0);
+
+            } while (cursor.moveToNext());
+        }
+        return maxID;
     }
 }

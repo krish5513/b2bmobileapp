@@ -392,8 +392,15 @@ public class Products_Activity extends AppCompatActivity {
             Toast.makeText(this, "Clicked on Settings...", Toast.LENGTH_SHORT).show();
             return true;
         }
+        if (id == R.id.autorenew) {
 
-
+            if (new NetworkConnectionDetector(Products_Activity.this).isNetworkConnected()) {
+                productsmodel.getProductsList("productsList");
+            }else {
+                new NetworkConnectionDetector(Products_Activity.this).displayNoNetworkError(Products_Activity.this);
+            }
+            return true;
+        }
         switch (item.getItemId()) {
             case android.R.id.home:
                 if(search.isIconified()) {
