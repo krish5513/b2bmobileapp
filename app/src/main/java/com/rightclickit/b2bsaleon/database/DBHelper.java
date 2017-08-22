@@ -9,6 +9,7 @@ import android.util.Log;
 
 
 import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
+import com.rightclickit.b2bsaleon.beanclass.AgentPaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentReturnsBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
@@ -4475,7 +4476,7 @@ public class DBHelper extends SQLiteOpenHelper {
             if (c.moveToFirst()) {
                 do {
                     String[] temp=new String[5];
-                    temp[0]=getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)),KEY_PRODUCT_TITLE);
+                    temp[0]=getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)),KEY_PRODUCT_TITLE);
                     temp[1]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_QUANTITY));
                     temp[2]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UNITPRICE));
                     temp[3]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_AMOUNT));
@@ -4640,5 +4641,54 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return arList;
+    }
+
+    public ArrayList<AgentPaymentsBean> getpaymentDetails(String userId) {
+        ArrayList<AgentPaymentsBean> paymentsBean = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT DISTINCT(tripsheet_payments_payment_number) AS Tripsheet_Payments_Number" +
+                    ", COUNT(tripsheet_payments_payment_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_USER_ID + " = '" + userId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+            HashMap<String, String> records = new HashMap<>();
+            if (c.moveToFirst()) {
+                do {
+                    records.put(c.getString(c.getColumnIndex("Tripsheet_Payments_Number")), c.getString(c.getColumnIndex("Total_COUNT")));
+               } while (c.moveToNext());
+            }
+            for (Map.Entry<String, String> entry : records.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE tripsheet_payments_payment_number  = '" + key + "'";
+                c = db.rawQuery(selectQuery, null);
+                boolean rerun = true;
+                if (c.moveToFirst()) {
+                    do {
+                        if (rerun) {
+                            AgentPaymentsBean agentpaymentsBean = new AgentPaymentsBean();
+                            agentpaymentsBean.setPayment_Number(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER)));
+                            agentpaymentsBean.setPayment_date(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_DATE)));
+                            agentpaymentsBean.setPayment_status(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS)));
+                            agentpaymentsBean.setPayment_OBamount("0.000");
+                            agentpaymentsBean.setPayment_ordervalue("0.000");
+                            agentpaymentsBean.setPayment_totalamount("0.000");
+                            agentpaymentsBean.setPayment_totaldue("0.000");
+                            paymentsBean.add(agentpaymentsBean);
+                            rerun = false;
+                        }
+                    } while (c.moveToNext());
+                }
+
+            }
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return paymentsBean;
     }
 }

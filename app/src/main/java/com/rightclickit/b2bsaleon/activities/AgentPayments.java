@@ -1,6 +1,8 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,9 +13,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.AgentDeliveriesAdapter;
+import com.rightclickit.b2bsaleon.adapters.AgentPaymentsAdapter;
+import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
+import com.rightclickit.b2bsaleon.beanclass.AgentPaymentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
@@ -28,6 +35,11 @@ public class AgentPayments extends AppCompatActivity {
     Button view;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
+    String agentId="";
+    AgentPaymentsAdapter paymentsAdapter;
+    ListView paymentsList;
+    FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,10 +72,35 @@ public class AgentPayments extends AppCompatActivity {
         orders.setVisibility(View.GONE);
 
 
-        view=(Button)findViewById(R.id.btn_view1);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
+        fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.customer60));
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(getApplicationContext(),"Clicked Customers Add",Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(AgentPayments.this, TripsheetPayments.class);
+                i.putExtra("From","AgentPayments");
+                startActivity(i);
+                finish();
+            }
+        });
 
+
+        paymentsList=(ListView)findViewById(R.id.ordered_products_list_view) ;
         mDBHelper = new DBHelper(AgentPayments.this);
         mPreferences = new MMSharedPreferences(AgentPayments.this);
+        agentId = mPreferences.getString("agentId");
+
+
+
+
+
+        ArrayList<AgentPaymentsBean> unUploadedPayments = mDBHelper.getpaymentDetails(agentId);
+
+        if(unUploadedPayments.size()>0){
+            loadPayments(unUploadedPayments);
+        }
 
         sales.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,16 +165,7 @@ public class AgentPayments extends AppCompatActivity {
                 finish();
             }
         });
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-
-                Intent i =new Intent(AgentPayments.this,AgentPaymentsView.class);
-                startActivity(i);
-                finish();
-            }
-        });
 
 
 
@@ -162,6 +190,16 @@ public class AgentPayments extends AppCompatActivity {
         }
 
 
+
+
+    }
+
+    private void loadPayments(ArrayList<AgentPaymentsBean> unUploadedPayments) {
+        if (paymentsAdapter != null) {
+            paymentsAdapter = null;
+        }
+        paymentsAdapter = new AgentPaymentsAdapter(this, AgentPayments.this, unUploadedPayments);
+        paymentsList.setAdapter(paymentsAdapter);
     }
 
     @Override

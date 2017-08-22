@@ -59,6 +59,8 @@ public class TripsheetPayments extends AppCompatActivity {
     private double openingBalance = 0.0, saleOrderValue = 0.0, totalAmount = 0.0, receivedAmount = 0.0, dueAmount = 0.0;
     private String cheque_image_path = "";
     private boolean isTripSheetClosed = false;
+    public String paymentsadd= " ";
+    LinearLayout tpsBottomOptionsLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,12 @@ public class TripsheetPayments extends AppCompatActivity {
             mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
             mAgentSoId = this.getIntent().getStringExtra("agentSoId");
             mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
+
+          /*  Bundle bundle = this.getIntent().getExtras();
+            if (bundle != null) {
+                paymentsadd=this.getIntent().getStringExtra("From");
+            }
+*/
 
             this.getSupportActionBar().setTitle("PAYMENTS");
             this.getSupportActionBar().setSubtitle(null);
@@ -114,6 +122,16 @@ public class TripsheetPayments extends AppCompatActivity {
             tps_total_amount = (TextView) findViewById(R.id.tps_total_amount);
             tps_received_amount = (TextView) findViewById(R.id.tps_received_amount);
             tps_due_amount = (TextView) findViewById(R.id.tps_due_amount);
+
+           /* tpsBottomOptionsLayout = (LinearLayout) findViewById(R.id.tpsBottomOptionsLayout);
+            if (paymentsadd.equals("AgentPayments")) {
+                tpsBottomOptionsLayout.setVisibility(View.GONE);
+
+            } else {
+                tpsBottomOptionsLayout.setVisibility(View.VISIBLE);
+
+            }*/
+
 
             captureChequeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -227,6 +245,8 @@ public class TripsheetPayments extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {
@@ -308,11 +328,19 @@ public class TripsheetPayments extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, TripSheetView.class);
-        intent.putExtra("tripsheetId", mTripSheetId);
-        startActivity(intent);
-        finish();
-    }
+      /*  if (paymentsadd.equals("AgentPayments")) {
+            Intent intent = new Intent(this, AgentPayments.class);
+
+            startActivity(intent);
+            finish();
+
+        } else {*/
+            Intent intent = new Intent(this, TripSheetView.class);
+            intent.putExtra("tripsheetId", mTripSheetId);
+            startActivity(intent);
+            finish();
+        }
+
 
     private void selectImage() {
 
