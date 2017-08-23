@@ -126,6 +126,11 @@ public class AgentsAdapter extends BaseAdapter {
             mHolder.mStatus.setText("InActive");
         }
 
+        mHolder.mObAmount.setText(mAgentsBeansList1.get(position).getmObAmount());
+        mHolder.mOrderValue.setText(mAgentsBeansList1.get(position).getmOrderValue());
+        mHolder.mTotalAmount.setText(mAgentsBeansList1.get(position).getmTotalAmount());
+        mHolder.mDueAmount.setText(mAgentsBeansList1.get(position).getmDueAmount());
+
 
         mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override

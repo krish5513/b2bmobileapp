@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
@@ -62,8 +63,9 @@ public class AgentPaymentsAdapter extends BaseAdapter {
     }
 
     public class TripSheetDeliveriesViewHolder {
-        TextView Payment_no, Paymeent_date, Payment_status, payment_obAmount, payment_ordervalue,payment_totalAmount,payment_totalDue;
+        TextView Payment_no, Paymeent_date, Payment_status, payment_Amount, payment_mop,payment_chechno,payment_checkdate,payment_bankName;
         Button View;
+        LinearLayout paymentcash;
     }
 
     @Override
@@ -94,10 +96,12 @@ public class AgentPaymentsAdapter extends BaseAdapter {
             tripSheetDeliveriesViewHolder.Payment_no = (TextView) view.findViewById(R.id.tv_prid);
             tripSheetDeliveriesViewHolder.Paymeent_date = (TextView) view.findViewById(R.id.payment_date);
             tripSheetDeliveriesViewHolder.Payment_status = (TextView) view.findViewById(R.id.payment_status);
-            tripSheetDeliveriesViewHolder.payment_obAmount = (TextView) view.findViewById(R.id.ob_amount);
-            tripSheetDeliveriesViewHolder.payment_ordervalue = (TextView) view.findViewById(R.id.ordervalue);
-            tripSheetDeliveriesViewHolder.payment_totalAmount = (TextView) view.findViewById(R.id.totalAmount);
-            tripSheetDeliveriesViewHolder.payment_totalDue = (TextView) view.findViewById(R.id.totaldue);
+            tripSheetDeliveriesViewHolder.payment_Amount = (TextView) view.findViewById(R.id.amount);
+            tripSheetDeliveriesViewHolder.payment_mop = (TextView) view.findViewById(R.id.mop);
+            tripSheetDeliveriesViewHolder.payment_chechno = (TextView) view.findViewById(R.id.checkNo);
+            tripSheetDeliveriesViewHolder.payment_checkdate = (TextView) view.findViewById(R.id.checkDate);
+            tripSheetDeliveriesViewHolder.payment_bankName = (TextView) view.findViewById(R.id.bankName);
+            tripSheetDeliveriesViewHolder.paymentcash = (LinearLayout) view.findViewById(R.id.paymentcash);
             tripSheetDeliveriesViewHolder.View = (Button) view.findViewById(R.id.btn_view1);
 
 
@@ -109,14 +113,27 @@ public class AgentPaymentsAdapter extends BaseAdapter {
         final AgentPaymentsAdapter.TripSheetDeliveriesViewHolder currentTripSheetDeliveriesViewHolder = tripSheetDeliveriesViewHolder;
 
         final AgentPaymentsBean currentDeliveryBean = allDeliveryProductsList.get(position);
+        if (currentDeliveryBean != null) {
+            tripSheetDeliveriesViewHolder.payment_mop.setText(currentDeliveryBean.getPayment_mop().equals("0") ? "Cash" : "Cheque");
+
+            if (currentDeliveryBean.getPayment_mop().equals("1")) {
+                tripSheetDeliveriesViewHolder.payment_chechno.setText("Cheque #" + currentDeliveryBean.getPayment_checkno());
+                tripSheetDeliveriesViewHolder.payment_checkdate.setText("Date : " + currentDeliveryBean.getPayment_checkDate());
+                tripSheetDeliveriesViewHolder.payment_bankName.setText(currentDeliveryBean.getPayment_bankName() + " Bank");
+            } else {
+                tripSheetDeliveriesViewHolder.paymentcash.setVisibility(View.GONE);
+            }
+        }
+
 
         tripSheetDeliveriesViewHolder.Payment_no.setText(currentDeliveryBean.getPayment_Number());
         tripSheetDeliveriesViewHolder.Paymeent_date.setText(getDate(currentDeliveryBean.getPayment_date(),"dd-MM-yyyy"));
         tripSheetDeliveriesViewHolder.Payment_status.setText(currentDeliveryBean.getPayment_status());
-        tripSheetDeliveriesViewHolder.payment_obAmount.setText(currentDeliveryBean.getPayment_OBamount());
-        tripSheetDeliveriesViewHolder.payment_ordervalue.setText(currentDeliveryBean.getPayment_ordervalue());
-        tripSheetDeliveriesViewHolder.payment_totalAmount.setText(currentDeliveryBean.getPayment_totalamount());
-        tripSheetDeliveriesViewHolder.payment_totalDue.setText(currentDeliveryBean.getPayment_totaldue());
+        tripSheetDeliveriesViewHolder.payment_Amount.setText(currentDeliveryBean.getPayment_amount());
+       /* tripSheetDeliveriesViewHolder.payment_mop.setText(currentDeliveryBean.getPayment_mop());
+        tripSheetDeliveriesViewHolder.payment_chechno.setText(currentDeliveryBean.getPayment_checkno());
+        tripSheetDeliveriesViewHolder.payment_checkdate.setText(currentDeliveryBean.getPayment_checkDate());
+        tripSheetDeliveriesViewHolder.payment_bankName.setText(currentDeliveryBean.getPayment_bankName());*/
 
         tripSheetDeliveriesViewHolder.View.setOnClickListener(new View.OnClickListener() {
             @Override

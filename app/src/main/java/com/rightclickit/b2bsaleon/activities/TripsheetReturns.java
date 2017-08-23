@@ -245,6 +245,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
         i.putExtra("agentRouteCode", mAgentRouteCode);
         i.putExtra("agentSoId", mAgentSoId);
         i.putExtra("agentSoCode", mAgentSoCode);
+        //i.putExtra("From","Delivery");
         startActivity(i);
         finish();
     }

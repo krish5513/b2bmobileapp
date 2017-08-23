@@ -80,11 +80,6 @@ public class TripsheetPayments extends AppCompatActivity {
             mAgentSoId = this.getIntent().getStringExtra("agentSoId");
             mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
 
-          /*  Bundle bundle = this.getIntent().getExtras();
-            if (bundle != null) {
-                paymentsadd=this.getIntent().getStringExtra("From");
-            }
-*/
 
             this.getSupportActionBar().setTitle("PAYMENTS");
             this.getSupportActionBar().setSubtitle(null);
@@ -328,18 +323,13 @@ public class TripsheetPayments extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-      /*  if (paymentsadd.equals("AgentPayments")) {
-            Intent intent = new Intent(this, AgentPayments.class);
 
-            startActivity(intent);
-            finish();
-
-        } else {*/
             Intent intent = new Intent(this, TripSheetView.class);
             intent.putExtra("tripsheetId", mTripSheetId);
             startActivity(intent);
             finish();
-        }
+
+    }
 
 
     private void selectImage() {

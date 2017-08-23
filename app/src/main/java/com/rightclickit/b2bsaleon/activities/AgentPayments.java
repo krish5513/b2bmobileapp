@@ -79,7 +79,7 @@ public class AgentPayments extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(),"Clicked Customers Add",Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(AgentPayments.this, TripsheetPayments.class);
+                Intent i = new Intent(AgentPayments.this, AgentAddPayment.class);
                 i.putExtra("From","AgentPayments");
                 startActivity(i);
                 finish();
@@ -97,6 +97,8 @@ public class AgentPayments extends AppCompatActivity {
 
 
         ArrayList<AgentPaymentsBean> unUploadedPayments = mDBHelper.getpaymentDetails(agentId);
+
+
 
         if(unUploadedPayments.size()>0){
             loadPayments(unUploadedPayments);

@@ -4671,10 +4671,11 @@ public class DBHelper extends SQLiteOpenHelper {
                             agentpaymentsBean.setPayment_Number(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER)));
                             agentpaymentsBean.setPayment_date(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_DATE)));
                             agentpaymentsBean.setPayment_status(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_STATUS)));
-                            agentpaymentsBean.setPayment_OBamount("0.000");
-                            agentpaymentsBean.setPayment_ordervalue("0.000");
-                            agentpaymentsBean.setPayment_totalamount("0.000");
-                            agentpaymentsBean.setPayment_totaldue("0.000");
+                            agentpaymentsBean.setPayment_amount("0.000");
+                            agentpaymentsBean.setPayment_mop(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TYPE)));
+                            agentpaymentsBean.setPayment_checkno(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_CHE_TRANS_ID)));
+                            agentpaymentsBean.setPayment_checkDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_TRANS_DATE)));
+                            agentpaymentsBean.setPayment_bankName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_BANK_NAME)));
                             paymentsBean.add(agentpaymentsBean);
                             rerun = false;
                         }

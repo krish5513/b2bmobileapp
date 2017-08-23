@@ -33,40 +33,52 @@ public class AgentPaymentsBean {
         this.payment_status = payment_status;
     }
 
-    public String getPayment_OBamount() {
-        return payment_OBamount;
+
+
+    String payment_amount;
+
+    public String getPayment_amount() {
+        return payment_amount;
     }
 
-    public void setPayment_OBamount(String payment_OBamount) {
-        this.payment_OBamount = payment_OBamount;
+    public void setPayment_amount(String payment_amount) {
+        this.payment_amount = payment_amount;
     }
 
-    public String getPayment_ordervalue() {
-        return payment_ordervalue;
+    public String getPayment_mop() {
+        return payment_mop;
     }
 
-    public void setPayment_ordervalue(String payment_ordervalue) {
-        this.payment_ordervalue = payment_ordervalue;
+    public void setPayment_mop(String payment_mop) {
+        this.payment_mop = payment_mop;
     }
 
-    public String getPayment_totalamount() {
-        return payment_totalamount;
+    public String getPayment_checkno() {
+        return payment_checkno;
     }
 
-    public void setPayment_totalamount(String payment_totalamount) {
-        this.payment_totalamount = payment_totalamount;
+    public void setPayment_checkno(String payment_checkno) {
+        this.payment_checkno = payment_checkno;
     }
 
-    public String getPayment_totaldue() {
-        return payment_totaldue;
+    public String getPayment_checkDate() {
+        return payment_checkDate;
     }
 
-    public void setPayment_totaldue(String payment_totaldue) {
-        this.payment_totaldue = payment_totaldue;
+    public void setPayment_checkDate(String payment_checkDate) {
+        this.payment_checkDate = payment_checkDate;
     }
 
-    String payment_OBamount;
-    String payment_ordervalue;
-    String payment_totalamount;
-    String payment_totaldue;
+    public String getPayment_bankName() {
+        return payment_bankName;
+    }
+
+    public void setPayment_bankName(String payment_bankName) {
+        this.payment_bankName = payment_bankName;
+    }
+
+    String payment_mop;
+    String payment_checkno;
+    String payment_checkDate;
+    String payment_bankName;
 }

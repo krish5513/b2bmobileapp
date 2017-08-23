@@ -102,12 +102,12 @@
                                 android:id="@+id/tv_address"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="OB Amt: "
+                                android:text="Amount: "
                                 android:textColor="@color/black"
                                 android:textSize="12sp" />
 
                             <TextView
-                                android:id="@+id/ob_amount"
+                                android:id="@+id/amount"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Rs.0.000"
@@ -123,12 +123,12 @@
                                 android:id="@+id/tv_ordervalue"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Order value: "
+                                android:text="Mop: "
                                 android:textColor="@color/black"
                                 android:textSize="12sp" />
 
                             <TextView
-                                android:id="@+id/ordervalue"
+                                android:id="@+id/mop"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Rs.0.000"
@@ -139,6 +139,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/paymentcash"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -147,43 +148,40 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_weight="0.5">
+                            >
                             <TextView
                                 android:id="@+id/tv_address"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Total Amt: "
+                                android:text="Details: "
                                 android:textColor="@color/black"
                                 android:textSize="12sp" />
 
                             <TextView
-                                android:id="@+id/totalAmount"
+                                android:id="@+id/checkNo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rs.0.000"
+                                android:text="CheckNo"
+                                android:layout_weight="0.5"
                                 android:textColor="@color/greydark"
-                                android:textSize="10sp" />
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="0.5">
+                                android:textSize="12sp" />
                             <TextView
-                                android:id="@+id/tv_address"
+                                android:id="@+id/checkDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Total Due: "
-                                android:textColor="@color/black"
+                                android:text="Date"
+                                android:layout_weight="0.5"
+                                android:textColor="@color/greydark"
                                 android:textSize="12sp" />
 
                             <TextView
-                                android:id="@+id/totaldue"
+                                android:id="@+id/bankName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Rs.0.000"
-                                android:textColor="@color/red"
-                                android:textSize="10sp" />
+                                android:text="BankName"
+                                android:layout_weight="0.5"
+                                android:textColor="@color/greydark"
+                                android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
 
