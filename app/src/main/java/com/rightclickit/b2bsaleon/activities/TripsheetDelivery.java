@@ -402,35 +402,37 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                             remainingInStock = deliverysBean.getProductStock() - deliverysBean.getSelectedQuantity();
                             remainingExtraStock = deliverysBean.getProductExtraQuantity();
                         }
+                        if (deliverysBean.getSelectedQuantity() != 0) {
+                            // Quantity is available....
+                            TripSheetDeliveriesBean tripSheetDeliveriesBean = new TripSheetDeliveriesBean();
+                            tripSheetDeliveriesBean.setmTripsheetDeliveryNo("");
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_tripId(mTripSheetId);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_so_id(mAgentSoId);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_so_code(mAgentSoCode);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_userId(mAgentId);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_userCodes(mAgentCode);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_routeId(mAgentRouteId);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_routeCodes(mAgentRouteCode);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_productId(deliverysBean.getProductId());
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_productCodes(deliverysBean.getProductCode());
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_TaxPercent(String.valueOf(deliverysBean.getProductTaxPerUnit()));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_UnitPrice(String.valueOf(deliverysBean.getProductRatePerUnit()));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_Quantity(String.valueOf(deliverysBean.getSelectedQuantity()));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_Amount(String.valueOf(deliverysBean.getProductAmount()));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_TaxAmount(String.valueOf(deliverysBean.getTaxAmount()));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_TaxTotal(String.valueOf(totalTaxAmount));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_SaleValue(String.valueOf(subTotal));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_Status("A");
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_Delete("N");
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_CreatedBy(loggedInUserId);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_CreatedOn(String.valueOf(currentTimeStamp));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_UpdatedBy(loggedInUserId);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_UpdatedOn(String.valueOf(currentTimeStamp));
+                            tripSheetDeliveriesBean.setProductRemainingInStock(String.valueOf(remainingInStock));
+                            tripSheetDeliveriesBean.setProductRemainingExtraStock(String.valueOf(remainingExtraStock));
 
-                        TripSheetDeliveriesBean tripSheetDeliveriesBean = new TripSheetDeliveriesBean();
-                        tripSheetDeliveriesBean.setmTripsheetDeliveryNo("");
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_tripId(mTripSheetId);
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_so_id(mAgentSoId);
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_so_code(mAgentSoCode);
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_userId(mAgentId);
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_userCodes(mAgentCode);
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_routeId(mAgentRouteId);
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_routeCodes(mAgentRouteCode);
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_productId(deliverysBean.getProductId());
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_productCodes(deliverysBean.getProductCode());
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_TaxPercent(String.valueOf(deliverysBean.getProductTaxPerUnit()));
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_UnitPrice(String.valueOf(deliverysBean.getProductRatePerUnit()));
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_Quantity(String.valueOf(deliverysBean.getSelectedQuantity()));
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_Amount(String.valueOf(deliverysBean.getProductAmount()));
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_TaxAmount(String.valueOf(deliverysBean.getTaxAmount()));
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_TaxTotal(String.valueOf(totalTaxAmount));
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_SaleValue(String.valueOf(subTotal));
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_Status("A");
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_Delete("N");
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_CreatedBy(loggedInUserId);
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_CreatedOn(String.valueOf(currentTimeStamp));
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_UpdatedBy(loggedInUserId);
-                        tripSheetDeliveriesBean.setmTripsheetDelivery_UpdatedOn(String.valueOf(currentTimeStamp));
-                        tripSheetDeliveriesBean.setProductRemainingInStock(String.valueOf(remainingInStock));
-                        tripSheetDeliveriesBean.setProductRemainingExtraStock(String.valueOf(remainingExtraStock));
-
-                        mTripsheetsDeliveriesList.add(tripSheetDeliveriesBean);
+                            mTripsheetsDeliveriesList.add(tripSheetDeliveriesBean);
+                        }
                     }
 
                     mDBHelper.insertTripsheetsDeliveriesListData(mTripsheetsDeliveriesList);
