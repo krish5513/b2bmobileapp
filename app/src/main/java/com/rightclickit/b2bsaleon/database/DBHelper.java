@@ -4416,6 +4416,74 @@ public class DBHelper extends SQLiteOpenHelper {
         return productname;
     }
 
+    public double getSoDetails(String agentId, String type ) {
+        double obamount =0;
+
+        try {
+            String selectQuery = "SELECT  *  FROM " + TABLE_TRIPSHEETS_SO_LIST + " WHERE " + KEY_TRIPSHEET_SO_AGENTID + " = '" + agentId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                obamount = Double.parseDouble((cursor.getString(cursor.getColumnIndex(type))));
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return obamount;
+    }
+
+    public double getReceivedAmountDetails(String agentId,String type ) {
+        double receivedAmount = 0;
+
+        try {
+            String selectQuery = "SELECT  *  FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_USER_ID + " = '" + agentId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                receivedAmount = Double.parseDouble((cursor.getString(cursor.getColumnIndex(type))));
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return receivedAmount;
+    }
+    /*public double getReceivedAmountDetails(String agentId){
+
+        double receivedAmount = 0;
+        *//*SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST +
+                        " LEFT JOIN " + TABLE_TRIPSHEETS_SO_LIST + " ON " + TABLE_TRIPSHEETS_PAYMENTS_LIST + "." + KEY_TRIPSHEET_PAYMENTS_USER_ID + " = " +
+                TABLE_TRIPSHEETS_SO_LIST + "." +  KEY_TRIPSHEET_SO_AGENTID + " WHERE " + TABLE_TRIPSHEETS_PAYMENTS_LIST + "." + KEY_TRIPSHEET_PAYMENTS_USER_ID + " = ?",
+                new String[]{"1"});
+*//*
+        String selectQuery = "SELECT  * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " tp LEFT JOIN " + TABLE_TRIPSHEETS_SO_LIST + " top ON tp." + KEY_TRIPSHEET_PAYMENTS_USER_ID
+                + "=top." + KEY_TRIPSHEET_SO_AGENTID + " AND top." + KEY_TRIPSHEET_PAYMENTS_USER_ID + "='" + agentId + "'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor != null){
+
+            while(cursor.moveToNext()){
+                receivedAmount= Double.parseDouble((cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT))));
+            }
+        }
+        return receivedAmount;
+    }*/
+
     public ArrayList<AgentDeliveriesBean> getdeliveryDetails(String userId) {
         ArrayList<AgentDeliveriesBean> deliveriesBean = new ArrayList<>();
 

@@ -39,6 +39,9 @@ public class AgentPayments extends AppCompatActivity {
     AgentPaymentsAdapter paymentsAdapter;
     ListView paymentsList;
     FloatingActionButton fab;
+    String ObAmount="",Ordervalue="",receivedAmount="",Due="";
+
+    TextView tv_obAmount,tv_orderValue,tv_receivedAmount,tv_due;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,23 @@ public class AgentPayments extends AppCompatActivity {
         orders = (LinearLayout) findViewById(R.id.linear_orders);
         orders.setVisibility(View.GONE);
 
+        mDBHelper = new DBHelper(AgentPayments.this);
+        mPreferences = new MMSharedPreferences(AgentPayments.this);
+
+        ObAmount=mPreferences.getString("ObAmount");
+        Ordervalue=mPreferences.getString("OrderValue");
+        receivedAmount=mPreferences.getString("ReceivedAmount");
+        Due=mPreferences.getString("due");
+
+        tv_obAmount=(TextView)findViewById(R.id.tv_obAmount) ;
+        tv_orderValue=(TextView)findViewById(R.id.tv_orderValue) ;
+        tv_receivedAmount=(TextView)findViewById(R.id.tv_receivedAmount) ;
+        tv_due=(TextView)findViewById(R.id.tv_due) ;
+
+        tv_obAmount.setText(ObAmount);
+        tv_orderValue.setText(Ordervalue);
+        tv_receivedAmount.setText(receivedAmount);
+        tv_due.setText(Due);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
@@ -80,7 +100,10 @@ public class AgentPayments extends AppCompatActivity {
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(),"Clicked Customers Add",Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(AgentPayments.this, AgentAddPayment.class);
-                i.putExtra("From","AgentPayments");
+               /* i.putExtra("ObAmount",ObAmount);
+                i.putExtra("OrderValue",Ordervalue);
+                i.putExtra("ReceivedAmount",receivedAmount);
+                i.putExtra("due",Due);*/
                 startActivity(i);
                 finish();
             }
@@ -88,8 +111,7 @@ public class AgentPayments extends AppCompatActivity {
 
 
         paymentsList=(ListView)findViewById(R.id.ordered_products_list_view) ;
-        mDBHelper = new DBHelper(AgentPayments.this);
-        mPreferences = new MMSharedPreferences(AgentPayments.this);
+
         agentId = mPreferences.getString("agentId");
 
 
@@ -138,6 +160,10 @@ public class AgentPayments extends AppCompatActivity {
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 payments.startAnimation(animation1);
+                Intent i =new Intent(AgentPayments.this,AgentPayments.class);
+
+                startActivity(i);
+                finish();
 
             }
         });

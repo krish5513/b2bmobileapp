@@ -220,7 +220,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
                                 android:paddingLeft="10dp"
-                                android:text="\u20B9 0.00"
+
                                 android:textColor="@color/greydark"
                                 android:textSize="14sp" />
 

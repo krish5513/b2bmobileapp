@@ -149,14 +149,14 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             >
-                            <TextView
+                            <!--<TextView
                                 android:id="@+id/tv_address"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Details: "
                                 android:textColor="@color/black"
                                 android:textSize="12sp" />
-
+-->
                             <TextView
                                 android:id="@+id/checkNo"
                                 android:layout_width="wrap_content"

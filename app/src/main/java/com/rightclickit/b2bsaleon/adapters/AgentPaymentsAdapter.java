@@ -127,18 +127,14 @@ public class AgentPaymentsAdapter extends BaseAdapter {
 
 
         tripSheetDeliveriesViewHolder.Payment_no.setText(currentDeliveryBean.getPayment_Number());
-        tripSheetDeliveriesViewHolder.Paymeent_date.setText(getDate(currentDeliveryBean.getPayment_date(),"dd-MM-yyyy"));
+        tripSheetDeliveriesViewHolder.Paymeent_date.setText(currentDeliveryBean.getPayment_checkDate());
         tripSheetDeliveriesViewHolder.Payment_status.setText(currentDeliveryBean.getPayment_status());
-        tripSheetDeliveriesViewHolder.payment_Amount.setText(currentDeliveryBean.getPayment_amount());
-       /* tripSheetDeliveriesViewHolder.payment_mop.setText(currentDeliveryBean.getPayment_mop());
-        tripSheetDeliveriesViewHolder.payment_chechno.setText(currentDeliveryBean.getPayment_checkno());
-        tripSheetDeliveriesViewHolder.payment_checkdate.setText(currentDeliveryBean.getPayment_checkDate());
-        tripSheetDeliveriesViewHolder.payment_bankName.setText(currentDeliveryBean.getPayment_bankName());*/
+        tripSheetDeliveriesViewHolder.payment_Amount.setText(mPreferences.getString("ReceivedAmount"));
 
         tripSheetDeliveriesViewHolder.View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mPreferences.putString("DeliveryNo",currentDeliveryBean.getTripNo());
+
                 Intent i=new Intent(activity,AgentPaymentsView.class);
                 i.putExtra("PaymentNo",currentDeliveryBean.getPayment_Number());
                 i.putExtra("Paymentdate",getDate(currentDeliveryBean.getPayment_date(),"dd-MM-yyyy"));

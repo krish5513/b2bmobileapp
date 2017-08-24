@@ -129,6 +129,7 @@ public class AgentDeliveries extends AppCompatActivity {
                 payments.startAnimation(animation1);
 
                 Intent i = new Intent(AgentDeliveries.this, AgentPayments.class);
+
                 startActivity(i);
                 finish();
             }

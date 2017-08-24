@@ -20,17 +20,15 @@ import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentTDC_Order;
-import com.rightclickit.b2bsaleon.activities.AgentViewActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
-import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
-import com.rightclickit.b2bsaleon.activities.AgentViewActivity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -125,11 +123,22 @@ public class AgentsAdapter extends BaseAdapter {
         }else {
             mHolder.mStatus.setText("InActive");
         }
+        final double obAmount,receivedAmount,ordervalue,due;
 
-        mHolder.mObAmount.setText(mAgentsBeansList1.get(position).getmObAmount());
-        mHolder.mOrderValue.setText(mAgentsBeansList1.get(position).getmOrderValue());
-        mHolder.mTotalAmount.setText(mAgentsBeansList1.get(position).getmTotalAmount());
-        mHolder.mDueAmount.setText(mAgentsBeansList1.get(position).getmDueAmount());
+
+
+        obAmount=mDBHelper.getSoDetails(mAgentsBeansList1.get(position).getmAgentId(),"tripsheet_so_opamount");
+        mHolder.mObAmount.setText(String.valueOf(Utility.getFormattedCurrency(obAmount)));
+        ordervalue=mDBHelper.getSoDetails(mAgentsBeansList1.get(position).getmAgentId(),"tripsheet_so_value");
+        mHolder.mOrderValue.setText(String.valueOf(Utility.getFormattedCurrency(ordervalue)));
+        receivedAmount=mDBHelper.getReceivedAmountDetails(mAgentsBeansList1.get(position).getmAgentId(),"tripsheet_payments_received_amount");
+
+        mHolder.mTotalAmount.setText(String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
+
+        due=(obAmount+ordervalue)-receivedAmount;
+
+
+        mHolder.mDueAmount.setText(String.valueOf(Utility.getFormattedCurrency(due)));
 
 
         mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
@@ -140,8 +149,12 @@ public class AgentsAdapter extends BaseAdapter {
                 mPreferences.putString("agentrouteId",mAgentsBeansList1.get(position).getmAgentRouteId());
                 mPreferences.putString("enqId",String.valueOf(position+1));
                 mPreferences.putString("agentCode",mAgentsBeansList1.get(position).getmAgentCode());
+
+                mPreferences.putString("ObAmount",String.valueOf(Utility.getFormattedCurrency(obAmount)));
+                mPreferences.putString("OrderValue",String.valueOf(Utility.getFormattedCurrency(ordervalue)));
+                mPreferences.putString("ReceivedAmount",String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
+                mPreferences.putString("due",String.valueOf(Utility.getFormattedCurrency(due)));
                 Intent i=new Intent(activity,AgentTDC_Order.class);
-               // i.putExtra("AGENTID",mAgentsBeansList1.get(position).getmAgentId());
                 activity.startActivity(i);
 
                 activity.finish();

@@ -30,6 +30,7 @@ import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.services.SyncTripSheetsPaymentsService;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
@@ -53,11 +54,11 @@ public class AgentAddPayment extends AppCompatActivity {
     private String mTripSheetId = "", mAgentId = "", mAgentCode = "", mAgentName = "", currentDate = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
     private static final int ACTION_TAKE_PHOTO_A = 1;
     private TripSheetDeliveriesBean currentDeliveriesBean = null;
-    private double openingBalance = 0.0, saleOrderValue = 0.0, totalAmount = 0.0, receivedAmount = 0.0, dueAmount = 0.0;
+
     private String cheque_image_path = "";
-    private boolean isTripSheetClosed = false;
-    public String paymentsadd= " ";
-    LinearLayout tpsBottomOptionsLayout;
+
+    String ObAmount="",Ordervalue="",receivedAmount="",Due="",totalAmount ="";
+    private MMSharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,24 +66,11 @@ public class AgentAddPayment extends AppCompatActivity {
         setContentView(R.layout.activity_agent_add_payment);
 
 
-        try {
+
             activityContext = AgentAddPayment.this;
             mDBHelper = new DBHelper(activityContext);
+           mPreferences = new MMSharedPreferences(AgentAddPayment.this);
 
-            mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
-            mAgentId = this.getIntent().getStringExtra("agentId");
-            mAgentCode = this.getIntent().getStringExtra("agentCode");
-            mAgentName = this.getIntent().getStringExtra("agentName");
-            mAgentRouteId = this.getIntent().getStringExtra("agentRouteId");
-            mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
-            mAgentSoId = this.getIntent().getStringExtra("agentSoId");
-            mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
-            paymentsadd=this.getIntent().getStringExtra("From");
-          /*  Bundle bundle = this.getIntent().getExtras();
-            if (bundle != null) {
-
-            }
-*/
 
             this.getSupportActionBar().setTitle("PAYMENTS");
             this.getSupportActionBar().setSubtitle(null);
@@ -121,14 +109,24 @@ public class AgentAddPayment extends AppCompatActivity {
             tps_received_amount = (TextView) findViewById(R.id.tps_received_amount);
             tps_due_amount = (TextView) findViewById(R.id.tps_due_amount);
 
-           /* tpsBottomOptionsLayout = (LinearLayout) findViewById(R.id.tpsBottomOptionsLayout);
-            if (paymentsadd.equals("AgentPayments")) {
-                tpsBottomOptionsLayout.setVisibility(View.GONE);
 
-            } else {
-                tpsBottomOptionsLayout.setVisibility(View.VISIBLE);
+            ObAmount=mPreferences.getString("ObAmount");
+            Ordervalue=mPreferences.getString("OrderValue");
+            receivedAmount=mPreferences.getString("ReceivedAmount");
+            Due= mPreferences.getString("due");
 
-            }*/
+            totalAmount = ObAmount + Ordervalue;
+
+            tps_opening_balance.setText(ObAmount);
+            tps_sale_order_value.setText(Ordervalue);
+            tps_total_amount.setText(totalAmount);
+            tps_received_amount.setText(receivedAmount);
+            tps_due_amount.setText(Due);
+
+            if (Due !=null)
+                mAmountText.setText(Due);
+            else
+                mAmountText.setText("0.00");
 
 
             captureChequeLayout.setOnClickListener(new View.OnClickListener() {
@@ -178,43 +176,8 @@ public class AgentAddPayment extends AppCompatActivity {
                 }
             });
 
-            isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
 
-            if (isTripSheetClosed) {
-                trip_sheet_payments_save.setVisibility(View.GONE);
-            }
 
-            deliveryArrayList = mDBHelper.fetchOrderPaymentFromDeliveriesTable(mTripSheetId, mAgentSoId, mAgentId);
-
-            if (deliveryArrayList.size() > 0) {
-                currentDeliveriesBean = deliveryArrayList.get(0); // We are saving trip sheet sale value in all objects so we are considering first object.
-            } else {
-                currentDeliveriesBean = new TripSheetDeliveriesBean();
-                currentDeliveriesBean.setmTripsheetDelivery_SaleValue("0.0");
-                currentDeliveriesBean.setmTripsheetDelivery_TaxTotal("0.0");
-            }
-
-            openingBalance = mDBHelper.fetchTripSheetSaleOrderOpeningBalance(mTripSheetId, mAgentSoId);
-            saleOrderValue = Double.parseDouble(currentDeliveriesBean.getmTripsheetDelivery_SaleValue());
-            receivedAmount = mDBHelper.fetchTripSheetSaleOrderReceivedAmount(mTripSheetId, mAgentSoId);
-            totalAmount = openingBalance + saleOrderValue;
-            dueAmount = totalAmount - receivedAmount;
-
-            tps_opening_balance.setText(Utility.getFormattedCurrency(openingBalance));
-            tps_sale_order_value.setText(Utility.getFormattedCurrency(saleOrderValue));
-            tps_total_amount.setText(Utility.getFormattedCurrency(totalAmount));
-            tps_received_amount.setText(Utility.getFormattedCurrency(receivedAmount));
-            tps_due_amount.setText(Utility.getFormattedCurrency(dueAmount));
-
-            if (dueAmount > 0)
-                mAmountText.setText(String.format("%.2f", dueAmount));
-            else
-                mAmountText.setText("0.00");
-            //mAmountText.setText(currentDeliveriesBean.getmTripsheetDelivery_SaleValue());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
 
     }
@@ -300,7 +263,7 @@ public class AgentAddPayment extends AppCompatActivity {
         super.onBackPressed();
 
             Intent intent = new Intent(this, AgentPayments.class);
-            intent.putExtra("tripsheetId", mTripSheetId);
+           // intent.putExtra("tripsheetId", mTripSheetId);
             startActivity(intent);
             finish();
 
@@ -456,8 +419,8 @@ public class AgentAddPayment extends AppCompatActivity {
     }
 
     public void validatePaymentDetails() {
-        Double enteredAmount = Double.parseDouble(mAmountText.getText().toString());
-        if (enteredAmount > 0) {
+        String enteredAmount = (mAmountText.getText().toString());
+        if (enteredAmount != null) {
             if (paymentTypeSpinner.getSelectedItem().toString().equals("Cheque")) {
                 if (mChequeNumber.getText().toString().trim().length() == 0) {
                     Toast.makeText(AgentAddPayment.this, "Please enter cheque number.", Toast.LENGTH_SHORT).show();
@@ -480,8 +443,8 @@ public class AgentAddPayment extends AppCompatActivity {
     }
 
     public void savePaymentDetails() {
-        Double enteredAmount = Double.parseDouble(mAmountText.getText().toString());
-        if (enteredAmount > 0) {
+        String enteredAmount = (mAmountText.getText().toString());
+        if (enteredAmount!=null) {
             PaymentsBean paymentsBean = null;
 
             if (paymentTypeSpinner.getSelectedItem().toString().equals("Cash"))
