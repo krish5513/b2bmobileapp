@@ -110,13 +110,11 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
             Map<String, String> deliveredProductsHashMap = mDBHelper.fetchDeliveriesListByTripSheetId(mTripSheetId, mAgentSoId, mAgentId);
 
             allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
-
             if (allReturnablesListFromStock.size() > 0) {
                 allReturnablesListFromStock.clear();
             }
             for (int i = 0; i < allProductsListFromStock.size(); i++) {
-
-                if (allProductsListFromStock.get(i).getProductReturnableUnit().equals("Y")) ;
+                if (allProductsListFromStock.get(i).getProductReturnableUnit().trim().equals("Y"))
                 {
                     DeliverysBean productsBean = new DeliverysBean();
 
@@ -136,8 +134,6 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
                     allReturnablesListFromStock.add(productsBean);
                 }
             }
-
-
             mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, allReturnablesListFromStock, previouslyReturnedProductsHashMap, deliveredProductsHashMap);
             tripSheetReturnProductsList.setAdapter(mTripSheetReturnsAdapter);
 
