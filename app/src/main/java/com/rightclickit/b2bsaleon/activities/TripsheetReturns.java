@@ -47,7 +47,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
     private TripSheetReturnsAdapter mTripSheetReturnsAdapter;
     private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "", loggedInUserId;
     private boolean isReturnsDataSaved = false, isReturnsInEditingMode = false;
-    private ArrayList<DeliverysBean> allProductsListFromStock , allReturnablesListFromStock = new ArrayList<>();
+    private ArrayList<DeliverysBean> allProductsListFromStock, allReturnablesListFromStock = new ArrayList<>();
 
     private Map<String, DeliverysBean> selectedProductsHashMap;
     private Map<String, String> previouslyReturnedProductsHashMap;
@@ -111,14 +111,31 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
 
             allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
 
-            allReturnablesListFromStock.clear();
-           for(int i=0;i<allProductsListFromStock.size();i++){
+            if (allReturnablesListFromStock.size() > 0) {
+                allReturnablesListFromStock.clear();
+            }
+            for (int i = 0; i < allProductsListFromStock.size(); i++) {
 
-                        if (allProductsListFromStock.get(i).getProductReturnableUnit().equals("Y"));
-                      {
+                if (allProductsListFromStock.get(i).getProductReturnableUnit().equals("Y")) ;
+                {
+                    DeliverysBean productsBean = new DeliverysBean();
 
-                         allReturnablesListFromStock.addAll(allProductsListFromStock);
-                  }}
+                    productsBean.setProductId(allProductsListFromStock.get(i).getProductId());
+                    productsBean.setProductCode(allProductsListFromStock.get(i).getProductCode());
+                    productsBean.setProductTitle(allProductsListFromStock.get(i).getProductTitle());
+                    productsBean.setProductAgentPrice(allProductsListFromStock.get(i).getProductAgentPrice());
+                    productsBean.setProductConsumerPrice(allProductsListFromStock.get(i).getProductConsumerPrice());
+                    productsBean.setProductRetailerPrice(allProductsListFromStock.get(i).getProductRetailerPrice());
+                    productsBean.setProductgst(allProductsListFromStock.get(i).getProductgst());
+                    productsBean.setProductvat(allProductsListFromStock.get(i).getProductvat());
+                    productsBean.setProductOrderedQuantity(allProductsListFromStock.get(i).getProductOrderedQuantity());
+                    productsBean.setProductStock(allProductsListFromStock.get(i).getProductStock());
+                    productsBean.setProductExtraQuantity(allProductsListFromStock.get(i).getProductExtraQuantity());
+                    productsBean.setProductReturnableUnit(allProductsListFromStock.get(i).getProductReturnableUnit());
+
+                    allReturnablesListFromStock.add(productsBean);
+                }
+            }
 
 
             mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, allReturnablesListFromStock, previouslyReturnedProductsHashMap, deliveredProductsHashMap);
