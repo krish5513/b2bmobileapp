@@ -198,6 +198,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_AGENT_DEVICESYNC = "agent_devicesync";
     private final String KEY_AGENT_ACCESSDEVICE = "agent_accessdevice";
     private final String KEY_AGENT_BACKUP = "agent_backup";
+    private final String KEY_AGENT_LOGIN_USER_ID = "agent_login_user_id";
 
     // Column names for Products with take order values
     private final String KEY_TO_PRODUCT_ID = "to_product_id";
@@ -430,7 +431,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_AGENT_STAKEHOLDERID + " VARCHAR," + KEY_AGENT_REPORTINGTO + " VARCHAR," + KEY_AGENT_VERIFYCODE + " VARCHAR,"
             + KEY_AGENT_DELETE + " VARCHAR," + KEY_AGENT_CREATEDBY + " VARCHAR," + KEY_AGENT_CREATEDON + " VARCHAR,"
             + KEY_AGENT_UPDATEDBY + " VARCHAR," + KEY_AGENT_UPDATEDON + " VARCHAR," + KEY_AGENT_ROUTECODE + " VARCHAR," + KEY_AGENT_DEVICESYNC + " VARCHAR,"
-            + KEY_AGENT_ACCESSDEVICE + " VARCHAR," + KEY_AGENT_BACKUP + " VARCHAR)";
+            + KEY_AGENT_ACCESSDEVICE + " VARCHAR,"  + KEY_AGENT_BACKUP + " VARCHAR," + KEY_AGENT_LOGIN_USER_ID + " VARCHAR)";
 
 
     // Userdetails Table Create Statements
@@ -751,7 +752,7 @@ public class DBHelper extends SQLiteOpenHelper {
      *
      * @param mAgentsBeansList
      */
-    public void insertAgentDetails(ArrayList<AgentsBean> mAgentsBeansList) {
+    public void insertAgentDetails(ArrayList<AgentsBean> mAgentsBeansList,String userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             for (int i = 0; i < mAgentsBeansList.size(); i++) {
@@ -788,9 +789,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_AGENT_DEVICESYNC, mAgentsBeansList.get(i).getmAgentDeviceSync());
                 values.put(KEY_AGENT_ACCESSDEVICE, mAgentsBeansList.get(i).getmAgentAccessDevice());
                 values.put(KEY_AGENT_BACKUP, mAgentsBeansList.get(i).getmAgentBackUp());
+                values.put(KEY_AGENT_LOGIN_USER_ID, userId);
                 // insert row
                 db.insert(TABLE_AGENTS, null, values);
-                System.out.println("F*********** INSERTED***************88");
+                System.out.println("Agent data*********** INSERTED***************88");
                 values.clear();
             }
         } catch (Exception e) {
@@ -803,10 +805,10 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch all records from agents table
      */
-    public ArrayList<AgentsBean> fetchAllRecordsFromAgentsTable() {
+    public ArrayList<AgentsBean> fetchAllRecordsFromAgentsTable(String userId) {
         ArrayList<AgentsBean> allDeviceTrackRecords = new ArrayList<AgentsBean>();
         try {
-            String selectQuery = "SELECT  * FROM " + TABLE_AGENTS;
+            String selectQuery = "SELECT  * FROM " + TABLE_AGENTS + " WHERE " + KEY_AGENT_LOGIN_USER_ID + " = " + "'" + userId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -997,6 +999,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     userData.put(KEY_LATITUDE, (c.getString(c.getColumnIndex(KEY_LATITUDE))));
                     userData.put(KEY_LONGITUDE, (c.getString(c.getColumnIndex(KEY_LONGITUDE))));
                     userData.put(KEY_PASSWORD, (c.getString(c.getColumnIndex(KEY_PASSWORD))));
+                    userData.put(KEY_USER_CODE, (c.getString(c.getColumnIndex(KEY_USER_CODE))));
 
                 } while (c.moveToNext());
             }

@@ -53,7 +53,8 @@ public class AgentsActivity extends AppCompatActivity {
 
     private TextView mNoDataText;
 
-    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
+    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ",
+            mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "",mUserId="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,17 +98,17 @@ public class AgentsActivity extends AppCompatActivity {
 
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
         mAgentsList.setVisibility(View.GONE);
-        // ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
-        //System.out.println("ELSE::: "+a.size());
+        HashMap<String, String> userMapData = mDBHelper.getUsersData();
+        mUserId = userMapData.get("user_id");
         if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
             if (mDBHelper.getAgentsTableCount() > 0) {
-                ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();
-
+                ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
+                System.out.println("F:::: "+ agentsBeanArrayList.size());
                 if (agentsBeanArrayList.size() > 0) {
                     mNoDataText.setText("");
                     loadAgentsList(agentsBeanArrayList);
                 } else {
-                    mNoDataText.setText("No Agents found.");
+                    agentsModel.getAgentsList("agents");
                 }
 
             } else {
@@ -115,7 +116,8 @@ public class AgentsActivity extends AppCompatActivity {
             }
         } else {
             // System.out.println("ELSE::: ");
-            ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable();
+            ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
+            System.out.println("F12333222222222 :::: "+ agentsBeanArrayList.size());
             if (agentsBeanArrayList.size() > 0) {
                 mNoDataText.setText("");
                 loadAgentsList(agentsBeanArrayList);
@@ -202,9 +204,8 @@ public class AgentsActivity extends AppCompatActivity {
                 finish();
             }
         });
-        HashMap<String, String> userMapData = mDBHelper.getUsersData();
+
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
-        // System.out.println("F 11111 ***COUNT === "+ privilegesData.size());
         for (int k = 0; k < privilegesData.size(); k++) {
             if (privilegesData.get(k).toString().equals("Dashboard")) {
                 mDashBoardLayout.setVisibility(View.VISIBLE);
@@ -222,10 +223,7 @@ public class AgentsActivity extends AppCompatActivity {
         }
 
         ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
-        //System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());
         for (int z = 0; z < privilegeActionsData1.size(); z++) {
-            //System.out.println("Name::: "+ privilegeActionsData.get(z).toString());
-
             if (privilegeActionsData1.get(z).toString().equals("List_View")) {
                 mAgentsList.setVisibility(View.VISIBLE);
             } else if (privilegeActionsData1.get(z).toString().equals("Add")) {
@@ -235,9 +233,7 @@ public class AgentsActivity extends AppCompatActivity {
 
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("UserActivity"));
-        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
         for (int z = 0; z < privilegeActionsData.size(); z++) {
-            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
             if (privilegeActionsData.get(z).toString().equals("Notification")) {
                 mNotifications = privilegeActionsData.get(z).toString();
             } else if (privilegeActionsData.get(z).toString().equals("tdc_home_screen")) {

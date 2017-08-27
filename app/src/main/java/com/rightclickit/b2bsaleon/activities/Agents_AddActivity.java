@@ -230,7 +230,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                     //agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
                     agentsmodel.customerAdd(mAgentsBeansList,db.getStakeTypeIdByStakeType("2"));
                 }
-                db.insertAgentDetails(mAgentsBeansList);
+                db.insertAgentDetails(mAgentsBeansList,userid);
                 Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
                 synchronized (this) {
                     Intent i = new Intent(Agents_AddActivity.this, AgentsActivity.class);

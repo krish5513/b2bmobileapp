@@ -2,6 +2,7 @@ package com.rightclickit.b2bsaleon.models;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
@@ -37,13 +38,14 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
     private Agents_AddActivity activity1;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
-    private String type = "";
+    private String type = "",UserCode="";
     private ArrayList<String> stakeIdsList = new ArrayList<String>();
     private JSONArray routesArray;
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
     private ArrayList<AgentsBean> mAgentsBeansList1 = new ArrayList<AgentsBean>();
+    private ArrayList<AgentsBean> mAgentsBeansList_MyPrivilege = new ArrayList<AgentsBean>();
     private String firstname = "", lastname = "", mobileno = "", stakeid = "", userid = "", email = "", password = "123456789", code = "", reportingto = "", verigycode = "", status = "IA", delete = "N", address = "", latitude = "", longitude = "", timestamp = "", ob = "", ordervalue = "", totalamount = "", dueamount = "", pic = "";
-    private boolean isSaveDeviceDetails;
+    private boolean isSaveDeviceDetails,isMyProfilePrivilege;
 
     public AgentsModel(Context context, AgentsActivity activity) {
         this.context = context;
@@ -84,9 +86,18 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
     public void getAgentsList(String s) {
         try {
+            HashMap<String, String> userMapData = mDBHelper.getUsersData();
+            isMyProfilePrivilege = false;
+            UserCode = userMapData.get("user_id");
+            ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
+            for (int z = 0; z < privilegeActionsData1.size(); z++) {
+                if (privilegeActionsData1.get(z).toString().equals("my_profile")) {
+                    isMyProfilePrivilege = true;
+                }
+            }
             type = s;
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-                HashMap<String, String> userMapData = mDBHelper.getUsersData();
+                //HashMap<String, String> userMapData = mDBHelper.getUsersData();
                 JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
                 routesArray = routesJob.getJSONArray("routeArray");
                 String logInURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_LIST);
@@ -196,116 +207,238 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                     int len = respArray.length();
                     for (int k = 0; k < len; k++) {
                         JSONObject jo = respArray.getJSONObject(k);
-
-                        AgentsBean agentsBean = new AgentsBean();
-                        if (jo.has("_id")) {
-                            agentsBean.setmAgentId(jo.getString("_id"));
-                        }
-                        if (jo.has("latitude")) {
-                            agentsBean.setmLatitude(jo.getString("latitude"));
-                        }
-                        if (jo.has("longitude")) {
-                            agentsBean.setmLongitude(jo.getString("longitude"));
-                        }
-                        if (jo.has("code")) {
-                            agentsBean.setmAgentCode(jo.getString("code"));
-                        }
-
-
-                        if (jo.has("email")) {
-                            agentsBean.setmAgentEmail(jo.getString("email"));
-                        }
-                        if (jo.has("password")) {
-                            agentsBean.setmAgentPassword(jo.getString("password"));
-                        }
-                        if (jo.has("reporting_to")) {
-                            agentsBean.setmAgentReprtingto(jo.getString("reporting_to"));
-                        }
-                        if (jo.has("verify_code")) {
-                            agentsBean.setmAgentVerifycode(jo.getString("verify_code"));
-                        }
-                        if (jo.has("status")) {
-                            agentsBean.setmStatus(jo.getString("status"));
-                        }
-                        if (jo.has("delete")) {
-                            agentsBean.setmAgentDelete(jo.getString("delete"));
-                        }
-                        if (jo.has("first_name")) {
-                            agentsBean.setmFirstname(jo.getString("first_name"));
-                            //Log.i("dgferkgferf", jo.getString("first_name"));
-                        }
-                        if (jo.has("last_name")) {
-                            agentsBean.setmLastname(jo.getString("last_name"));
-                            //System.out.println("dgferkgferf IS::: " + jo.getString("last_name"));
-                        }
-                        if (jo.has("phone")) {
-                            agentsBean.setMphoneNO(jo.getString("phone"));
-                        }
-
-                        if (jo.has("shopdata")) {
-                            JSONArray priceJsonArray = jo.getJSONArray("shopdata");
-                            int length = priceJsonArray.length();
-                            if (length > 0) {
-                                for (int s = 0; s < length; s++) {
-                                    JSONObject priceObj = priceJsonArray.getJSONObject(s);
-                                    if (priceObj.has("shop_address")) {
-                                        // Agent price
-                                        agentsBean.setMaddress(priceObj.getString("shop_address"));
-
+                        // Check for my profile privilege
+                        if(isMyProfilePrivilege){
+                            // Privilege exists, display only login user profile
+                            if (jo.has("_id")) {
+                                if(UserCode.equals(jo.getString("_id"))){
+                                    System.out.println("CODE MATCHED::: "+jo.getString("_id"));
+                                    AgentsBean agentsBean = new AgentsBean();
+                                    if (jo.has("_id")) {
+                                        agentsBean.setmAgentId(jo.getString("_id"));
                                     }
-                                    if (priceObj.has("poi")) {
-
-                                        //String URL = Constants.MAIN_URL + "/b2b/" + priceObj.getString("poi");
-                                        agentsBean.setmPoiImage(priceObj.getString("poi"));
-
-                                        // agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
+                                    if (jo.has("latitude")) {
+                                        agentsBean.setmLatitude(jo.getString("latitude"));
                                     }
-                                    if (priceObj.has("poa")) {
-                                        // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
-                                        agentsBean.setmPoaImage(priceObj.getString("poa"));
+                                    if (jo.has("longitude")) {
+                                        agentsBean.setmLongitude(jo.getString("longitude"));
                                     }
-                                }
-                            }
-                        }
-                        if (jo.has("route_id")) {
-                            if (jo.get("route_id") instanceof JSONArray) {
-                                JSONArray agentRouteArray = jo.getJSONArray("route_id");
-                                if (agentRouteArray != null) {
-                                    agentsBean.setmAgentRouteId(agentRouteArray.toString());
-                                }
-                            }else {
-                                agentsBean.setmAgentRouteId(jo.getString("route_id"));
-                            }
-                        }
+                                    if (jo.has("code")) {
+                                        agentsBean.setmAgentCode(jo.getString("code"));
+                                    }
 
-                        agentsBean.setmObAmount("");
-                        agentsBean.setmOrderValue("");
-                        agentsBean.setmTotalAmount("");
-                        agentsBean.setmDueAmount("");
 
-                        if (jo.has("stakeholder_id")) {
-                            agentsBean.setmAgentStakeid(jo.getString("stakeholder_id"));
-                        }
-                        if (jo.has("avatar")) {
-                            agentsBean.setmAgentPic(jo.getString("avatar"));
-                        }
+                                    if (jo.has("email")) {
+                                        agentsBean.setmAgentEmail(jo.getString("email"));
+                                    }
+                                    if (jo.has("password")) {
+                                        agentsBean.setmAgentPassword(jo.getString("password"));
+                                    }
+                                    if (jo.has("reporting_to")) {
+                                        agentsBean.setmAgentReprtingto(jo.getString("reporting_to"));
+                                    }
+                                    if (jo.has("verify_code")) {
+                                        agentsBean.setmAgentVerifycode(jo.getString("verify_code"));
+                                    }
+                                    if (jo.has("status")) {
+                                        agentsBean.setmStatus(jo.getString("status"));
+                                    }
+                                    if (jo.has("delete")) {
+                                        agentsBean.setmAgentDelete(jo.getString("delete"));
+                                    }
+                                    if (jo.has("first_name")) {
+                                        agentsBean.setmFirstname(jo.getString("first_name"));
+                                        //Log.i("dgferkgferf", jo.getString("first_name"));
+                                    }
+                                    if (jo.has("last_name")) {
+                                        agentsBean.setmLastname(jo.getString("last_name"));
+                                        //System.out.println("dgferkgferf IS::: " + jo.getString("last_name"));
+                                    }
+                                    if (jo.has("phone")) {
+                                        agentsBean.setMphoneNO(jo.getString("phone"));
+                                    }
+
+                                    if (jo.has("shopdata")) {
+                                        JSONArray priceJsonArray = jo.getJSONArray("shopdata");
+                                        int length = priceJsonArray.length();
+                                        if (length > 0) {
+                                            for (int s = 0; s < length; s++) {
+                                                JSONObject priceObj = priceJsonArray.getJSONObject(s);
+                                                if (priceObj.has("shop_address")) {
+                                                    // Agent price
+                                                    agentsBean.setMaddress(priceObj.getString("shop_address"));
+
+                                                }
+                                                if (priceObj.has("poi")) {
+
+                                                    //String URL = Constants.MAIN_URL + "/b2b/" + priceObj.getString("poi");
+                                                    agentsBean.setmPoiImage(priceObj.getString("poi"));
+
+                                                    // agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
+                                                }
+                                                if (priceObj.has("poa")) {
+                                                    // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
+                                                    agentsBean.setmPoaImage(priceObj.getString("poa"));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (jo.has("route_id")) {
+                                        if (jo.get("route_id") instanceof JSONArray) {
+                                            JSONArray agentRouteArray = jo.getJSONArray("route_id");
+                                            if (agentRouteArray != null) {
+                                                agentsBean.setmAgentRouteId(agentRouteArray.toString());
+                                            }
+                                        }else {
+                                            agentsBean.setmAgentRouteId(jo.getString("route_id"));
+                                        }
+                                    }
+
+                                    agentsBean.setmObAmount("");
+                                    agentsBean.setmOrderValue("");
+                                    agentsBean.setmTotalAmount("");
+                                    agentsBean.setmDueAmount("");
+
+                                    if (jo.has("stakeholder_id")) {
+                                        agentsBean.setmAgentStakeid(jo.getString("stakeholder_id"));
+                                    }
+                                    if (jo.has("avatar")) {
+                                        agentsBean.setmAgentPic(jo.getString("avatar"));
+                                    }
 //                        if (jo.has("address")) {
 //                            agentsBean.setMaddress(jo.getString("address"));
 //                        }
-                        if (jo.has("created_by")) {
-                            agentsBean.setmAgentCreatedBy(jo.getString("created_by"));
-                        }
-                        if (jo.has("created_on")) {
-                            agentsBean.setmAgentCreatedOn(jo.getString("created_on"));
-                        }
-                        if (jo.has("updated_on")) {
-                            agentsBean.setmAgentUpdatedOn(jo.getString("updated_on"));
-                        }
-                        if (jo.has("updated_by")) {
-                            agentsBean.setmAgentUpdatedBy(jo.getString("updated_by"));
+                                    if (jo.has("created_by")) {
+                                        agentsBean.setmAgentCreatedBy(jo.getString("created_by"));
+                                    }
+                                    if (jo.has("created_on")) {
+                                        agentsBean.setmAgentCreatedOn(jo.getString("created_on"));
+                                    }
+                                    if (jo.has("updated_on")) {
+                                        agentsBean.setmAgentUpdatedOn(jo.getString("updated_on"));
+                                    }
+                                    if (jo.has("updated_by")) {
+                                        agentsBean.setmAgentUpdatedBy(jo.getString("updated_by"));
+                                    }
+
+                                    mAgentsBeansList_MyPrivilege.add(agentsBean);
+
+                                    break;
+                                }
+                            }
+                        }else {
+                            // Privilege not exists, display all users profile
+                            AgentsBean agentsBean = new AgentsBean();
+                            if (jo.has("_id")) {
+                                agentsBean.setmAgentId(jo.getString("_id"));
+                            }
+                            if (jo.has("latitude")) {
+                                agentsBean.setmLatitude(jo.getString("latitude"));
+                            }
+                            if (jo.has("longitude")) {
+                                agentsBean.setmLongitude(jo.getString("longitude"));
+                            }
+                            if (jo.has("code")) {
+                                agentsBean.setmAgentCode(jo.getString("code"));
+                            }
+
+
+                            if (jo.has("email")) {
+                                agentsBean.setmAgentEmail(jo.getString("email"));
+                            }
+                            if (jo.has("password")) {
+                                agentsBean.setmAgentPassword(jo.getString("password"));
+                            }
+                            if (jo.has("reporting_to")) {
+                                agentsBean.setmAgentReprtingto(jo.getString("reporting_to"));
+                            }
+                            if (jo.has("verify_code")) {
+                                agentsBean.setmAgentVerifycode(jo.getString("verify_code"));
+                            }
+                            if (jo.has("status")) {
+                                agentsBean.setmStatus(jo.getString("status"));
+                            }
+                            if (jo.has("delete")) {
+                                agentsBean.setmAgentDelete(jo.getString("delete"));
+                            }
+                            if (jo.has("first_name")) {
+                                agentsBean.setmFirstname(jo.getString("first_name"));
+                                //Log.i("dgferkgferf", jo.getString("first_name"));
+                            }
+                            if (jo.has("last_name")) {
+                                agentsBean.setmLastname(jo.getString("last_name"));
+                                //System.out.println("dgferkgferf IS::: " + jo.getString("last_name"));
+                            }
+                            if (jo.has("phone")) {
+                                agentsBean.setMphoneNO(jo.getString("phone"));
+                            }
+
+                            if (jo.has("shopdata")) {
+                                JSONArray priceJsonArray = jo.getJSONArray("shopdata");
+                                int length = priceJsonArray.length();
+                                if (length > 0) {
+                                    for (int s = 0; s < length; s++) {
+                                        JSONObject priceObj = priceJsonArray.getJSONObject(s);
+                                        if (priceObj.has("shop_address")) {
+                                            // Agent price
+                                            agentsBean.setMaddress(priceObj.getString("shop_address"));
+
+                                        }
+                                        if (priceObj.has("poi")) {
+
+                                            //String URL = Constants.MAIN_URL + "/b2b/" + priceObj.getString("poi");
+                                            agentsBean.setmPoiImage(priceObj.getString("poi"));
+
+                                            // agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
+                                        }
+                                        if (priceObj.has("poa")) {
+                                            // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
+                                            agentsBean.setmPoaImage(priceObj.getString("poa"));
+                                        }
+                                    }
+                                }
+                            }
+                            if (jo.has("route_id")) {
+                                if (jo.get("route_id") instanceof JSONArray) {
+                                    JSONArray agentRouteArray = jo.getJSONArray("route_id");
+                                    if (agentRouteArray != null) {
+                                        agentsBean.setmAgentRouteId(agentRouteArray.toString());
+                                    }
+                                }else {
+                                    agentsBean.setmAgentRouteId(jo.getString("route_id"));
+                                }
+                            }
+
+                            agentsBean.setmObAmount("");
+                            agentsBean.setmOrderValue("");
+                            agentsBean.setmTotalAmount("");
+                            agentsBean.setmDueAmount("");
+
+                            if (jo.has("stakeholder_id")) {
+                                agentsBean.setmAgentStakeid(jo.getString("stakeholder_id"));
+                            }
+                            if (jo.has("avatar")) {
+                                agentsBean.setmAgentPic(jo.getString("avatar"));
+                            }
+//                        if (jo.has("address")) {
+//                            agentsBean.setMaddress(jo.getString("address"));
+//                        }
+                            if (jo.has("created_by")) {
+                                agentsBean.setmAgentCreatedBy(jo.getString("created_by"));
+                            }
+                            if (jo.has("created_on")) {
+                                agentsBean.setmAgentCreatedOn(jo.getString("created_on"));
+                            }
+                            if (jo.has("updated_on")) {
+                                agentsBean.setmAgentUpdatedOn(jo.getString("updated_on"));
+                            }
+                            if (jo.has("updated_by")) {
+                                agentsBean.setmAgentUpdatedBy(jo.getString("updated_by"));
+                            }
+
+                            mAgentsBeansList.add(agentsBean);
                         }
 
-                        mAgentsBeansList.add(agentsBean);
                     }
 //                    synchronized (this) {
 //                        if (mDBHelper.getAgentsTableCount() > 0) {
@@ -316,10 +449,18 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                         if (mDBHelper.getAgentsTableCount() > 0) {
                             mDBHelper.deleteValuesFromAgentsTable();
                         }
-                        mDBHelper.insertAgentDetails(mAgentsBeansList);
+                        if(isMyProfilePrivilege) {
+                            mDBHelper.insertAgentDetails(mAgentsBeansList_MyPrivilege,UserCode);
+                        }else {
+                            mDBHelper.insertAgentDetails(mAgentsBeansList,UserCode);
+                        }
                     }
                     synchronized (this) {
-                        activity.loadAgentsList(mAgentsBeansList);
+                        if(isMyProfilePrivilege) {
+                            activity.loadAgentsList(mAgentsBeansList_MyPrivilege);
+                        }else {
+                            activity.loadAgentsList(mAgentsBeansList);
+                        }
                     }
                 }
             } else {

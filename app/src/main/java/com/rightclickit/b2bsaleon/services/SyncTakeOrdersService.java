@@ -95,7 +95,7 @@ public class SyncTakeOrdersService extends Service {
                 String currentDate = df.format(cal.getTime());
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
                 mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes", mSessionManagement.getString("agentId"));
-                mAgentsBeansList = mDBHelper.fetchAllRecordsFromAgentsTable();
+                mAgentsBeansList = mDBHelper.fetchAllRecordsFromAgentsTable(mSessionManagement.getString("userId"));
                 mProductsBeansList = mDBHelper.fetchAllRecordsFromProductsTable();
                 System.out.println("BEFORE SERVICE:: " + mTakeOrderBeansList.size());
                 // System.out.println("BEFORE SERVICE PRICE:: "+ mTakeOrderBeansList.get(0).getmAgentPrice());
