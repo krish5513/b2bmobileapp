@@ -53,14 +53,14 @@ public class AgentAddPaymentPreview extends AppCompatActivity {
     private ArrayList<SaleOrderDeliveredProducts> deliveredProductsList;
     private ArrayList<SaleOrderReturnedProducts> returnedProductsList;
     private PaymentsBean paymentsDetails = null;
-    private double totalAmount = 0.0;
+   // private double totalAmount = 0.0;
     private TripSheetsPaymentPreviewDeliveredProductsAdapter tripSheetsPaymentPreviewDeliveredProductsAdapter;
     private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
     TextView print;
 
     ArrayList<String[]> selectedList, cratesList;
     SaleOrderDeliveredProducts deliveredProduct;
-
+    String ObAmount="",Ordervalue="",receivedAmount="",Due="",totalAmount ="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,15 +106,6 @@ public class AgentAddPaymentPreview extends AppCompatActivity {
             delivered_products_list_view = (ListView) findViewById(R.id.delivered_products_list_view);
             returned_products_list_view = (ListView) findViewById(R.id.returned_products_list_view);
 
-            mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
-            mAgentId = this.getIntent().getStringExtra("agentId");
-            mAgentCode = this.getIntent().getStringExtra("agentCode");
-            mAgentName = this.getIntent().getStringExtra("agentName");
-            mAgentRouteId = this.getIntent().getStringExtra("agentRouteId");
-            mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
-            mAgentSoId = this.getIntent().getStringExtra("agentSoId");
-            mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
-
             loggedInUserId = mmSharedPreferences.getString("userId");
             loggedInUserName = mmSharedPreferences.getString("loginusername");
             companyName = mmSharedPreferences.getString("companyname");
@@ -122,33 +113,21 @@ public class AgentAddPaymentPreview extends AppCompatActivity {
             routeName = mmSharedPreferences.getString("routename");
             currentDate = Utility.formatTime(System.currentTimeMillis(), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
 
-            saleOrdersDetails = mDBHelper.fetchTripSheetSaleOrderDetails(mTripSheetId, mAgentSoId, mAgentId);
-            deliveredProductsList = mDBHelper.getDeliveredProductsListForSaleOrder(mTripSheetId, mAgentSoId, mAgentId);
-            returnedProductsList = mDBHelper.getReturnsProductsListForSaleOrder(mTripSheetId, mAgentSoId, mAgentId);
-            paymentsDetails = mDBHelper.getSaleOrderPaymentDetails(mTripSheetId, mAgentSoId);
-
-            // Updating UI with fetched values.
             tv_companyName.setText(companyName);
             tv_routecode.setText(routeCode);
             tv_route_name.setText(routeName);
             tv_delivered_user_Name.setText("by " + loggedInUserName);
 
-            if (saleOrdersDetails != null) {
-                if (saleOrdersDetails.getmTripshetSOCode().isEmpty())
-                    tv_sale_order_no.setText("Sale # -");
-                else
-                    tv_sale_order_no.setText(String.format("Sale # %s", saleOrdersDetails.getmTripshetSOCode()));
+            ObAmount=mmSharedPreferences.getString("ObAmount");
+            Ordervalue=mmSharedPreferences.getString("OrderValue");
+            receivedAmount=mmSharedPreferences.getString("ReceivedAmount");
+            Due= mmSharedPreferences.getString("due");
 
-                if (saleOrdersDetails.getmTripshetSODate().isEmpty())
-                    tv_sale_order_date.setText("-");
-                else
-                    tv_sale_order_date.setText(saleOrdersDetails.getmTripshetSODate());
+               opening_balance.setText(ObAmount);
+                sale_order_amount.setText(Ordervalue);
+                received_amount.setText(receivedAmount);
+                closing_balance.setText(Due);
 
-                opening_balance.setText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOOpAmount())));
-                sale_order_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOValue())));
-                received_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOReceivedAmount())));
-                closing_balance.setText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOCBAmount())));
-            }
 
             selectedList = new ArrayList<>(deliveredProductsList.size());
 
@@ -170,7 +149,7 @@ public class AgentAddPaymentPreview extends AppCompatActivity {
 
 
                 tax_total_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())));
-                price_total.setText(Utility.getFormattedCurrency(totalAmount));
+                //price_total.setText(Utility.getFormattedCurrency(totalAmount));
                 sub_total.setText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())));
 
 
@@ -284,7 +263,7 @@ public class AgentAddPaymentPreview extends AppCompatActivity {
                 st = st + 20;
                 canvas.drawText("Total:", 5, st, paint);
                 canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())), 70, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(totalAmount), 170, st, paint);
+               // canvas.drawText(Utility.getFormattedCurrency(totalAmount), 170, st, paint);
                 canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())), 280, st, paint);
                 st = st + 30;
                 canvas.drawText("PAYMENT INFO", 5, st, paint);
@@ -310,10 +289,11 @@ public class AgentAddPaymentPreview extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText("CB", 330, st, paint);
                 st = st + 30;
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOOpAmount())), 5, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOValue())), 120, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOReceivedAmount())), 210, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOCBAmount())), 300, st, paint);
+
+                canvas.drawText((ObAmount), 5, st, paint);
+                canvas.drawText((Ordervalue), 120, st, paint);
+                canvas.drawText((receivedAmount), 210, st, paint);
+                canvas.drawText((Due), 300, st, paint);
                 st = st + 30;
                 canvas.drawText("CRATES", 5, st, paint);
                 st = st + 30;

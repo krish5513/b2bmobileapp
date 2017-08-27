@@ -537,6 +537,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_STOCK_TRIPSHEET_ID + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_PRODUCT_CODE + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_PRODUCT_NAME + " VARCHAR,"
+
             + KEY_TRIPSHEET_STOCK_PRODUCT_ID + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_ORDER_QUANTITY + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_DISPATCH_QUANTITY + " VARCHAR,"
@@ -2778,6 +2779,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripStockBean.setmTripsheetStockProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_PRODUCT_ID)));
                     tripStockBean.setmTripsheetStockProductCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_PRODUCT_CODE)));
                     tripStockBean.setmTripsheetStockProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_PRODUCT_NAME)));
+
                     tripStockBean.setmTripsheetStockProductOrderQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_ORDER_QUANTITY)));
                     tripStockBean.setmTripsheetStockDispatchBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_DISPATCH_BY)));
                     tripStockBean.setmTripsheetStockDispatchDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_DISPATCH_DATE)));
@@ -3389,6 +3391,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripStockBean.setmTripsheetStockProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_PRODUCT_ID)));
                     tripStockBean.setmTripsheetStockProductCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_PRODUCT_CODE)));
                     tripStockBean.setmTripsheetStockProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_PRODUCT_NAME)));
+
                     tripStockBean.setmTripsheetStockProductOrderQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_ORDER_QUANTITY)));
                     tripStockBean.setmTripsheetStockDispatchBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_DISPATCH_BY)));
                     tripStockBean.setmTripsheetStockDispatchDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_DISPATCH_DATE)));
@@ -3488,6 +3491,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     productsBean.setProductOrderedQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_ORDER_QUANTITY))));
                     productsBean.setProductStock(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY))));
                     productsBean.setProductExtraQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_EXTRA_QUANTITY))));
+                    productsBean.setProductReturnableUnit(c.getString(c.getColumnIndex(KEY_PRODUCT_RETURNABLE)));
 
                     deliverysBeanArrayList.add(productsBean);
                 } while (c.moveToNext());

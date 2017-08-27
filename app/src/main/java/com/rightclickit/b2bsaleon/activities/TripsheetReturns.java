@@ -47,7 +47,8 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
     private TripSheetReturnsAdapter mTripSheetReturnsAdapter;
     private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "", loggedInUserId;
     private boolean isReturnsDataSaved = false, isReturnsInEditingMode = false;
-    private ArrayList<DeliverysBean> allProductsListFromStock = new ArrayList<>();
+    private ArrayList<DeliverysBean> allProductsListFromStock , allReturnablesListFromStock = new ArrayList<>();
+
     private Map<String, DeliverysBean> selectedProductsHashMap;
     private Map<String, String> previouslyReturnedProductsHashMap;
     private boolean isTripSheetClosed = false;
@@ -110,7 +111,17 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
 
             allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
 
-            mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, allProductsListFromStock, previouslyReturnedProductsHashMap, deliveredProductsHashMap);
+            allReturnablesListFromStock.clear();
+           for(int i=0;i<allProductsListFromStock.size();i++){
+
+                        if (allProductsListFromStock.get(i).getProductReturnableUnit().equals("Y"));
+                      {
+
+                         allReturnablesListFromStock.addAll(allProductsListFromStock);
+                  }}
+
+
+            mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, allReturnablesListFromStock, previouslyReturnedProductsHashMap, deliveredProductsHashMap);
             tripSheetReturnProductsList.setAdapter(mTripSheetReturnsAdapter);
 
         } catch (Exception e) {

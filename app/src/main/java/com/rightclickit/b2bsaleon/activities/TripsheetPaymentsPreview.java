@@ -199,6 +199,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
             cratesList = new ArrayList<>(returnedProductsList.size());
 
+
             if (returnedProductsList.size() > 0) {
 
                 for (SaleOrderReturnedProducts crates : returnedProductsList) {

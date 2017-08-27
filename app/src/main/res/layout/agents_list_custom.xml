@@ -110,7 +110,7 @@
         android:id="@+id/tv_address2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OB Amt:"
+        android:text="OB:"
         android:textColor="@color/black"
         android:textSize="12sp" />
     <TextView
@@ -130,7 +130,7 @@
         android:id="@+id/tv_address3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Order value:"
+        android:text="O.value:"
         android:textColor="@color/black"
         android:textSize="12sp" />
     <TextView
@@ -156,7 +156,7 @@
         android:id="@+id/tv_address5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Received Amt:"
+        android:text="Rcvd:"
         android:textColor="@color/black"
         android:textSize="12sp" />
     <TextView
@@ -176,7 +176,7 @@
         android:id="@+id/tv_address7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total Due:"
+        android:text="Due:"
         android:textColor="@color/black"
         android:textSize="12sp" />
     <TextView
@@ -209,25 +209,24 @@
         android:id="@+id/btn_info"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="15dp"
         android:background="@drawable/border_btn"
         android:drawableLeft="@drawable/ic_info_black_24dp"
         android:padding="5dp"
         android:text="@string/info_btn"
         android:textColor="@color/colorPrimary"
         android:textSize="10sp" />
-    <Button
-        android:id="@+id/btn_del"
-        android:layout_width="70dp"
-        android:layout_height="25dp"
-        android:layout_marginLeft="10dp"
-        android:background="@drawable/border_red_btn"
-        android:drawableLeft="@drawable/ic_delete_black_24dp"
-        android:padding="5dp"
-        android:text="@string/delete_btn"
-        android:visibility="gone"
-        android:textColor="@color/red"
-        android:textSize="10sp" />
+        <Button
+            android:id="@+id/btnStock"
+            android:layout_width="70dp"
+            android:layout_height="25dp"
+            android:background="@drawable/border_btn"
+            android:drawableLeft="@drawable/ic_remove_red_eye_black_24dp"
+            android:padding="5dp"
+            android:text="Stock"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/colorPrimary"
+            android:textSize="10sp" />
 </LinearLayout>
 </LinearLayout>
 </LinearLayout>

@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.activities.AgentStockActivity;
 import com.rightclickit.b2bsaleon.activities.AgentTDC_Order;
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
@@ -91,6 +92,7 @@ public class AgentsAdapter extends BaseAdapter {
             mHolder.mDueAmount = (TextView) view.findViewById(R.id.tv_address8);
             mHolder.viewbtn = (Button) view.findViewById(R.id.btn_view);
             mHolder.infobtn = (Button) view.findViewById(R.id.btn_info);
+            mHolder.stockbtn=(Button)view.findViewById(R.id.btnStock);
          //   AgentsInfoActivity.avatar=(ImageView) view.findViewById(R.id.shopaddress_image);
             mHolder.mPoiImage=(ImageView) view.findViewById(R.id.poiImage);
             mHolder.mPoaImage=(ImageView) view.findViewById(R.id.poaImage);
@@ -199,6 +201,15 @@ public class AgentsAdapter extends BaseAdapter {
                 activity.finish();
             }
         });
+
+        mHolder.stockbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(activity,AgentStockActivity.class);
+                activity.startActivity(intent);
+                activity.finish();
+            }
+        });
         mHolder.mPicImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -231,6 +242,7 @@ public class AgentsAdapter extends BaseAdapter {
         ImageView mPoaImage;
         public Button viewbtn;
         public Button infobtn;
+        public Button stockbtn;
         LinearLayout mEmptyLayout;
     }
 

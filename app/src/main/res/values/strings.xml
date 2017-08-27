@@ -40,7 +40,7 @@
     <string name="view_btn">View</string>
     <string name="order_btn">Take Order</string>
     <string name="info_btn">Info</string>
-    <string name="delete_btn">Delete</string>
+    <string name="delete_btn">Stock</string>
     <string name="more_btn">More...</string>
 
     <string name="myroutes_btm">Trips</string>

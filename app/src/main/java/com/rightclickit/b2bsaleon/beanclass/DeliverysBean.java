@@ -10,6 +10,16 @@ public class DeliverysBean implements Serializable {
     private String productId;
     private String productCode;
     private String productTitle;
+
+    public String getProductReturnableUnit() {
+        return productReturnableUnit;
+    }
+
+    public void setProductReturnableUnit(String productReturnableUnit) {
+        this.productReturnableUnit = productReturnableUnit;
+    }
+
+    private String productReturnableUnit;
     private String productAgentPrice;
     private String productConsumerPrice;
     private String productRetailerPrice;

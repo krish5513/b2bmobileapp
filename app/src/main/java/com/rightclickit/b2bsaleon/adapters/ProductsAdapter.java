@@ -105,7 +105,7 @@ public class ProductsAdapter extends BaseAdapter {
             holder.materialConsumerUnit = (TextView) convertView.findViewById(R.id.materialSPUnit);
             holder.materialConsumerUnit.setVisibility(View.GONE);
 
-            holder.materialReturnable = (TextView) convertView.findViewById(R.id.material_Returnable);
+
             holder.productImage = (ImageView) convertView.findViewById(R.id.materialImage);
             holder.downarrowImage = (ImageView) convertView.findViewById(R.id.img);
             holder.viewbtn = (Button) convertView.findViewById(R.id.btnView);

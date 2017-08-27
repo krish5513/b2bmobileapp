@@ -41,6 +41,7 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
     private Map<String, String> deliveredProductsHashMap;
     private boolean isReturnsInEditingMode = false;
     private final String zero_cost = "0.000";
+     DeliverysBean currentDeliveryBean;
 
     public TripSheetReturnsAdapter(Context ctxt, TripsheetReturns returnsActivity, TripSheetReturnsListener tripSheetReturnsListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyProducts, Map<String, String> productsDeliveryDetails) {
         this.ctxt = ctxt;
@@ -110,23 +111,24 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
         tripSheetReturnsViewHolder.deliveredQuantity.setClickable(true);
 
         final TripSheetReturnsViewHolder currentTripSheetReturnsViewHolder = tripSheetReturnsViewHolder;
+     /* if(filteredProductsList.get(position).getProductReturnableUnit().equals("Y"))
+       {*/
+          currentDeliveryBean = getItem(position);
 
-        final DeliverysBean currentDeliveryBean = getItem(position);
+         tripSheetReturnsViewHolder.productName.setText(String.format("%s", currentDeliveryBean.getProductTitle()));
 
-        tripSheetReturnsViewHolder.productName.setText(String.format("%s", currentDeliveryBean.getProductTitle()));
+         if (deliveredProductsHashMap.containsKey(currentDeliveryBean.getProductId())) {
+             tripSheetReturnsViewHolder.deliveredQuantity.setText(deliveredProductsHashMap.get(currentDeliveryBean.getProductId()));
+             currentDeliveryBean.setDeliveredQuantity(Double.parseDouble(deliveredProductsHashMap.get(currentDeliveryBean.getProductId())));
+         } else {
+             tripSheetReturnsViewHolder.deliveredQuantity.setText(zero_cost);
+             currentDeliveryBean.setDeliveredQuantity(0);
+         }
 
-        if (deliveredProductsHashMap.containsKey(currentDeliveryBean.getProductId())) {
-            tripSheetReturnsViewHolder.deliveredQuantity.setText(deliveredProductsHashMap.get(currentDeliveryBean.getProductId()));
-            currentDeliveryBean.setDeliveredQuantity(Double.parseDouble(deliveredProductsHashMap.get(currentDeliveryBean.getProductId())));
-        } else {
-            tripSheetReturnsViewHolder.deliveredQuantity.setText(zero_cost);
-            currentDeliveryBean.setDeliveredQuantity(0);
-        }
-
-        if (previouslyReturnedProductsHashMap.containsKey(currentDeliveryBean.getProductId()))
-            tripSheetReturnsViewHolder.product_quantity.setText(previouslyReturnedProductsHashMap.get(currentDeliveryBean.getProductId()));
-        else
-            tripSheetReturnsViewHolder.product_quantity.setText(zero_cost);
+         if (previouslyReturnedProductsHashMap.containsKey(currentDeliveryBean.getProductId()))
+             tripSheetReturnsViewHolder.product_quantity.setText(previouslyReturnedProductsHashMap.get(currentDeliveryBean.getProductId()));
+         else
+             tripSheetReturnsViewHolder.product_quantity.setText(zero_cost);
 
         tripSheetReturnsViewHolder.product_quantity_decrement.setOnClickListener(new View.OnClickListener() {
             @Override
