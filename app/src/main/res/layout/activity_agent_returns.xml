@@ -29,14 +29,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Delivered"
+                    android:gravity="center"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/tv_address"
+                    android:id="@+id/tv_rDeliverd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="50 ltrs"
+                    android:gravity="center"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
@@ -53,19 +55,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Returned"
-                    android:layout_gravity="left"
-                    android:gravity="left"
+                    android:gravity="center"
+
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/tv_address"
+                    android:id="@+id/tv_returned"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="50 items"
-                    android:layout_gravity="left"
-                    android:gravity="left"
-                    android:paddingRight="20dp"
+                    android:gravity="center"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
@@ -81,17 +81,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Pending"
+                    android:gravity="center"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/tv_address"
+                    android:id="@+id/tv_rpending"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="5 items"
                     android:layout_marginTop="5dp"
-                    android:layout_gravity="left"
-                    android:gravity="left"
+                    android:gravity="center"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
             </LinearLayout>

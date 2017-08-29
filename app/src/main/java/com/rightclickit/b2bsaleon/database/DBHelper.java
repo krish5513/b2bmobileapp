@@ -4468,6 +4468,51 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return receivedAmount;
     }
+    public ArrayList<String> getDeliverynumber(String agentId,String type ) {
+        ArrayList<String> deliverynumber=new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT  *  FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + agentId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                deliverynumber.add((cursor.getString(cursor.getColumnIndex(type))));
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return deliverynumber;
+    }
+
+    public ArrayList<String> getReturnnumber(String agentId,String type ) {
+        ArrayList<String> returnnumber=new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT  *  FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + agentId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                returnnumber.add((cursor.getString(cursor.getColumnIndex(type))));
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return returnnumber;
+    }
     /*public double getReceivedAmountDetails(String agentId){
 
         double receivedAmount = 0;

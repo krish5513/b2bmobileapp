@@ -30,17 +30,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Deliveries"
-                    android:layout_gravity="left"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/tv_address"
+                    android:id="@+id/tv_totalDeliveries"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="48"
-                    android:layout_gravity="left"
-                    android:gravity="left"
+
+                    android:gravity="center"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
@@ -57,17 +58,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Value"
+                    android:gravity="center"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/tv_address"
+                    android:id="@+id/tv_value"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Rs.4,800.00"
                     android:layout_marginTop="5dp"
-                    android:layout_gravity="left"
-                    android:gravity="left"
+
+                    android:gravity="center"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -84,14 +86,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Pending"
+                    android:gravity="center"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/tv_address"
+                    android:id="@+id/tv_pendingvalue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Rs.200"
+                    android:gravity="center"
                     android:layout_marginTop="5dp"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />

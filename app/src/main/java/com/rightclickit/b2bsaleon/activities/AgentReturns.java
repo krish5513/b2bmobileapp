@@ -25,6 +25,8 @@ import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
 
+import static com.rightclickit.b2bsaleon.R.id.tv_deliveries;
+
 public class AgentReturns extends AppCompatActivity {
     LinearLayout sales;
     LinearLayout returns;
@@ -38,6 +40,7 @@ public class AgentReturns extends AppCompatActivity {
     AgentReturnsAdapter returnsAdapter;
     ListView deliveriesList;
     private SearchView search;
+    TextView rDelivered,r_returned,r_pending;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,9 @@ public class AgentReturns extends AppCompatActivity {
         orders.setVisibility(View.GONE);
 
 
+        rDelivered=(TextView)findViewById((R.id.tv_rDeliverd));
+        r_returned=(TextView)findViewById(R.id.tv_returned);
+        r_pending=(TextView)findViewById(R.id.tv_rpending);
 
         deliveriesList=(ListView)findViewById(R.id.ordered_products_list_view) ;
         mDBHelper = new DBHelper(AgentReturns.this);
@@ -67,7 +73,10 @@ public class AgentReturns extends AppCompatActivity {
         agentId = mPreferences.getString("agentId");
 
 
-
+        ArrayList<String> deliveriess = mDBHelper.getReturnnumber(agentId, "tripsheet_returns_return_number");
+        if(deliveriess.size()>0) {
+            r_returned.setText(Integer.toString(deliveriess.size()));
+        }
 
 
         ArrayList<AgentReturnsBean> unUploadedDeliveries = mDBHelper.getreturnsDetails(agentId);

@@ -25,6 +25,7 @@ import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,12 @@ public class AgentDeliveries extends AppCompatActivity {
     AgentDeliveriesAdapter deliveriesAdapter;
     ListView deliveriesList;
     private SearchView search;
-
+    TextView tv_deliveries,tv_deliveriesValue,tv_pendingvalue;
+    ArrayList<String> deliveriess=new ArrayList<>();
+    String d_no;
+    private double totalAmount=0 ;
+    private double totalTaxAmount =0;
+    private double subTotal=0 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,10 @@ public class AgentDeliveries extends AppCompatActivity {
         orders = (LinearLayout) findViewById(R.id.linear_orders);
         orders.setVisibility(View.GONE);
 
+        tv_deliveries=(TextView)findViewById(R.id.tv_totalDeliveries);
+        tv_deliveriesValue=(TextView)findViewById(R.id.tv_value);
+        tv_pendingvalue=(TextView)findViewById(R.id.tv_pendingvalue);
+
 
         deliveriesList=(ListView)findViewById(R.id.ordered_products_list_view) ;
         mDBHelper = new DBHelper(AgentDeliveries.this);
@@ -90,9 +100,25 @@ public class AgentDeliveries extends AppCompatActivity {
 
 
 
+        deliveriess=mDBHelper.getDeliverynumber(agentId,"tripsheet_delivery_number");
+        if(deliveriess.size()>0) {
+            tv_deliveries.setText(Integer.toString(deliveriess.size()));
+        }
+
 
         ArrayList<AgentDeliveriesBean> unUploadedDeliveries = mDBHelper.getdeliveryDetails(agentId);
+        for (int i=0;i<unUploadedDeliveries.size();i++){
+             d_no=unUploadedDeliveries.get(i).getTripNo();
+        }
+        ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(d_no);
+        for (int i=0;i<arList.size();i++) {
+            String[] temp = arList.get(i);
 
+            totalAmount = totalAmount + Double.parseDouble(temp[3]);
+            totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
+            subTotal = totalAmount + totalTaxAmount;
+            tv_deliveriesValue.setText(Utility.getFormattedCurrency((subTotal)));
+        }
         if(unUploadedDeliveries.size()>0){
             loadDeliveries(unUploadedDeliveries);
         }

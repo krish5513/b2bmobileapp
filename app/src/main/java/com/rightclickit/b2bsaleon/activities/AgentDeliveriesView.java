@@ -260,6 +260,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
             @Override
             public void run() {
                 totalprice.setText(Utility.getFormattedCurrency(subTotal));
+                sharedPreferences.putString("total", String.valueOf(subTotal));
                 tv_amount.setText(Utility.getFormattedCurrency(totalAmount));
                 taxprice.setText(Utility.getFormattedCurrency(totalTaxAmount));
             }
