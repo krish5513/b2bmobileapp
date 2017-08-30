@@ -206,6 +206,7 @@ public class AgentsAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(activity,AgentStockActivity.class);
+                intent.putExtra("agentId",mAgentsBeansList1.get(position).getmAgentId());
                 activity.startActivity(intent);
                 activity.finish();
             }
