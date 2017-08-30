@@ -9,7 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.activities.AgentStockActivity;
 import com.rightclickit.b2bsaleon.activities.TripsheetStockPreview;
+import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetStockListener;
@@ -37,7 +39,7 @@ public class AgentStockAdapter extends BaseAdapter{
 
 
 
-    public AgentStockAdapter(Context ctxt) {
+    public AgentStockAdapter(AgentStockActivity agentStockActivity, Context ctxt, ArrayList<AgentsStockBean> mAgentsBeansList) {
         this.ctxt = ctxt;
 
         this.mInflater = LayoutInflater.from(activity);

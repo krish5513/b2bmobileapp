@@ -10,7 +10,10 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.AgentStockAdapter;
+import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
+import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentsStockModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -23,6 +26,7 @@ public class AgentStockActivity extends AppCompatActivity {
     private MMSharedPreferences sharedPreferences;
     private AgentsStockModel mAgentStockModel;
     private ListView mStockList;
+    private AgentStockAdapter mStockAdapter;
     private Context activityContext;
     private String mAgentId = "";
 
@@ -48,37 +52,30 @@ public class AgentStockActivity extends AppCompatActivity {
 
         this.activityContext = AgentStockActivity.this;
 
-        this.mAgentStockModel = new AgentsStockModel(activityContext,AgentStockActivity.this);
+        this.mAgentStockModel = new AgentsStockModel(activityContext, AgentStockActivity.this);
 
         mDBHelper = new DBHelper(AgentStockActivity.this);
         sharedPreferences = new MMSharedPreferences(AgentStockActivity.this);
 
         if (new NetworkConnectionDetector(AgentStockActivity.this).isNetworkConnected()) {
             mAgentStockModel.getAgentsStock(mAgentId);
-//            if (mDBHelper.getAgentsTableCount() > 0) {
-//                ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
-//                System.out.println("F:::: "+ agentsBeanArrayList.size());
-//                if (agentsBeanArrayList.size() > 0) {
-//                    mNoDataText.setText("");
-//                    loadAgentsList(agentsBeanArrayList);
-//                } else {
-//                    agentsModel.getAgentsList("agents");
-//                }
-//
-//            } else {
-//                agentsModel.getAgentsList("agents");
-//            }
         } else {
-            // System.out.println("ELSE::: ");
-//            ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
-//            System.out.println("F12333222222222 :::: "+ agentsBeanArrayList.size());
-//            if (agentsBeanArrayList.size() > 0) {
-//                mNoDataText.setText("");
-//                loadAgentsList(agentsBeanArrayList);
-//            } else {
-//                mNoDataText.setText("No Agents found.");
-//            }
+            if (mDBHelper.getAgentsStockTableCount() > 0) {
+                loadAgentsStockList();
+            } else {
+                // No stock available
+            }
+        }
+    }
 
+    public void loadAgentsStockList() {
+        ArrayList<AgentsStockBean> stockBeanArrayList = mDBHelper.fetchAllStockByAgentId(mAgentId);
+        if (mStockAdapter != null) {
+            mStockAdapter = null;
+        }
+        if (stockBeanArrayList.size() > 0) {
+            mStockAdapter = new AgentStockAdapter(this, AgentStockActivity.this, stockBeanArrayList);
+            mStockList.setAdapter(mStockAdapter);
         }
     }
 
@@ -88,6 +85,7 @@ public class AgentStockActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -113,11 +111,12 @@ public class AgentStockActivity extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
+        menu.findItem(R.id.Add).setVisible(false);
 
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

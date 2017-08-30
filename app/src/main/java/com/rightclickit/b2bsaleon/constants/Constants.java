@@ -87,7 +87,10 @@ public class Constants {
     public static final String SYNC_NOTIFICATIONS_PORT = ":3010";
 
     //Production
-    public static final String MAIN_URL = "http://111.93.17.12";
+    public static final String MAIN_URL = "http://111.93.17.13";
+
+    //Production for Agent stock
+    public static final String MAIN_URL_STOCK = "http://111.93.17.12";
 
     //Development
     //public static final String MAIN_URL = "http://52.10.51.54";
@@ -149,4 +152,7 @@ public class Constants {
 
     // Tripsheets Returns URL
     public static final String TRIPSHEETS_RETURNS_URL = "/return_orders/add";
+
+    // Agents Stock URL
+    public static final String AGENTS_STOCK_URL = "/customer/stock";
 }

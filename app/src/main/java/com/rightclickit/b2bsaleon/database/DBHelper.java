@@ -12,6 +12,7 @@ import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentPaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentReturnsBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
+import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
 import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
@@ -114,6 +115,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // This table contains notifications list
     private final String TABLE_NOTIFICATION_LIST = "notification_list";
+
+    // This table contains agents stock list
+    private final String TABLE_AGENTS_STOCK_LIST = "agentd_stock_list";
 
 
     // Column names for User Table
@@ -417,6 +421,17 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_NOTIFICATIONS_NAME = "notification_name";
     private final String KEY_NOTIFICATIONS_DESCRIPTION = "notification_description";
 
+    // Column names for Agent Stock  Table
+    private final String KEY_AGENT_STOCK_UNIQUE_ID = "agent_stock_unique_id";
+    private final String KEY_AGENT_STOCK_AGENT_ID = "agent_stock_agent_id";
+    private final String KEY_AGENT_STOCK_PRODUCT_NAME = "agent_stock_product_name";
+    private final String KEY_AGENT_STOCK_PRODUCT_CODE = "agent_stock_product_code";
+    private final String KEY_AGENT_STOCK_PRODUCT_ID = "agent_stock_product_id";
+    private final String KEY_AGENT_STOCK_PRODUCT_UOM = "agent_stock_product_uom";
+    private final String KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY = "agent_stock_product_stock_qunatity";
+    private final String KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY = "agent_stock_product_delivery_qunatity";
+    private final String KEY_AGENT_STOCK_PRODUCT_CNQUANTITY = "agent_stock_product_cb_qunatity";
+
     // Agents Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_AGENTS + "(" + KEY_AGENT_ID + " VARCHAR,"
@@ -431,7 +446,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_AGENT_STAKEHOLDERID + " VARCHAR," + KEY_AGENT_REPORTINGTO + " VARCHAR," + KEY_AGENT_VERIFYCODE + " VARCHAR,"
             + KEY_AGENT_DELETE + " VARCHAR," + KEY_AGENT_CREATEDBY + " VARCHAR," + KEY_AGENT_CREATEDON + " VARCHAR,"
             + KEY_AGENT_UPDATEDBY + " VARCHAR," + KEY_AGENT_UPDATEDON + " VARCHAR," + KEY_AGENT_ROUTECODE + " VARCHAR," + KEY_AGENT_DEVICESYNC + " VARCHAR,"
-            + KEY_AGENT_ACCESSDEVICE + " VARCHAR,"  + KEY_AGENT_BACKUP + " VARCHAR," + KEY_AGENT_LOGIN_USER_ID + " VARCHAR)";
+            + KEY_AGENT_ACCESSDEVICE + " VARCHAR," + KEY_AGENT_BACKUP + " VARCHAR," + KEY_AGENT_LOGIN_USER_ID + " VARCHAR)";
 
 
     // Userdetails Table Create Statements
@@ -663,6 +678,18 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_NOTIFICATIONS_NAME + " VARCHAR,"
             + KEY_NOTIFICATIONS_DESCRIPTION + " VARCHAR)";
 
+    // Agent Stock Table Create Statements
+    private final String CREATE_AGENT_STOCK_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_AGENTS_STOCK_LIST + "(" + KEY_AGENT_STOCK_UNIQUE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_AGENT_STOCK_AGENT_ID + " VARCHAR,"
+            + KEY_AGENT_STOCK_PRODUCT_NAME + " VARCHAR,"
+            + KEY_AGENT_STOCK_PRODUCT_CODE + " VARCHAR,"
+            + KEY_AGENT_STOCK_PRODUCT_ID + " VARCHAR,"
+            + KEY_AGENT_STOCK_PRODUCT_UOM + " VARCHAR,"
+            + KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY + " VARCHAR,"
+            + KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY + " VARCHAR,"
+            + KEY_AGENT_STOCK_PRODUCT_CNQUANTITY + " VARCHAR)";
+
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -690,6 +717,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TRIPSHEETS_RETURNS_LIST_TABLE);
             db.execSQL(CREATE_TRIPSHEETS_PAYMENTS_LIST_TABLE);
             db.execSQL(CREATE_NOTIFICATIONS_LIST_TABLE);
+            db.execSQL(CREATE_AGENT_STOCK_LIST_TABLE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -752,7 +780,7 @@ public class DBHelper extends SQLiteOpenHelper {
      *
      * @param mAgentsBeansList
      */
-    public void insertAgentDetails(ArrayList<AgentsBean> mAgentsBeansList,String userId) {
+    public void insertAgentDetails(ArrayList<AgentsBean> mAgentsBeansList, String userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             for (int i = 0; i < mAgentsBeansList.size(); i++) {
@@ -1492,7 +1520,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void insertProductDetails(ArrayList<ProductsBean> mProductsBeansList) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            long effectedRows=0;
+            long effectedRows = 0;
             for (int i = 0; i < mProductsBeansList.size(); i++) {
                 ContentValues values = new ContentValues();
                 values.put(KEY_PRODUCT_ID, mProductsBeansList.get(i).getProductId());
@@ -1510,12 +1538,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_PRODUCT_VAT_PRICE, mProductsBeansList.get(i).getProductvat());
 
                 int productExists = checkProductIsExistsOrNot(mProductsBeansList.get(i).getProductId());
-                if(productExists == 0) {
+                if (productExists == 0) {
                     // Insert row
                     effectedRows = db.insert(TABLE_PRODUCTS, null, values);
-                }else {
+                } else {
                     // Update row
-                    effectedRows = db.update(TABLE_PRODUCTS, values, KEY_PRODUCT_ID + " = ?" ,
+                    effectedRows = db.update(TABLE_PRODUCTS, values, KEY_PRODUCT_ID + " = ?",
                             new String[]{String.valueOf(mProductsBeansList.get(i).getProductId())});
                 }
                 values.clear();
@@ -4400,7 +4428,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return username;
     }
-    public String getProductName(String productId,String type ) {
+
+    public String getProductName(String productId, String type) {
         String productname = "";
 
         try {
@@ -4423,8 +4452,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return productname;
     }
 
-    public double getSoDetails(String agentId, String type ) {
-        double obamount =0;
+    public double getSoDetails(String agentId, String type) {
+        double obamount = 0;
 
         try {
             String selectQuery = "SELECT  *  FROM " + TABLE_TRIPSHEETS_SO_LIST + " WHERE " + KEY_TRIPSHEET_SO_AGENTID + " = '" + agentId + "'";
@@ -4446,7 +4475,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return obamount;
     }
 
-    public double getReceivedAmountDetails(String agentId,String type ) {
+    public double getReceivedAmountDetails(String agentId, String type) {
         double receivedAmount = 0;
 
         try {
@@ -4468,8 +4497,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return receivedAmount;
     }
-    public ArrayList<String> getDeliverynumber(String agentId,String type ) {
-        ArrayList<String> deliverynumber=new ArrayList<>();
+
+    public ArrayList<String> getDeliverynumber(String agentId, String type) {
+        ArrayList<String> deliverynumber = new ArrayList<>();
 
         try {
             String selectQuery = "SELECT  *  FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + agentId + "'";
@@ -4491,8 +4521,8 @@ public class DBHelper extends SQLiteOpenHelper {
         return deliverynumber;
     }
 
-    public ArrayList<String> getReturnnumber(String agentId,String type ) {
-        ArrayList<String> returnnumber=new ArrayList<>();
+    public ArrayList<String> getReturnnumber(String agentId, String type) {
+        ArrayList<String> returnnumber = new ArrayList<>();
 
         try {
             String selectQuery = "SELECT  *  FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + agentId + "'";
@@ -4602,13 +4632,13 @@ public class DBHelper extends SQLiteOpenHelper {
             // boolean rerun=true;
             if (c.moveToFirst()) {
                 do {
-                    String[] temp=new String[5];
-                    temp[0]=getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)),KEY_PRODUCT_TITLE);
-                    temp[1]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_QUANTITY));
-                    temp[2]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UNITPRICE));
-                    temp[3]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_AMOUNT));
-                    temp[4]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT));
-                       arList.add(temp);
+                    String[] temp = new String[5];
+                    temp[0] = getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)), KEY_PRODUCT_TITLE);
+                    temp[1] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_QUANTITY));
+                    temp[2] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UNITPRICE));
+                    temp[3] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_AMOUNT));
+                    temp[4] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT));
+                    arList.add(temp);
 
 
                 } while (c.moveToNext());
@@ -4691,10 +4721,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
-            HashMap<String,String> records=new HashMap<>();
+            HashMap<String, String> records = new HashMap<>();
             if (c.moveToFirst()) {
                 do {
-                    records.put(c.getString(c.getColumnIndex("Tripsheet_Return_Number")),c.getString(c.getColumnIndex("Total_COUNT")));
+                    records.put(c.getString(c.getColumnIndex("Tripsheet_Return_Number")), c.getString(c.getColumnIndex("Total_COUNT")));
 //                    AgentDeliveriesBean returndeliveriesBean = new AgentDeliveriesBean();
 //                    returndeliveriesBean.setTripNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NUMBER)));
 //                    returndeliveriesBean.setTripDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
@@ -4704,15 +4734,15 @@ public class DBHelper extends SQLiteOpenHelper {
 //                    deliveriesBean.add(returndeliveriesBean);
                 } while (c.moveToNext());
             }
-            for(Map.Entry<String, String> entry : records.entrySet()) {
+            for (Map.Entry<String, String> entry : records.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
                 selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + key + "'";
                 c = db.rawQuery(selectQuery, null);
-                boolean rerun=true;
+                boolean rerun = true;
                 if (c.moveToFirst()) {
                     do {
-                        if(rerun) {
+                        if (rerun) {
                             AgentReturnsBean returnsBean = new AgentReturnsBean();
                             returnsBean.setReturnNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER)));
                             returnsBean.setReturnDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_ON)));
@@ -4720,7 +4750,7 @@ public class DBHelper extends SQLiteOpenHelper {
                             returnsBean.setReturnedItems(value);
                             returnsBean.setReturnedBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_BY)));
                             agentsreturnsBean.add(returnsBean);
-                            rerun =false;
+                            rerun = false;
                         }
                     } while (c.moveToNext());
                 }
@@ -4735,23 +4765,24 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return agentsreturnsBean;
     }
+
     public ArrayList<String[]> getreturnDetailsPreview(String userId) {
 
-        ArrayList<String[]> arList=null ;
+        ArrayList<String[]> arList = null;
         try {
             String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + userId + "'";
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
-            arList=new ArrayList<>(c.getCount());
+            arList = new ArrayList<>(c.getCount());
             // c = db.rawQuery(selectQuery, null);
             // boolean rerun=true;
             if (c.moveToFirst()) {
                 do {
-                    String[] temp=new String[4];
-                    temp[0]=getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)),KEY_PRODUCT_TITLE);
-                    temp[1]=getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)),KEY_PRODUCT_UOM);
-                    temp[2]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY));
-                    temp[3]=c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TYPE));
+                    String[] temp = new String[4];
+                    temp[0] = getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)), KEY_PRODUCT_TITLE);
+                    temp[1] = getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)), KEY_PRODUCT_UOM);
+                    temp[2] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY));
+                    temp[3] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TYPE));
 
                     arList.add(temp);
 
@@ -4783,7 +4814,7 @@ public class DBHelper extends SQLiteOpenHelper {
             if (c.moveToFirst()) {
                 do {
                     records.put(c.getString(c.getColumnIndex("Tripsheet_Payments_Number")), c.getString(c.getColumnIndex("Total_COUNT")));
-               } while (c.moveToNext());
+                } while (c.moveToNext());
             }
             for (Map.Entry<String, String> entry : records.entrySet()) {
                 String key = entry.getKey();
@@ -4822,6 +4853,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * This method is used to check the product exists or not.
+     *
      * @param productId
      * @return
      */
@@ -4839,4 +4871,129 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return maxID;
     }
+
+    /**
+     * Method to get count of the agents stock table
+     */
+    public int getAgentsStockTableCount() {
+        int noOfEvents = 0;
+        try {
+            String countQuery = "SELECT * FROM " + TABLE_AGENTS_STOCK_LIST;
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfEvents = cursor.getCount();
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return noOfEvents;
+    }
+
+    /**
+     * Method to insert the tripsheets list.
+     *
+     * @param mStockList
+     * @param agentId
+     */
+    public void insertAgentsStockListData(ArrayList<AgentsStockBean> mStockList, String agentId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0; i < mStockList.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_AGENT_STOCK_AGENT_ID, agentId);
+                values.put(KEY_AGENT_STOCK_PRODUCT_NAME, mStockList.get(i).getmProductName());
+                values.put(KEY_AGENT_STOCK_PRODUCT_CODE, mStockList.get(i).getmProductCode());
+                values.put(KEY_AGENT_STOCK_PRODUCT_ID, mStockList.get(i).getmProductId());
+                values.put(KEY_AGENT_STOCK_PRODUCT_UOM, mStockList.get(i).getmProductUOM());
+                values.put(KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY, mStockList.get(i).getmProductStockQunatity());
+                values.put(KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY, mStockList.get(i).getmProductDeliveryQunatity());
+                values.put(KEY_AGENT_STOCK_PRODUCT_CNQUANTITY, mStockList.get(i).getmProductCBQuantity());
+
+
+                int checkVal = checkTripsheetExistsOrNot(mStockList.get(i).getmProductId());
+                if (checkVal == 0) {
+                    System.out.println("+++++++++++++++++++++++++ STOCK INSERTED++++++++++++++++++++++");
+                    db.insert(TABLE_AGENTS_STOCK_LIST, null, values);
+                } else {
+                    System.out.println("+++++++++++++++++++++++++ STOCK UPDATED++++++++++++++++++++++");
+                    db.update(TABLE_AGENTS_STOCK_LIST, values, KEY_AGENT_STOCK_AGENT_ID + " = ?" + " AND " + KEY_AGENT_STOCK_PRODUCT_ID + " = ?", new String[]{String.valueOf(agentId), String.valueOf(mStockList.get(i).getmProductId())});
+                }
+
+                values.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    /**
+     * Method to check weather the Agent Stock exists or not using product id and agentid.
+     *
+     * @param productId
+     * @param agentId
+     * @return integer value
+     */
+    public int checkAgentStockExistsOrNot(String productId, String agentId) {
+        int maxID = 0;
+
+        String selectQuery = "SELECT  * FROM " + TABLE_AGENTS_STOCK_LIST + " WHERE " + KEY_AGENT_STOCK_AGENT_ID + "='" + agentId + "'"
+                + " AND " + KEY_AGENT_STOCK_PRODUCT_ID + "='" + productId + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //System.out.println("DDDD::: "+ cursor.getCount());
+        if (cursor.moveToFirst()) {
+            do {
+                maxID = cursor.getInt(0);
+
+            } while (cursor.moveToNext());
+        }
+        //System.out.println("FGGHH::: "+maxID);
+        return maxID;
+    }
+
+    /**
+     * Method to get all stock list by agentid
+     *
+     * @param agentId
+     * @return
+     */
+    public ArrayList<AgentsStockBean> fetchAllStockByAgentId(String agentId) {
+        ArrayList<AgentsStockBean> stockList = new ArrayList<AgentsStockBean>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_AGENTS_STOCK_LIST + " WHERE " + KEY_AGENT_STOCK_AGENT_ID + " = '" + agentId + "'";
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    AgentsStockBean agentsStockBean = new AgentsStockBean();
+
+                    agentsStockBean.setmProductId(cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_ID)));
+                    agentsStockBean.setmProductName(cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_NAME)));
+                    agentsStockBean.setmProductCode(cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_CODE)));
+                    agentsStockBean.setmProductUOM(cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_UOM)));
+                    agentsStockBean.setmProductStockQunatity(cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY)));
+                    agentsStockBean.setmProductDeliveryQunatity(cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY)));
+                    agentsStockBean.setmProductCBQuantity(cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_CNQUANTITY)));
+
+                    stockList.add(agentsStockBean);
+                } while (cursor.moveToNext());
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return stockList;
+    }
+
 }
