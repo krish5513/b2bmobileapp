@@ -48,7 +48,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
     public static LinearLayout mPaymentsLayout;
 
     public static FloatingActionButton fab;
-    private SearchView search;
+    public static SearchView search;
 
     private ArrayList<ProductsBean> productsList;
 
@@ -88,8 +88,8 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
 
         mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("no", mPreference.getString("agentId"));
         productsList = mDBHelper.fetchAllRecordsFromProductsTableForTakeOrders(mPreference.getString("agentId"));
-        System.out.println("The TO LIST IS::: " + productsList.size());
-        System.out.println("The TO LIST 111 IS::: " + mTakeOrderBeansList.size());
+        //System.out.println("The TO LIST IS::: " + productsList.size());
+        //System.out.println("The TO LIST 111 IS::: " + mTakeOrderBeansList.size());
 //        for (int k = 0; k<productsList.size();k++){
 //            System.out.println("AAAA FROM:: "+mTakeOrderBeansList.get(k).getmProductFromDate());
 //            System.out.println("BBBBB QUA:: "+mTakeOrderBeansList.get(k).getmProductQuantity());
@@ -196,10 +196,10 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
         fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_eye_white_24dp));
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreference.getString("Customers"));
-        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        // System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
         for (int z = 0; z < privilegeActionsData.size(); z++) {
 
-            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+            //System.out.println("Name::: " + privilegeActionsData.get(z).toString());
             if (privilegeActionsData.get(z).toString().equals("Orders_List")) {
                 mTDCorderLayout.setVisibility(View.VISIBLE);
             } else if (privilegeActionsData.get(z).toString().equals("Delivery_List")) {

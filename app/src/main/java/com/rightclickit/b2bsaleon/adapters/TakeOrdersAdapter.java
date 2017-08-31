@@ -387,30 +387,37 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                         quantityList.size() == 0) {
                     showAlertDialogTakeorder(activity, "Alert!", "No orders placed.");
                 } else {
-                    String productId = "", productFD = "", productTD = "", productOrType = "", productQua = "", productTitle = "";
-                    if (temptoList.size() > 0) {
-                        temptoList.clear();
+                    synchronized (this) {
+                        AgentTakeOrderScreen.search.setQuery("", false);
+                        AgentTakeOrderScreen.search.clearFocus();
+                        AgentTakeOrderScreen.search.onActionViewCollapsed();
                     }
-                    for (int k = 0; k < mTakeOrderBeansList1.size(); k++) {
-                        TakeOrderBean tb = new TakeOrderBean();
+                    synchronized (this) {
+                        String productId = "", productFD = "", productTD = "", productOrType = "", productQua = "", productTitle = "";
+                        if (temptoList.size() > 0) {
+                            temptoList.clear();
+                        }
+                        for (int k = 0; k < mTakeOrderBeansList1.size(); k++) {
+                            TakeOrderBean tb = new TakeOrderBean();
 
-                        if (mProductIdsList.get(mTakeOrderBeansList1.get(k).getProductId()) != null) {
-                            tb.setmProductId(mTakeOrderBeansList1.get(k).getProductId());
-                            tb.setmRouteId(mPreferences.getString("agentrouteId"));
-                            tb.setmProductTitle(mTakeOrderBeansList1.get(k).getProductTitle());
-                            tb.setmProductToDate(toDatesList.get(mTakeOrderBeansList1.get(k).getProductId()));
-                            tb.setmProductFromDate(fromDatesList.get(mTakeOrderBeansList1.get(k).getProductId()));
-                            tb.setmProductQuantity(quantityList.get(mTakeOrderBeansList1.get(k).getProductId()));
-                            tb.setmProductStatus("1");
-                            tb.setmEnquiryId(mPreferences.getString("enqId"));
-                            tb.setmAgentId(mPreferences.getString("agentId"));
-                            tb.setMtakeorderProductCode(mTakeOrderBeansList1.get(k).getProductCode());
-                            tb.setmAgentTakeOrderDate(currentDate);
-                            tb.setmAgentPrice(mTakeOrderBeansList1.get(k).getProductAgentPrice());
-                            tb.setmAgentVAT(mTakeOrderBeansList1.get(k).getProductvat());
-                            tb.setmAgentGST(mTakeOrderBeansList1.get(k).getProductgst());
-                            tb.setmTakeorderAgentCode(mPreferences.getString("agentCode"));
-                            temptoList.add(tb);
+                            if (mProductIdsList.get(mTakeOrderBeansList1.get(k).getProductId()) != null) {
+                                tb.setmProductId(mTakeOrderBeansList1.get(k).getProductId());
+                                tb.setmRouteId(mPreferences.getString("agentrouteId"));
+                                tb.setmProductTitle(mTakeOrderBeansList1.get(k).getProductTitle());
+                                tb.setmProductToDate(toDatesList.get(mTakeOrderBeansList1.get(k).getProductId()));
+                                tb.setmProductFromDate(fromDatesList.get(mTakeOrderBeansList1.get(k).getProductId()));
+                                tb.setmProductQuantity(quantityList.get(mTakeOrderBeansList1.get(k).getProductId()));
+                                tb.setmProductStatus("1");
+                                tb.setmEnquiryId(mPreferences.getString("enqId"));
+                                tb.setmAgentId(mPreferences.getString("agentId"));
+                                tb.setMtakeorderProductCode(mTakeOrderBeansList1.get(k).getProductCode());
+                                tb.setmAgentTakeOrderDate(currentDate);
+                                tb.setmAgentPrice(mTakeOrderBeansList1.get(k).getProductAgentPrice());
+                                tb.setmAgentVAT(mTakeOrderBeansList1.get(k).getProductvat());
+                                tb.setmAgentGST(mTakeOrderBeansList1.get(k).getProductgst());
+                                tb.setmTakeorderAgentCode(mPreferences.getString("agentCode"));
+                                temptoList.add(tb);
+                            }
                         }
                     }
 
