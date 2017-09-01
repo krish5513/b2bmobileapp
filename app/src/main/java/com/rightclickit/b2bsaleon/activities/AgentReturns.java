@@ -22,6 +22,7 @@ import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentReturnsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 
@@ -41,6 +42,8 @@ public class AgentReturns extends AppCompatActivity {
     ListView deliveriesList;
     private SearchView search;
     TextView rDelivered,r_returned,r_pending;
+    ArrayList<String> deliveriess,rdelivery;
+    double str_pending,str_delivery,str_returns;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,11 +76,20 @@ public class AgentReturns extends AppCompatActivity {
         agentId = mPreferences.getString("agentId");
 
 
-        ArrayList<String> deliveriess = mDBHelper.getReturnnumber(agentId, "tripsheet_returns_return_number");
+        deliveriess = mDBHelper.getReturnnumber(agentId, "tripsheet_returns_return_number");
         if(deliveriess.size()>0) {
             r_returned.setText(Integer.toString(deliveriess.size()));
         }
 
+        rdelivery=mDBHelper.getDeliverynumber(agentId,"tripsheet_delivery_number");
+        if(rdelivery.size()>0) {
+            rDelivered.setText(Integer.toString(rdelivery.size()));
+        }
+        str_delivery= Double.parseDouble(String.valueOf((rdelivery.size())));
+        str_returns= Double.parseDouble(String.valueOf(deliveriess.size()));
+        str_pending=str_delivery-str_returns;
+
+        r_pending.setText(Utility.getFormattedCurrency(str_pending));
 
         ArrayList<AgentReturnsBean> unUploadedDeliveries = mDBHelper.getreturnsDetails(agentId);
 
@@ -165,9 +177,6 @@ public class AgentReturns extends AppCompatActivity {
                 finish();
             }
         });
-
-
-
 
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
