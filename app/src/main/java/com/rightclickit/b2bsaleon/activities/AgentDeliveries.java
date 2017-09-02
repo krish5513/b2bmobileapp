@@ -205,7 +205,6 @@ public class AgentDeliveries extends AppCompatActivity {
                 orders.setVisibility(View.VISIBLE);
             }
 
-
         }
 
     }

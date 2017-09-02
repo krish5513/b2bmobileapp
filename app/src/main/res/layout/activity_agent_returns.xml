@@ -9,121 +9,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
-            android:paddingTop="10dp"
-            android:background="@color/layout_background"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:paddingLeft="30dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Delivered"
-                    android:gravity="center"
-                    android:textColor="@color/greydark"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_rDeliverd"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="50 ltrs"
-                    android:gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/greydark"
-                    android:textSize="14sp" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:paddingLeft="15dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Returned"
-                    android:gravity="center"
-
-                    android:textColor="@color/greydark"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_returned"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="50 items"
-                    android:gravity="center"
-                    android:layout_marginTop="5dp"
-                    android:textColor="@color/greydark"
-                    android:textSize="14sp" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Pending"
-                    android:gravity="center"
-                    android:textColor="@color/greydark"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_rpending"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="5 items"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:textColor="@color/greydark"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/view_line"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true">
-
-            <ListView
-                android:id="@+id/ordered_products_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="60dp"
-                android:divider="@android:color/transparent"
-                android:smoothScrollbar="true"
-                android:background="@color/white"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="end|bottom"
         android:background="@color/layout_background">
@@ -249,6 +134,127 @@
 
                 </LinearLayout>
             </HorizontalScrollView>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/layout_background"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:orientation="vertical"
+                android:paddingLeft="30dp">
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Delivered"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_rDeliverd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="no ltrs"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:orientation="vertical"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Returned"
+
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_returned"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="no items"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.3"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Pending"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_rpending"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="no items"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/view_line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true">
+
+            <ListView
+                android:id="@+id/ordered_products_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="60dp"
+                android:background="@color/white"
+                android:divider="@android:color/transparent"
+                android:smoothScrollbar="true" />
+
         </LinearLayout>
 
     </LinearLayout>
