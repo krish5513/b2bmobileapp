@@ -85,7 +85,7 @@ public class AgentDeliveries extends AppCompatActivity {
 
         tv_deliveries=(TextView)findViewById(R.id.tv_totalDeliveries);
         tv_deliveriesValue=(TextView)findViewById(R.id.tv_value);
-        tv_pendingvalue=(TextView)findViewById(R.id.tv_pendingvalue);
+       // tv_pendingvalue=(TextView)findViewById(R.id.tv_pendingvalue);
 
 
         deliveriesList=(ListView)findViewById(R.id.ordered_products_list_view) ;

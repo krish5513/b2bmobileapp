@@ -87,7 +87,7 @@ public class Constants {
     public static final String SYNC_NOTIFICATIONS_PORT = ":3010";
 
     //Production
-    public static final String MAIN_URL = "http://111.93.17.13";
+    public static final String MAIN_URL = "http://111.93.17.12";
 
     //Production for Agent stock
     public static final String MAIN_URL_STOCK = "http://111.93.17.12";
