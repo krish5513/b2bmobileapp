@@ -139,12 +139,10 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
             productsDispatchListHashMap = new HashMap<>();
             productsVerifyListHashMap = new HashMap<>();
 
-            if (tripsheetsStockLists.size() > 0) {
+            if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
+                mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
+            } else if (tripsheetsStockLists.size() > 0) {
                 loadTripsData(tripsheetsStockLists);
-            } else {
-                if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
-                    mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
-                }
             }
         } catch (Exception e) {
             e.printStackTrace();
