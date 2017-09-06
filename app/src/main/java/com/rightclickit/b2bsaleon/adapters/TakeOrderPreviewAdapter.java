@@ -96,7 +96,13 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
         }
 
         double quantity = Double.parseDouble(mpreviewBeansList1.get(position).getpQuantity().replace(",", ""));
-        double price = Double.parseDouble(mpreviewBeansList1.get(position).getpPrice().replace(",", ""));
+        double price;
+        if(mpreviewBeansList1.get(position).getpPrice()!=null){
+            price = Double.parseDouble(mpreviewBeansList1.get(position).getpPrice().replace(",", ""));
+        }else {
+            price = 0.0f;
+        }
+
 
         float tax = 0.0f;
         String str_Taxname="";

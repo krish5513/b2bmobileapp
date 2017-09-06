@@ -114,27 +114,27 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
                 allReturnablesListFromStock.clear();
             }
             for (int i = 0; i < allProductsListFromStock.size(); i++) {
-                if (allProductsListFromStock.get(i).getProductReturnableUnit().trim().equals("Y"))
-                {
-                    DeliverysBean productsBean = new DeliverysBean();
+                if (allProductsListFromStock.get(i).getProductReturnableUnit().trim() != null) {
+                    if (allProductsListFromStock.get(i).getProductReturnableUnit().trim().equals("Y")) {
+                        DeliverysBean productsBean = new DeliverysBean();
 
-                    productsBean.setProductId(allProductsListFromStock.get(i).getProductId());
-                    productsBean.setProductCode(allProductsListFromStock.get(i).getProductCode());
-                    productsBean.setProductTitle(allProductsListFromStock.get(i).getProductTitle());
-                    productsBean.setProductAgentPrice(allProductsListFromStock.get(i).getProductAgentPrice());
-                    productsBean.setProductConsumerPrice(allProductsListFromStock.get(i).getProductConsumerPrice());
-                    productsBean.setProductRetailerPrice(allProductsListFromStock.get(i).getProductRetailerPrice());
-                    productsBean.setProductgst(allProductsListFromStock.get(i).getProductgst());
-                    productsBean.setProductvat(allProductsListFromStock.get(i).getProductvat());
-                    productsBean.setProductOrderedQuantity(allProductsListFromStock.get(i).getProductOrderedQuantity());
-                    productsBean.setProductStock(allProductsListFromStock.get(i).getProductStock());
-                    productsBean.setProductExtraQuantity(allProductsListFromStock.get(i).getProductExtraQuantity());
-                    productsBean.setProductReturnableUnit(allProductsListFromStock.get(i).getProductReturnableUnit());
+                        productsBean.setProductId(allProductsListFromStock.get(i).getProductId());
+                        productsBean.setProductCode(allProductsListFromStock.get(i).getProductCode());
+                        productsBean.setProductTitle(allProductsListFromStock.get(i).getProductTitle());
+                        productsBean.setProductAgentPrice(allProductsListFromStock.get(i).getProductAgentPrice());
+                        productsBean.setProductConsumerPrice(allProductsListFromStock.get(i).getProductConsumerPrice());
+                        productsBean.setProductRetailerPrice(allProductsListFromStock.get(i).getProductRetailerPrice());
+                        productsBean.setProductgst(allProductsListFromStock.get(i).getProductgst());
+                        productsBean.setProductvat(allProductsListFromStock.get(i).getProductvat());
+                        productsBean.setProductOrderedQuantity(allProductsListFromStock.get(i).getProductOrderedQuantity());
+                        productsBean.setProductStock(allProductsListFromStock.get(i).getProductStock());
+                        productsBean.setProductExtraQuantity(allProductsListFromStock.get(i).getProductExtraQuantity());
+                        productsBean.setProductReturnableUnit(allProductsListFromStock.get(i).getProductReturnableUnit());
 
-                    allReturnablesListFromStock.add(productsBean);
+                        allReturnablesListFromStock.add(productsBean);
+                    }
                 }
-            }
-            mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, allReturnablesListFromStock, previouslyReturnedProductsHashMap, deliveredProductsHashMap);
+            }mTripSheetReturnsAdapter = new TripSheetReturnsAdapter(activityContext, this, this, allReturnablesListFromStock, previouslyReturnedProductsHashMap, deliveredProductsHashMap);
             tripSheetReturnProductsList.setAdapter(mTripSheetReturnsAdapter);
 
         } catch (Exception e) {

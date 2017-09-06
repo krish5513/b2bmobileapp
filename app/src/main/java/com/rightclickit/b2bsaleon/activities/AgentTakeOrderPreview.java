@@ -142,8 +142,12 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 
                name = String.valueOf(mProductIdsList.get(k).getmProductTitle().replace(",", ""));
 
-               double price = Double.parseDouble(productsList.get(i).getProductAgentPrice().replace(",", ""));
-
+               double price ;
+                if(productsList.get(i).getProductAgentPrice()!=null){
+                    price = Double.parseDouble(productsList.get(i).getProductAgentPrice().replace(",", ""));
+                }else{
+                    price = 0.0f;
+                }
                double quantity = Double.parseDouble(mProductIdsList.get(k).getmProductQuantity().replace(",", ""));
 
                currentDate = mProductIdsList.get(k).getmAgentTakeOrderDate();

@@ -58,7 +58,13 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
         // in order to update total amount's at the time of initial loading.
         for (DeliverysBean deliverysBean : filteredDeliveryProductsList) {
-            final double productRatePerUnit = Double.parseDouble(deliverysBean.getProductAgentPrice().replace(",", ""));
+            System.out.println("Agent Price::"+deliverysBean.getProductAgentPrice());
+            final double productRatePerUnit;
+            if(deliverysBean.getProductAgentPrice()!=null) {
+                 productRatePerUnit = Double.parseDouble(deliverysBean.getProductAgentPrice().replace(",", ""));
+            }else {
+                productRatePerUnit = 0.0f;
+            }
             float productTax = 0.0f;
 
             if (isDeliveryInEditingMode && previouslyDeliveredProductsHashMap.containsKey(deliverysBean.getProductId())) {
