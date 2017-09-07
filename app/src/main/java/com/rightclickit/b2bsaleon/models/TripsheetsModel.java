@@ -111,6 +111,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
         //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         currentDate = Utility.formatDate(new Date(), "yyyy-MM-dd");
     }*/
+
     /**
      * Method to get tripsheets list
      *
@@ -260,31 +261,33 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     JSONArray stockArray = new JSONArray(response);
                     int stockLen = stockArray.length();
 
-                    JSONArray productCodesArray, orderQuantityArray;
+                    JSONArray productCodesArray, orderQuantityArray, productsInfoArray;
 
                     for (int i = 0; i < stockLen; i++) {
 
                         JSONObject jb = stockArray.getJSONObject(i);
 
+                        productsInfoArray = jb.getJSONArray("productdata");
                         productCodesArray = jb.getJSONArray("product_codes");
                         orderQuantityArray = jb.getJSONArray("order_qty");
-                        int noOfProducts = productCodesArray.length();
-
-                        for (int j = 0; j < noOfProducts; j++) {
-                            // Checking weather product code is null or not
-                            if (productCodesArray.get(j).toString() != "null") {
+                        int noOfProducts = 0;
+                        if (productsInfoArray.length() > 0) {
+                            // If products info array found.
+                            noOfProducts = productsInfoArray.length();
+                            for (int j = 0; j < noOfProducts; j++) {
+                                JSONObject jj = productsInfoArray.getJSONObject(j);
+                                // Checking weather product code is null or not
                                 TripsheetsStockList tripStockBean = new TripsheetsStockList();
 
                                 tripStockBean.setmTripsheetStockTripsheetId(jb.getString("trip_id"));
                                 tripStockBean.setmTripsheetStockId(jb.getString("_id"));
                                 tripStockBean.setmTripsheetStockProductCode(productCodesArray.get(j).toString());
-
-                                ProductsBean productsDetails = mDBHelper.fetchProductDetailsByProductCode(productCodesArray.get(j).toString());
-                                if (productsDetails != null) {
-                                    tripStockBean.setmTripsheetStockProductId(productsDetails.getProductId());
-                                    tripStockBean.setmTripsheetStockProductName(productsDetails.getProductTitle());
+                                if (jj.has("_id")) {
+                                    tripStockBean.setmTripsheetStockProductId(jj.getString("_id"));
                                 }
-
+                                if (jj.has("name")) {
+                                    tripStockBean.setmTripsheetStockProductName(jj.getString("name"));
+                                }
                                 tripStockBean.setmTripsheetStockProductOrderQuantity(orderQuantityArray.get(j).toString());
                                 tripStockBean.setmTripsheetStockDispatchBy("");
                                 tripStockBean.setmTripsheetStockDispatchDate("");
@@ -294,6 +297,35 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                 tripStockBean.setmTripsheetStockVerifyBy("");
 
                                 mTripsheetsStockList.add(tripStockBean);
+                            }
+                        } else {
+                            // If products info array not found.
+                            noOfProducts = productCodesArray.length();
+                            for (int j = 0; j < noOfProducts; j++) {
+                                // Checking weather product code is null or not
+                                if (productCodesArray.get(j).toString() != "null") {
+                                    TripsheetsStockList tripStockBean = new TripsheetsStockList();
+
+                                    tripStockBean.setmTripsheetStockTripsheetId(jb.getString("trip_id"));
+                                    tripStockBean.setmTripsheetStockId(jb.getString("_id"));
+                                    tripStockBean.setmTripsheetStockProductCode(productCodesArray.get(j).toString());
+
+                                    ProductsBean productsDetails = mDBHelper.fetchProductDetailsByProductCode(productCodesArray.get(j).toString());
+                                    if (productsDetails != null) {
+                                        tripStockBean.setmTripsheetStockProductId(productsDetails.getProductId());
+                                        tripStockBean.setmTripsheetStockProductName(productsDetails.getProductTitle());
+                                    }
+
+                                    tripStockBean.setmTripsheetStockProductOrderQuantity(orderQuantityArray.get(j).toString());
+                                    tripStockBean.setmTripsheetStockDispatchBy("");
+                                    tripStockBean.setmTripsheetStockDispatchDate("");
+                                    tripStockBean.setmTripsheetStockDispatchQuantity("");
+                                    tripStockBean.setmTripsheetStockVerifiedDate("");
+                                    tripStockBean.setmTripsheetStockVerifiedQuantity("");
+                                    tripStockBean.setmTripsheetStockVerifyBy("");
+
+                                    mTripsheetsStockList.add(tripStockBean);
+                                }
                             }
                         }
                     }
@@ -377,7 +409,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     }
                     synchronized (this) {
                         activity2.loadTripSheetSaleOrderData();
-                      //  activity4.loadTripSheetSaleOrderPreviewData();
+                        //  activity4.loadTripSheetSaleOrderPreviewData();
 
                     }
                     break;
