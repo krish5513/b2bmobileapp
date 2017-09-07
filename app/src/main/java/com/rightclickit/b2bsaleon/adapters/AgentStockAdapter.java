@@ -26,33 +26,35 @@ import java.util.Map;
  * Created by PPS on 8/26/2017.
  */
 
-public class AgentStockAdapter extends BaseAdapter{
+public class AgentStockAdapter extends BaseAdapter {
 
     private Context ctxt;
     private Activity activity;
     private TripSheetStockListener listener;
     private MMSharedPreferences mPreferences;
     private LayoutInflater mInflater;
-    String myList ;
+    String myList;
     DBHelper mDBHelper;
+    private ArrayList<AgentsStockBean> stockList;
 
 
-
-
-    public AgentStockAdapter(AgentStockActivity agentStockActivity, Context ctxt, ArrayList<AgentsStockBean> mAgentsBeansList) {
+    public AgentStockAdapter(Activity agentStockActivity, Context ctxt, ArrayList<AgentsStockBean> mAgentsBeansList) {
         this.ctxt = ctxt;
+        this.activity = agentStockActivity;
 
         this.mInflater = LayoutInflater.from(activity);
 
         this.mPreferences = new MMSharedPreferences(activity);
 
-        mDBHelper=new DBHelper(activity);
+        mDBHelper = new DBHelper(activity);
+
+        this.stockList = mAgentsBeansList;
     }
 
 
     @Override
     public int getCount() {
-        return 0;
+        return stockList.size();
     }
 
     @Override
@@ -67,12 +69,12 @@ public class AgentStockAdapter extends BaseAdapter{
 
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
-        final AgentStockAdapter.AgentStockViewHolder agentStockViewHolder;
+        final AgentStockViewHolder agentStockViewHolder;
 
         if (view == null) {
             view = mInflater.inflate(R.layout.tripsheetstock_preview_custom, null);
 
-            agentStockViewHolder = new AgentStockAdapter.AgentStockViewHolder();
+            agentStockViewHolder = new AgentStockViewHolder();
             agentStockViewHolder.mProductName = (TextView) view.findViewById(R.id.productName);
             agentStockViewHolder.mProductSIPCode = (TextView) view.findViewById(R.id.productCode);
             agentStockViewHolder.mProductUom = (TextView) view.findViewById(R.id.UOM);
@@ -85,9 +87,16 @@ public class AgentStockAdapter extends BaseAdapter{
 
             view.setTag(agentStockViewHolder);
         } else {
-            agentStockViewHolder = (AgentStockAdapter.AgentStockViewHolder) view.getTag();
+            agentStockViewHolder = (AgentStockViewHolder) view.getTag();
         }
 
+
+        agentStockViewHolder.mProductName.setText(stockList.get(position).getmProductName());
+        agentStockViewHolder.mProductSIPCode.setText(stockList.get(position).getmProductCode());
+        agentStockViewHolder.mProductUom.setText(stockList.get(position).getmProductUOM());
+        agentStockViewHolder.mRecd.setText(stockList.get(position).getmProductStockQunatity());
+        agentStockViewHolder.mSales.setText(stockList.get(position).getmProductDeliveryQunatity());
+        agentStockViewHolder.mCB.setText(stockList.get(position).getmProductCBQuantity());
 
         return view;
     }
@@ -101,9 +110,6 @@ public class AgentStockAdapter extends BaseAdapter{
         TextView mCB;
 
     }
-
-
-
 
 
 }

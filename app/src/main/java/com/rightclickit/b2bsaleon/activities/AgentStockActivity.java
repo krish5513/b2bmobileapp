@@ -52,6 +52,8 @@ public class AgentStockActivity extends AppCompatActivity {
 
         this.activityContext = AgentStockActivity.this;
 
+        mStockList = (ListView) findViewById(R.id.agent_stock_preview);
+
         this.mAgentStockModel = new AgentsStockModel(activityContext, AgentStockActivity.this);
 
         mDBHelper = new DBHelper(AgentStockActivity.this);
@@ -91,6 +93,16 @@ public class AgentStockActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_search) {
 
+            return true;
+        }
+
+        if (id == R.id.autorenew) {
+
+            if (new NetworkConnectionDetector(AgentStockActivity.this).isNetworkConnected()) {
+                mAgentStockModel.getAgentsStock(mAgentId);
+            } else {
+                new NetworkConnectionDetector(AgentStockActivity.this).displayNoNetworkError(AgentStockActivity.this);
+            }
             return true;
         }
 

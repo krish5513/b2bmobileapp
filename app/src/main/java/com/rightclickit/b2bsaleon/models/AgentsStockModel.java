@@ -75,12 +75,35 @@ public class AgentsStockModel implements OnAsyncRequestCompleteListener {
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
         try {
             CustomProgressDialog.hideProgressDialog();
+            if (mAgentsStockList.size() > 0) {
+                mAgentsStockList.clear();
+            }
+            if (prodIdsList.size() > 0) {
+                prodIdsList.clear();
+            }
+            if (prodCodesList.size() > 0) {
+                prodCodesList.clear();
+            }
+            if (prodQuantityList.size() > 0) {
+                prodQuantityList.clear();
+            }
+            if (prodNamesList.size() > 0) {
+                prodNamesList.clear();
+            }
+            if (prodUOMList.size() > 0) {
+                prodUOMList.clear();
+            }
+            if (prodDelQuantityList.size() > 0) {
+                prodDelQuantityList.clear();
+            }
             System.out.println("========= STOCKS response = " + response);
             JSONObject resObj = new JSONObject(response);
-            JSONArray stockArray = new JSONArray();
-            JSONArray saleArray = new JSONArray();
+            JSONArray stockArray;
+            JSONArray saleArray;
             // Stock Response
             if (resObj.has("stock_res")) {
+                stockArray = resObj.getJSONArray("stock_res");
+                System.out.println("STOCK RESP LENG::: " + stockArray.length());
                 int length = stockArray.length();
                 if (length > 0) {
                     for (int i = 0; i < length; i++) {
@@ -143,8 +166,10 @@ public class AgentsStockModel implements OnAsyncRequestCompleteListener {
                 }
             }
 
-            // Delivery Response
-            if (resObj.has("stock_res")) {
+            // Delivery(SALE) Response
+            if (resObj.has("sales_res")) {
+                stockArray = resObj.getJSONArray("sales_res");
+                System.out.println("SALE RESP LENG::: " + stockArray.length());
                 int length = stockArray.length();
                 if (length > 0) {
                     for (int i = 0; i < length; i++) {
@@ -165,17 +190,51 @@ public class AgentsStockModel implements OnAsyncRequestCompleteListener {
 
             // Add all to bean
             int len = prodIdsList.size();
+            System.out.println("PS:: " + len);
             if (len > 0) {
                 for (int b = 0; b < len; b++) {
+                    int stockQunatity = 0, saleQuantity = 0;
                     AgentsStockBean aBean = new AgentsStockBean();
 
-                    aBean.setmProductId(prodIdsList.get(b).toString());
-                    aBean.setmProductName(prodNamesList.get(b).toString());
-                    aBean.setmProductCode(prodCodesList.get(b).toString());
-                    aBean.setmProductUOM(prodUOMList.get(b).toString());
-                    aBean.setmProductStockQunatity(prodQuantityList.get(b).toString());
-                    aBean.setmProductDeliveryQunatity(prodDelQuantityList.get(b).toString());
-                    int CBQ = Integer.parseInt(prodQuantityList.get(b).toString()) - Integer.parseInt(prodDelQuantityList.get(b).toString());
+                    if (prodIdsList.get(b) != null) {
+                        aBean.setmProductId(prodIdsList.get(b).toString());
+                    } else {
+                        aBean.setmProductId("");
+                    }
+
+                    if (prodNamesList.get(b) != null) {
+                        aBean.setmProductName(prodNamesList.get(b).toString());
+                    } else {
+                        aBean.setmProductName("");
+                    }
+
+                    if (prodCodesList.get(b) != null) {
+                        aBean.setmProductCode(prodCodesList.get(b).toString());
+                    } else {
+                        aBean.setmProductCode("");
+                    }
+
+                    if (prodUOMList.get(b) != null) {
+                        aBean.setmProductUOM(prodUOMList.get(b).toString());
+                    } else {
+                        aBean.setmProductUOM("");
+                    }
+
+                    if (prodQuantityList.get(b) != null) {
+                        aBean.setmProductStockQunatity(prodQuantityList.get(b).toString());
+                        stockQunatity = Integer.parseInt(prodQuantityList.get(b).toString());
+                    } else {
+                        aBean.setmProductStockQunatity("0");
+                    }
+
+                    if (prodDelQuantityList.size() > 0) {
+                        aBean.setmProductDeliveryQunatity(prodDelQuantityList.get(b).toString());
+                        saleQuantity = Integer.parseInt(prodDelQuantityList.get(b).toString());
+                    } else {
+                        aBean.setmProductDeliveryQunatity("0");
+                    }
+
+                    int CBQ = stockQunatity - saleQuantity;
                     aBean.setmProductCBQuantity(String.valueOf(CBQ));
 
                     mAgentsStockList.add(aBean);

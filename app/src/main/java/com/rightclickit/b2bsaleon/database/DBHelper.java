@@ -4913,7 +4913,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_AGENT_STOCK_PRODUCT_CNQUANTITY, mStockList.get(i).getmProductCBQuantity());
 
 
-                int checkVal = checkTripsheetExistsOrNot(mStockList.get(i).getmProductId());
+                int checkVal = checkAgentStockExistsOrNot(mStockList.get(i).getmProductId(),agentId);
                 if (checkVal == 0) {
                     System.out.println("+++++++++++++++++++++++++ STOCK INSERTED++++++++++++++++++++++");
                     db.insert(TABLE_AGENTS_STOCK_LIST, null, values);
