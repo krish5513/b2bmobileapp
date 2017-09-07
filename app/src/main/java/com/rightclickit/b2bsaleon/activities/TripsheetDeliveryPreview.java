@@ -139,7 +139,12 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
             String[] temp = new String[5];
             temp[0] = d.getProductTitle();
             temp[1] = (String.valueOf(d.getProductOrderedQuantity()));
-            temp[2] = Utility.getFormattedCurrency(Double.parseDouble(d.getProductAgentPrice()));
+            if(d.getProductAgentPrice()!=null) {
+                temp[2] = Utility.getFormattedCurrency(Double.parseDouble(d.getProductAgentPrice()));
+            }
+            else {
+                temp[2]="Rs.0.00";
+            }
             temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(d.getTaxAmount())));
             temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(d.getProductAmount())));
             arList.add(temp);
