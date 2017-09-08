@@ -368,7 +368,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
                         String dId = getDeviceId();
 
-                        settingsmodel.saveDeviceDetails(dId, vehicleNo.getText().toString(), transporterName.getText().toString(), companyName.getText().toString());
+                        settingsmodel.saveDeviceDetails(dId, vehicleNo.getText().toString(), transporterName.getText().toString(), companyName.getText().toString(),mRouteCode);
 
                         long f = mDBHelper.updateUserDetails(mPreferences.getString("userId"), companyName.getText().toString(), "", userName.getText().toString(),
                                 "", mobile.getText().toString(), "", "", "", "", "", "", "", dId, transporterName.getText().toString(),

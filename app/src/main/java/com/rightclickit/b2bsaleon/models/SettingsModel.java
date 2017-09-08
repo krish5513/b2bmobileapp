@@ -31,7 +31,7 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private boolean isSaveDeviceDetails;
-    private String did="",transporterName="",vehicleNumber="",companyname="";
+    private String did="",transporterName="",vehicleNumber="",companyname="",routeCode="";
 
     public SettingsModel(Context context, SettingsActivity activity) {
         this.context = context;
@@ -78,13 +78,14 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
         }
     }
 
-    public void saveDeviceDetails(String deviceId,String vechicleNumber,String transporterName,String companyname) {
+    public void saveDeviceDetails(String deviceId,String vechicleNumber,String transporterName,String companyname,String mRouteCode) {
         try {
             isSaveDeviceDetails = true;
             this.did = deviceId;
             this.vehicleNumber = vechicleNumber;
             this.transporterName = transporterName;
             this.companyname=companyname;
+            this.routeCode=mRouteCode;
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String deviceName = mPreferences.getString("name")+deviceId.substring(deviceId.length()-3);
                 String settingsURL = String.format("%s%s%s", Constants.MAIN_URL,Constants.PORT_ADD, Constants.SAVE_DEVICE_DETAILS);
@@ -96,6 +97,7 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
                 params.put("vehicle_no", vechicleNumber);
                 params.put("transporter_name", transporterName);
                // params.put("companyname", companyname);
+                params.put("route_code",mRouteCode);
                 System.out.println("The PARAMS ARE==== "+params.toString());
 
                 AsyncRequest routeidRequest = new AsyncRequest(context, this, settingsURL, AsyncRequest.MethodType.POST, params);

@@ -28,7 +28,7 @@
                 android:textColor="@color/greydark"
                 android:textSize="16sp" />
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/companyId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,8 +38,9 @@
                 android:text="(223320221)"
                 android:textAllCaps="true"
                 android:textColor="@color/greydark"
-                android:textSize="16sp" />
+                android:textSize="16sp" />-->
 
+<!--
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,6 +70,7 @@
                     android:textSize="10sp" />
 
             </LinearLayout>
+-->
 
         </LinearLayout>
 

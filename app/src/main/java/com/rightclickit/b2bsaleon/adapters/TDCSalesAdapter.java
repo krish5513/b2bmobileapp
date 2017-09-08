@@ -50,6 +50,7 @@ public class TDCSalesAdapter extends BaseAdapter {
     private double availableStock = 5;
     private final String zero_cost = "0.000";
     private boolean isOrderInEditingMode = false;
+    double productRate;
 
     public TDCSalesAdapter(Context ctxt, TDCSalesActivity TDCSalesActivity, TDCSalesListener salesListener, ListView products_list_view, ArrayList<ProductsBean> productsList, Map<String, ProductsBean> previouslySelectedProducts) {
         this.ctxt = ctxt;
@@ -134,8 +135,13 @@ public class TDCSalesAdapter extends BaseAdapter {
             tdcSalesViewHolder.arrow_icon.setImageResource(R.drawable.ic_arrow_downward_white_24dp);
             tdcSalesViewHolder.arrow_icon.setBackground(red_circle);
         }
+          if(currentProductsBean.getProductConsumerPrice()!=null){
+            productRate = Double.parseDouble(currentProductsBean.getProductConsumerPrice().replace(",", ""));
+          }
+          else {
+              productRate=0.00f;
+          }
 
-        final double productRate = Double.parseDouble(currentProductsBean.getProductConsumerPrice().replace(",", ""));
         double taxAmount = 0, amount = 0;
         float productTax = 0.0f;
 
