@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TDCSalesAdapter;
+import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
@@ -49,8 +51,9 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     private boolean showProductsListView = false;
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
     private TDCSaleOrder currentOrder;
-    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
-
+    private String userId = "",mNotifications="", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
+    ArrayList<AgentsStockBean> stockBeanArrayList;
+    ArrayList<String> availableStockProductsList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +77,10 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             assert actionBar != null;
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+            userId=mmSharedPreferences.getString("userId");
+
+
+            //Log.e(allProductsList.size())
 
             ArrayList<String> privilegeActionsData1= mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("UserActivity"));
             //System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
@@ -136,9 +143,30 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                 }
             }
 
+            allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
+            stockBeanArrayList = mDBHelper.fetchAllStockByAgentId(userId);
+            if(allProductsList.size()>0){
+                availableStockProductsList = new ArrayList<String>();
+                for (int h = 0;h <allProductsList.size();h++){
+                    // Check condition for product id match
+                    for (int g = 0;g<stockBeanArrayList.size();g++){
+                        if(allProductsList.get(h).getProductId().equals(stockBeanArrayList.get(g).getmProductId())){
+                            // If match add this cb quantity to temp string array
+                            availableStockProductsList.add(stockBeanArrayList.get(g).getmProductCBQuantity());
+                        }/*else {
+                            // If not match add "0" to temp string array
+                            availableStockProductsList.add("0");
+                        }*/
+                    }
+                }
+            }
+            Log.i("allpList",allProductsList.size()+"");
+            Log.i("available",availableStockProductsList.size()+"");
+            Log.i("stock",stockBeanArrayList.size()+"");
             if (showProductsListView) {
-                allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
-                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsList, previouslySelectedProductsListHashMap);
+               // allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
+
+                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsList, previouslySelectedProductsListHashMap,availableStockProductsList);
                 tdc_products_list_view.setAdapter(tdcSalesAdapter);
             }
 

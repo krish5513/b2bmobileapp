@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentStockActivity;
 import com.rightclickit.b2bsaleon.activities.TripsheetStockPreview;
+import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -36,7 +37,7 @@ public class AgentStockAdapter extends BaseAdapter {
     String myList;
     DBHelper mDBHelper;
     private ArrayList<AgentsStockBean> stockList;
-
+    private ArrayList<AgentsStockBean> arraylist;
 
     public AgentStockAdapter(Activity agentStockActivity, Context ctxt, ArrayList<AgentsStockBean> mAgentsBeansList) {
         this.ctxt = ctxt;
@@ -47,8 +48,9 @@ public class AgentStockAdapter extends BaseAdapter {
         this.mPreferences = new MMSharedPreferences(activity);
 
         mDBHelper = new DBHelper(activity);
-
+        this.arraylist = new ArrayList<AgentsStockBean>();
         this.stockList = mAgentsBeansList;
+        this.arraylist.addAll(stockList);
     }
 
 
@@ -111,6 +113,27 @@ public class AgentStockAdapter extends BaseAdapter {
 
     }
 
+    // Filter Class
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        stockList.clear();
+        if (charText.length() == 0) {
+            stockList.addAll(arraylist);
+        } else {
+            for (AgentsStockBean wp : arraylist) {
+                if (wp.getmProductName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    stockList.add(wp);
+                }
+                if (wp.getmProductCode().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    stockList.add(wp);
+                }
+                if (wp.getmProductUOM().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    stockList.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 
 }
 

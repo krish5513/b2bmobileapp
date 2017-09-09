@@ -193,7 +193,7 @@ public class AgentsStockModel implements OnAsyncRequestCompleteListener {
             System.out.println("PS:: " + len);
             if (len > 0) {
                 for (int b = 0; b < len; b++) {
-                    int stockQunatity = 0, saleQuantity = 0;
+                    double stockQunatity = 0.0f, saleQuantity = 0.0f;
                     AgentsStockBean aBean = new AgentsStockBean();
 
                     if (prodIdsList.get(b) != null) {
@@ -222,19 +222,19 @@ public class AgentsStockModel implements OnAsyncRequestCompleteListener {
 
                     if (prodQuantityList.get(b) != null) {
                         aBean.setmProductStockQunatity(prodQuantityList.get(b).toString());
-                        stockQunatity = Integer.parseInt(prodQuantityList.get(b).toString());
+                        stockQunatity = Double.parseDouble((prodQuantityList.get(b).toString()));
                     } else {
                         aBean.setmProductStockQunatity("0");
                     }
 
                     if (prodDelQuantityList.size() > 0) {
                         aBean.setmProductDeliveryQunatity(prodDelQuantityList.get(b).toString());
-                        saleQuantity = Integer.parseInt(prodDelQuantityList.get(b).toString());
+                        saleQuantity = Double.parseDouble((prodDelQuantityList.get(b).toString()));
                     } else {
                         aBean.setmProductDeliveryQunatity("0");
                     }
 
-                    int CBQ = stockQunatity - saleQuantity;
+                    double CBQ = stockQunatity - saleQuantity;
                     aBean.setmProductCBQuantity(String.valueOf(CBQ));
 
                     mAgentsStockList.add(aBean);

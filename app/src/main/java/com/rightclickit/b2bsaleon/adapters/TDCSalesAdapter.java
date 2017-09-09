@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.TDCSalesActivity;
+import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
@@ -47,12 +48,14 @@ public class TDCSalesAdapter extends BaseAdapter {
     private MMSharedPreferences mPreferences;
     private Drawable red_circle, green_circle;
 
-    private double availableStock = 5;
+    private double availableStock = 0;
     private final String zero_cost = "0.000";
     private boolean isOrderInEditingMode = false;
     double productRate;
 
-    public TDCSalesAdapter(Context ctxt, TDCSalesActivity TDCSalesActivity, TDCSalesListener salesListener, ListView products_list_view, ArrayList<ProductsBean> productsList, Map<String, ProductsBean> previouslySelectedProducts) {
+    ArrayList<String> availableStockProductsList;
+
+    public TDCSalesAdapter(Context ctxt, TDCSalesActivity TDCSalesActivity, TDCSalesListener salesListener, ListView products_list_view, ArrayList<ProductsBean> productsList, Map<String, ProductsBean> previouslySelectedProducts,   ArrayList<String> availableStockProductsList) {
         this.ctxt = ctxt;
         this.activity = TDCSalesActivity;
         this.listener = salesListener;
@@ -63,6 +66,8 @@ public class TDCSalesAdapter extends BaseAdapter {
         this.filteredProductsList = new ArrayList<>();
         this.filteredProductsList.addAll(allProductsList);
         this.selectedProductsListHashMap = new HashMap<>();
+       ;
+        this.availableStockProductsList=availableStockProductsList;
 
         if (!previouslySelectedProducts.isEmpty()) {
             this.selectedProductsListHashMap = previouslySelectedProducts;
@@ -160,7 +165,12 @@ public class TDCSalesAdapter extends BaseAdapter {
         else
             tdcSalesViewHolder.product_name.setText(String.format("%s", currentProductsBean.getProductTitle()));
 
-        tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", availableStock));
+if(availableStockProductsList.get(position)!=null) {
+    tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f",Double.parseDouble(availableStockProductsList.get(position).toString())));
+}else{
+    tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f",availableStock));
+}
+
         tdcSalesViewHolder.price.setText(Utility.getFormattedCurrency(currentProductsBean.getProductRatePerUnit()));
         tdcSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
         tdcSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
