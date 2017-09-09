@@ -39,18 +39,19 @@ public class AgentStockActivity extends AppCompatActivity {
     private ListView mStockList;
     private AgentStockAdapter mStockAdapter;
     private Context activityContext;
-    private String mAgentId = "",mAgentCode="",mAgentName="";
+    private String mAgentId = "", mAgentCode = "", mAgentName = "";
     private SearchView search;
     TextView stock_print;
     ArrayList<AgentsStockBean> stockBeanArrayList;
     ArrayList<String[]> selectedList;
     String str_ProductName, str_ProductCode, str_Uom, str_Received, str_Sale, str_CB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAgentId = this.getIntent().getStringExtra("agentId");
-        mAgentCode=this.getIntent().getStringExtra("agentCode");
-        mAgentName=this.getIntent().getStringExtra("agentName");
+        mAgentCode = this.getIntent().getStringExtra("agentCode");
+        mAgentName = this.getIntent().getStringExtra("agentName");
         setContentView(R.layout.activity_agent_stock);
 
         this.getSupportActionBar().setTitle("AS ON STOCK");
@@ -75,8 +76,7 @@ public class AgentStockActivity extends AppCompatActivity {
 
         mDBHelper = new DBHelper(AgentStockActivity.this);
         sharedPreferences = new MMSharedPreferences(AgentStockActivity.this);
-        stock_print=(TextView)findViewById(R.id.stock_print);
-
+        stock_print = (TextView) findViewById(R.id.stock_print);
 
 
         if (new NetworkConnectionDetector(AgentStockActivity.this).isNetworkConnected()) {
@@ -88,9 +88,9 @@ public class AgentStockActivity extends AppCompatActivity {
                 // No stock available
             }
         }
-           stockBeanArrayList = mDBHelper.fetchAllStockByAgentId(mAgentId);
-            Log.i("stock",stockBeanArrayList.size()+"");
-           selectedList = new ArrayList<>(stockBeanArrayList.size());
+        stockBeanArrayList = mDBHelper.fetchAllStockByAgentId(mAgentId);
+        Log.i("stock", stockBeanArrayList.size() + "");
+        selectedList = new ArrayList<>(stockBeanArrayList.size());
 
         for (int i = 0; i < stockBeanArrayList.size(); i++) {
 
@@ -98,7 +98,8 @@ public class AgentStockActivity extends AppCompatActivity {
             str_ProductCode = stockBeanArrayList.get(i).getmProductCode();
 
 
-            str_Uom = stockBeanArrayList.get(i).getmProductUOM();;
+            str_Uom = stockBeanArrayList.get(i).getmProductUOM();
+            ;
             str_Received = stockBeanArrayList.get(i).getmProductStockQunatity();
             str_Sale = stockBeanArrayList.get(i).getmProductDeliveryQunatity();
             str_CB = stockBeanArrayList.get(i).getmProductCBQuantity();
@@ -181,6 +182,10 @@ public class AgentStockActivity extends AppCompatActivity {
         if (mStockAdapter != null) {
             mStockAdapter = null;
         }
+        if (stockBeanArrayList.size() > 0) {
+            stockBeanArrayList.clear();
+        }
+        stockBeanArrayList = mDBHelper.fetchAllStockByAgentId(mAgentId);
         if (stockBeanArrayList.size() > 0) {
             mStockAdapter = new AgentStockAdapter(this, AgentStockActivity.this, stockBeanArrayList);
             mStockList.setAdapter(mStockAdapter);

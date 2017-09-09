@@ -131,7 +131,15 @@ public class TDCSalesAdapter extends BaseAdapter {
             final TDCSalesViewHolder currentTDCSalesViewHolder = tdcSalesViewHolder;
 
             final ProductsBean currentProductsBean = getItem(position);
-            currentProductsBean.setProductStock(availableStock);
+            if (availableStockProductsList.size() > 0) {
+                if (availableStockProductsList.get(position) != null) {
+                    currentProductsBean.setProductStock(Double.parseDouble(availableStockProductsList.get(position).toString()));
+                } else {
+                    currentProductsBean.setProductStock(availableStock);
+                }
+            } else {
+                currentProductsBean.setProductStock(availableStock);
+            }
 
             if (currentProductsBean.getProductStock() > 0) {
                 tdcSalesViewHolder.arrow_icon.setImageResource(R.drawable.ic_arrow_upward_white_24dp);

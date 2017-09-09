@@ -51,9 +51,11 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     private boolean showProductsListView = false;
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
     private TDCSaleOrder currentOrder;
-    private String userId = "",mNotifications="", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
+    private String userId = "", mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
     ArrayList<AgentsStockBean> stockBeanArrayList;
     ArrayList<String> availableStockProductsList;
+    ArrayList<String> availableStockProductsListTemp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,12 +79,12 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             assert actionBar != null;
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-            userId=mmSharedPreferences.getString("userId");
+            userId = mmSharedPreferences.getString("userId");
 
 
             //Log.e(allProductsList.size())
 
-            ArrayList<String> privilegeActionsData1= mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("UserActivity"));
+            ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("UserActivity"));
             //System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
             for (int z = 0; z < privilegeActionsData1.size(); z++) {
                 //System.out.println("Name::: " + privilegeActionsData1.get(z).toString());
@@ -145,28 +147,50 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
 
             allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
             stockBeanArrayList = mDBHelper.fetchAllStockByAgentId(userId);
-            if(allProductsList.size()>0){
-                availableStockProductsList = new ArrayList<String>();
-                for (int h = 0;h <allProductsList.size();h++){
+            availableStockProductsList = new ArrayList<String>();
+            availableStockProductsListTemp = new ArrayList<String>();
+            if (availableStockProductsList.size() > 0) {
+                availableStockProductsList.clear();
+            }
+            if (availableStockProductsListTemp.size() > 0) {
+                availableStockProductsListTemp.clear();
+            }
+            if (allProductsList.size() > 0) {
+                for (int h = 0; h < allProductsList.size(); h++) {
                     // Check condition for product id match
-                    for (int g = 0;g<stockBeanArrayList.size();g++){
-                        if(allProductsList.get(h).getProductId().equals(stockBeanArrayList.get(g).getmProductId())){
+                    for (int g = 0; g < stockBeanArrayList.size(); g++) {
+                        if (allProductsList.get(h).getProductId().equals(stockBeanArrayList.get(g).getmProductId())) {
                             // If match add this cb quantity to temp string array
-                            availableStockProductsList.add(stockBeanArrayList.get(g).getmProductCBQuantity());
+                            availableStockProductsListTemp.add(stockBeanArrayList.get(g).getmProductCBQuantity());
                         }/*else {
                             // If not match add "0" to temp string array
                             availableStockProductsList.add("0");
                         }*/
                     }
                 }
-            }
-            Log.i("allpList",allProductsList.size()+"");
-            Log.i("available",availableStockProductsList.size()+"");
-            Log.i("stock",stockBeanArrayList.size()+"");
-            if (showProductsListView) {
-               // allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
+                Log.i("available temp Super", availableStockProductsListTemp.size() + "\n");
 
-                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsList, previouslySelectedProductsListHashMap,availableStockProductsList);
+                // Make the params array
+                for (int v = 0; v < allProductsList.size(); v++) {
+                    if (availableStockProductsListTemp.size() > 0) {
+                        if (v < availableStockProductsListTemp.size()) {
+                            availableStockProductsList.add(availableStockProductsListTemp.get(v).toString());
+                        } else {
+                            availableStockProductsList.add("0");
+                        }
+                    } else {
+                        availableStockProductsList.add("0");
+                    }
+                }
+            }
+            Log.i("allpList", allProductsList.size() + "\n");
+            Log.i("available temp", availableStockProductsListTemp.size() + "\n");
+            Log.i("stock", stockBeanArrayList.size() + "\n");
+            Log.i("available actual", availableStockProductsList.size() + "\n");
+            if (showProductsListView) {
+                // allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
+
+                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsList, previouslySelectedProductsListHashMap, availableStockProductsList);
                 tdc_products_list_view.setAdapter(tdcSalesAdapter);
             }
 
@@ -286,6 +310,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                 return true;
         }
     }
+
     private void loadNotifications() {
         Intent navigationIntent = new Intent(TDCSalesActivity.this, NotificationsActivity.class);
         // mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -318,7 +343,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
         super.onBackPressed();
         Intent intent = null;
         if (mTdcHomeScreen.equals("tdc_home_screen")) {
-           // intent = new Intent(this, TDCSalesActivity.class);
+            // intent = new Intent(this, TDCSalesActivity.class);
             finish();
         } else if (mTripsHomeScreen.equals("Trips@Home")) {
             intent = new Intent(this, TripSheetsActivity.class);
