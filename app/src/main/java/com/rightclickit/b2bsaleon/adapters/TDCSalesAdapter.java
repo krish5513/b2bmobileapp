@@ -53,9 +53,9 @@ public class TDCSalesAdapter extends BaseAdapter {
     private boolean isOrderInEditingMode = false;
     double productRate;
 
-    ArrayList<String> availableStockProductsList;
+    HashMap<String, String> availableStockProductsList;
 
-    public TDCSalesAdapter(Context ctxt, TDCSalesActivity TDCSalesActivity, TDCSalesListener salesListener, ListView products_list_view, ArrayList<ProductsBean> productsList, Map<String, ProductsBean> previouslySelectedProducts, ArrayList<String> availableStockProductsList) {
+    public TDCSalesAdapter(Context ctxt, TDCSalesActivity TDCSalesActivity, TDCSalesListener salesListener, ListView products_list_view, ArrayList<ProductsBean> productsList, Map<String, ProductsBean> previouslySelectedProducts, HashMap<String, String> availableStockProductsList) {
         this.ctxt = ctxt;
         this.activity = TDCSalesActivity;
         this.listener = salesListener;
@@ -131,14 +131,17 @@ public class TDCSalesAdapter extends BaseAdapter {
             final TDCSalesViewHolder currentTDCSalesViewHolder = tdcSalesViewHolder;
 
             final ProductsBean currentProductsBean = getItem(position);
-            if (availableStockProductsList.size() > 0) {
-                if (availableStockProductsList.get(position) != null) {
-                    currentProductsBean.setProductStock(Double.parseDouble(availableStockProductsList.get(position).toString()));
-                } else {
-                    currentProductsBean.setProductStock(availableStock);
-                }
+            if (availableStockProductsList.get(filteredProductsList.get(position).getProductId()) != null) {
+                //if (availableStockProductsList.get(filteredProductsList.get(position).getProductId()) == filteredProductsList.get(position).getProductId()) {
+                    currentProductsBean.setProductStock(Double.parseDouble(availableStockProductsList.get(filteredProductsList.get(position).getProductId()).toString()));
+                    System.out.println("MATCHED::::::::: ");
+//                } else {
+//                    currentProductsBean.setProductStock(availableStock);
+//                    System.out.println("NOT MATCHED 111111111::::::::: ");
+//                }
             } else {
                 currentProductsBean.setProductStock(availableStock);
+                System.out.println("NOT MATCHED 222222222::::::::: ");
             }
 
             if (currentProductsBean.getProductStock() > 0) {
@@ -172,14 +175,17 @@ public class TDCSalesAdapter extends BaseAdapter {
             else
                 tdcSalesViewHolder.product_name.setText(String.format("%s", currentProductsBean.getProductTitle()));
 
-            if (availableStockProductsList.size() > 0) {
-                if (availableStockProductsList.get(position) != null) {
-                    tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", Double.parseDouble(availableStockProductsList.get(position).toString())));
-                } else {
-                    tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", availableStock));
-                }
+            if (availableStockProductsList.get(filteredProductsList.get(position).getProductId()) != null) {
+               // if (availableStockProductsList.get(filteredProductsList.get(position).getProductId()).equals(filteredProductsList.get(position).getProductId())) {
+                    tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", Double.parseDouble(availableStockProductsList.get(filteredProductsList.get(position).getProductId()).toString())));
+                    // System.out.println("MATCHED 111111111::::::::: ");
+//                } else {
+//                    tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", availableStock));
+//                    //System.out.println("NOT MATCHED 333333333333333::::::::: ");
+//                }
             } else {
                 tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", availableStock));
+                //System.out.println("NOT MATCHED 44444444444444444::::::::: ");
             }
 
             tdcSalesViewHolder.price.setText(Utility.getFormattedCurrency(currentProductsBean.getProductRatePerUnit()));

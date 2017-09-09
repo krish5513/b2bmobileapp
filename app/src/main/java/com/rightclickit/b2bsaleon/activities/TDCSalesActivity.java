@@ -53,8 +53,10 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     private TDCSaleOrder currentOrder;
     private String userId = "", mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
     ArrayList<AgentsStockBean> stockBeanArrayList;
-    ArrayList<String> availableStockProductsList;
-    ArrayList<String> availableStockProductsListTemp;
+    //ArrayList<String> availableStockProductsList;
+    HashMap<String, String> availableStockProductsList = new HashMap<String, String>();
+    HashMap<String, String> availableStockProductsListTemp = new HashMap<String, String>();
+    //ArrayList<String> availableStockProductsListTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,8 +149,8 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
 
             allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
             stockBeanArrayList = mDBHelper.fetchAllStockByAgentId(userId);
-            availableStockProductsList = new ArrayList<String>();
-            availableStockProductsListTemp = new ArrayList<String>();
+            //availableStockProductsList = new ArrayList<String>();
+            //availableStockProductsListTemp = new ArrayList<String>();
             if (availableStockProductsList.size() > 0) {
                 availableStockProductsList.clear();
             }
@@ -161,34 +163,40 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                     for (int g = 0; g < stockBeanArrayList.size(); g++) {
                         if (allProductsList.get(h).getProductId().equals(stockBeanArrayList.get(g).getmProductId())) {
                             // If match add this cb quantity to temp string array
-                            availableStockProductsListTemp.add(stockBeanArrayList.get(g).getmProductCBQuantity());
+                            availableStockProductsListTemp.put(
+                                    stockBeanArrayList.get(g).getmProductId(), stockBeanArrayList.get(g).getmProductCBQuantity());
+                            availableStockProductsList.put(
+                                    stockBeanArrayList.get(g).getmProductId(), stockBeanArrayList.get(g).getmProductCBQuantity());
                         }/*else {
                             // If not match add "0" to temp string array
                             availableStockProductsList.add("0");
                         }*/
                     }
                 }
-                Log.i("available temp Super", availableStockProductsListTemp.size() + "\n");
 
                 // Make the params array
-                for (int v = 0; v < allProductsList.size(); v++) {
-                    if (availableStockProductsListTemp.size() > 0) {
-                        if (v < availableStockProductsListTemp.size()) {
-                            availableStockProductsList.add(availableStockProductsListTemp.get(v).toString());
-                        } else {
-                            availableStockProductsList.add("0");
-                        }
-                    } else {
-                        availableStockProductsList.add("0");
-                    }
-                }
+                //for (int v = 0; v < allProductsList.size(); v++) {
+//                if (availableStockProductsListTemp.size() > 0) {
+//                    for (int v = 0; v < availableStockProductsListTemp.size(); v++) {
+//                        //if (v < availableStockProductsListTemp.size()) {
+//                            if (availableStockProductsListTemp.get(allProductsList.get(v).getProductId()) != null) {
+//                                availableStockProductsList.put(
+//                                        allProductsList.get(v).getProductId(), availableStockProductsListTemp.get(allProductsList.get(v).getProductId()));
+//                            } else {
+//                                //availableStockProductsList.put(allProductsList.get(v).getProductId(), "0");
+//                            }
+////                        } else {
+////                            //availableStockProductsList.put(allProductsList.get(v).getProductId(), "0");
+////                        }
+//                    }
+//                }
             }
             Log.i("allpList", allProductsList.size() + "\n");
             Log.i("available temp", availableStockProductsListTemp.size() + "\n");
             Log.i("stock", stockBeanArrayList.size() + "\n");
             Log.i("available actual", availableStockProductsList.size() + "\n");
             if (showProductsListView) {
-                // allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
+                allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
 
                 tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsList, previouslySelectedProductsListHashMap, availableStockProductsList);
                 tdc_products_list_view.setAdapter(tdcSalesAdapter);
