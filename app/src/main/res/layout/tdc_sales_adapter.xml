@@ -55,7 +55,7 @@
                     android:layout_gravity="left"
                     android:layout_marginLeft="5dp"
                     android:gravity="left"
-                    android:text="0000.000"
+                    android:text="0.000"
                     android:textColor="@color/colorPrimary"
                     android:textSize="14sp" />
 

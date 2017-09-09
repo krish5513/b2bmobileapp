@@ -55,7 +55,7 @@ public class TDCSalesAdapter extends BaseAdapter {
 
     ArrayList<String> availableStockProductsList;
 
-    public TDCSalesAdapter(Context ctxt, TDCSalesActivity TDCSalesActivity, TDCSalesListener salesListener, ListView products_list_view, ArrayList<ProductsBean> productsList, Map<String, ProductsBean> previouslySelectedProducts,   ArrayList<String> availableStockProductsList) {
+    public TDCSalesAdapter(Context ctxt, TDCSalesActivity TDCSalesActivity, TDCSalesListener salesListener, ListView products_list_view, ArrayList<ProductsBean> productsList, Map<String, ProductsBean> previouslySelectedProducts, ArrayList<String> availableStockProductsList) {
         this.ctxt = ctxt;
         this.activity = TDCSalesActivity;
         this.listener = salesListener;
@@ -66,8 +66,8 @@ public class TDCSalesAdapter extends BaseAdapter {
         this.filteredProductsList = new ArrayList<>();
         this.filteredProductsList.addAll(allProductsList);
         this.selectedProductsListHashMap = new HashMap<>();
-       ;
-        this.availableStockProductsList=availableStockProductsList;
+        ;
+        this.availableStockProductsList = availableStockProductsList;
 
         if (!previouslySelectedProducts.isEmpty()) {
             this.selectedProductsListHashMap = previouslySelectedProducts;
@@ -127,178 +127,185 @@ public class TDCSalesAdapter extends BaseAdapter {
         } else {
             tdcSalesViewHolder = (TDCSalesViewHolder) convertView.getTag();
         }
+        try {
+            final TDCSalesViewHolder currentTDCSalesViewHolder = tdcSalesViewHolder;
 
-        final TDCSalesViewHolder currentTDCSalesViewHolder = tdcSalesViewHolder;
+            final ProductsBean currentProductsBean = getItem(position);
+            currentProductsBean.setProductStock(availableStock);
 
-        final ProductsBean currentProductsBean = getItem(position);
-        currentProductsBean.setProductStock(availableStock);
-
-        if (currentProductsBean.getProductStock() > 0) {
-            tdcSalesViewHolder.arrow_icon.setImageResource(R.drawable.ic_arrow_upward_white_24dp);
-            tdcSalesViewHolder.arrow_icon.setBackground(green_circle);
-        } else {
-            tdcSalesViewHolder.arrow_icon.setImageResource(R.drawable.ic_arrow_downward_white_24dp);
-            tdcSalesViewHolder.arrow_icon.setBackground(red_circle);
-        }
-          if(currentProductsBean.getProductConsumerPrice()!=null){
-            productRate = Double.parseDouble(currentProductsBean.getProductConsumerPrice().replace(",", ""));
-          }
-          else {
-              productRate=0.00f;
-          }
-
-        double taxAmount = 0, amount = 0;
-        float productTax = 0.0f;
-
-        if (currentProductsBean.getProductvat() != null)
-            productTax = Float.parseFloat(currentProductsBean.getProductvat());
-        else if (currentProductsBean.getProductgst() != null)
-            productTax = Float.parseFloat(currentProductsBean.getProductgst());
-
-        currentProductsBean.setProductRatePerUnit(productRate);
-        currentProductsBean.setProductTaxPerUnit(productTax);
-
-        final float finalProductTax = productTax;
-
-        if (finalProductTax > 0)
-            tdcSalesViewHolder.product_name.setText(String.format("%s (%s%%)", currentProductsBean.getProductTitle(), finalProductTax));
-        else
-            tdcSalesViewHolder.product_name.setText(String.format("%s", currentProductsBean.getProductTitle()));
-
-if(availableStockProductsList.get(position)!=null) {
-    tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f",Double.parseDouble(availableStockProductsList.get(position).toString())));
-}else{
-    tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f",availableStock));
-}
-
-        tdcSalesViewHolder.price.setText(Utility.getFormattedCurrency(currentProductsBean.getProductRatePerUnit()));
-        tdcSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
-        tdcSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
-        tdcSalesViewHolder.product_quantity.setText(String.format("%.3f", currentProductsBean.getSelectedQuantity()));
-
-        tdcSalesViewHolder.product_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
-                    String productImageURL = currentProductsBean.getProductImageUrl();
-
-                    if (productImageURL != null && productImageURL.length() > 0) {
-                        String URL = Constants.MAIN_URL + "/b2b/" + productImageURL;
-                        showProductImageFull(URL);
-                    } else {
-                        Toast.makeText(ctxt, "Product image not available..!", Toast.LENGTH_SHORT).show();
-                    }
-                }
+            if (currentProductsBean.getProductStock() > 0) {
+                tdcSalesViewHolder.arrow_icon.setImageResource(R.drawable.ic_arrow_upward_white_24dp);
+                tdcSalesViewHolder.arrow_icon.setBackground(green_circle);
+            } else {
+                tdcSalesViewHolder.arrow_icon.setImageResource(R.drawable.ic_arrow_downward_white_24dp);
+                tdcSalesViewHolder.arrow_icon.setBackground(red_circle);
             }
-        });
+            if (currentProductsBean.getProductConsumerPrice() != null) {
+                productRate = Double.parseDouble(currentProductsBean.getProductConsumerPrice().replace(",", ""));
+            } else {
+                productRate = 0.00f;
+            }
 
-        tdcSalesViewHolder.product_quantity_decrement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Double presentQuantity = Double.parseDouble(currentTDCSalesViewHolder.product_quantity.getText().toString());
+            double taxAmount = 0, amount = 0;
+            float productTax = 0.0f;
 
-                    if (presentQuantity > 0) {
-                        presentQuantity--;
+            if (currentProductsBean.getProductvat() != null)
+                productTax = Float.parseFloat(currentProductsBean.getProductvat());
+            else if (currentProductsBean.getProductgst() != null)
+                productTax = Float.parseFloat(currentProductsBean.getProductgst());
 
-                        double amount = productRate * presentQuantity;
-                        double taxAmount = (amount * finalProductTax) / 100;
+            currentProductsBean.setProductRatePerUnit(productRate);
+            currentProductsBean.setProductTaxPerUnit(productTax);
 
-                        currentProductsBean.setSelectedQuantity(presentQuantity);
-                        currentProductsBean.setProductAmount(amount);
-                        currentProductsBean.setTaxAmount(taxAmount);
+            final float finalProductTax = productTax;
 
-                        currentTDCSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
-                        currentTDCSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
+            if (finalProductTax > 0)
+                tdcSalesViewHolder.product_name.setText(String.format("%s (%s%%)", currentProductsBean.getProductTitle(), finalProductTax));
+            else
+                tdcSalesViewHolder.product_name.setText(String.format("%s", currentProductsBean.getProductTitle()));
 
-                        if (presentQuantity == 0) {
-                            currentTDCSalesViewHolder.product_quantity.setText(zero_cost);
-                            removeProductFromSelectedProductsList(currentProductsBean);
+            if (availableStockProductsList.size() > 0) {
+                if (availableStockProductsList.get(position) != null) {
+                    tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", Double.parseDouble(availableStockProductsList.get(position).toString())));
+                } else {
+                    tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", availableStock));
+                }
+            } else {
+                tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", availableStock));
+            }
+
+            tdcSalesViewHolder.price.setText(Utility.getFormattedCurrency(currentProductsBean.getProductRatePerUnit()));
+            tdcSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
+            tdcSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
+            tdcSalesViewHolder.product_quantity.setText(String.format("%.3f", currentProductsBean.getSelectedQuantity()));
+
+            tdcSalesViewHolder.product_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
+                        String productImageURL = currentProductsBean.getProductImageUrl();
+
+                        if (productImageURL != null && productImageURL.length() > 0) {
+                            String URL = Constants.MAIN_URL + "/b2b/" + productImageURL;
+                            showProductImageFull(URL);
                         } else {
-                            currentTDCSalesViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
-                            updateSelectedProductsList(currentProductsBean);
+                            Toast.makeText(ctxt, "Product image not available..!", Toast.LENGTH_SHORT).show();
                         }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
 
-        tdcSalesViewHolder.product_quantity_increment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Double presentQuantity = Double.parseDouble(currentTDCSalesViewHolder.product_quantity.getText().toString());
+            tdcSalesViewHolder.product_quantity_decrement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Double presentQuantity = Double.parseDouble(currentTDCSalesViewHolder.product_quantity.getText().toString());
 
-                    if (presentQuantity < currentProductsBean.getProductStock()) {
-                        presentQuantity++;
+                        if (presentQuantity > 0) {
+                            presentQuantity--;
 
-                        double amount = productRate * presentQuantity;
-                        double taxAmount = (amount * finalProductTax) / 100;
+                            double amount = productRate * presentQuantity;
+                            double taxAmount = (amount * finalProductTax) / 100;
 
-                        currentProductsBean.setSelectedQuantity(presentQuantity);
-                        currentProductsBean.setProductAmount(amount);
-                        currentProductsBean.setTaxAmount(taxAmount);
+                            currentProductsBean.setSelectedQuantity(presentQuantity);
+                            currentProductsBean.setProductAmount(amount);
+                            currentProductsBean.setTaxAmount(taxAmount);
 
-                        currentTDCSalesViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
-                        currentTDCSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
-                        currentTDCSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
+                            currentTDCSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
+                            currentTDCSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
 
-                        updateSelectedProductsList(currentProductsBean);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        tdcSalesViewHolder.product_quantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                try {
-                    if (!hasFocus) {
-                        EditText quantityEditText = (EditText) view;
-                        Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
-
-                        if (enteredQuantity > currentProductsBean.getProductStock()) {
-                            quantityEditText.setText(zero_cost);
-
-                            removeProductFromSelectedProductsList(currentProductsBean);
-
-                            new AlertDialog.Builder(activity)
-                                    .setTitle("Alert..!")
-                                    .setMessage("Quantity should not be greater than available stock.")
-                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .show();
-                        } else {
-                            if (enteredQuantity > 0) {
-                                double amount = productRate * enteredQuantity;
-                                double taxAmount = (amount * finalProductTax) / 100;
-
-                                currentProductsBean.setSelectedQuantity(enteredQuantity);
-                                currentProductsBean.setProductAmount(amount);
-                                currentProductsBean.setTaxAmount(taxAmount);
-
-                                currentTDCSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
-                                currentTDCSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
-
-                                updateSelectedProductsList(currentProductsBean);
-                            } else if (enteredQuantity == 0) {
+                            if (presentQuantity == 0) {
+                                currentTDCSalesViewHolder.product_quantity.setText(zero_cost);
                                 removeProductFromSelectedProductsList(currentProductsBean);
+                            } else {
+                                currentTDCSalesViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
+                                updateSelectedProductsList(currentProductsBean);
                             }
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
+
+            tdcSalesViewHolder.product_quantity_increment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Double presentQuantity = Double.parseDouble(currentTDCSalesViewHolder.product_quantity.getText().toString());
+
+                        if (presentQuantity < currentProductsBean.getProductStock()) {
+                            presentQuantity++;
+
+                            double amount = productRate * presentQuantity;
+                            double taxAmount = (amount * finalProductTax) / 100;
+
+                            currentProductsBean.setSelectedQuantity(presentQuantity);
+                            currentProductsBean.setProductAmount(amount);
+                            currentProductsBean.setTaxAmount(taxAmount);
+
+                            currentTDCSalesViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
+                            currentTDCSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
+                            currentTDCSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
+
+                            updateSelectedProductsList(currentProductsBean);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            tdcSalesViewHolder.product_quantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean hasFocus) {
+                    try {
+                        if (!hasFocus) {
+                            EditText quantityEditText = (EditText) view;
+                            Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
+
+                            if (enteredQuantity > currentProductsBean.getProductStock()) {
+                                quantityEditText.setText(zero_cost);
+
+                                removeProductFromSelectedProductsList(currentProductsBean);
+
+                                new AlertDialog.Builder(activity)
+                                        .setTitle("Alert..!")
+                                        .setMessage("Quantity should not be greater than available stock.")
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            } else {
+                                if (enteredQuantity > 0) {
+                                    double amount = productRate * enteredQuantity;
+                                    double taxAmount = (amount * finalProductTax) / 100;
+
+                                    currentProductsBean.setSelectedQuantity(enteredQuantity);
+                                    currentProductsBean.setProductAmount(amount);
+                                    currentProductsBean.setTaxAmount(taxAmount);
+
+                                    currentTDCSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
+                                    currentTDCSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
+
+                                    updateSelectedProductsList(currentProductsBean);
+                                } else if (enteredQuantity == 0) {
+                                    removeProductFromSelectedProductsList(currentProductsBean);
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         return convertView;
     }
