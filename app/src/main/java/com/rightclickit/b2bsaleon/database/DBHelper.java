@@ -553,7 +553,6 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_STOCK_TRIPSHEET_ID + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_PRODUCT_CODE + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_PRODUCT_NAME + " VARCHAR,"
-
             + KEY_TRIPSHEET_STOCK_PRODUCT_ID + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_ORDER_QUANTITY + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_DISPATCH_QUANTITY + " VARCHAR,"
@@ -2689,10 +2688,11 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripsheetsListBean.setIsTripshhetClosed(c.getInt(c.getColumnIndex(KEY_TRIPSHEET_IS_TRIP_SHEET_CLOSED)));
 
                     double receivedAmount = fetchTripSheetReceivedAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_ID)));
-                    double dueAmount = (Double.parseDouble(tripsheetsListBean.getmTripshhetOBAmount()) + Double.parseDouble(tripsheetsListBean.getmTripshhetOrderedAmount())) - receivedAmount;
+                    receivedAmount = Double.parseDouble(String.valueOf(receivedAmount).replace(",", ""));
+                    double dueAmount = (Double.parseDouble(tripsheetsListBean.getmTripshhetOBAmount().replace(",", "")) + Double.parseDouble(tripsheetsListBean.getmTripshhetOrderedAmount().replace(",", ""))) - receivedAmount;
 
-                    tripsheetsListBean.setmTripshhetReceivedAmount(String.valueOf(receivedAmount));
-                    tripsheetsListBean.setmTripshhetDueAmount(String.valueOf(dueAmount));
+                    tripsheetsListBean.setmTripshhetReceivedAmount(String.valueOf(receivedAmount).replace(",", ""));
+                    tripsheetsListBean.setmTripshhetDueAmount(String.valueOf(dueAmount).replace(",", ""));
 
                     alltripsheets.add(tripsheetsListBean);
 
@@ -2780,7 +2780,18 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_STOCK_VERIFY_DATE, mTripsheetsStockList.get(i).getmTripsheetStockVerifiedDate());
                 values.put(KEY_TRIPSHEET_STOCK_VERIFY_BY, mTripsheetsStockList.get(i).getmTripsheetStockVerifyBy());
 
-                db.insert(TABLE_TRIPSHEETS_STOCK_LIST, null, values);
+                long l;
+                int checkVal = checkTripsheetStockExistsOrNot(mTripsheetsStockList.get(i).getmTripsheetStockTripsheetId(),
+                        mTripsheetsStockList.get(i).getmTripsheetStockId(), mTripsheetsStockList.get(i).getmTripsheetStockProductId());
+                if (checkVal == 0) {
+                    l = db.insert(TABLE_TRIPSHEETS_STOCK_LIST, null, values);
+                    System.out.println("+++++++++++++++++++++++++ TRIP SHEET STOCK INSERTED++++++++++++++++++++++" + l);
+                } else {
+                    l = db.update(TABLE_TRIPSHEETS_STOCK_LIST, values, KEY_TRIPSHEET_STOCK_TRIPSHEET_ID + " = ?" + " AND " + KEY_TRIPSHEET_STOCK_ID + " = ?" + " AND " + KEY_TRIPSHEET_STOCK_PRODUCT_ID + " = ?",
+                            new String[]{String.valueOf(mTripsheetsStockList.get(i).getmTripsheetStockTripsheetId()),
+                                    String.valueOf(mTripsheetsStockList.get(i).getmTripsheetStockId()), String.valueOf(mTripsheetsStockList.get(i).getmTripsheetStockProductId())});
+                    System.out.println("+++++++++++++++++++++++++ TRIP SHEET STOCK UPDATED++++++++++++++++++++++" + l);
+                }
                 values.clear();
             }
         } catch (Exception e) {
@@ -4146,7 +4157,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 tripSheetDetails.setIsTripshhetClosed(c.getInt(c.getColumnIndex(KEY_TRIPSHEET_IS_TRIP_SHEET_CLOSED)));
 
                 double receivedAmount = fetchTripSheetReceivedAmount(tripSheetDetails.getmTripshhetId());
-                double dueAmount = (Double.parseDouble(tripSheetDetails.getmTripshhetOBAmount()) + Double.parseDouble(tripSheetDetails.getmTripshhetOrderedAmount())) - receivedAmount;
+                receivedAmount = Double.parseDouble(String.valueOf(receivedAmount).replace(",", ""));
+                double dueAmount = (Double.parseDouble(tripSheetDetails.getmTripshhetOBAmount().replace(",", "")) + Double.parseDouble(tripSheetDetails.getmTripshhetOrderedAmount().replace(",", ""))) - receivedAmount;
 
                 tripSheetDetails.setmTripshhetReceivedAmount(String.valueOf(receivedAmount));
                 tripSheetDetails.setmTripshhetDueAmount(String.valueOf(dueAmount));
@@ -4913,7 +4925,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_AGENT_STOCK_PRODUCT_CNQUANTITY, mStockList.get(i).getmProductCBQuantity());
 
 
-                int checkVal = checkAgentStockExistsOrNot(mStockList.get(i).getmProductId(),agentId);
+                int checkVal = checkAgentStockExistsOrNot(mStockList.get(i).getmProductId(), agentId);
                 if (checkVal == 0) {
                     System.out.println("+++++++++++++++++++++++++ STOCK INSERTED++++++++++++++++++++++");
                     db.insert(TABLE_AGENTS_STOCK_LIST, null, values);
@@ -4994,6 +5006,29 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return stockList;
+    }
+
+    /**
+     * Method to check weather the trip sheet Stock exists or not using trip sheet id and stockid and product id.
+     *
+     * @param tripsheetId
+     * @param stockId
+     * @return integer value
+     */
+    public int checkTripsheetStockExistsOrNot(String tripsheetId, String stockId, String productId) {
+        int maxID = 0;
+
+        String selectQuery = "SELECT  * FROM " + TABLE_TRIPSHEETS_STOCK_LIST + " WHERE " + KEY_TRIPSHEET_STOCK_TRIPSHEET_ID + "='" + tripsheetId + "'"
+                + " AND " + KEY_TRIPSHEET_STOCK_ID + "='" + stockId + "'" + " AND " + KEY_TRIPSHEET_STOCK_PRODUCT_ID + "='" + productId + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                maxID = cursor.getInt(0);
+
+            } while (cursor.moveToNext());
+        }
+        return maxID;
     }
 
 }

@@ -236,7 +236,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                             tripsheetsListBean.setmTripshhetReceivedAmount("0");
                         }
 
-                        Double dueAmt = Double.parseDouble(tripsheetsListBean.getmTripshhetOrderedAmount()) - Double.parseDouble(tripsheetsListBean.getmTripshhetReceivedAmount());
+                        Double dueAmt = Double.parseDouble(tripsheetsListBean.getmTripshhetOrderedAmount().replace(",", "")) - Double.parseDouble(tripsheetsListBean.getmTripshhetReceivedAmount().replace(",", ""));
                         tripsheetsListBean.setmTripshhetDueAmount(String.valueOf(dueAmt));
                         tripsheetsListBean.setmTripshhetRouteCode("route_code");
                         tripsheetsListBean.setmTripshhetSalesMenCode("salesman_code");
@@ -331,6 +331,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     }
 
                     synchronized (this) {
+                        //System.out.println("TRIPSHEETS STOCK SIZE::: " + mTripsheetsStockList.size());
                         if (mTripsheetsStockList.size() > 0) {
                             mDBHelper.insertTripsheetsStockListData(mTripsheetsStockList);
                         }

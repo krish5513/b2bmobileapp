@@ -157,7 +157,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
             mDBHelper = new DBHelper(TripSheetView.this);
             mPreferences = new MMSharedPreferences(TripSheetView.this);
-           // mPreferences.putString("tripId",mTripSheetId);
+            // mPreferences.putString("tripId",mTripSheetId);
             networkConnectionDetector = new NetworkConnectionDetector(activityContext);
 
             ts_ob_amount = (TextView) findViewById(R.id.ts_ob_amount);
@@ -346,10 +346,10 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             // Updating Trip Sheet values in header
             TripsheetsList currentTripSheetDetails = mDBHelper.fetchTripSheetDetails(mTripSheetId);
             if (currentTripSheetDetails != null) {
-                ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount())));
-                ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount())));
-                ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())));
-                ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())));
+                ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount().replace(",", ""))));
+                ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount().replace(",", ""))));
+                ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount().replace(",", ""))));
+                ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount().replace(",", ""))));
             }
 
             isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);

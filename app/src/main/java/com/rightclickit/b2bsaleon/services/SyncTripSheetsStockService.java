@@ -116,10 +116,11 @@ public class SyncTripSheetsStockService extends Service {
                 TripSheetStockListWithProducts stockListWithProducts = null;
                 JSONArray productCodesArray = new JSONArray();
                 JSONArray quantitiesArray = new JSONArray();
-
+                System.out.println("STOCK QUANTITY" + unUploadedStockLists.size());
                 for (int i = 0; i < unUploadedStockLists.size(); i++) {
                     TripsheetsStockList currentStockDetails = unUploadedStockLists.get(i);
-
+                    System.out.println("P CODE ===== " + currentStockDetails.getmTripsheetStockProductCode());
+                    System.out.println("P QAUN ===== " + currentStockDetails.getmTripsheetStockDispatchQuantity());
                     if (i == 0) {
                         stockListWithProducts = new TripSheetStockListWithProducts();
                         stockListWithProducts.setmTripsheetStockId(currentStockDetails.getmTripsheetStockId());
@@ -177,13 +178,11 @@ public class SyncTripSheetsStockService extends Service {
                 requestObj.put("date", currentStock.getDate());
 
                 String requestURL = String.format("%s%s%s/update", Constants.MAIN_URL, Constants.SYNC_TRIPSHEETS_PORT, Constants.GET_TRIPSHEETS_STOCK_LIST);
-
-                String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
-
                 System.out.println("requestObj = " + requestObj);
                 System.out.println("requestURL = " + requestURL);
-                System.out.println("responseString = " + responseString);
 
+                String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
+                System.out.println("responseString = " + responseString);
                 if (responseString != null && !(responseString == "error" || responseString == "failure")) {
                     JSONObject resultObj = new JSONObject(responseString);
 

@@ -122,10 +122,10 @@ public class TripsheetsListAdapter extends BaseAdapter {
         else
             mHolder.mTripsheetStatus.setText("Closed");
 
-        mHolder.mTripsheetOBAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetOBAmount())));
-        mHolder.mTripsheetOrderedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetOrderedAmount())));
-        mHolder.mTripsheetReceivedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetReceivedAmount())));
-        mHolder.mTripsheetDueAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetDueAmount())));
+        mHolder.mTripsheetOBAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetOBAmount().replace(",", ""))));
+        mHolder.mTripsheetOrderedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetOrderedAmount().replace(",", ""))));
+        mHolder.mTripsheetReceivedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetReceivedAmount().replace(",", ""))));
+        mHolder.mTripsheetDueAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetDueAmount().replace(",", ""))));
 
         mHolder.stockbtn.setOnClickListener(new View.OnClickListener() {
             @Override

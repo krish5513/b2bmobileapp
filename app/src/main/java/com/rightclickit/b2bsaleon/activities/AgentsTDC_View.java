@@ -150,7 +150,11 @@ public class AgentsTDC_View extends AppCompatActivity {
                 takeOrderPreviewBeanArrayList.add(tb);
 
                 name=mTakeOrderBeansList.get(i).getmProductTitle();
-                price= Double.parseDouble(mTakeOrderBeansList.get(i).getmAgentPrice());
+                if(mTakeOrderBeansList.get(i).getmAgentPrice()!=null) {
+                    price = Double.parseDouble(mTakeOrderBeansList.get(i).getmAgentPrice());
+                }else {
+                    price = 0.0f;
+                }
                 quantity= Double.parseDouble(mTakeOrderBeansList.get(i).getmProductQuantity());
                 tax = 0.0f;
                 String str_Taxname = "";
