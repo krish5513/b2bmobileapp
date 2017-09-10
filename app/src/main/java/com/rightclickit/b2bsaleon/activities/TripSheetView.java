@@ -61,9 +61,13 @@ import com.rightclickit.b2bsaleon.util.Utility;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -78,7 +82,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     LinearLayout tsProductsLayout;
     LinearLayout tsTDCLayout;
     LinearLayout tsRetailersLayout;
-    private TextView ts_ob_amount, ts_order_value, ts_total_received, ts_total_due;
+    private TextView ts_ob_amount, ts_order_value, ts_total_received, ts_total_due,ts_code,ts_date;
     private Location mLastLocation, startingLocation, endingLocation;
 
     // Google client to interact with Google API
@@ -116,6 +120,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private ArrayList<AgentLatLong> agentsLatLongList = new ArrayList<>(); // this list contains all valid agents lat long details
     private NetworkConnectionDetector networkConnectionDetector;
     private boolean isTripSheetClosed = false;
+    String startDateStrNewFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,18 +152,38 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-            Bundle bundle = this.getIntent().getExtras();
-            if (bundle != null) {
-                mTripSheetId = bundle.getString("tripsheetId");
-                // mTripSheetCode = bundle.getString("tripsheetCode");
-                // mTripSheetDate = bundle.getString("tripsheetDate");
-
-            }
-
             mDBHelper = new DBHelper(TripSheetView.this);
             mPreferences = new MMSharedPreferences(TripSheetView.this);
             // mPreferences.putString("tripId",mTripSheetId);
             networkConnectionDetector = new NetworkConnectionDetector(activityContext);
+
+            Bundle bundle = this.getIntent().getExtras();
+            if (bundle != null) {
+                mTripSheetId = bundle.getString("tripsheetId");
+
+
+            }
+            mTripSheetCode = mPreferences.getString("tripsheetCode");
+            mTripSheetDate = mPreferences.getString("tripsheetDate");
+
+            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat outputFormat = new SimpleDateFormat("MMM dd,yyyy");
+            mTripSheetDate = mPreferences.getString("tripsheetDate");
+            Date date = null;
+            try {
+                date = inputFormat.parse(mTripSheetDate);
+                startDateStrNewFormat = outputFormat.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+
+            ts_code=(TextView)findViewById(R.id.tripsheetCode);
+            ts_date=(TextView)findViewById(R.id.tripsheetDate);
+
+            ts_code.setText(mTripSheetCode);
+            ts_date.setText(startDateStrNewFormat);
 
             ts_ob_amount = (TextView) findViewById(R.id.ts_ob_amount);
             ts_order_value = (TextView) findViewById(R.id.ts_order_value);

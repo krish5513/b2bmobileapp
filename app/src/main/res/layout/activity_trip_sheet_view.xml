@@ -13,21 +13,81 @@
         android:layout_marginBottom="60dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView4"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/route_grey"
-            android:drawablePadding="5dp"
-            android:gravity="left|center"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:text="Daily Trip sheet # 908915,   feb 03, 2017"
-            android:textAllCaps="true"
-            android:textColor="@color/greydark"
-            android:textSize="16sp"
-            android:textStyle="normal" />
+            android:orientation="horizontal">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.22"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/route_grey"
+                    android:drawablePadding="5dp"
+                    android:gravity="left|center"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Daily Trip sheet #"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.35"
+                android:paddingTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tripsheetCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="908915 "
+                    android:drawablePadding="5dp"
+                    android:paddingLeft="5dp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="16sp"
+                    android:textStyle="normal"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.32"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tripsheetDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="feb,03,2017"
+                    android:textColor="@color/greydark"
+                    android:drawablePadding="5dp"
+                    android:gravity="left|center"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:textAllCaps="true"
+                    android:textSize="16sp"
+                    android:textStyle="normal"/>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

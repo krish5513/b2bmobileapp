@@ -114,7 +114,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private MMSharedPreferences mPreferences;
 
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
-
+     JSONArray routecode=new JSONArray();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -476,7 +476,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                             case 4:
                                 if (mRouteCode.equals("")) {
                                     mRouteCode = routesDataList.get(4);
+                                    routecode.put(mRouteCode);
                                 } else if (!routesDataList.get(4).toString().equals(mRouteCode)) {
+                                    routecode.put(routesDataList.get(4).toString());
                                     mRouteCode = mRouteCode + "," + routesDataList.get(4);
                                 }
                                 //mRouteCode = mRouteCode + routesDataList.get(4);

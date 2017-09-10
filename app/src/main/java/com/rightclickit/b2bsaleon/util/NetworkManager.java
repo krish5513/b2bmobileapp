@@ -254,6 +254,22 @@ public class NetworkManager {
 
         return result.toString();
     }
+    private String getPostDataString1(HashMap<String, Object> params) throws UnsupportedEncodingException {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            if (first)
+                first = false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode((String) entry.getValue(), "UTF-8"));
+        }
+
+        return result.toString();
+    }
 
     /**
      * Method to execute GET requests.

@@ -61,7 +61,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
         //  this.mDBHelper = new DBHelper(context);
     }
 
-    public void getStakeHoldersList(String s) {
+  /*  public void getStakeHoldersList(String s) {
         try {
             type = s;
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
@@ -82,7 +82,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public void getAgentsList(String s) {
         try {

@@ -420,6 +420,7 @@
                                 android:hint="Cheque No"
                                 android:longClickable="false"
                                 android:padding="10dp"
+                                android:inputType="number"
                                 android:textColor="@color/greydark"
                                 android:textSize="14sp" />
                         </android.support.design.widget.TextInputLayout>

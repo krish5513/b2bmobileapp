@@ -82,6 +82,7 @@ public class AsyncRequest extends AsyncTask<Void, Void, String> {
         isUrlEncode = true;
     }
 
+
 //    public AsyncRequest(Context context, PrevilegesModel previlegesModel, String settingsURL, MethodType post, HashMap<String, String> params) {
 //    }
 

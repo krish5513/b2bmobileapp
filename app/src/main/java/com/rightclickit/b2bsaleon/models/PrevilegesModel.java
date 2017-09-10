@@ -37,7 +37,7 @@ public class PrevilegesModel implements OnAsyncRequestCompleteListener {
         this.mDBHelper = new DBHelper(context);
     }
 
-    public void getUserPrevileges() {
+  /*  public void getUserPrevileges() {
         try {
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String token = "token="+mPreferences.getString("token");
@@ -52,7 +52,7 @@ public class PrevilegesModel implements OnAsyncRequestCompleteListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
     @Override
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
         try{
