@@ -161,13 +161,17 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
                 try {
                     Double presentQuantity = Double.parseDouble(currentTripSheetReturnsViewHolder.product_quantity.getText().toString());
 
-                    if (presentQuantity < currentDeliveryBean.getDeliveredQuantity()) {
+                    if (presentQuantity >=0) {
                         presentQuantity++;
 
                         currentDeliveryBean.setSelectedQuantity(presentQuantity);
+                        if (presentQuantity == 0) {
+                            currentTripSheetReturnsViewHolder.product_quantity.setText(zero_cost);
+                            updateSelectedReturnProductsList(currentDeliveryBean);
+                        } else {
                         currentTripSheetReturnsViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
                         updateSelectedReturnProductsList(currentDeliveryBean);
-                    }
+                    }}
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -185,7 +189,7 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
                         if (quantityEditText.getText().length() > 0) {
                             Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
 
-                            if (enteredQuantity > currentDeliveryBean.getDeliveredQuantity()) {
+                          /*  if (enteredQuantity > currentDeliveryBean.getDeliveredQuantity()) {
                                 quantityEditText.setText(zero_cost);
                                 currentDeliveryBean.setSelectedQuantity(0);
 
@@ -202,10 +206,10 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
                                         .setIcon(android.R.drawable.ic_dialog_alert)
                                         .show();
 
-                            } else {
+                            } else {*/
                                 currentDeliveryBean.setSelectedQuantity(enteredQuantity);
                                 updateSelectedReturnProductsList(currentDeliveryBean);
-                            }
+
                         }
                     }
                 } catch (Exception e) {
