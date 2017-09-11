@@ -91,7 +91,8 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
                 String deviceName = mPreferences.getString("name") + deviceId.substring(deviceId.length() - 3);
                 String settingsURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_ADD, Constants.SAVE_DEVICE_DETAILS);
                 System.out.println("The URL IS==== " + settingsURL);
-                HashMap<String, Object> params = new HashMap<String, Object>();
+                //HashMap<String, Object> params = new HashMap<String, Object>();
+                JSONObject params = new JSONObject();
                 params.put("device_id", deviceId);
                 params.put("user_id", mPreferences.getString("userId"));
                 params.put("device_name", deviceName);
@@ -101,7 +102,7 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
                 params.put("route_code", mRouteCode);
                 System.out.println("The PARAMS ARE==== " + params.toString());
 
-                AsyncRequest routeidRequest = new AsyncRequest(context, this, settingsURL, AsyncRequest.MethodType.POST, params, "set");
+                AsyncRequest routeidRequest = new AsyncRequest(context, this, settingsURL, AsyncRequest.MethodType.POST, params);
                 routeidRequest.execute();
             }
 
