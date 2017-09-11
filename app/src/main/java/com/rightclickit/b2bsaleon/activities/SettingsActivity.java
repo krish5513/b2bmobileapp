@@ -56,6 +56,7 @@ import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -114,7 +115,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private MMSharedPreferences mPreferences;
 
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
-     JSONArray routecode=new JSONArray();
+    JSONArray routecode = new JSONArray();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -367,8 +368,8 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                         //bundle.putString("COMPANYNAME", companyName.getText().toString());
 
                         String dId = getDeviceId();
-
-                        settingsmodel.saveDeviceDetails(dId, vehicleNo.getText().toString(), transporterName.getText().toString(), companyName.getText().toString(),mRouteCode);
+                        
+                        settingsmodel.saveDeviceDetails(dId, vehicleNo.getText().toString(), transporterName.getText().toString(), companyName.getText().toString(), mRouteCode, routecode);
 
                         long f = mDBHelper.updateUserDetails(mPreferences.getString("userId"), companyName.getText().toString(), "", userName.getText().toString(),
                                 "", mobile.getText().toString(), "", "", "", "", "", "", "", dId, transporterName.getText().toString(),

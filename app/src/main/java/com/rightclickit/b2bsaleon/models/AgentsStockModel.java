@@ -39,11 +39,25 @@ public class AgentsStockModel implements OnAsyncRequestCompleteListener {
     private JSONArray routesArray;
     private ArrayList<AgentsStockBean> mAgentsStockList = new ArrayList<AgentsStockBean>();
     private ArrayList<String> prodIdsList = new ArrayList<String>();
+    private HashMap<String, String> prodIdsListMap = new HashMap<String, String>();
+
     private ArrayList<String> prodNamesList = new ArrayList<String>();
+    private HashMap<String, String> prodNamesListMap = new HashMap<String, String>();
+
     private ArrayList<String> prodCodesList = new ArrayList<String>();
+    private HashMap<String, String> prodCodesListMap = new HashMap<String, String>();
+
     private ArrayList<String> prodUOMList = new ArrayList<String>();
+    private HashMap<String, String> prodUOMListMap = new HashMap<String, String>();
+
+    // SALE QUNATITY...
+    private ArrayList<String> prodSaleIdsList = new ArrayList<String>();
+
     private ArrayList<String> prodQuantityList = new ArrayList<String>();
+    private HashMap<String, String> prodQuantityListMap = new HashMap<String, String>();
+
     private ArrayList<String> prodDelQuantityList = new ArrayList<String>();
+    private HashMap<String, String> prodDelQuantityListMap = new HashMap<String, String>();
     private ArrayList<AgentsBean> mAgentsBeansList_MyPrivilege = new ArrayList<AgentsBean>();
     private String firstname = "", lastname = "", mobileno = "", stakeid = "", userid = "", email = "", password = "123456789", code = "", reportingto = "", verigycode = "", status = "IA", delete = "N", address = "", latitude = "", longitude = "", timestamp = "", ob = "", ordervalue = "", totalamount = "", dueamount = "", pic = "";
     private boolean isSaveDeviceDetails, isMyProfilePrivilege;
@@ -81,20 +95,46 @@ public class AgentsStockModel implements OnAsyncRequestCompleteListener {
             if (prodIdsList.size() > 0) {
                 prodIdsList.clear();
             }
+            if (prodIdsListMap.size() > 0) {
+                prodIdsListMap.clear();
+            }
+
             if (prodCodesList.size() > 0) {
                 prodCodesList.clear();
             }
+            if (prodCodesListMap.size() > 0) {
+                prodCodesListMap.clear();
+            }
+
             if (prodQuantityList.size() > 0) {
                 prodQuantityList.clear();
             }
+            if (prodQuantityListMap.size() > 0) {
+                prodQuantityListMap.clear();
+            }
+
             if (prodNamesList.size() > 0) {
                 prodNamesList.clear();
             }
+            if (prodNamesListMap.size() > 0) {
+                prodNamesListMap.clear();
+            }
+
             if (prodUOMList.size() > 0) {
                 prodUOMList.clear();
             }
+            if (prodUOMListMap.size() > 0) {
+                prodUOMListMap.clear();
+            }
+
             if (prodDelQuantityList.size() > 0) {
                 prodDelQuantityList.clear();
+            }
+            if (prodDelQuantityListMap.size() > 0) {
+                prodDelQuantityListMap.clear();
+            }
+            if (prodSaleIdsList.size() > 0) {
+                prodSaleIdsList.clear();
             }
             System.out.println("========= STOCKS response = " + response);
             JSONObject resObj = new JSONObject(response);
@@ -174,6 +214,17 @@ public class AgentsStockModel implements OnAsyncRequestCompleteListener {
                 if (length > 0) {
                     for (int i = 0; i < length; i++) {
                         JSONObject jsonObject = stockArray.getJSONObject(i);
+                        // Product Ids
+                        if (jsonObject.has("agent_prod_ids")) {
+                            JSONArray prodIdsArray = jsonObject.getJSONArray("agent_prod_ids");
+                            int prodIdsLe = prodIdsArray.length();
+                            if (prodIdsLe > 0) {
+                                for (int a = 0; a < prodIdsLe; a++) {
+                                    prodSaleIdsList.add(prodIdsArray.get(a).toString());
+                                }
+                            }
+                        }
+
                         // Product Qunatity
                         if (jsonObject.has("agent_prod_quantity")) {
                             JSONArray prodQunatityArray = jsonObject.getJSONArray("agent_prod_quantity");
@@ -193,54 +244,74 @@ public class AgentsStockModel implements OnAsyncRequestCompleteListener {
             System.out.println("PS:: " + len);
             if (len > 0) {
                 for (int b = 0; b < len; b++) {
-                    double stockQunatity = 0.0f, saleQuantity = 0.0f;
-                    AgentsStockBean aBean = new AgentsStockBean();
-
-                    if (prodIdsList.get(b) != null) {
-                        aBean.setmProductId(prodIdsList.get(b).toString());
-                    } else {
-                        aBean.setmProductId("");
-                    }
-
-                    if (prodNamesList.get(b) != null) {
-                        aBean.setmProductName(prodNamesList.get(b).toString());
-                    } else {
-                        aBean.setmProductName("");
-                    }
-
-                    if (prodCodesList.get(b) != null) {
-                        aBean.setmProductCode(prodCodesList.get(b).toString());
-                    } else {
-                        aBean.setmProductCode("");
-                    }
-
-                    if (prodUOMList.get(b) != null) {
-                        aBean.setmProductUOM(prodUOMList.get(b).toString());
-                    } else {
-                        aBean.setmProductUOM("");
-                    }
-
-                    if (prodQuantityList.get(b) != null) {
-                        aBean.setmProductStockQunatity(prodQuantityList.get(b).toString());
-                        stockQunatity = Double.parseDouble((prodQuantityList.get(b).toString()));
-                    } else {
-                        aBean.setmProductStockQunatity("0");
-                    }
-
-                    if (prodDelQuantityList.size() > 0) {
-                        aBean.setmProductDeliveryQunatity(prodDelQuantityList.get(b).toString());
-                        saleQuantity = Double.parseDouble((prodDelQuantityList.get(b).toString()));
-                    } else {
-                        aBean.setmProductDeliveryQunatity("0");
-                    }
-
-                    double CBQ = stockQunatity - saleQuantity;
-                    aBean.setmProductCBQuantity(String.valueOf(CBQ));
-
-                    mAgentsStockList.add(aBean);
+                    prodIdsListMap.put(prodIdsList.get(b).toString(), prodIdsList.get(b).toString());
+                    prodNamesListMap.put(prodIdsList.get(b).toString(), prodNamesList.get(b).toString());
+                    prodCodesListMap.put(prodIdsList.get(b).toString(), prodCodesList.get(b).toString());
+                    prodUOMListMap.put(prodIdsList.get(b).toString(), prodUOMList.get(b).toString());
+                    prodQuantityListMap.put(prodIdsList.get(b).toString(), prodQuantityList.get(b).toString());
                 }
             }
 
+            int saleLen = prodSaleIdsList.size();
+            System.out.println("SALE SIZE::: " + saleLen);
+            if (saleLen > 0) {
+                for (int g = 0; g < saleLen; g++) {
+                    prodDelQuantityListMap.put(prodSaleIdsList.get(g).toString(), prodDelQuantityList.get(g).toString());
+                }
+            }
+
+            System.out.println("FINAL STOCK SIZE::: " + prodQuantityListMap.size());
+            System.out.println("FINAL SALE SIZE::: " + prodDelQuantityListMap.size());
+
+            for (int n = 0; n < prodIdsList.size(); n++) {
+                System.out.println("StQ:" + prodQuantityListMap.get(prodIdsList.get(n).toString()) + "\n");
+                System.out.println("SaleQ:" + prodDelQuantityListMap.get(prodIdsList.get(n).toString()) + "\n");
+                double stockQunatity = 0.0f, saleQuantity = 0.0f;
+                AgentsStockBean aBean = new AgentsStockBean();
+
+                if (prodIdsListMap.get(prodIdsList.get(n).toString()) != null) {
+                    aBean.setmProductId(prodIdsListMap.get(prodIdsList.get(n).toString()));
+                } else {
+                    aBean.setmProductId("");
+                }
+
+                if (prodNamesListMap.get(prodIdsList.get(n).toString()) != null) {
+                    aBean.setmProductName(prodNamesListMap.get(prodIdsList.get(n).toString()));
+                } else {
+                    aBean.setmProductName("");
+                }
+
+                if (prodCodesListMap.get(prodIdsList.get(n).toString()) != null) {
+                    aBean.setmProductCode(prodCodesListMap.get(prodIdsList.get(n).toString()));
+                } else {
+                    aBean.setmProductCode("");
+                }
+
+                if (prodUOMListMap.get(prodIdsList.get(n).toString()) != null) {
+                    aBean.setmProductUOM(prodUOMListMap.get(prodIdsList.get(n).toString()));
+                } else {
+                    aBean.setmProductUOM("");
+                }
+
+                if (prodQuantityListMap.get(prodIdsList.get(n).toString()) != null) {
+                    aBean.setmProductStockQunatity(prodQuantityListMap.get(prodIdsList.get(n).toString()));
+                    stockQunatity = Double.parseDouble(prodQuantityListMap.get(prodIdsList.get(n).toString()));
+                } else {
+                    aBean.setmProductStockQunatity("0");
+                }
+
+                if (prodDelQuantityListMap.get(prodIdsList.get(n).toString()) != null) {
+                    aBean.setmProductDeliveryQunatity(prodDelQuantityListMap.get(prodIdsList.get(n).toString()));
+                    saleQuantity = Double.parseDouble(prodDelQuantityListMap.get(prodIdsList.get(n).toString()));
+                } else {
+                    aBean.setmProductDeliveryQunatity("0");
+                }
+
+                double CBQ = stockQunatity - saleQuantity;
+                aBean.setmProductCBQuantity(String.valueOf(CBQ));
+
+                mAgentsStockList.add(aBean);
+            }
             synchronized (this) {
                 if (mAgentsStockList.size() > 0) {
                     mDBHelper.insertAgentsStockListData(mAgentsStockList, agentId);

@@ -133,15 +133,13 @@ public class TDCSalesAdapter extends BaseAdapter {
             final ProductsBean currentProductsBean = getItem(position);
             if (availableStockProductsList.get(filteredProductsList.get(position).getProductId()) != null) {
                 //if (availableStockProductsList.get(filteredProductsList.get(position).getProductId()) == filteredProductsList.get(position).getProductId()) {
-                    currentProductsBean.setProductStock(Double.parseDouble(availableStockProductsList.get(filteredProductsList.get(position).getProductId()).toString()));
-                    System.out.println("MATCHED::::::::: ");
+                currentProductsBean.setProductStock(Double.parseDouble(availableStockProductsList.get(filteredProductsList.get(position).getProductId()).toString()));
 //                } else {
 //                    currentProductsBean.setProductStock(availableStock);
 //                    System.out.println("NOT MATCHED 111111111::::::::: ");
 //                }
             } else {
                 currentProductsBean.setProductStock(availableStock);
-                System.out.println("NOT MATCHED 222222222::::::::: ");
             }
 
             if (currentProductsBean.getProductStock() > 0) {
@@ -164,7 +162,7 @@ public class TDCSalesAdapter extends BaseAdapter {
                 productTax = Float.parseFloat(currentProductsBean.getProductvat());
             else if (currentProductsBean.getProductgst() != null)
                 productTax = Float.parseFloat(currentProductsBean.getProductgst());
-
+            
             currentProductsBean.setProductRatePerUnit(productRate);
             currentProductsBean.setProductTaxPerUnit(productTax);
 
@@ -176,9 +174,9 @@ public class TDCSalesAdapter extends BaseAdapter {
                 tdcSalesViewHolder.product_name.setText(String.format("%s", currentProductsBean.getProductTitle()));
 
             if (availableStockProductsList.get(filteredProductsList.get(position).getProductId()) != null) {
-               // if (availableStockProductsList.get(filteredProductsList.get(position).getProductId()).equals(filteredProductsList.get(position).getProductId())) {
-                    tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", Double.parseDouble(availableStockProductsList.get(filteredProductsList.get(position).getProductId()).toString())));
-                    // System.out.println("MATCHED 111111111::::::::: ");
+                // if (availableStockProductsList.get(filteredProductsList.get(position).getProductId()).equals(filteredProductsList.get(position).getProductId())) {
+                tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", Double.parseDouble(availableStockProductsList.get(filteredProductsList.get(position).getProductId()).toString())));
+                // System.out.println("MATCHED 111111111::::::::: ");
 //                } else {
 //                    tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", availableStock));
 //                    //System.out.println("NOT MATCHED 333333333333333::::::::: ");
@@ -218,7 +216,7 @@ public class TDCSalesAdapter extends BaseAdapter {
                         if (presentQuantity > 0) {
                             presentQuantity--;
 
-                            double amount = productRate * presentQuantity;
+                            double amount = currentProductsBean.getProductRatePerUnit() * presentQuantity;
                             double taxAmount = (amount * finalProductTax) / 100;
 
                             currentProductsBean.setSelectedQuantity(presentQuantity);
@@ -250,8 +248,7 @@ public class TDCSalesAdapter extends BaseAdapter {
 
                         if (presentQuantity < currentProductsBean.getProductStock()) {
                             presentQuantity++;
-
-                            double amount = productRate * presentQuantity;
+                            double amount = currentProductsBean.getProductRatePerUnit() * presentQuantity;
                             double taxAmount = (amount * finalProductTax) / 100;
 
                             currentProductsBean.setSelectedQuantity(presentQuantity);

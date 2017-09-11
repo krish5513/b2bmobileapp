@@ -238,6 +238,73 @@ public class NetworkManager {
         return responseObject;
     }
 
+    /**
+     * Method to execute post requests with url encoded data as input params.
+     *
+     * @param url
+     * @param params
+     * @return String
+     */
+
+    public String makeHttpPostConnectionWithUrlEncoeContentTypeSettings(String url, HashMap<String, Object> params) {
+        try {
+            urlObj = new URL(url);
+            con = (HttpURLConnection) urlObj.openConnection();
+
+            // add reuqest header
+            con.setRequestMethod("POST");
+            //con.setRequestProperty("User-Agent", USER_AGENT);
+            // con.setRequestProperty("Accept-Language", ACCEPT_LANGUAGE);
+            con.setRequestProperty("Content-Type", CONTENT_TYPE_FORM_ENCODE);
+
+            // Send post request
+            con.setDoOutput(true);
+
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            wr.writeBytes(getPostDataString2(params));
+            wr.flush();
+            wr.close();
+
+            int responseCode = con.getResponseCode();
+            printDataInLog("POST Request : ", "URL : " + url);
+            printDataInLog("POST Request : ", "Parameters : " + params);
+            printDataInLog("POST Request : ", "Response Code : " + responseCode);
+
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+
+                in.close();
+
+                responseObject = response.toString();
+
+                //JSONObject jsonObject = new JSONObject(responseObject);
+
+            } else if (responseCode == HttpURLConnection.HTTP_CLIENT_TIMEOUT) {
+                responseObject = "timeout";
+            } else {
+                responseObject = "failure";
+            }
+
+            // print result
+            printDataInLog("POST Response : ", responseObject);
+
+        } catch (Exception e) {
+            responseObject = "error";
+            e.printStackTrace();
+        } finally {
+            con.disconnect();
+        }
+
+        return responseObject;
+    }
+
     private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
@@ -254,7 +321,25 @@ public class NetworkManager {
 
         return result.toString();
     }
+
     private String getPostDataString1(HashMap<String, Object> params) throws UnsupportedEncodingException {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            if (first)
+                first = false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode((String) entry.getValue(), "UTF-8"));
+        }
+
+        return result.toString();
+    }
+
+    private String getPostDataString2(HashMap<String, Object> params) throws UnsupportedEncodingException {
         StringBuilder result = new StringBuilder();
         boolean first = true;
         for (Map.Entry<String, Object> entry : params.entrySet()) {
