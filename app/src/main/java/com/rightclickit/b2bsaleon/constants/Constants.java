@@ -24,8 +24,11 @@ public class Constants {
     public static final String BUNDLE_REQUEST_FROM_TDC_SALES_LIST = "TDCSalesList";
     public static final String BUNDLE_REQUEST_FROM_RETAILER_PAYMENTS_LIST = "TDCCustomerPayments";
     public static final String BUNDLE_TDC_SALE_ORDER = "TDCSaleOrder";
+    public static final String BUNDLE_TDC_SALE_ORDER_SALE_QUNAT = "TDCSaleOrderQuantity";
     public static final String BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW = "TDCSaleCurrentOrder_Preview";
+    public static final String BUNDLE_TDC_SALE_QUANTITY = "TDCSaleCurrentOrder_SaleQuantity";
     public static final String BUNDLE_TDC_SALE_CURRENT_ORDER = "TDCSaleCurrentOrder";
+    public static final String BUNDLE_TDC_SALE_CURRENT_SALEQUNATITY = "TDCSaleCurrentSaleQuantity";
     public static final String BUNDLE_TDC_CUSTOMER = "TDCCustomer";
     public static final String BUNDLE_SELECTED_CUSTOMER_ID = "CustomerId";
 
@@ -133,7 +136,7 @@ public class Constants {
     public static final String TDC_SALES_ORDER_ADD = "/tdc_customer_order/add";
 
     //Tripsheets List URL
-    public static final String GET_TRIPSHEETS_LIST = "/tripsheet/list";
+    public static final String GET_TRIPSHEETS_LIST = "/tripsheet/list_history";
 
     //Tripsheets Stock List
     public static final String GET_TRIPSHEETS_STOCK_LIST = "/tripsheet/stock";

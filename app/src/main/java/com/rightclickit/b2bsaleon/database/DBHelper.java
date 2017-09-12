@@ -5032,4 +5032,58 @@ public class DBHelper extends SQLiteOpenHelper {
         return maxID;
     }
 
+    /**
+     * Method to update the stock after tdc sale has been done.
+     */
+    public void updateAgentStockAfterTDCSales(String mAgentId, String mProdId, String deliveryQunatity) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY, deliveryQunatity);
+
+            int status = db.update(TABLE_AGENTS_STOCK_LIST, values, KEY_AGENT_STOCK_AGENT_ID + " = ?" + " AND " + KEY_AGENT_STOCK_PRODUCT_ID + " = ?", new String[]{String.valueOf(mAgentId), String.valueOf(mProdId)});
+
+            System.out.println("AgentStockUpdated:: " + status);
+
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    /**
+     * Method to get sale quantity by agent and product id.
+     *
+     * @param agentId
+     * @return
+     */
+    public String getSaleQuantityByAgentAndProductId(String agentId, String productId) {
+        String saleQuantity = "";
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_AGENTS_STOCK_LIST + " WHERE " + KEY_AGENT_STOCK_AGENT_ID + " = '" + agentId + "'"
+                    + " AND " + KEY_AGENT_STOCK_PRODUCT_ID + " = '" + productId + "'";
+            SQLiteDatabase db = this.getWritableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    saleQuantity = cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY));
+                } while (cursor.moveToNext());
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return saleQuantity;
+    }
+
 }

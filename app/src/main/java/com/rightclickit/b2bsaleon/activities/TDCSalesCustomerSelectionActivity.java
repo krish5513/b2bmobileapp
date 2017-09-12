@@ -25,16 +25,20 @@ import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TDCSalesCustomerSelectionAdapter;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
 import com.rightclickit.b2bsaleon.services.SyncTDCCustomersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
     private Context applicationContext, activityContext;
@@ -51,6 +55,9 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
 
     private TDCSaleOrder currentOrder;
     private boolean isCustomerSelected = false;
+
+    private String saleQunatity = "";
+    private Map<String, String> saleQuantityListMap = new HashMap<String, String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +94,8 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_ORDER);
+                saleQunatity = bundle.getString(Constants.BUNDLE_TDC_SALE_ORDER_SALE_QUNAT);
+                //System.out.println("CUSTOMER SALE QUANTITY=== " + saleQunatity);
             }
 
             mDBHelper = new DBHelper(activityContext);
@@ -205,6 +214,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, TDCSalesActivity.class);
         intent.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER, currentOrder); // to handle back button
+        intent.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_SALEQUNATITY, saleQunatity); // to handle back button
         startActivity(intent);
         finish();
     }
@@ -303,6 +313,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
         Intent i = new Intent(TDCSalesCustomerSelectionActivity.this, TDCSales_Preview_PrintActivity.class);
         i.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
         i.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION);
+        i.putExtra(Constants.BUNDLE_TDC_SALE_QUANTITY, saleQunatity);
         startActivity(i);
         finish();
 

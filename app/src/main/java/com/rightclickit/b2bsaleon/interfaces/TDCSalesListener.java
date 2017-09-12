@@ -10,4 +10,6 @@ import java.util.Map;
 
 public interface TDCSalesListener {
     void updateSelectedProductsListAndSubTotal(Map<String, ProductsBean> selectedProductsList);
+
+    void updateAgentStockSaleQuantityAfterTDCSale(Map<String, String> selectedProductsList);
 }

@@ -21,6 +21,7 @@ import com.rightclickit.b2bsaleon.activities.TDCSalesActivity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -47,15 +48,17 @@ public class TDCSalesAdapter extends BaseAdapter {
     private ListView products_list_view;
     private MMSharedPreferences mPreferences;
     private Drawable red_circle, green_circle;
-
+    private DBHelper mDBHelper;
     private double availableStock = 0;
     private final String zero_cost = "0.000";
     private boolean isOrderInEditingMode = false;
     double productRate;
+    private String mAgentId = "";
+    private Map<String, String> selectedProductsStockListHashMap; // Hash Map Key = Product Id
 
     HashMap<String, String> availableStockProductsList;
 
-    public TDCSalesAdapter(Context ctxt, TDCSalesActivity TDCSalesActivity, TDCSalesListener salesListener, ListView products_list_view, ArrayList<ProductsBean> productsList, Map<String, ProductsBean> previouslySelectedProducts, HashMap<String, String> availableStockProductsList) {
+    public TDCSalesAdapter(Context ctxt, TDCSalesActivity TDCSalesActivity, TDCSalesListener salesListener, ListView products_list_view, ArrayList<ProductsBean> productsList, Map<String, ProductsBean> previouslySelectedProducts, HashMap<String, String> availableStockProductsList, String userId, Map<String, String> previousselectedProductsStockListHashMap) {
         this.ctxt = ctxt;
         this.activity = TDCSalesActivity;
         this.listener = salesListener;
@@ -66,12 +69,19 @@ public class TDCSalesAdapter extends BaseAdapter {
         this.filteredProductsList = new ArrayList<>();
         this.filteredProductsList.addAll(allProductsList);
         this.selectedProductsListHashMap = new HashMap<>();
-        ;
+        this.selectedProductsStockListHashMap = new HashMap<>();
+        this.mAgentId = userId;
+        this.mDBHelper = new DBHelper(activity);
         this.availableStockProductsList = availableStockProductsList;
 
         if (!previouslySelectedProducts.isEmpty()) {
             this.selectedProductsListHashMap = previouslySelectedProducts;
             isOrderInEditingMode = true;
+        }
+
+        if (!previousselectedProductsStockListHashMap.isEmpty()) {
+            this.selectedProductsStockListHashMap = previousselectedProductsStockListHashMap;
+            //System.out.println("Adapter Salw Qu::: " + selectedProductsStockListHashMap.toString());
         }
 
         this.products_list_view = products_list_view;
@@ -215,6 +225,9 @@ public class TDCSalesAdapter extends BaseAdapter {
 
                         if (presentQuantity > 0) {
                             presentQuantity--;
+                            selectedProductsStockListHashMap.put(currentProductsBean.getProductId(), String.valueOf(presentQuantity));
+                            if (listener != null)
+                                listener.updateAgentStockSaleQuantityAfterTDCSale(selectedProductsStockListHashMap);
 
                             double amount = currentProductsBean.getProductRatePerUnit() * presentQuantity;
                             double taxAmount = (amount * finalProductTax) / 100;
@@ -248,6 +261,11 @@ public class TDCSalesAdapter extends BaseAdapter {
 
                         if (presentQuantity < currentProductsBean.getProductStock()) {
                             presentQuantity++;
+                            // Update the Agent stock table....
+                            selectedProductsStockListHashMap.put(currentProductsBean.getProductId(), String.valueOf(presentQuantity));
+                            if (listener != null)
+                                listener.updateAgentStockSaleQuantityAfterTDCSale(selectedProductsStockListHashMap);
+
                             double amount = currentProductsBean.getProductRatePerUnit() * presentQuantity;
                             double taxAmount = (amount * finalProductTax) / 100;
 
@@ -292,8 +310,12 @@ public class TDCSalesAdapter extends BaseAdapter {
                                         .show();
                             } else {
                                 if (enteredQuantity > 0) {
-                                    double amount = productRate * enteredQuantity;
+                                    double amount = currentProductsBean.getProductRatePerUnit() * enteredQuantity;
                                     double taxAmount = (amount * finalProductTax) / 100;
+
+                                    selectedProductsStockListHashMap.put(currentProductsBean.getProductId(), String.valueOf(enteredQuantity));
+                                    if (listener != null)
+                                        listener.updateAgentStockSaleQuantityAfterTDCSale(selectedProductsStockListHashMap);
 
                                     currentProductsBean.setSelectedQuantity(enteredQuantity);
                                     currentProductsBean.setProductAmount(amount);

@@ -51,12 +51,14 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     private boolean showProductsListView = false;
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
     private TDCSaleOrder currentOrder;
-    private String userId = "", mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
+    private String userId = "", mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "",
+            mRetailersHomeScreen = "", mDashboardHomeScreen = "", saleQuantity = "";
     ArrayList<AgentsStockBean> stockBeanArrayList;
     //ArrayList<String> availableStockProductsList;
     HashMap<String, String> availableStockProductsList = new HashMap<String, String>();
     HashMap<String, String> availableStockProductsListTemp = new HashMap<String, String>();
-    //ArrayList<String> availableStockProductsListTemp;
+    private Map<String, String> selectedProductsStockListHashMap = new HashMap<String, String>();
+    private Map<String, String> previousselectedProductsStockListHashMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,19 +133,38 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             allProductsList = new ArrayList<>();
             selectedProductsListHashMap = new HashMap<>();
             previouslySelectedProductsListHashMap = new HashMap<>();
+            previousselectedProductsStockListHashMap = new HashMap<String, String>();
             currentOrder = new TDCSaleOrder();
 
             // when you came back to this activity when you want to change your order, we are pre populating with previously selected values.
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER);
-
+                saleQuantity = bundle.getString(Constants.BUNDLE_TDC_SALE_CURRENT_SALEQUNATITY);
+                //System.out.println("TDC ACT SALE QUA==:: " + saleQuantity);
                 // Getting previously selected products list to update on UI
                 previouslySelectedProductsListHashMap = currentOrder.getProductsList();
                 if (previouslySelectedProductsListHashMap == null) {
                     previouslySelectedProductsListHashMap = new HashMap<>();
                 } else {
                     updateSelectedProductsListAndSubTotal(previouslySelectedProductsListHashMap);
+                }
+
+                // Getting previously selected stock products list to update on UI
+
+                if (saleQuantity.length() > 0) {
+                    saleQuantity = saleQuantity.substring(1, saleQuantity.length() - 1);           //remove curly brackets
+                    String[] keyValuePairs = saleQuantity.split(",");              //split the string to creat key-value pairs
+                    if (previousselectedProductsStockListHashMap == null) {
+                        previousselectedProductsStockListHashMap = new HashMap<>();
+                    } else {
+                        for (String pair : keyValuePairs)                        //iterate over the pairs
+                        {
+                            String[] entry = pair.split("=");                   //split the pairs to get key and value
+                            previousselectedProductsStockListHashMap.put(entry[0].trim(), entry[1].trim());          //add them to the hashmap and trim whitespaces
+                        }
+                        updateAgentStockSaleQuantityAfterTDCSale(previousselectedProductsStockListHashMap);
+                    }
                 }
             }
 
@@ -191,14 +212,14 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
 //                    }
 //                }
             }
-            Log.i("allpList", allProductsList.size() + "\n");
-            Log.i("available temp", availableStockProductsListTemp.size() + "\n");
-            Log.i("stock", stockBeanArrayList.size() + "\n");
-            Log.i("available actual", availableStockProductsList.size() + "\n");
+            //Log.i("allpList", allProductsList.size() + "\n");
+            //Log.i("available temp", availableStockProductsListTemp.size() + "\n");
+            // Log.i("stock", stockBeanArrayList.size() + "\n");
+            // Log.i("available actual", availableStockProductsList.size() + "\n");
             if (showProductsListView) {
                 allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
 
-                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsList, previouslySelectedProductsListHashMap, availableStockProductsList);
+                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsList, previouslySelectedProductsListHashMap, availableStockProductsList, userId, previousselectedProductsStockListHashMap);
                 tdc_products_list_view.setAdapter(tdcSalesAdapter);
             }
 
@@ -396,6 +417,12 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
         subTotalAmountTextView.setText(Utility.getFormattedCurrency(subTotal));
     }
 
+    @Override
+    public void updateAgentStockSaleQuantityAfterTDCSale(Map<String, String> selectedProductsList) {
+        //System.out.println("SIZE:::: " + selectedProductsList.size());
+        this.selectedProductsStockListHashMap = selectedProductsList;
+    }
+
     public void showTDCSalesPreview(View view) {
         try {
             if (selectedProductsListHashMap.size() > 0) {
@@ -406,6 +433,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
 
                 Intent customerSelectionIntent = new Intent(activityContext, TDCSalesCustomerSelectionActivity.class);
                 customerSelectionIntent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER, currentOrder);
+                customerSelectionIntent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER_SALE_QUNAT, selectedProductsStockListHashMap.toString());
                 startActivity(customerSelectionIntent);
                 finish();
             } else {

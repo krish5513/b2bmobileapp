@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
@@ -59,7 +60,8 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
     private String currentOrderId;
     private boolean isOrderAlreadySaved = false;
     ArrayList<String[]> selectedList;
-    private String requestCameFrom;
+    private String requestCameFrom, saleQuantity = "", actualSaleQuantity = "";
+    private Map<String, String> saleQuantityListMap = new HashMap<String, String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +108,18 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 requestCameFrom = bundle.getString(Constants.BUNDLE_REQUEST_FROM);
 
                 if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION)) {
+                    saleQuantity = bundle.getString(Constants.BUNDLE_TDC_SALE_QUANTITY);
+                    actualSaleQuantity = saleQuantity;
+                    // System.out.println("FINAL SQ=====" + actualSaleQuantity);
+                    saleQuantity = saleQuantity.substring(1, saleQuantity.length() - 1);           //remove curly brackets
+                    String[] keyValuePairs = saleQuantity.split(",");              //split the string to creat key-value pairs
+
+                    for (String pair : keyValuePairs)                        //iterate over the pairs
+                    {
+                        String[] entry = pair.split("=");                   //split the pairs to get key and value
+                        saleQuantityListMap.put(entry[0].trim(), entry[1].trim());          //add them to the hashmap and trim whitespaces
+                    }
+
                     currentTimeStamp = System.currentTimeMillis();
                     currentDate = Utility.formatTime(currentTimeStamp, Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
 
@@ -155,7 +169,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                         currentOrder.setOrderTotalTaxAmount(totalTaxAmount);
                         currentOrder.setOrderSubTotal(subTotal);
                     }
-                    
+
                 } else {
                     currentOrderId = String.format("TDC%05d", currentOrder.getOrderId());
                     currentDate = Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
@@ -311,6 +325,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
         if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION)) {
             Intent intent = new Intent(this, TDCSalesCustomerSelectionActivity.class);
             intent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER, currentOrder); // to handle back button
+            intent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER_SALE_QUNAT, actualSaleQuantity); // to handle back button
             startActivity(intent);
             finish();
         } else if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_TDC_SALES_LIST)) {
@@ -324,7 +339,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
             user_name.setText("by " + loggedInUserName);
             route_name.setText(mmSharedPreferences.getString("routename"));
             route_code.setText(str_routecode);
-            sale_no_text_view.setText(currentOrderId +",");
+            sale_no_text_view.setText(currentOrderId + ",");
             sale_date_time_text_view.setText(currentDate);
 
             if (saleOrder.getProductsList() != null) {
@@ -356,8 +371,20 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     Toast.makeText(activityContext, "Order Saved Successfully.", Toast.LENGTH_LONG).show();
                     isOrderAlreadySaved = true;
 
+                    for (Map.Entry<String, String> stockEntry : saleQuantityListMap.entrySet()) {
+                        //System.out.println("F====KEY::: " + stockEntry.getKey() + "\n");
+                        //System.out.println("F=====VALUE::: " + stockEntry.getValue() + "\n");
+                        String saleQuantity = mDBHelper.getSaleQuantityByAgentAndProductId(loggedInUserId, stockEntry.getKey());
+                        //System.out.println("SALE QUAN::: " + saleQuantity);
+                        double finalSaleVal = Double.parseDouble(saleQuantity) + Double.parseDouble(stockEntry.getValue());
+                        mDBHelper.updateAgentStockAfterTDCSales(loggedInUserId, stockEntry.getKey(), String.valueOf(finalSaleVal));
+                        String saleQuantity1 = mDBHelper.getSaleQuantityByAgentAndProductId(loggedInUserId, stockEntry.getKey());
+                        //System.out.println("After Update SALE QUAN::: " + saleQuantity1);
+                    }
+
                     // after order was saved successfully, we are creating a new TDCSaleOrder object to clear previous selected products.
                     currentOrder = new TDCSaleOrder();
+                    actualSaleQuantity = "";
 
                     if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
                         Intent syncTDCOrderServiceIntent = new Intent(activityContext, SyncTDCSalesOrderService.class);
