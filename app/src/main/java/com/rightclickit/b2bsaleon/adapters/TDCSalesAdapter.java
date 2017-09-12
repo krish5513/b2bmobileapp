@@ -162,7 +162,7 @@ public class TDCSalesAdapter extends BaseAdapter {
                 productTax = Float.parseFloat(currentProductsBean.getProductvat());
             else if (currentProductsBean.getProductgst() != null)
                 productTax = Float.parseFloat(currentProductsBean.getProductgst());
-            
+
             currentProductsBean.setProductRatePerUnit(productRate);
             currentProductsBean.setProductTaxPerUnit(productTax);
 
