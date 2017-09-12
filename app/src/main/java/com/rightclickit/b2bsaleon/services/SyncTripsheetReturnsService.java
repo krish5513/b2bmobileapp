@@ -140,7 +140,7 @@ public class SyncTripsheetReturnsService extends Service {
                 String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TAKE_ORDERS_PORT, Constants.TRIPSHEETS_RETURNS_URL);
                 System.out.println("requestObj = " + requestObj);
                 System.out.println("requestURL = " + requestURL);
-                
+
                 String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
 
                 System.out.println("responseString = " + responseString);

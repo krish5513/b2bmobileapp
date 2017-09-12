@@ -3017,7 +3017,8 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<TripSheetReturnsBean> alltripsheetsReturns = new ArrayList<>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = " + "'" + tripsheetId + "'";
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = " + "'" + tripsheetId + "'"
+                    + " AND " + KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS + " = 0";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
