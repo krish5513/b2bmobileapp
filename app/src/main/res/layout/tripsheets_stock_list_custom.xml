@@ -58,7 +58,8 @@
                 android:layout_weight="0.25"
                 android:clickable="false"
                 android:gravity="center"
-                android:inputType="none"
+                android:inputType="number"
+
                 android:longClickable="false"
                 android:text="0.123"
                 android:textColor="@color/greydark"
@@ -98,7 +99,7 @@
                 android:layout_weight="0.25"
                 android:clickable="false"
                 android:gravity="center"
-                android:inputType="none"
+                android:inputType="number"
                 android:longClickable="false"
                 android:text="0.456"
                 android:textColor="@color/greydark"
