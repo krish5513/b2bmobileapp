@@ -8,6 +8,16 @@ public class TripsheetsList {
 
     private String mTripshhetId;
     private String mTripshhetCode;
+
+    public String getMy_Id() {
+        return my_Id;
+    }
+
+    public void setMy_Id(String my_Id) {
+        this.my_Id = my_Id;
+    }
+
+    private String my_Id;
     private String mTripshhetDate;
     private String mTripshhetStatus;
     private String mTripshhetOBAmount;

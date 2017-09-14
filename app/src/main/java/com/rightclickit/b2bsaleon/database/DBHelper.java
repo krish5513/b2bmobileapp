@@ -283,6 +283,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_UNIQUE_ID = "tripsheet_unique_id";
     private final String KEY_TRIPSHEET_ID = "tripsheet_id";
     private final String KEY_TRIPSHEET_CODE = "tripsheet_code";
+    private final String KEY_TRIPSHEET_MY_ID = "tripsheet_my_id";
     private final String KEY_TRIPSHEET_DATE = "tripsheet_date";
     private final String KEY_TRIPSHEET_STATUS = "tripsheet_status";
     private final String KEY_TRIPSHEET_OB_AMOUNT = "tripsheet_ob_amount";
@@ -533,6 +534,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + TABLE_TRIPSHEETS_LIST + "(" + KEY_TRIPSHEET_UNIQUE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + KEY_TRIPSHEET_ID + " VARCHAR,"
             + KEY_TRIPSHEET_CODE + " VARCHAR,"
+            + KEY_TRIPSHEET_MY_ID + " VARCHAR,"
             + KEY_TRIPSHEET_DATE + " VARCHAR,"
             + KEY_TRIPSHEET_STATUS + " VARCHAR,"
             + KEY_TRIPSHEET_OB_AMOUNT + " VARCHAR,"
@@ -1511,6 +1513,25 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return noOfEvents;
     }
+
+
+    public int getNotificationsTableCount() {
+        int noOfEvents = 0;
+        try {
+            String countQuery = "SELECT * FROM " + TABLE_NOTIFICATION_LIST;
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfEvents = cursor.getCount();
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return noOfEvents;
+    }
+
 
     /**
      * Method to insert product details
@@ -2626,6 +2647,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 ContentValues values = new ContentValues();
                 values.put(KEY_TRIPSHEET_ID, mTripsheetsList.get(i).getmTripshhetId());
                 values.put(KEY_TRIPSHEET_CODE, mTripsheetsList.get(i).getmTripshhetCode());
+                values.put(KEY_TRIPSHEET_MY_ID, mTripsheetsList.get(i).getMy_Id());
                 values.put(KEY_TRIPSHEET_DATE, mTripsheetsList.get(i).getmTripshhetDate());
                 values.put(KEY_TRIPSHEET_STATUS, mTripsheetsList.get(i).getmTripshhetStatus());
                 values.put(KEY_TRIPSHEET_OB_AMOUNT, mTripsheetsList.get(i).getmTripshhetOBAmount());
@@ -2674,6 +2696,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     TripsheetsList tripsheetsListBean = new TripsheetsList();
                     tripsheetsListBean.setmTripshhetId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_ID)));
                     tripsheetsListBean.setmTripshhetCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_CODE)));
+                    tripsheetsListBean.setMy_Id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_MY_ID)));
                     tripsheetsListBean.setmTripshhetDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DATE)));
                     tripsheetsListBean.setmTripshhetStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STATUS)));
                     tripsheetsListBean.setmTripshhetOBAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_OB_AMOUNT)));

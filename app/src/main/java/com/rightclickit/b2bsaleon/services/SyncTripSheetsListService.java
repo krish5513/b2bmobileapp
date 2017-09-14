@@ -87,6 +87,7 @@ public class SyncTripSheetsListService extends Service {
 
                     tripsheetsListBean.setmTripshhetId(jb.getString("_id"));
                     tripsheetsListBean.setmTripshhetCode(jb.getString("code"));
+                    tripsheetsListBean.setMy_Id(jb.getString("my_id"));
                     tripsheetsListBean.setmTripshhetDate(jb.getString("date"));
                     tripsheetsListBean.setmTripshhetStatus(jb.getString("status"));
                     tripsheetsListBean.setmTripshhetOBAmount(jb.getString("ob_amt"));

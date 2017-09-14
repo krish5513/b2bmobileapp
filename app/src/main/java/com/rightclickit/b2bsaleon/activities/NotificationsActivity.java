@@ -202,11 +202,9 @@ public class NotificationsActivity extends AppCompatActivity {
 
 
 
-        if (new NetworkConnectionDetector(NotificationsActivity.this).isNetworkConnected()) {
 
-            startService(new Intent(NotificationsActivity.this, SyncNotificationsListService.class));
-        }
-            else {
+        if (new NetworkConnectionDetector(NotificationsActivity.this).isNetworkConnected()) {
+            if (mDBHelper.getNotificationsTableCount()>0){
                 ArrayList<NotificationBean> notificationsList = mDBHelper.fetchAllNotificationsList();
                 Log.e("received", notificationsList.size() + "");
                 if (notificationsList.size() > 0) {
@@ -214,7 +212,22 @@ public class NotificationsActivity extends AppCompatActivity {
                 } else {
                     mNotificationsFoundText.setText("No Notifications found.");
                 }
+            }else {
+                startService(new Intent(NotificationsActivity.this, SyncNotificationsListService.class));
             }
+        }else {
+            System.out.println("ELSE::: ");
+            ArrayList<NotificationBean> notificationsList = mDBHelper.fetchAllNotificationsList();
+            Log.e("received", notificationsList.size() + "");
+            if (notificationsList.size() > 0) {
+                loadNotificationsData(notificationsList);
+            } else {
+                mNotificationsFoundText.setText("No Notifications found.");
+            }
+        }
+
+
+
 
     }
 
@@ -276,8 +289,14 @@ public class NotificationsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_search) {
 
+        if (id == R.id.autorenew) {
+
+            if (new NetworkConnectionDetector(NotificationsActivity.this).isNetworkConnected()) {
+                startService(new Intent(NotificationsActivity.this, SyncNotificationsListService.class));
+            }else {
+                new NetworkConnectionDetector(NotificationsActivity.this).displayNoNetworkError(NotificationsActivity.this);
+            }
             return true;
         }
 

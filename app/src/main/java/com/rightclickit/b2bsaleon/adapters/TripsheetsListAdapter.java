@@ -114,7 +114,18 @@ public class TripsheetsListAdapter extends BaseAdapter {
 
         final TripsheetsList currentTripSheet = getItem(position);
 
-        mHolder.mTripsheetCode.setText(currentTripSheet.getmTripshhetCode());
+
+        if (currentTripSheet.getmTripshhetCode() != null) {
+            if (currentTripSheet.getmTripshhetCode().length() == 0) {
+                mHolder.mTripsheetCode.setText("TR-"+currentTripSheet.getMy_Id());
+            } else {
+                mHolder.mTripsheetCode.setText(currentTripSheet.getmTripshhetCode());
+            }
+        } else {
+            mHolder.mTripsheetCode.setText("TR-"+currentTripSheet.getMy_Id());
+        }
+
+
         mHolder.mTripsheetDate.setText(currentTripSheet.getmTripshhetDate());
 
         if (currentTripSheet.getIsTripshhetClosed() == 0)
