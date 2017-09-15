@@ -15,7 +15,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
+            <TextView
+                android:id="@+id/soCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:padding="5dp"
+                android:text="1234567891"
+                android:textAllCaps="true"
+                android:maxLength="10"
+                android:textColor="@color/greydark"
+                android:textSize="16sp" />
             <TextView
                 android:id="@+id/companyName"
                 android:layout_width="wrap_content"
@@ -28,7 +39,7 @@
                 android:textColor="@color/greydark"
                 android:textSize="16sp" />
 
-            <!--<TextView
+            <TextView
                 android:id="@+id/companyId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,7 +49,7 @@
                 android:text="(223320221)"
                 android:textAllCaps="true"
                 android:textColor="@color/greydark"
-                android:textSize="16sp" />-->
+                android:textSize="16sp" />
 
 <!--
             <LinearLayout

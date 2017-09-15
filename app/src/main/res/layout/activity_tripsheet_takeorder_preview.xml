@@ -84,7 +84,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:text="login User name "
-
                 android:textAllCaps="true"
                 android:paddingLeft="10dp"
                 android:textColor="@color/greydark"

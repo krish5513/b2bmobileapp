@@ -46,7 +46,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
     private SearchView search;
     private ListView ordered_products_list_view;
-    private TextView companyName, totalTaxAmountTextView, totalAmountTextView, subTotalAmountTextView;
+    private TextView companyName, totalTaxAmountTextView, totalAmountTextView, subTotalAmountTextView,soCode,agentcode;
     private LinearLayout trip_sheet_deliveries_save, trip_sheet_deliveries_preview, trip_sheet_returns, trip_sheet_payments;
 
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
@@ -78,6 +78,8 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
             companyName = (TextView) findViewById(R.id.companyName);
+            soCode = (TextView) findViewById(R.id.soCode);
+            agentcode = (TextView) findViewById(R.id.companyId);
             ordered_products_list_view = (ListView) findViewById(R.id.ordered_products_list_view);
             totalTaxAmountTextView = (TextView) findViewById(R.id.delivery_total_tax_amount);
             totalAmountTextView = (TextView) findViewById(R.id.delivery_total_amount);
@@ -99,6 +101,9 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
             mAgentSoDate = this.getIntent().getStringExtra("agentSoDate");
             loggedInUserId = mPreferences.getString("userId");
+
+            soCode.setText(mAgentSoCode);
+            agentcode.setText("("+mAgentCode+")");
 
             if (mAgentId != null && mAgentId != "") {
                 List<String> agentRouteIds = mDBHelper.getAgentRouteId(mAgentId);
