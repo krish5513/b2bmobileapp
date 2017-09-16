@@ -39,6 +39,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
     private final String zero_cost = "0.000";
     private boolean isDeliveryInEditingMode = false;
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMapTemp;
+    private Map<String, String> selectedDeliveryProductsHashMapTemp1;
 
     public TripSheetDeliveriesAdapter(Context ctxt, TripsheetDelivery deliveryActivity, TripSheetDeliveriesListener deliveriesListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyDeliveredProducts, Map<String, String> productOrderQuantities) {
         this.ctxt = ctxt;
@@ -52,17 +53,21 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         this.previouslyDeliveredProductsHashMap = previouslyDeliveredProducts;
         this.productOrderQuantitiesHashMap = productOrderQuantities;
         this.selectedDeliveryProductsHashMapTemp = new HashMap<>();
+        this.selectedDeliveryProductsHashMapTemp1 = new HashMap<>();
         if (!previouslyDeliveredProductsHashMap.isEmpty()) {
             isDeliveryInEditingMode = true;
+        }
+        if (selectedDeliveryProductsHashMapTemp1.size() > 0) {
+            selectedDeliveryProductsHashMapTemp1.clear();
         }
 
         // in order to update total amount's at the time of initial loading.
         for (DeliverysBean deliverysBean : filteredDeliveryProductsList) {
-            System.out.println("Agent Price::"+deliverysBean.getProductAgentPrice());
+            System.out.println("Agent Price::" + deliverysBean.getProductAgentPrice());
             final double productRatePerUnit;
-            if(deliverysBean.getProductAgentPrice()!=null) {
-                 productRatePerUnit = Double.parseDouble(deliverysBean.getProductAgentPrice().replace(",", ""));
-            }else {
+            if (deliverysBean.getProductAgentPrice() != null) {
+                productRatePerUnit = Double.parseDouble(deliverysBean.getProductAgentPrice().replace(",", ""));
+            } else {
                 productRatePerUnit = 0.0f;
             }
             float productTax = 0.0f;
@@ -101,10 +106,10 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
             selectedDeliveryProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
 
-           // if (!Utility.isDeliveryFirstTime) {
-                if (listener != null)
-                    listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
-           // }
+            // if (!Utility.isDeliveryFirstTime) {
+            if (listener != null)
+                listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
+            // }
         }
     }
 
@@ -186,14 +191,19 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
         tripSheetDeliveriesViewHolder.product_name.setText(String.format("%s", currentDeliveryBean.getProductTitle()));
         tripSheetDeliveriesViewHolder.quantity_stock.setText(String.format("%.3f + %.3f", currentDeliveryBean.getProductStock(), currentDeliveryBean.getProductExtraQuantity()));
-        if(currentDeliveryBean.getProductAgentPrice()!=null) {
+        if (currentDeliveryBean.getProductAgentPrice() != null) {
             tripSheetDeliveriesViewHolder.price.setText(Utility.getFormattedCurrency(Double.parseDouble(currentDeliveryBean.getProductAgentPrice())));
-        }else {
+        } else {
             tripSheetDeliveriesViewHolder.price.setText("RS.0.00");
         }
         tripSheetDeliveriesViewHolder.tax.setText(Utility.getFormattedCurrency(currentDeliveryBean.getTaxAmount()));
         tripSheetDeliveriesViewHolder.amount.setText(Utility.getFormattedCurrency(currentDeliveryBean.getProductAmount()));
-        tripSheetDeliveriesViewHolder.product_quantity.setText(String.format("%.3f", currentDeliveryBean.getProductOrderedQuantity()));
+        if (selectedDeliveryProductsHashMapTemp1.get(currentDeliveryBean.getProductId()) != null) {
+            Double dq = Double.parseDouble(selectedDeliveryProductsHashMapTemp1.get(currentDeliveryBean.getProductId()));
+            tripSheetDeliveriesViewHolder.product_quantity.setText(String.format("%.3f", dq));
+        } else {
+            tripSheetDeliveriesViewHolder.product_quantity.setText(String.format("%.3f", currentDeliveryBean.getProductOrderedQuantity()));
+        }
 
         tripSheetDeliveriesViewHolder.product_quantity_decrement.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,7 +220,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                         currentDeliveryBean.setSelectedQuantity(presentQuantity);
                         currentDeliveryBean.setProductAmount(amount);
                         currentDeliveryBean.setTaxAmount(taxAmount);
-
+                        selectedDeliveryProductsHashMapTemp1.put(currentDeliveryBean.getProductId(), String.valueOf(currentDeliveryBean.getSelectedQuantity()));
                         currentTripSheetDeliveriesViewHolder.tax.setText(Utility.getFormattedCurrency(currentDeliveryBean.getTaxAmount()));
                         currentTripSheetDeliveriesViewHolder.amount.setText(Utility.getFormattedCurrency(currentDeliveryBean.getProductAmount()));
 
@@ -243,7 +253,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                         currentDeliveryBean.setSelectedQuantity(presentQuantity);
                         currentDeliveryBean.setProductAmount(amount);
                         currentDeliveryBean.setTaxAmount(taxAmount);
-
+                        selectedDeliveryProductsHashMapTemp1.put(currentDeliveryBean.getProductId(), String.valueOf(currentDeliveryBean.getSelectedQuantity()));
                         currentTripSheetDeliveriesViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
                         currentTripSheetDeliveriesViewHolder.tax.setText(Utility.getFormattedCurrency(currentDeliveryBean.getTaxAmount()));
                         currentTripSheetDeliveriesViewHolder.amount.setText(Utility.getFormattedCurrency(currentDeliveryBean.getProductAmount()));
@@ -294,7 +304,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                                 currentDeliveryBean.setSelectedQuantity(enteredQuantity);
                                 currentDeliveryBean.setProductAmount(amount);
                                 currentDeliveryBean.setTaxAmount(taxAmount);
-
+                                selectedDeliveryProductsHashMapTemp1.put(currentDeliveryBean.getProductId(), String.valueOf(currentDeliveryBean.getSelectedQuantity()));
                                 currentTripSheetDeliveriesViewHolder.tax.setText(Utility.getFormattedCurrency(currentDeliveryBean.getTaxAmount()));
                                 currentTripSheetDeliveriesViewHolder.amount.setText(Utility.getFormattedCurrency(currentDeliveryBean.getProductAmount()));
 
@@ -322,15 +332,15 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
     public void updateSelectedProductsList(DeliverysBean deliverysBean) {
         try {
-           // if (!Utility.isDeliveryFirstTime) {
-                if (selectedDeliveryProductsHashMap.containsKey(deliverysBean.getProductId()))
-                    selectedDeliveryProductsHashMap.remove(deliverysBean.getProductId());
+            // if (!Utility.isDeliveryFirstTime) {
+            if (selectedDeliveryProductsHashMap.containsKey(deliverysBean.getProductId()))
+                selectedDeliveryProductsHashMap.remove(deliverysBean.getProductId());
 
-                selectedDeliveryProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
+            selectedDeliveryProductsHashMap.put(deliverysBean.getProductId(), deliverysBean);
 
-                if (listener != null)
-                    listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
-           // }
+            if (listener != null)
+                listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
+            // }
 //            else {
 //                if (selectedDeliveryProductsHashMapTemp.containsKey(deliverysBean.getProductId()))
 //                    selectedDeliveryProductsHashMapTemp.remove(deliverysBean.getProductId());
