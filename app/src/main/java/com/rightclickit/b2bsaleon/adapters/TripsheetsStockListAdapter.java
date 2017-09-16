@@ -34,6 +34,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
     private ArrayList<TripsheetsStockList> allTripSheetStockList, filteredTripSheetStockList;
     private ArrayList<String> privilegeActionsData;
     private Map<String, TripsheetsStockList> dispatchProductsListHashMap, verifyProductsListHashMap;
+    private Map<String, String> dispatchProductsListHashMapTemp, verifyProductsListHashMapTemp;
 
     private final String zero_cost = "0.000";
 
@@ -47,7 +48,15 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
         this.filteredTripSheetStockList.addAll(allTripSheetStockList);
         this.privilegeActionsData = privilegeActionsData;
         this.dispatchProductsListHashMap = new HashMap<>();
+        this.dispatchProductsListHashMapTemp = new HashMap<>();
         this.verifyProductsListHashMap = new HashMap<>();
+        this.verifyProductsListHashMapTemp = new HashMap<>();
+        if (dispatchProductsListHashMapTemp.size() > 0) {
+            dispatchProductsListHashMapTemp.clear();
+        }
+        if (verifyProductsListHashMapTemp.size() > 0) {
+            verifyProductsListHashMapTemp.clear();
+        }
     }
 
     @Override
@@ -98,10 +107,16 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
             tripSheetStockViewHolder.mDispatchQuantity.setVisibility(View.VISIBLE);
             tripSheetStockViewHolder.mDispatchDecrement.setVisibility(View.VISIBLE);
             tripSheetStockViewHolder.mDispatchIncrement.setVisibility(View.VISIBLE);
-
+            
             if (currentStockList.getIsStockDispatched() == 0) {
-                tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", orderQuantity));
-                currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(orderQuantity));
+                if (dispatchProductsListHashMapTemp.get(currentStockList.getmTripsheetStockProductId()) != null) {
+                    Double oq = Double.parseDouble(dispatchProductsListHashMapTemp.get(currentStockList.getmTripsheetStockProductId()));
+                    tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", oq));
+                    currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(oq));
+                } else {
+                    tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", orderQuantity));
+                    currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(orderQuantity));
+                }
             } else {
                 Double dispatchedQuantity = Double.parseDouble(currentStockList.getmTripsheetStockDispatchQuantity());
                 tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", dispatchedQuantity));
@@ -121,6 +136,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                             presentQuantity--;
 
                             currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(presentQuantity));
+                            dispatchProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockDispatchQuantity());
                             updateProductsDispatchList(currentStockList);
 
                             if (presentQuantity == 0) {
@@ -145,6 +161,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                         presentQuantity++;
 
                         currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(presentQuantity));
+                        dispatchProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockDispatchQuantity());
                         tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", presentQuantity));
                         updateProductsDispatchList(currentStockList);
 
@@ -161,8 +178,14 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
             tripSheetStockViewHolder.mVerifyIncrement.setVisibility(View.VISIBLE);
 
             if (currentStockList.getIsStockVerified() == 0) {
-                tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", orderQuantity));
-                currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(orderQuantity));
+                if (verifyProductsListHashMapTemp.get(currentStockList.getmTripsheetStockProductId()) != null) {
+                    Double vq = Double.parseDouble(verifyProductsListHashMapTemp.get(currentStockList.getmTripsheetStockProductId()));
+                    tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", vq));
+                    currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(vq));
+                } else {
+                    tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", orderQuantity));
+                    currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(orderQuantity));
+                }
             } else {
                 Double verifiedQuantity = Double.parseDouble(currentStockList.getmTripsheetStockVerifiedQuantity());
                 tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", verifiedQuantity));
@@ -182,6 +205,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                             presentQuantity--;
 
                             currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(presentQuantity));
+                            verifyProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockVerifiedQuantity());
                             updateProductsVerifyList(currentStockList);
 
                             if (presentQuantity == 0) {
@@ -206,7 +230,9 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                         presentQuantity++;
 
                         currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(presentQuantity));
+                        verifyProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockVerifiedQuantity());
                         tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", presentQuantity));
+
                         updateProductsVerifyList(currentStockList);
 
                     } catch (Exception e) {
