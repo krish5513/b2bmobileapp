@@ -369,19 +369,19 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 if (orderId == -1)
                     Toast.makeText(activityContext, "An error occurred while saving order.", Toast.LENGTH_LONG).show();
                 else {
-                   // Toast.makeText(activityContext, "Order Saved Successfully.", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(activityContext, "Order Saved Successfully.", Toast.LENGTH_LONG).show();
                     CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
                     isOrderAlreadySaved = true;
 
                     for (Map.Entry<String, String> stockEntry : saleQuantityListMap.entrySet()) {
-                        System.out.println("F====KEY::: " + stockEntry.getKey() + "\n");
-                        System.out.println("F=====VALUE::: " + stockEntry.getValue() + "\n");
+                        //System.out.println("F====KEY::: " + stockEntry.getKey() + "\n");
+                        //System.out.println("F=====VALUE::: " + stockEntry.getValue() + "\n");
                         String saleQuantity = mDBHelper.getSaleQuantityByAgentAndProductId(loggedInUserId, stockEntry.getKey());
-                        System.out.println("SALE QUAN::: " + saleQuantity);
+                        //System.out.println("SALE QUAN::: " + saleQuantity);
                         double finalSaleVal = Double.parseDouble(saleQuantity) + Double.parseDouble(stockEntry.getValue());
                         mDBHelper.updateAgentStockAfterTDCSales(loggedInUserId, stockEntry.getKey(), String.valueOf(finalSaleVal));
                         String saleQuantity1 = mDBHelper.getSaleQuantityByAgentAndProductId(loggedInUserId, stockEntry.getKey());
-                        System.out.println("After Update SALE QUAN::: " + saleQuantity1);
+                        //System.out.println("After Update SALE QUAN::: " + saleQuantity1);
                     }
 
                     // after order was saved successfully, we are creating a new TDCSaleOrder object to clear previous selected products.

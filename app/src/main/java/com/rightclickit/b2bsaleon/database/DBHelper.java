@@ -5016,7 +5016,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     agentsStockBean.setmProductUOM(cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_UOM)));
                     agentsStockBean.setmProductStockQunatity(cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY)));
                     agentsStockBean.setmProductDeliveryQunatity(cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY)));
-                    agentsStockBean.setmProductCBQuantity(cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_CNQUANTITY)));
+                    Double sq = Double.parseDouble(cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY)));
+                    Double dq = Double.parseDouble(cursor.getString(cursor.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY)));
+                    Double cbq = sq - dq;
+                    agentsStockBean.setmProductCBQuantity(String.valueOf(cbq));
 
                     stockList.add(agentsStockBean);
                 } while (cursor.moveToNext());

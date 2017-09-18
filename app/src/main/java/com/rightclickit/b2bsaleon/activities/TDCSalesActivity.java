@@ -178,6 +178,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             if (availableStockProductsListTemp.size() > 0) {
                 availableStockProductsListTemp.clear();
             }
+
             if (allProductsList.size() > 0) {
                 for (int h = 0; h < allProductsList.size(); h++) {
                     // Check condition for product id match
