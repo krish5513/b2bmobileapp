@@ -26,6 +26,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetStockListener;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
@@ -254,7 +255,8 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
         Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
         ts_stock_preview.startAnimation(animation1);
         if (!isStockVerified)
-            Toast.makeText(activityContext, "This Preview is unavailable untill the tripsheet stock is verified", Toast.LENGTH_LONG).show();
+           // Toast.makeText(activityContext, "This Preview is unavailable untill the tripsheet stock is verified", Toast.LENGTH_LONG).show();
+            CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.preview));
         else {
             Intent i = new Intent(TripSheetStock.this, TripsheetStockPreview.class);
             i.putExtra("tripSheetId", mTripSheetId);
@@ -274,7 +276,8 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
     public void verifyTripSheetStock(View view) {
         if (!isStockDispatched)
-            Toast.makeText(activityContext, "This Trip Sheet Stock is not yet dispatched.", Toast.LENGTH_LONG).show();
+            //Toast.makeText(activityContext, "This Trip Sheet Stock is not yet dispatched.", Toast.LENGTH_LONG).show();
+        CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.stock));
         else {
             //if (!isStockVerified)
             //showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to verify?\n\nOnce you verified you can't edit.", "Verify");
@@ -345,7 +348,8 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
         }
 
         isStockDispatched = true;
-        Toast.makeText(activityContext, "Stock Dispatched Successfully.", Toast.LENGTH_LONG).show();
+        //Toast.makeText(activityContext, "Stock Dispatched Successfully.", Toast.LENGTH_LONG).show();
+        CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.stocksuccess));
 
         if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
             Intent syncTripSheetsStockServiceIntent = new Intent(activityContext, SyncTripSheetsStockService.class);
@@ -382,8 +386,8 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
         isStockVerified = true;
 
-        Toast.makeText(activityContext, "Stock Verified Successfully.", Toast.LENGTH_LONG).show();
-
+        //Toast.makeText(activityContext, "Stock Verified Successfully.", Toast.LENGTH_LONG).show();
+        CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.stockverify));
         if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
             Intent syncTripSheetsStockServiceIntent = new Intent(activityContext, SyncTripSheetsStockService.class);
             syncTripSheetsStockServiceIntent.putExtra("actionType", "verify");

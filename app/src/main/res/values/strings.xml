@@ -17,6 +17,18 @@
     <string name="success_password">Password changed Successfully.</string>
     <string name="order">Order placed Successfully.</string>
     <string name="noitems">No Orders Found</string>
+    <string name="preview">This Preview is unavailable untill the tripsheet stock is verified</string>
+    <string name="stock">This Trip Sheet Stock is not yet dispatched.</string>
+    <string name="stocksuccess">Stock Dispatched Successfully.</string>
+    <string name="stockverify">Stock Verified Successfully.</string>
+    <string name="deliveryfail">This Preview is unavailable untill the tripsheet delivery is saved.</string>
+    <string name="returnsfail">This Preview is unavailable untill the tripsheet returns is saved.</string>
+    <string name="deliveryexceed">Delivery quantity for one of the product exceeds available stock, please check it.</string>
+    <string name="deliverylimit">Please select at least one product to save.</string>
+
+
+
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

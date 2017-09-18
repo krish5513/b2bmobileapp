@@ -24,6 +24,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetReturnsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetReturnsListener;
 import com.rightclickit.b2bsaleon.services.SyncTripsheetReturnsService;
@@ -242,7 +243,8 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
             startActivity(i);
             finish();
         } else {
-            Toast.makeText(activityContext, "This Preview is unavailable untill you saved the tripsheet returns data.", Toast.LENGTH_LONG).show();
+           // Toast.makeText(activityContext, "This Preview is unavailable untill you saved the tripsheet returns data.", Toast.LENGTH_LONG).show();
+            CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.returnsfail));
         }
     }
 
@@ -352,14 +354,15 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
 
                 mDBHelper.insertTripsheetsReturnsListData(mTripsheetsReturnsList);
                 isReturnsDataSaved = true;
-                Toast.makeText(activityContext, "Return Products Data Saved Successfully.", Toast.LENGTH_LONG).show();
-
+                //Toast.makeText(activityContext, "Return Products Data Saved Successfully.", Toast.LENGTH_LONG).show();
+                CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
                 if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
                     Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncTripsheetReturnsService.class);
                     startService(syncTripSheetDeliveriesServiceIntent);
                 }
             } else {
-                Toast.makeText(activityContext, "Please select at least one product to save.", Toast.LENGTH_LONG).show();
+                //Toast.makeText(activityContext, "Please select at least one product to save.", Toast.LENGTH_LONG).show();
+                CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliverylimit));
             }
         } catch (Exception e) {
             e.printStackTrace();

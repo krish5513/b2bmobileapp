@@ -24,6 +24,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.services.SyncTripsheetDeliveriesService;
@@ -270,7 +271,8 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             startActivity(i);
             finish();
         } else {
-            Toast.makeText(activityContext, "This Preview is unavailable untill the tripsheet delivery is saved.", Toast.LENGTH_LONG).show();
+          //  Toast.makeText(activityContext, "This Preview is unavailable untill the tripsheet delivery is saved.", Toast.LENGTH_LONG).show();
+            CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliveryfail));
         }
     }
 
@@ -442,17 +444,20 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
                     mDBHelper.insertTripsheetsDeliveriesListData(mTripsheetsDeliveriesList);
                     isDeliveryDataSaved = true;
-                    Toast.makeText(activityContext, "Delivery Data Saved Successfully.", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(activityContext, "Delivery Data Saved Successfully.", Toast.LENGTH_LONG).show();
+                    CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
                     Utility.isDeliveryFirstTime = true;
                     if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
                         Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncTripsheetDeliveriesService.class);
                         startService(syncTripSheetDeliveriesServiceIntent);
                     }
                 } else {
-                    Toast.makeText(activityContext, "Delivery quantity for one of the product exceeds available stock, please check it. ", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(activityContext, "Delivery quantity for one of the product exceeds available stock, please check it. ", Toast.LENGTH_LONG).show();
+                    CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliveryexceed));
                 }
             } else {
-                Toast.makeText(activityContext, "Please select at least one product to deliver.", Toast.LENGTH_LONG).show();
+               // Toast.makeText(activityContext, "Please select at least one product to deliver.", Toast.LENGTH_LONG).show();
+                CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliverylimit));
             }
         } catch (Exception e) {
             e.printStackTrace();

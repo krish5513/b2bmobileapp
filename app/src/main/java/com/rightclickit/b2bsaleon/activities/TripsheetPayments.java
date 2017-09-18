@@ -29,6 +29,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.services.SyncTripSheetsPaymentsService;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
@@ -518,8 +519,8 @@ public class TripsheetPayments extends AppCompatActivity {
                 mDBHelper.insertTripsheetsPaymentsListData(paymentsBean);
             }
 
-            Toast.makeText(TripsheetPayments.this, "Payment details saved successfully.", Toast.LENGTH_SHORT).show();
-
+           // Toast.makeText(TripsheetPayments.this, "Payment details saved successfully.", Toast.LENGTH_SHORT).show();
+            CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
             synchronized (this) {
                 if (new NetworkConnectionDetector(TripsheetPayments.this).isNetworkConnected()) {
                     startService(new Intent(TripsheetPayments.this, SyncTripSheetsPaymentsService.class));
