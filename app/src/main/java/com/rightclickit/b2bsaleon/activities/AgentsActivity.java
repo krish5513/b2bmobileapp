@@ -322,7 +322,15 @@ public class AgentsActivity extends AppCompatActivity {
             Toast.makeText(this, "Clicked on Settings...", Toast.LENGTH_SHORT).show();
             return true;
         }
+        if (id == R.id.autorenew) {
 
+            if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
+                agentsModel.getAgentsList("agents");
+            }else {
+                new NetworkConnectionDetector(AgentsActivity.this).displayNoNetworkError(AgentsActivity.this);
+            }
+            return true;
+        }
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -364,7 +372,7 @@ public class AgentsActivity extends AppCompatActivity {
         menu.findItem(R.id.notifications).setVisible(true);
 
         menu.findItem(R.id.autorenew).setVisible(true);
-
+        menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 

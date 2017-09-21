@@ -441,7 +441,7 @@ public class Products_Activity extends AppCompatActivity {
         menu.findItem(R.id.notifications).setVisible(true);
 
         menu.findItem( R.id.autorenew).setVisible(true);
-
+        menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 

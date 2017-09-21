@@ -19,6 +19,7 @@
     <string name="noitems">No Orders Found</string>
     <string name="preview">This Preview is unavailable untill the tripsheet stock is verified</string>
     <string name="stock">This Trip Sheet Stock is not yet dispatched.</string>
+    <string name="stockv">This Trip Sheet Stock is not yet verified.</string>
     <string name="stocksuccess">Stock Dispatched Successfully.</string>
     <string name="stockverify">Stock Verified Successfully.</string>
     <string name="deliveryfail">This Preview is unavailable untill the tripsheet delivery is saved.</string>

@@ -307,7 +307,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
         menu.findItem(R.id.Add).setVisible(false);
 
         menu.findItem(R.id.autorenew).setVisible(true);
-
+        menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 

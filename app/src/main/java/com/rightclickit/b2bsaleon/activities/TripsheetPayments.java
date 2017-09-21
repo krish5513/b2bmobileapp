@@ -48,7 +48,7 @@ public class TripsheetPayments extends AppCompatActivity {
     private Context activityContext;
 
     private LinearLayout trip_sheet_payments_save, trip_sheet_payments_preview, ret, delivery, cheqLinearLayout, captureChequeLayout;
-    private TextView tps_opening_balance, tps_sale_order_value, tps_total_amount, tps_received_amount, tps_due_amount;
+    private TextView tps_opening_balance, tps_sale_order_value, tps_total_amount, tps_received_amount, tps_due_amount,agentcode;
     private Spinner paymentTypeSpinner;
     private EditText mAmountText, mChequeNumber, mBankName, mChequeDate;
     private ImageView imageview;
@@ -95,6 +95,8 @@ public class TripsheetPayments extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+            agentcode = (TextView) findViewById(R.id.companyId);
+
             TextView agentName = (TextView) findViewById(R.id.companyName);
             agentName.setText(mAgentName);
 
@@ -127,7 +129,7 @@ public class TripsheetPayments extends AppCompatActivity {
                 tpsBottomOptionsLayout.setVisibility(View.VISIBLE);
 
             }*/
-
+            agentcode.setText("("+mAgentCode+")");
 
             captureChequeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -317,7 +319,7 @@ public class TripsheetPayments extends AppCompatActivity {
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.Add).setVisible(false);
         menu.findItem(R.id.autorenew).setVisible(true);
-
+        menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 

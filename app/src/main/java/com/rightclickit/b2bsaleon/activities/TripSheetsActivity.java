@@ -280,7 +280,7 @@ public class TripSheetsActivity extends AppCompatActivity {
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.notifications).setVisible(true);
         menu.findItem(R.id.autorenew).setVisible(true);
-
+        menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 

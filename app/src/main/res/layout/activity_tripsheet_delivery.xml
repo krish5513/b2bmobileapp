@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="left"
+                android:maxLength="15"
                 android:padding="5dp"
                 android:text="CUSTOMER INFO"
                 android:textAllCaps="true"

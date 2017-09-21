@@ -24,12 +24,12 @@
                 android:layout_gravity="center"
                 android:gravity="left"
                 android:padding="5dp"
+                android:maxLength="15"
                 android:text="CUSTOMER INFO"
                 android:textAllCaps="true"
                 android:textColor="@color/greydark"
                 android:textSize="16sp" />
 
-<!--
             <TextView
                 android:id="@+id/companyId"
                 android:layout_width="wrap_content"
@@ -41,7 +41,6 @@
                 android:textAllCaps="true"
                 android:textColor="@color/greydark"
                 android:textSize="16sp" />
--->
 
 <!--
             <LinearLayout

@@ -46,5 +46,10 @@
         app:showAsAction="always"
         android:visible="true"/>
 
-
+    <item
+        android:id="@+id/sort"
+        android:icon="@drawable/ic_sort_black_24dp"
+        android:title="autorenew"
+        app:showAsAction="always"
+        android:visible="true"/>
 </menu>

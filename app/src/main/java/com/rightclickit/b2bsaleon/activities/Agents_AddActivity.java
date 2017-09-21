@@ -447,7 +447,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem( R.id.Add).setVisible(false);
         menu.findItem( R.id.autorenew).setVisible(true);
-
+        menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 

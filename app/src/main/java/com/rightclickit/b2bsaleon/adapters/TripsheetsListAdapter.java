@@ -27,6 +27,7 @@ import com.rightclickit.b2bsaleon.activities.TripSheetsActivity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -164,7 +165,8 @@ public class TripsheetsListAdapter extends BaseAdapter {
                     activity.startActivity(stockIntent);
                     activity.finish();
                 } else {
-                    Toast.makeText(ctxt, "This Trip Sheet is not yet verified.", Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(ctxt, "This Trip Sheet is not yet verified.", Toast.LENGTH_LONG).show();
+                    CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.stockv));
                 }
             }
         });

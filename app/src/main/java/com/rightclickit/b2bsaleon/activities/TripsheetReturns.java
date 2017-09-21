@@ -42,7 +42,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
     private DBHelper mDBHelper;
 
     private SearchView search;
-    private TextView companyName;
+    private TextView companyName,agentcode;
     private ListView tripSheetReturnProductsList;
     private LinearLayout trip_sheet_returns_save, trip_sheet_returns_preview;
     private TripSheetReturnsAdapter mTripSheetReturnsAdapter;
@@ -82,6 +82,8 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
             mmSharedPreferences = new MMSharedPreferences(activityContext);
             mDBHelper = new DBHelper(activityContext);
 
+            agentcode = (TextView) findViewById(R.id.companyId);
+
             mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
             mAgentId = this.getIntent().getStringExtra("agentId");
             mAgentCode = this.getIntent().getStringExtra("agentCode");
@@ -93,6 +95,8 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
             mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
 
             companyName.setText(mAgentName);
+
+            agentcode.setText("("+mAgentCode+")");
 
             isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
 
@@ -211,7 +215,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.Add).setVisible(false);
         menu.findItem(R.id.autorenew).setVisible(true);
-
+        menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 
