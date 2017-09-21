@@ -26,6 +26,7 @@ import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
 import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
@@ -438,7 +439,8 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                 startActivity(customerSelectionIntent);
                 finish();
             } else {
-                Toast.makeText(activityContext, "Please select at least one product.", Toast.LENGTH_LONG).show();
+              //  Toast.makeText(activityContext, "Please select at least one product.", Toast.LENGTH_LONG).show();
+                CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliverylimit));
             }
         } catch (Exception e) {
             e.printStackTrace();
