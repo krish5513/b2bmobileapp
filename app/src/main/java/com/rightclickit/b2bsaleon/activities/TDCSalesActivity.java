@@ -365,7 +365,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.notifications).setVisible(true);
         menu.findItem(R.id.autorenew).setVisible(true);
-        menu.findItem(R.id.sort).setVisible(false);
+        menu.findItem(R.id.sort).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
 
