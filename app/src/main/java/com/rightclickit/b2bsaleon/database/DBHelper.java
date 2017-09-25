@@ -5112,4 +5112,74 @@ public class DBHelper extends SQLiteOpenHelper {
         return saleQuantity;
     }
 
+    /**
+     * Method to update the stock after tdc sale has been done.
+     */
+    public void updateAgentStockAfterAgentDeliverFromStock(String mAgentId, ArrayList<String> productIdsList, ArrayList<String> productValuesList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            for (int j = 0; j < productIdsList.size(); j++) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY, productValuesList.get(j).toString());
+
+                int status = db.update(TABLE_AGENTS_STOCK_LIST, values, KEY_AGENT_STOCK_AGENT_ID + " = ?" + " AND " + KEY_AGENT_STOCK_PRODUCT_ID + " = ?",
+                        new String[]{String.valueOf(mAgentId), String.valueOf(productIdsList.get(j).toString())});
+
+                System.out.println("++++ AgentStockUpdated ++++ :: " + status);
+
+                values.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    /**
+     * Method to insert the tripsheets list.
+     *
+     * @param mStockList
+     * @param agentId
+     */
+    public void insertAgentsStockListData1(ArrayList<AgentsStockBean> mStockList, String agentId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0; i < mStockList.size(); i++) {
+                ContentValues values = new ContentValues();
+                int checkVal = checkAgentStockExistsOrNot(mStockList.get(i).getmProductId(), agentId);
+                if (checkVal == 0) {
+                    values.put(KEY_AGENT_STOCK_AGENT_ID, agentId);
+                    values.put(KEY_AGENT_STOCK_PRODUCT_NAME, mStockList.get(i).getmProductName());
+                    values.put(KEY_AGENT_STOCK_PRODUCT_CODE, mStockList.get(i).getmProductCode());
+                    values.put(KEY_AGENT_STOCK_PRODUCT_ID, mStockList.get(i).getmProductId());
+                    values.put(KEY_AGENT_STOCK_PRODUCT_UOM, mStockList.get(i).getmProductUOM());
+                    values.put(KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY, mStockList.get(i).getmProductStockQunatity());
+                    values.put(KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY, mStockList.get(i).getmProductDeliveryQunatity());
+                    values.put(KEY_AGENT_STOCK_PRODUCT_CNQUANTITY, mStockList.get(i).getmProductCBQuantity());
+                    System.out.println("+++++++++++++++++++++++++ AGENT STOCK INSERTED++++++++++++++++++++++");
+                    db.insert(TABLE_AGENTS_STOCK_LIST, null, values);
+                } else {
+                    values.put(KEY_AGENT_STOCK_AGENT_ID, agentId);
+                    values.put(KEY_AGENT_STOCK_PRODUCT_NAME, mStockList.get(i).getmProductName());
+                    values.put(KEY_AGENT_STOCK_PRODUCT_CODE, mStockList.get(i).getmProductCode());
+                    values.put(KEY_AGENT_STOCK_PRODUCT_ID, mStockList.get(i).getmProductId());
+                    values.put(KEY_AGENT_STOCK_PRODUCT_UOM, mStockList.get(i).getmProductUOM());
+                    values.put(KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY, mStockList.get(i).getmProductStockQunatity());
+                    //values.put(KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY, mStockList.get(i).getmProductDeliveryQunatity());
+                    //values.put(KEY_AGENT_STOCK_PRODUCT_CNQUANTITY, mStockList.get(i).getmProductCBQuantity());
+                    System.out.println("+++++++++++++++++++++++++ AGENT STOCK UPDATED++++++++++++++++++++++");
+                    db.update(TABLE_AGENTS_STOCK_LIST, values, KEY_AGENT_STOCK_AGENT_ID + " = ?" + " AND " + KEY_AGENT_STOCK_PRODUCT_ID + " = ?", new String[]{String.valueOf(agentId), String.valueOf(mStockList.get(i).getmProductId())});
+                }
+
+                values.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
 }

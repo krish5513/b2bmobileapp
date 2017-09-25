@@ -49,15 +49,15 @@ public class AgentsAdapter extends BaseAdapter {
     private ArrayList<AgentsBean> arraylist;
     private DBHelper mDBHelper;
 
-    public AgentsAdapter(Context ctxt,AgentsActivity agentsActivity, ArrayList<AgentsBean> mAgentsBeansList) {
-        this.ctxt=ctxt;
+    public AgentsAdapter(Context ctxt, AgentsActivity agentsActivity, ArrayList<AgentsBean> mAgentsBeansList) {
+        this.ctxt = ctxt;
         this.activity = agentsActivity;
         this.mAgentsBeansList1 = mAgentsBeansList;
         this.mImageLoader = new ImageLoader(agentsActivity);
         this.mInflater = LayoutInflater.from(activity);
         this.mPreferences = new MMSharedPreferences(activity);
         this.arraylist = new ArrayList<AgentsBean>();
-        this.mDBHelper=new DBHelper(activity);
+        this.mDBHelper = new DBHelper(activity);
         this.arraylist.addAll(mAgentsBeansList1);
     }
 
@@ -79,10 +79,10 @@ public class AgentsAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View view, ViewGroup viewGroup) {
         final ViewHolder mHolder;
-        if(view == null){
+        if (view == null) {
             mHolder = new ViewHolder();
-            view = mInflater.inflate(R.layout.agents_list_custom,null);
-            mHolder.id=(TextView)view.findViewById(R.id.tv_uidNo) ;
+            view = mInflater.inflate(R.layout.agents_list_custom, null);
+            mHolder.id = (TextView) view.findViewById(R.id.tv_uidNo);
             mHolder.mPicImage = (ImageView) view.findViewById(R.id.personImage);
             mHolder.mStatus = (TextView) view.findViewById(R.id.StatusText);
             mHolder.mTitle = (TextView) view.findViewById(R.id.tv_companyName);
@@ -92,52 +92,51 @@ public class AgentsAdapter extends BaseAdapter {
             mHolder.mDueAmount = (TextView) view.findViewById(R.id.tv_address8);
             mHolder.viewbtn = (Button) view.findViewById(R.id.btn_view);
             mHolder.infobtn = (Button) view.findViewById(R.id.btn_info);
-            mHolder.stockbtn=(Button)view.findViewById(R.id.btnStock);
-         //   AgentsInfoActivity.avatar=(ImageView) view.findViewById(R.id.shopaddress_image);
-            mHolder.mPoiImage=(ImageView) view.findViewById(R.id.poiImage);
-            mHolder.mPoaImage=(ImageView) view.findViewById(R.id.poaImage);
+            mHolder.stockbtn = (Button) view.findViewById(R.id.btnStock);
+            //   AgentsInfoActivity.avatar=(ImageView) view.findViewById(R.id.shopaddress_image);
+            mHolder.mPoiImage = (ImageView) view.findViewById(R.id.poiImage);
+            mHolder.mPoaImage = (ImageView) view.findViewById(R.id.poaImage);
 
             mHolder.mEmptyLayout = (LinearLayout) view.findViewById(R.id.EmptyView);
 
             view.setTag(mHolder);
-        }else {
+        } else {
             mHolder = (ViewHolder) view.getTag();
         }
 
-        if(position == mAgentsBeansList1.size()-1){
+        if (position == mAgentsBeansList1.size() - 1) {
             mHolder.mEmptyLayout.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             mHolder.mEmptyLayout.setVisibility(View.GONE);
         }
 
 
-        System.out.println("URL===== "+mAgentsBeansList1.get(position).getmAgentPic());
-        if (!mAgentsBeansList1.get(position).getmAgentPic().equals("")){
+        System.out.println("URL===== " + mAgentsBeansList1.get(position).getmAgentPic());
+        if (!mAgentsBeansList1.get(position).getmAgentPic().equals("")) {
             String URL = Constants.MAIN_URL + "/b2b/" + mAgentsBeansList1.get(position).getmAgentPic();
-            mImageLoader.DisplayImage(URL,mHolder.mPicImage,null,"");
-        }else {
+            mImageLoader.DisplayImage(URL, mHolder.mPicImage, null, "");
+        } else {
             mHolder.mPicImage.setBackgroundResource(R.drawable.logo);
         }
         mHolder.mTitle.setText(mAgentsBeansList1.get(position).getmFirstname());
         mHolder.id.setText(mAgentsBeansList1.get(position).getmAgentCode());
-        if (mAgentsBeansList1.get(position).getmStatus().equals("A")){
+        if (mAgentsBeansList1.get(position).getmStatus().equals("A")) {
             mHolder.mStatus.setText("Active");
-        }else {
+        } else {
             mHolder.mStatus.setText("InActive");
         }
-        final double obAmount,receivedAmount,ordervalue,due;
+        final double obAmount, receivedAmount, ordervalue, due;
 
 
-
-        obAmount=mDBHelper.getSoDetails(mAgentsBeansList1.get(position).getmAgentId(),"tripsheet_so_opamount");
+        obAmount = mDBHelper.getSoDetails(mAgentsBeansList1.get(position).getmAgentId(), "tripsheet_so_opamount");
         mHolder.mObAmount.setText(String.valueOf(Utility.getFormattedCurrency(obAmount)));
-        ordervalue=mDBHelper.getSoDetails(mAgentsBeansList1.get(position).getmAgentId(),"tripsheet_so_value");
+        ordervalue = mDBHelper.getSoDetails(mAgentsBeansList1.get(position).getmAgentId(), "tripsheet_so_value");
         mHolder.mOrderValue.setText(String.valueOf(Utility.getFormattedCurrency(ordervalue)));
-        receivedAmount=mDBHelper.getReceivedAmountDetails(mAgentsBeansList1.get(position).getmAgentId(),"tripsheet_payments_received_amount");
+        receivedAmount = mDBHelper.getReceivedAmountDetails(mAgentsBeansList1.get(position).getmAgentId(), "tripsheet_payments_received_amount");
 
         mHolder.mTotalAmount.setText(String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
 
-        due=(obAmount+ordervalue)-receivedAmount;
+        due = (obAmount + ordervalue) - receivedAmount;
 
 
         mHolder.mDueAmount.setText(String.valueOf(Utility.getFormattedCurrency(due)));
@@ -146,17 +145,17 @@ public class AgentsAdapter extends BaseAdapter {
         mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPreferences.putString("agentName",mAgentsBeansList1.get(position).getmFirstname());
-                mPreferences.putString("agentId",mAgentsBeansList1.get(position).getmAgentId());
-                mPreferences.putString("agentrouteId",mAgentsBeansList1.get(position).getmAgentRouteId());
-                mPreferences.putString("enqId",String.valueOf(position+1));
-                mPreferences.putString("agentCode",mAgentsBeansList1.get(position).getmAgentCode());
+                mPreferences.putString("agentName", mAgentsBeansList1.get(position).getmFirstname());
+                mPreferences.putString("agentId", mAgentsBeansList1.get(position).getmAgentId());
+                mPreferences.putString("agentrouteId", mAgentsBeansList1.get(position).getmAgentRouteId());
+                mPreferences.putString("enqId", String.valueOf(position + 1));
+                mPreferences.putString("agentCode", mAgentsBeansList1.get(position).getmAgentCode());
 
-                mPreferences.putString("ObAmount",String.valueOf(Utility.getFormattedCurrency(obAmount)));
-                mPreferences.putString("OrderValue",String.valueOf(Utility.getFormattedCurrency(ordervalue)));
-                mPreferences.putString("ReceivedAmount",String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
-                mPreferences.putString("due",String.valueOf(Utility.getFormattedCurrency(due)));
-                Intent i=new Intent(activity,AgentTDC_Order.class);
+                mPreferences.putString("ObAmount", String.valueOf(Utility.getFormattedCurrency(obAmount)));
+                mPreferences.putString("OrderValue", String.valueOf(Utility.getFormattedCurrency(ordervalue)));
+                mPreferences.putString("ReceivedAmount", String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
+                mPreferences.putString("due", String.valueOf(Utility.getFormattedCurrency(due)));
+                Intent i = new Intent(activity, AgentTDC_Order.class);
                 activity.startActivity(i);
 
                 activity.finish();
@@ -166,7 +165,7 @@ public class AgentsAdapter extends BaseAdapter {
         mHolder.infobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(activity,AgentsInfoActivity.class);
+                Intent intent = new Intent(activity, AgentsInfoActivity.class);
                 Bundle bundle = new Bundle();
                 //Add your data from getFactualResults method to bundle
 
@@ -184,11 +183,11 @@ public class AgentsAdapter extends BaseAdapter {
                 mHolder.mPicImage.buildDrawingCache();
                 mHolder.mPoiImage.buildDrawingCache();
                 mHolder.mPoaImage.buildDrawingCache();
-                Bitmap avatar=   mHolder.mPicImage.getDrawingCache();
-                Log.i("avatar",avatar+"");
-                Bitmap poi= mHolder.mPoiImage.getDrawingCache();
-                Log.i("poi",poi+"");
-                Bitmap poa= mHolder.mPoaImage.getDrawingCache();
+                Bitmap avatar = mHolder.mPicImage.getDrawingCache();
+                Log.i("avatar", avatar + "");
+                Bitmap poi = mHolder.mPoiImage.getDrawingCache();
+                Log.i("poi", poi + "");
+                Bitmap poa = mHolder.mPoaImage.getDrawingCache();
                 Bundle extras = new Bundle();
                 extras.putParcelable("avatar", avatar);
                 extras.putParcelable("poi", poi);
@@ -205,10 +204,10 @@ public class AgentsAdapter extends BaseAdapter {
         mHolder.stockbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(activity,AgentStockActivity.class);
-                intent.putExtra("agentId",mAgentsBeansList1.get(position).getmAgentId());
-                intent.putExtra("agentCode",mAgentsBeansList1.get(position).getmAgentCode());
-                intent.putExtra("agentName",mAgentsBeansList1.get(position).getmAgentName());
+                Intent intent = new Intent(activity, AgentStockActivity.class);
+                intent.putExtra("agentId", mAgentsBeansList1.get(position).getmAgentId());
+                intent.putExtra("agentCode", mAgentsBeansList1.get(position).getmAgentCode());
+                intent.putExtra("agentName", mAgentsBeansList1.get(position).getmFirstname());
                 activity.startActivity(intent);
                 activity.finish();
             }
@@ -232,7 +231,7 @@ public class AgentsAdapter extends BaseAdapter {
         return view;
     }
 
-    public class ViewHolder{
+    public class ViewHolder {
         TextView id;
         TextView mTitle;
         TextView mObAmount;
@@ -268,7 +267,7 @@ public class AgentsAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    private void showProductImageFull(String url){
+    private void showProductImageFull(String url) {
         final AlertDialog.Builder alertadd = new AlertDialog.Builder(activity);
         LayoutInflater factory = LayoutInflater.from(activity);
         final View view = factory.inflate(R.layout.image_full_screen_layout, null);

@@ -41,7 +41,7 @@ public class AgentStockActivity extends AppCompatActivity {
     private Context activityContext;
     private String mAgentId = "", mAgentCode = "", mAgentName = "";
     private SearchView search;
-    TextView stock_print;
+    TextView stock_print, stock_delivery;
     ArrayList<AgentsStockBean> stockBeanArrayList;
     ArrayList<String[]> selectedList;
     String str_ProductName, str_ProductCode, str_Uom, str_Received, str_Sale, str_CB;
@@ -77,6 +77,7 @@ public class AgentStockActivity extends AppCompatActivity {
         mDBHelper = new DBHelper(AgentStockActivity.this);
         sharedPreferences = new MMSharedPreferences(AgentStockActivity.this);
         stock_print = (TextView) findViewById(R.id.stock_print);
+        stock_delivery = (TextView) findViewById(R.id.stock_delivery);
 
 
         if (new NetworkConnectionDetector(AgentStockActivity.this).isNetworkConnected()) {
@@ -175,6 +176,18 @@ public class AgentStockActivity extends AppCompatActivity {
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
             }
         });
+
+        stock_delivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AgentStockActivity.this, AgentStockDeliveryActivity.class);
+                intent.putExtra("agentId", mAgentId);
+                intent.putExtra("agentCode", mAgentCode);
+                intent.putExtra("agentName", mAgentName);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void loadAgentsStockList() {
@@ -186,6 +199,7 @@ public class AgentStockActivity extends AppCompatActivity {
             stockBeanArrayList.clear();
         }
         stockBeanArrayList = mDBHelper.fetchAllStockByAgentId(mAgentId);
+        System.out.println("AGENT STOCK QUA==== " + stockBeanArrayList.size());
         if (stockBeanArrayList.size() > 0) {
             mStockAdapter = new AgentStockAdapter(this, AgentStockActivity.this, stockBeanArrayList);
             mStockList.setAdapter(mStockAdapter);
@@ -279,7 +293,7 @@ public class AgentStockActivity extends AppCompatActivity {
         menu.findItem(R.id.Add).setVisible(false);
 
         menu.findItem(R.id.autorenew).setVisible(true);
-        menu.findItem(R.id.sort).setVisible(false);
+        //menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 

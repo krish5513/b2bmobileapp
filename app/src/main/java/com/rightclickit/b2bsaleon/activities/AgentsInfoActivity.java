@@ -32,13 +32,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
-    EditText firstname,lastname,mobile,address;
-    public static ImageView avatar,poi,poa;
+    EditText firstname, lastname, mobile, address;
+    public static ImageView avatar, poi, poa;
     private MMSharedPreferences mPreference;
     ArrayList<AgentsBean> mAgentsBeansList1;
     private ImageLoader mImageLoader;
     private GoogleMap mMap;
-    private String mLatitude="",mLongitude="";
+    private String mLatitude = "", mLongitude = "";
     DBHelper dbHelper;
 
     @Override
@@ -57,7 +57,7 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
         mAgentsBeansList1 = new ArrayList<>();
-        mImageLoader=new ImageLoader(this);
+        mImageLoader = new ImageLoader(this);
 
         final ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
@@ -80,14 +80,14 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         Bitmap avatarbmp = (Bitmap) extras.getParcelable("avatar");
         Bitmap poibmp = (Bitmap) extras.getParcelable("poi");
         Bitmap poabmp = (Bitmap) extras.getParcelable("poa");
-        if(avatarbmp!=null){
+        if (avatarbmp != null) {
             avatar.setImageBitmap(avatarbmp);
         }
-        if(poibmp!=null){
-            poi.setImageBitmap(poibmp );
+        if (poibmp != null) {
+            poi.setImageBitmap(poibmp);
         }
-        if(poabmp!=null){
-            poa.setImageBitmap(poabmp );
+        if (poabmp != null) {
+            poa.setImageBitmap(poabmp);
         }
         /*for (int i = 0; i < mAgentsBeansList1.size(); i++) {
             if (!mAgentsBeansList1.get(i).getmPoiImage().equals("")) {
@@ -104,11 +104,13 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFrag);
         supportMapFragment.getMapAsync(this);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -144,11 +146,12 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
-        menu.findItem( R.id.Add).setVisible(false);
-        menu.findItem( R.id.autorenew).setVisible(true);
-        menu.findItem(R.id.sort).setVisible(false);
+        menu.findItem(R.id.Add).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(false);
+        //menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -169,11 +172,11 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(100));*/
         LatLng sydney;
-        if(!mLatitude.equals("")&& !mLongitude.equals("")){
+        if (!mLatitude.equals("") && !mLongitude.equals("")) {
             sydney = new LatLng(Double.parseDouble(mLatitude), Double.parseDouble(mLongitude));
 
 
-        }else {
+        } else {
             // Pass current location lat and long
             sydney = new LatLng(17.3850440, 78.4866710);
         }

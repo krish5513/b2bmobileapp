@@ -25,13 +25,15 @@
                 android:text="Summary from jan 12, 2017"
                 android:textAllCaps="true"
                 android:textColor="@color/greydark"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
