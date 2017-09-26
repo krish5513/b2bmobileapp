@@ -119,6 +119,9 @@ public class DBHelper extends SQLiteOpenHelper {
     // This table contains agents stock list
     private final String TABLE_AGENTS_STOCK_LIST = "agentd_stock_list";
 
+    // This table contains tripsheets deliveries list
+    private final String TABLE_AGENT_STOCK_DELIVERIES_LIST = "agent_stock_deliveries_list";
+
 
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
@@ -168,7 +171,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public final String KEY_PRODUCT_RETAILER_PRICE = "product_retailer_price";
     public final String KEY_PRODUCT_GST_PRICE = "product_gst_price";
     public final String KEY_PRODUCT_VAT_PRICE = "product_vat_price";
-    public final String KEY_PRODUCT_CONTROL_CODE= "control_code";
+    public final String KEY_PRODUCT_CONTROL_CODE = "control_code";
 
     // Column names for Agents Table
     private final String KEY_AGENT_ID = "agent_id";
@@ -434,6 +437,33 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY = "agent_stock_product_delivery_qunatity";
     private final String KEY_AGENT_STOCK_PRODUCT_CNQUANTITY = "agent_stock_product_cb_qunatity";
 
+    // Column names for Agent Stock deliveries List  Table
+    private final String KEY_AGENT_STOCK_DELIVERY_NO = "agent_stock_delivery_no";
+    private final String KEY_AGENT_STOCK_DELIVERY_NUMBER = "agent_stock_delivery_number";
+    private final String KEY_AGENT_STOCK_DELIVERY_TRIP_ID = "agent_stock_delivery_trip_id";
+    private final String KEY_AGENT_STOCK_DELIVERY_SO_ID = "agent_stock_delivery_so_id";
+    private final String KEY_AGENT_STOCK_DELIVERY_SO_CODE = "agent_stock_delivery_so_code";
+    private final String KEY_AGENT_STOCK_DELIVERY_USER_ID = "agent_stock_delivery_user_id"; // Agent id
+    private final String KEY_AGENT_STOCK_DELIVERY_USER_CODES = "agent_stock_delivery_user_codes"; // Agent code
+    private final String KEY_AGENT_STOCK_DELIVERY_ROUTE_ID = "agent_stock_delivery_route_id";
+    private final String KEY_AGENT_STOCK_DELIVERY_ROUTE_CODES = "agent_stock_delivery_route_codes";
+    private final String KEY_AGENT_STOCK_DELIVERY_PRODUCT_IDS = "agent_stock_delivery_product_ids";
+    private final String KEY_AGENT_STOCK_DELIVERY_PRODUCT_CODES = "agent_stock_delivery_product_codes";
+    private final String KEY_AGENT_STOCK_DELIVERY_TAXPERCENT = "agent_stock_delivery_taxpercent";
+    private final String KEY_AGENT_STOCK_DELIVERY_UNITPRICE = "agent_stock_delivery_unitprice";
+    private final String KEY_AGENT_STOCK_DELIVERY_QUANTITY = "agent_stock_delivery_quantity";
+    private final String KEY_AGENT_STOCK_DELIVERY_AMOUNT = "agent_stock_delivery_amount";
+    private final String KEY_AGENT_STOCK_DELIVERY_TAXAMOUNT = "agent_stock_delivery_taxamount";
+    private final String KEY_AGENT_STOCK_DELIVERY_TAXTOTAL = "agent_stock_delivery_taxtotal";
+    private final String KEY_AGENT_STOCK_DELIVERY_SALEVALUE = "agent_stock_delivery_salevalue";
+    private final String KEY_AGENT_STOCK_DELIVERY_STATUS = "agent_stock_delivery_status";
+    private final String KEY_AGENT_STOCK_DELIVERY_DELETE = "agent_stock_delivery_delete";
+    private final String KEY_AGENT_STOCK_DELIVERY_CREATEDBY = "agent_stock_delivery_createdby";
+    private final String KEY_AGENT_STOCK_DELIVERY_CREATEDON = "agent_stock_delivery_createdon";
+    private final String KEY_AGENT_STOCK_DELIVERY_UPDATEDON = "agent_stock_delivery_updatedon";
+    private final String KEY_AGENT_STOCK_DELIVERY_UPDATEDBY = "agent_stock_delivery_updatedby";
+    private final String KEY_AGENT_STOCK_DELIVERY_UPLOAD_STATUS = "agent_stock_delivery_upload_status";
+
     // Agents Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_AGENTS + "(" + KEY_AGENT_ID + " VARCHAR,"
@@ -692,6 +722,34 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY + " VARCHAR,"
             + KEY_AGENT_STOCK_PRODUCT_CNQUANTITY + " VARCHAR)";
 
+    // Agent stock Deliveries list Table Create Statements
+    private final String CREATE_AGENT_STOCK_DELIVERIES_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_AGENT_STOCK_DELIVERIES_LIST + "(" + KEY_AGENT_STOCK_DELIVERY_NO + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + KEY_AGENT_STOCK_DELIVERY_NUMBER + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_TRIP_ID + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_SO_ID + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_SO_CODE + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_USER_ID + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_USER_CODES + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_ROUTE_ID + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_ROUTE_CODES + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_PRODUCT_IDS + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_PRODUCT_CODES + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_TAXPERCENT + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_UNITPRICE + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_QUANTITY + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_AMOUNT + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_TAXAMOUNT + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_TAXTOTAL + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_SALEVALUE + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_STATUS + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_DELETE + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_CREATEDBY + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_CREATEDON + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_UPDATEDON + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_UPDATEDBY + " VARCHAR,"
+            + KEY_AGENT_STOCK_DELIVERY_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
+
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -720,6 +778,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TRIPSHEETS_PAYMENTS_LIST_TABLE);
             db.execSQL(CREATE_NOTIFICATIONS_LIST_TABLE);
             db.execSQL(CREATE_AGENT_STOCK_LIST_TABLE);
+            db.execSQL(CREATE_AGENT_STOCK_DELIVERIES_LIST_TABLE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -5119,70 +5178,181 @@ public class DBHelper extends SQLiteOpenHelper {
      * Method to update the stock after tdc sale has been done.
      */
     public void updateAgentStockAfterAgentDeliverFromStock(String mAgentId, ArrayList<String> productIdsList, ArrayList<String> productValuesList) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
         try {
             for (int j = 0; j < productIdsList.size(); j++) {
                 ContentValues values = new ContentValues();
-                values.put(KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY, productValuesList.get(j).toString());
+                int checkVal = checkAgentStockExistsOrNot(productIdsList.get(j).toString(), mAgentId);
+                if (checkVal == 0) {
+                    String productCode = "", productUOM = "", productName = "";
+                    // Insert
+                    String selectQuery = "SELECT * FROM " + TABLE_PRODUCTS + " WHERE " + KEY_PRODUCT_ID + " = '" + productIdsList.get(j).toString() + "'";
+                    // SQLiteDatabase db1 = this.getWritableDatabase();
+                    SQLiteDatabase db = this.getWritableDatabase();
+                    Cursor cursor1 = db.rawQuery(selectQuery, null);
 
-                int status = db.update(TABLE_AGENTS_STOCK_LIST, values, KEY_AGENT_STOCK_AGENT_ID + " = ?" + " AND " + KEY_AGENT_STOCK_PRODUCT_ID + " = ?",
-                        new String[]{String.valueOf(mAgentId), String.valueOf(productIdsList.get(j).toString())});
+                    if (cursor1.moveToFirst()) {
+                        do {
+                            productCode = cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_CODE));
+                            productUOM = cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_UOM));
+                            productName = cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_TITLE));
+                        } while (cursor1.moveToNext());
+                    }
 
-                System.out.println("++++ AgentStockUpdated ++++ :: " + status);
+                    cursor1.close();
 
+                    System.out.println("Product Code:::: " + productCode + "\n");
+                    System.out.println("Product UOM:::: " + productUOM + "\n");
+                    System.out.println("Product Id:::: " + productIdsList.get(j).toString() + "\n");
+                    System.out.println("Product Name:::: " + productName + "\n");
+                    System.out.println("Product Stock Quantity:::: " + productValuesList.get(j).toString() + "\n");
+
+                    values.put(KEY_AGENT_STOCK_AGENT_ID, mAgentId);
+                    values.put(KEY_AGENT_STOCK_PRODUCT_NAME, productName);
+                    values.put(KEY_AGENT_STOCK_PRODUCT_CODE, productCode);
+                    values.put(KEY_AGENT_STOCK_PRODUCT_ID, productIdsList.get(j).toString());
+                    values.put(KEY_AGENT_STOCK_PRODUCT_UOM, productUOM);
+                    values.put(KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY, productValuesList.get(j).toString());
+                    values.put(KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY, "0");
+                    values.put(KEY_AGENT_STOCK_PRODUCT_CNQUANTITY, "0");
+
+                    long status1 = db.insert(TABLE_AGENTS_STOCK_LIST, null, values);
+                    System.out.println("+++++++++++++++++++++++++ AGENT STOCK NEW INSERTED++++++++++++++++++++++" + status1);
+                    db.close();
+                } else {
+                    // Update
+                    String existQuantity = getStockQuantityByProdIdandAgentId(productIdsList.get(j).toString(), mAgentId);
+                    System.out.println("EXISTING QUAN VAL::: " + existQuantity);
+                    Double newstockVal = Double.parseDouble(existQuantity) + Double.parseDouble(productValuesList.get(j).toString());
+                    values.put(KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY, String.valueOf(newstockVal));
+                    SQLiteDatabase db1 = this.getWritableDatabase();
+                    int status = db1.update(TABLE_AGENTS_STOCK_LIST, values, KEY_AGENT_STOCK_AGENT_ID + " = ?" + " AND " + KEY_AGENT_STOCK_PRODUCT_ID + " = ?",
+                            new String[]{String.valueOf(mAgentId), String.valueOf(productIdsList.get(j).toString())});
+
+                    System.out.println("++++ AgentStock Updated ++++ :: " + status);
+                    db1.close();
+                }
                 values.clear();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        db.close();
     }
 
     /**
-     * Method to insert the tripsheets list.
+     * Method to insert the mTripsheetsDeliveriesList.
      *
-     * @param mStockList
-     * @param agentId
+     * @param mTripsheetsDeliveriesList
      */
-    public void insertAgentsStockListData1(ArrayList<AgentsStockBean> mStockList, String agentId) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void insertAgentStockDeliveriesListData(ArrayList<TripSheetDeliveriesBean> mTripsheetsDeliveriesList) {
         try {
-            for (int i = 0; i < mStockList.size(); i++) {
+            for (TripSheetDeliveriesBean tripSheetDeliveriesBean : mTripsheetsDeliveriesList) {
                 ContentValues values = new ContentValues();
-                int checkVal = checkAgentStockExistsOrNot(mStockList.get(i).getmProductId(), agentId);
-                if (checkVal == 0) {
-                    values.put(KEY_AGENT_STOCK_AGENT_ID, agentId);
-                    values.put(KEY_AGENT_STOCK_PRODUCT_NAME, mStockList.get(i).getmProductName());
-                    values.put(KEY_AGENT_STOCK_PRODUCT_CODE, mStockList.get(i).getmProductCode());
-                    values.put(KEY_AGENT_STOCK_PRODUCT_ID, mStockList.get(i).getmProductId());
-                    values.put(KEY_AGENT_STOCK_PRODUCT_UOM, mStockList.get(i).getmProductUOM());
-                    values.put(KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY, mStockList.get(i).getmProductStockQunatity());
-                    values.put(KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY, mStockList.get(i).getmProductDeliveryQunatity());
-                    values.put(KEY_AGENT_STOCK_PRODUCT_CNQUANTITY, mStockList.get(i).getmProductCBQuantity());
-                    System.out.println("+++++++++++++++++++++++++ AGENT STOCK INSERTED++++++++++++++++++++++");
-                    db.insert(TABLE_AGENTS_STOCK_LIST, null, values);
+                values.put(KEY_AGENT_STOCK_DELIVERY_TRIP_ID, tripSheetDeliveriesBean.getmTripsheetDelivery_tripId());
+                values.put(KEY_AGENT_STOCK_DELIVERY_SO_ID, tripSheetDeliveriesBean.getmTripsheetDelivery_so_id());
+                values.put(KEY_AGENT_STOCK_DELIVERY_SO_CODE, tripSheetDeliveriesBean.getmTripsheetDelivery_so_code());
+                values.put(KEY_AGENT_STOCK_DELIVERY_USER_ID, tripSheetDeliveriesBean.getmTripsheetDelivery_userId());
+                values.put(KEY_AGENT_STOCK_DELIVERY_USER_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_userCodes());
+                values.put(KEY_AGENT_STOCK_DELIVERY_ROUTE_ID, tripSheetDeliveriesBean.getmTripsheetDelivery_routeId());
+                values.put(KEY_AGENT_STOCK_DELIVERY_ROUTE_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_routeCodes());
+                values.put(KEY_AGENT_STOCK_DELIVERY_PRODUCT_IDS, tripSheetDeliveriesBean.getmTripsheetDelivery_productId());
+                values.put(KEY_AGENT_STOCK_DELIVERY_PRODUCT_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes());
+                values.put(KEY_AGENT_STOCK_DELIVERY_TAXPERCENT, tripSheetDeliveriesBean.getmTripsheetDelivery_TaxPercent());
+                values.put(KEY_AGENT_STOCK_DELIVERY_UNITPRICE, tripSheetDeliveriesBean.getmTripsheetDelivery_UnitPrice());
+                values.put(KEY_AGENT_STOCK_DELIVERY_QUANTITY, tripSheetDeliveriesBean.getmTripsheetDelivery_Quantity());
+                values.put(KEY_AGENT_STOCK_DELIVERY_AMOUNT, tripSheetDeliveriesBean.getmTripsheetDelivery_Amount());
+                values.put(KEY_AGENT_STOCK_DELIVERY_TAXAMOUNT, tripSheetDeliveriesBean.getmTripsheetDelivery_TaxAmount());
+                values.put(KEY_AGENT_STOCK_DELIVERY_TAXTOTAL, tripSheetDeliveriesBean.getmTripsheetDelivery_TaxTotal());
+                values.put(KEY_AGENT_STOCK_DELIVERY_SALEVALUE, tripSheetDeliveriesBean.getmTripsheetDelivery_SaleValue());
+                values.put(KEY_AGENT_STOCK_DELIVERY_STATUS, tripSheetDeliveriesBean.getmTripsheetDelivery_Status());
+                values.put(KEY_AGENT_STOCK_DELIVERY_DELETE, tripSheetDeliveriesBean.getmTripsheetDelivery_Delete());
+                values.put(KEY_AGENT_STOCK_DELIVERY_CREATEDBY, tripSheetDeliveriesBean.getmTripsheetDelivery_CreatedBy());
+                values.put(KEY_AGENT_STOCK_DELIVERY_CREATEDON, tripSheetDeliveriesBean.getmTripsheetDelivery_CreatedOn());
+                values.put(KEY_AGENT_STOCK_DELIVERY_UPDATEDON, tripSheetDeliveriesBean.getmTripsheetDelivery_UpdatedOn());
+                values.put(KEY_AGENT_STOCK_DELIVERY_UPDATEDBY, tripSheetDeliveriesBean.getmTripsheetDelivery_UpdatedBy());
+
+                int noOfRecordsExisted = checkProductExistsInAgentStockDeliveryTableByAgentIdProductId(tripSheetDeliveriesBean.getmTripsheetDelivery_so_id(), tripSheetDeliveriesBean.getmTripsheetDelivery_userId(), tripSheetDeliveriesBean.getmTripsheetDelivery_productId());
+
+                SQLiteDatabase db = this.getWritableDatabase();
+                long status;
+
+                if (noOfRecordsExisted == 0) {
+                    values.put(KEY_AGENT_STOCK_DELIVERY_UPLOAD_STATUS, 0);
+                    status = db.insert(TABLE_AGENT_STOCK_DELIVERIES_LIST, null, values);
+                    System.out.println("Agent Stock Delivery API Record Inserted=================" + status);
                 } else {
-                    values.put(KEY_AGENT_STOCK_AGENT_ID, agentId);
-                    values.put(KEY_AGENT_STOCK_PRODUCT_NAME, mStockList.get(i).getmProductName());
-                    values.put(KEY_AGENT_STOCK_PRODUCT_CODE, mStockList.get(i).getmProductCode());
-                    values.put(KEY_AGENT_STOCK_PRODUCT_ID, mStockList.get(i).getmProductId());
-                    values.put(KEY_AGENT_STOCK_PRODUCT_UOM, mStockList.get(i).getmProductUOM());
-                    values.put(KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY, mStockList.get(i).getmProductStockQunatity());
-                    //values.put(KEY_AGENT_STOCK_PRODUCT_DELIVERY_QUNATITY, mStockList.get(i).getmProductDeliveryQunatity());
-                    //values.put(KEY_AGENT_STOCK_PRODUCT_CNQUANTITY, mStockList.get(i).getmProductCBQuantity());
-                    System.out.println("+++++++++++++++++++++++++ AGENT STOCK UPDATED++++++++++++++++++++++");
-                    db.update(TABLE_AGENTS_STOCK_LIST, values, KEY_AGENT_STOCK_AGENT_ID + " = ?" + " AND " + KEY_AGENT_STOCK_PRODUCT_ID + " = ?", new String[]{String.valueOf(agentId), String.valueOf(mStockList.get(i).getmProductId())});
+                    status = db.update(TABLE_AGENT_STOCK_DELIVERIES_LIST, values, KEY_AGENT_STOCK_DELIVERY_TRIP_ID + " = ? AND "
+                            + KEY_AGENT_STOCK_DELIVERY_SO_ID + " = ? AND " + KEY_AGENT_STOCK_DELIVERY_PRODUCT_IDS + " = ?", new String[]{tripSheetDeliveriesBean.getmTripsheetDelivery_tripId(), tripSheetDeliveriesBean.getmTripsheetDelivery_so_id(), tripSheetDeliveriesBean.getmTripsheetDelivery_productId()});
+                    System.out.println("Agent Stock Delivery API Record Updated=================" + status);
                 }
 
                 values.clear();
+                db.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        db.close();
+    /**
+     * Method to get the existing stock quantity by using product id and agent id.
+     *
+     * @param productId
+     * @param agentId
+     */
+    private String getStockQuantityByProdIdandAgentId(String productId, String agentId) {
+        String existingQuantity = "";
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_AGENTS_STOCK_LIST + " WHERE " + KEY_AGENT_STOCK_PRODUCT_ID
+                    + " = '" + productId + "'" + " AND " + KEY_AGENT_STOCK_AGENT_ID
+                    + " = '" + agentId + "'";
+            SQLiteDatabase db1 = this.getWritableDatabase();
+            Cursor cursor1 = db1.rawQuery(selectQuery, null);
+
+            if (cursor1.moveToFirst()) {
+                do {
+                    existingQuantity = cursor1.getString(cursor1.getColumnIndex(KEY_AGENT_STOCK_PRODUCT_STOCK_QUNATITY));
+                } while (cursor1.moveToNext());
+            }
+
+            cursor1.close();
+            db1.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return existingQuantity;
+    }
+
+    /**
+     * Method to check the product is existing or not using by soid,agentId and productid.
+     *
+     * @param soId
+     * @param agentId
+     * @param productId
+     * @return
+     */
+    public int checkProductExistsInAgentStockDeliveryTableByAgentIdProductId(String soId, String agentId, String productId) {
+        int noOfRecords = 0;
+
+        try {
+            String selectQuery = "SELECT " + KEY_AGENT_STOCK_DELIVERY_NO + " FROM " + TABLE_AGENT_STOCK_DELIVERIES_LIST
+                    + " WHERE " + KEY_AGENT_STOCK_DELIVERY_SO_ID + " = '" + soId + "' AND " + KEY_AGENT_STOCK_DELIVERY_USER_ID
+                    + " = '" + agentId + "' AND " + KEY_AGENT_STOCK_DELIVERY_PRODUCT_IDS + " = '" + productId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfRecords = cursor.getCount();
+                cursor.close();
+            }
+
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return noOfRecords;
     }
 
 }

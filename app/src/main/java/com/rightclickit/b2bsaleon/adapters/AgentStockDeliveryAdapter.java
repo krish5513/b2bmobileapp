@@ -12,11 +12,13 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentStockDeliveryActivity;
+import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.interfaces.AgentStockListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -27,10 +29,11 @@ public class AgentStockDeliveryAdapter extends BaseAdapter {
     LayoutInflater mInflater;
     private Activity activity;
     private Context ctxt;
-    private ArrayList<ProductsBean> allProductsListSuper, filteredProductsList;
+    private ArrayList<ProductsBean> allProductsListSuper, filteredProductsList, arraylist;
     private Map<String, String> selectedProductsStockListHashMap;
     private Map<String, String> selectedProductsStockListHashMapNameCode;
     private Map<String, String> selectedProductsStockListHashMapIdUOM;
+    private Map<String, ProductsBean> selectedProductsStockListHashProductsMap;
     private AgentStockListener listener;
 
     public AgentStockDeliveryAdapter(AgentStockDeliveryActivity agentStockDeliveryActivity, AgentStockDeliveryActivity stockDeliveryActivity,
@@ -39,12 +42,15 @@ public class AgentStockDeliveryAdapter extends BaseAdapter {
         this.activity = agentStockDeliveryActivity;
         this.mInflater = LayoutInflater.from(activity);
         this.allProductsListSuper = allProductsList;
-        this.filteredProductsList = new ArrayList<>();
+        this.filteredProductsList = new ArrayList<ProductsBean>();
         this.filteredProductsList.addAll(allProductsListSuper);
         this.selectedProductsStockListHashMap = new HashMap<>();
         this.selectedProductsStockListHashMapNameCode = new HashMap<>();
         this.selectedProductsStockListHashMapIdUOM = new HashMap<>();
+        this.selectedProductsStockListHashProductsMap = new HashMap<String, ProductsBean>();
         this.listener = deliverListener;
+        this.arraylist = new ArrayList<ProductsBean>();
+        this.arraylist.addAll(filteredProductsList);
     }
 
     @Override
@@ -107,11 +113,11 @@ public class AgentStockDeliveryAdapter extends BaseAdapter {
                         presentQuantity--;
                         currentAgentStockSalesViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
                         selectedProductsStockListHashMap.put(currentProductsBean.getProductId(), String.valueOf(presentQuantity));
-                        // selectedProductsStockListHashMapNameCode.put(currentProductsBean.getProductTitle(), currentProductsBean.getProductCode());
-                        //selectedProductsStockListHashMapIdUOM.put(currentProductsBean.getProductId(), currentProductsBean.getProductUOM());
-                        if (listener != null)
-                            listener.updateSelectedProductsList(selectedProductsStockListHashMap, selectedProductsStockListHashMapNameCode
-                                    , selectedProductsStockListHashMapIdUOM);
+                        selectedProductsStockListHashProductsMap.put(currentProductsBean.getProductId(), currentProductsBean);
+                        if (listener != null) {
+                            listener.updateSelectedProductsList(selectedProductsStockListHashMap);
+                            listener.updateDeliveryProductsList(selectedProductsStockListHashProductsMap);
+                        }
                     } else {
                         removeFromSelectedList(currentProductsBean);
                     }
@@ -126,11 +132,11 @@ public class AgentStockDeliveryAdapter extends BaseAdapter {
                     currentAgentStockSalesViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
                     if (presentQuantity > 0) {
                         selectedProductsStockListHashMap.put(currentProductsBean.getProductId(), String.valueOf(presentQuantity));
-//                        selectedProductsStockListHashMapNameCode.put(currentProductsBean.getProductTitle(), currentProductsBean.getProductCode());
-                        //                      selectedProductsStockListHashMapIdUOM.put(currentProductsBean.getProductId(), currentProductsBean.getProductUOM());
-                        if (listener != null)
-                            listener.updateSelectedProductsList(selectedProductsStockListHashMap, selectedProductsStockListHashMapNameCode
-                                    , selectedProductsStockListHashMapIdUOM);
+                        selectedProductsStockListHashProductsMap.put(currentProductsBean.getProductId(), currentProductsBean);
+                        if (listener != null) {
+                            listener.updateSelectedProductsList(selectedProductsStockListHashMap);
+                            listener.updateDeliveryProductsList(selectedProductsStockListHashProductsMap);
+                        }
                     }
                 }
             });
@@ -144,11 +150,12 @@ public class AgentStockDeliveryAdapter extends BaseAdapter {
                             Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
                             if (enteredQuantity > 0) {
                                 selectedProductsStockListHashMap.put(currentProductsBean.getProductId(), String.valueOf(enteredQuantity));
-                                // selectedProductsStockListHashMapNameCode.put(currentProductsBean.getProductTitle(), currentProductsBean.getProductCode());
-                                //selectedProductsStockListHashMapIdUOM.put(currentProductsBean.getProductId(), currentProductsBean.getProductUOM());
-                                if (listener != null)
-                                    listener.updateSelectedProductsList(selectedProductsStockListHashMap, selectedProductsStockListHashMapNameCode
-                                            , selectedProductsStockListHashMapIdUOM);
+                                selectedProductsStockListHashProductsMap.put(currentProductsBean.getProductId(), currentProductsBean);
+                                if (listener != null) {
+                                    listener.updateSelectedProductsList(selectedProductsStockListHashMap);
+
+                                    listener.updateDeliveryProductsList(selectedProductsStockListHashProductsMap);
+                                }
                             } else {
                                 removeFromSelectedList(currentProductsBean);
                             }
@@ -179,5 +186,23 @@ public class AgentStockDeliveryAdapter extends BaseAdapter {
         ImageView arrow_icon, product_quantity_decrement, product_quantity_increment;
         TextView product_name, product_code, product_uom;
         EditText product_quantity;
+    }
+
+    // Filter Class
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        filteredProductsList.clear();
+        if (charText.length() == 0) {
+            filteredProductsList.addAll(arraylist);
+        } else {
+            for (ProductsBean wp : arraylist) {
+                if (wp.getProductTitle().toLowerCase(Locale.getDefault()).contains(charText)
+                        || wp.getProductCode().toLowerCase(Locale.getDefault()).contains(charText)
+                        || wp.getProductUOM().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    filteredProductsList.add(wp);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="ADD TRIP DETAILS"
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/business_name_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/tripsheet_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789"
+            android:hint="Tripsheet Number"
+            android:longClickable="false"
+            android:textColor="@color/greydark"
+            android:textSize="14sp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/business_name_labe2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/sale_order_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Saleorder Id"
+            android:inputType="number"
+            android:longClickable="false"
+            android:textColor="@color/greydark"
+            android:textSize="14sp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/business_name_labe3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/sale_order_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Saleorder Number"
+            android:inputType="number"
+            android:longClickable="false"
+            android:textColor="@color/greydark"
+            android:textSize="14sp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>

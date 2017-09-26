@@ -1,16 +1,25 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -19,13 +28,16 @@ import com.rightclickit.b2bsaleon.adapters.AgentStockAdapter;
 import com.rightclickit.b2bsaleon.adapters.AgentStockDeliveryAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.AgentStockListener;
 import com.rightclickit.b2bsaleon.models.AgentsStockModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,13 +51,13 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
     private ListView mStockList;
     private AgentStockDeliveryAdapter mStockAdapter;
     private Context activityContext;
-    private String mAgentId = "", mAgentCode = "", mAgentName = "";
+    private String mAgentId = "", mAgentCode = "", mAgentName = "", mAgentRouteId = "", mAgentRouteCode = "", loggedInUserId = "";
     private SearchView search;
     TextView stock_delivery_print, stock_delivery_save;
     private ArrayList<ProductsBean> allProductsList;
     private Map<String, String> selectedProductsStockListHashMap;
-    private Map<String, String> selectedProductsStockListHashMapNameCode;
-    private Map<String, String> selectedProductsStockListHashMapIdUOM;
+    private Map<String, String> selectedProductsStockListHashMap1;
+    private Map<String, ProductsBean> selectedProductsStockListHashMapProducts;
     private ArrayList<String> productIdsList = new ArrayList<String>();
     private ArrayList<String> productValuesList = new ArrayList<String>();
     private ArrayList<String> productCodesList = new ArrayList<String>();
@@ -80,9 +92,11 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
         mDBHelper = new DBHelper(AgentStockDeliveryActivity.this);
+        sharedPreferences = new MMSharedPreferences(AgentStockDeliveryActivity.this);
         selectedProductsStockListHashMap = new HashMap<String, String>();
-        selectedProductsStockListHashMapNameCode = new HashMap<String, String>();
-        selectedProductsStockListHashMapIdUOM = new HashMap<String, String>();
+        selectedProductsStockListHashMap1 = new HashMap<String, String>();
+        selectedProductsStockListHashMapProducts = new HashMap<String, ProductsBean>();
+
         allProductsList = new ArrayList<>();
 
         this.activityContext = AgentStockDeliveryActivity.this;
@@ -90,6 +104,15 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
         mStockList = (ListView) findViewById(R.id.agent_stock_delivery_list);
 
         stock_delivery_save = (TextView) findViewById(R.id.stock_delivery_save);
+
+        if (mAgentId != null && mAgentId != "") {
+            List<String> agentRouteIds = mDBHelper.getAgentRouteId(mAgentId);
+            if (mAgentRouteId != null && agentRouteIds.size() > 0) {
+                mAgentRouteId = agentRouteIds.get(0);
+                mAgentRouteCode = mDBHelper.getRouteCodeByRouteId(mAgentRouteId);
+            }
+        }
+        loggedInUserId = sharedPreferences.getString("userId");
 
         allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
 
@@ -106,39 +129,9 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
             public void onClick(View view) {
                 System.out.println("IN 0000000000::: " + selectedProductsStockListHashMap.size());
                 if (selectedProductsStockListHashMap.size() > 0) {
-                    synchronized (this) {
-                        System.out.println("IN 11111111111111");
-                        for (Map.Entry<String, String> productsBeanEntry : selectedProductsStockListHashMap.entrySet()) {
-                            productIdsList.add(productsBeanEntry.getKey());
-                            productValuesList.add(productsBeanEntry.getValue());
-                        }
-//                        for (int g = 0; g < allProductsList.size(); g++) {
-//                            if (selectedProductsStockListHashMap.get(allProductsList.get(g).getProductId()) != null) {
-//                                if (allProductsList.get(g).getProductId().equals(
-//                                        selectedProductsStockListHashMap.get(allProductsList.get(g).getProductId()))) {
-//
-//                                    AgentsStockBean agentsStockBean = new AgentsStockBean();
-//
-//                                    agentsStockBean.setmProductName(allProductsList.get(g).getProductTitle());
-//                                    agentsStockBean.setmProductCode(allProductsList.get(g).getProductCode());
-//                                    agentsStockBean.setmProductId(allProductsList.get(g).getProductId());
-//                                    agentsStockBean.setmProductStockQunatity(selectedProductsStockListHashMap.get(allProductsList.get(g).getProductId()));
-//                                    agentsStockBean.setmProductDeliveryQunatity("0");
-//                                    agentsStockBean.setmProductUOM(allProductsList.get(g).getProductUOM());
-//                                    agentsStockBean.setmProductCBQuantity("0");
-//
-//                                    agentsStockBeanList.add(agentsStockBean);
-//                                }
-//                            }
-//                        }
-                    }
-                    synchronized (this) {
-                        System.out.println("IN 22222222222222222:::" + productIdsList.size());
-//                        if (agentsStockBeanList.size() > 0) {
-//                            mDBHelper.insertAgentsStockListData1(agentsStockBeanList, mAgentId);
-//                        }
-                        mDBHelper.updateAgentStockAfterAgentDeliverFromStock(mAgentId, productIdsList, productValuesList);
-                    }
+                    showAddTripDetailsDialog();
+                } else {
+                    Toast.makeText(activityContext, "Please select at least one product quantity.", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -147,25 +140,63 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+        search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+
+        search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if (query.length() > 0) {
+                    mStockAdapter.filter(query);
+                }
+                return true;
+            }
+        });
+
+        // Get the search close button image view
+        ImageView closeButton = (ImageView) search.findViewById(R.id.search_close_btn);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                search.setQuery("", false);
+                mStockAdapter.filter("");
+                search.clearFocus();
+                search.onActionViewCollapsed();
+            }
+        });
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-//        if (id == R.id.action_search) {
-//
-//            return true;
-//        }
+        if (id == R.id.action_search) {
 
-//        switch (item.getItemId()) {
-//            case android.R.id.home:
-//                onBackPressed();
-//                return true;
-//            default:
-//                return true;
-//        }
-        return true;
+            return true;
+        }
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                if (search.isIconified()) {
+                    onBackPressed();
+                } else {
+                    search.setQuery("", false);
+                    search.clearFocus();
+                    search.onActionViewCollapsed();
+                }
+                return true;
+            default:
+                return true;
+        }
     }
 
     @Override
@@ -183,10 +214,154 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
     }
 
     @Override
-    public void updateSelectedProductsList(Map<String, String> selectedProductsList, Map<String, String> selectedProductsListNameCode
-            , Map<String, String> selectedProductsListIdUOM) {
+    public void updateSelectedProductsList(Map<String, String> selectedProductsList) {
         this.selectedProductsStockListHashMap = selectedProductsList;
-        this.selectedProductsStockListHashMapNameCode = selectedProductsListNameCode;
-        this.selectedProductsStockListHashMapIdUOM = selectedProductsListIdUOM;
+    }
+
+    @Override
+    public void updateDeliveryProductsList(Map<String, ProductsBean> deliveryProductsList) {
+        this.selectedProductsStockListHashMapProducts = deliveryProductsList;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, AgentStockActivity.class);
+        intent.putExtra("agentId", mAgentId);
+        intent.putExtra("agentCode", mAgentCode);
+        intent.putExtra("agentName", mAgentName);
+        startActivity(intent);
+        finish();
+    }
+
+    protected void showAddTripDetailsDialog() {
+        LayoutInflater layoutInflater = LayoutInflater.from(AgentStockDeliveryActivity.this);
+        View promptView = layoutInflater.inflate(R.layout.agent_stock_tripso_adddialog, null);
+        final EditText tripshhetNumber = (EditText) promptView.findViewById(R.id.tripsheet_number);
+        final EditText soId = (EditText) promptView.findViewById(R.id.sale_order_id);
+        final EditText soNumber = (EditText) promptView.findViewById(R.id.sale_order_number);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AgentStockDeliveryActivity.this);
+        alertDialogBuilder.setView(promptView);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton(android.R.string.ok, null);
+        alertDialogBuilder.setNegativeButton(android.R.string.cancel, null);
+
+        final AlertDialog alertDialog = alertDialogBuilder.create();// create an alert dialog
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button button = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        String tripSheetStr = tripshhetNumber.getText().toString().trim();
+                        String soIdStr = soId.getText().toString().trim();
+                        String soNumStr = soNumber.getText().toString().trim();
+                        saveQuantityToLocalAgentsStockDB(tripSheetStr, soIdStr, soNumStr);
+                        alertDialog.dismiss();
+//                        boolean cancel = false;
+//                        View focusView = null;
+//
+//                        if (tripSheetStr.isEmpty()) {
+//                            tripshhetNumber.setError("Please enter tripsheet number.");
+//                            focusView = tripshhetNumber;
+//                            cancel = true;
+//                        } else if (soIdStr.isEmpty()) {
+//                            soId.setError("Please enter sale order id.");
+//                            focusView = soId;
+//                            cancel = true;
+//                        } else if (soNumStr.isEmpty()) {
+//                            soNumber.setError("Please enter sale order number.");
+//                            focusView = soNumber;
+//                            cancel = true;
+//                        }
+//
+//                        if (cancel) {
+//                            focusView.requestFocus();
+//                        } else {
+//                            alertDialog.dismiss();
+//
+//                            saveQuantityToLocalAgentsStockDB(tripSheetStr, soIdStr, soNumStr);
+//                        }
+                    }
+                });
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    private void saveQuantityToLocalAgentsStockDB(String tripSheetStr, String soIdStr, String soNumStr) {
+        long currentTimeStamp = System.currentTimeMillis();
+        ArrayList<TripSheetDeliveriesBean> mAgentStockDeliveriesList = new ArrayList<>();
+        if (tripSheetStr.length() == 0) {
+            tripSheetStr = "";
+        }
+        if (soIdStr.length() == 0) {
+            soIdStr = "";
+        }
+        if (soNumStr.length() == 0) {
+            soNumStr = "";
+        }
+        if (selectedProductsStockListHashMap.size() > 0) {
+            synchronized (this) {
+                System.out.println("IN 11111111111111");
+                for (Map.Entry<String, String> productsBeanEntry : selectedProductsStockListHashMap.entrySet()) {
+                    productIdsList.add(productsBeanEntry.getKey());
+                    productValuesList.add(productsBeanEntry.getValue());
+                    selectedProductsStockListHashMap1.put(productsBeanEntry.getKey(), productsBeanEntry.getValue());
+                }
+            }
+            synchronized (this) {
+                System.out.println("IN 22222222222222222:::" + productIdsList.size());
+                mDBHelper.updateAgentStockAfterAgentDeliverFromStock(mAgentId, productIdsList, productValuesList);
+            }
+
+            Toast.makeText(activityContext, "Agent Stock Updated Successfully.", Toast.LENGTH_SHORT).show();
+
+            synchronized (this) {
+                if (selectedProductsStockListHashMapProducts.size() > 0) {
+                    for (Map.Entry<String, ProductsBean> productsBeanEntry : selectedProductsStockListHashMapProducts.entrySet()) {
+                        String key = productsBeanEntry.getKey();
+                        ProductsBean deliverysBean = productsBeanEntry.getValue();
+                        if (selectedProductsStockListHashMap1.get(key) != null) {
+                            TripSheetDeliveriesBean tripSheetDeliveriesBean = new TripSheetDeliveriesBean();
+                            tripSheetDeliveriesBean.setmTripsheetDeliveryNo("");
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_tripId(tripSheetStr);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_so_id(soIdStr);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_so_code(soNumStr);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_userId(mAgentId);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_userCodes(mAgentCode);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_routeId(mAgentRouteId);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_routeCodes(mAgentRouteCode);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_productId(deliverysBean.getProductId());
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_productCodes(deliverysBean.getProductCode());
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_TaxPercent(String.valueOf(deliverysBean.getProductTaxPerUnit()));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_UnitPrice(String.valueOf(deliverysBean.getProductRatePerUnit()));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_Quantity(selectedProductsStockListHashMap1.get(key));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_Amount(String.valueOf(deliverysBean.getProductAmount()));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_TaxAmount(String.valueOf(deliverysBean.getTaxAmount()));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_TaxTotal("0.0");
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_SaleValue("0.0");
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_Status("A");
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_Delete("N");
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_CreatedBy(loggedInUserId);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_CreatedOn(String.valueOf(currentTimeStamp));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_UpdatedBy(loggedInUserId);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_UpdatedOn(String.valueOf(currentTimeStamp));
+
+                            mAgentStockDeliveriesList.add(tripSheetDeliveriesBean);
+                        }
+                    }
+                }
+                System.out.println("Agent Stock API INPUT IS::: " + mAgentStockDeliveriesList.size());
+                if (mAgentStockDeliveriesList.size() > 0) {
+                    mDBHelper.insertAgentStockDeliveriesListData(mAgentStockDeliveriesList);
+                }
+            }
+        }
     }
 }
