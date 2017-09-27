@@ -168,6 +168,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public final String KEY_PRODUCT_RETAILER_PRICE = "product_retailer_price";
     public final String KEY_PRODUCT_GST_PRICE = "product_gst_price";
     public final String KEY_PRODUCT_VAT_PRICE = "product_vat_price";
+    public final String KEY_PRODUCT_CONTROL_CODE= "control_code";
 
     // Column names for Agents Table
     private final String KEY_AGENT_ID = "agent_id";
@@ -481,7 +482,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_PRODUCT_MOQ + " VARCHAR," + KEY_PRODUCT_AGENT_PRICE + " VARCHAR," + KEY_PRODUCT_CONSUMER_PRICE + " VARCHAR,"
             + KEY_PRODUCT_UOM + " VARCHAR,"
             + KEY_PRODUCT_RETAILER_PRICE + " VARCHAR," + KEY_PRODUCT_GST_PRICE + " VARCHAR,"
-            + KEY_PRODUCT_VAT_PRICE + " VARCHAR)";
+            + KEY_PRODUCT_VAT_PRICE + " VARCHAR," + KEY_PRODUCT_CONTROL_CODE + " VARCHAR)";
 
     //TO Products Table Create Statements
     private final String CREATE_PRODUCTS_TABLE_TO = "CREATE TABLE IF NOT EXISTS "
@@ -1556,6 +1557,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_PRODUCT_RETAILER_PRICE, mProductsBeansList.get(i).getProductRetailerPrice());
                 values.put(KEY_PRODUCT_GST_PRICE, mProductsBeansList.get(i).getProductgst());
                 values.put(KEY_PRODUCT_VAT_PRICE, mProductsBeansList.get(i).getProductvat());
+                values.put(KEY_PRODUCT_CONTROL_CODE, mProductsBeansList.get(i).getControlCode());
 
                 int productExists = checkProductIsExistsOrNot(mProductsBeansList.get(i).getProductId());
                 if (productExists == 0) {
@@ -1604,6 +1606,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     productsBean.setProductRetailerPrice((c.getString(c.getColumnIndex(KEY_PRODUCT_RETAILER_PRICE))));
                     productsBean.setProductgst((c.getString(c.getColumnIndex(KEY_PRODUCT_GST_PRICE))));
                     productsBean.setProductvat((c.getString(c.getColumnIndex(KEY_PRODUCT_VAT_PRICE))));
+                    productsBean.setControlCode((c.getString(c.getColumnIndex(KEY_PRODUCT_CONTROL_CODE))));
 
                     allProductTrackRecords.add(productsBean);
                 } while (c.moveToNext());

@@ -34,7 +34,7 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
     }
 
     private class TDCSalesPreviewViewHolder {
-        TextView order_preview_product_name, order_preview_quantity, order_preview_tax, order_preview_mrp, order_preview_amount;
+        TextView order_preview_product_name, order_preview_quantity, order_preview_tax, order_preview_mrp, order_preview_amount,hssn_number,cgst,sgst;
     }
 
     @Override
@@ -65,6 +65,9 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
             salesPreviewViewHolder.order_preview_mrp = (TextView) convertView.findViewById(R.id.order_preview_mrp);
             salesPreviewViewHolder.order_preview_amount = (TextView) convertView.findViewById(R.id.order_preview_amount);
             salesPreviewViewHolder.order_preview_tax = (TextView) convertView.findViewById(R.id.order_preview_tax);
+            salesPreviewViewHolder.hssn_number = (TextView) convertView.findViewById(R.id.hssn_number);
+            salesPreviewViewHolder.cgst = (TextView) convertView.findViewById(R.id.cgst);
+            salesPreviewViewHolder.sgst = (TextView) convertView.findViewById(R.id.sgst);
 
             convertView.setTag(salesPreviewViewHolder);
         } else {
@@ -75,10 +78,26 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
 
         salesPreviewViewHolder.order_preview_product_name.setText(productBean.getProductTitle());
         salesPreviewViewHolder.order_preview_quantity.setText(String.format("%.3f", productBean.getSelectedQuantity()));
-        salesPreviewViewHolder.order_preview_mrp.setText(Utility.getFormattedCurrency(productBean.getProductRatePerUnit()));
+
         salesPreviewViewHolder.order_preview_amount.setText(Utility.getFormattedCurrency(productBean.getProductAmount()));
         salesPreviewViewHolder.order_preview_tax.setText(Utility.getFormattedCurrency(productBean.getTaxAmount()));
+        salesPreviewViewHolder.hssn_number.setText(productBean.getControlCode());
+        if(productBean.getProductgst()!=null) {
+            salesPreviewViewHolder.cgst.setText(productBean.getProductgst()+"%");
+        }
+            else{
+            salesPreviewViewHolder.cgst.setText("0.00%");
+        }
+        if(productBean.getProductvat()!=null) {
+            salesPreviewViewHolder.sgst.setText(productBean.getProductvat()+"%");
+        }else{
+            salesPreviewViewHolder.sgst.setText("0.00%");
+        }
+        String taxes= (productBean.getProductgst()+productBean.getProductvat());
 
+        double rate=productBean.getProductRatePerUnit();
+        double totalRate= (rate-(rate*Double.parseDouble(taxes)));
+        salesPreviewViewHolder.order_preview_mrp.setText(Utility.getFormattedCurrency(totalRate));
         return convertView;
     }
 }

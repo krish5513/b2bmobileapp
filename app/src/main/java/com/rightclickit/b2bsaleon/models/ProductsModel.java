@@ -152,13 +152,16 @@ public class ProductsModel  implements OnAsyncRequestCompleteListener {
                         if (len>0){
                             for (int t= 0;t<len;t++){
                                 JSONObject taxObj = taxJsonArray.getJSONObject(t);
+                                if(taxObj.has("control_code")){
+                                    productsBean.setControlCode(taxObj.getString("control_code"));
+                                }
                                 if(taxObj.has("tax_type")){
                                     // Agent price
-                                    if(taxObj.getString("tax_type").equals("1")){
+                                    if(taxObj.getString("tax_type").equals("3")){
                                         productsBean.setProductgst(taxObj.getString("tax"));
                                     }
                                     // Retailer price
-                                    if(taxObj.getString("tax_type").equals("2")){
+                                   else if(taxObj.getString("tax_type").equals("4")){
                                         productsBean.setProductvat(taxObj.getString("tax"));
                                     }
 

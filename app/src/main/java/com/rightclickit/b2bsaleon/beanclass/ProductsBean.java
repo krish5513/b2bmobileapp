@@ -17,6 +17,16 @@ public class ProductsBean implements Serializable {
     private String productReturnable;
     private String productMOQ;
 
+    public String getControlCode() {
+        return controlCode;
+    }
+
+    public void setControlCode(String controlCode) {
+        this.controlCode = controlCode;
+    }
+
+    private String controlCode;
+
     public String getProductUOM() {
         return productUOM;
     }

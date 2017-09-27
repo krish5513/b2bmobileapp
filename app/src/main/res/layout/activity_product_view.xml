@@ -192,7 +192,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.20"
-                        android:hint="JOCG"
+                        android:hint="CGST"
                         android:editable="false"
                         android:clickable="false"
                         android:longClickable="false"
@@ -210,7 +210,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.20"
-                        android:hint="JOSG"
+                        android:hint="SGST"
                         android:editable="false"
                         android:clickable="false"
                         android:longClickable="false"
@@ -219,6 +219,24 @@
                         android:textSize="14sp" />
                 </android.support.design.widget.TextInputLayout>
 
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/controlCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.20"
+                        android:hint="ControlCode"
+                        android:editable="false"
+                        android:clickable="false"
+                        android:longClickable="false"
+                        android:paddingTop="20dp"
+                        android:textColor="@color/greydark"
+                        android:textSize="14sp" />
+                </android.support.design.widget.TextInputLayout>
 
             </LinearLayout>
 

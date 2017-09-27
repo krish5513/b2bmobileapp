@@ -120,6 +120,7 @@ public class ProductsAdapter extends BaseAdapter {
             holder.gst = (EditText) convertView.findViewById(R.id.GST);
             holder.vat = (EditText) convertView.findViewById(R.id.VAT);
             holder.materialUOM=(EditText)convertView.findViewById(R.id.UOM);
+            holder.controlCode = (EditText) convertView.findViewById(R.id.controlCode);
             convertView.setTag(holder);
         } else {
             holder = (MyViewHolder) convertView.getTag();
@@ -212,6 +213,18 @@ public class ProductsAdapter extends BaseAdapter {
             holder.materialUOM.setText("-");
         }
 
+
+        if (mProductsBeansList1.get(position).getControlCode() != null) {
+            if (mProductsBeansList1.get(position).getControlCode().length() == 0) {
+                holder.controlCode.setText("-");
+            } else {
+                holder.controlCode.setText(mProductsBeansList1.get(position).getControlCode());
+            }
+        } else {
+            holder.controlCode.setText("-");
+        }
+
+
         //System.out.println("URL===== "+mProductsBeansList1.get(position).getProductImageUrl());
         if (mProductsBeansList1.get(position).getProductImageUrl() != null) {
             if (!mProductsBeansList1.get(position).getProductImageUrl().equals("")) {
@@ -249,8 +262,10 @@ public class ProductsAdapter extends BaseAdapter {
                 bundle.putString("RETAILER", mProductsBeansList1.get(position).getProductRetailerPrice());
                 bundle.putString("CONSUMER", mProductsBeansList1.get(position).getProductConsumerPrice());
                 bundle.putString("GST", mProductsBeansList1.get(position).getProductgst());
+                Log.i("gst",mProductsBeansList1.get(position).getProductgst()+"");
                 bundle.putString("VAT", mProductsBeansList1.get(position).getProductvat());
                 bundle.putString("UOM", mProductsBeansList1.get(position).getProductUOM());
+                bundle.putString("controlCode", mProductsBeansList1.get(position).getControlCode());
                 intent.putExtra("IMAGE", mProductsBeansList1.get(position).getProductImageUrl());
                 holder.productImage.buildDrawingCache();
                 Bitmap image = holder.productImage.getDrawingCache();
@@ -310,6 +325,7 @@ public class ProductsAdapter extends BaseAdapter {
 
         public Button stockbtn;
         public EditText gst;
+        public EditText controlCode;
         public EditText vat;
 
 
