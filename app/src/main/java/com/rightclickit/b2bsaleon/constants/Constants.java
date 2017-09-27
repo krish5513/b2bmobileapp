@@ -158,4 +158,7 @@ public class Constants {
 
     // Agents Stock URL
     public static final String AGENTS_STOCK_URL = "/customer/stock";
+
+    // Agents Stock Delivery URL
+    public static final String AGENTS_STOCK_DELIVERY_URL = "/delivery_orders_no_tripid/add/";
 }

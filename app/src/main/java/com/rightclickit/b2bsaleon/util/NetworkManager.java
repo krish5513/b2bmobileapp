@@ -71,9 +71,9 @@ public class NetworkManager {
             wr.close();
 
             int responseCode = con.getResponseCode();
-            printDataInLog("POST Request : ", "URL : " + url);
-            printDataInLog("POST Request : ", "Parameters : " + params);
-            printDataInLog("POST Request : ", "Response Code : " + responseCode);
+//            printDataInLog("POST Request : ", "URL : " + url);
+//            printDataInLog("POST Request : ", "Parameters : " + params);
+//            printDataInLog("POST Request : ", "Response Code : " + responseCode);
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
 

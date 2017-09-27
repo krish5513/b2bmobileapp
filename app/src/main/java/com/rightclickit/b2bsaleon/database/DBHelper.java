@@ -5269,21 +5269,25 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_AGENT_STOCK_DELIVERY_CREATEDON, tripSheetDeliveriesBean.getmTripsheetDelivery_CreatedOn());
                 values.put(KEY_AGENT_STOCK_DELIVERY_UPDATEDON, tripSheetDeliveriesBean.getmTripsheetDelivery_UpdatedOn());
                 values.put(KEY_AGENT_STOCK_DELIVERY_UPDATEDBY, tripSheetDeliveriesBean.getmTripsheetDelivery_UpdatedBy());
+                //values.put(KEY_AGENT_STOCK_DELIVERY_UPLOAD_STATUS, 0);
 
-                int noOfRecordsExisted = checkProductExistsInAgentStockDeliveryTableByAgentIdProductId(tripSheetDeliveriesBean.getmTripsheetDelivery_so_id(), tripSheetDeliveriesBean.getmTripsheetDelivery_userId(), tripSheetDeliveriesBean.getmTripsheetDelivery_productId());
+                //int noOfRecordsExisted = checkProductExistsInAgentStockDeliveryTableByAgentIdProductId(tripSheetDeliveriesBean.getmTripsheetDelivery_so_id(), tripSheetDeliveriesBean.getmTripsheetDelivery_userId(), tripSheetDeliveriesBean.getmTripsheetDelivery_productId());
 
                 SQLiteDatabase db = this.getWritableDatabase();
                 long status;
 
-                if (noOfRecordsExisted == 0) {
-                    values.put(KEY_AGENT_STOCK_DELIVERY_UPLOAD_STATUS, 0);
-                    status = db.insert(TABLE_AGENT_STOCK_DELIVERIES_LIST, null, values);
-                    System.out.println("Agent Stock Delivery API Record Inserted=================" + status);
-                } else {
-                    status = db.update(TABLE_AGENT_STOCK_DELIVERIES_LIST, values, KEY_AGENT_STOCK_DELIVERY_TRIP_ID + " = ? AND "
-                            + KEY_AGENT_STOCK_DELIVERY_SO_ID + " = ? AND " + KEY_AGENT_STOCK_DELIVERY_PRODUCT_IDS + " = ?", new String[]{tripSheetDeliveriesBean.getmTripsheetDelivery_tripId(), tripSheetDeliveriesBean.getmTripsheetDelivery_so_id(), tripSheetDeliveriesBean.getmTripsheetDelivery_productId()});
-                    System.out.println("Agent Stock Delivery API Record Updated=================" + status);
-                }
+//                if (noOfRecordsExisted == 0) {
+//                    values.put(KEY_AGENT_STOCK_DELIVERY_UPLOAD_STATUS, 0);
+//                    status = db.insert(TABLE_AGENT_STOCK_DELIVERIES_LIST, null, values);
+//                    System.out.println("Agent Stock Delivery API Record Inserted=================" + status);
+//                } else {
+//                    status = db.update(TABLE_AGENT_STOCK_DELIVERIES_LIST, values, KEY_AGENT_STOCK_DELIVERY_TRIP_ID + " = ? AND "
+//                            + KEY_AGENT_STOCK_DELIVERY_SO_ID + " = ? AND " + KEY_AGENT_STOCK_DELIVERY_PRODUCT_IDS + " = ?", new String[]{tripSheetDeliveriesBean.getmTripsheetDelivery_tripId(), tripSheetDeliveriesBean.getmTripsheetDelivery_so_id(), tripSheetDeliveriesBean.getmTripsheetDelivery_productId()});
+//                    System.out.println("Agent Stock Delivery API Record Updated=================" + status);
+//                }
+
+                status = db.insert(TABLE_AGENT_STOCK_DELIVERIES_LIST, null, values);
+                System.out.println("Agent Stock Delivery API Record Inserted=================" + status);
 
                 values.clear();
                 db.close();
@@ -5353,6 +5357,125 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return noOfRecords;
+    }
+
+    /**
+     * Method to get the unuploaded unique agent stock deliveries.
+     *
+     * @param agentId
+     * @return
+     */
+    public ArrayList<String> fetchUnUploadedUniqueAgentStockDeliverys() {
+        ArrayList<String> tripSheetIds = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT " + KEY_AGENT_STOCK_DELIVERY_PRODUCT_IDS + " FROM " +
+                    TABLE_AGENT_STOCK_DELIVERIES_LIST + " WHERE " + KEY_AGENT_STOCK_DELIVERY_UPLOAD_STATUS + " = 0";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    tripSheetIds.add(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_PRODUCT_IDS)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return tripSheetIds;
+    }
+
+    /**
+     * Method to fetch all agent stock deliveries list by agent id and product id.
+     */
+    public ArrayList<TripSheetDeliveriesBean> fetchAllAgentStockDeliveriesList(String agentId, String productId) {
+        ArrayList<TripSheetDeliveriesBean> alltripsheetsDeliveries = new ArrayList<TripSheetDeliveriesBean>();
+// + KEY_AGENT_STOCK_DELIVERY_USER_ID + " = " + "'" + agentId + "'" + " AND "
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_AGENT_STOCK_DELIVERIES_LIST + " WHERE "
+                    + KEY_AGENT_STOCK_DELIVERY_PRODUCT_IDS + " = " + "'" + productId + "'"
+                    + " AND " + KEY_AGENT_STOCK_DELIVERY_UPLOAD_STATUS + " = 0";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    TripSheetDeliveriesBean tripDeliveriesBean = new TripSheetDeliveriesBean();
+
+                    tripDeliveriesBean.setmTripsheetDeliveryNo(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_NO)));
+                    tripDeliveriesBean.setmTripsheetDeliveryNumber(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_NUMBER)));
+                    tripDeliveriesBean.setmTripsheetDelivery_tripId(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_TRIP_ID)));
+                    tripDeliveriesBean.setmTripsheetDelivery_so_id(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_SO_ID)));
+                    tripDeliveriesBean.setmTripsheetDelivery_so_code(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_SO_CODE)));
+                    tripDeliveriesBean.setmTripsheetDelivery_userId(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_USER_ID)));
+                    tripDeliveriesBean.setmTripsheetDelivery_userCodes(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_USER_CODES)));
+                    tripDeliveriesBean.setmTripsheetDelivery_routeId(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_ROUTE_ID)));
+                    tripDeliveriesBean.setmTripsheetDelivery_routeCodes(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_ROUTE_CODES)));
+                    tripDeliveriesBean.setmTripsheetDelivery_productId(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_PRODUCT_IDS)));
+                    tripDeliveriesBean.setmTripsheetDelivery_productCodes(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_PRODUCT_CODES)));
+                    tripDeliveriesBean.setmTripsheetDelivery_TaxPercent(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_TAXPERCENT)));
+                    tripDeliveriesBean.setmTripsheetDelivery_UnitPrice(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_UNITPRICE)));
+                    tripDeliveriesBean.setmTripsheetDelivery_Quantity(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_QUANTITY)));
+                    tripDeliveriesBean.setmTripsheetDelivery_Amount(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_AMOUNT)));
+                    tripDeliveriesBean.setmTripsheetDelivery_TaxAmount(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_TAXAMOUNT)));
+                    tripDeliveriesBean.setmTripsheetDelivery_TaxTotal(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_TAXTOTAL)));
+                    tripDeliveriesBean.setmTripsheetDelivery_SaleValue(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_SALEVALUE)));
+                    tripDeliveriesBean.setmTripsheetDelivery_Status(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_STATUS)));
+                    tripDeliveriesBean.setmTripsheetDelivery_Delete(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_DELETE)));
+                    tripDeliveriesBean.setmTripsheetDelivery_CreatedBy(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_CREATEDBY)));
+                    tripDeliveriesBean.setmTripsheetDelivery_CreatedOn(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_CREATEDON)));
+                    tripDeliveriesBean.setmTripsheetDelivery_UpdatedOn(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_UPDATEDON)));
+                    tripDeliveriesBean.setmTripsheetDelivery_UpdatedBy(c.getString(c.getColumnIndex(KEY_AGENT_STOCK_DELIVERY_UPDATEDBY)));
+
+                    alltripsheetsDeliveries.add(tripDeliveriesBean);
+
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return alltripsheetsDeliveries;
+    }
+
+    /**
+     * Method to update the agent stock table uploaded status after calling API.
+     *
+     * @param deliveryNumber
+     * @param tripSheetId
+     * @param saleOrderId
+     * @param agentId
+     */
+    public void updateAgentStockDeliveriesTable(String deliveryNumber, String tripSheetId, String saleOrderId, String agentId, String productId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        //System.out.println("AGENT ID:: " + agentId);
+        //System.out.println("PRODUCT ID:: " + productId);
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_AGENT_STOCK_DELIVERY_NUMBER, deliveryNumber);
+            values.put(KEY_AGENT_STOCK_DELIVERY_UPLOAD_STATUS, 1);
+
+            int status = db.update(TABLE_AGENT_STOCK_DELIVERIES_LIST, values,
+                    KEY_AGENT_STOCK_DELIVERY_USER_ID + " = ? AND " + KEY_AGENT_STOCK_DELIVERY_PRODUCT_IDS + " = ?",
+                    new String[]{agentId, productId});
+
+            //System.out.println("AGENT STOCK INSERT NUMBER UPDATED===== " + status);
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
     }
 
 }

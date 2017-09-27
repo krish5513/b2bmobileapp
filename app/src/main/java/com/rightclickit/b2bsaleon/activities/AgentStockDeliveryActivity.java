@@ -32,7 +32,10 @@ import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.AgentStockListener;
 import com.rightclickit.b2bsaleon.models.AgentsStockModel;
+import com.rightclickit.b2bsaleon.services.SyncAgentStockDeliveriesService;
+import com.rightclickit.b2bsaleon.services.SyncTripsheetDeliveriesService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
@@ -183,6 +186,16 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
 
             return true;
         }
+        if (id == R.id.autorenew) {
+
+            if (new NetworkConnectionDetector(AgentStockDeliveryActivity.this).isNetworkConnected()) {
+                Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncAgentStockDeliveriesService.class);
+                startService(syncTripSheetDeliveriesServiceIntent);
+            } else {
+                new NetworkConnectionDetector(AgentStockDeliveryActivity.this).displayNoNetworkError(AgentStockDeliveryActivity.this);
+            }
+            return true;
+        }
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -208,7 +221,7 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.Add).setVisible(false);
-        menu.findItem(R.id.autorenew).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(true);
         //menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -345,7 +358,11 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
                             tripSheetDeliveriesBean.setmTripsheetDelivery_Amount(String.valueOf(deliverysBean.getProductAmount()));
                             tripSheetDeliveriesBean.setmTripsheetDelivery_TaxAmount(String.valueOf(deliverysBean.getTaxAmount()));
                             tripSheetDeliveriesBean.setmTripsheetDelivery_TaxTotal("0.0");
-                            tripSheetDeliveriesBean.setmTripsheetDelivery_SaleValue("0.0");
+                            Double unitPrice = deliverysBean.getProductRatePerUnit();
+                            Double qunatity = Double.parseDouble(selectedProductsStockListHashMap1.get(key));
+                            Double saleVal = qunatity * unitPrice;
+                            //System.out.println("SALE VAL::: " + saleVal);
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_SaleValue(String.valueOf(saleVal));
                             tripSheetDeliveriesBean.setmTripsheetDelivery_Status("A");
                             tripSheetDeliveriesBean.setmTripsheetDelivery_Delete("N");
                             tripSheetDeliveriesBean.setmTripsheetDelivery_CreatedBy(loggedInUserId);
@@ -357,9 +374,14 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
                         }
                     }
                 }
-                System.out.println("Agent Stock API INPUT IS::: " + mAgentStockDeliveriesList.size());
+                //System.out.println("Agent Stock API INPUT IS::: " + mAgentStockDeliveriesList.size());
                 if (mAgentStockDeliveriesList.size() > 0) {
                     mDBHelper.insertAgentStockDeliveriesListData(mAgentStockDeliveriesList);
+                }
+
+                if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                    Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncAgentStockDeliveriesService.class);
+                    startService(syncTripSheetDeliveriesServiceIntent);
                 }
             }
         }

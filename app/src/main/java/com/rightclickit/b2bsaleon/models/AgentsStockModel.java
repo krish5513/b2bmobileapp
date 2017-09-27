@@ -322,6 +322,7 @@ public class AgentsStockModel implements OnAsyncRequestCompleteListener {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            activity.loadAgentsStockList();
         }
     }
 }
