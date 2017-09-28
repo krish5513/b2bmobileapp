@@ -25,6 +25,8 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
     private Activity activity;
     private Context ctxt;
     private ArrayList<ProductsBean> selectedProductsList;
+    String taxes,totalRate="";
+    double rate,ratetax,taxvalue;
 
     public TDCSalesPreviewAdapter(Context ctxt, TDCSales_Preview_PrintActivity TDCSales_preview_printActivity, List<ProductsBean> productsList) {
         this.ctxt = ctxt;
@@ -79,9 +81,13 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
         salesPreviewViewHolder.order_preview_product_name.setText(productBean.getProductTitle());
         salesPreviewViewHolder.order_preview_quantity.setText(String.format("%.3f", productBean.getSelectedQuantity()));
 
-        salesPreviewViewHolder.order_preview_amount.setText(Utility.getFormattedCurrency(productBean.getProductAmount()));
-        salesPreviewViewHolder.order_preview_tax.setText(Utility.getFormattedCurrency(productBean.getTaxAmount()));
-        salesPreviewViewHolder.hssn_number.setText(productBean.getControlCode());
+
+        if(productBean.getControlCode()!=null) {
+            salesPreviewViewHolder.hssn_number.setText(productBean.getControlCode());
+        }
+        else {
+            salesPreviewViewHolder.hssn_number.setText("-");
+        }
         if(productBean.getProductgst()!=null) {
             salesPreviewViewHolder.cgst.setText(productBean.getProductgst()+"%");
         }
@@ -93,11 +99,34 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
         }else{
             salesPreviewViewHolder.sgst.setText("0.00%");
         }
-        String taxes= (productBean.getProductgst()+productBean.getProductvat());
 
-        double rate=productBean.getProductRatePerUnit();
-        double totalRate= (rate-(rate*Double.parseDouble(taxes)));
-        salesPreviewViewHolder.order_preview_mrp.setText(Utility.getFormattedCurrency(totalRate));
+        try {
+
+
+             taxes = (productBean.getProductgst() + productBean.getProductvat());
+            }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        rate=productBean.getProductRatePerUnit();
+        try {
+           ratetax= rate* (Double.parseDouble(taxes)%100);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        totalRate = String.valueOf((rate-ratetax));
+        salesPreviewViewHolder.order_preview_mrp.setText((Utility.getFormattedCurrency(Double.parseDouble(totalRate))));
+        double qty= Double.parseDouble(String.format("%.3f", productBean.getSelectedQuantity()));
+        double salevalue=qty*rate;
+        try {
+             taxvalue=salevalue*Double.parseDouble(taxes);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        salesPreviewViewHolder.order_preview_amount.setText(Utility.getFormattedCurrency(salevalue));
+        salesPreviewViewHolder.order_preview_tax.setText(Utility.getFormattedCurrency(taxvalue));
         return convertView;
     }
 }

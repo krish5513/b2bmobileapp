@@ -217,7 +217,7 @@
                 android:layout_gravity="center|end"
                 android:layout_weight="0.18"
                 android:gravity="center"
-                android:text="SaleValue"
+                android:text="Value"
                 android:textColor="@color/greydark"
                 android:textSize="14sp"
                 android:textStyle="bold" />

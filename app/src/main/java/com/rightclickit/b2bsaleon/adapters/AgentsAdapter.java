@@ -140,8 +140,9 @@ public class AgentsAdapter extends BaseAdapter {
 
 
         mHolder.mDueAmount.setText(String.valueOf(Utility.getFormattedCurrency(due)));
-
-
+        mPreferences.putString("agentNameAdapter", mAgentsBeansList1.get(position).getmFirstname());
+        mPreferences.putString("agentCodeAdapter", mAgentsBeansList1.get(position).getmAgentCode());
+        mPreferences.putString("incId", String.valueOf(position + 1));
         mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

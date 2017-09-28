@@ -134,10 +134,10 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                String str_Taxname = "";
                if (productsList.get(i).getProductvat() != null) {
                    tax = Float.parseFloat(productsList.get(i).getProductvat());
-                   str_Taxname = "VAT:";
+                   str_Taxname = "SGST:";
                } else if (productsList.get(i).getProductgst() != null) {
                    tax = Float.parseFloat(productsList.get(i).getProductgst());
-                   str_Taxname = "GST:";
+                   str_Taxname = "CGST:";
                }
 
                name = String.valueOf(mProductIdsList.get(k).getmProductTitle().replace(",", ""));
