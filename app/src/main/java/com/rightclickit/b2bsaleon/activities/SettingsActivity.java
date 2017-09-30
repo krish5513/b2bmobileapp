@@ -117,6 +117,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
     JSONArray routecode = new JSONArray();
 
+    private boolean isSaveDeviceDetails,isMyProfilePrivilege;
+    TextView tvrouts_customerN;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -586,6 +589,16 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         } catch (Exception e) {
             e.printStackTrace();
 
+        }
+
+        ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
+        for (int z = 0; z < privilegeActionsData1.size(); z++) {
+            if (privilegeActionsData1.get(z).toString().equals("my_profile")) {
+                isMyProfilePrivilege = true;
+                tvrouts_customerN=(TextView)findViewById(R.id.tvrouts_customerN);
+                tvrouts_customerN.setText("Profile");
+
+            }
         }
         SupportMapFragment supportMapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFrag);

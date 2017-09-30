@@ -89,6 +89,8 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
 
             //Log.e(allProductsList.size())
 
+
+
             ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("UserActivity"));
             //System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
             for (int z = 0; z < privilegeActionsData1.size(); z++) {

@@ -59,6 +59,8 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
     SupportMapFragment mapFragment;
     Button taleorder;
     LinearLayout delivery;
+    private boolean isSaveDeviceDetails,isMyProfilePrivilege;
+    TextView tvrouts_customerN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -274,6 +276,16 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
 
 
          }
+
+        ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
+        for (int z = 0; z < privilegeActionsData1.size(); z++) {
+            if (privilegeActionsData1.get(z).toString().equals("my_profile")) {
+                isMyProfilePrivilege = true;
+                tvrouts_customerN=(TextView)findViewById(R.id.tvrouts_customerN);
+                tvrouts_customerN.setText("Profile");
+
+            }
+        }
 
 //        if (mDBHelper.getRouteId().length()==0) {
 //            startService(new Intent(DashboardActivity.this, SyncRoutesMasterDetailsService.class));

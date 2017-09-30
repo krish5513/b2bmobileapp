@@ -58,7 +58,8 @@ public class Products_Activity extends AppCompatActivity {
     private String mStock = "",mAgentPrice="",mRetailerPrice="",mConsumerPrice="";
 
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
-
+    private boolean isSaveDeviceDetails,isMyProfilePrivilege;
+    TextView tvrouts_customerN;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +96,17 @@ public class Products_Activity extends AppCompatActivity {
         listView.setEmptyView(mNoDataText);
 
         myList= mDBHelper.fetchAllRecordsFromProductsTable();
+
+
+        ArrayList<String> privilegeActionsData2 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
+        for (int z = 0; z < privilegeActionsData2.size(); z++) {
+            if (privilegeActionsData2.get(z).toString().equals("my_profile")) {
+                isMyProfilePrivilege = true;
+                tvrouts_customerN=(TextView)findViewById(R.id.tvrouts_customerN);
+                tvrouts_customerN.setText("Profile");
+
+            }
+        }
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Products"));
         System.out.println("F 11111 ***COUNT === "+ privilegeActionsData.size());

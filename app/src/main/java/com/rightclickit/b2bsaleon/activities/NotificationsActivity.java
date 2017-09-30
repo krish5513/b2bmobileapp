@@ -50,6 +50,8 @@ public class NotificationsActivity extends AppCompatActivity {
     private ArrayList notificationList=new ArrayList();
 
     private NotificationAdapter mNotificationAdapter;
+    private boolean isSaveDeviceDetails,isMyProfilePrivilege;
+    TextView tvrouts_customerN;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,7 +203,15 @@ public class NotificationsActivity extends AppCompatActivity {
         }
 
 
+        ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
+        for (int z = 0; z < privilegeActionsData1.size(); z++) {
+            if (privilegeActionsData1.get(z).toString().equals("my_profile")) {
+                isMyProfilePrivilege = true;
+                tvrouts_customerN=(TextView)findViewById(R.id.tvrouts_customerN);
+                tvrouts_customerN.setText("Profile");
 
+            }
+        }
 
         if (new NetworkConnectionDetector(NotificationsActivity.this).isNetworkConnected()) {
             if (mDBHelper.getNotificationsTableCount()>0){

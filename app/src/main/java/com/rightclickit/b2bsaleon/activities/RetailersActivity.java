@@ -47,7 +47,8 @@ public class RetailersActivity extends AppCompatActivity {
     private RetailersListAdapter retailersListAdapter;
     private List<TDCCustomer> retailersList;
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
-
+    private boolean isSaveDeviceDetails,isMyProfilePrivilege;
+    TextView tvrouts_customerN;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -213,6 +214,20 @@ public class RetailersActivity extends AppCompatActivity {
                     mDashboardHomeScreen = privilegeActionsData.get(z).toString();
                 }
             }
+
+
+            ArrayList<String> privilegeActionsData2 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
+            for (int z = 0; z < privilegeActionsData2.size(); z++) {
+                if (privilegeActionsData2.get(z).toString().equals("my_profile")) {
+                    isMyProfilePrivilege = true;
+                    tvrouts_customerN=(TextView)findViewById(R.id.tvrouts_customerN);
+                    tvrouts_customerN.setText("Profile");
+
+                }
+            }
+
+
+
 
 
             ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Retailers"));
