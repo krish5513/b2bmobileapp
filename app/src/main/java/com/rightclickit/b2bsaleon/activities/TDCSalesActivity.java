@@ -1,5 +1,6 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,6 +35,8 @@ import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,7 +49,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     private TextView tdc_sales_list, tdc_sales_preview, totalTaxAmountTextView, totalAmountTextView, subTotalAmountTextView;
 
     private DBHelper mDBHelper;
-    private ArrayList<ProductsBean> allProductsList;
+    private ArrayList<ProductsBean> allProductsList, allProductsListSort;
     private Map<String, ProductsBean> selectedProductsListHashMap, previouslySelectedProductsListHashMap; // Hash Map Key = Product Id
     private TDCSalesAdapter tdcSalesAdapter;
     private boolean showProductsListView = false;
@@ -60,6 +63,8 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     HashMap<String, String> availableStockProductsListTemp = new HashMap<String, String>();
     private Map<String, String> selectedProductsStockListHashMap = new HashMap<String, String>();
     private Map<String, String> previousselectedProductsStockListHashMap;
+
+    private boolean isAscendingSort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +137,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             }
 
             allProductsList = new ArrayList<>();
+            allProductsListSort = new ArrayList<>();
             selectedProductsListHashMap = new HashMap<>();
             previouslySelectedProductsListHashMap = new HashMap<>();
             previousselectedProductsStockListHashMap = new HashMap<String, String>();
@@ -170,6 +176,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             }
 
             allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
+            System.out.println("ALL PRODs LIST:: " + allProductsList.size());
             stockBeanArrayList = mDBHelper.fetchAllStockByAgentId(userId);
             //availableStockProductsList = new ArrayList<String>();
             //availableStockProductsListTemp = new ArrayList<String>();
@@ -325,6 +332,71 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             Toast.makeText(this, "Clicked on Settings...", Toast.LENGTH_SHORT).show();
             return true;
         }
+        if (id == R.id.sort) {
+            if (selectedProductsListHashMap.size() > 0) {
+                if (allProductsListSort.size() > 0) {
+                    allProductsListSort.clear();
+                }
+                synchronized (this) {
+                    for (int k = 0; k < allProductsList.size(); k++) {
+                        Double selectedQua = 0.0;
+                        if (selectedProductsStockListHashMap.get(allProductsList.get(k).getProductId()) != null) {
+                            selectedQua = Double.parseDouble(selectedProductsStockListHashMap.get(allProductsList.get(k).getProductId()));
+                        }
+
+                        // Sorting code
+                        ProductsBean productsBean1 = new ProductsBean();
+
+                        productsBean1.setProductId(allProductsList.get(k).getProductId());
+                        productsBean1.setProductCode(allProductsList.get(k).getProductCode());
+                        productsBean1.setProductTitle(allProductsList.get(k).getProductTitle());
+                        productsBean1.setProductDescription(allProductsList.get(k).getProductDescription());
+                        productsBean1.setProductImageUrl(allProductsList.get(k).getProductImageUrl());
+                        productsBean1.setProductReturnable(allProductsList.get(k).getProductReturnable());
+                        productsBean1.setProductMOQ(allProductsList.get(k).getProductMOQ());
+                        productsBean1.setProductUOM(allProductsList.get(k).getProductUOM());
+                        productsBean1.setProductAgentPrice(allProductsList.get(k).getProductAgentPrice());
+                        productsBean1.setProductConsumerPrice(allProductsList.get(k).getProductConsumerPrice());
+                        productsBean1.setProductRetailerPrice(allProductsList.get(k).getProductRetailerPrice());
+                        productsBean1.setProductgst(allProductsList.get(k).getProductgst());
+                        productsBean1.setProductvat(allProductsList.get(k).getProductvat());
+                        productsBean1.setControlCode(allProductsList.get(k).getControlCode());
+                        productsBean1.setSelectedQuantity(selectedQua);
+
+                        allProductsListSort.add(productsBean1);
+                    }
+                }
+
+                synchronized (this) {
+                    if (!isAscendingSort) {
+                        // Ascending order
+                        isAscendingSort = true;
+                        Collections.sort(allProductsListSort, StringAscComparator);
+                    } else {
+                        // Descending order
+                        isAscendingSort = false;
+                        Collections.sort(allProductsListSort, StringDescComparator);
+                    }
+                }
+
+                synchronized (this) {
+                    if (showProductsListView) {
+                        if (tdcSalesAdapter != null) {
+                            tdcSalesAdapter = null;
+                        }
+                        previousselectedProductsStockListHashMap = selectedProductsStockListHashMap;
+
+                        tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsListSort, previouslySelectedProductsListHashMap, availableStockProductsList, userId, previousselectedProductsStockListHashMap);
+                        tdc_products_list_view.setAdapter(tdcSalesAdapter);
+                        tdcSalesAdapter.notifyDataSetChanged();
+                    }
+                }
+            } else {
+                CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliverylimit_sort));
+            }
+
+            return true;
+        }
 
 
         switch (id) {
@@ -341,6 +413,37 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                 return true;
         }
     }
+
+    // Comparator for Ascending Order
+    public static Comparator<ProductsBean> StringAscComparator = new Comparator<ProductsBean>() {
+
+        public int compare(ProductsBean app1, ProductsBean app2) {
+            int g = 0;
+
+            Double stringName1 = app1.getSelectedQuantity();
+            Double stringName2 = app2.getSelectedQuantity();
+            if (stringName1 >= stringName2) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+    };
+
+    //Comparator for Descending Order
+    public static Comparator<ProductsBean> StringDescComparator = new Comparator<ProductsBean>() {
+
+        public int compare(ProductsBean app1, ProductsBean app2) {
+            int f = 0;
+            Double stringName1 = app1.getSelectedQuantity();
+            Double stringName2 = app2.getSelectedQuantity();
+            if (stringName2 >= stringName1) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+    };
 
     private void loadNotifications() {
         Intent navigationIntent = new Intent(TDCSalesActivity.this, NotificationsActivity.class);
@@ -402,7 +505,9 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     @Override
     public void updateSelectedProductsListAndSubTotal(Map<String, ProductsBean> productsList) {
         this.selectedProductsListHashMap = productsList;
-
+        if (allProductsListSort.size() > 0) {
+            allProductsListSort.clear();
+        }
         totalAmount = 0;
         totalTaxAmount = 0;
         subTotal = 0;
@@ -412,17 +517,24 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             totalAmount = totalAmount + productsBean.getProductAmount();
             totalTaxAmount = totalTaxAmount + productsBean.getTaxAmount();
             subTotal = totalAmount + totalTaxAmount;
+
         }
 
         totalTaxAmountTextView.setText(Utility.getFormattedCurrency(totalTaxAmount));
         totalAmountTextView.setText(Utility.getFormattedCurrency(totalAmount));
         subTotalAmountTextView.setText(Utility.getFormattedCurrency(subTotal));
+
+        //mDBHelper.insertProductDetailsForSort(allProductsListSort);
+
+
     }
 
     @Override
     public void updateAgentStockSaleQuantityAfterTDCSale(Map<String, String> selectedProductsList) {
-        //System.out.println("SIZE:::: " + selectedProductsList.size());
+        // System.out.println("SIZE:::: " + selectedProductsList.size());
         this.selectedProductsStockListHashMap = selectedProductsList;
+
+        //System.out.println("SIZE 1111:::: " + selectedProductsStockListHashMap.size());
     }
 
     public void showTDCSalesPreview(View view) {
@@ -439,7 +551,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                 startActivity(customerSelectionIntent);
                 finish();
             } else {
-              //  Toast.makeText(activityContext, "Please select at least one product.", Toast.LENGTH_LONG).show();
+                //  Toast.makeText(activityContext, "Please select at least one product.", Toast.LENGTH_LONG).show();
                 CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliverylimit));
             }
         } catch (Exception e) {

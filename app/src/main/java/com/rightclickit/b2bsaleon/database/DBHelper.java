@@ -122,6 +122,9 @@ public class DBHelper extends SQLiteOpenHelper {
     // This table contains tripsheets deliveries list
     private final String TABLE_AGENT_STOCK_DELIVERIES_LIST = "agent_stock_deliveries_list";
 
+    // This table contains products and its details for sorting
+    private final String TABLE_PRODUCTS_SORT_LIST = "products_sort";
+
 
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
@@ -464,6 +467,22 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_AGENT_STOCK_DELIVERY_UPDATEDBY = "agent_stock_delivery_updatedby";
     private final String KEY_AGENT_STOCK_DELIVERY_UPLOAD_STATUS = "agent_stock_delivery_upload_status";
 
+    //Column names for Produts sort activity Table
+    public final String KEY_PRODUCT_SORT_ID = "product_sort_id";
+    public final String KEY_PRODUCT_SORT_CODE = "product_sort_code";
+    public final String KEY_PRODUCT_SORT_TITLE = "product_sort_title";
+    public final String KEY_PRODUCT_SORT_DESCRIPTION = "product_sort_description";
+    public final String KEY_PRODUCT_SORT_IMAGE_URL = "product_sort_image_url";
+    public final String KEY_PRODUCT_SORT_RETURNABLE = "product_sort_returnable";
+    public final String KEY_PRODUCT_SORT_MOQ = "product_sort_moq";
+    public final String KEY_PRODUCT_SORT_UOM = "product_sort_uom";
+    public final String KEY_PRODUCT_SORT_AGENT_PRICE = "product_sort_agent_price";
+    public final String KEY_PRODUCT_SORT_CONSUMER_PRICE = "product_sort_consumer_price";
+    public final String KEY_PRODUCT_SORT_RETAILER_PRICE = "product_sort_retailer_price";
+    public final String KEY_PRODUCT_SORT_GST_PRICE = "product_sort_gst_price";
+    public final String KEY_PRODUCT_SORT_VAT_PRICE = "product_sort_vat_price";
+    public final String KEY_PRODUCT_SORT_CONTROL_CODE = "control_sort_code";
+
     // Agents Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_AGENTS + "(" + KEY_AGENT_ID + " VARCHAR,"
@@ -750,6 +769,23 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_AGENT_STOCK_DELIVERY_UPDATEDBY + " VARCHAR,"
             + KEY_AGENT_STOCK_DELIVERY_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
+    //Products Sort Table Create Statements
+    private final String CREATE_PRODUCTS_SORT_TABLE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_PRODUCTS_SORT_LIST + "(" + KEY_PRODUCT_SORT_ID + " VARCHAR,"
+            + KEY_PRODUCT_SORT_CODE + " VARCHAR,"
+            + KEY_PRODUCT_SORT_TITLE + " VARCHAR,"
+            + KEY_PRODUCT_SORT_DESCRIPTION + " VARCHAR,"
+            + KEY_PRODUCT_SORT_IMAGE_URL + " VARCHAR,"
+            + KEY_PRODUCT_SORT_RETURNABLE + " VARCHAR,"
+            + KEY_PRODUCT_SORT_MOQ + " VARCHAR,"
+            + KEY_PRODUCT_SORT_AGENT_PRICE + " VARCHAR,"
+            + KEY_PRODUCT_SORT_CONSUMER_PRICE + " VARCHAR,"
+            + KEY_PRODUCT_SORT_UOM + " VARCHAR,"
+            + KEY_PRODUCT_SORT_RETAILER_PRICE + " VARCHAR,"
+            + KEY_PRODUCT_SORT_GST_PRICE + " VARCHAR,"
+            + KEY_PRODUCT_SORT_VAT_PRICE + " VARCHAR,"
+            + KEY_PRODUCT_SORT_CONTROL_CODE + " VARCHAR)";
+
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -779,6 +815,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_NOTIFICATIONS_LIST_TABLE);
             db.execSQL(CREATE_AGENT_STOCK_LIST_TABLE);
             db.execSQL(CREATE_AGENT_STOCK_DELIVERIES_LIST_TABLE);
+            db.execSQL(CREATE_PRODUCTS_SORT_TABLE);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -5477,5 +5514,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+
 
 }

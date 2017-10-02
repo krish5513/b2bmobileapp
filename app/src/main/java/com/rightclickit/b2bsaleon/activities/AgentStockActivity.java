@@ -226,8 +226,9 @@ public class AgentStockActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String query) {
-
-                mStockAdapter.filter(query);
+                if (query.length() > 0 && stockBeanArrayList.size() > 0) {
+                    mStockAdapter.filter(query);
+                }
 
                 return true;
 

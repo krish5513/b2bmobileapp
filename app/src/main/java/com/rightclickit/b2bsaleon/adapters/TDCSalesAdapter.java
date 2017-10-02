@@ -259,26 +259,26 @@ public class TDCSalesAdapter extends BaseAdapter {
                     try {
                         Double presentQuantity = Double.parseDouble(currentTDCSalesViewHolder.product_quantity.getText().toString());
 
-                        if (presentQuantity < currentProductsBean.getProductStock()) {
-                            presentQuantity++;
-                            // Update the Agent stock table....
-                            selectedProductsStockListHashMap.put(currentProductsBean.getProductId(), String.valueOf(presentQuantity));
-                            if (listener != null)
-                                listener.updateAgentStockSaleQuantityAfterTDCSale(selectedProductsStockListHashMap);
+                        //if (presentQuantity < currentProductsBean.getProductStock()) {
+                        presentQuantity++;
+                        // Update the Agent stock table....
+                        selectedProductsStockListHashMap.put(currentProductsBean.getProductId(), String.valueOf(presentQuantity));
+                        if (listener != null)
+                            listener.updateAgentStockSaleQuantityAfterTDCSale(selectedProductsStockListHashMap);
 
-                            double amount = currentProductsBean.getProductRatePerUnit() * presentQuantity;
-                            double taxAmount = (amount * finalProductTax) / 100;
+                        double amount = currentProductsBean.getProductRatePerUnit() * presentQuantity;
+                        double taxAmount = (amount * finalProductTax) / 100;
 
-                            currentProductsBean.setSelectedQuantity(presentQuantity);
-                            currentProductsBean.setProductAmount(amount);
-                            currentProductsBean.setTaxAmount(taxAmount);
+                        currentProductsBean.setSelectedQuantity(presentQuantity);
+                        currentProductsBean.setProductAmount(amount);
+                        currentProductsBean.setTaxAmount(taxAmount);
 
-                            currentTDCSalesViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
-                            currentTDCSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
-                            currentTDCSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
+                        currentTDCSalesViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
+                        currentTDCSalesViewHolder.tax.setText(Utility.getFormattedCurrency(currentProductsBean.getTaxAmount()));
+                        currentTDCSalesViewHolder.amount.setText(Utility.getFormattedCurrency(currentProductsBean.getProductAmount()));
 
-                            updateSelectedProductsList(currentProductsBean);
-                        }
+                        updateSelectedProductsList(currentProductsBean);
+                        //}
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
