@@ -44,7 +44,8 @@ public class TripSheetsActivity extends AppCompatActivity {
 
     private String mTripSheetViewPrivilege = "", mTripSheetStockPrivilege = "";
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
-
+    private boolean isSaveDeviceDetails,isMyProfilePrivilege;
+    TextView tvrouts_customerN;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,6 +150,18 @@ public class TripSheetsActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
+
+        ArrayList<String> privilegeActionsData2 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
+        for (int z = 0; z < privilegeActionsData2.size(); z++) {
+            if (privilegeActionsData2.get(z).toString().equals("my_profile")) {
+                isMyProfilePrivilege = true;
+                tvrouts_customerN=(TextView)findViewById(R.id.tvrouts_customerN);
+                tvrouts_customerN.setText("Profile");
+
+            }
+        }
 
         HashMap<String, String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
