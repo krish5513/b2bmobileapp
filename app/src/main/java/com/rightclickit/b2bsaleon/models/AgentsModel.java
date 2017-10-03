@@ -283,6 +283,37 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                             }
                                         }
                                     }
+
+                                    if (jo.has("so_details_data")) {
+                                        JSONArray sodetailsJsonArray = jo.getJSONArray("so_details_data");
+                                        int length = sodetailsJsonArray.length();
+                                        if (length > 0) {
+                                            for (int n = 0; n < length; n++) {
+                                                JSONObject soObj = sodetailsJsonArray.getJSONObject(n);
+                                                if (soObj.has("sale_order_value")) {
+                                                    // Agent price
+                                                    agentsBean.setmOrderValue(soObj.getString("sale_order_value"));
+
+                                                }
+                                                if (soObj.has("op_amt")) {
+
+                                                    //String URL = Constants.MAIN_URL + "/b2b/" + priceObj.getString("poi");
+                                                    agentsBean.setmObAmount(soObj.getString("op_amt"));
+
+                                                    // agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
+                                                }
+                                                if (soObj.has("received_amt")) {
+                                                    // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
+                                                    agentsBean.setmTotalAmount(soObj.getString("received_amt"));
+                                                }
+
+                                                if (soObj.has("cb_amt")) {
+                                                    // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
+                                                    agentsBean.setmDueAmount(soObj.getString("cb_amt"));
+                                                }
+                                            }
+                                        }
+                                    }
                                     if (jo.has("route_id")) {
                                         if (jo.get("route_id") instanceof JSONArray) {
                                             JSONArray agentRouteArray = jo.getJSONArray("route_id");

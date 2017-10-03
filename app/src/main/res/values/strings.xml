@@ -53,6 +53,7 @@
     <string name="info_btn">Info</string>
     <string name="delete_btn">Stock</string>
     <string name="more_btn">More...</string>
+    <string name="approve_btn">Approve</string>
 
     <string name="myroutes_btm">Trips</string>
     <string name="customers_btm">Agents</string>

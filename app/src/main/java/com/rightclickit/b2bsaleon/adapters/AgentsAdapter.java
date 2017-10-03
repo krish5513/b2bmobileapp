@@ -129,17 +129,23 @@ public class AgentsAdapter extends BaseAdapter {
 
 
         obAmount = mDBHelper.getSoDetails(mAgentsBeansList1.get(position).getmAgentId(), "tripsheet_so_opamount");
-        mHolder.mObAmount.setText(String.valueOf(Utility.getFormattedCurrency(obAmount)));
+       // obAmount =mAgentsBeansList1.get(position).getmObAmount();
+        //mHolder.mObAmount.setText(String.valueOf(Utility.getFormattedCurrency(obAmount)));
+        mHolder.mObAmount.setText(mAgentsBeansList1.get(position).getmObAmount());
         ordervalue = mDBHelper.getSoDetails(mAgentsBeansList1.get(position).getmAgentId(), "tripsheet_so_value");
-        mHolder.mOrderValue.setText(String.valueOf(Utility.getFormattedCurrency(ordervalue)));
+      //  mHolder.mOrderValue.setText(String.valueOf(Utility.getFormattedCurrency(ordervalue)));
+        mHolder.mOrderValue.setText(mAgentsBeansList1.get(position).getmOrderValue());
         receivedAmount = mDBHelper.getReceivedAmountDetails(mAgentsBeansList1.get(position).getmAgentId(), "tripsheet_payments_received_amount");
 
-        mHolder.mTotalAmount.setText(String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
+       // mHolder.mTotalAmount.setText(String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
+        mHolder.mTotalAmount.setText(mAgentsBeansList1.get(position).getmTotalAmount());
 
         due = (obAmount + ordervalue) - receivedAmount;
 
 
-        mHolder.mDueAmount.setText(String.valueOf(Utility.getFormattedCurrency(due)));
+        //mHolder.mDueAmount.setText(String.valueOf(Utility.getFormattedCurrency(due)));
+
+        mHolder.mDueAmount.setText(mAgentsBeansList1.get(position).getmDueAmount());
         mPreferences.putString("agentNameAdapter", mAgentsBeansList1.get(position).getmFirstname());
         mPreferences.putString("agentCodeAdapter", mAgentsBeansList1.get(position).getmAgentCode());
         mPreferences.putString("incId", String.valueOf(position + 1));

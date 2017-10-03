@@ -371,7 +371,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
     }
 
     public void closeTripSheet(View v) {
-        try {
+       /* try {
             AlertDialog alertDialog = null;
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
             alertDialogBuilder.setTitle("User Action!");
@@ -414,6 +414,6 @@ public class TripSheetViewPreview extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+*/
     }
 }
