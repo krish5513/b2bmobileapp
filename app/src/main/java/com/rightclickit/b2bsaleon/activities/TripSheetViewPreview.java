@@ -371,6 +371,11 @@ public class TripSheetViewPreview extends AppCompatActivity {
     }
 
     public void closeTripSheet(View v) {
+
+        Intent i=new Intent(TripSheetViewPreview.this,RouteStock.class);
+        i.putExtra("tripSheetId", tripSheetId);
+        startActivity(i);
+        finish();
        /* try {
             AlertDialog alertDialog = null;
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);

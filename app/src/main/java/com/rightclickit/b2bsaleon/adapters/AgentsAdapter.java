@@ -131,21 +131,41 @@ public class AgentsAdapter extends BaseAdapter {
         obAmount = mDBHelper.getSoDetails(mAgentsBeansList1.get(position).getmAgentId(), "tripsheet_so_opamount");
        // obAmount =mAgentsBeansList1.get(position).getmObAmount();
         //mHolder.mObAmount.setText(String.valueOf(Utility.getFormattedCurrency(obAmount)));
-        mHolder.mObAmount.setText(mAgentsBeansList1.get(position).getmObAmount());
+        if (mAgentsBeansList1.get(position).getmObAmount()!=null && mAgentsBeansList1.get(position).getmObAmount()!="") {
+            mHolder.mObAmount.setText(mAgentsBeansList1.get(position).getmObAmount());
+        }
+        else {
+            mHolder.mObAmount.setText("Rs.0.00");
+        }
         ordervalue = mDBHelper.getSoDetails(mAgentsBeansList1.get(position).getmAgentId(), "tripsheet_so_value");
       //  mHolder.mOrderValue.setText(String.valueOf(Utility.getFormattedCurrency(ordervalue)));
-        mHolder.mOrderValue.setText(mAgentsBeansList1.get(position).getmOrderValue());
+        if (mAgentsBeansList1.get(position).getmOrderValue()!=null && mAgentsBeansList1.get(position).getmOrderValue()!="") {
+            mHolder.mOrderValue.setText(mAgentsBeansList1.get(position).getmOrderValue());
+        }else {
+            mHolder.mOrderValue.setText("Rs.0.00");
+        }
         receivedAmount = mDBHelper.getReceivedAmountDetails(mAgentsBeansList1.get(position).getmAgentId(), "tripsheet_payments_received_amount");
 
        // mHolder.mTotalAmount.setText(String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
-        mHolder.mTotalAmount.setText(mAgentsBeansList1.get(position).getmTotalAmount());
+        if (mAgentsBeansList1.get(position).getmTotalAmount()!=null && mAgentsBeansList1.get(position).getmTotalAmount()!="") {
+            mHolder.mTotalAmount.setText(mAgentsBeansList1.get(position).getmTotalAmount());
+        }else {
+            mHolder.mTotalAmount.setText("Rs.0.00");
+        }
+
 
         due = (obAmount + ordervalue) - receivedAmount;
 
 
         //mHolder.mDueAmount.setText(String.valueOf(Utility.getFormattedCurrency(due)));
+        if (mAgentsBeansList1.get(position).getmDueAmount()!=null && mAgentsBeansList1.get(position).getmDueAmount()!=""){
+            mHolder.mDueAmount.setText(mAgentsBeansList1.get(position).getmDueAmount());
+        }
+        else {
+            mHolder.mDueAmount.setText("Rs.0.00");
+        }
 
-        mHolder.mDueAmount.setText(mAgentsBeansList1.get(position).getmDueAmount());
+
         mPreferences.putString("agentNameAdapter", mAgentsBeansList1.get(position).getmFirstname());
         mPreferences.putString("agentCodeAdapter", mAgentsBeansList1.get(position).getmAgentCode());
         mPreferences.putString("incId", String.valueOf(position + 1));

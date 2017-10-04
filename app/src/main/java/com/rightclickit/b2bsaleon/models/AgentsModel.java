@@ -38,14 +38,14 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
     private Agents_AddActivity activity1;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
-    private String type = "",UserCode="";
+    private String type = "", UserCode = "";
     private ArrayList<String> stakeIdsList = new ArrayList<String>();
     private JSONArray routesArray;
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
     private ArrayList<AgentsBean> mAgentsBeansList1 = new ArrayList<AgentsBean>();
     private ArrayList<AgentsBean> mAgentsBeansList_MyPrivilege = new ArrayList<AgentsBean>();
     private String firstname = "", lastname = "", mobileno = "", stakeid = "", userid = "", email = "", password = "123456789", code = "", reportingto = "", verigycode = "", status = "IA", delete = "N", address = "", latitude = "", longitude = "", timestamp = "", ob = "", ordervalue = "", totalamount = "", dueamount = "", pic = "";
-    private boolean isSaveDeviceDetails,isMyProfilePrivilege;
+    private boolean isSaveDeviceDetails, isMyProfilePrivilege;
 
     public AgentsModel(Context context, AgentsActivity activity) {
         this.context = context;
@@ -103,9 +103,9 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                 String logInURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_LIST);
                 JSONObject job = new JSONObject();
                 ArrayList<String> stakeHolderId = mDBHelper.getStakeTypeIdByStakeTypeForAgents("2");
-                System.out.println("STAKES::::: "+ stakeHolderId);
+                System.out.println("STAKES::::: " + stakeHolderId);
                 JSONArray stakesArray = new JSONArray();
-                for (int k = 0;k<stakeHolderId.size();k++){
+                for (int k = 0; k < stakeHolderId.size(); k++) {
                     stakesArray.put(stakeHolderId.get(k));
                 }
                 job.put("route_ids", routesArray);
@@ -129,7 +129,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
             this.mAgentsBeansList1 = list;
 
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-                System.out.println("STAKE HOLDER ID IS:: "+ stakeTypeIdByStakeType);
+                System.out.println("STAKE HOLDER ID IS:: " + stakeTypeIdByStakeType);
                 String customerAdd = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_ADD);
                 // HashMap<String,String> params = new HashMap<String,String>();
 
@@ -208,11 +208,11 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                     for (int k = 0; k < len; k++) {
                         JSONObject jo = respArray.getJSONObject(k);
                         // Check for my profile privilege
-                        if(isMyProfilePrivilege){
+                        if (isMyProfilePrivilege) {
                             // Privilege exists, display only login user profile
                             if (jo.has("_id")) {
-                                if(UserCode.equals(jo.getString("_id"))){
-                                    System.out.println("CODE MATCHED::: "+jo.getString("_id"));
+                                if (UserCode.equals(jo.getString("_id"))) {
+                                    System.out.println("CODE MATCHED::: " + jo.getString("_id"));
                                     AgentsBean agentsBean = new AgentsBean();
                                     if (jo.has("_id")) {
                                         agentsBean.setmAgentId(jo.getString("_id"));
@@ -285,34 +285,39 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                     }
 
                                     if (jo.has("so_details_data")) {
-                                        JSONArray sodetailsJsonArray = jo.getJSONArray("so_details_data");
-                                        int length = sodetailsJsonArray.length();
-                                        if (length > 0) {
-                                            for (int n = 0; n < length; n++) {
-                                                JSONObject soObj = sodetailsJsonArray.getJSONObject(n);
-                                                if (soObj.has("sale_order_value")) {
-                                                    // Agent price
-                                                    agentsBean.setmOrderValue(soObj.getString("sale_order_value"));
+                                        JSONObject soObj = jo.getJSONObject("so_details_data");
+                                        //int length = sodetailsJsonArray.length();
+                                        //if (length > 0) {
+                                        // for (int n = 0; n < length; n++) {
+                                        //JSONObject soObj = sodetailsJsonArray.getJSONObject(n);
+                                        if (soObj.has("sale_order_value")) {
+                                            // Agent price
+                                            agentsBean.setmOrderValue(soObj.getString("sale_order_value"));
 
-                                                }
-                                                if (soObj.has("op_amt")) {
-
-                                                    //String URL = Constants.MAIN_URL + "/b2b/" + priceObj.getString("poi");
-                                                    agentsBean.setmObAmount(soObj.getString("op_amt"));
-
-                                                    // agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
-                                                }
-                                                if (soObj.has("received_amt")) {
-                                                    // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
-                                                    agentsBean.setmTotalAmount(soObj.getString("received_amt"));
-                                                }
-
-                                                if (soObj.has("cb_amt")) {
-                                                    // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
-                                                    agentsBean.setmDueAmount(soObj.getString("cb_amt"));
-                                                }
-                                            }
                                         }
+                                        if (soObj.has("op_amt")) {
+
+                                            //String URL = Constants.MAIN_URL + "/b2b/" + priceObj.getString("poi");
+                                            agentsBean.setmObAmount(soObj.getString("op_amt"));
+
+                                            // agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
+                                        }
+                                        if (soObj.has("received_amt")) {
+                                            // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
+                                            agentsBean.setmTotalAmount(soObj.getString("received_amt"));
+                                        }
+
+                                        if (soObj.has("cb_amt")) {
+                                            // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
+                                            agentsBean.setmDueAmount(soObj.getString("cb_amt"));
+                                        }
+                                        //}
+                                        //}
+                                    } else {
+                                        agentsBean.setmObAmount("");
+                                        agentsBean.setmOrderValue("");
+                                        agentsBean.setmTotalAmount("");
+                                        agentsBean.setmDueAmount("");
                                     }
                                     if (jo.has("route_id")) {
                                         if (jo.get("route_id") instanceof JSONArray) {
@@ -320,15 +325,10 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                             if (agentRouteArray != null) {
                                                 agentsBean.setmAgentRouteId(agentRouteArray.toString());
                                             }
-                                        }else {
+                                        } else {
                                             agentsBean.setmAgentRouteId(jo.getString("route_id"));
                                         }
                                     }
-
-                                    agentsBean.setmObAmount("");
-                                    agentsBean.setmOrderValue("");
-                                    agentsBean.setmTotalAmount("");
-                                    agentsBean.setmDueAmount("");
 
                                     if (jo.has("stakeholder_id")) {
                                         agentsBean.setmAgentStakeid(jo.getString("stakeholder_id"));
@@ -357,7 +357,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                     break;
                                 }
                             }
-                        }else {
+                        } else {
                             // Privilege not exists, display all users profile
                             AgentsBean agentsBean = new AgentsBean();
                             if (jo.has("_id")) {
@@ -429,21 +429,51 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                     }
                                 }
                             }
+                            if (jo.has("so_details_data")) {
+                                JSONObject soObj = jo.getJSONObject("so_details_data");
+                                //int length = sodetailsJsonArray.length();
+                                //if (length > 0) {
+                                // for (int n = 0; n < length; n++) {
+                                //JSONObject soObj = sodetailsJsonArray.getJSONObject(n);
+                                if (soObj.has("sale_order_value")) {
+                                    // Agent price
+                                    agentsBean.setmOrderValue(soObj.getString("sale_order_value"));
+
+                                }
+                                if (soObj.has("op_amt")) {
+
+                                    //String URL = Constants.MAIN_URL + "/b2b/" + priceObj.getString("poi");
+                                    agentsBean.setmObAmount(soObj.getString("op_amt"));
+
+                                    // agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
+                                }
+                                if (soObj.has("received_amt")) {
+                                    // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
+                                    agentsBean.setmTotalAmount(soObj.getString("received_amt"));
+                                }
+
+                                if (soObj.has("cb_amt")) {
+                                    // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
+                                    agentsBean.setmDueAmount(soObj.getString("cb_amt"));
+                                }
+                                //}
+                                //}
+                            } else {
+                                agentsBean.setmObAmount("");
+                                agentsBean.setmOrderValue("");
+                                agentsBean.setmTotalAmount("");
+                                agentsBean.setmDueAmount("");
+                            }
                             if (jo.has("route_id")) {
                                 if (jo.get("route_id") instanceof JSONArray) {
                                     JSONArray agentRouteArray = jo.getJSONArray("route_id");
                                     if (agentRouteArray != null) {
                                         agentsBean.setmAgentRouteId(agentRouteArray.toString());
                                     }
-                                }else {
+                                } else {
                                     agentsBean.setmAgentRouteId(jo.getString("route_id"));
                                 }
                             }
-
-                            agentsBean.setmObAmount("");
-                            agentsBean.setmOrderValue("");
-                            agentsBean.setmTotalAmount("");
-                            agentsBean.setmDueAmount("");
 
                             if (jo.has("stakeholder_id")) {
                                 agentsBean.setmAgentStakeid(jo.getString("stakeholder_id"));
@@ -480,16 +510,16 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                         if (mDBHelper.getAgentsTableCount() > 0) {
                             mDBHelper.deleteValuesFromAgentsTable();
                         }
-                        if(isMyProfilePrivilege) {
-                            mDBHelper.insertAgentDetails(mAgentsBeansList_MyPrivilege,UserCode);
-                        }else {
-                            mDBHelper.insertAgentDetails(mAgentsBeansList,UserCode);
+                        if (isMyProfilePrivilege) {
+                            mDBHelper.insertAgentDetails(mAgentsBeansList_MyPrivilege, UserCode);
+                        } else {
+                            mDBHelper.insertAgentDetails(mAgentsBeansList, UserCode);
                         }
                     }
                     synchronized (this) {
-                        if(isMyProfilePrivilege) {
+                        if (isMyProfilePrivilege) {
                             activity.loadAgentsList(mAgentsBeansList_MyPrivilege);
-                        }else {
+                        } else {
                             activity.loadAgentsList(mAgentsBeansList);
                         }
                     }
