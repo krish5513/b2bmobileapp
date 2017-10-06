@@ -27,12 +27,7 @@
     <string name="deliveryexceed">Delivery quantity for one of the product exceeds available stock, please check it.</string>
     <string name="deliverylimit">Please select at least one product to save.</string>
     <string name="deliverylimit_sort">There is no available stock to sort.</string>
-<<<<<<< HEAD
     <string name="take_order_sort">Please select at least one product to sort.</string>
-=======
-
->>>>>>> 3204842cd8a6a3f59164a40efa560b6c8ba54daa
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

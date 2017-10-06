@@ -247,10 +247,6 @@ public class ProductsBean implements Serializable {
                 ", mStockQuantity='" + mStockQuantity + '\'' +
                 '}';
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 3204842cd8a6a3f59164a40efa560b6c8ba54daa
     public double getmStockQuantity() {
         return mStockQuantity;
     }
