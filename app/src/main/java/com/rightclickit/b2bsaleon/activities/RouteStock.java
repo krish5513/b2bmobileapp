@@ -16,14 +16,20 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentStockAdapter;
 import com.rightclickit.b2bsaleon.adapters.RouteStockAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
+import com.rightclickit.b2bsaleon.models.TripsheetsModel;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RouteStock extends AppCompatActivity {
 
     private SearchView search;
     private  String tripSheetId;
     RouteStockAdapter routestockadapter;
+
+    private TripsheetsModel mTripsheetsModel;
 
    // ArrayList<AgentsStockBean> stockBeanArrayList;
 
@@ -51,6 +57,18 @@ public class RouteStock extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
+      /*  mTripsheetsModel = new TripsheetsModel(this, RouteStock.this);
+        ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
+
+        productsDispatchListHashMap = new HashMap<>();
+        productsVerifyListHashMap = new HashMap<>();
+
+        if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
+            mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
+        } else if (tripsheetsStockLists.size() > 0) {
+            loadTripsData(tripsheetsStockLists);
+        }*/
 
     }
 

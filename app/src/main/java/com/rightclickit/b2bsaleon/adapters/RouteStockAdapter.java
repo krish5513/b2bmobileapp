@@ -84,8 +84,8 @@ public class RouteStockAdapter extends BaseAdapter{
             mHolder.mProductUom = (TextView) view.findViewById(R.id.p_uom);
             mHolder.mDeliveryQty = (TextView) view.findViewById(R.id.delivery_qty);
             mHolder.mReturnQty = (TextView) view.findViewById(R.id.return_quantity);
-            mHolder.mReturnQtyInc = (ImageButton) view.findViewById(R.id.return_inc);
-            mHolder.mReturnQtyDec = (ImageButton) view.findViewById(R.id.return_dec);
+          //  mHolder.mReturnQtyInc = (ImageButton) view.findViewById(R.id.return_inc);
+          //  mHolder.mReturnQtyDec = (ImageButton) view.findViewById(R.id.return_dec);
 
             mHolder.mLeakQty = (TextView) view.findViewById(R.id.leak_quantity);
             mHolder.mLeakQtyInc = (ImageButton) view.findViewById(R.id.leak_inc);
@@ -118,8 +118,8 @@ public class RouteStockAdapter extends BaseAdapter{
         TextView mProductUom;
         TextView mDeliveryQty;
         TextView mReturnQty;
-        public ImageButton mReturnQtyInc;
-        public ImageButton mReturnQtyDec;
+       // public ImageButton mReturnQtyInc;
+       // public ImageButton mReturnQtyDec;
         TextView mLeakQty;
         public ImageButton mLeakQtyInc;
         public ImageButton mLeakQtyDec;
