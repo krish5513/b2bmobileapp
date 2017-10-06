@@ -245,7 +245,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        getMenuInflater().inflate(R.menu.menu_tdc, menu);
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
         search = (SearchView) menu.findItem(R.id.action_search).getActionView();

@@ -280,7 +280,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        getMenuInflater().inflate(R.menu.menu_tdc, menu);
 
         try {
             SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
