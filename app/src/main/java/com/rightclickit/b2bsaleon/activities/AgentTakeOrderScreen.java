@@ -21,15 +21,22 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.TDCSalesAdapter;
 import com.rightclickit.b2bsaleon.adapters.TakeOrdersAdapter;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.interfaces.AgentTakeOrderListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
-public class AgentTakeOrderScreen extends AppCompatActivity {
+public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTakeOrderListener {
     private MMSharedPreferences mPreference;
     private ListView mTakeOrderListView;
     private TakeOrdersAdapter mTakeOrderAdapter;
@@ -50,7 +57,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
     public static FloatingActionButton fab;
     public static SearchView search;
 
-    private ArrayList<ProductsBean> productsList;
+    private ArrayList<ProductsBean> productsList, productsListSort;
 
     public String Agents;
     public String TroipsTakeorder = "", tripSheetId = "";
@@ -59,6 +66,9 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
     Runnable rr;
     Handler h = new Handler();
 
+    private Map<String, String> selectedTakeOrderQuantityListMap, selectedTakeOrderFromDatesListMap, selectedTakeOrderToDatesListMap;
+    private boolean isAscendingSort;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +76,10 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
 
         mPreference = new MMSharedPreferences(this);
         mDBHelper = new DBHelper(this);
-
+        selectedTakeOrderQuantityListMap = new HashMap<String, String>();
+        selectedTakeOrderFromDatesListMap = new HashMap<String, String>();
+        selectedTakeOrderToDatesListMap = new HashMap<String, String>();
+        productsListSort = new ArrayList<ProductsBean>();
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
         this.getSupportActionBar().setTitle(mPreference.getString("agentName"));
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
@@ -106,7 +119,8 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
 
         mTakeOrderListView = (ListView) findViewById(R.id.TakeOrdersList);
         if (productsList.size() > 0) {
-            mTakeOrderAdapter = new TakeOrdersAdapter(this, productsList, mTakeOrderListView, mPreference.getString("agentId"), mTakeOrderBeansList);
+            mTakeOrderAdapter = new TakeOrdersAdapter(this, this, productsList, mTakeOrderListView, mPreference.getString("agentId"), mTakeOrderBeansList,
+                    selectedTakeOrderQuantityListMap, selectedTakeOrderFromDatesListMap, selectedTakeOrderToDatesListMap);
             mTakeOrderListView.setAdapter(mTakeOrderAdapter);
         }
 
@@ -285,6 +299,87 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
 //            return true;
 //        }
 
+        if (id == R.id.sort) {
+            System.out.println("Selected TO::: " + selectedTakeOrderQuantityListMap.size());
+            System.out.println("Products List Size::: " + productsList.size());
+            if (selectedTakeOrderQuantityListMap.size() > 0) {
+                synchronized (this) {
+                    if (productsList.size() > 0) {
+                        if (productsListSort.size() > 0) {
+                            productsListSort.clear();
+                        }
+                        for (int y = 0; y < productsList.size(); y++) {
+                            Double toq = 0.000;
+                            ProductsBean pB = new ProductsBean();
+
+                            pB.setProductId(productsList.get(y).getProductId());
+                            pB.setProductCode(productsList.get(y).getProductCode());
+                            pB.setProductTitle(productsList.get(y).getProductTitle());
+                            pB.setProductDescription(productsList.get(y).getProductDescription());
+                            pB.setProductImageUrl(productsList.get(y).getProductImageUrl());
+                            pB.setProductReturnable(productsList.get(y).getProductReturnable());
+                            pB.setProductMOQ(productsList.get(y).getProductMOQ());
+                            pB.setProductUOM(productsList.get(y).getProductUOM());
+                            pB.setProductAgentPrice(productsList.get(y).getProductAgentPrice());
+                            pB.setProductConsumerPrice(productsList.get(y).getProductConsumerPrice());
+                            pB.setProductRetailerPrice(productsList.get(y).getProductRetailerPrice());
+                            pB.setProductgst(productsList.get(y).getProductgst());
+                            pB.setProductvat(productsList.get(y).getProductvat());
+
+                            if (selectedTakeOrderQuantityListMap.get(productsList.get(y).getProductId()) != null) {
+                                toq = Double.parseDouble(selectedTakeOrderQuantityListMap.get(productsList.get(y).getProductId()));
+                                pB.setmTakeOrderQuantity(String.valueOf(toq));
+                            } else {
+                                if (productsList.get(y).getmTakeOrderQuantity() != null) {
+                                    pB.setmTakeOrderQuantity(productsList.get(y).getmTakeOrderQuantity());
+                                } else {
+                                    pB.setmTakeOrderQuantity(String.valueOf(toq));
+                                }
+                            }
+                            if (selectedTakeOrderFromDatesListMap.get(productsList.get(y).getProductId()) != null) {
+                                pB.setmTakeOrderFromDate(selectedTakeOrderFromDatesListMap.get(productsList.get(y).getProductId()));
+                            } else {
+                                pB.setmTakeOrderFromDate(productsList.get(y).getmTakeOrderFromDate());
+                            }
+                            if (selectedTakeOrderToDatesListMap.get(productsList.get(y).getProductId()) != null) {
+                                pB.setmTakeOrderToDate(selectedTakeOrderToDatesListMap.get(productsList.get(y).getProductId()));
+                            } else {
+                                pB.setmTakeOrderToDate(productsList.get(y).getmTakeOrderToDate());
+                            }
+
+                            productsListSort.add(pB);
+                        }
+
+                        System.out.println("Products SORT List Size::: " + productsListSort.size());
+                    }
+                }
+
+                synchronized (this) {
+                    if (!isAscendingSort) {
+                        // Ascending order
+                        isAscendingSort = true;
+                        Collections.sort(productsListSort, StringAscComparator);
+                    } else {
+                        // Descending order
+                        isAscendingSort = false;
+                        Collections.sort(productsListSort, StringDescComparator);
+                    }
+                }
+
+                synchronized (this) {
+                    if (mTakeOrderAdapter != null) {
+                        mTakeOrderAdapter = null;
+                    }
+                    mTakeOrderAdapter = new TakeOrdersAdapter(this, this, productsListSort, mTakeOrderListView, mPreference.getString("agentId"), mTakeOrderBeansList,
+                            selectedTakeOrderQuantityListMap, selectedTakeOrderFromDatesListMap, selectedTakeOrderToDatesListMap);
+                    mTakeOrderListView.setAdapter(mTakeOrderAdapter);
+                    mTakeOrderAdapter.notifyDataSetChanged();
+                }
+            } else {
+                CustomAlertDialog.showAlertDialog(AgentTakeOrderScreen.this, "Failed", getResources().getString(R.string.take_order_sort));
+            }
+        }
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 if (search.isIconified()) {
@@ -299,6 +394,37 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
                 return true;
         }
     }
+
+    // Comparator for Ascending Order
+    public static Comparator<ProductsBean> StringAscComparator = new Comparator<ProductsBean>() {
+
+        public int compare(ProductsBean app1, ProductsBean app2) {
+            int g = 0;
+
+            Double stringName1 = Double.parseDouble(app1.getmTakeOrderQuantity());
+            Double stringName2 = Double.parseDouble(app2.getmTakeOrderQuantity());
+            if (stringName1 >= stringName2) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+    };
+
+    //Comparator for Descending Order
+    public static Comparator<ProductsBean> StringDescComparator = new Comparator<ProductsBean>() {
+
+        public int compare(ProductsBean app1, ProductsBean app2) {
+            int f = 0;
+            Double stringName1 = Double.parseDouble(app1.getmTakeOrderQuantity());
+            Double stringName2 = Double.parseDouble(app2.getmTakeOrderQuantity());
+            if (stringName2 >= stringName1) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+    };
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -330,6 +456,11 @@ public class AgentTakeOrderScreen extends AppCompatActivity {
         }
     }
 
-
+    @Override
+    public void updateSelectedTakeOrderQuantity(Map<String, String> productsList, Map<String, String> fromDatesList, Map<String, String> toDatesList) {
+        this.selectedTakeOrderQuantityListMap = productsList;
+        this.selectedTakeOrderFromDatesListMap = fromDatesList;
+        this.selectedTakeOrderToDatesListMap = toDatesList;
+    }
 }
 

@@ -26,8 +26,8 @@
     <string name="returnsfail">This Preview is unavailable untill the tripsheet returns is saved.</string>
     <string name="deliveryexceed">Delivery quantity for one of the product exceeds available stock, please check it.</string>
     <string name="deliverylimit">Please select at least one product to save.</string>
-    <string name="deliverylimit_sort">Please select at least one product to sort.</string>
-
+    <string name="deliverylimit_sort">There is no available stock to sort.</string>
+    <string name="take_order_sort">Please select at least one product to sort.</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

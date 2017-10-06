@@ -95,7 +95,6 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             //Log.e(allProductsList.size())
 
 
-
             ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("UserActivity"));
             //System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
             for (int z = 0; z < privilegeActionsData1.size(); z++) {
@@ -335,68 +334,72 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             return true;
         }
         if (id == R.id.sort) {
-            if (selectedProductsListHashMap.size() > 0) {
-                if (allProductsListSort.size() > 0) {
-                    allProductsListSort.clear();
-                }
-                synchronized (this) {
-                    for (int k = 0; k < allProductsList.size(); k++) {
-                        Double selectedQua = 0.0;
-                        if (selectedProductsStockListHashMap.get(allProductsList.get(k).getProductId()) != null) {
-                            selectedQua = Double.parseDouble(selectedProductsStockListHashMap.get(allProductsList.get(k).getProductId()));
+            synchronized (this) {
+                if (stockBeanArrayList.size() > 0) {
+                    if (allProductsListSort.size() > 0) {
+                        allProductsListSort.clear();
+                    }
+                    synchronized (this) {
+                        for (int k = 0; k < allProductsList.size(); k++) {
+                            Double selectedQua = 0.0, stockQuantity = 0.0;
+                            if (selectedProductsStockListHashMap.get(allProductsList.get(k).getProductId()) != null) {
+                                selectedQua = Double.parseDouble(selectedProductsStockListHashMap.get(allProductsList.get(k).getProductId()));
+                            }
+
+                            if (availableStockProductsList.get(allProductsList.get(k).getProductId()) != null) {
+                                stockQuantity = Double.parseDouble(availableStockProductsList.get(allProductsList.get(k).getProductId()));
+                            }
+
+                            // Sorting code
+                            ProductsBean productsBean1 = new ProductsBean();
+
+                            productsBean1.setProductId(allProductsList.get(k).getProductId());
+                            productsBean1.setProductCode(allProductsList.get(k).getProductCode());
+                            productsBean1.setProductTitle(allProductsList.get(k).getProductTitle());
+                            productsBean1.setProductDescription(allProductsList.get(k).getProductDescription());
+                            productsBean1.setProductImageUrl(allProductsList.get(k).getProductImageUrl());
+                            productsBean1.setProductReturnable(allProductsList.get(k).getProductReturnable());
+                            productsBean1.setProductMOQ(allProductsList.get(k).getProductMOQ());
+                            productsBean1.setProductUOM(allProductsList.get(k).getProductUOM());
+                            productsBean1.setProductAgentPrice(allProductsList.get(k).getProductAgentPrice());
+                            productsBean1.setProductConsumerPrice(allProductsList.get(k).getProductConsumerPrice());
+                            productsBean1.setProductRetailerPrice(allProductsList.get(k).getProductRetailerPrice());
+                            productsBean1.setProductgst(allProductsList.get(k).getProductgst());
+                            productsBean1.setProductvat(allProductsList.get(k).getProductvat());
+                            productsBean1.setControlCode(allProductsList.get(k).getControlCode());
+                            productsBean1.setSelectedQuantity(selectedQua);
+                            productsBean1.setmStockQuantity(stockQuantity);
+
+                            allProductsListSort.add(productsBean1);
                         }
-
-                        // Sorting code
-                        ProductsBean productsBean1 = new ProductsBean();
-
-                        productsBean1.setProductId(allProductsList.get(k).getProductId());
-                        productsBean1.setProductCode(allProductsList.get(k).getProductCode());
-                        productsBean1.setProductTitle(allProductsList.get(k).getProductTitle());
-                        productsBean1.setProductDescription(allProductsList.get(k).getProductDescription());
-                        productsBean1.setProductImageUrl(allProductsList.get(k).getProductImageUrl());
-                        productsBean1.setProductReturnable(allProductsList.get(k).getProductReturnable());
-                        productsBean1.setProductMOQ(allProductsList.get(k).getProductMOQ());
-                        productsBean1.setProductUOM(allProductsList.get(k).getProductUOM());
-                        productsBean1.setProductAgentPrice(allProductsList.get(k).getProductAgentPrice());
-                        productsBean1.setProductConsumerPrice(allProductsList.get(k).getProductConsumerPrice());
-                        productsBean1.setProductRetailerPrice(allProductsList.get(k).getProductRetailerPrice());
-                        productsBean1.setProductgst(allProductsList.get(k).getProductgst());
-                        productsBean1.setProductvat(allProductsList.get(k).getProductvat());
-                        productsBean1.setControlCode(allProductsList.get(k).getControlCode());
-                        productsBean1.setSelectedQuantity(selectedQua);
-
-                        allProductsListSort.add(productsBean1);
                     }
-                }
-
-                synchronized (this) {
-                    if (!isAscendingSort) {
-                        // Ascending order
-                        isAscendingSort = true;
-                        Collections.sort(allProductsListSort, StringAscComparator);
-                    } else {
-                        // Descending order
-                        isAscendingSort = false;
-                        Collections.sort(allProductsListSort, StringDescComparator);
-                    }
-                }
-
-                synchronized (this) {
-                    if (showProductsListView) {
-                        if (tdcSalesAdapter != null) {
-                            tdcSalesAdapter = null;
+                    synchronized (this) {
+                        if (!isAscendingSort) {
+                            // Ascending order
+                            isAscendingSort = true;
+                            Collections.sort(allProductsListSort, StringAscComparator);
+                        } else {
+                            // Descending order
+                            isAscendingSort = false;
+                            Collections.sort(allProductsListSort, StringDescComparator);
                         }
-                        previousselectedProductsStockListHashMap = selectedProductsStockListHashMap;
-
-                        tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsListSort, previouslySelectedProductsListHashMap, availableStockProductsList, userId, previousselectedProductsStockListHashMap);
-                        tdc_products_list_view.setAdapter(tdcSalesAdapter);
-                        tdcSalesAdapter.notifyDataSetChanged();
                     }
+                    synchronized (this) {
+                        if (showProductsListView) {
+                            if (tdcSalesAdapter != null) {
+                                tdcSalesAdapter = null;
+                            }
+                            previousselectedProductsStockListHashMap = selectedProductsStockListHashMap;
+
+                            tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsListSort, previouslySelectedProductsListHashMap, availableStockProductsList, userId, previousselectedProductsStockListHashMap);
+                            tdc_products_list_view.setAdapter(tdcSalesAdapter);
+                            tdcSalesAdapter.notifyDataSetChanged();
+                        }
+                    }
+                } else {
+                    CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliverylimit_sort));
                 }
-            } else {
-                CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliverylimit_sort));
             }
-
             return true;
         }
 
@@ -422,8 +425,8 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
         public int compare(ProductsBean app1, ProductsBean app2) {
             int g = 0;
 
-            Double stringName1 = app1.getSelectedQuantity();
-            Double stringName2 = app2.getSelectedQuantity();
+            Double stringName1 = app1.getmStockQuantity();
+            Double stringName2 = app2.getmStockQuantity();
             if (stringName1 >= stringName2) {
                 return -1;
             } else {
@@ -437,8 +440,8 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
 
         public int compare(ProductsBean app1, ProductsBean app2) {
             int f = 0;
-            Double stringName1 = app1.getSelectedQuantity();
-            Double stringName2 = app2.getSelectedQuantity();
+            Double stringName1 = app1.getmStockQuantity();
+            Double stringName2 = app2.getmStockQuantity();
             if (stringName2 >= stringName1) {
                 return -1;
             } else {

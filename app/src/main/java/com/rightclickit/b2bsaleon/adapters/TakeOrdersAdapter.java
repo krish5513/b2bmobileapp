@@ -42,6 +42,7 @@ import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
+import com.rightclickit.b2bsaleon.interfaces.AgentTakeOrderListener;
 import com.rightclickit.b2bsaleon.services.SyncTakeOrdersService;
 import com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -90,8 +91,14 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     private int clickedPosition;
     private HashMap<String, String> mProductIdsList = new HashMap<String, String>();
     private String mAgentID = "";
+    private AgentTakeOrderListener mListener;
+    private Map<String, String> updateTakeOrderData = new HashMap<String, String>();
+    private Map<String, String> updateFromDatesTakeOrderData = new HashMap<String, String>();
+    private Map<String, String> updateToDatesTakeOrderData = new HashMap<String, String>();
 
-    public TakeOrdersAdapter(Activity productsActivity, ArrayList<ProductsBean> mTakeOrderBeansList, ListView mTakeOrderListView, String agentId, ArrayList<TakeOrderBean> takeOrderBeansList) {
+    public TakeOrdersAdapter(Activity productsActivity, AgentTakeOrderListener listener, ArrayList<ProductsBean> mTakeOrderBeansList, ListView mTakeOrderListView, String agentId,
+                             ArrayList<TakeOrderBean> takeOrderBeansList, Map<String, String> quantityListMap,
+                             Map<String, String> fromDatesListMap, Map<String, String> toDatesListMap) {
         this.activity = productsActivity;
         this.mTakeOrderBeansList1 = mTakeOrderBeansList;
         this.mInflater = LayoutInflater.from(activity);
@@ -101,6 +108,10 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         this.arraylist = new ArrayList<ProductsBean>();
         this.arraylist.addAll(mTakeOrderBeansList1);
         this.mStoredTakeOrderBeansList = takeOrderBeansList;
+        this.mListener = listener;
+        this.updateTakeOrderData = quantityListMap;
+        this.updateFromDatesTakeOrderData = fromDatesListMap;
+        this.updateToDatesTakeOrderData = toDatesListMap;
         try {
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -307,6 +318,11 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     fromDatesList.put(mTakeOrderBeansList1.get(position).getProductId(), fromDate.getText().toString().trim());
                     toDatesList.put(mTakeOrderBeansList1.get(position).getProductId(), toDate.getText().toString().trim());
                     mProductIdsList.put(mTakeOrderBeansList1.get(position).getProductId().toString(), mTakeOrderBeansList1.get(position).getProductId().toString());
+                    updateTakeOrderData.put(mTakeOrderBeansList1.get(position).getProductId(), String.format("%.3f", presentIntVal));
+                    updateFromDatesTakeOrderData.put(mTakeOrderBeansList1.get(position).getProductId(), fromDate.getText().toString().trim());
+                    updateToDatesTakeOrderData.put(mTakeOrderBeansList1.get(position).getProductId(), toDate.getText().toString().trim());
+                    if (mListener != null)
+                        mListener.updateSelectedTakeOrderQuantity(updateTakeOrderData, updateFromDatesTakeOrderData, updateToDatesTakeOrderData);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -338,11 +354,11 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                             fromDatesList.put(mTakeOrderBeansList1.get(position).getProductId(), fromDate.getText().toString().trim());
                             toDatesList.put(mTakeOrderBeansList1.get(position).getProductId(), toDate.getText().toString().trim());
                             mProductIdsList.put(mTakeOrderBeansList1.get(position).getProductId().toString(), mTakeOrderBeansList1.get(position).getProductId().toString());
-//                            System.out.println("Q LIST:::: " + quantityList.size());
-//                            System.out.println("POS LIST:::: " + position);
-//                            System.out.println(" P ID LIST:::: " + mTakeOrderBeansList1.get(position).getProductId());
-                            //}
-                            // }
+                            updateTakeOrderData.put(mTakeOrderBeansList1.get(position).getProductId(), String.format("%.3f", presentIntVal));
+                            updateFromDatesTakeOrderData.put(mTakeOrderBeansList1.get(position).getProductId(), fromDate.getText().toString().trim());
+                            updateToDatesTakeOrderData.put(mTakeOrderBeansList1.get(position).getProductId(), toDate.getText().toString().trim());
+                            if (mListener != null)
+                                mListener.updateSelectedTakeOrderQuantity(updateTakeOrderData, updateFromDatesTakeOrderData, updateToDatesTakeOrderData);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -371,6 +387,11 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     fromDatesList.put(mTakeOrderBeansList1.get(position).getProductId(), fromDate.getText().toString().trim());
                     toDatesList.put(mTakeOrderBeansList1.get(position).getProductId(), toDate.getText().toString().trim());
                     mProductIdsList.put(mTakeOrderBeansList1.get(position).getProductId().toString(), mTakeOrderBeansList1.get(position).getProductId().toString());
+                    updateTakeOrderData.put(mTakeOrderBeansList1.get(position).getProductId(), String.format("%.3f", presentIntVal));
+                    updateFromDatesTakeOrderData.put(mTakeOrderBeansList1.get(position).getProductId(), fromDate.getText().toString().trim());
+                    updateToDatesTakeOrderData.put(mTakeOrderBeansList1.get(position).getProductId(), toDate.getText().toString().trim());
+                    if (mListener != null)
+                        mListener.updateSelectedTakeOrderQuantity(updateTakeOrderData, updateFromDatesTakeOrderData, updateToDatesTakeOrderData);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
