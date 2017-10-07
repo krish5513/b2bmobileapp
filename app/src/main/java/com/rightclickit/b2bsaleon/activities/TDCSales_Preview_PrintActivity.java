@@ -252,7 +252,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
 
                         rate = productsBean.getProductRatePerUnit();
                         try {
-                            ratetax = rate * (Double.parseDouble(taxes) % 100);
+                            ratetax = rate * (Double.parseDouble(taxes) / 100);
 
                         } catch (Exception e) {
                             e.printStackTrace();
