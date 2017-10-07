@@ -101,8 +101,6 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
         }
 
         try {
-
-
              taxes = (productBean.getProductgst() + productBean.getProductvat());
             }catch (Exception e){
             e.printStackTrace();

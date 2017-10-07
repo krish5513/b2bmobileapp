@@ -243,7 +243,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                         double qty= Double.parseDouble(String.format("%.3f", productsBean.getSelectedQuantity()));
                         double salevalue=qty*rate;
                         try {
-                            taxvalue=salevalue*Double.parseDouble(taxes);
+                            taxvalue=salevalue*(Double.parseDouble(taxes)%100);
                         }catch (Exception e){
                             e.printStackTrace();
                         }
