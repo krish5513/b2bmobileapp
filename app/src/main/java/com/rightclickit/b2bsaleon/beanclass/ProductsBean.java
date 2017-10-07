@@ -50,6 +50,7 @@ public class ProductsBean implements Serializable {
     private String mTakeOrderQuantity;
     private String mTakeOrderFromDate;
     private String mTakeOrderToDate;
+    private double mStockQuantity;
 
     public String getProductgst() {
         return productgst;
@@ -243,6 +244,15 @@ public class ProductsBean implements Serializable {
                 ", mTakeOrderQuantity='" + mTakeOrderQuantity + '\'' +
                 ", mTakeOrderFromDate='" + mTakeOrderFromDate + '\'' +
                 ", mTakeOrderToDate='" + mTakeOrderToDate + '\'' +
+                ", mStockQuantity='" + mStockQuantity + '\'' +
                 '}';
+    }
+
+    public double getmStockQuantity() {
+        return mStockQuantity;
+    }
+
+    public void setmStockQuantity(double mStockQuantity) {
+        this.mStockQuantity = mStockQuantity;
     }
 }
