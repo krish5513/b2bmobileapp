@@ -25,7 +25,8 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
     private Activity activity;
     private Context ctxt;
     private ArrayList<ProductsBean> selectedProductsList;
-    String taxes,totalRate="";
+    double taxes;
+    String totalRate="";
     double rate,ratetax,taxvalue;
 
     public TDCSalesPreviewAdapter(Context ctxt, TDCSales_Preview_PrintActivity TDCSales_preview_printActivity, List<ProductsBean> productsList) {
@@ -91,7 +92,7 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
         if(productBean.getProductgst()!=null) {
             salesPreviewViewHolder.cgst.setText(productBean.getProductgst()+"%");
         }
-            else{
+        else{
             salesPreviewViewHolder.cgst.setText("0.00%");
         }
         if(productBean.getProductvat()!=null) {
@@ -101,24 +102,31 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
         }
 
         try {
-             taxes = (productBean.getProductgst() + productBean.getProductvat());
-            }catch (Exception e){
+            Double gst = 0.0,vat = 0.0;
+            if(productBean.getProductgst()!=null){
+                gst = Double.parseDouble(productBean.getProductgst());
+            }
+            if(productBean.getProductvat()!=null){
+                vat = Double.parseDouble(productBean.getProductvat());
+            }
+            taxes = gst + vat;
+        }catch (Exception e){
             e.printStackTrace();
         }
 
         rate=productBean.getProductRatePerUnit();
+        double per= taxes / 100;
         try {
-           ratetax= rate* (Double.parseDouble(taxes)%100);
-
+            ratetax= rate* per;
         }catch (Exception e){
             e.printStackTrace();
         }
         totalRate = String.valueOf((rate-ratetax));
         salesPreviewViewHolder.order_preview_mrp.setText((Utility.getFormattedCurrency(Double.parseDouble(totalRate))));
         double qty= Double.parseDouble(String.format("%.3f", productBean.getSelectedQuantity()));
-        double salevalue=qty*rate;
+        double salevalue=qty*Double.parseDouble(totalRate);
         try {
-             taxvalue=salevalue*Double.parseDouble(taxes);
+            taxvalue=salevalue*per;
         }catch (Exception e){
             e.printStackTrace();
         }

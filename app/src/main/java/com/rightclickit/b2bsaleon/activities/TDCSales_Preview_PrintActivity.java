@@ -50,11 +50,11 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
     private String loggedInUserId, loggedInUserName;
 
     TextView company_name, route_name, route_code, user_name, sales_print;
-    String amount, subtotal, taxAmount, name,hssnnumber,cgst,sgst;
+    String amount, subtotal, taxAmount, name, hssnnumber, cgst, sgst;
     double mrp, quantity;
     String subtaxAmount, subAmount, finalAmount;
 
-    String currentDate, str_routecode, str_enguiryid, str_agentname,id;
+    String currentDate, str_routecode, str_enguiryid, str_agentname, id;
     long currentTimeStamp;
 
     private long previousOrderId;
@@ -64,10 +64,11 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
     private String requestCameFrom, saleQuantity = "", actualSaleQuantity = "";
     private Map<String, String> saleQuantityListMap = new HashMap<String, String>();
 
-    String taxes,totalRate="";
-    double rate,ratetax,taxvalue;
+    String taxes, totalRate = "";
+    double rate, ratetax, taxvalue;
     Map<String, ProductsBean> productsList;
     ProductsBean productsBean;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,7 +114,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
             if (bundle != null) {
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW);
                 requestCameFrom = bundle.getString(Constants.BUNDLE_REQUEST_FROM);
-                id=bundle.getString("incid");
+                id = bundle.getString("incid");
                 if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION)) {
                     saleQuantity = bundle.getString(Constants.BUNDLE_TDC_SALE_QUANTITY);
                     actualSaleQuantity = saleQuantity;
@@ -161,8 +162,28 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                                 }
                             }
 
-                            double amount = productsBean.getProductRatePerUnit() * productsBean.getSelectedQuantity();
-                            double taxAmount = (amount * productsBean.getProductTaxPerUnit()) / 100;
+                            Double gst = 0.0, vat = 0.0;
+                            if (productsBean.getProductgst() != null) {
+                                gst = Double.parseDouble(productsBean.getProductgst());
+                            }
+                            if (productsBean.getProductvat() != null) {
+                                vat = Double.parseDouble(productsBean.getProductvat());
+                            }
+                            double taxAmount = gst + vat;
+                            System.out.println("TAX AMOUNT::: " + taxAmount);
+
+                            double rate = productsBean.getProductRatePerUnit();
+                            double per = taxAmount / 100;
+                            double ratetax = 0.0;
+                            try {
+                                ratetax = rate * per;
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            String totalRate = String.valueOf((rate - ratetax));
+                            double amount = Double.parseDouble(totalRate) * productsBean.getSelectedQuantity();
+                            taxAmount = amount * per;
 
                             productsBean.setProductAmount(amount);
                             productsBean.setTaxAmount(taxAmount);
@@ -189,83 +210,79 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 subtaxAmount = Utility.getFormattedCurrency(currentOrder.getOrderTotalTaxAmount());
                 subAmount = Utility.getFormattedCurrency(currentOrder.getOrderTotalAmount());
                 finalAmount = Utility.getFormattedCurrency(currentOrder.getOrderSubTotal());
-                 productsList = currentOrder.getProductsList();
+                productsList = currentOrder.getProductsList();
                 selectedList = new ArrayList<>(productsList.size());
 
                 if (productsList != null) {
                     for (Map.Entry<String, ProductsBean> productsBeanEntry : productsList.entrySet()) {
-                         productsBean = productsBeanEntry.getValue();
+                        productsBean = productsBeanEntry.getValue();
                         name = String.valueOf(productsBean.getProductTitle().replace(",", ""));
                         quantity = productsBean.getSelectedQuantity();
-                       // mrp = productsBean.getProductRatePerUnit();
-                       // subtotal = Utility.getFormattedCurrency(productsBean.getProductAmount());
-                       // taxAmount = Utility.getFormattedCurrency(productsBean.getTaxAmount());
-                        if (productsBean.getControlCode()!=null) {
+                        // mrp = productsBean.getProductRatePerUnit();
+                        // subtotal = Utility.getFormattedCurrency(productsBean.getProductAmount());
+                        // taxAmount = Utility.getFormattedCurrency(productsBean.getTaxAmount());
+                        if (productsBean.getControlCode() != null) {
                             hssnnumber = productsBean.getControlCode();
-                        }else {
-                            hssnnumber="-";
+                        } else {
+                            hssnnumber = "-";
                         }
-                        if(productsBean.getProductgst()!=null){
-                            cgst=productsBean.getProductgst()+"%";
-                        }
-                        else {
+                        if (productsBean.getProductgst() != null) {
+                            cgst = productsBean.getProductgst() + "%";
+                        } else {
                             cgst = "0.00%";
                         }
-                        if(productsBean.getProductvat()!=null) {
+                        if (productsBean.getProductvat() != null) {
                             sgst = productsBean.getProductvat() + "%";
-                        }else {
-                            sgst="0.00%";
+                        } else {
+                            sgst = "0.00%";
                         }
 
                         try {
-                            if(productsBean.getProductgst()!=null && productsBean.getProductvat()!=null) {
+                            if (productsBean.getProductgst() != null && productsBean.getProductvat() != null) {
 
 
                                 taxes = (productsBean.getProductgst() + productsBean.getProductvat());
+                            } else {
+                                taxes = "0.00%";
                             }
-                            else {
-                                taxes="0.00%";
-                            }
 
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
 
-                        rate=productsBean.getProductRatePerUnit();
+                        rate = productsBean.getProductRatePerUnit();
                         try {
-                            ratetax= rate* (Double.parseDouble(taxes)%100);
+                            ratetax = rate * (Double.parseDouble(taxes) % 100);
 
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        totalRate = String.valueOf((rate-ratetax));
-                        mrp= (Double.parseDouble(totalRate));
-                        double qty= Double.parseDouble(String.format("%.3f", productsBean.getSelectedQuantity()));
-                        double salevalue=qty*rate;
+                        totalRate = String.valueOf((rate - ratetax));
+                        mrp = (Double.parseDouble(totalRate));
+                        double qty = Double.parseDouble(String.format("%.3f", productsBean.getSelectedQuantity()));
+                        double salevalue = qty * rate;
                         try {
-                            taxvalue=salevalue*(Double.parseDouble(taxes)%100);
-                        }catch (Exception e){
+                            taxvalue = salevalue * (Double.parseDouble(taxes) / 100);
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        subtotal= Utility.getFormattedCurrency(salevalue);
-                        taxAmount= Utility.getFormattedCurrency(taxvalue);
-
-
+                        subtotal = Utility.getFormattedCurrency(salevalue);
+                        taxAmount = Utility.getFormattedCurrency(taxvalue);
 
 
                         String[] temp = new String[11];
                         temp[0] = name;
                         temp[7] = String.valueOf(quantity);
                         temp[8] = Utility.getFormattedCurrency(mrp);
-                        temp[9] =subtotal;
+                        temp[9] = subtotal;
                         temp[10] = taxAmount;
-                        temp[3]=hssnnumber;
-                        temp[4]=cgst;
-                        temp[5]=sgst;
-                        temp[1]=productsBean.getProductCode();
-                        temp[2]=productsBean.getProductUOM();
-                        temp[6]=taxes;
-                       // temp[11]=id;
+                        temp[3] = hssnnumber;
+                        temp[4] = cgst;
+                        temp[5] = sgst;
+                        temp[1] = productsBean.getProductCode();
+                        temp[2] = productsBean.getProductUOM();
+                        temp[6] = taxes;
+                        // temp[11]=id;
                         selectedList.add(temp);
                     }
                 }
@@ -353,7 +370,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
 
                 canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
                 paint.setTextSize(20);
-                canvas.drawText(mmSharedPreferences.getString("routename")+ ",", 5, 80, paint);
+                canvas.drawText(mmSharedPreferences.getString("routename") + ",", 5, 80, paint);
                 paint.setTextSize(20);
                 canvas.drawText(str_routecode, 150, 80, paint);
                 paint.setTextSize(20);
@@ -380,7 +397,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText("CODE ", 5, 320, paint);
                 paint.setTextSize(20);
-                canvas.drawText( ": " + str_enguiryid, 150, 320, paint);
+                canvas.drawText(": " + str_enguiryid, 150, 320, paint);
                 paint.setTextSize(20);
                 canvas.drawText("-------------------------------------------", 5, 350, paint);
                 paint.setTextSize(20);
@@ -402,34 +419,33 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     canvas.drawText("," + temps[1], 150, st, paint);
                     paint.setTextSize(22);
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                    canvas.drawText(  "( " + temps[2] + " )", 240, st, paint);
+                    canvas.drawText("( " + temps[2] + " )", 240, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("HSSN CODE ", 5, st, paint);
-                    canvas.drawText( ": " +  temps[3], 150, st, paint);
+                    canvas.drawText(": " + temps[3], 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("CGST,SGST ", 5, st, paint);
-                    canvas.drawText(": " +temps[4], 150, st, paint);
-                    canvas.drawText(" + " +temps[5], 225, st, paint);
-                    canvas.drawText(" = " +temps[6], 300, st, paint);
+                    canvas.drawText(": " + temps[4], 150, st, paint);
+                    canvas.drawText(" + " + temps[5], 225, st, paint);
+                    canvas.drawText(" = " + temps[6], 300, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("QUANTITY ", 5, st, paint);
-                    canvas.drawText(": " +temps[7], 150, st, paint);
+                    canvas.drawText(": " + temps[7], 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("RATE ", 5, st, paint);
-                    canvas.drawText(": " +temps[8], 150, st, paint);
+                    canvas.drawText(": " + temps[8], 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("VALUE ", 5, st, paint);
-                    canvas.drawText(": " +temps[9], 150, st, paint);
+                    canvas.drawText(": " + temps[9], 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("TAX VALUE ", 5, st, paint);
-                    canvas.drawText(": " +temps[10], 150, st, paint);
-
+                    canvas.drawText(": " + temps[10], 150, st, paint);
 
 
                     st = st + 45;
@@ -445,12 +461,12 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText(": " + " INR " + finalAmount, 150, st, paint);
                 st = st + 30;
-               // paint.setTextSize(20);
-               // canvas.drawText("VALUE ", 5, st, paint);
+                // paint.setTextSize(20);
+                // canvas.drawText("VALUE ", 5, st, paint);
                 paint.setTextSize(20);
-                canvas.drawText( "(" + "INR " +subAmount  +" + "  + "INR " + subtaxAmount + ")", 100, st, paint);
+                canvas.drawText("(" + "INR " + subAmount + " + " + "INR " + subtaxAmount + ")", 100, st, paint);
                 st = st + 30;
-                canvas.drawText("--------X---------", 100,st , paint);
+                canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
             }
         });
