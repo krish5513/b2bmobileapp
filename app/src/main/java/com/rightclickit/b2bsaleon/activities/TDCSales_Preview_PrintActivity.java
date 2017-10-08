@@ -65,7 +65,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
     private Map<String, String> saleQuantityListMap = new HashMap<String, String>();
 
     String taxes, totalRate = "";
-    double rate, ratetax, taxvalue;
+    double rate = 0.0, ratetax=0.0, taxvalue=0.0;
     Map<String, ProductsBean> productsList;
     ProductsBean productsBean;
 
@@ -135,7 +135,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     currentOrderId = String.format("TDC%05d", previousOrderId + 1);
 
                     // Checking weather the selected customer is retailer or not, if yes checking weather he has any special prices.
-                    if (currentOrder.getSelectedCustomerId() > 0 && currentOrder.getSelectedCustomerType() == 1) {
+                    //if (currentOrder.getSelectedCustomerId() > 0 && currentOrder.getSelectedCustomerType() == 1) {
                         Map<String, String> specialPriceList = mDBHelper.fetchSpecialPricesForUserId(currentOrder.getSelectedCustomerUserId()); // Getting special prices for selected retailer from local db.
 
                         double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
@@ -170,7 +170,6 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                                 vat = Double.parseDouble(productsBean.getProductvat());
                             }
                             double taxAmount = gst + vat;
-                            System.out.println("TAX AMOUNT::: " + taxAmount);
 
                             double rate = productsBean.getProductRatePerUnit();
                             double per = taxAmount / 100;
@@ -196,7 +195,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                         currentOrder.setOrderTotalAmount(totalAmount);
                         currentOrder.setOrderTotalTaxAmount(totalTaxAmount);
                         currentOrder.setOrderSubTotal(subTotal);
-                    }
+                    //}
 
                 } else {
                     currentOrderId = String.format("TDC%05d", currentOrder.getOrderId());
@@ -241,7 +240,8 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                             if (productsBean.getProductgst() != null && productsBean.getProductvat() != null) {
 
 
-                                taxes = (productsBean.getProductgst() + productsBean.getProductvat());
+                                taxes = String.valueOf(Double.parseDouble(productsBean.getProductgst())
+                                        + Double.parseDouble(productsBean.getProductvat()));
                             } else {
                                 taxes = "0.00%";
                             }
@@ -251,8 +251,10 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                         }
 
                         rate = productsBean.getProductRatePerUnit();
+
+                        double per = Double.parseDouble(taxes) / 100; // Added extra...
                         try {
-                            ratetax = rate * (Double.parseDouble(taxes) / 100);
+                            ratetax = rate * per;
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -260,13 +262,15 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                         totalRate = String.valueOf((rate - ratetax));
                         mrp = (Double.parseDouble(totalRate));
                         double qty = Double.parseDouble(String.format("%.3f", productsBean.getSelectedQuantity()));
+                        double amount = Double.parseDouble(totalRate) * qty;
                         double salevalue = qty * rate;
                         try {
-                            taxvalue = salevalue * (Double.parseDouble(taxes) / 100);
+                            taxvalue = amount * per;
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        subtotal = Utility.getFormattedCurrency(salevalue);
+                        Double sbT = amount + taxvalue;
+                        subtotal = Utility.getFormattedCurrency(sbT); // instead of sbT -- salevalue
                         taxAmount = Utility.getFormattedCurrency(taxvalue);
 
 
@@ -284,6 +288,17 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                         temp[6] = taxes;
                         // temp[11]=id;
                         selectedList.add(temp);
+                        System.out.println("NAME::: "+ name + "\n");
+                        System.out.println("QUAN::: "+ quantity + "\n");
+                        System.out.println("MRP::: "+ mrp + "\n");
+                        System.out.println("SUBTOTAL::: "+ subtotal + "\n");
+                        System.out.println("TAXMAOUNT::: "+ taxAmount + "\n");
+                        System.out.println("HSSNNUM::: "+ hssnnumber + "\n");
+                        System.out.println("CGST::: "+ cgst + "\n");
+                        System.out.println("SGST::: "+ sgst + "\n");
+                        System.out.println("PROCODE::: "+ productsBean.getProductCode() + "\n");
+                        System.out.println("PROUOM::: "+ productsBean.getProductUOM() + "\n");
+                        System.out.println("TAXES::: "+ taxes + "\n");
                     }
                 }
             }
@@ -295,7 +310,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
         sales_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int pageheight = 2000 + selectedList.size() * 60;
+                int pageheight = 1000 + selectedList.size() * 60; // 2000 is old
                 Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawColor(Color.WHITE);
