@@ -143,15 +143,12 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         if (isTripSheetClosed) {
             mHolder.so_status.setText("Closed");
             mHolder.mItemBgLayout.setBackgroundColor(Color.WHITE);
-            mHolder.so_status.setTextColor(Color.parseColor("#0B7480"));
         } else if (Double.parseDouble(currentSaleOrder.getmTripshetSOReceivedAmount()) > 0) {
             mHolder.so_status.setText("Delivered");
-            mHolder.mItemBgLayout.setBackgroundColor(Color.LTGRAY);
-            mHolder.so_status.setTextColor(Color.LTGRAY);
+            mHolder.mItemBgLayout.setBackgroundColor(Color.parseColor("#d3d3d3"));
         } else {
             mHolder.so_status.setText("In Process");
             mHolder.mItemBgLayout.setBackgroundColor(Color.WHITE);
-            mHolder.so_status.setTextColor(Color.parseColor("#0B7480"));
         }
 
         mHolder.mSOMapIconParent.setOnClickListener(new View.OnClickListener() {
