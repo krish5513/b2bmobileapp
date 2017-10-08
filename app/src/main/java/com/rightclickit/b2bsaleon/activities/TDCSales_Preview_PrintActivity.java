@@ -262,8 +262,8 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                         totalRate = String.valueOf((rate - ratetax));
                         mrp = (Double.parseDouble(totalRate));
                         double qty = Double.parseDouble(String.format("%.3f", productsBean.getSelectedQuantity()));
-                        double amount = Double.parseDouble(totalRate) * qty;
-                        double salevalue = qty * rate;
+                        double amount = Double.parseDouble(totalRate) * productsBean.getSelectedQuantity();
+                        double salevalue = productsBean.getSelectedQuantity() * rate;
                         try {
                             taxvalue = amount * per;
                         } catch (Exception e) {
