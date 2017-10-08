@@ -288,17 +288,17 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                         temp[6] = taxes;
                         // temp[11]=id;
                         selectedList.add(temp);
-                        System.out.println("NAME::: "+ name + "\n");
-                        System.out.println("QUAN::: "+ quantity + "\n");
-                        System.out.println("MRP::: "+ mrp + "\n");
-                        System.out.println("SUBTOTAL::: "+ subtotal + "\n");
-                        System.out.println("TAXMAOUNT::: "+ taxAmount + "\n");
-                        System.out.println("HSSNNUM::: "+ hssnnumber + "\n");
-                        System.out.println("CGST::: "+ cgst + "\n");
-                        System.out.println("SGST::: "+ sgst + "\n");
-                        System.out.println("PROCODE::: "+ productsBean.getProductCode() + "\n");
-                        System.out.println("PROUOM::: "+ productsBean.getProductUOM() + "\n");
-                        System.out.println("TAXES::: "+ taxes + "\n");
+//                        System.out.println("NAME::: "+ name + "\n");
+//                        System.out.println("QUAN::: "+ quantity + "\n");
+//                        System.out.println("MRP::: "+ mrp + "\n");
+//                        System.out.println("SUBTOTAL::: "+ subtotal + "\n");
+//                        System.out.println("TAXMAOUNT::: "+ taxAmount + "\n");
+//                        System.out.println("HSSNNUM::: "+ hssnnumber + "\n");
+//                        System.out.println("CGST::: "+ cgst + "\n");
+//                        System.out.println("SGST::: "+ sgst + "\n");
+//                        System.out.println("PROCODE::: "+ productsBean.getProductCode() + "\n");
+//                        System.out.println("PROUOM::: "+ productsBean.getProductUOM() + "\n");
+//                        System.out.println("TAXES::: "+ taxes + "\n");
                     }
                 }
             }
@@ -310,7 +310,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
         sales_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int pageheight = 1000 + selectedList.size() * 60; // 2000 is old
+                int pageheight = 2000 + selectedList.size() * 60; // 2000 is old
                 Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawColor(Color.WHITE);
@@ -385,14 +385,14 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
 
                 canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
                 paint.setTextSize(20);
-                canvas.drawText(mmSharedPreferences.getString("routename") + ",", 5, 80, paint);
-                paint.setTextSize(20);
-                canvas.drawText(str_routecode, 150, 80, paint);
-                paint.setTextSize(20);
-                canvas.drawText(mmSharedPreferences.getString("loginusername"), 5, 110, paint);
-                paint.setTextSize(20);
-                canvas.drawText("USER GST NUMBER", 5, 140, paint);
-                paint.setTextSize(20);
+//                canvas.drawText(mmSharedPreferences.getString("routename") + ",", 5, 80, paint);
+//                paint.setTextSize(20);
+//                canvas.drawText(str_routecode, 150, 80, paint);
+//                paint.setTextSize(20);
+//                canvas.drawText(mmSharedPreferences.getString("loginusername"), 5, 110, paint);
+//                paint.setTextSize(20);
+//                canvas.drawText("USER GST NUMBER", 5, 140, paint);
+//                paint.setTextSize(20);
                 canvas.drawText("-------------------------------------------", 5, 170, paint);
                 paint.setTextSize(20);
                 canvas.drawText("BILL", 150, 200, paint);
@@ -410,10 +410,10 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText(": " + str_agentname, 150, 290, paint);
                 paint.setTextSize(20);
-                canvas.drawText("CODE ", 5, 320, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + str_enguiryid, 150, 320, paint);
-                paint.setTextSize(20);
+//                canvas.drawText("CODE ", 5, 320, paint);
+//                paint.setTextSize(20);
+//                canvas.drawText(": " + str_enguiryid, 150, 320, paint);
+//                paint.setTextSize(20);
                 canvas.drawText("-------------------------------------------", 5, 350, paint);
                 paint.setTextSize(20);
 
@@ -428,23 +428,23 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
 
                     paint.setTextSize(22);
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                    canvas.drawText(temps[0], 5, st, paint);
-                    paint.setTextSize(22);
-                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                    canvas.drawText("," + temps[1], 150, st, paint);
-                    paint.setTextSize(22);
-                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                    canvas.drawText("( " + temps[2] + " )", 240, st, paint);
+                    canvas.drawText(temps[0]+"," + temps[1]+"( " + temps[2] + " )", 5, st, paint);
+//                    paint.setTextSize(22);
+//                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+//                    canvas.drawText("," + temps[1], 150, st, paint);
+//                    paint.setTextSize(22);
+//                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+//                    canvas.drawText("( " + temps[2] + " )", 240, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("HSSN CODE ", 5, st, paint);
                     canvas.drawText(": " + temps[3], 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
-                    canvas.drawText("CGST,SGST ", 5, st, paint);
-                    canvas.drawText(": " + temps[4], 150, st, paint);
-                    canvas.drawText(" + " + temps[5], 225, st, paint);
-                    canvas.drawText(" = " + temps[6], 300, st, paint);
+                    canvas.drawText("CGST,SGST "+": " + temps[4]+" + " + temps[5]+" = " + temps[6], 5, st, paint);
+//                    canvas.drawText(": " + temps[4], 150, st, paint);
+//                    canvas.drawText(" + " + temps[5], 225, st, paint);
+//                    canvas.drawText(" = " + temps[6], 300, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("QUANTITY ", 5, st, paint);
@@ -474,12 +474,12 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText(" SALE VALUE ", 5, st, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + " INR " + finalAmount, 150, st, paint);
+                canvas.drawText(": "+ finalAmount, 150, st, paint);
                 st = st + 30;
-                // paint.setTextSize(20);
-                // canvas.drawText("VALUE ", 5, st, paint);
-                paint.setTextSize(20);
-                canvas.drawText("(" + "INR " + subAmount + " + " + "INR " + subtaxAmount + ")", 100, st, paint);
+                 paint.setTextSize(20);
+                 canvas.drawText("(VALUE+TAX) :"+"(" +  subAmount + " + " +  subtaxAmount + ")", 5, st, paint);
+                //paint.setTextSize(20);
+                //canvas.drawText("(" +  subAmount + " + " +  subtaxAmount + ")", 100, st, paint);
                 st = st + 30;
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
