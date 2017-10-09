@@ -2,6 +2,7 @@ package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
             mHolder.mSOAgentDistance = (TextView) view.findViewById(R.id.tv_km);
             mHolder.mEmptyLayout = (LinearLayout) view.findViewById(R.id.EmptyView);
             mHolder.so_status = (TextView) view.findViewById(R.id.tv_status);
+            mHolder.mItemBgLayout = (LinearLayout) view.findViewById(R.id.dashboard_takeorder);
 
             view.setTag(mHolder);
         } else {
@@ -129,7 +131,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         } else {
             mHolder.mAgentCode.setText("-");
         }
-        mHolder.mSOCode.setText("("+currentSaleOrder.getmTripshetSOAgentCode()+")");
+        mHolder.mSOCode.setText("(" + currentSaleOrder.getmTripshetSOAgentCode() + ")");
         //mHolder.mSOItemsCount.setText(currentSaleOrder.getmTripshetSOProductsCount());
         mHolder.mSOAgentName.setText(currentSaleOrder.getmTripshetSOAgentFirstName());
         mHolder.mSOOBamtValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOOpAmount())));
@@ -138,10 +140,16 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         mHolder.mSODueValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSODueAmount())));
         mHolder.mSOAgentDistance.setText(currentSaleOrder.getDistance() + " KM");
 
-        if (isTripSheetClosed)
+        if (isTripSheetClosed) {
             mHolder.so_status.setText("Closed");
-        else
+            mHolder.mItemBgLayout.setBackgroundColor(Color.WHITE);
+        } else if (Double.parseDouble(currentSaleOrder.getmTripshetSOReceivedAmount()) > 0) {
+            mHolder.so_status.setText("Delivered");
+            mHolder.mItemBgLayout.setBackgroundColor(Color.parseColor("#d3d3d3"));
+        } else {
             mHolder.so_status.setText("In Process");
+            mHolder.mItemBgLayout.setBackgroundColor(Color.WHITE);
+        }
 
         mHolder.mSOMapIconParent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,7 +221,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         mHolder.mSOTakeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPreferences.putString("agentName",currentSaleOrder.getmTripshetSOAgentFirstName());
+                mPreferences.putString("agentName", currentSaleOrder.getmTripshetSOAgentFirstName());
                 Intent i = new Intent(activity, AgentTakeOrderScreen.class);
                 i.putExtra("tripsheetId", currentSaleOrder.getmTripshetSOTripId());
                 i.putExtra("From", "Tripsheet");
@@ -239,6 +247,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         TextView mSOAgentDistance;
         LinearLayout mEmptyLayout;
         TextView so_status;
+        LinearLayout mItemBgLayout;
     }
 
     // Filter Class
@@ -250,7 +259,9 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
             filteredSaleOrdersList.addAll(allSaleOrdersList);
         } else {
             for (TripsheetSOList wp : allSaleOrdersList) {
-                if (wp.getmTripshetSOAgentCode().toLowerCase(Locale.getDefault()).contains(charText)) {
+                if (wp.getmTripshetSOAgentCode().toLowerCase(Locale.getDefault()).contains(charText)
+                        || wp.getmTripshetSOAgentFirstName().toLowerCase(Locale.getDefault()).contains(charText)
+                        || wp.getmTripshetSOCode().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredSaleOrdersList.add(wp);
                 }
             }

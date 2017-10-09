@@ -432,6 +432,8 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                 }
                             }
                             if (jo.has("so_details_data")) {
+                                if(jo.get("so_details_data") instanceof JSONObject){
+
                                 JSONObject soObj = jo.getJSONObject("so_details_data");
                                 //int length = sodetailsJsonArray.length();
                                 //if (length > 0) {
@@ -460,6 +462,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                 }
                                 //}
                                 //}
+                                }
                             } else {
                                 agentsBean.setmObAmount("");
                                 agentsBean.setmOrderValue("");
