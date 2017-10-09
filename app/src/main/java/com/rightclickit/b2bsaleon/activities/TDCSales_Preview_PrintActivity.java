@@ -135,7 +135,9 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     currentOrderId = String.format("TDC%05d", previousOrderId + 1);
 
                     // Checking weather the selected customer is retailer or not, if yes checking weather he has any special prices.
-                    if (currentOrder.getSelectedCustomerId() > 0 && currentOrder.getSelectedCustomerType() == 1) {
+                    System.out.println("1111111111111 :::"+currentOrder.getSelectedCustomerId());
+                    System.out.println("2222222222222 :::"+currentOrder.getSelectedCustomerType());
+                   // if (currentOrder.getSelectedCustomerId() > 0 && currentOrder.getSelectedCustomerType() == 1) {
                         Map<String, String> specialPriceList = mDBHelper.fetchSpecialPricesForUserId(currentOrder.getSelectedCustomerUserId()); // Getting special prices for selected retailer from local db.
 
                         double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
@@ -173,30 +175,39 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                             System.out.println("TAX AMOUNT::: " + taxAmount);
 
                             double rate = productsBean.getProductRatePerUnit();
+                            System.out.println(" RATE:: "+ rate);
                             double per = taxAmount / 100;
+                            System.out.println(" PERCENAGE:: "+ per);
                             double ratetax = 0.0;
                             try {
                                 ratetax = rate * per;
+                                System.out.println(" RATE TAX:: "+ ratetax);
 
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                             String totalRate = String.valueOf((rate - ratetax));
+                            System.out.println(" TOTAL RATE:: "+ totalRate);
                             double amount = Double.parseDouble(totalRate) * productsBean.getSelectedQuantity();
+                            System.out.println("  AMOUNT:: "+ amount);
                             taxAmount = amount * per;
+                            System.out.println(" TAX AMOUNT:: "+ taxAmount);
 
                             productsBean.setProductAmount(amount);
                             productsBean.setTaxAmount(taxAmount);
 
                             totalAmount = totalAmount + productsBean.getProductAmount();
+                            System.out.println(" TOTAL AMOUNT:: "+ totalAmount);
                             totalTaxAmount = totalTaxAmount + productsBean.getTaxAmount();
+                            System.out.println("TOTAL TAX AMOUNT:: "+ totalTaxAmount);
                             subTotal = totalAmount + totalTaxAmount;
+                            System.out.println("SUB TOTAL:: "+ subTotal);
                         }
 
                         currentOrder.setOrderTotalAmount(totalAmount);
                         currentOrder.setOrderTotalTaxAmount(totalTaxAmount);
                         currentOrder.setOrderSubTotal(subTotal);
-                    }
+                   // }
 
                 } else {
                     currentOrderId = String.format("TDC%05d", currentOrder.getOrderId());
