@@ -58,6 +58,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
     private String currentDate;
     private int calledApi = 0;
+    private boolean isRouteStockCalled;
 
     public TripsheetsModel(Context context, TripSheetsActivity activity) {
         this.context = context;
@@ -76,7 +77,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
         this.activity1 = tripSheetStock;
         this.mPreferences = new MMSharedPreferences(context);
         this.mDBHelper = new DBHelper(context);
-
+        this.isRouteStockCalled = false;
         // Calendar cal = Calendar.getInstance();
         //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         currentDate = Utility.formatDate(new Date(), "yyyy-MM-dd");
@@ -92,16 +93,18 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
         //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         currentDate = Utility.formatDate(new Date(), "yyyy-MM-dd");
     }
+
     public TripsheetsModel(RouteStock context, RouteStock routeStock) {
         this.context = context;
         this.activity5 = routeStock;
         this.mPreferences = new MMSharedPreferences(context);
         this.mDBHelper = new DBHelper(context);
-
+        this.isRouteStockCalled = true;
         // Calendar cal = Calendar.getInstance();
         //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         currentDate = Utility.formatDate(new Date(), "yyyy-MM-dd");
     }
+
     public TripsheetsModel(TripSheetView tripSheetView, TripSheetView tripSheetView1) {
         this.context = tripSheetView;
         this.activity2 = tripSheetView1;
@@ -351,7 +354,11 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
                     synchronized (this) {
                         if (mTripsheetsStockList.size() > 0) {
-                            activity1.loadTripsData(mTripsheetsStockList);
+                            if (isRouteStockCalled) {
+                                activity5.loadTripsData(mTripsheetsStockList);
+                            } else {
+                                activity1.loadTripsData(mTripsheetsStockList);
+                            }
                         }
                     }
 

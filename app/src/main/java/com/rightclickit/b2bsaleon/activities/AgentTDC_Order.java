@@ -21,7 +21,9 @@ import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.models.AgentOrdersModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
@@ -32,7 +34,7 @@ public class AgentTDC_Order extends AppCompatActivity {
     LinearLayout payments;
     LinearLayout deliveries;
     LinearLayout orders;
-    public LinearLayout agentOrders,noOrders;
+    public LinearLayout agentOrders, noOrders;
 
 
     public TextView tv_enquiryId;
@@ -51,7 +53,7 @@ public class AgentTDC_Order extends AppCompatActivity {
     private ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
     double amount, subtotal;
     double taxAmount;
-    String name,agentId="",ObAmount="",Ordervalue="",receivedAmount="",Due="";
+    String name, agentId = "", ObAmount = "", Ordervalue = "", receivedAmount = "", Due = "";
     private double mProductsPriceAmountSum = 0.0, mTotalProductsPriceAmountSum = 0.0, mTotalProductsTax = 0.0;
 
     String enquiryId;
@@ -60,7 +62,11 @@ public class AgentTDC_Order extends AppCompatActivity {
     String totalprice;
     float tax;
 
-    double quantity,price;
+    double quantity, price;
+    private AgentOrdersModel mAgentOrdersModel;
+    ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,15 +87,17 @@ public class AgentTDC_Order extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+        mAgentOrdersModel = new AgentOrdersModel(this, AgentTDC_Order.this);
+
 
         mDBHelper = new DBHelper(AgentTDC_Order.this);
         mPreferences = new MMSharedPreferences(AgentTDC_Order.this);
 
         tv_enquiryId = (TextView) findViewById(R.id.tv_EnquiryId);
         date = (TextView) findViewById(R.id.tv_ordersdate);
-        status= (TextView) findViewById(R.id.tv_orderstatus);
-        tv_itemsCount=(TextView)findViewById(R.id.tv_ItemsCount);
-        valueCount=(TextView)findViewById(R.id.tv_OrdervalueCount) ;
+        status = (TextView) findViewById(R.id.tv_orderstatus);
+        tv_itemsCount = (TextView) findViewById(R.id.tv_ItemsCount);
+        valueCount = (TextView) findViewById(R.id.tv_OrdervalueCount);
         ordersview = (Button) findViewById(R.id.btn_ordersview);
 
 
@@ -98,16 +106,16 @@ public class AgentTDC_Order extends AppCompatActivity {
 
         ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
 
+        agentId = mPreferences.getString("agentId");
+        ArrayList<OrdersListBean> ordersList = new ArrayList<>();
 
-        ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
-        ArrayList<OrdersListBean> ordersList=new ArrayList<>();
-        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("",mSessionManagement.getString("agentId"));
+        loadOrders();
 
         Log.i("takeorderlist", String.valueOf(mTakeOrderBeansList.size()));
 
-       // Bundle bundle = this.getIntent().getExtras();
+        // Bundle bundle = this.getIntent().getExtras();
         //if (bundle != null) {
-            agentId = mPreferences.getString("agentId");
+
 
         /* ObAmount=this.getIntent().getStringExtra("ObAmount");
         Ordervalue=this.getIntent().getStringExtra("OrderValue");
@@ -115,56 +123,6 @@ public class AgentTDC_Order extends AppCompatActivity {
         Due=this.getIntent().getStringExtra("due");
 
 */
-
-        if(mTakeOrderBeansList.size()>0) {
-
-            tv_enquiryId .setText("ENQ"+mTakeOrderBeansList.get(0).getmEnquiryId());
-            date.setText(mTakeOrderBeansList.get(0).getmAgentTakeOrderDate());
-            mPreferences.putString("ORDERDATE", String.valueOf(date));
-            itemCount= String.valueOf(mTakeOrderBeansList.size());
-            tv_itemsCount.setText(itemCount);
-
-
-
-
-            for (int j=0;j<mTakeOrderBeansList.size();j++){
-                Log.i("take order price log",(mTakeOrderBeansList.get(j).getmAgentPrice()+"  count "+j+" size of takeorder"+mTakeOrderBeansList.size()));
-                price= mTakeOrderBeansList.get(j).getmAgentPrice()!= null?Double.parseDouble(mTakeOrderBeansList.get(j).getmAgentPrice()):0.00;
-                quantity= mTakeOrderBeansList.get(j).getmProductQuantity()!=null?Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity()):0.000;
-                tax = 0.0f;
-                if (mTakeOrderBeansList.get(j).getmAgentVAT() != null) {
-                    tax = Float.parseFloat(mTakeOrderBeansList.get(j).getmAgentVAT());
-
-                } else if (mTakeOrderBeansList.get(j).getmAgentGST() != null) {
-                    tax = Float.parseFloat(mTakeOrderBeansList.get(j).getmAgentGST());
-
-                }
-                taxAmount = ((quantity * price) * tax) / 100;
-                System.out.println("P TAX IS::: " + taxAmount);
-                //  amount = price + taxAmount;
-                amount = price;
-
-                subtotal = (price * quantity);
-
-                mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
-                        *Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity())));
-                System.out.println("P SUBTOTAl IS::: " + mProductsPriceAmountSum);
-
-                mTotalProductsTax = (mTotalProductsTax + taxAmount);
-
-                mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
-                System.out.println("P FINAL IS::: " + mTotalProductsPriceAmountSum);
-                totalprice= String.valueOf(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
-                valueCount.setText(totalprice);
-            }
-
-        }else if(mTakeOrderBeansList.size() == 0){
-            agentOrders.setVisibility(View.GONE);
-            noOrders.setVisibility(View.VISIBLE);
-
-        }
-
-
 
 
         sales = (LinearLayout) findViewById(R.id.linear_sales);
@@ -182,7 +140,7 @@ public class AgentTDC_Order extends AppCompatActivity {
         sales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Toast.makeText(Agents_Tpc_OrdersActivity.this, "Clicked on TPC Orders", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Agents_Tpc_OrdersActivity.this, "Clicked on TPC Orders", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 sales.startAnimation(animation1);
@@ -197,8 +155,8 @@ public class AgentTDC_Order extends AppCompatActivity {
                         R.anim.blink);
                 deliveries.startAnimation(animation1);
 
-                Intent i =new Intent(AgentTDC_Order.this,AgentDeliveries.class);
-               // i.putExtra("agentID",agentId);
+                Intent i = new Intent(AgentTDC_Order.this, AgentDeliveries.class);
+                // i.putExtra("agentID",agentId);
                 startActivity(i);
                 finish();
 
@@ -212,7 +170,7 @@ public class AgentTDC_Order extends AppCompatActivity {
                         R.anim.blink);
                 payments.startAnimation(animation1);
 
-                Intent i =new Intent(AgentTDC_Order.this,AgentPayments.class);
+                Intent i = new Intent(AgentTDC_Order.this, AgentPayments.class);
              /*   i.putExtra("ObAmount",ObAmount);
                 i.putExtra("OrderValue",Ordervalue);
                 i.putExtra("ReceivedAmount",receivedAmount);
@@ -224,12 +182,12 @@ public class AgentTDC_Order extends AppCompatActivity {
         returns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Toast.makeText(Agents_Tpc_OrdersActivity.this, "Clicked on returns", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Agents_Tpc_OrdersActivity.this, "Clicked on returns", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 returns.startAnimation(animation1);
 
-                Intent i =new Intent(AgentTDC_Order.this,AgentReturns.class);
+                Intent i = new Intent(AgentTDC_Order.this, AgentReturns.class);
                 startActivity(i);
                 finish();
             }
@@ -237,12 +195,12 @@ public class AgentTDC_Order extends AppCompatActivity {
         orders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Toast.makeText(Agents_Tpc_OrdersActivity.this, "Clicked on orders", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Agents_Tpc_OrdersActivity.this, "Clicked on orders", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 orders.startAnimation(animation1);
 
-                Intent i =new Intent(AgentTDC_Order.this,AgentTakeOrderScreen.class);
+                Intent i = new Intent(AgentTDC_Order.this, AgentTakeOrderScreen.class);
                 startActivity(i);
                 finish();
             }
@@ -251,13 +209,11 @@ public class AgentTDC_Order extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent i =new Intent(AgentTDC_Order.this,AgentsTDC_View.class);
+                Intent i = new Intent(AgentTDC_Order.this, AgentsTDC_View.class);
                 startActivity(i);
                 finish();
             }
         });
-
-
 
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
@@ -284,18 +240,26 @@ public class AgentTDC_Order extends AppCompatActivity {
     }
 
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_search) {
 
+            return true;
+        }
+
+        if (id == R.id.autorenew) {
+            if (new NetworkConnectionDetector(AgentTDC_Order.this).isNetworkConnected()) {
+                mAgentOrdersModel.getOrdersList(agentId);
+            } else {
+                new NetworkConnectionDetector(AgentTDC_Order.this).displayNoNetworkError(AgentTDC_Order.this);
+            }
             return true;
         }
 
@@ -316,18 +280,73 @@ public class AgentTDC_Order extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
+        menu.findItem(R.id.Add).setVisible(false);
 
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(true);
         menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, AgentsActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    /***
+     * Method to load the orders data
+     */
+    public void loadOrders() {
+        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("", mSessionManagement.getString("agentId"));
+
+
+        if (mTakeOrderBeansList.size() > 0) {
+
+            tv_enquiryId.setText("ENQ" + mTakeOrderBeansList.get(0).getmEnquiryId());
+            date.setText(mTakeOrderBeansList.get(0).getmAgentTakeOrderDate());
+            mPreferences.putString("ORDERDATE", String.valueOf(date));
+            itemCount = String.valueOf(mTakeOrderBeansList.size());
+            tv_itemsCount.setText(itemCount);
+
+
+            for (int j = 0; j < mTakeOrderBeansList.size(); j++) {
+                Log.i("take order price log", (mTakeOrderBeansList.get(j).getmAgentPrice() + "  count " + j + " size of takeorder" + mTakeOrderBeansList.size()));
+                price = mTakeOrderBeansList.get(j).getmAgentPrice() != null ? Double.parseDouble(mTakeOrderBeansList.get(j).getmAgentPrice()) : 0.00;
+                quantity = mTakeOrderBeansList.get(j).getmProductQuantity() != null ? Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity()) : 0.000;
+                tax = 0.0f;
+                if (mTakeOrderBeansList.get(j).getmAgentVAT() != null) {
+                    tax = Float.parseFloat(mTakeOrderBeansList.get(j).getmAgentVAT());
+
+                } else if (mTakeOrderBeansList.get(j).getmAgentGST() != null) {
+                    tax = Float.parseFloat(mTakeOrderBeansList.get(j).getmAgentGST());
+
+                }
+                taxAmount = ((quantity * price) * tax) / 100;
+                System.out.println("P TAX IS::: " + taxAmount);
+                //  amount = price + taxAmount;
+                amount = price;
+
+                subtotal = (price * quantity);
+
+                mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
+                        * Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity())));
+                System.out.println("P SUBTOTAl IS::: " + mProductsPriceAmountSum);
+
+                mTotalProductsTax = (mTotalProductsTax + taxAmount);
+
+                mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
+                System.out.println("P FINAL IS::: " + mTotalProductsPriceAmountSum);
+                totalprice = String.valueOf(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
+                valueCount.setText(totalprice);
+            }
+
+        } else if (mTakeOrderBeansList.size() == 0) {
+            agentOrders.setVisibility(View.GONE);
+            noOrders.setVisibility(View.VISIBLE);
+
+        }
     }
 
 
