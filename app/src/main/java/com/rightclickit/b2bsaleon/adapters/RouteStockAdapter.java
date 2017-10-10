@@ -12,62 +12,74 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.activities.RouteStock;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
 import com.rightclickit.b2bsaleon.activities.TripSheetView;
 import com.rightclickit.b2bsaleon.activities.TripSheetsActivity;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
+import com.rightclickit.b2bsaleon.interfaces.TripSheetStockListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by PPS on 10/3/2017.
  */
 
 public class RouteStockAdapter extends BaseAdapter{
-
-    LayoutInflater mInflater;
+    private Context ctxt;
     private Activity activity;
-    Context ctxt;
-    ArrayList<TripsheetsList> mTripSheetsList;
-    private ImageLoader mImageLoader;
-    private MMSharedPreferences mPreferences;
-    private ArrayList<TripsheetsList> arraylist;
-    private DBHelper mDBHelper;
-    private String mViewPrivilege = "", mStockPrivilege = "";
+    private RouteStock listener;
+    private LayoutInflater mInflater;
+    private ArrayList<TripsheetsStockList> allTripSheetStockList, filteredTripSheetStockList;
+    private ArrayList<String> privilegeActionsData;
+    private Map<String, TripsheetsStockList> dispatchProductsListHashMap, verifyProductsListHashMap;
+    private Map<String, String> dispatchProductsListHashMapTemp, verifyProductsListHashMapTemp;
 
-    public RouteStockAdapter(Context ctxt, TripSheetsActivity agentsActivity, ArrayList<TripsheetsList> mAgentsBeansList, String mTripSheetViewPrivilege, String mTripSheetStockPrivilege) {
+    private final String zero_cost = "0.000";
+
+    public RouteStockAdapter(Context ctxt, RouteStock agentsActivity, RouteStock tripSheetStockListener, ArrayList<TripsheetsStockList> tripSheetStockList) {
         this.ctxt = ctxt;
         this.activity = agentsActivity;
-        this.mTripSheetsList = mAgentsBeansList;
-        this.mImageLoader = new ImageLoader(agentsActivity);
+        this.listener = tripSheetStockListener;
         this.mInflater = LayoutInflater.from(activity);
-        this.mPreferences = new MMSharedPreferences(activity);
-        this.arraylist = new ArrayList<TripsheetsList>();
-        this.mDBHelper = new DBHelper(activity);
-        this.arraylist.addAll(mTripSheetsList);
-        this.mViewPrivilege = mTripSheetViewPrivilege;
-        this.mStockPrivilege = mTripSheetStockPrivilege;
+        this.allTripSheetStockList = tripSheetStockList;
+        this.filteredTripSheetStockList = new ArrayList<>();
+        this.filteredTripSheetStockList.addAll(allTripSheetStockList);
+        this.privilegeActionsData = privilegeActionsData;
+        this.dispatchProductsListHashMap = new HashMap<>();
+        this.dispatchProductsListHashMapTemp = new HashMap<>();
+        this.verifyProductsListHashMap = new HashMap<>();
+        this.verifyProductsListHashMapTemp = new HashMap<>();
+        if (dispatchProductsListHashMapTemp.size() > 0) {
+            dispatchProductsListHashMapTemp.clear();
+        }
+        if (verifyProductsListHashMapTemp.size() > 0) {
+            verifyProductsListHashMapTemp.clear();
+        }
     }
 
     @Override
     public int getCount() {
-        return mTripSheetsList.size();
+        return filteredTripSheetStockList.size();
     }
 
     @Override
-    public TripsheetsList getItem(int i) {
-        return mTripSheetsList.get(i);
+    public TripsheetsStockList getItem(int position) {
+        return filteredTripSheetStockList.get(position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return i;
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
@@ -103,8 +115,8 @@ public class RouteStockAdapter extends BaseAdapter{
         }
 
 
-
-
+        final TripsheetsStockList currentStockList = getItem(position);
+        mHolder.mProductName.setText(currentStockList.getmTripsheetStockProductName());
 
 
         return view;

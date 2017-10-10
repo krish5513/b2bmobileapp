@@ -3,6 +3,7 @@ package com.rightclickit.b2bsaleon.models;
 import android.content.Context;
 import android.widget.TextView;
 
+import com.rightclickit.b2bsaleon.activities.RouteStock;
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
 import com.rightclickit.b2bsaleon.activities.TripSheetView;
@@ -46,6 +47,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
     private TripSheetView activity2;
     private TripSheetViewPreview activity4;
     private TripsheetStockPreview activity3;
+    private RouteStock activity5;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private TextView mNotripsText;
@@ -90,7 +92,16 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
         //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         currentDate = Utility.formatDate(new Date(), "yyyy-MM-dd");
     }
+    public TripsheetsModel(RouteStock context, RouteStock routeStock) {
+        this.context = context;
+        this.activity5 = routeStock;
+        this.mPreferences = new MMSharedPreferences(context);
+        this.mDBHelper = new DBHelper(context);
 
+        // Calendar cal = Calendar.getInstance();
+        //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        currentDate = Utility.formatDate(new Date(), "yyyy-MM-dd");
+    }
     public TripsheetsModel(TripSheetView tripSheetView, TripSheetView tripSheetView1) {
         this.context = tripSheetView;
         this.activity2 = tripSheetView1;

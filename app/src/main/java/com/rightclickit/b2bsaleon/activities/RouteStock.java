@@ -11,12 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentStockAdapter;
 import com.rightclickit.b2bsaleon.adapters.RouteStockAdapter;
+import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
@@ -24,12 +27,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RouteStock extends AppCompatActivity {
-
+    private Context applicationContext, activityContext;
     private SearchView search;
     private  String tripSheetId;
     RouteStockAdapter routestockadapter;
-
+    private DBHelper mDBHelper;
     private TripsheetsModel mTripsheetsModel;
+    ListView Routestocklist;
 
    // ArrayList<AgentsStockBean> stockBeanArrayList;
 
@@ -37,13 +41,14 @@ public class RouteStock extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_stock);
-
+        activityContext = RouteStock.this;
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             tripSheetId = bundle.getString("tripSheetId");
             //str_Tripcode=bundle.getString("tripsheetCode");
             //str_Tripdate=bundle.getString("tripsheetDate");
         }
+        mDBHelper = new DBHelper(activityContext);
 
         this.getSupportActionBar().setTitle("ROUTE STOCK");
         this.getSupportActionBar().setSubtitle(null);
@@ -57,23 +62,31 @@ public class RouteStock extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        Routestocklist=(ListView)findViewById(R.id.RouteStockList);
+        mTripsheetsModel = new TripsheetsModel(this, RouteStock.this);
+        ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
 
-      /*  mTripsheetsModel = new TripsheetsModel(this, RouteStock.this);
-        ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
 
-        productsDispatchListHashMap = new HashMap<>();
-        productsVerifyListHashMap = new HashMap<>();
 
-        if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
-            mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
+        if (new NetworkConnectionDetector(RouteStock.this).isNetworkConnected()) {
+            mTripsheetsModel.getTripsheetsStockList(tripSheetId);
         } else if (tripsheetsStockLists.size() > 0) {
             loadTripsData(tripsheetsStockLists);
-        }*/
+        }
 
     }
 
 
+    public void loadTripsData(ArrayList<TripsheetsStockList> tripsStockList) {
+        if (routestockadapter != null) {
+            routestockadapter = null;
+        }
 
+        routestockadapter = new RouteStockAdapter(this, RouteStock.this, this, tripsStockList);
+        Routestocklist.setAdapter(routestockadapter);
+
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);

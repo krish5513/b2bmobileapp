@@ -58,6 +58,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
 
     private String saleQunatity = "";
     private Map<String, String> saleQuantityListMap = new HashMap<String, String>();
+    private String customer="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
                         currentOrder.setSelectedCustomerUserId(selectedCustomer.getUserId());
                         currentOrder.setSelectedCustomerType(selectedCustomer.getCustomerType());
                         isCustomerSelected = true;
+                        customer=selectedCustomer.getName();
 
                         showTDCSalesOrderPreview(null);
                     }
@@ -314,6 +316,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
         i.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
         i.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION);
         i.putExtra(Constants.BUNDLE_TDC_SALE_QUANTITY, saleQunatity);
+        i.putExtra("CustomerName",customer);
         startActivity(i);
         finish();
 

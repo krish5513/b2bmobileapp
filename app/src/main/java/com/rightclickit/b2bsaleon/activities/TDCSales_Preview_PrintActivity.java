@@ -24,6 +24,7 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,10 +65,13 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
     private String requestCameFrom, saleQuantity = "", actualSaleQuantity = "";
     private Map<String, String> saleQuantityListMap = new HashMap<String, String>();
 
-    String taxes, totalRate = "";
+    String totalRate = "";
+    double taxes;
     double rate = 0.0, ratetax=0.0, taxvalue=0.0;
     Map<String, ProductsBean> productsList;
     ProductsBean productsBean;
+
+    double per;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +86,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
             loggedInUserId = mmSharedPreferences.getString("userId");
             loggedInUserName = (mmSharedPreferences.getString("loginusername") + ",");
             str_routecode = mmSharedPreferences.getString("routecode");
-            str_agentname = mmSharedPreferences.getString("agentNameAdapter");
+            //str_agentname = mmSharedPreferences.getString("agentNameAdapter");
             str_enguiryid = mmSharedPreferences.getString("agentCodeAdapter");
 
             mDBHelper = new DBHelper(TDCSales_Preview_PrintActivity.this);
@@ -112,6 +116,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
 
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
+                str_agentname=bundle.getString("CustomerName");
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW);
                 requestCameFrom = bundle.getString(Constants.BUNDLE_REQUEST_FROM);
                 id = bundle.getString("incid");
@@ -230,6 +235,8 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 productsList = currentOrder.getProductsList();
                 selectedList = new ArrayList<>(productsList.size());
 
+                Log.i("selectedlist00",selectedList.size()+"");
+
                 if (productsList != null) {
                     for (Map.Entry<String, ProductsBean> productsBeanEntry : productsList.entrySet()) {
                         productsBean = productsBeanEntry.getValue();
@@ -253,7 +260,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                         } else {
                             sgst = "0.00%";
                         }
-
+/*
                         try {
                             if (productsBean.getProductgst() != null && productsBean.getProductvat() != null) {
 
@@ -266,11 +273,32 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
 
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }
+                        }*/
 
                         rate = productsBean.getProductRatePerUnit();
 
-                        double per = Double.parseDouble(taxes) / 100; // Added extra...
+
+
+
+                        try {
+                            Double gst = 0.0,vat = 0.0;
+                            if(productsBean.getProductgst()!=null){
+                                gst = Double.parseDouble(productsBean.getProductgst());
+                            }
+                            if(productsBean.getProductvat()!=null){
+                                vat = Double.parseDouble(productsBean.getProductvat());
+                            }
+                            taxes = gst + vat;
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
+
+                        try {
+                         per = taxes / 100; // Added extra...
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         try {
                             ratetax = rate * per;
 
@@ -303,9 +331,11 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                         temp[5] = sgst;
                         temp[1] = productsBean.getProductCode();
                         temp[2] = productsBean.getProductUOM();
-                        temp[6] = taxes;
+                        temp[6] = String.valueOf(taxes);
                         // temp[11]=id;
                         selectedList.add(temp);
+
+                        Log.i("selectedlist11",selectedList.size()+"");
 //                        System.out.println("NAME::: "+ name + "\n");
 //                        System.out.println("QUAN::: "+ quantity + "\n");
 //                        System.out.println("MRP::: "+ mrp + "\n");
@@ -328,7 +358,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
         sales_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int pageheight = 2000 + selectedList.size() * 60; // 2000 is old
+                int pageheight = 550 + selectedList.size() * 200; // 2000 is old
                 Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawColor(Color.WHITE);
@@ -401,7 +431,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 st = st + 20;
                 canvas.drawText("--------X---------", 100, st, paint);*/
 
-                canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
+                canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 20, paint);
                 paint.setTextSize(20);
 //                canvas.drawText(mmSharedPreferences.getString("routename") + ",", 5, 80, paint);
 //                paint.setTextSize(20);
@@ -411,35 +441,37 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
 //                paint.setTextSize(20);
 //                canvas.drawText("USER GST NUMBER", 5, 140, paint);
 //                paint.setTextSize(20);
-                canvas.drawText("-------------------------------------------", 5, 170, paint);
+                canvas.drawText("-------------------------------------------", 5, 50, paint);
                 paint.setTextSize(20);
-                canvas.drawText("BILL", 150, 200, paint);
+                canvas.drawText("BILL", 150, 80, paint);
 
                 paint.setTextSize(20);
-                canvas.drawText("BILL# ", 5, 230, paint);
+                canvas.drawText("BILL# ", 5, 110, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "TDC-" + str_enguiryid + "-" + currentOrderId, 150, 230, paint);
+                canvas.drawText(": " + "TDC-" + str_enguiryid + "-" + currentOrderId, 150, 110, paint);
                 paint.setTextSize(20);
-                canvas.drawText("DATE ", 5, 260, paint);
+                canvas.drawText("DATE ", 5, 140, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + currentDate, 150, 260, paint);
+                canvas.drawText(": " + currentDate, 150, 140, paint);
                 paint.setTextSize(20);
-                canvas.drawText("CUSTOMER ", 5, 290, paint);
+                canvas.drawText("CUSTOMER ", 5, 170, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + str_agentname, 150, 290, paint);
+                canvas.drawText(": " + str_agentname, 150, 170, paint);
                 paint.setTextSize(20);
 //                canvas.drawText("CODE ", 5, 320, paint);
 //                paint.setTextSize(20);
 //                canvas.drawText(": " + str_enguiryid, 150, 320, paint);
 //                paint.setTextSize(20);
-                canvas.drawText("-------------------------------------------", 5, 350, paint);
+                canvas.drawText("-------------------------------------------", 5, 200, paint);
                 paint.setTextSize(20);
 
-                int st = 380;
+                int st = 230;
                 paint.setTextSize(17);
                 // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
 
                 for (int i = 0; i < selectedList.size(); i++) {
+
+                    Log.i("selectedlist",selectedList.size()+"");
                     String[] temps = selectedList.get(i);
                     /*paint.setTextSize(20);
                     canvas.drawText("#" + temps[11] , 5, st, paint);*/
@@ -481,10 +513,10 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     canvas.drawText(": " + temps[10], 150, st, paint);
 
 
-                    st = st + 45;
+                    st = st + 40;
                     //  canvas.drawText("----------------------------------------------------", 5, st, paint);
                 }
-                st = st + 30;
+                st = st + 5;
                 paint.setTextSize(20);
                 canvas.drawText("-------------------------------------------", 5, st, paint);
 
