@@ -109,7 +109,7 @@ public class AgentTDC_Order extends AppCompatActivity {
         agentId = mPreferences.getString("agentId");
         ArrayList<OrdersListBean> ordersList = new ArrayList<>();
 
-        loadOrders();
+       // loadOrders();
 
         Log.i("takeorderlist", String.valueOf(mTakeOrderBeansList.size()));
 
@@ -305,8 +305,8 @@ public class AgentTDC_Order extends AppCompatActivity {
         if (mTakeOrderBeansList.size() > 0) {
 
             tv_enquiryId.setText("ENQ" + mTakeOrderBeansList.get(0).getmEnquiryId());
-            date.setText(mTakeOrderBeansList.get(0).getmAgentTakeOrderDate());
-            mPreferences.putString("ORDERDATE", String.valueOf(date));
+           // date.setText(mTakeOrderBeansList.get(0).getmAgentTakeOrderDate());
+           // mPreferences.putString("ORDERDATE", String.valueOf(date));
             itemCount = String.valueOf(mTakeOrderBeansList.size());
             tv_itemsCount.setText(itemCount);
 

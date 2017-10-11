@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.TDCSalesActivity;
-import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -38,6 +37,7 @@ import java.util.Map;
  */
 
 public class TDCSalesAdapter extends BaseAdapter {
+
     LayoutInflater mInflater;
     private Activity activity;
     private TDCSalesListener listener;
@@ -91,7 +91,7 @@ public class TDCSalesAdapter extends BaseAdapter {
 
     private class TDCSalesViewHolder {
         ImageView arrow_icon, product_quantity_decrement, product_quantity_increment;
-        TextView product_name, quantity_stock, price, tax, amount;
+        TextView product_name, quantity_stock, price, tax, amount,product_code;
         EditText product_quantity;
     }
 
@@ -125,6 +125,7 @@ public class TDCSalesAdapter extends BaseAdapter {
             tdcSalesViewHolder = new TDCSalesViewHolder();
             tdcSalesViewHolder.arrow_icon = (ImageView) convertView.findViewById(R.id.arrow_icon);
             tdcSalesViewHolder.product_name = (TextView) convertView.findViewById(R.id.product_name);
+            tdcSalesViewHolder.product_code = (TextView) convertView.findViewById(R.id.product_code);
             tdcSalesViewHolder.quantity_stock = (TextView) convertView.findViewById(R.id.quantity_stock);
             tdcSalesViewHolder.price = (TextView) convertView.findViewById(R.id.price);
             tdcSalesViewHolder.tax = (TextView) convertView.findViewById(R.id.tax);
@@ -163,6 +164,12 @@ public class TDCSalesAdapter extends BaseAdapter {
                 productRate = Double.parseDouble(currentProductsBean.getProductConsumerPrice().replace(",", ""));
             } else {
                 productRate = 0.00f;
+            }
+
+            if (currentProductsBean.getProductCode() != null) {
+                tdcSalesViewHolder.product_code.setText(String.format("%s", "("+ currentProductsBean.getProductCode())+")");
+            } else {
+                tdcSalesViewHolder.product_code.setText("_");
             }
 
             double taxAmount = 0, amount = 0;

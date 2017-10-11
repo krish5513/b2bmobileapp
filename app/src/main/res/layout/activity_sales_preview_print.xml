@@ -24,6 +24,7 @@
             android:textColor="@color/greydark"
             android:textSize="16sp" />
 
+<!--
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,12 +57,14 @@
                 android:textColor="@color/greydark"
                 android:textSize="14sp" />
         </LinearLayout>
+-->
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/view_line" />
 
+<!--
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,6 +97,7 @@
                 android:textSize="14sp" />
 
         </LinearLayout>
+-->
 
         <!--
                 <LinearLayout
@@ -144,6 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="5dp"
             android:paddingBottom="5dp">
 
             <TextView
