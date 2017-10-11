@@ -1,29 +1,15 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.TDCSalesPreviewAdapter;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
-import com.rightclickit.b2bsaleon.beanclass.SpecialPriceBean;
-import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
-import com.rightclickit.b2bsaleon.constants.Constants;
-import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
-import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.services.SyncTDCSalesOrderService;
-import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
-import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
-import com.rightclickit.b2bsaleon.util.Utility;
-
-import android.content.Intent;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +18,18 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.TDCSalesPreviewAdapter;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
+import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
+import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.services.SyncTDCSalesOrderService;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,9 +101,9 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
 
             sales_print = (TextView) findViewById(R.id.tdc_sales_print);
             company_name = (TextView) findViewById(R.id.tdc_sales_company_name);
-            user_name = (TextView) findViewById(R.id.tdc_sales_user_name);
-            route_name = (TextView) findViewById(R.id.tdc_sales_route_name);
-            route_code = (TextView) findViewById(R.id.tdc_sales_route_code);
+           // user_name = (TextView) findViewById(R.id.tdc_sales_user_name);
+            //route_name = (TextView) findViewById(R.id.tdc_sales_route_name);
+            //route_code = (TextView) findViewById(R.id.tdc_sales_route_code);
             sale_no_text_view = (TextView) findViewById(R.id.tdc_sales_sale_no);
             sale_date_time_text_view = (TextView) findViewById(R.id.tdc_sales_date_time);
             total_tax_amount_text_view = (TextView) findViewById(R.id.total_tax_amount);
@@ -358,81 +356,25 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
         sales_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int pageheight = 550 + selectedList.size() * 200; // 2000 is old
-                Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
-                Canvas canvas = new Canvas(bmOverlay);
-                canvas.drawColor(Color.WHITE);
-                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                paint.setAntiAlias(true);
-                paint.setFilterBitmap(true);
-                paint.setDither(true);
-                paint.setColor(Color.parseColor("#000000"));
-                paint.setTextSize(26);
+                if (isOrderAlreadySaved = true) {
 
-                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                /*canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
-                paint.setTextSize(20);
-                canvas.drawText(str_routecode, 5, 80, paint);
-                paint.setTextSize(20);
-                canvas.drawText(mmSharedPreferences.getString("routename"), 200, 80, paint);
-                paint.setTextSize(20);
-                canvas.drawText("BILL,", 5, 120, paint);
-                paint.setTextSize(20);
-                canvas.drawText("by " + mmSharedPreferences.getString("loginusername"), 200, 120, paint);
-                paint.setTextSize(20);
-                canvas.drawText(currentOrderId, 5, 150, paint);
-                paint.setTextSize(20);
-                canvas.drawText(currentDate, 170, 150, paint);
-                paint.setTextSize(20);
-                //  canvas.drawText(str_agentname, 5, 180, paint);
-                //  canvas.drawText(mmSharedPreferences.getString("agentCode"), 200, 180, paint);
 
-                canvas.drawText("----------------------------------------------------", 5, 180, paint);
-                canvas.drawText("Product", 5, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Qty", 95, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Rate", 160, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Value", 230, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Tax", 330, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("----------------------------------------------------", 5, 235, paint);
+                    int pageheight = 550 + selectedList.size() * 200; // 2000 is old
+                    Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
+                    Canvas canvas = new Canvas(bmOverlay);
+                    canvas.drawColor(Color.WHITE);
+                    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                    paint.setAntiAlias(true);
+                    paint.setFilterBitmap(true);
+                    paint.setDither(true);
+                    paint.setColor(Color.parseColor("#000000"));
+                    paint.setTextSize(26);
 
-                int st = 250;
-                paint.setTextSize(17);
-                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 
-                for (int i = 0; i < selectedList.size(); i++) {
-                    String[] temps = selectedList.get(i);
-                    canvas.drawText(temps[0], 5, st, paint);
-                    canvas.drawText(temps[1], 100, st, paint);
-                    canvas.drawText(temps[2], 140, st, paint);
-                    canvas.drawText(temps[3], 220, st, paint);
-                    canvas.drawText(temps[4], 310, st, paint);
 
-                    st = st + 30;
-                    canvas.drawText(temps[5], 5, st, paint);
-                    canvas.drawText(temps[6], 100, st, paint);
-                    canvas.drawText(temps[7], 160, st, paint);
-
-                    st = st + 30;
-                    //  canvas.drawText("----------------------------------------------------", 5, st, paint);
-                }
-
-                canvas.drawText("----------------------------------------------------", 5, st, paint);
-
-                st = st + 20;
-                canvas.drawText("Total:", 5, st, paint);
-                canvas.drawText(subAmount, 70, st, paint);
-                canvas.drawText(subtaxAmount, 170, st, paint);
-                canvas.drawText(finalAmount, 280, st, paint);
-                st = st + 20;
-                canvas.drawText("--------X---------", 100, st, paint);*/
-
-                canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 20, paint);
-                paint.setTextSize(20);
+                    canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 20, paint);
+                    paint.setTextSize(20);
 //                canvas.drawText(mmSharedPreferences.getString("routename") + ",", 5, 80, paint);
 //                paint.setTextSize(20);
 //                canvas.drawText(str_routecode, 150, 80, paint);
@@ -441,98 +383,101 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
 //                paint.setTextSize(20);
 //                canvas.drawText("USER GST NUMBER", 5, 140, paint);
 //                paint.setTextSize(20);
-                canvas.drawText("-------------------------------------------", 5, 50, paint);
-                paint.setTextSize(20);
-                canvas.drawText("BILL", 150, 80, paint);
+                    canvas.drawText("-------------------------------------------", 5, 50, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("BILL", 150, 80, paint);
 
-                paint.setTextSize(20);
-                canvas.drawText("BILL# ", 5, 110, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + "TDC-" + str_enguiryid + "-" + currentOrderId, 150, 110, paint);
-                paint.setTextSize(20);
-                canvas.drawText("DATE ", 5, 140, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + currentDate, 150, 140, paint);
-                paint.setTextSize(20);
-                canvas.drawText("CUSTOMER ", 5, 170, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + str_agentname, 150, 170, paint);
-                paint.setTextSize(20);
+                    paint.setTextSize(20);
+                    canvas.drawText("BILL# ", 5, 110, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + "TDC-" + str_enguiryid + "-" + currentOrderId, 150, 110, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("DATE ", 5, 140, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + currentDate, 150, 140, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("CUSTOMER ", 5, 170, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + str_agentname, 150, 170, paint);
+                    paint.setTextSize(20);
 //                canvas.drawText("CODE ", 5, 320, paint);
 //                paint.setTextSize(20);
 //                canvas.drawText(": " + str_enguiryid, 150, 320, paint);
 //                paint.setTextSize(20);
-                canvas.drawText("-------------------------------------------", 5, 200, paint);
-                paint.setTextSize(20);
+                    canvas.drawText("-------------------------------------------", 5, 200, paint);
+                    paint.setTextSize(20);
 
-                int st = 230;
-                paint.setTextSize(17);
-                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                    int st = 230;
+                    paint.setTextSize(17);
+                    // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
 
-                for (int i = 0; i < selectedList.size(); i++) {
+                    for (int i = 0; i < selectedList.size(); i++) {
 
-                    Log.i("selectedlist",selectedList.size()+"");
-                    String[] temps = selectedList.get(i);
+                        Log.i("selectedlist", selectedList.size() + "");
+                        String[] temps = selectedList.get(i);
                     /*paint.setTextSize(20);
                     canvas.drawText("#" + temps[11] , 5, st, paint);*/
 
-                    paint.setTextSize(22);
-                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                    canvas.drawText(temps[0]+"," + temps[1]+"( " + temps[2] + " )", 5, st, paint);
+                        paint.setTextSize(22);
+                        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                        canvas.drawText(temps[0] + "," + temps[1] + "( " + temps[2] + " )", 5, st, paint);
 //                    paint.setTextSize(22);
 //                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 //                    canvas.drawText("," + temps[1], 150, st, paint);
 //                    paint.setTextSize(22);
 //                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
 //                    canvas.drawText("( " + temps[2] + " )", 240, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("HSSN CODE ", 5, st, paint);
-                    canvas.drawText(": " + temps[3], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("CGST,SGST "+": " + temps[4]+" + " + temps[5]+" = " + temps[6], 5, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("HSSN CODE ", 5, st, paint);
+                        canvas.drawText(": " + temps[3], 150, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("CGST,SGST " + ": " + temps[4] + " + " + temps[5] + " = " + temps[6], 5, st, paint);
 //                    canvas.drawText(": " + temps[4], 150, st, paint);
 //                    canvas.drawText(" + " + temps[5], 225, st, paint);
 //                    canvas.drawText(" = " + temps[6], 300, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("QUANTITY ", 5, st, paint);
-                    canvas.drawText(": " + temps[7], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("RATE ", 5, st, paint);
-                    canvas.drawText(": " + temps[8], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("VALUE ", 5, st, paint);
-                    canvas.drawText(": " + temps[9], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("TAX VALUE ", 5, st, paint);
-                    canvas.drawText(": " + temps[10], 150, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("QUANTITY ", 5, st, paint);
+                        canvas.drawText(": " + temps[7], 150, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("RATE ", 5, st, paint);
+                        canvas.drawText(": " + temps[8], 150, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("VALUE ", 5, st, paint);
+                        canvas.drawText(": " + temps[9], 150, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("TAX VALUE ", 5, st, paint);
+                        canvas.drawText(": " + temps[10], 150, st, paint);
 
 
-                    st = st + 40;
-                    //  canvas.drawText("----------------------------------------------------", 5, st, paint);
+                        st = st + 40;
+                        //  canvas.drawText("----------------------------------------------------", 5, st, paint);
+                    }
+                    st = st + 5;
+                    paint.setTextSize(20);
+                    canvas.drawText("-------------------------------------------", 5, st, paint);
+
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText(" SALE VALUE ", 5, st, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + finalAmount, 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("(VALUE+TAX) :" + "(" + subAmount + " + " + subtaxAmount + ")", 5, st, paint);
+                    //paint.setTextSize(20);
+                    //canvas.drawText("(" +  subAmount + " + " +  subtaxAmount + ")", 100, st, paint);
+                    st = st + 30;
+                    canvas.drawText("--------X---------", 100, st, paint);
+                    com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+                }else {
+                    CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.print));
                 }
-                st = st + 5;
-                paint.setTextSize(20);
-                canvas.drawText("-------------------------------------------", 5, st, paint);
-
-                st = st + 30;
-                paint.setTextSize(20);
-                canvas.drawText(" SALE VALUE ", 5, st, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": "+ finalAmount, 150, st, paint);
-                st = st + 30;
-                 paint.setTextSize(20);
-                 canvas.drawText("(VALUE+TAX) :"+"(" +  subAmount + " + " +  subtaxAmount + ")", 5, st, paint);
-                //paint.setTextSize(20);
-                //canvas.drawText("(" +  subAmount + " + " +  subtaxAmount + ")", 100, st, paint);
-                st = st + 30;
-                canvas.drawText("--------X---------", 100, st, paint);
-                com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
             }
         });
     }
@@ -586,9 +531,9 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
     public void updateUIWithBundleValues(TDCSaleOrder saleOrder) {
         try {
             company_name.setText(mmSharedPreferences.getString("companyname"));
-            user_name.setText("by " + loggedInUserName);
-            route_name.setText(mmSharedPreferences.getString("routename"));
-            route_code.setText(str_routecode);
+           // user_name.setText("by " + loggedInUserName);
+           // route_name.setText(mmSharedPreferences.getString("routename"));
+           // route_code.setText(str_routecode);
             sale_no_text_view.setText(currentOrderId + ",");
             sale_date_time_text_view.setText(currentDate);
 
