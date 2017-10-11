@@ -395,13 +395,12 @@ public class Products_Activity extends AppCompatActivity {
 //        }
         if (id == R.id.notifications) {
             loadNotifications();
-            Toast.makeText(this, "Clicked on Notifications...", Toast.LENGTH_SHORT).show();
+
             return true;
         }
         if (id == R.id.settings) {
 
             loadSettings();
-            Toast.makeText(this, "Clicked on Settings...", Toast.LENGTH_SHORT).show();
             return true;
         }
         if (id == R.id.autorenew) {
