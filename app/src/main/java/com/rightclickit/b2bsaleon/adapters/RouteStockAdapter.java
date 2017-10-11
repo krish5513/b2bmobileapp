@@ -34,7 +34,7 @@ import java.util.Map;
  * Created by PPS on 10/3/2017.
  */
 
-public class RouteStockAdapter extends BaseAdapter{
+public class RouteStockAdapter extends BaseAdapter {
     private Context ctxt;
     private Activity activity;
     private RouteStock listener;
@@ -94,10 +94,11 @@ public class RouteStockAdapter extends BaseAdapter{
             mHolder.mClosingBal = (TextView) view.findViewById(R.id.cb);
             mHolder.mProductName = (TextView) view.findViewById(R.id.p_name);
             mHolder.mProductUom = (TextView) view.findViewById(R.id.p_uom);
+            mHolder.mProductUom.setVisibility(View.GONE);
             mHolder.mDeliveryQty = (TextView) view.findViewById(R.id.delivery_qty);
             mHolder.mReturnQty = (TextView) view.findViewById(R.id.return_quantity);
-          //  mHolder.mReturnQtyInc = (ImageButton) view.findViewById(R.id.return_inc);
-          //  mHolder.mReturnQtyDec = (ImageButton) view.findViewById(R.id.return_dec);
+            //  mHolder.mReturnQtyInc = (ImageButton) view.findViewById(R.id.return_inc);
+            //  mHolder.mReturnQtyDec = (ImageButton) view.findViewById(R.id.return_dec);
 
             mHolder.mLeakQty = (TextView) view.findViewById(R.id.leak_quantity);
             mHolder.mLeakQtyInc = (ImageButton) view.findViewById(R.id.leak_inc);
@@ -108,7 +109,6 @@ public class RouteStockAdapter extends BaseAdapter{
             mHolder.mOthersQtyDec = (ImageButton) view.findViewById(R.id.others_dec);
 
 
-
             view.setTag(mHolder);
         } else {
             mHolder = (RouteStockAdapter.ViewHolder) view.getTag();
@@ -117,6 +117,10 @@ public class RouteStockAdapter extends BaseAdapter{
 
         final TripsheetsStockList currentStockList = getItem(position);
         mHolder.mProductName.setText(currentStockList.getmTripsheetStockProductName());
+        mHolder.mRouteCode.setText(currentStockList.getmTripsheetStockProductCode());
+
+        Double verifiedQuantity = Double.parseDouble(currentStockList.getmTripsheetStockVerifiedQuantity());
+        mHolder.mTruckQty.setText(String.format("%.3f", verifiedQuantity));
 
 
         return view;
@@ -130,8 +134,8 @@ public class RouteStockAdapter extends BaseAdapter{
         TextView mProductUom;
         TextView mDeliveryQty;
         TextView mReturnQty;
-       // public ImageButton mReturnQtyInc;
-       // public ImageButton mReturnQtyDec;
+        // public ImageButton mReturnQtyInc;
+        // public ImageButton mReturnQtyDec;
         TextView mLeakQty;
         public ImageButton mLeakQtyInc;
         public ImageButton mLeakQtyDec;

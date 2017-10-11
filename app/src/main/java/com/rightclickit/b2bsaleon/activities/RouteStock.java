@@ -134,6 +134,15 @@ public class RouteStock extends AppCompatActivity {
             return true;
         }
 
+        if (id == R.id.autorenew) {
+            if (new NetworkConnectionDetector(RouteStock.this).isNetworkConnected()) {
+                mTripsheetsModel.getTripsheetsStockList(tripSheetId);
+            } else {
+                new NetworkConnectionDetector(RouteStock.this).displayNoNetworkError(RouteStock.this);
+            }
+            return true;
+        }
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
