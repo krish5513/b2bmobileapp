@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-
-
+import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.TripsheetPaymentsPreview;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderDeliveredProducts;
 import com.rightclickit.b2bsaleon.util.Utility;
