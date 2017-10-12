@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.AgentPaymentsView;
+
+
 import com.rightclickit.b2bsaleon.activities.TripsheetPaymentsPreview;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderDeliveredProducts;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -32,12 +32,12 @@ public class TripSheetsPaymentPreviewDeliveredProductsAdapter extends BaseAdapte
         this.mInflater = LayoutInflater.from(activity);
         this.deliveredProductsList = productsList;
     }
-    public TripSheetsPaymentPreviewDeliveredProductsAdapter(Context ctxt, AgentPaymentsView activity, ArrayList<SaleOrderDeliveredProducts> productsList) {
+   /* public TripSheetsPaymentPreviewDeliveredProductsAdapter(Context ctxt, AgentPaymentsView activity, ArrayList<SaleOrderDeliveredProducts> productsList) {
         this.ctxt = ctxt;
         this.activity = activity;
         this.mInflater = LayoutInflater.from(activity);
         this.deliveredProductsList = productsList;
-    }
+    }*/
 
     private class TDCSalesPreviewViewHolder {
         TextView product_name, quantity, price, amount, tax;

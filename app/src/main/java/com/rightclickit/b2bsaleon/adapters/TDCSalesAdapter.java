@@ -37,6 +37,7 @@ import java.util.Map;
  */
 
 public class TDCSalesAdapter extends BaseAdapter {
+
     LayoutInflater mInflater;
     private Activity activity;
     private TDCSalesListener listener;
@@ -163,6 +164,12 @@ public class TDCSalesAdapter extends BaseAdapter {
                 productRate = Double.parseDouble(currentProductsBean.getProductConsumerPrice().replace(",", ""));
             } else {
                 productRate = 0.00f;
+            }
+
+            if (currentProductsBean.getProductCode() != null) {
+                tdcSalesViewHolder.product_code.setText(String.format("%s", "("+ currentProductsBean.getProductCode())+")");
+            } else {
+                tdcSalesViewHolder.product_code.setText("_");
             }
 
             double taxAmount = 0, amount = 0;
