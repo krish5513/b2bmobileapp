@@ -1,9 +1,9 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,12 +12,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.OrdersListBean;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -299,53 +297,70 @@ public class AgentTDC_Order extends AppCompatActivity {
      * Method to load the orders data
      */
     public void loadOrders() {
+        quantity = 0.0;
+        price = 0.0;
+        amount = 0.0;
+        subtotal = 0.0;
+        taxAmount = 0.0;
+        mProductsPriceAmountSum = 0.0;
+        mTotalProductsPriceAmountSum = 0.0;
+        mTotalProductsTax = 0.0;
+        totalprice = "";
         mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("", mSessionManagement.getString("agentId"));
-
+        System.out.println("UPDATED SIZE::: " + mTakeOrderBeansList.size());
 
         if (mTakeOrderBeansList.size() > 0) {
-
-            tv_enquiryId.setText("ENQ" + mTakeOrderBeansList.get(0).getmEnquiryId());
+            agentOrders.setVisibility(View.VISIBLE);
+            noOrders.setVisibility(View.GONE);
+            if (mTakeOrderBeansList.get(0).getmEnquiryId().contains("ENQ")) {
+                tv_enquiryId.setText(mTakeOrderBeansList.get(0).getmEnquiryId());
+            } else {
+                tv_enquiryId.setText("ENQ" + mTakeOrderBeansList.get(0).getmEnquiryId());
+            }
             date.setText(mTakeOrderBeansList.get(0).getmAgentTakeOrderDate());
             mPreferences.putString("ORDERDATE", String.valueOf(date));
             itemCount = String.valueOf(mTakeOrderBeansList.size());
             tv_itemsCount.setText(itemCount);
 
 
-            for (int j = 0; j < mTakeOrderBeansList.size(); j++) {
-                Log.i("take order price log", (mTakeOrderBeansList.get(j).getmAgentPrice() + "  count " + j + " size of takeorder" + mTakeOrderBeansList.size()));
-                price = mTakeOrderBeansList.get(j).getmAgentPrice() != null ? Double.parseDouble(mTakeOrderBeansList.get(j).getmAgentPrice()) : 0.00;
-                quantity = mTakeOrderBeansList.get(j).getmProductQuantity() != null ? Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity()) : 0.000;
-                tax = 0.0f;
-                if (mTakeOrderBeansList.get(j).getmAgentVAT() != null) {
-                    tax = Float.parseFloat(mTakeOrderBeansList.get(j).getmAgentVAT());
+            try {
+                for (int j = 0; j < mTakeOrderBeansList.size(); j++) {
+                    Log.i("take order price log", (mTakeOrderBeansList.get(j).getmAgentPrice() + "  count " + j + " size of takeorder" + mTakeOrderBeansList.size()));
+                    price = mTakeOrderBeansList.get(j).getmAgentPrice() != null ? Double.parseDouble(mTakeOrderBeansList.get(j).getmAgentPrice()) : 0.00;
+                    quantity = mTakeOrderBeansList.get(j).getmProductQuantity() != null ? Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity()) : 0.000;
+                    tax = 0.0f;
+                    if (mTakeOrderBeansList.get(j).getmAgentVAT() != null) {
+                        tax = Float.parseFloat(mTakeOrderBeansList.get(j).getmAgentVAT());
 
-                } else if (mTakeOrderBeansList.get(j).getmAgentGST() != null) {
-                    tax = Float.parseFloat(mTakeOrderBeansList.get(j).getmAgentGST());
+                    } else if (mTakeOrderBeansList.get(j).getmAgentGST() != null) {
+                        tax = Float.parseFloat(mTakeOrderBeansList.get(j).getmAgentGST());
 
+                    }
+                    taxAmount = ((quantity * price) * tax) / 100;
+                    System.out.println("P TAX IS::: " + taxAmount);
+                    //  amount = price + taxAmount;
+                    amount = price;
+
+                    subtotal = (price * quantity);
+
+                    mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
+                            * Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity())));
+                    System.out.println("P SUBTOTAl IS::: " + mProductsPriceAmountSum);
+
+                    mTotalProductsTax = (mTotalProductsTax + taxAmount);
+
+                    mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
+                    System.out.println("P FINAL IS::: " + mTotalProductsPriceAmountSum);
+                    totalprice = String.valueOf(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
+                    valueCount.setText(totalprice);
                 }
-                taxAmount = ((quantity * price) * tax) / 100;
-                System.out.println("P TAX IS::: " + taxAmount);
-                //  amount = price + taxAmount;
-                amount = price;
-
-                subtotal = (price * quantity);
-
-                mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
-                        * Double.parseDouble(mTakeOrderBeansList.get(j).getmProductQuantity())));
-                System.out.println("P SUBTOTAl IS::: " + mProductsPriceAmountSum);
-
-                mTotalProductsTax = (mTotalProductsTax + taxAmount);
-
-                mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
-                System.out.println("P FINAL IS::: " + mTotalProductsPriceAmountSum);
-                totalprice = String.valueOf(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
-                valueCount.setText(totalprice);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
         } else if (mTakeOrderBeansList.size() == 0) {
             agentOrders.setVisibility(View.GONE);
             noOrders.setVisibility(View.VISIBLE);
-
         }
     }
 

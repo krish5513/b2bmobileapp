@@ -1,8 +1,6 @@
 package com.rightclickit.b2bsaleon.models;
 
 import android.content.Context;
-import android.util.Log;
-import android.view.View;
 
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
@@ -16,7 +14,6 @@ import com.rightclickit.b2bsaleon.interfaces.OnAsyncRequestCompleteListener;
 import com.rightclickit.b2bsaleon.util.AsyncRequest;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
-import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,8 +21,6 @@ import org.json.JSONTokener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by Sekhar Kuppa
@@ -86,6 +81,12 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
     public void getAgentsList(String s) {
         try {
+            if (mAgentsBeansList.size() > 0) {
+                mAgentsBeansList.clear();
+            }
+            if (mAgentsBeansList_MyPrivilege.size() > 0) {
+                mAgentsBeansList_MyPrivilege.clear();
+            }
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
             isMyProfilePrivilege = false;
             UserCode = userMapData.get("user_id");
@@ -432,36 +433,36 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                 }
                             }
                             if (jo.has("so_details_data")) {
-                                if(jo.get("so_details_data") instanceof JSONObject){
+                                if (jo.get("so_details_data") instanceof JSONObject) {
 
-                                JSONObject soObj = jo.getJSONObject("so_details_data");
-                                //int length = sodetailsJsonArray.length();
-                                //if (length > 0) {
-                                // for (int n = 0; n < length; n++) {
-                                //JSONObject soObj = sodetailsJsonArray.getJSONObject(n);
-                                if (soObj.has("sale_order_value")) {
-                                    // Agent price
-                                    agentsBean.setmOrderValue(soObj.getString("sale_order_value"));
+                                    JSONObject soObj = jo.getJSONObject("so_details_data");
+                                    //int length = sodetailsJsonArray.length();
+                                    //if (length > 0) {
+                                    // for (int n = 0; n < length; n++) {
+                                    //JSONObject soObj = sodetailsJsonArray.getJSONObject(n);
+                                    if (soObj.has("sale_order_value")) {
+                                        // Agent price
+                                        agentsBean.setmOrderValue(soObj.getString("sale_order_value"));
 
-                                }
-                                if (soObj.has("op_amt")) {
+                                    }
+                                    if (soObj.has("op_amt")) {
 
-                                    //String URL = Constants.MAIN_URL + "/b2b/" + priceObj.getString("poi");
-                                    agentsBean.setmObAmount(soObj.getString("op_amt"));
+                                        //String URL = Constants.MAIN_URL + "/b2b/" + priceObj.getString("poi");
+                                        agentsBean.setmObAmount(soObj.getString("op_amt"));
 
-                                    // agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
-                                }
-                                if (soObj.has("received_amt")) {
-                                    // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
-                                    agentsBean.setmTotalAmount(soObj.getString("received_amt"));
-                                }
+                                        // agentsBean.setmPoiImage(Constants.MAIN_URL+"/b2b/"+priceObj.getString("poi"));
+                                    }
+                                    if (soObj.has("received_amt")) {
+                                        // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
+                                        agentsBean.setmTotalAmount(soObj.getString("received_amt"));
+                                    }
 
-                                if (soObj.has("cb_amt")) {
-                                    // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
-                                    agentsBean.setmDueAmount(soObj.getString("cb_amt"));
-                                }
-                                //}
-                                //}
+                                    if (soObj.has("cb_amt")) {
+                                        // agentsBean.setmPoaImage(Constants.MAIN_URL + "/b2b/" + priceObj.getString("poa"));
+                                        agentsBean.setmDueAmount(soObj.getString("cb_amt"));
+                                    }
+                                    //}
+                                    //}
                                 }
                             } else {
                                 agentsBean.setmObAmount("");

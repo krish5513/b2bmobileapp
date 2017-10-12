@@ -337,7 +337,7 @@ public class AgentsActivity extends AppCompatActivity {
             Toast.makeText(this, "Clicked on Settings...", Toast.LENGTH_SHORT).show();
             return true;
         }
-       /* if (id == R.id.autorenew) {
+        if (id == R.id.autorenew) {
 
             if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
                 agentsModel.getAgentsList("agents");
@@ -345,7 +345,7 @@ public class AgentsActivity extends AppCompatActivity {
                 new NetworkConnectionDetector(AgentsActivity.this).displayNoNetworkError(AgentsActivity.this);
             }
             return true;
-        }*/
+        }
 
         switch (item.getItemId()) {
             case android.R.id.home:

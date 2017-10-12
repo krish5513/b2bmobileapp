@@ -6,18 +6,13 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,30 +21,19 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentTakeOrderPreview;
-import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
-import com.rightclickit.b2bsaleon.activities.DashboardTakeorderPreview;
-import com.rightclickit.b2bsaleon.activities.LoginActivity;
-import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.activities.AgentTakeOrderScreen;
-import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
-import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.interfaces.AgentTakeOrderListener;
 import com.rightclickit.b2bsaleon.services.SyncTakeOrdersService;
-import com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
-
-import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -165,6 +149,8 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             convertView = mInflater.inflate(R.layout.customer_take_order_customlayout, null);
 
             holder.productName = (TextView) convertView.findViewById(R.id.productName);
+            holder.code = (TextView) convertView.findViewById(R.id.productcode);
+            holder.uom = (TextView) convertView.findViewById(R.id.productuom);
             holder.fromDate = (EditText) convertView.findViewById(R.id.from_date);
             holder.toDate = (EditText) convertView.findViewById(R.id.to_date);
             holder.orderTypeSpinner = (Spinner) convertView.findViewById(R.id.spinner1);
@@ -180,6 +166,8 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         }
 
         holder.productName.setText(mTakeOrderBeansList1.get(position).getProductTitle());
+        holder.code.setText("("+ mTakeOrderBeansList1.get(position).getProductCode()+")"+ ",");
+        holder.uom.setText(mTakeOrderBeansList1.get(position).getProductUOM());
         holder.fromDate.setText(currentDate);
         holder.toDate.setText(currentDate);
         holder.productQuantity.setText("0.000");
@@ -512,7 +500,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     }
 
     private class MyViewHolder {
-        public TextView productName;
+        public TextView productName,code,uom;
         public EditText fromDate;
         public EditText toDate;
         public Spinner orderTypeSpinner;

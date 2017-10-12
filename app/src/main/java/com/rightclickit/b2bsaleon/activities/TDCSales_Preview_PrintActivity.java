@@ -356,7 +356,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
         sales_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOrderAlreadySaved = true) {
+                if (isOrderAlreadySaved ) {
 
 
                     int pageheight = 550 + selectedList.size() * 200; // 2000 is old

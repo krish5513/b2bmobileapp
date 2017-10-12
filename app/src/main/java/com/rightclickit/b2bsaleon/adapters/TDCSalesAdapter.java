@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.TDCSalesActivity;
-import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -91,7 +90,7 @@ public class TDCSalesAdapter extends BaseAdapter {
 
     private class TDCSalesViewHolder {
         ImageView arrow_icon, product_quantity_decrement, product_quantity_increment;
-        TextView product_name, quantity_stock, price, tax, amount;
+        TextView product_name, quantity_stock, price, tax, amount,product_code;
         EditText product_quantity;
     }
 
@@ -125,6 +124,7 @@ public class TDCSalesAdapter extends BaseAdapter {
             tdcSalesViewHolder = new TDCSalesViewHolder();
             tdcSalesViewHolder.arrow_icon = (ImageView) convertView.findViewById(R.id.arrow_icon);
             tdcSalesViewHolder.product_name = (TextView) convertView.findViewById(R.id.product_name);
+            tdcSalesViewHolder.product_code = (TextView) convertView.findViewById(R.id.product_code);
             tdcSalesViewHolder.quantity_stock = (TextView) convertView.findViewById(R.id.quantity_stock);
             tdcSalesViewHolder.price = (TextView) convertView.findViewById(R.id.price);
             tdcSalesViewHolder.tax = (TextView) convertView.findViewById(R.id.tax);
@@ -194,6 +194,13 @@ public class TDCSalesAdapter extends BaseAdapter {
             } else {
                 tdcSalesViewHolder.quantity_stock.setText(String.format("%.3f", availableStock));
                 //System.out.println("NOT MATCHED 44444444444444444::::::::: ");
+            }
+
+
+            if (currentProductsBean.getProductCode() != null) {
+                tdcSalesViewHolder.product_code.setText(String.format("%s", "("+ currentProductsBean.getProductCode())+")");
+            } else {
+                tdcSalesViewHolder.product_code.setText("_");
             }
 
             tdcSalesViewHolder.price.setText(Utility.getFormattedCurrency(currentProductsBean.getProductRatePerUnit()));
