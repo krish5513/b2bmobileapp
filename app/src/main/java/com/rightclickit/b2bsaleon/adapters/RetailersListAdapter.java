@@ -118,14 +118,21 @@ public class RetailersListAdapter extends BaseAdapter {
             }
         });
 
+
+
+
         retailersViewHolder.retailer_btn_payments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, Retailers_PaymentsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putLong(Constants.BUNDLE_SELECTED_CUSTOMER_ID, currentRetailer.getId());
+                intent.putExtras(bundle);
                 activity.startActivity(intent);
                 activity.finish();
             }
         });
+
 
         return convertView;
     }
