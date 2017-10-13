@@ -91,7 +91,7 @@ public class TDCSalesAdapter extends BaseAdapter {
 
     private class TDCSalesViewHolder {
         ImageView arrow_icon, product_quantity_decrement, product_quantity_increment;
-        TextView product_name, quantity_stock, price, tax, amount,product_code;
+        TextView product_name, quantity_stock, price, tax, amount,product_code,uom;
         EditText product_quantity;
     }
 
@@ -125,6 +125,7 @@ public class TDCSalesAdapter extends BaseAdapter {
             tdcSalesViewHolder = new TDCSalesViewHolder();
             tdcSalesViewHolder.arrow_icon = (ImageView) convertView.findViewById(R.id.arrow_icon);
             tdcSalesViewHolder.product_name = (TextView) convertView.findViewById(R.id.product_name);
+            tdcSalesViewHolder.uom = (TextView) convertView.findViewById(R.id.productuom);
             tdcSalesViewHolder.product_code = (TextView) convertView.findViewById(R.id.product_code);
             tdcSalesViewHolder.quantity_stock = (TextView) convertView.findViewById(R.id.quantity_stock);
             tdcSalesViewHolder.price = (TextView) convertView.findViewById(R.id.price);
@@ -167,9 +168,15 @@ public class TDCSalesAdapter extends BaseAdapter {
             }
 
             if (currentProductsBean.getProductCode() != null) {
-                tdcSalesViewHolder.product_code.setText(String.format("%s", "("+ currentProductsBean.getProductCode())+")");
+                tdcSalesViewHolder.product_code.setText(currentProductsBean.getProductCode()+ ",");
             } else {
                 tdcSalesViewHolder.product_code.setText("_");
+            }
+
+            if (currentProductsBean.getProductUOM() != null) {
+                tdcSalesViewHolder.uom.setText(String.format("%s", currentProductsBean.getProductUOM()));
+            } else {
+                tdcSalesViewHolder.uom.setText("_");
             }
 
             double taxAmount = 0, amount = 0;
@@ -205,7 +212,7 @@ public class TDCSalesAdapter extends BaseAdapter {
 
 
             if (currentProductsBean.getProductCode() != null) {
-                tdcSalesViewHolder.product_code.setText(String.format("%s", "("+ currentProductsBean.getProductCode())+")");
+                tdcSalesViewHolder.product_code.setText(String.format("%s", currentProductsBean.getProductCode()));
             } else {
                 tdcSalesViewHolder.product_code.setText("_");
             }

@@ -1,34 +1,21 @@
 package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentTakeOrderPreview;
-import com.rightclickit.b2bsaleon.activities.AgentsTDC_View;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
-import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
-import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Created by bhagya on 6/20/2017.
@@ -85,10 +72,10 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
             holder.pPrice = (TextView) convertView.findViewById(R.id.price);
             holder.pTax = (TextView) convertView.findViewById(R.id.tax);
             holder.pAmount = (TextView) convertView.findViewById(R.id.amount);
-            holder.taxName = (TextView) convertView.findViewById(R.id.taxname);
-            holder.taxPer = (TextView) convertView.findViewById(R.id.taxper);
-            holder.fromPreview = (TextView) convertView.findViewById(R.id.fromDate);
-            holder.toPreview = (TextView) convertView.findViewById(R.id.toDate);
+            //holder.taxName = (TextView) convertView.findViewById(R.id.taxname);
+           // holder.taxPer = (TextView) convertView.findViewById(R.id.taxper);
+           // holder.fromPreview = (TextView) convertView.findViewById(R.id.fromDate);
+           // holder.toPreview = (TextView) convertView.findViewById(R.id.toDate);
 
             convertView.setTag(holder);
         } else {
@@ -122,10 +109,10 @@ public class TakeOrderPreviewAdapter extends BaseAdapter{
         holder.pPrice.setText(Utility.getFormattedCurrency(price));
         holder.pTax.setText(Utility.getFormattedCurrency(taxAmount));
         holder.pAmount.setText(Utility.getFormattedCurrency(price*Double.parseDouble(mpreviewBeansList1.get(position).getpQuantity())));
-        holder.fromPreview.setText(mpreviewBeansList1.get(position).getmProductFromDate());
-        holder.toPreview.setText(mpreviewBeansList1.get(position).getmProductToDate());
-        holder.taxName.setText(str_Taxname);
-        holder.taxPer.setText(String.valueOf("("+tax+"%)"));
+       // holder.fromPreview.setText(mpreviewBeansList1.get(position).getmProductFromDate());
+        //holder.toPreview.setText(mpreviewBeansList1.get(position).getmProductToDate());
+       // holder.taxName.setText(str_Taxname);
+       // holder.taxPer.setText(String.valueOf("("+tax+"%)"));
 
         return convertView;
     }

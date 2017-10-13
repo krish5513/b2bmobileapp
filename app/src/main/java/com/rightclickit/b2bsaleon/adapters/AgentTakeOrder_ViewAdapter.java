@@ -70,10 +70,10 @@ public class AgentTakeOrder_ViewAdapter extends BaseAdapter {
             holder.pPrice = (TextView) convertView.findViewById(R.id.price);
             holder.pTax = (TextView) convertView.findViewById(R.id.tax);
             holder.pAmount = (TextView) convertView.findViewById(R.id.amount);
-            holder.taxName = (TextView) convertView.findViewById(R.id.taxname);
-            holder.taxPer = (TextView) convertView.findViewById(R.id.taxper);
-            holder.fromPreview = (TextView) convertView.findViewById(R.id.fromDate);
-            holder.toPreview = (TextView) convertView.findViewById(R.id.toDate);
+           // holder.taxName = (TextView) convertView.findViewById(R.id.taxname);
+           // holder.taxPer = (TextView) convertView.findViewById(R.id.taxper);
+           // holder.fromPreview = (TextView) convertView.findViewById(R.id.fromDate);
+           // holder.toPreview = (TextView) convertView.findViewById(R.id.toDate);
 
             convertView.setTag(holder);
         } else {
@@ -92,10 +92,10 @@ public class AgentTakeOrder_ViewAdapter extends BaseAdapter {
         String str_Taxname = "";
         if (mpreviewBeansList1.get(position).getmProductTaxVAT() != null) {
             tax = Float.parseFloat(mpreviewBeansList1.get(position).getmProductTaxVAT());
-            str_Taxname = "VAT:";
+            str_Taxname = "CGST:";
         } else if (mpreviewBeansList1.get(position).getmProductTaxGST() != null) {
             tax = Float.parseFloat(mpreviewBeansList1.get(position).getmProductTaxGST());
-            str_Taxname = "GST:";
+            str_Taxname = "SGST:";
         }
         double taxAmount = ((quantity * price) * tax) / 100;
         double amount = price + taxAmount;
@@ -105,10 +105,10 @@ public class AgentTakeOrder_ViewAdapter extends BaseAdapter {
         holder.pPrice.setText(Utility.getFormattedCurrency(price));
         holder.pTax.setText(Utility.getFormattedCurrency(taxAmount));
         holder.pAmount.setText(Utility.getFormattedCurrency(price * Double.parseDouble(mpreviewBeansList1.get(position).getpQuantity())));
-        holder.fromPreview.setText(mpreviewBeansList1.get(position).getmProductFromDate());
-        holder.toPreview.setText(mpreviewBeansList1.get(position).getmProductToDate());
-        holder.taxName.setText(str_Taxname);
-        holder.taxPer.setText(String.valueOf("(" + tax + "%)"));
+        //holder.fromPreview.setText(mpreviewBeansList1.get(position).getmProductFromDate());
+        //holder.toPreview.setText(mpreviewBeansList1.get(position).getmProductToDate());
+        //holder.taxName.setText(str_Taxname);
+        //holder.taxPer.setText(String.valueOf("(" + tax + "%)"));
 
         return convertView;
     }

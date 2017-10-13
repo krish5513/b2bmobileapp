@@ -25,12 +25,11 @@ import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TDCSalesCustomerSelectionAdapter;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
 import com.rightclickit.b2bsaleon.services.SyncTDCCustomersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
@@ -58,7 +57,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
 
     private String saleQunatity = "";
     private Map<String, String> saleQuantityListMap = new HashMap<String, String>();
-    private String customer="";
+    private String customer = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,13 +115,12 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                     TDCCustomer selectedCustomer = customerList.get(position);
-
                     if (currentOrder != null) {
                         currentOrder.setSelectedCustomerId(selectedCustomer.getId());
                         currentOrder.setSelectedCustomerUserId(selectedCustomer.getUserId());
                         currentOrder.setSelectedCustomerType(selectedCustomer.getCustomerType());
                         isCustomerSelected = true;
-                        customer=selectedCustomer.getName();
+                        customer = selectedCustomer.getName();
 
                         showTDCSalesOrderPreview(null);
                     }
@@ -312,17 +310,16 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
     }
 
     public void showTDCSalesOrderPreview(View view) {
-        Intent i = new Intent(TDCSalesCustomerSelectionActivity.this, TDCSales_Preview_PrintActivity.class);
-        i.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
-        i.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION);
-        i.putExtra(Constants.BUNDLE_TDC_SALE_QUANTITY, saleQunatity);
-        i.putExtra("CustomerName",customer);
-        startActivity(i);
-        finish();
-
-        /*if (isCustomerSelected) {
+        if (isCustomerSelected) {
+            Intent i = new Intent(TDCSalesCustomerSelectionActivity.this, TDCSales_Preview_PrintActivity.class);
+            i.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
+            i.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_TDC_CUSTOMER_SELECTION);
+            i.putExtra(Constants.BUNDLE_TDC_SALE_QUANTITY, saleQunatity);
+            i.putExtra("CustomerName", customer);
+            startActivity(i);
+            finish();
         } else {
-            Toast.makeText(activityContext, "Please select either retailer or consumer.", Toast.LENGTH_LONG).show();
-        }*/
+            CustomAlertDialog.showAlertDialog(activityContext, "Failed", "Please select/add either retailer or consumer.");
+        }
     }
 }

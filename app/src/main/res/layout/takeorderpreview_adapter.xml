@@ -68,37 +68,34 @@
             android:gravity="center"
             android:textColor="@color/greydark"/>
     </LinearLayout>
+<!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp"
         android:background="@color/white"
         android:orientation="horizontal">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.22"
             android:text="TAX"
+            android:layout_weight="7"
+            android:textSize="12sp"
             android:layout_gravity="end"
             android:gravity="end"
-
-            android:textSize="12sp"
-            android:layout_marginRight="7dp"
+            android:layout_marginLeft="5dp"
             android:textColor="@color/greydark"
             android:id="@+id/taxname" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.20"
             android:text="(per%)"
-            android:layout_gravity="start"
-            android:gravity="start"
+            android:layout_weight="1"
 
             android:textSize="12sp"
             android:layout_marginRight="7dp"
             android:textColor="@color/greydark"
             android:id="@+id/taxper" />
-        <TextView
+        &lt;!&ndash;<TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.21"
@@ -137,8 +134,9 @@
             android:textAllCaps="true"
             android:textSize="12sp"
             android:textColor="@color/greydark"
-            android:id="@+id/toDate" />
+            android:id="@+id/toDate" />&ndash;&gt;
     </LinearLayout>
+-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"

@@ -166,8 +166,9 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         }
 
         holder.productName.setText(mTakeOrderBeansList1.get(position).getProductTitle());
-        holder.code.setText("("+ mTakeOrderBeansList1.get(position).getProductCode()+")"+ ",");
+        holder.code.setText( mTakeOrderBeansList1.get(position).getProductCode()+ ",");
         holder.uom.setText(mTakeOrderBeansList1.get(position).getProductUOM());
+        mPreferences.putString("UOM",mTakeOrderBeansList1.get(position).getProductUOM());
         holder.fromDate.setText(currentDate);
         holder.toDate.setText(currentDate);
         holder.productQuantity.setText("0.000");
@@ -424,6 +425,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                                 tb.setmAgentPrice(mTakeOrderBeansList1.get(k).getProductAgentPrice());
                                 tb.setmAgentVAT(mTakeOrderBeansList1.get(k).getProductvat());
                                 tb.setmAgentGST(mTakeOrderBeansList1.get(k).getProductgst());
+                                tb.setUom(mTakeOrderBeansList1.get(k).getProductUOM());
                                 tb.setmTakeorderAgentCode(mPreferences.getString("agentCode"));
                                 temptoList.add(tb);
                             }
@@ -587,6 +589,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     dialog.dismiss();
                     CustomProgressDialog.hideProgressDialog();
                     if (message.equals("Order placed Successfully.")) {
+
                         Intent ii = new Intent(activity, AgentTakeOrderPreview.class);
                         Bundle args = new Bundle();
                         args.putSerializable("productIdsList", (Serializable) temptoList);

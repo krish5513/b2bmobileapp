@@ -59,7 +59,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 
     double amount, subtotal;
     double taxAmount;
-    String name;
+    String name,p_code,p_uom;
 
   //  Map<String, String[]> selectedList = new HashMap<String, String[]>();
 
@@ -141,6 +141,8 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                }
 
                name = String.valueOf(mProductIdsList.get(k).getmProductTitle().replace(",", ""));
+                p_code = String.valueOf(mProductIdsList.get(k).getMtakeorderProductCode().replace(",", ""));
+                p_uom =String.valueOf(mProductIdsList.get(k).getUom().replace(",", ""));
 
                double price ;
                 if(productsList.get(i).getProductAgentPrice()!=null){
@@ -166,16 +168,18 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 
                mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
                System.out.println("FINAL AMOUNT PRICE IS::: " + mTotalProductsPriceAmountSum);
-               String[] temp = new String[10];
+               String[] temp = new String[6];
                temp[0] = name;
-               temp[1] = String.valueOf(quantity);
-               temp[2] = String.valueOf(price);
-               temp[3] = String.valueOf(subtotal);
-               temp[4] = String.valueOf(taxAmount);
+                temp[1] = p_code;
+                temp[2] = p_uom;
+               temp[3] = String.valueOf(quantity);
+               temp[4] = String.valueOf(price);
+               temp[5] = String.valueOf(subtotal);
+               /*temp[4] = String.valueOf(taxAmount);
                temp[5] = String.valueOf(str_Taxname);
                temp[6] = String.valueOf("(" + tax + "%)");
                temp[7] = mProductIdsList.get(k).getmProductFromDate();
-               temp[8] = mProductIdsList.get(k).getmProductToDate();
+               temp[8] = mProductIdsList.get(k).getmProductToDate();*/
                selectedList.add(temp);
                Log.i("takeordertemp", temp + "");
                takeOrderPreviewBeanArrayList.add(topBean);
@@ -188,15 +192,15 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
             tv_companyName = (TextView) findViewById(R.id.tv_companyName);
             tv_companyName.setText(sharedPreferences.getString("companyname"));
 
-            user_Name = (TextView) findViewById(R.id.tv_user_Name);
-            user_Name.setText("by " + sharedPreferences.getString("loginusername"));
+           // user_Name = (TextView) findViewById(R.id.tv_user_Name);
+           // user_Name.setText("by " + sharedPreferences.getString("loginusername"));
 
-            Route_Name = (TextView) findViewById(R.id.route_name);
-            Route_Name.setText(sharedPreferences.getString("routename"));
+           // Route_Name = (TextView) findViewById(R.id.route_name);
+           // Route_Name.setText(sharedPreferences.getString("routename"));
 
-            RouteCode = (TextView) findViewById(R.id.tv_routecode);
-            str_routecode = (sharedPreferences.getString("routecode") + ",");
-            RouteCode.setText(str_routecode);
+            //RouteCode = (TextView) findViewById(R.id.tv_routecode);
+            //str_routecode = (sharedPreferences.getString("routecode") + ",");
+            //RouteCode.setText(str_routecode);
 
 
             orderNo = (TextView) findViewById(R.id.order_no);
@@ -239,7 +243,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(getApplicationContext(),"print",Toast.LENGTH_LONG).show();
-                    int pageheight = 300 + selectedList.size() * 60;
+                    int pageheight = 400 + selectedList.size() * 150;
                     Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                     Canvas canvas = new Canvas(bmOverlay);
                     canvas.drawColor(Color.WHITE);
@@ -249,6 +253,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                     paint.setDither(true);
                     paint.setColor(Color.parseColor("#000000"));
                     paint.setTextSize(26);
+/*
 
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     canvas.drawText(sharedPreferences.getString("companyname"), 5, 50, paint);
@@ -312,6 +317,83 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                     canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
                     canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
                     canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
+                    st = st + 20;
+                    canvas.drawText("--------X---------", 100, st, paint);
+                    com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+
+
+
+
+*/
+
+
+
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    canvas.drawText(sharedPreferences.getString("companyname"), 5, 20, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(sharedPreferences.getString("loginusername"), 5, 50, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("----------------------------------------------------", 5, 80, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("PURCHASE REQUEST", 100, 110, paint);
+
+                    paint.setTextSize(20);
+                    canvas.drawText("CUSTOMER", 5, 140, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + str_agentname, 150, 140, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("CODE", 5, 170, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + sharedPreferences.getString("agentCode"), 150, 170, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("PR#", 5, 200, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + str_enguiryid, 150, 200, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("DATE", 5, 230, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + currentDate, 150, 230, paint);
+
+                    paint.setTextSize(20);
+                    canvas.drawText("----------------------------------------------------", 5, 260, paint);
+
+
+                    int st = 290;
+                    paint.setTextSize(17);
+                    // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                    for (int i = 0; i <selectedList.size(); i++) {
+                        String[] temps = selectedList.get(i);
+                        canvas.drawText(temps[0], 5, st, paint);
+                        canvas.drawText("," + temps[1], 150, st, paint);
+                        canvas.drawText("(" + temps[2] + ")", 220, st, paint);
+
+                        st = st + 30;
+                        canvas.drawText("Qty", 5, st, paint);
+                        canvas.drawText( ": " + temps[3], 150, st, paint);
+
+                        st = st + 30;
+                        canvas.drawText("Rate", 5, st, paint);
+                        canvas.drawText(": " + temps[4], 150, st, paint);
+
+
+                        st = st + 30;
+                        canvas.drawText("Value", 5, st, paint);
+                        canvas.drawText(": " + temps[5], 150, st, paint);
+
+                        st = st + 45;
+
+
+                    }
+
+                    canvas.drawText("----------------------------------------------------", 5, st, paint);
+
+                    st = st + 20;
+                    canvas.drawText("PR VALUE:", 5, st, paint);
+                    canvas.drawText( ": " + Utility.getFormattedCurrency(mProductsPriceAmountSum), 150, st, paint);
+
+                    //  canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
+                    //  canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
+                    // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
                     st = st + 20;
                     canvas.drawText("--------X---------", 100, st, paint);
                     com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);

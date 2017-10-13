@@ -20,6 +20,16 @@ public class TakeOrderBean implements Serializable {
     private String mAgentId;
     private String mAgentGST;
 
+    public String getUom() {
+        return uom;
+    }
+
+    public void setUom(String uom) {
+        this.uom = uom;
+    }
+
+    private String uom;
+
     public String getmTakeorderAgentCode() {
         return mTakeorderAgentCode;
     }
