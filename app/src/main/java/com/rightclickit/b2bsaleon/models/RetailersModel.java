@@ -66,7 +66,7 @@ public class RetailersModel implements OnAsyncRequestCompleteListener {
 
     }
 
-    public void getOrdersList(String s) {
+    public void getRetailersList(String s) {
         try {
             if (mTDCCustomerList.size() > 0) {
                 mTDCCustomerList.clear();
@@ -106,15 +106,16 @@ public class RetailersModel implements OnAsyncRequestCompleteListener {
             }
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 String ordersURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.RETAILERS_TDC_SALESLIST);
+                JSONArray customerArray = new JSONArray();
+                customerArray.put(s);
                 JSONObject params = new JSONObject();
-                params.put("customer", s);
-                params.put("filter_by_filed", "user_id");
+                params.put("customer", customerArray);
+                params.put("filter_by_filed", "created_by");
                 params.put("from_date", fromDate);
                 params.put("to_date", currentDate);
 
-
-
-
+                System.out.println("URL:::: " + ordersURL);
+                System.out.println("INPUT:::: " + params.toString());
                 AsyncRequest routeidRequest = new AsyncRequest(context, this, ordersURL, AsyncRequest.MethodType.POST, params);
                 routeidRequest.execute();
             }
@@ -129,115 +130,115 @@ public class RetailersModel implements OnAsyncRequestCompleteListener {
         try {
             CustomProgressDialog.hideProgressDialog();
 
-
+            System.out.println("RETAILERS RESPONSE=====::: " + response);
 
             JSONArray respArray = new JSONArray(response);
             int resLength = respArray.length();
-            if (resLength > 0) {
-                for (int j = 0; j < resLength; j++) {
-                    JSONObject resObj = respArray.getJSONObject(j);
-
-
-                    // Bill no
-                    if (resObj.has("bill_no")) {
-                        billnoList.add(resObj.getString("bill_no"));
-                    }
-                    // User Id
-                    if (resObj.has("user_id")) {
-                        userIdsList.add(resObj.getString("user_id"));
-                    }
-
-                    // Route Id
-                    if (resObj.has("route_id")) {
-                        routeIdsList.add(resObj.getString("route_id"));
-                    }
-
-                    // Product Ids
-                    if (resObj.has("product_ids")) {
-                        JSONArray pIdsArray = resObj.getJSONArray("product_ids");
-                        productIdsList.put(String.valueOf(j), pIdsArray);
-                    }
-                    //Tax Percent
-                    if (resObj.has("tax_percent")) {
-                        JSONArray taxArray = resObj.getJSONArray("tax_percent");
-                        taxpercentList.put(String.valueOf(j), taxArray);
-                    }
-
-                    // Unit price
-                    if (resObj.has("unit_price")) {
-                        JSONArray upArray = resObj.getJSONArray("unit_price");
-                        unitPriceArray.put(String.valueOf(j), upArray);
-                    }
-                    // Quantitys
-                    if (resObj.has("quantity")) {
-                        JSONArray quArray = resObj.getJSONArray("quantity");
-                        quantitysList.put(String.valueOf(j), quArray);
-                    }
-                    // From date
-                    if (resObj.has("from_date")) {
-                        JSONArray fDatesArray = resObj.getJSONArray("from_date");
-                        fromDatesList.put(String.valueOf(j), fDatesArray);
-                    }
-                    // To date
-                    if (resObj.has("to_date")) {
-                        JSONArray tDatesArray = resObj.getJSONArray("to_date");
-                        toDatesList.put(String.valueOf(j), tDatesArray);
-                    }
-
-
-                    // Products Array
-                    if (resObj.has("user_data")) {
-                        JSONArray userdataArray = resObj.getJSONArray("user_data");
-                        userDataArray.put(String.valueOf(j), userdataArray);
-                    }
-
-                }
-
-
-                for (int d = 0; d < userDataArray.size(); d++) {
-
-                    // Unit prices
-                    ArrayList<String> upPriceList = new ArrayList<String>();
-                    JSONArray uPriceAr = unitPriceArray.get(String.valueOf(d));
-                    for (int z = 0; z < uPriceAr.length(); z++) {
-                        upPriceList.add(uPriceAr.get(z).toString());
-                    }
-                    // From Dates
-                    ArrayList<String> fDaList = new ArrayList<String>();
-                    JSONArray fDAr = fromDatesList.get(String.valueOf(d));
-                    for (int z = 0; z < fDAr.length(); z++) {
-                        fDaList.add(fDAr.get(z).toString());
-                    }
-                    // TO Dates
-                    ArrayList<String> tDaList = new ArrayList<String>();
-                    JSONArray tDAr = toDatesList.get(String.valueOf(d));
-                    for (int z1 = 0; z1 < tDAr.length(); z1++) {
-                        tDaList.add(tDAr.get(z1).toString());
-                    }
-                    // Quantity
-                    ArrayList<String> qList = new ArrayList<String>();
-                    JSONArray qAr = quantitysList.get(String.valueOf(d));
-                    for (int z2 = 0; z2 < qAr.length(); z2++) {
-                        qList.add(qAr.get(z2).toString());
-                    }
-                    JSONArray aaa = userDataArray.get(String.valueOf(d));
-                    for (int s = 0; s < aaa.length(); s++) {
-                        TDCCustomer tdcCustomer = new TDCCustomer();
-                        JSONObject jj = aaa.getJSONObject(s);
-                        tdcCustomer.setName(jj.getString("first_name"));
-                        tdcCustomer.setId(Long.parseLong(jj.getString("_id")));
-                        tdcCustomer.setBusinessName(jj.getString("last_name"));
-                        tdcCustomer.setAddress(jj.getString("address"));
-                        tdcCustomer.setMobileNo(jj.getString("phone"));
-                        tdcCustomer.setLatitude(jj.getString("latitude"));
-                        tdcCustomer.setLongitude(jj.getString("longitude"));
-
-
-                        mTDCCustomerList.add(tdcCustomer);
-                    }
-                }
-
-            }
+//            if (resLength > 0) {
+//                for (int j = 0; j < resLength; j++) {
+//                    JSONObject resObj = respArray.getJSONObject(j);
+//
+//
+//                    // Bill no
+//                    if (resObj.has("bill_no")) {
+//                        billnoList.add(resObj.getString("bill_no"));
+//                    }
+//                    // User Id
+//                    if (resObj.has("user_id")) {
+//                        userIdsList.add(resObj.getString("user_id"));
+//                    }
+//
+//                    // Route Id
+//                    if (resObj.has("route_id")) {
+//                        routeIdsList.add(resObj.getString("route_id"));
+//                    }
+//
+//                    // Product Ids
+//                    if (resObj.has("product_ids")) {
+//                        JSONArray pIdsArray = resObj.getJSONArray("product_ids");
+//                        productIdsList.put(String.valueOf(j), pIdsArray);
+//                    }
+//                    //Tax Percent
+//                    if (resObj.has("tax_percent")) {
+//                        JSONArray taxArray = resObj.getJSONArray("tax_percent");
+//                        taxpercentList.put(String.valueOf(j), taxArray);
+//                    }
+//
+//                    // Unit price
+//                    if (resObj.has("unit_price")) {
+//                        JSONArray upArray = resObj.getJSONArray("unit_price");
+//                        unitPriceArray.put(String.valueOf(j), upArray);
+//                    }
+//                    // Quantitys
+//                    if (resObj.has("quantity")) {
+//                        JSONArray quArray = resObj.getJSONArray("quantity");
+//                        quantitysList.put(String.valueOf(j), quArray);
+//                    }
+//                    // From date
+//                    if (resObj.has("from_date")) {
+//                        JSONArray fDatesArray = resObj.getJSONArray("from_date");
+//                        fromDatesList.put(String.valueOf(j), fDatesArray);
+//                    }
+//                    // To date
+//                    if (resObj.has("to_date")) {
+//                        JSONArray tDatesArray = resObj.getJSONArray("to_date");
+//                        toDatesList.put(String.valueOf(j), tDatesArray);
+//                    }
+//
+//
+//                    // Products Array
+//                    if (resObj.has("user_data")) {
+//                        JSONArray userdataArray = resObj.getJSONArray("user_data");
+//                        userDataArray.put(String.valueOf(j), userdataArray);
+//                    }
+//
+//                }
+//
+//
+//                for (int d = 0; d < userDataArray.size(); d++) {
+//
+//                    // Unit prices
+//                    ArrayList<String> upPriceList = new ArrayList<String>();
+//                    JSONArray uPriceAr = unitPriceArray.get(String.valueOf(d));
+//                    for (int z = 0; z < uPriceAr.length(); z++) {
+//                        upPriceList.add(uPriceAr.get(z).toString());
+//                    }
+//                    // From Dates
+//                    ArrayList<String> fDaList = new ArrayList<String>();
+//                    JSONArray fDAr = fromDatesList.get(String.valueOf(d));
+//                    for (int z = 0; z < fDAr.length(); z++) {
+//                        fDaList.add(fDAr.get(z).toString());
+//                    }
+//                    // TO Dates
+//                    ArrayList<String> tDaList = new ArrayList<String>();
+//                    JSONArray tDAr = toDatesList.get(String.valueOf(d));
+//                    for (int z1 = 0; z1 < tDAr.length(); z1++) {
+//                        tDaList.add(tDAr.get(z1).toString());
+//                    }
+//                    // Quantity
+//                    ArrayList<String> qList = new ArrayList<String>();
+//                    JSONArray qAr = quantitysList.get(String.valueOf(d));
+//                    for (int z2 = 0; z2 < qAr.length(); z2++) {
+//                        qList.add(qAr.get(z2).toString());
+//                    }
+//                    JSONArray aaa = userDataArray.get(String.valueOf(d));
+//                    for (int s = 0; s < aaa.length(); s++) {
+//                        TDCCustomer tdcCustomer = new TDCCustomer();
+//                        JSONObject jj = aaa.getJSONObject(s);
+//                        tdcCustomer.setName(jj.getString("first_name"));
+//                        tdcCustomer.setId(Long.parseLong(jj.getString("_id")));
+//                        tdcCustomer.setBusinessName(jj.getString("last_name"));
+//                        tdcCustomer.setAddress(jj.getString("address"));
+//                        tdcCustomer.setMobileNo(jj.getString("phone"));
+//                        tdcCustomer.setLatitude(jj.getString("latitude"));
+//                        tdcCustomer.setLongitude(jj.getString("longitude"));
+//
+//
+//                        mTDCCustomerList.add(tdcCustomer);
+//                    }
+//                }
+//
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }

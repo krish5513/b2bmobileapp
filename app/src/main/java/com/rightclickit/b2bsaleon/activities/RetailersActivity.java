@@ -25,6 +25,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.RetailersListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.models.RetailersModel;
 import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
@@ -47,8 +48,10 @@ public class RetailersActivity extends AppCompatActivity {
     private RetailersListAdapter retailersListAdapter;
     private List<TDCCustomer> retailersList;
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
-    private boolean isSaveDeviceDetails,isMyProfilePrivilege;
+    private boolean isSaveDeviceDetails, isMyProfilePrivilege;
     TextView tvrouts_customerN;
+    private RetailersModel mRetailersModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +71,7 @@ public class RetailersActivity extends AppCompatActivity {
 
             mPreferences = new MMSharedPreferences(RetailersActivity.this);
             mDBHelper = new DBHelper(RetailersActivity.this);
+            mRetailersModel = new RetailersModel(this, RetailersActivity.this);
 
             final ActionBar actionBar = getSupportActionBar();
             assert actionBar != null;
@@ -220,14 +224,11 @@ public class RetailersActivity extends AppCompatActivity {
             for (int z = 0; z < privilegeActionsData2.size(); z++) {
                 if (privilegeActionsData2.get(z).toString().equals("my_profile")) {
                     isMyProfilePrivilege = true;
-                    tvrouts_customerN=(TextView)findViewById(R.id.tvrouts_customerN);
+                    tvrouts_customerN = (TextView) findViewById(R.id.tvrouts_customerN);
                     tvrouts_customerN.setText("Profile");
 
                 }
             }
-
-
-
 
 
             ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Retailers"));
@@ -317,6 +318,21 @@ public class RetailersActivity extends AppCompatActivity {
             Toast.makeText(this, "Clicked on Settings...", Toast.LENGTH_SHORT).show();
             return true;
         }
+//        if (id == R.id.autorenew) {
+//
+//            if (new NetworkConnectionDetector(RetailersActivity.this).isNetworkConnected()) {
+//                // First we need to call the special price service and then call the sync for retailers
+//                synchronized (this) {
+//
+//                }
+//                synchronized (this) {
+//                    mRetailersModel.getRetailersList(mPreferences.getString("userId"));
+//                }
+//            } else {
+//                new NetworkConnectionDetector(RetailersActivity.this).displayNoNetworkError(RetailersActivity.this);
+//            }
+//            return true;
+//        }
 
         if (id == R.id.action_search) {
             return true;

@@ -79,7 +79,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     private TDCCustomer customer;
     private boolean isCameFromRetailersList = false;
     Spinner paymentTypeSpinner;
-
+    private String mRouteName = "", mRegionName = "", mOfficeName = "", mRouteCode = "";
     private JSONArray routeCodesArray;
 
     @Override
@@ -117,28 +117,71 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
 
             routeCodesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
-
+            System.out.println("ROUTE CODE ARRAY:: "+ routeCodesArray);
 
             ArrayList<String> stringArray = new ArrayList<String>();
 
             for(int i = 0, count = routeCodesArray.length(); i< count; i++)
             {
 
-                    JSONObject jsonObject = routeCodesArray.getJSONObject(i);
-                    stringArray.add(jsonObject.toString());
+                    stringArray.add(routeCodesArray.get(i).toString());
 
             }
+            System.out.println("ROUTE JSON OBJ 22:: "+ stringArray.toString());
 
-            List<String> list = new ArrayList<String>();
-            for(int i = 0; i < routeCodesArray.length(); i++){
-                list.add(routeCodesArray.getJSONObject(i).getString("route_id"));
+
+
+
+
+            HashMap<String, String> userMapData = mDBHelper.getUsersData();
+
+            JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
+            JSONArray routesArray = routesJob.getJSONArray("routeArray");
+
+            for (int l = 0; l < routesArray.length(); l++) {
+                // System.out.println("The Route Id IS::: " + routesArray.get(l).toString());
+
+                List<String> routesDataList = mDBHelper.getRouteDataByRouteId(routesArray.get(l).toString());
+
+                for (int k = 0; k < routesDataList.size(); k++) {
+                    //System.out.println(" LOOPPPPPPPPPPPPPP " + k);
+                    if (routesDataList.get(k) != null) {
+                        switch (k) {
+                            case 1:
+                                if (mRouteName.equals("")) {
+                                    mRouteName = routesDataList.get(1);
+                                } else if (!routesDataList.get(1).toString().equals(mRouteName)) {
+                                    mRouteName = mRouteName + "," + routesDataList.get(1);
+                                }
+                                break;
+                            case 2:
+                                if (mRegionName.equals("")) {
+                                    mRegionName = routesDataList.get(2);
+                                } else if (!routesDataList.get(2).toString().equals(mRegionName)) {
+                                    mRegionName = mRegionName + "," + routesDataList.get(2);
+                                }
+                                //  mRegionName = mRegionName + routesDataList.get(2);
+                                break;
+                            case 3:
+                                if (mOfficeName.equals("")) {
+                                    mOfficeName = routesDataList.get(3);
+                                } else if (!routesDataList.get(3).toString().equals(mOfficeName)) {
+                                    mOfficeName = mOfficeName + "," + routesDataList.get(3);
+                                }
+                                //mOfficeName = mOfficeName + routesDataList.get(3);
+                                break;
+
+                        }
+                    }
+                }
             }
+
 
 
 
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
                     (this, android.R.layout.simple_spinner_item,
-                            list); //selected item will look like a spinner set from XML
+                            stringArray); //selected item will look like a spinner set from XML
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout
                     .simple_spinner_dropdown_item);
             paymentTypeSpinner.setAdapter(spinnerArrayAdapter);

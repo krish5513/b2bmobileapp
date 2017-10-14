@@ -5516,4 +5516,89 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Method to get the gst by product id
+     *
+     * @param productId
+     * @return GST
+     */
+    public double getGSTByProductId(String productId) {
+        double gst = 0.0;
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_PRODUCTS + " WHERE " + KEY_PRODUCT_ID
+                    + " = '" + productId + "'";
+            SQLiteDatabase db1 = this.getWritableDatabase();
+            Cursor cursor1 = db1.rawQuery(selectQuery, null);
+
+            if (cursor1.moveToFirst()) {
+                do {
+                    gst = Double.parseDouble(cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_GST_PRICE)));
+                } while (cursor1.moveToNext());
+            }
+
+            cursor1.close();
+            db1.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return gst;
+    }
+
+    /**
+     * Method to get the vat by product id
+     *
+     * @param productId
+     * @return VAT
+     */
+    public double getVATByProductId(String productId) {
+        double vat = 0.0;
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_PRODUCTS + " WHERE " + KEY_PRODUCT_ID
+                    + " = '" + productId + "'";
+            SQLiteDatabase db1 = this.getWritableDatabase();
+            Cursor cursor1 = db1.rawQuery(selectQuery, null);
+
+            if (cursor1.moveToFirst()) {
+                do {
+                    vat = Double.parseDouble(cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_VAT_PRICE)));
+                } while (cursor1.moveToNext());
+            }
+
+            cursor1.close();
+            db1.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return vat;
+    }
+
+    /**
+     * Method to get the hssn number by product id
+     *
+     * @param productId
+     * @return HSSN NUMBER
+     */
+    public String getHSSNNUMBERByProductId(String productId) {
+        String hssn = "";
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_PRODUCTS + " WHERE " + KEY_PRODUCT_ID
+                    + " = '" + productId + "'";
+            SQLiteDatabase db1 = this.getWritableDatabase();
+            Cursor cursor1 = db1.rawQuery(selectQuery, null);
+
+            if (cursor1.moveToFirst()) {
+                do {
+                    hssn = cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_CONTROL_CODE));
+                } while (cursor1.moveToNext());
+            }
+
+            cursor1.close();
+            db1.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hssn;
+    }
+
+
 }

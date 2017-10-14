@@ -66,7 +66,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
     String totalRate = "";
     double taxes;
     double rate = 0.0, ratetax = 0.0, taxvalue = 0.0;
-    Map<String, ProductsBean> productsList;
+    Map<String, ProductsBean> productsList, productsListRetailer;
     ProductsBean productsBean;
 
     double per;
@@ -111,6 +111,8 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
             sub_total_amount_text_view = (TextView) findViewById(R.id.sub_total_amount);
             tdc_products_list_preview = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
             tdc_sales_save_layout = (LinearLayout) findViewById(R.id.tdc_sales_save_layout);
+
+            productsListRetailer = new HashMap<String, ProductsBean>();
 
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
@@ -200,29 +202,6 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                             double taxValue = prodQuantity * sumRate * taxValue1; // prodQuantity * sumRate*(taxSumAmount/100)
                             System.out.println("RET TAX VALUE IS::: " + taxValue);
 
-//                            double rate = productsBean.getProductRatePerUnit();
-//                            System.out.println(" RETAILER RATE:: " + rate);
-//                            double per1 = 100 + taxAmount;
-//                            double per = taxAmount / per1;
-//                            System.out.println(" RETAILER PERCENAGE:: " + per);
-//                            double ratetax = 0.0;
-//                            try {
-//                                ratetax = rate * per;
-//                                System.out.println(" RETAILER RATE TAX:: " + ratetax);
-//
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//
-//                            double newRate = 0.0;
-//
-//                            String totalRate = String.valueOf((rate - ratetax));
-//                            System.out.println(" RETAILER TOTAL RATE:: " + totalRate);
-//                            double amount = Double.parseDouble(totalRate) * productsBean.getSelectedQuantity();
-//                            System.out.println(" RETAILER AMOUNT:: " + amount);
-//                            taxAmount = amount * per;
-//                            System.out.println(" RETAILER TAX AMOUNT:: " + taxAmount);
-//
                             productsBean.setProductAmount(value);
                             productsBean.setTaxAmount(taxValue);
 
@@ -294,28 +273,6 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                             double taxValue = prodQuantity * sumRate * taxValue1; // prodQuantity * sumRate*(taxSumAmount/100)
                             System.out.println("CONSU TAX VALUE IS::: " + taxValue);
 
-//                            double taxAmount = gst + vat;
-//
-//                            double rate = productsBean.getProductRatePerUnit();
-//                            System.out.println(" CONSUMER RATE:: " + rate);
-//                            double per1 = 100 + taxAmount;
-//                            double per = taxAmount / per1;
-//                            System.out.println(" CONSUMER PERCENAGE:: " + per);
-//                            double ratetax = 0.0;
-//                            try {
-//                                ratetax = rate * per;
-//                                System.out.println(" CONSUMER RATE TAX:: " + ratetax);
-//
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//                            String totalRate = String.valueOf((rate - ratetax));
-//                            System.out.println(" CONSUMER TOTAL RATE:: " + totalRate);
-//                            double amount = Double.parseDouble(totalRate) * productsBean.getSelectedQuantity();
-//                            System.out.println(" CONSUMER  AMOUNT:: " + amount);
-//                            taxAmount = amount * per;
-//                            System.out.println(" CONSUMER TAX AMOUNT:: " + taxAmount);
-
                             productsBean.setProductAmount(value);
                             productsBean.setTaxAmount(taxValue);
 
@@ -329,6 +286,75 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                         currentOrder.setOrderTotalTaxAmount(totalTaxAmount);
                         currentOrder.setOrderSubTotal(subTotal);
                     }
+                } else if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_RETAILER_PAYMENTS_LIST)) {
+                    long oId = currentOrder.getOrderId();
+                    currentOrderId = String.format("TDC%05d", oId);
+                    currentDate = Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
+                    // Retailer
+                    Map<String, String> specialPriceList = mDBHelper.fetchSpecialPricesForUserId(currentOrder.getSelectedCustomerUserId()); // Getting special prices for selected retailer from local db.
+
+                    double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
+
+                    for (Map.Entry<String, ProductsBean> productsBeanEntry : currentOrder.getProductsList().entrySet()) {
+                        ProductsBean productsBean = productsBeanEntry.getValue();
+
+                        // Checking weather product has any special price or not.
+                        if (specialPriceList.size() > 0 && specialPriceList.containsKey(productsBean.getProductId())) {
+                            Double specialPrice = Double.parseDouble(specialPriceList.get(productsBean.getProductId()));
+
+                            if (specialPrice > 0) {
+                                productsBean.setProductRatePerUnit(specialPrice);
+                            }
+                        } else {
+                            String productRetailerPrice = productsBean.getProductRetailerPrice();
+
+                            if (productRetailerPrice != null) {
+                                Double productPrice = Double.parseDouble(productRetailerPrice);
+
+                                if (productPrice > 0) {
+                                    productsBean.setProductRatePerUnit(productPrice);
+                                }
+                            }
+                        }
+
+                        Double gst = 0.0, vat = 0.0;
+                        if (productsBean.getProductgst() != null) {
+                            gst = Double.parseDouble(productsBean.getProductgst());
+                        } else {
+                            gst = mDBHelper.getGSTByProductId(productsBean.getProductId());
+                        }
+                        if (productsBean.getProductvat() != null) {
+                            vat = Double.parseDouble(productsBean.getProductvat());
+                        } else {
+                            vat = mDBHelper.getVATByProductId(productsBean.getProductId());
+                        }
+
+                        double unitPrice = productsBean.getProductRatePerUnit();
+
+                        double taxSumAmount = gst + vat;
+
+                        double prodQuantity = productsBean.getSelectedQuantity();
+
+                        double sumRate1 = 100 + taxSumAmount;
+
+                        double sumRate = (unitPrice / sumRate1) * 100; // ((unitPrice/100+taxSumAmount))*100
+
+                        double value = prodQuantity * sumRate; // prodQuantity * sumRate
+
+                        double taxValue1 = taxSumAmount / 100;
+                        double taxValue = prodQuantity * sumRate * taxValue1; // prodQuantity * sumRate*(taxSumAmount/100)
+
+                        productsBean.setProductAmount(value);
+                        productsBean.setTaxAmount(taxValue);
+
+                        totalAmount = totalAmount + productsBean.getProductAmount();
+                        totalTaxAmount = totalTaxAmount + productsBean.getTaxAmount();
+                        subTotal = totalAmount + totalTaxAmount;
+                    }
+
+                    currentOrder.setOrderTotalAmount(totalAmount);
+                    currentOrder.setOrderTotalTaxAmount(totalTaxAmount);
+                    currentOrder.setOrderSubTotal(subTotal);
                 } else {
                     currentOrderId = String.format("TDC%05d", currentOrder.getOrderId());
                     currentDate = Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
@@ -344,45 +370,33 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 productsList = currentOrder.getProductsList();
                 selectedList = new ArrayList<>(productsList.size());
 
-                Log.i("selectedlist00", selectedList.size() + "");
-
                 if (productsList != null) {
                     for (Map.Entry<String, ProductsBean> productsBeanEntry : productsList.entrySet()) {
                         productsBean = productsBeanEntry.getValue();
                         name = String.valueOf(productsBean.getProductTitle().replace(",", ""));
                         quantity = productsBean.getSelectedQuantity();
-                        // mrp = productsBean.getProductRatePerUnit();
-                        // subtotal = Utility.getFormattedCurrency(productsBean.getProductAmount());
-                        // taxAmount = Utility.getFormattedCurrency(productsBean.getTaxAmount());
+
                         if (productsBean.getControlCode() != null) {
                             hssnnumber = productsBean.getControlCode();
+                        } else if (mDBHelper.getHSSNNUMBERByProductId(productsBean.getProductId()).length() > 0) {
+                            hssnnumber = mDBHelper.getHSSNNUMBERByProductId(productsBean.getProductId());
                         } else {
                             hssnnumber = "-";
                         }
                         if (productsBean.getProductgst() != null) {
                             cgst = productsBean.getProductgst() + "%";
+                        } else if (mDBHelper.getGSTByProductId(productsBean.getProductId()) > 0) {
+                            cgst = String.valueOf(mDBHelper.getGSTByProductId(productsBean.getProductId())) + "%";
                         } else {
                             cgst = "0.00%";
                         }
                         if (productsBean.getProductvat() != null) {
                             sgst = productsBean.getProductvat() + "%";
+                        } else if (mDBHelper.getVATByProductId(productsBean.getProductId()) > 0) {
+                            sgst = String.valueOf(mDBHelper.getVATByProductId(productsBean.getProductId())) + "%";
                         } else {
                             sgst = "0.00%";
                         }
-/*
-                        try {
-                            if (productsBean.getProductgst() != null && productsBean.getProductvat() != null) {
-
-
-                                taxes = String.valueOf(Double.parseDouble(productsBean.getProductgst())
-                                        + Double.parseDouble(productsBean.getProductvat()));
-                            } else {
-                                taxes = "0.00%";
-                            }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }*/
 
                         rate = productsBean.getProductRatePerUnit();
 
@@ -391,9 +405,13 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                             Double gst = 0.0, vat = 0.0;
                             if (productsBean.getProductgst() != null) {
                                 gst = Double.parseDouble(productsBean.getProductgst());
+                            } else {
+                                gst = mDBHelper.getGSTByProductId(productsBean.getProductId());
                             }
                             if (productsBean.getProductvat() != null) {
                                 vat = Double.parseDouble(productsBean.getProductvat());
+                            } else {
+                                vat = mDBHelper.getVATByProductId(productsBean.getProductId());
                             }
                             taxes = gst + vat;
                         } catch (Exception e) {
@@ -409,21 +427,6 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                         double taxValue1 = taxes / 100;
                         taxvalue = quantity * sumRate * taxValue1; // prodQuantity * sumRate*(taxSumAmount/100)
 
-//                        try {
-//                            per = taxes / 100; // Added extra...
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                        try {
-//                            ratetax = rate * per;
-//
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                        totalRate = String.valueOf((rate - ratetax));
-//                        mrp = (Double.parseDouble(totalRate));
-//                        double qty = Double.parseDouble(String.format("%.3f", productsBean.getSelectedQuantity()));
-//                        double amount = Double.parseDouble(totalRate) * productsBean.getSelectedQuantity();
                         double salevalue = productsBean.getSelectedQuantity() * sumRate;
                         Double sbT = value + taxvalue;
                         subtotal = Utility.getFormattedCurrency(salevalue); // instead of sbT -- salevalue
@@ -444,19 +447,6 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                         temp[6] = String.valueOf(taxes);
                         // temp[11]=id;
                         selectedList.add(temp);
-
-                        Log.i("selectedlist11", selectedList.size() + "");
-//                        System.out.println("NAME::: "+ name + "\n");
-//                        System.out.println("QUAN::: "+ quantity + "\n");
-//                        System.out.println("MRP::: "+ mrp + "\n");
-//                        System.out.println("SUBTOTAL::: "+ subtotal + "\n");
-//                        System.out.println("TAXMAOUNT::: "+ taxAmount + "\n");
-//                        System.out.println("HSSNNUM::: "+ hssnnumber + "\n");
-//                        System.out.println("CGST::: "+ cgst + "\n");
-//                        System.out.println("SGST::: "+ sgst + "\n");
-//                        System.out.println("PROCODE::: "+ productsBean.getProductCode() + "\n");
-//                        System.out.println("PROUOM::: "+ productsBean.getProductUOM() + "\n");
-//                        System.out.println("TAXES::: "+ taxes + "\n");
                     }
                 }
             }

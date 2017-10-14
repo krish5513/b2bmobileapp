@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
@@ -28,12 +29,14 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
     double taxes;
     String totalRate = "";
     double rate, ratetax, taxvalue;
+    private DBHelper mDBHelper;
 
     public TDCSalesPreviewAdapter(Context ctxt, TDCSales_Preview_PrintActivity TDCSales_preview_printActivity, List<ProductsBean> productsList) {
         this.ctxt = ctxt;
         this.activity = TDCSales_preview_printActivity;
         this.mInflater = LayoutInflater.from(activity);
         this.selectedProductsList = (ArrayList<ProductsBean>) productsList;
+        this.mDBHelper = new DBHelper(activity);
     }
 
     private class TDCSalesPreviewViewHolder {
@@ -85,16 +88,24 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
 
         if (productBean.getControlCode() != null) {
             salesPreviewViewHolder.hssn_number.setText(productBean.getControlCode());
+        } else if (mDBHelper.getHSSNNUMBERByProductId(productBean.getProductId()).length() > 0) {
+            salesPreviewViewHolder.hssn_number.setText(mDBHelper.getHSSNNUMBERByProductId(productBean.getProductId()));
         } else {
             salesPreviewViewHolder.hssn_number.setText("-");
         }
         if (productBean.getProductgst() != null) {
             salesPreviewViewHolder.cgst.setText(productBean.getProductgst() + "%");
+        } else if (mDBHelper.getGSTByProductId(productBean.getProductId()) > 0) {
+            String gst = String.valueOf(mDBHelper.getGSTByProductId(productBean.getProductId()));
+            salesPreviewViewHolder.cgst.setText(gst + "%");
         } else {
             salesPreviewViewHolder.cgst.setText("0.00%");
         }
         if (productBean.getProductvat() != null) {
             salesPreviewViewHolder.sgst.setText(productBean.getProductvat() + "%");
+        } else if (mDBHelper.getVATByProductId(productBean.getProductId()) > 0) {
+            String vat = String.valueOf(mDBHelper.getVATByProductId(productBean.getProductId()));
+            salesPreviewViewHolder.sgst.setText(vat + "%");
         } else {
             salesPreviewViewHolder.sgst.setText("0.00%");
         }
@@ -103,52 +114,31 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
             Double gst = 0.0, vat = 0.0;
             if (productBean.getProductgst() != null) {
                 gst = Double.parseDouble(productBean.getProductgst());
+            } else {
+                gst = mDBHelper.getGSTByProductId(productBean.getProductId());
             }
             if (productBean.getProductvat() != null) {
                 vat = Double.parseDouble(productBean.getProductvat());
+            } else {
+                vat = mDBHelper.getVATByProductId(productBean.getProductId());
             }
             taxes = gst + vat;
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-//        rate = productBean.getProductRatePerUnit();
-//        double per1 = 100 + taxes;
-//        double per = taxes / per1;
-//        try {
-//            ratetax = rate * per;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        totalRate = String.valueOf((rate - ratetax));
-//        salesPreviewViewHolder.order_preview_mrp.setText((Utility.getFormattedCurrency(Double.parseDouble(totalRate))));
-//        double qty = Double.parseDouble(String.format("%.3f", productBean.getSelectedQuantity()));
-//        double salevalue = qty * Double.parseDouble(totalRate);
-//        try {
-//            taxvalue = salevalue * per;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         double unitPrice = productBean.getProductRatePerUnit();
-        System.out.println("ADAPTER Unite Price IS::: " + unitPrice);
-
-        System.out.println("ADAPTER TAX SUM IS::: " + taxes);
 
         double prodQuantity = productBean.getSelectedQuantity();
-        System.out.println("ADAPTER PROD SELCTED QUA IS::: " + prodQuantity);
 
         double sumRate1 = 100 + taxes;
 
         double sumRate = (unitPrice / sumRate1) * 100; // ((unitPrice/100+taxSumAmount))*100
-        System.out.println("ADAPTER SUM RATE IS::: " + sumRate);
 
         double salevalue = prodQuantity * sumRate; // prodQuantity * sumRate
-        System.out.println("ADAPTER VALUE IS::: " + salevalue);
 
         double taxValue1 = taxes / 100;
         taxvalue = prodQuantity * sumRate * taxValue1; // prodQuantity * sumRate*(taxSumAmount/100)
-        System.out.println("ADAPTER TAX VALUE IS::: " + taxvalue);
 
         salesPreviewViewHolder.order_preview_mrp.setText((Utility.getFormattedCurrency(sumRate)));
 
