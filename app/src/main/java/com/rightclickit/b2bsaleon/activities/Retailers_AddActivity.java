@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,6 +54,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -117,7 +119,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             routeCodesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
 
 
-       /*     ArrayList<String> stringArray = new ArrayList<String>();
+            ArrayList<String> stringArray = new ArrayList<String>();
 
             for(int i = 0, count = routeCodesArray.length(); i< count; i++)
             {
@@ -126,9 +128,8 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                     stringArray.add(jsonObject.toString());
 
             }
-*/
 
-            /*List<String> list = new ArrayList<String>();
+            List<String> list = new ArrayList<String>();
             for(int i = 0; i < routeCodesArray.length(); i++){
                 list.add(routeCodesArray.getJSONObject(i).getString("route_id"));
             }
@@ -141,7 +142,6 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout
                     .simple_spinner_dropdown_item);
             paymentTypeSpinner.setAdapter(spinnerArrayAdapter);
-*/
 
 
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.retailer_map_fragment);
