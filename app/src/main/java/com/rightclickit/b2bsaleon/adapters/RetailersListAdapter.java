@@ -91,7 +91,7 @@ public class RetailersListAdapter extends BaseAdapter {
         final TDCCustomer currentRetailer = getItem(position);
 
         retailersViewHolder.retailer_id.setText(String.format("R%05d", currentRetailer.getId()));
-        retailersViewHolder.retailer_name.setText(currentRetailer.getName());
+        retailersViewHolder.retailer_name.setText(currentRetailer.getBusinessName());
         retailersViewHolder.retailer_mobile_no.setText(currentRetailer.getMobileNo());
 
         if (privilegeActionsData.contains("List_Info")) {

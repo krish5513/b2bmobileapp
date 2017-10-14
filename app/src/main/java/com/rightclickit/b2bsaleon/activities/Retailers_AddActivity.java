@@ -13,13 +13,13 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,17 +40,20 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
-import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.services.SyncTDCCustomersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -72,6 +76,9 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     private DBHelper mDBHelper;
     private TDCCustomer customer;
     private boolean isCameFromRetailersList = false;
+    Spinner paymentTypeSpinner;
+
+    private JSONArray routeCodesArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +107,42 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             mobile_no = (EditText) findViewById(R.id.retailer_mobile_no);
             business_name = (EditText) findViewById(R.id.retailer_business_name);
             address = (EditText) findViewById(R.id.retailer_address);
+            paymentTypeSpinner = (Spinner) findViewById(R.id.paymentTypeSpinner);
             shop_image = (ImageView) findViewById(R.id.retailer_shop_image);
             retailer_add_footer = (LinearLayout) findViewById(R.id.retailer_add_footer);
+
+            HashMap<String, String> userRouteIds = mDBHelper.getUserRouteIds();
+
+
+            routeCodesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
+
+
+       /*     ArrayList<String> stringArray = new ArrayList<String>();
+
+            for(int i = 0, count = routeCodesArray.length(); i< count; i++)
+            {
+
+                    JSONObject jsonObject = routeCodesArray.getJSONObject(i);
+                    stringArray.add(jsonObject.toString());
+
+            }
+*/
+
+            /*List<String> list = new ArrayList<String>();
+            for(int i = 0; i < routeCodesArray.length(); i++){
+                list.add(routeCodesArray.getJSONObject(i).getString("route_id"));
+            }
+
+
+
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
+                    (this, android.R.layout.simple_spinner_item,
+                            list); //selected item will look like a spinner set from XML
+            spinnerArrayAdapter.setDropDownViewResource(android.R.layout
+                    .simple_spinner_dropdown_item);
+            paymentTypeSpinner.setAdapter(spinnerArrayAdapter);
+*/
+
 
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.retailer_map_fragment);
             mapFragment.getMapAsync(this);
@@ -491,12 +532,12 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
                                 address.setText(currentAddress);
                             } else {
-                                address.setText("Unable to get your address. Please enter it manually.");
+                                address.setText(" ");
                             }
                         } catch (IOException e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
-                            address.setText("Unable to get your address. Please enter it manually.");
+                            address.setText(" ");
                         }
                     }
                 });
