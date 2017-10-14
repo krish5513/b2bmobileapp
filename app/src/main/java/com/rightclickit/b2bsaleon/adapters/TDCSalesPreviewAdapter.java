@@ -85,14 +85,16 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
         salesPreviewViewHolder.order_preview_product_name.setText(productBean.getProductTitle());
         salesPreviewViewHolder.order_preview_quantity.setText(String.format("%.3f", productBean.getSelectedQuantity()));
 
-
         if (productBean.getControlCode() != null) {
             salesPreviewViewHolder.hssn_number.setText(productBean.getControlCode());
-        } else if (mDBHelper.getHSSNNUMBERByProductId(productBean.getProductId()).length() > 0) {
-            salesPreviewViewHolder.hssn_number.setText(mDBHelper.getHSSNNUMBERByProductId(productBean.getProductId()));
+        } else if (mDBHelper.getHSSNNUMBERByProductId(productBean.getProductId()) != null) {
+            if (mDBHelper.getHSSNNUMBERByProductId(productBean.getProductId()).length() > 0) {
+                salesPreviewViewHolder.hssn_number.setText(mDBHelper.getHSSNNUMBERByProductId(productBean.getProductId()));
+            }
         } else {
             salesPreviewViewHolder.hssn_number.setText("-");
         }
+
         if (productBean.getProductgst() != null) {
             salesPreviewViewHolder.cgst.setText(productBean.getProductgst() + "%");
         } else if (mDBHelper.getGSTByProductId(productBean.getProductId()) > 0) {

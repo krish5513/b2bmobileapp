@@ -97,12 +97,12 @@ public class TDCSalesListAdapter extends BaseAdapter {
                 public void onClick(View view) {
                     Intent intent = new Intent(activity, TDCSales_Preview_PrintActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("incid", String.valueOf(position+1));
+                    bundle.putString("incid", String.valueOf(position + 1));
                     bundle.putSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
                     intent.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_TDC_SALES_LIST);
                     intent.putExtras(bundle);
                     activity.startActivity(intent);
-                    //activity.finish();
+                    activity.finish();
                 }
             });
 
