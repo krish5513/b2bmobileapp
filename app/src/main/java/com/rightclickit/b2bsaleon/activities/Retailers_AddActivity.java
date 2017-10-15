@@ -9,8 +9,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,6 +47,7 @@ import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -57,7 +57,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class Retailers_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
     private Context applicationContext, activityContext;
@@ -81,6 +80,9 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     Spinner paymentTypeSpinner;
     private String mRouteName = "", mRegionName = "", mOfficeName = "", mRouteCode = "";
     private JSONArray routeCodesArray;
+    String selected_val;
+    ArrayList<String> idsArray = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,70 +115,34 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             shop_image = (ImageView) findViewById(R.id.retailer_shop_image);
             retailer_add_footer = (LinearLayout) findViewById(R.id.retailer_add_footer);
 
+
             HashMap<String, String> userRouteIds = mDBHelper.getUserRouteIds();
 
 
-            routeCodesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
-            System.out.println("ROUTE CODE ARRAY:: "+ routeCodesArray);
+            try {
+                routeCodesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            System.out.println("ROUTE CODE ARRAY:: " + routeCodesArray);
 
             ArrayList<String> stringArray = new ArrayList<String>();
 
-            for(int i = 0, count = routeCodesArray.length(); i< count; i++)
-            {
 
-                    stringArray.add(routeCodesArray.get(i).toString());
-
-            }
-            System.out.println("ROUTE JSON OBJ 22:: "+ stringArray.toString());
-
-
-
-
-
-            HashMap<String, String> userMapData = mDBHelper.getUsersData();
-
-            JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
-            JSONArray routesArray = routesJob.getJSONArray("routeArray");
-
-            for (int l = 0; l < routesArray.length(); l++) {
-                // System.out.println("The Route Id IS::: " + routesArray.get(l).toString());
-
-                List<String> routesDataList = mDBHelper.getRouteDataByRouteId(routesArray.get(l).toString());
-
-                for (int k = 0; k < routesDataList.size(); k++) {
-                    //System.out.println(" LOOPPPPPPPPPPPPPP " + k);
-                    if (routesDataList.get(k) != null) {
-                        switch (k) {
-                            case 1:
-                                if (mRouteName.equals("")) {
-                                    mRouteName = routesDataList.get(1);
-                                } else if (!routesDataList.get(1).toString().equals(mRouteName)) {
-                                    mRouteName = mRouteName + "," + routesDataList.get(1);
-                                }
-                                break;
-                            case 2:
-                                if (mRegionName.equals("")) {
-                                    mRegionName = routesDataList.get(2);
-                                } else if (!routesDataList.get(2).toString().equals(mRegionName)) {
-                                    mRegionName = mRegionName + "," + routesDataList.get(2);
-                                }
-                                //  mRegionName = mRegionName + routesDataList.get(2);
-                                break;
-                            case 3:
-                                if (mOfficeName.equals("")) {
-                                    mOfficeName = routesDataList.get(3);
-                                } else if (!routesDataList.get(3).toString().equals(mOfficeName)) {
-                                    mOfficeName = mOfficeName + "," + routesDataList.get(3);
-                                }
-                                //mOfficeName = mOfficeName + routesDataList.get(3);
-                                break;
-
-                        }
-                    }
+            for (int i = 0, count = routeCodesArray.length(); i < count; i++) {
+                List<String> routesDataList = null;
+                try {
+                    idsArray.add(routeCodesArray.get(i).toString());
+                    routesDataList = mDBHelper.getRouteDataByRouteId(routeCodesArray.get(i).toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
+                System.out.println("ROUTE JSON OBJ 22:: " + routesDataList.toString());
+
+
+                stringArray.add(routesDataList.get(1).toString());
             }
-
-
+            System.out.println("ROUTE JSON OBJ 22:: " + stringArray.toString());
 
 
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
@@ -184,7 +150,21 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                             stringArray); //selected item will look like a spinner set from XML
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout
                     .simple_spinner_dropdown_item);
+            paymentTypeSpinner.setPrompt("Select routecode");
             paymentTypeSpinner.setAdapter(spinnerArrayAdapter);
+
+            paymentTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    selected_val = idsArray.get(i).toString();
+                    System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
 
 
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.retailer_map_fragment);
@@ -435,6 +415,8 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             customer.setMobileNo(mobileNo);
             customer.setBusinessName(businessName);
             customer.setAddress(retailerAddress);
+            customer.setRoutecode(selected_val);
+
 
             if (latitude > 0)
                 customer.setLatitude(String.valueOf(latitude));
@@ -550,9 +532,9 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                         googleMap.clear();
                         Marker marker = googleMap.addMarker(new MarkerOptions().position(loc));
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
-                        Geocoder geocoder = new Geocoder(activityContext, Locale.getDefault());
+                      //  Geocoder geocoder = new Geocoder(activityContext, Locale.getDefault());
 
-                        try {
+                        /*try {
                             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
                             if (addresses != null && addresses.size() > 0) {
@@ -581,7 +563,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                             address.setText(" ");
-                        }
+                        }*/
                     }
                 });
             }

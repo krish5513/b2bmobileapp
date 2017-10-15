@@ -17,6 +17,7 @@ public class AgentsBean {
     private String mAgentVerifycode;
     private String mAgentDelete;
     private String mAgentDeviceSync;
+    private String mSelectedRouteName;
 
     public String getmAgentDeviceSync() {
         return mAgentDeviceSync;
@@ -315,4 +316,11 @@ public class AgentsBean {
     private String mphoneNO;
     private String maddress;
 
+    public String getmSelectedRouteName() {
+        return mSelectedRouteName;
+    }
+
+    public void setmSelectedRouteName(String mSelectedRouteName) {
+        this.mSelectedRouteName = mSelectedRouteName;
+    }
 }

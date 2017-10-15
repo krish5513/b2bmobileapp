@@ -95,8 +95,14 @@ public class SyncTDCCustomersService extends Service {
 
                 String createdTime = Utility.formatDate(new Date(), Constants.SEND_DATA_TO_SERVICE_DATE_TIME_FORMAT);
 
+
+                String rId = currentTDCCustomer.getRoutecode();
+                System.out.println("AGENT SEL R ID:: "+ rId);
+                JSONArray agentRouteArray = new JSONArray(rId);
+
+
                 JSONObject requestObj = new JSONObject();
-                requestObj.put("route_id", routeCodesArray);
+                requestObj.put("route_id", agentRouteArray);
                 requestObj.put("stakeholder_id", (currentTDCCustomer.getCustomerType() == 1 ? retailerStakeTypeId : consumerStakeTypeId));
                 requestObj.put("first_name", currentTDCCustomer.getName());
                 requestObj.put("last_name", currentTDCCustomer.getBusinessName());

@@ -10,26 +10,27 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,11 +46,11 @@ import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentsModel;
-
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -62,7 +63,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -88,8 +88,12 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
     Location presentLocation = null;
     private AgentsActivity activity;
     AgentsModel agentsmodel;
+    Spinner paymentTypeSpinner;
     private Context applicationContext, activityContext;
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
+    private JSONArray routeCodesArray;
+    String selected_val;
+    ArrayList<String> idsArray = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,13 +123,16 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         mobile = (EditText) findViewById(R.id.mobile_no);
         address = (EditText) findViewById(R.id.uid_no);
         save = (TextView) findViewById(R.id.ts_dispatch_save);
+        paymentTypeSpinner = (Spinner) findViewById(R.id.paymentTypeSpinner);
         Bundle extras = getIntent().getExtras();
         //  Bitmap avatarbmp = (Bitmap) extras.getParcelable("avatar");
 
         //  imageview.setImageBitmap(avatarbmp);
         db = new DBHelper(getApplicationContext());
         agentsmodel = new AgentsModel(activityContext, this);
-        System.out.println("STAKE ID IS::: "+ db.getStakeTypeIdByStakeType("2"));
+
+
+        System.out.println("STAKE ID IS::: " + db.getStakeTypeIdByStakeType("2"));
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFrag);
         mapFragment.getMapAsync(this);
@@ -135,6 +142,59 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 selectImage();
             }
         });
+
+
+        HashMap<String, String> userRouteIds = db.getUserRouteIds();
+
+
+        try {
+            routeCodesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("ROUTE CODE ARRAY:: " + routeCodesArray);
+
+        ArrayList<String> stringArray = new ArrayList<String>();
+
+
+        for (int i = 0, count = routeCodesArray.length(); i < count; i++) {
+            List<String> routesDataList = null;
+            try {
+                idsArray.add(routeCodesArray.get(i).toString());
+                routesDataList = db.getRouteDataByRouteId(routeCodesArray.get(i).toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            System.out.println("ROUTE JSON OBJ 22:: " + routesDataList.toString());
+
+
+            stringArray.add(routesDataList.get(1).toString());
+        }
+        System.out.println("ROUTE JSON OBJ 22:: " + stringArray.toString());
+
+
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_spinner_item,
+                        stringArray); //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout
+                .simple_spinner_dropdown_item);
+        paymentTypeSpinner.setPrompt("Select routecode");
+        paymentTypeSpinner.setAdapter(spinnerArrayAdapter);
+
+        paymentTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selected_val = idsArray.get(i).toString();
+                System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,7 +279,9 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 agentsBean.setmAgentDeviceSync("0");
                 agentsBean.setmAgentAccessDevice("NO");
                 agentsBean.setmAgentBackUp("0");
-                agentsBean.setmAgentRouteId(routesArray.toString());
+               // agentsBean.setmAgentRouteId(routesArray.toString());
+                agentsBean.setmAgentRouteId(selected_val);
+               // agentsBean.setmSelectedRouteName(selected_val);
                 mAgentsBeansList.add(agentsBean);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -228,9 +290,9 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
             synchronized (this) {
                 if (new NetworkConnectionDetector(Agents_AddActivity.this).isNetworkConnected()) {
                     //agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
-                    agentsmodel.customerAdd(mAgentsBeansList,db.getStakeTypeIdByStakeType("2"));
+                    agentsmodel.customerAdd(mAgentsBeansList, db.getStakeTypeIdByStakeType("2"));
                 }
-                db.insertAgentDetails(mAgentsBeansList,userid);
+                db.insertAgentDetails(mAgentsBeansList, userid);
                 Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
                 synchronized (this) {
                     Intent i = new Intent(Agents_AddActivity.this, AgentsActivity.class);
@@ -400,9 +462,9 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 marker = googlemap.addMarker(new MarkerOptions().position(loc));
                 googlemap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
                 // locationText.setText("You are at [" + longitude + " ; " + latitude + " ]");
-                Geocoder geocoder = new Geocoder(Agents_AddActivity.this, Locale.ENGLISH);
+                // Geocoder geocoder = new Geocoder(Agents_AddActivity.this, Locale.ENGLISH);
 
-                try {
+                /*try {
                     List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
 
                     if (addresses != null && addresses.size() > 0) {
@@ -415,15 +477,15 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                         address.setText(strReturnedAddress.toString());
 
                     } else {
-                        address.setText("No Address returned!");
+                        address.setText("");
                         //  address.setText(strReturnedAddress.toString());
                     }
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
-                    address.setText("Canont get Address!");
+                    address.setText("");
                 }
-
+*/
 
                 //get current address by invoke an AsyncTask object
                 // new GetAddressTask(Agents_AddActivity.this).execute(String.valueOf(latitude), String.valueOf(longitude));
@@ -445,8 +507,8 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
-        menu.findItem( R.id.Add).setVisible(false);
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.Add).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(true);
         menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }

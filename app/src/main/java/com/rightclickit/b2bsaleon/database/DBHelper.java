@@ -249,6 +249,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_CUSTOMER_SHOP_IMAGE = "tdc_customer_shop_image";
     private final String KEY_TDC_CUSTOMER_IS_ACTIVE = "tdc_customer_is_active";
     private final String KEY_TDC_CUSTOMER_UPLOAD_STATUS = "tdc_customer_upload_status";
+    private final String KEY_TDC_CUSTOMER_ROUTECODE = "tdc_customer_routecode";
     private final String KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS = "tdc_customer_shop_image_upload_status";
 
     // Column names for Special price
@@ -549,7 +550,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // TDC Customers Table Create Statement
     private final String CREATE_TDC_CUSTOMERS_TABLE = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_TDC_CUSTOMERS + "(" + KEY_TDC_CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_CUSTOMER_USER_ID + " VARCHAR, " + KEY_TDC_CUSTOMER_TYPE + " INTEGER, "
+            + TABLE_TDC_CUSTOMERS + "(" + KEY_TDC_CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_CUSTOMER_USER_ID + " VARCHAR, " + KEY_TDC_CUSTOMER_ROUTECODE + " VARCHAR, " + KEY_TDC_CUSTOMER_TYPE + " INTEGER, "
             + KEY_TDC_CUSTOMER_NAME + " VARCHAR, " + KEY_TDC_CUSTOMER_MOBILE_NO + " VARCHAR, " + KEY_TDC_CUSTOMER_BUSINESS_NAME + " VARCHAR, "
             + KEY_TDC_CUSTOMER_ADDRESS + " TEXT, " + KEY_TDC_CUSTOMER_LATITUDE + " TEXT, " + KEY_TDC_CUSTOMER_LONGITUDE + " TEXT, " + KEY_TDC_CUSTOMER_SHOP_IMAGE + " VARCHAR, "
             + KEY_TDC_CUSTOMER_IS_ACTIVE + " INTEGER DEFAULT 1, " + KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS + " INTEGER DEFAULT 0, " + KEY_TDC_CUSTOMER_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
@@ -2006,6 +2007,8 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_CUSTOMER_LATITUDE, customer.getLatitude());
             values.put(KEY_TDC_CUSTOMER_LONGITUDE, customer.getLongitude());
             values.put(KEY_TDC_CUSTOMER_SHOP_IMAGE, customer.getShopImage());
+            values.put(KEY_TDC_CUSTOMER_ROUTECODE, customer.getRoutecode());
+
             values.put(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS, customer.getIsShopImageUploaded());
 
             customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
@@ -2046,6 +2049,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     customer.setShopImage(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE)));
                     customer.setIsActive(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_IS_ACTIVE)));
                     customer.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_UPLOAD_STATUS)));
+                    customer.setRoutecode(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_ROUTECODE)));
                     customer.setIsShopImageUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS)));
 
                     allTDCCustomersList.add(customer);
@@ -2090,6 +2094,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     customer.setShopImage(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE)));
                     customer.setIsActive(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_IS_ACTIVE)));
                     customer.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_UPLOAD_STATUS)));
+                    customer.setRoutecode(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_ROUTECODE)));
                     customer.setIsShopImageUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS)));
 
                     allRetailersList.add(customer);
@@ -2132,6 +2137,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     customer.setShopImage(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE)));
                     customer.setIsActive(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_IS_ACTIVE)));
                     customer.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_UPLOAD_STATUS)));
+                    customer.setRoutecode(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_ROUTECODE)));
                     customer.setIsShopImageUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS)));
 
                     allTDCCustomersList.add(customer);

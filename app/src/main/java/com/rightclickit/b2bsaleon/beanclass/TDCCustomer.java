@@ -16,6 +16,16 @@ public class TDCCustomer implements Serializable {
     private String address;
     private String latitude;
     private String longitude;
+
+    public String getRoutecode() {
+        return routecode;
+    }
+
+    public void setRoutecode(String routecode) {
+        this.routecode = routecode;
+    }
+
+    private String routecode;
     private String shopImage;
     private int isActive;
     private int isUploaded;

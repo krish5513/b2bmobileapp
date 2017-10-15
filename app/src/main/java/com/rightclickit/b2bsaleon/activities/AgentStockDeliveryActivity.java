@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -21,10 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentStockAdapter;
 import com.rightclickit.b2bsaleon.adapters.AgentStockDeliveryAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
@@ -33,10 +30,8 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.AgentStockListener;
 import com.rightclickit.b2bsaleon.models.AgentsStockModel;
 import com.rightclickit.b2bsaleon.services.SyncAgentStockDeliveriesService;
-import com.rightclickit.b2bsaleon.services.SyncTripsheetDeliveriesService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
-import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -321,7 +316,6 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
         }
         if (selectedProductsStockListHashMap.size() > 0) {
             synchronized (this) {
-                System.out.println("IN 11111111111111");
                 for (Map.Entry<String, String> productsBeanEntry : selectedProductsStockListHashMap.entrySet()) {
                     productIdsList.add(productsBeanEntry.getKey());
                     productValuesList.add(productsBeanEntry.getValue());
@@ -329,11 +323,8 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
                 }
             }
             synchronized (this) {
-                System.out.println("IN 22222222222222222:::" + productIdsList.size());
                 mDBHelper.updateAgentStockAfterAgentDeliverFromStock(mAgentId, productIdsList, productValuesList);
             }
-
-            Toast.makeText(activityContext, "Agent Stock Updated Successfully.", Toast.LENGTH_SHORT).show();
 
             synchronized (this) {
                 if (selectedProductsStockListHashMapProducts.size() > 0) {
@@ -384,6 +375,47 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
                     startService(syncTripSheetDeliveriesServiceIntent);
                 }
             }
+            showAlertDialogToGoBack();
+        }
+    }
+
+    protected void showAlertDialogToGoBack() {
+        try {
+            AlertDialog alertDialog = null;
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AgentStockDeliveryActivity.this, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle("User Action!");
+            alertDialogBuilder.setMessage("Stock details updated successfully..");
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    Intent intent = new Intent(AgentStockDeliveryActivity.this, AgentStockActivity.class);
+                    intent.putExtra("agentId", mAgentId);
+                    intent.putExtra("agentCode", mAgentCode);
+                    intent.putExtra("agentName", mAgentName);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button cancelButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            if (cancelButton != null)
+                cancelButton.setTextColor(ContextCompat.getColor(AgentStockDeliveryActivity.this, R.color.alert_dialog_color_accent));
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

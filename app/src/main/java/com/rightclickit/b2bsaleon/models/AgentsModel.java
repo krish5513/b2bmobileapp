@@ -137,6 +137,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                 JSONObject paramsc = new JSONObject();
 
                 String rId = mAgentsBeansList1.get(0).getmAgentRouteId();
+                System.out.println("AGENT SEL R ID:: "+ rId);
                 JSONArray agentRouteArray = new JSONArray(rId);
                 paramsc.put("route_id", agentRouteArray);
 
@@ -163,8 +164,8 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                 paramsc.put("back_up", mAgentsBeansList1.get(0).getmAgentBackUp());
 
 
-                //System.out.println("THE ADD URL IS::: " + customerAdd);
-                //System.out.println("THE ADD DATA IS::: " + paramsc.toString());
+               // System.out.println("THE ADD URL IS::: " + customerAdd);
+               // System.out.println("THE ADD DATA IS::: " + paramsc.toString());
 
                 AsyncRequest loginRequest = new AsyncRequest(context, this, customerAdd, AsyncRequest.MethodType.POST, paramsc);
                 loginRequest.execute();
