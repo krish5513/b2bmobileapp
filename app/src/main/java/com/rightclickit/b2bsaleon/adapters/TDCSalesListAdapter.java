@@ -2,6 +2,8 @@ package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,10 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.TDCSalesListActivity;
+import com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
@@ -30,6 +34,7 @@ public class TDCSalesListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private MMSharedPreferences sp;
     private List<TDCSaleOrder> allTDCSalesOrders, filteredTDCSalesOrders;
+    private DBHelper mDBHelper;
 
     public TDCSalesListAdapter(Context ctxt, TDCSalesListActivity salesListActivity) {
         this.context = ctxt;
@@ -37,6 +42,7 @@ public class TDCSalesListAdapter extends BaseAdapter {
         this.mInflater = LayoutInflater.from(activity);
         this.filteredTDCSalesOrders = new ArrayList<>();
         sp=new MMSharedPreferences(context);
+        this.mDBHelper = new DBHelper(activity);
     }
 
     private class TDCSalesListViewHolder {
@@ -79,7 +85,7 @@ public class TDCSalesListAdapter extends BaseAdapter {
                 tdcSalesListViewHolder.tdc_sale_order_amount = (TextView) convertView.findViewById(R.id.tdc_sale_order_amount);
                 tdcSalesListViewHolder.tdc_sale_order_items_count = (TextView) convertView.findViewById(R.id.tdc_sale_order_items_count);
                 tdcSalesListViewHolder.customer = (TextView) convertView.findViewById(R.id.name);
-                //tdcSalesListViewHolder.view_button = (Button) convertView.findViewById(R.id.tdc_sale_order_btn_view);
+                tdcSalesListViewHolder.view_button = (Button) convertView.findViewById(R.id.tdc_sale_order_btn_view);
 
                 convertView.setTag(tdcSalesListViewHolder);
             } else {
@@ -92,9 +98,10 @@ public class TDCSalesListAdapter extends BaseAdapter {
             tdcSalesListViewHolder.tdc_sale_order_date.setText(Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT));
             tdcSalesListViewHolder.tdc_sale_order_amount.setText(Utility.getFormattedCurrency(currentOrder.getOrderSubTotal()));
             tdcSalesListViewHolder.tdc_sale_order_items_count.setText(Utility.getFormattedNumber(currentOrder.getNoOfItems()));
-            tdcSalesListViewHolder.customer.setText(sp.getString("CustomerName"));
+            String name = mDBHelper.getNameById(currentOrder.getSelectedCustomerUserId(), currentOrder.getSelectedCustomerType());
+            tdcSalesListViewHolder.customer.setText(name);
 
-         /*   tdcSalesListViewHolder.view_button.setOnClickListener(new View.OnClickListener() {
+            tdcSalesListViewHolder.view_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(activity, TDCSales_Preview_PrintActivity.class);
@@ -107,7 +114,7 @@ public class TDCSalesListAdapter extends BaseAdapter {
                     activity.finish();
                 }
             });
-*/
+
         } catch (Exception e) {
             e.printStackTrace();
         }

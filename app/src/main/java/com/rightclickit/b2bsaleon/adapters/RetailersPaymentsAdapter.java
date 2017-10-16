@@ -16,7 +16,10 @@ import com.rightclickit.b2bsaleon.activities.Retailers_PaymentsActivity;
 import com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.Utility;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,7 @@ public class RetailersPaymentsAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater mInflater;
     private List<TDCSaleOrder> allTDCSalesOrders, filteredTDCSalesOrders;
+    private DBHelper mDBHelper;
     ;
 
     public RetailersPaymentsAdapter(Context ctxt, Retailers_PaymentsActivity salesListActivity, List<TDCSaleOrder> ordersList) {
@@ -40,10 +44,11 @@ public class RetailersPaymentsAdapter extends BaseAdapter {
         this.allTDCSalesOrders = ordersList;
         this.filteredTDCSalesOrders = new ArrayList<>();
         this.filteredTDCSalesOrders.addAll(allTDCSalesOrders);
+        this.mDBHelper = new DBHelper(activity);
     }
 
     private class RetailerPaymentsListViewHolder {
-        TextView tdc_sale_bill_no, tdc_sale_order_date, tdc_sale_order_amount, tdc_sale_order_items_count;
+        TextView tdc_sale_bill_no, tdc_sale_order_date, tdc_sale_order_amount, tdc_sale_order_items_count,name;
         Button view_button;
     }
 
@@ -81,7 +86,8 @@ public class RetailersPaymentsAdapter extends BaseAdapter {
                 paymentsListViewHolder.tdc_sale_order_date = (TextView) convertView.findViewById(R.id.tdc_sale_order_date);
                 paymentsListViewHolder.tdc_sale_order_amount = (TextView) convertView.findViewById(R.id.tdc_sale_order_amount);
                 paymentsListViewHolder.tdc_sale_order_items_count = (TextView) convertView.findViewById(R.id.tdc_sale_order_items_count);
-               // paymentsListViewHolder.view_button = (Button) convertView.findViewById(R.id.tdc_sale_order_btn_view);
+                paymentsListViewHolder.view_button = (Button) convertView.findViewById(R.id.tdc_sale_order_btn_view);
+                paymentsListViewHolder.name = (TextView) convertView.findViewById(R.id.name);
 
                 convertView.setTag(paymentsListViewHolder);
             } else {
@@ -94,7 +100,8 @@ public class RetailersPaymentsAdapter extends BaseAdapter {
             paymentsListViewHolder.tdc_sale_order_date.setText(Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT));
             paymentsListViewHolder.tdc_sale_order_amount.setText(Utility.getFormattedCurrency(currentOrder.getOrderSubTotal()));
             paymentsListViewHolder.tdc_sale_order_items_count.setText(Utility.getFormattedNumber(currentOrder.getNoOfItems()));
-
+            String name = mDBHelper.getNameById(currentOrder.getSelectedCustomerUserId(),currentOrder.getSelectedCustomerType());
+            paymentsListViewHolder.name.setText(name);
             paymentsListViewHolder.view_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
