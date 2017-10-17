@@ -243,7 +243,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(getApplicationContext(),"print",Toast.LENGTH_LONG).show();
-                    int pageheight = 400 + selectedList.size() * 150;
+                    int pageheight = 430 + selectedList.size() * 150;
                     Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                     Canvas canvas = new Canvas(bmOverlay);
                     canvas.drawColor(Color.WHITE);

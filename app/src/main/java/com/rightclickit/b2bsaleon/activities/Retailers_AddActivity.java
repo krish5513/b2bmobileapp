@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -128,19 +129,19 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
             ArrayList<String> stringArray = new ArrayList<String>();
 
-
-            for (int i = 0, count = routeCodesArray.length(); i < count; i++) {
+            stringArray.add(0,"Select Routecode");
+            for (int i = 1, count = routeCodesArray.length(); i <= count; i++) {
                 List<String> routesDataList = null;
                 try {
-                    idsArray.add(routeCodesArray.get(i).toString());
-                    routesDataList = mDBHelper.getRouteDataByRouteId(routeCodesArray.get(i).toString());
+                    idsArray.add(routeCodesArray.get(i-1).toString());
+                    routesDataList = mDBHelper.getRouteDataByRouteId(routeCodesArray.get(i-1).toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 System.out.println("ROUTE JSON OBJ 22:: " + routesDataList.toString());
 
 
-                stringArray.add(routesDataList.get(1).toString());
+                stringArray.add(i, routesDataList.get(1).toString());
             }
             System.out.println("ROUTE JSON OBJ 22:: " + stringArray.toString());
 
@@ -150,14 +151,19 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                             stringArray); //selected item will look like a spinner set from XML
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout
                     .simple_spinner_dropdown_item);
-            paymentTypeSpinner.setPrompt("Select routecode");
+            //paymentTypeSpinner.setPrompt("Select routecode");
             paymentTypeSpinner.setAdapter(spinnerArrayAdapter);
 
             paymentTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    selected_val = idsArray.get(i).toString();
-                    System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
+                    Log.i("postion",i+"");
+                    if(i==0){
+
+                    }else{
+                        selected_val = idsArray.get(i-1).toString();
+                        System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
+                    }
                 }
 
                 @Override

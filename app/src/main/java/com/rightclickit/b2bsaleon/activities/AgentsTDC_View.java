@@ -215,7 +215,7 @@ public class AgentsTDC_View extends AppCompatActivity {
         ordersprint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int pageheight = 300 + selectedList.size() * 60;
+                int pageheight = 600 + selectedList.size() * 150;
                 Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawColor(Color.WHITE);

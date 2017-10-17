@@ -96,7 +96,6 @@
         <!--<item>Leakage</item>-->
     </string-array>
 
-
     <string-array name="mop_type">
         <item>Cash</item>
         <!--<item>Card</item>-->

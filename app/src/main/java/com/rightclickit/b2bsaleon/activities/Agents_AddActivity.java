@@ -152,25 +152,23 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("ROUTE CODE ARRAY:: " + routeCodesArray);
-
         ArrayList<String> stringArray = new ArrayList<String>();
 
-
-        for (int i = 0, count = routeCodesArray.length(); i < count; i++) {
+        stringArray.add(0,"Select Card");
+        for (int i = 1, count = routeCodesArray.length(); i <= count; i++) {
             List<String> routesDataList = null;
             try {
-                idsArray.add(routeCodesArray.get(i).toString());
-                routesDataList = db.getRouteDataByRouteId(routeCodesArray.get(i).toString());
+                idsArray.add(routeCodesArray.get(i-1).toString());
+                routesDataList = db.getRouteDataByRouteId(routeCodesArray.get(i-1).toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            System.out.println("ROUTE JSON OBJ 22:: " + routesDataList.toString());
 
 
-            stringArray.add(routesDataList.get(1).toString());
+
+            stringArray.add(i, routesDataList.get(1).toString());
         }
-        System.out.println("ROUTE JSON OBJ 22:: " + stringArray.toString());
+
 
 
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
@@ -178,15 +176,19 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                         stringArray); //selected item will look like a spinner set from XML
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout
                 .simple_spinner_dropdown_item);
-        paymentTypeSpinner.setPrompt("Select routecode");
+        //paymentTypeSpinner.setPrompt("Select routecode");
         paymentTypeSpinner.setAdapter(spinnerArrayAdapter);
 
         paymentTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selected_val = idsArray.get(i).toString();
-                System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
 
+                if(i==0){
+
+                }else{
+                    selected_val = idsArray.get(i-1).toString();
+                    System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
+                }
             }
 
             @Override
@@ -194,7 +196,6 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
 
             }
         });
-
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override

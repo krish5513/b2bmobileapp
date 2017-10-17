@@ -57,7 +57,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
 
     private String saleQunatity = "";
     private Map<String, String> saleQuantityListMap = new HashMap<String, String>();
-    private String customer = "";
+    private String customer = "",code="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
         try {
             applicationContext = getApplicationContext();
             activityContext = TDCSalesCustomerSelectionActivity.this;
+            mmSharedPreferences=new MMSharedPreferences(this);
 
             final ActionBar actionBar = getSupportActionBar();
             assert actionBar != null;
@@ -121,6 +122,18 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
                         currentOrder.setSelectedCustomerType(selectedCustomer.getCustomerType());
                         isCustomerSelected = true;
                         customer = selectedCustomer.getName();
+
+
+                        if (selectedCustomer.getCustomerType() == 1) {
+                            code=(String.format("R%05d", selectedCustomer.getId()));
+
+                        } else {
+                           code=(String.format("C%05d", selectedCustomer.getId()));
+
+                        }
+
+                        mmSharedPreferences.putString("CustomerName",customer);
+                        mmSharedPreferences.putString("CustomerCode",code);
 
                         showTDCSalesOrderPreview(null);
                     }
@@ -214,7 +227,8 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, TDCSalesActivity.class);
         intent.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER, currentOrder); // to handle back button
-        intent.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_SALEQUNATITY, saleQunatity); // to handle back button
+        intent.putExtra(Constants.BUNDLE_TDC_SALE_CURRENT_SALEQUNATITY, saleQunatity);
+        intent.putExtra("CustomerName", customer);// to handle back button
         startActivity(intent);
         finish();
     }

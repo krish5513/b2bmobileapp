@@ -138,7 +138,8 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
                 String rId = mAgentsBeansList1.get(0).getmAgentRouteId();
                 System.out.println("AGENT SEL R ID:: "+ rId);
-                JSONArray agentRouteArray = new JSONArray(rId);
+                JSONArray agentRouteArray = new JSONArray();
+                agentRouteArray.put(rId);
                 paramsc.put("route_id", agentRouteArray);
 
                 paramsc.put("first_name", mAgentsBeansList1.get(0).getmFirstname());

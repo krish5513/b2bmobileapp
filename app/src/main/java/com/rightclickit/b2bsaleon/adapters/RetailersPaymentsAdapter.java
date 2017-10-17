@@ -81,7 +81,7 @@ public class RetailersPaymentsAdapter extends BaseAdapter {
                 paymentsListViewHolder.tdc_sale_order_date = (TextView) convertView.findViewById(R.id.tdc_sale_order_date);
                 paymentsListViewHolder.tdc_sale_order_amount = (TextView) convertView.findViewById(R.id.tdc_sale_order_amount);
                 paymentsListViewHolder.tdc_sale_order_items_count = (TextView) convertView.findViewById(R.id.tdc_sale_order_items_count);
-                paymentsListViewHolder.view_button = (Button) convertView.findViewById(R.id.tdc_sale_order_btn_view);
+               // paymentsListViewHolder.view_button = (Button) convertView.findViewById(R.id.tdc_sale_order_btn_view);
 
                 convertView.setTag(paymentsListViewHolder);
             } else {

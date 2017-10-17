@@ -1,17 +1,15 @@
 package com.rightclickit.b2bsaleon.activities;
 
-import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,6 +63,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     private Map<String, String> previousselectedProductsStockListHashMap;
 
     private boolean isAscendingSort;
+    String str_selectedretailername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +146,8 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             // when you came back to this activity when you want to change your order, we are pre populating with previously selected values.
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
+
+
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER);
                 saleQuantity = bundle.getString(Constants.BUNDLE_TDC_SALE_CURRENT_SALEQUNATITY);
                 //System.out.println("TDC ACT SALE QUA==:: " + saleQuantity);
@@ -254,6 +255,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     Intent i = new Intent(TDCSalesActivity.this, TDCSalesListActivity.class);
+                    i.putExtra("CustomerName", str_selectedretailername);
                     startActivity(i);
                     finish();
                 }

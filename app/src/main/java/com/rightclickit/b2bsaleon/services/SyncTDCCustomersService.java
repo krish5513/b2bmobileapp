@@ -98,7 +98,8 @@ public class SyncTDCCustomersService extends Service {
 
                 String rId = currentTDCCustomer.getRoutecode();
                 System.out.println("AGENT SEL R ID:: "+ rId);
-                JSONArray agentRouteArray = new JSONArray(rId);
+                JSONArray agentRouteArray = new JSONArray();
+                agentRouteArray.put(rId);
 
 
                 JSONObject requestObj = new JSONObject();

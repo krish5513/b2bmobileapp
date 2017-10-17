@@ -2,8 +2,6 @@ package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +10,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity;
 import com.rightclickit.b2bsaleon.activities.TDCSalesListActivity;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
@@ -30,6 +28,7 @@ public class TDCSalesListAdapter extends BaseAdapter {
     private Context context;
     private Activity activity;
     private LayoutInflater mInflater;
+    private MMSharedPreferences sp;
     private List<TDCSaleOrder> allTDCSalesOrders, filteredTDCSalesOrders;
 
     public TDCSalesListAdapter(Context ctxt, TDCSalesListActivity salesListActivity) {
@@ -37,10 +36,11 @@ public class TDCSalesListAdapter extends BaseAdapter {
         this.activity = salesListActivity;
         this.mInflater = LayoutInflater.from(activity);
         this.filteredTDCSalesOrders = new ArrayList<>();
+        sp=new MMSharedPreferences(context);
     }
 
     private class TDCSalesListViewHolder {
-        TextView tdc_sale_bill_no, tdc_sale_order_date, tdc_sale_order_amount, tdc_sale_order_items_count;
+        TextView tdc_sale_bill_no, tdc_sale_order_date, tdc_sale_order_amount, tdc_sale_order_items_count,customer;
         Button view_button;
     }
 
@@ -78,7 +78,8 @@ public class TDCSalesListAdapter extends BaseAdapter {
                 tdcSalesListViewHolder.tdc_sale_order_date = (TextView) convertView.findViewById(R.id.tdc_sale_order_date);
                 tdcSalesListViewHolder.tdc_sale_order_amount = (TextView) convertView.findViewById(R.id.tdc_sale_order_amount);
                 tdcSalesListViewHolder.tdc_sale_order_items_count = (TextView) convertView.findViewById(R.id.tdc_sale_order_items_count);
-                tdcSalesListViewHolder.view_button = (Button) convertView.findViewById(R.id.tdc_sale_order_btn_view);
+                tdcSalesListViewHolder.customer = (TextView) convertView.findViewById(R.id.name);
+                //tdcSalesListViewHolder.view_button = (Button) convertView.findViewById(R.id.tdc_sale_order_btn_view);
 
                 convertView.setTag(tdcSalesListViewHolder);
             } else {
@@ -91,8 +92,9 @@ public class TDCSalesListAdapter extends BaseAdapter {
             tdcSalesListViewHolder.tdc_sale_order_date.setText(Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT));
             tdcSalesListViewHolder.tdc_sale_order_amount.setText(Utility.getFormattedCurrency(currentOrder.getOrderSubTotal()));
             tdcSalesListViewHolder.tdc_sale_order_items_count.setText(Utility.getFormattedNumber(currentOrder.getNoOfItems()));
+            tdcSalesListViewHolder.customer.setText(sp.getString("CustomerName"));
 
-            tdcSalesListViewHolder.view_button.setOnClickListener(new View.OnClickListener() {
+         /*   tdcSalesListViewHolder.view_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(activity, TDCSales_Preview_PrintActivity.class);
@@ -105,7 +107,7 @@ public class TDCSalesListAdapter extends BaseAdapter {
                     activity.finish();
                 }
             });
-
+*/
         } catch (Exception e) {
             e.printStackTrace();
         }
