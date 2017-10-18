@@ -110,7 +110,7 @@
         android:id="@+id/tv_address2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OB:"
+        android:text="OB: "
         android:textColor="@color/black"
         android:textSize="12sp" />
     <TextView
@@ -130,7 +130,7 @@
         android:id="@+id/tv_address3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="O.value:"
+        android:text="Order: "
         android:textColor="@color/black"
         android:textSize="12sp" />
     <TextView
@@ -156,7 +156,7 @@
         android:id="@+id/tv_address5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Rcvd:"
+        android:text="Revd: "
         android:textColor="@color/black"
         android:textSize="12sp" />
     <TextView
@@ -176,7 +176,7 @@
         android:id="@+id/tv_address7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Due:"
+        android:text="Due: "
         android:textColor="@color/black"
         android:textSize="12sp" />
     <TextView
@@ -221,7 +221,7 @@
             android:layout_width="70dp"
             android:layout_height="25dp"
             android:background="@drawable/border_btn"
-            android:drawableLeft="@drawable/ic_remove_red_eye_black_24dp"
+            android:drawableLeft="@drawable/payments_greensmall"
             android:padding="5dp"
             android:text="Stock"
             android:layout_marginLeft="15dp"

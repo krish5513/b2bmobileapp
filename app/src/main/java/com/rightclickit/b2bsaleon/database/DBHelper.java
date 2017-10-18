@@ -5641,4 +5641,31 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public String getcodeById(String Id, long selectedCustomerType) {
+        String hssn = "";
+        System.out.println("AAAA:: "+ selectedCustomerType);
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TDC_CUSTOMERS + " WHERE " + KEY_TDC_CUSTOMER_USER_ID
+                    + " = '" + Id + "'";
+            SQLiteDatabase db1 = this.getWritableDatabase();
+            Cursor cursor1 = db1.rawQuery(selectQuery, null);
+
+            if (cursor1.moveToFirst()) {
+                do {
+
+                        hssn = cursor1.getString(cursor1.getColumnIndex(KEY_TDC_CUSTOMER_USER_ID));
+
+                } while (cursor1.moveToNext());
+            }
+
+            cursor1.close();
+            db1.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hssn;
+    }
+
+
+
 }

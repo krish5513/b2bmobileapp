@@ -1,11 +1,11 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,9 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentDeliveriesAdapter;
 import com.rightclickit.b2bsaleon.adapters.AgentPaymentsAdapter;
-import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentPaymentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -93,22 +91,21 @@ public class AgentPayments extends AppCompatActivity {
         tv_due.setText(Due);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.GONE);
         fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.customer60));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(),"Clicked Customers Add",Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(AgentPayments.this, AgentAddPayment.class);
-               /* i.putExtra("ObAmount",ObAmount);
+                i.putExtra("ObAmount",ObAmount);
                 i.putExtra("OrderValue",Ordervalue);
                 i.putExtra("ReceivedAmount",receivedAmount);
-                i.putExtra("due",Due);*/
+                i.putExtra("due",Due);
                 startActivity(i);
                 finish();
             }
         });
-
 
         paymentsList=(ListView)findViewById(R.id.ordered_products_list_view) ;
 

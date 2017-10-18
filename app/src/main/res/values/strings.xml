@@ -59,7 +59,7 @@
     <string name="customers_btm">Agents</string>
     <string name="products_btm">Products</string>
     <string name="settings_btm">Settings</string>
-    <string name="sales_btm">TDC</string>
+    <string name="sales_btm">Sales</string>
     <string name="dashboard_btm">Home</string>
     <string name="orders_btm">Take Orders</string>
     <string name="tpcorders_btm">Orders</string>
@@ -68,7 +68,7 @@
     <string name="payment_btm">Payment</string>
     <string name="delivery_btm">Deliveries</string>
     <string name="return_btm">Return</string>
-    <string name="payments_btn">Payments</string>
+    <string name="payments_btn">SALES</string>
     <string name="retailers_btn">Retailers</string>
 
 

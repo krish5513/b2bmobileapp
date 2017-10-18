@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.ProductStock;
 import com.rightclickit.b2bsaleon.activities.ProductInfoActivity;
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
@@ -114,8 +113,8 @@ public class ProductsAdapter extends BaseAdapter {
             holder.materialAgentUnit = (TextView) convertView.findViewById(R.id.agentUnit);
             holder.materialAgentUnit.setVisibility(View.GONE);
 
-            holder.stockbtn = (Button) convertView.findViewById(R.id.btnStock);
-            holder.stockbtn.setVisibility(View.GONE);
+           // holder.stockbtn = (Button) convertView.findViewById(R.id.btnStock);
+           // holder.stockbtn.setVisibility(View.GONE);
 
             holder.gst = (EditText) convertView.findViewById(R.id.GST);
             holder.vat = (EditText) convertView.findViewById(R.id.VAT);
@@ -126,9 +125,9 @@ public class ProductsAdapter extends BaseAdapter {
             holder = (MyViewHolder) convertView.getTag();
         }
 
-        if(mStock.equals("Stock")){
+       /* if(mStock.equals("Stock")){
             holder.stockbtn.setVisibility(View.VISIBLE);
-        }
+        }*/
 
         if(mAgentPrice.equals("Agent_Price")){
             holder.materialAgentUnit.setVisibility(View.VISIBLE);
@@ -239,7 +238,7 @@ public class ProductsAdapter extends BaseAdapter {
             holder.productImage.setBackgroundResource(R.drawable.logo);
         }
 
-        holder.stockbtn.setOnClickListener(new View.OnClickListener() {
+       /* holder.stockbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(activity, ProductStock.class);
@@ -247,7 +246,7 @@ public class ProductsAdapter extends BaseAdapter {
                 activity.finish();
             }
         });
-
+*/
         holder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

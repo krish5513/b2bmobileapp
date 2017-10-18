@@ -584,7 +584,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     /*paint.setTextSize(20);
                     canvas.drawText("#" + temps[11] , 5, st, paint);*/
 
-                        paint.setTextSize(22);
+                        paint.setTextSize(20);
                         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                         canvas.drawText(temps[0] + "," + temps[1] + "( " + temps[2] + " )", 5, st, paint);
 //                    paint.setTextSize(22);
@@ -690,7 +690,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.Add).setVisible(false);
-        menu.findItem(R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(false);
         menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }

@@ -252,6 +252,7 @@
                     android:text="Edit"
                     android:textColor="@color/colorPrimary"
                     android:textSize="10sp" />-->
+<!--
                 <Button
                     android:id="@+id/btnStock"
                     android:layout_width="70dp"
@@ -263,6 +264,7 @@
                     android:layout_marginLeft="50dp"
                     android:textColor="@color/colorPrimary"
                     android:textSize="10sp" />
+-->
             </LinearLayout>
 
         </LinearLayout>

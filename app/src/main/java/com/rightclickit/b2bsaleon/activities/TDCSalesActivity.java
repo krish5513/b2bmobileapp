@@ -76,7 +76,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             mmSharedPreferences = new MMSharedPreferences(activityContext);
             mDBHelper = new DBHelper(activityContext);
 
-            this.getSupportActionBar().setTitle("COUNTER SALES");
+            this.getSupportActionBar().setTitle("SALES");
             this.getSupportActionBar().setSubtitle(null);
             this.getSupportActionBar().setLogo(R.drawable.sales_white);
             // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
@@ -474,7 +474,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
         menu.findItem(R.id.settings).setVisible(true);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.notifications).setVisible(true);
-        menu.findItem(R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(false);
         menu.findItem(R.id.sort).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }

@@ -8,9 +8,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -22,8 +22,6 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentStockAdapter;
-import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
-import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentsStockModel;
@@ -56,7 +54,7 @@ public class AgentStockActivity extends AppCompatActivity {
 
         this.getSupportActionBar().setTitle("AS ON STOCK");
         this.getSupportActionBar().setSubtitle(null);
-        this.getSupportActionBar().setLogo(R.drawable.ic_shopping_cart_white_24dp);
+        this.getSupportActionBar().setLogo(R.drawable.payments_white);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -78,6 +76,7 @@ public class AgentStockActivity extends AppCompatActivity {
         sharedPreferences = new MMSharedPreferences(AgentStockActivity.this);
         stock_print = (TextView) findViewById(R.id.stock_print);
         stock_delivery = (TextView) findViewById(R.id.stock_delivery);
+        stock_delivery.setVisibility(View.GONE);
 
 
         if (new NetworkConnectionDetector(AgentStockActivity.this).isNetworkConnected()) {
@@ -92,6 +91,9 @@ public class AgentStockActivity extends AppCompatActivity {
         stockBeanArrayList = mDBHelper.fetchAllStockByAgentId(mAgentId);
         Log.i("stock", stockBeanArrayList.size() + "");
         selectedList = new ArrayList<>(stockBeanArrayList.size());
+
+
+
 
         for (int i = 0; i < stockBeanArrayList.size(); i++) {
 
@@ -116,6 +118,14 @@ public class AgentStockActivity extends AppCompatActivity {
             selectedList.add(temp);
         }
 
+
+        ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(sharedPreferences.getString("Customers"));
+        for (int z = 0; z < privilegeActionsData1.size(); z++) {
+            if (privilegeActionsData1.get(z).toString().equals("UpdateStock")) {
+                stock_delivery.setVisibility(View.VISIBLE);
+            }
+        }
+
         stock_print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,13 +146,13 @@ public class AgentStockActivity extends AppCompatActivity {
                 canvas.drawText(mAgentCode, 140, 80, paint);
                 canvas.drawText("AS ON STOCK,", 5, 120, paint);
                 canvas.drawText("----------------------------------------------------", 5, 180, paint);
-                canvas.drawText("Product", 5, 210, paint);
+                canvas.drawText("PRODUCT", 5, 210, paint);
                 paint.setTextSize(20);
                 canvas.drawText("UOM", 110, 210, paint);
                 paint.setTextSize(20);
-                canvas.drawText("RECD", 160, 210, paint);
+                canvas.drawText("REVD", 160, 210, paint);
                 paint.setTextSize(20);
-                canvas.drawText("Sale", 230, 210, paint);
+                canvas.drawText("SALE", 230, 210, paint);
                 paint.setTextSize(20);
                 canvas.drawText("CB", 330, 210, paint);
                 paint.setTextSize(20);
@@ -294,7 +304,7 @@ public class AgentStockActivity extends AppCompatActivity {
         menu.findItem(R.id.Add).setVisible(false);
 
         menu.findItem(R.id.autorenew).setVisible(true);
-        //menu.findItem(R.id.sort).setVisible(false);
+        menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -302,6 +312,7 @@ public class AgentStockActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, AgentsActivity.class);
+
         startActivity(intent);
         finish();
     }

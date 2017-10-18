@@ -19,8 +19,6 @@ import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.Utility;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -85,7 +83,7 @@ public class RetailersPaymentsAdapter extends BaseAdapter {
                 paymentsListViewHolder.tdc_sale_bill_no = (TextView) convertView.findViewById(R.id.tdc_sale_bill_no);
                 paymentsListViewHolder.tdc_sale_order_date = (TextView) convertView.findViewById(R.id.tdc_sale_order_date);
                 paymentsListViewHolder.tdc_sale_order_amount = (TextView) convertView.findViewById(R.id.tdc_sale_order_amount);
-                paymentsListViewHolder.tdc_sale_order_items_count = (TextView) convertView.findViewById(R.id.tdc_sale_order_items_count);
+               // paymentsListViewHolder.tdc_sale_order_items_count = (TextView) convertView.findViewById(R.id.tdc_sale_order_items_count);
                 paymentsListViewHolder.view_button = (Button) convertView.findViewById(R.id.tdc_sale_order_btn_view);
                 paymentsListViewHolder.name = (TextView) convertView.findViewById(R.id.name);
 
@@ -99,7 +97,7 @@ public class RetailersPaymentsAdapter extends BaseAdapter {
             paymentsListViewHolder.tdc_sale_bill_no.setText(String.format("TDC%05d", currentOrder.getOrderId()));
             paymentsListViewHolder.tdc_sale_order_date.setText(Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT));
             paymentsListViewHolder.tdc_sale_order_amount.setText(Utility.getFormattedCurrency(currentOrder.getOrderSubTotal()));
-            paymentsListViewHolder.tdc_sale_order_items_count.setText(Utility.getFormattedNumber(currentOrder.getNoOfItems()));
+            //paymentsListViewHolder.tdc_sale_order_items_count.setText(Utility.getFormattedNumber(currentOrder.getNoOfItems()));
             String name = mDBHelper.getNameById(currentOrder.getSelectedCustomerUserId(),currentOrder.getSelectedCustomerType());
             paymentsListViewHolder.name.setText(name);
             paymentsListViewHolder.view_button.setOnClickListener(new View.OnClickListener() {

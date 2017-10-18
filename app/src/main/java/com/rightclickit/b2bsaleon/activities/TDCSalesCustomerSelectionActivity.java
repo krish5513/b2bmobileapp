@@ -72,7 +72,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
             final ActionBar actionBar = getSupportActionBar();
             assert actionBar != null;
 
-            actionBar.setTitle("SELECT RETAILER/CONSUMER");
+            actionBar.setTitle("RETAILER/CONSUMER");
             actionBar.setSubtitle(null);
             actionBar.setDisplayUseLogoEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);

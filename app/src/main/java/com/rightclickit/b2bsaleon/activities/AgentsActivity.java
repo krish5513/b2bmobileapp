@@ -52,6 +52,7 @@ public class AgentsActivity extends AppCompatActivity {
     private SearchView search;
 
     private TextView mNoDataText;
+    private String mStock = "";
 
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ",
             mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "",mUserId="";
@@ -101,32 +102,6 @@ public class AgentsActivity extends AppCompatActivity {
         mAgentsList.setVisibility(View.GONE);
         HashMap<String, String> userMapData = mDBHelper.getUsersData();
         mUserId = userMapData.get("user_id");
-        if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
-            if (mDBHelper.getAgentsTableCount() > 0) {
-                ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
-                System.out.println("F:::: "+ agentsBeanArrayList.size());
-                if (agentsBeanArrayList.size() > 0) {
-                    mNoDataText.setText("");
-                    loadAgentsList(agentsBeanArrayList);
-                } else {
-                    agentsModel.getAgentsList("agents");
-                }
-
-            } else {
-                agentsModel.getAgentsList("agents");
-            }
-        } else {
-            // System.out.println("ELSE::: ");
-            ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
-            System.out.println("F12333222222222 :::: "+ agentsBeanArrayList.size());
-            if (agentsBeanArrayList.size() > 0) {
-                mNoDataText.setText("");
-                loadAgentsList(agentsBeanArrayList);
-            } else {
-                mNoDataText.setText("No Agents found.");
-            }
-
-        }
 
         mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
         mDashBoardLayout.setVisibility(View.GONE);
@@ -244,6 +219,9 @@ public class AgentsActivity extends AppCompatActivity {
             } else if (privilegeActionsData1.get(z).toString().equals("my_profile")){
                 this.getSupportActionBar().setTitle("PROFILE");
             }
+              else if (privilegeActionsData1.get(z).toString().equals("ViewStock")){
+                mStock = privilegeActionsData1.get(z).toString();
+            }
         }
 
 
@@ -263,6 +241,32 @@ public class AgentsActivity extends AppCompatActivity {
                 mDashboardHomeScreen = privilegeActionsData.get(z).toString();
             }
         }
+        if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
+            if (mDBHelper.getAgentsTableCount() > 0) {
+                ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
+                System.out.println("F:::: "+ agentsBeanArrayList.size());
+                if (agentsBeanArrayList.size() > 0) {
+                    mNoDataText.setText("");
+                    loadAgentsList(agentsBeanArrayList);
+                } else {
+                    agentsModel.getAgentsList("agents");
+                }
+
+            } else {
+                agentsModel.getAgentsList("agents");
+            }
+        } else {
+            // System.out.println("ELSE::: ");
+            ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
+            System.out.println("F12333222222222 :::: "+ agentsBeanArrayList.size());
+            if (agentsBeanArrayList.size() > 0) {
+                mNoDataText.setText("");
+                loadAgentsList(agentsBeanArrayList);
+            } else {
+                mNoDataText.setText("No Agents found.");
+            }
+
+        }
 
         startService(new Intent(AgentsActivity.this, SyncNotificationsListService.class));
 
@@ -272,7 +276,7 @@ public class AgentsActivity extends AppCompatActivity {
         if (mAgentsAdapter != null) {
             mAgentsAdapter = null;
         }
-        mAgentsAdapter = new AgentsAdapter(this, AgentsActivity.this, mAgentsBeansList);
+        mAgentsAdapter = new AgentsAdapter(this, AgentsActivity.this, mAgentsBeansList,mStock);
         mAgentsList.setAdapter(mAgentsAdapter);
     }
 

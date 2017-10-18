@@ -4,10 +4,10 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -22,14 +22,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
     EditText firstname, lastname, mobile, address;
@@ -148,7 +146,7 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.Add).setVisible(false);
         menu.findItem(R.id.autorenew).setVisible(false);
-        //menu.findItem(R.id.sort).setVisible(false);
+        menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 

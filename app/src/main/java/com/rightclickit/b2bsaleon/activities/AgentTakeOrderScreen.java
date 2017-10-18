@@ -18,10 +18,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.TDCSalesAdapter;
 import com.rightclickit.b2bsaleon.adapters.TakeOrdersAdapter;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
@@ -207,7 +205,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
-        fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_eye_white_24dp));
+        fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.save_icon_white));
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreference.getString("Customers"));
         // System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
@@ -436,7 +434,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.Add).setVisible(false);
 
-        menu.findItem(R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(false);
         menu.findItem(R.id.sort).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }

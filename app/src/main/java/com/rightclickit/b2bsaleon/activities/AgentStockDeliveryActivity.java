@@ -75,7 +75,7 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
 
         setContentView(R.layout.activity_agent_stock_delivery);
 
-        this.getSupportActionBar().setTitle(mAgentName);
+        this.getSupportActionBar().setTitle("STOCK UPDATE");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.ic_shopping_cart_white_24dp);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
@@ -216,8 +216,8 @@ public class AgentStockDeliveryActivity extends AppCompatActivity implements Age
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.Add).setVisible(false);
-        menu.findItem(R.id.autorenew).setVisible(true);
-        //menu.findItem(R.id.sort).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(false);
+        menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 

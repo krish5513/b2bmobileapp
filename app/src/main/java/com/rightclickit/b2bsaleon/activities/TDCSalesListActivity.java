@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TDCSalesListAdapter;
+import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
@@ -54,6 +55,8 @@ public class TDCSalesListActivity extends AppCompatActivity {
     String billno,billdate,billamount,billitems;
 
     String str_selectedretailername;
+    private List<TDCCustomer> customerList;
+    String name,code;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,9 +132,21 @@ public class TDCSalesListActivity extends AppCompatActivity {
 
             allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr);
 
+            customerList = new ArrayList<>();
 
+            customerList = mDBHelper.fetchAllRecordsFromTDCCustomers();
+           /* for (int i=0;i<customerList.size();i++){
 
+                if (customerList.get(i).getCustomerType() == 1) {
+                    code=(String.format("R%05d", customerList.get(i).getId()));
 
+                } else {
+                    code=(String.format("C%05d", customerList.get(i).getId()));
+
+                }
+            }
+
+*/
                 int noOfSales = allTDCSaleOrders.size();
 
                 int noOfItems = 0;
@@ -154,11 +169,32 @@ public class TDCSalesListActivity extends AppCompatActivity {
                 billamount = Utility.getFormattedCurrency(allTDCSaleOrders.get(i).getOrderSubTotal());
                 billdate = Utility.formatTime(allTDCSaleOrders.get(i).getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT);
                 billitems =Utility.getFormattedNumber(allTDCSaleOrders.get(i).getNoOfItems());
+                name = mDBHelper.getNameById(allTDCSaleOrders.get(i).getSelectedCustomerUserId(), allTDCSaleOrders.get(i).getSelectedCustomerType());
 
-                String[] temp = new String[6];
 
-                temp[0] =mmSharedPreferences.getString("CustomerName");
-                temp[1] = mmSharedPreferences.getString("CustomerCode");
+                if (allTDCSaleOrders.get(i).getSelectedCustomerType() == 1) {
+                    code=(String.format("R%05d", allTDCSaleOrders.get(i).getSelectedCustomerId()));
+
+                } else {
+                    code=(String.format("C%05d", allTDCSaleOrders.get(i).getSelectedCustomerId()));
+
+                }
+              /*  for (int j=0;j<customerList.size();j++){
+
+                    if (customerList.get(j).getCustomerType() == 1) {
+                        code=(String.format("R%05d", customerList.get(j).getId()));
+
+                    } else {
+                        code=(String.format("C%05d", customerList.get(j).getId()));
+
+                    }
+                }
+*/
+
+                    String[] temp = new String[6];
+
+                temp[0] =name;
+                temp[1] = code;
                 temp[2] = billno;
                 temp[3] = billdate;
                 temp[4] = billamount;
@@ -197,12 +233,12 @@ public class TDCSalesListActivity extends AppCompatActivity {
 
 
         int st = 130;
-        paint.setTextSize(17);
+        paint.setTextSize(20);
         // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
         for (int i = 0; i <selectedList.size(); i++) {
             String[] temps = selectedList.get(i);
             canvas.drawText(temps[0], 5, st, paint);
-            canvas.drawText("," + "(" +temps[1] + ")", 150, st, paint);
+           // canvas.drawText("," + "(" +temps[1] + ")", 150, st, paint);
 
 
             st = st + 30;
@@ -316,7 +352,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.Add).setVisible(false);
-        menu.findItem(R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(false);
         menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }

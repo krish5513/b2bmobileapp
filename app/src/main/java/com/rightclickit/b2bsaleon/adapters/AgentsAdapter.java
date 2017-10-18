@@ -48,8 +48,9 @@ public class AgentsAdapter extends BaseAdapter {
     private MMSharedPreferences mPreferences;
     private ArrayList<AgentsBean> arraylist;
     private DBHelper mDBHelper;
+    private String mStock="";
 
-    public AgentsAdapter(Context ctxt, AgentsActivity agentsActivity, ArrayList<AgentsBean> mAgentsBeansList) {
+    public AgentsAdapter(Context ctxt, AgentsActivity agentsActivity, ArrayList<AgentsBean> mAgentsBeansList,String mStock) {
         this.ctxt = ctxt;
         this.activity = agentsActivity;
         this.mAgentsBeansList1 = mAgentsBeansList;
@@ -59,6 +60,7 @@ public class AgentsAdapter extends BaseAdapter {
         this.arraylist = new ArrayList<AgentsBean>();
         this.mDBHelper = new DBHelper(activity);
         this.arraylist.addAll(mAgentsBeansList1);
+        this.mStock=mStock;
     }
 
     @Override
@@ -93,6 +95,7 @@ public class AgentsAdapter extends BaseAdapter {
             mHolder.viewbtn = (Button) view.findViewById(R.id.btn_view);
             mHolder.infobtn = (Button) view.findViewById(R.id.btn_info);
             mHolder.stockbtn = (Button) view.findViewById(R.id.btnStock);
+            mHolder.stockbtn.setVisibility(View.GONE);
             //   AgentsInfoActivity.avatar=(ImageView) view.findViewById(R.id.shopaddress_image);
             mHolder.mPoiImage = (ImageView) view.findViewById(R.id.poiImage);
             mHolder.mPoaImage = (ImageView) view.findViewById(R.id.poaImage);
@@ -104,12 +107,19 @@ public class AgentsAdapter extends BaseAdapter {
             mHolder = (ViewHolder) view.getTag();
         }
 
+
+
+
+
         if (position == mAgentsBeansList1.size() - 1) {
             mHolder.mEmptyLayout.setVisibility(View.VISIBLE);
         } else {
             mHolder.mEmptyLayout.setVisibility(View.GONE);
         }
 
+        if(mStock.equals("ViewStock")){
+            mHolder.stockbtn.setVisibility(View.VISIBLE);
+        }
 
         System.out.println("URL===== " + mAgentsBeansList1.get(position).getmAgentPic());
         if (!mAgentsBeansList1.get(position).getmAgentPic().equals("")) {
