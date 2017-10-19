@@ -524,6 +524,8 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             for (ProductsBean wp : arraylist) {
                 if (wp.getProductTitle().toLowerCase(Locale.getDefault()).contains(charText)) {
                     mTakeOrderBeansList1.add(wp);
+                } else if (wp.getProductCode().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    mTakeOrderBeansList1.add(wp);
                 }
 
             }

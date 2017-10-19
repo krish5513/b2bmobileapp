@@ -151,7 +151,8 @@ public class AgentsTDC_View extends AppCompatActivity {
 
                 name=mTakeOrderBeansList.get(i).getmProductTitle();
                 code=mTakeOrderBeansList.get(i).getMtakeorderProductCode();
-                uom=sharedPreferences.getString("UOM");
+                uom=mTakeOrderBeansList.get(i).getUom();
+
                 if(mTakeOrderBeansList.get(i).getmAgentPrice()!=null) {
                     price = Double.parseDouble(mTakeOrderBeansList.get(i).getmAgentPrice());
                 }else {
