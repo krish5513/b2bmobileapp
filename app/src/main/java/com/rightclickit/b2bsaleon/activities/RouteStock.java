@@ -18,6 +18,8 @@ import com.rightclickit.b2bsaleon.adapters.AgentStockAdapter;
 import com.rightclickit.b2bsaleon.adapters.RouteStockAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
@@ -29,13 +31,15 @@ import java.util.HashMap;
 public class RouteStock extends AppCompatActivity {
     private Context applicationContext, activityContext;
     private SearchView search;
-    private  String tripSheetId;
+    private String tripSheetId;
     RouteStockAdapter routestockadapter;
     private DBHelper mDBHelper;
     private TripsheetsModel mTripsheetsModel;
     ListView Routestocklist;
+    private HashMap<String, String> deliveryQuantityListMap = new HashMap<String, String>();
+    private HashMap<String, String> returnQuantityListMap = new HashMap<String, String>();
 
-   // ArrayList<AgentsStockBean> stockBeanArrayList;
+    // ArrayList<AgentsStockBean> stockBeanArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +66,9 @@ public class RouteStock extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        Routestocklist=(ListView)findViewById(R.id.RouteStockList);
+        Routestocklist = (ListView) findViewById(R.id.RouteStockList);
         mTripsheetsModel = new TripsheetsModel(this, RouteStock.this);
         ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
-
 
 
         if (new NetworkConnectionDetector(RouteStock.this).isNetworkConnected()) {
@@ -78,15 +81,53 @@ public class RouteStock extends AppCompatActivity {
 
 
     public void loadTripsData(ArrayList<TripsheetsStockList> tripsStockList) {
+        // ALL DELIVIRES
+        ArrayList<TripSheetDeliveriesBean> deliveriesBeenList = mDBHelper.fetchAllTripsheetsDeliveriesListByTripAndProductId(tripSheetId, "");
+        System.out.println("ALL DELIVERIES:::: " + deliveriesBeenList.size());
+        if (deliveriesBeenList.size() > 0) {
+            for (int g = 0; g < deliveriesBeenList.size(); g++) {
+                if (deliveryQuantityListMap.get(deliveriesBeenList.get(g).getmTripsheetDelivery_productId()) != null) {
+                    double quantity = Double.parseDouble(deliveryQuantityListMap.get(deliveriesBeenList.get(g).getmTripsheetDelivery_productId()));
+
+                    double sumQuantity = quantity + Double.parseDouble(deliveriesBeenList.get(g).getmTripsheetDelivery_Quantity());
+
+                    deliveryQuantityListMap.put(deliveriesBeenList.get(g).getmTripsheetDelivery_productId(),
+                            String.valueOf(sumQuantity));
+                } else {
+                    deliveryQuantityListMap.put(deliveriesBeenList.get(g).getmTripsheetDelivery_productId(),
+                            deliveriesBeenList.get(g).getmTripsheetDelivery_Quantity());
+                }
+            }
+        }
+
+        // ALL RETURNS
+        ArrayList<TripSheetReturnsBean> returnsBeenList = mDBHelper.fetchAllTripsheetsReturnsListByTripId(tripSheetId);
+        System.out.println("ALL RETURNS:::: " + returnsBeenList.size());
+        if (returnsBeenList.size() > 0) {
+            for (int g = 0; g < returnsBeenList.size(); g++) {
+                if (returnQuantityListMap.get(returnsBeenList.get(g).getmTripshhetReturnsProduct_ids()) != null) {
+                    double quantity = Double.parseDouble(returnQuantityListMap.get(returnsBeenList.get(g).getmTripshhetReturnsProduct_ids()));
+
+                    double sumQuantity = quantity + Double.parseDouble(returnsBeenList.get(g).getmTripshhetReturnsQuantity());
+
+                    returnQuantityListMap.put(returnsBeenList.get(g).getmTripshhetReturnsProduct_ids(),
+                            String.valueOf(sumQuantity));
+                } else {
+                    returnQuantityListMap.put(returnsBeenList.get(g).getmTripshhetReturnsProduct_ids(),
+                            returnsBeenList.get(g).getmTripshhetReturnsQuantity());
+                }
+            }
+        }
         if (routestockadapter != null) {
             routestockadapter = null;
         }
 
-        routestockadapter = new RouteStockAdapter(this, RouteStock.this, this, tripsStockList);
+        routestockadapter = new RouteStockAdapter(this, RouteStock.this, this, tripsStockList, deliveryQuantityListMap, returnQuantityListMap);
         Routestocklist.setAdapter(routestockadapter);
 
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
@@ -104,7 +145,7 @@ public class RouteStock extends AppCompatActivity {
 
                 @Override
                 public boolean onQueryTextChange(String query) {
-                  //  deliveriesAdapter.filter(query);
+                    //  deliveriesAdapter.filter(query);
                     return true;
                 }
             });
@@ -126,6 +167,7 @@ public class RouteStock extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -160,11 +202,12 @@ public class RouteStock extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.Add).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(true);
         menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -173,7 +216,6 @@ public class RouteStock extends AppCompatActivity {
         startActivity(intent);
 
     }
-
 
 
 }

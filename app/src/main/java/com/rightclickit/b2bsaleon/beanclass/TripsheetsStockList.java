@@ -22,6 +22,12 @@ public class TripsheetsStockList {
     private int isStockVerified; // 0 means not verified & 1 means verified
     private String inStockQuantity;
     private String extraQuantity; // this column contains product extra quantity delivered and also we will update this value after saving of returns if any.
+    // Added by Sekhar for close trip functionality
+    private String mDeliveryQuantity;
+    private String mReturnQuantity;
+    private String mCBQuantity;
+    private String mLeakQuantity;
+    private String mOtherQuantity;
 
     public String getmTripsheetStockTripsheetId() {
         return mTripsheetStockTripsheetId;
@@ -160,6 +166,51 @@ public class TripsheetsStockList {
                 ", mTripsheetStockProductOrderQuantity='" + mTripsheetStockProductOrderQuantity + '\'' +
                 ", inStockQuantity='" + inStockQuantity + '\'' +
                 ", extraQuantity='" + extraQuantity + '\'' +
+                ", mDeliveryQuantity='" + mDeliveryQuantity + '\'' +
+                ", mReturnQuantity='" + mReturnQuantity + '\'' +
+                ", mCBQuantity='" + mCBQuantity + '\'' +
+                ", mLeakQuantity='" + mLeakQuantity + '\'' +
+                ", mOtherQuantity='" + mOtherQuantity + '\'' +
                 '}';
+    }
+
+    public String getmDeliveryQuantity() {
+        return mDeliveryQuantity;
+    }
+
+    public void setmDeliveryQuantity(String mDeliveryQuantity) {
+        this.mDeliveryQuantity = mDeliveryQuantity;
+    }
+
+    public String getmReturnQuantity() {
+        return mReturnQuantity;
+    }
+
+    public void setmReturnQuantity(String mReturnQuantity) {
+        this.mReturnQuantity = mReturnQuantity;
+    }
+
+    public String getmCBQuantity() {
+        return mCBQuantity;
+    }
+
+    public void setmCBQuantity(String mCBQuantity) {
+        this.mCBQuantity = mCBQuantity;
+    }
+
+    public String getmLeakQuantity() {
+        return mLeakQuantity;
+    }
+
+    public void setmLeakQuantity(String mLeakQuantity) {
+        this.mLeakQuantity = mLeakQuantity;
+    }
+
+    public String getmOtherQuantity() {
+        return mOtherQuantity;
+    }
+
+    public void setmOtherQuantity(String mOtherQuantity) {
+        this.mOtherQuantity = mOtherQuantity;
     }
 }

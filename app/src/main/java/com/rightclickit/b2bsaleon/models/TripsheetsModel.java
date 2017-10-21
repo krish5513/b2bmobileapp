@@ -276,7 +276,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     JSONArray stockArray = new JSONArray(response);
                     int stockLen = stockArray.length();
 
-                    JSONArray productCodesArray, orderQuantityArray, productsInfoArray;
+                    JSONArray productCodesArray, orderQuantityArray, productsInfoArray, leakQuantityArray, verifyQuantityArray;
 
                     for (int i = 0; i < stockLen; i++) {
 
@@ -285,10 +285,12 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                         productsInfoArray = jb.getJSONArray("productdata");
                         productCodesArray = jb.getJSONArray("product_codes");
                         orderQuantityArray = jb.getJSONArray("order_qty");
+                        leakQuantityArray = jb.getJSONArray("route_leakage_qty");
+                        verifyQuantityArray = jb.getJSONArray("verify_qty");
                         int noOfProducts = 0;
-                        if (productsInfoArray.length() > 0) {
+                        if (productCodesArray.length() > 0) {
                             // If products info array found.
-                            noOfProducts = productsInfoArray.length();
+                            noOfProducts = productCodesArray.length();
                             for (int j = 0; j < noOfProducts; j++) {
                                 JSONObject jj = productsInfoArray.getJSONObject(j);
                                 // Checking weather product code is null or not
@@ -308,8 +310,21 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                 tripStockBean.setmTripsheetStockDispatchDate("");
                                 tripStockBean.setmTripsheetStockDispatchQuantity("");
                                 tripStockBean.setmTripsheetStockVerifiedDate("");
-                                tripStockBean.setmTripsheetStockVerifiedQuantity("");
+                                if (isRouteStockCalled) {
+                                    tripStockBean.setmTripsheetStockVerifiedQuantity(verifyQuantityArray.get(j).toString());
+                                } else {
+                                    tripStockBean.setmTripsheetStockVerifiedQuantity("");
+                                }
                                 tripStockBean.setmTripsheetStockVerifyBy("");
+
+                                // Added by Sekhar for close trip functionality
+                                //tripStockBean.setmDeliveryQuantity("");
+                                //tripStockBean.setmReturnQuantity("");
+                                //tripStockBean.setmCBQuantity("");
+                                if (leakQuantityArray.length() > 0) {
+                                    tripStockBean.setmLeakQuantity(leakQuantityArray.get(j).toString());
+                                }
+                                //tripStockBean.setmOtherQuantity("");
 
                                 mTripsheetsStockList.add(tripStockBean);
                             }
@@ -336,8 +351,21 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                     tripStockBean.setmTripsheetStockDispatchDate("");
                                     tripStockBean.setmTripsheetStockDispatchQuantity("");
                                     tripStockBean.setmTripsheetStockVerifiedDate("");
-                                    tripStockBean.setmTripsheetStockVerifiedQuantity("");
+                                    if (isRouteStockCalled) {
+                                        tripStockBean.setmTripsheetStockVerifiedQuantity(verifyQuantityArray.get(j).toString());
+                                    } else {
+                                        tripStockBean.setmTripsheetStockVerifiedQuantity("");
+                                    }
                                     tripStockBean.setmTripsheetStockVerifyBy("");
+
+                                    // Added by Sekhar for close trip functionality
+                                    //tripStockBean.setmDeliveryQuantity("");
+                                    //tripStockBean.setmReturnQuantity("");
+                                    // tripStockBean.setmCBQuantity("");
+                                    if (leakQuantityArray.length() > 0) {
+                                        tripStockBean.setmLeakQuantity(leakQuantityArray.get(j).toString());
+                                    }
+                                    //tripStockBean.setmOtherQuantity("");
 
                                     mTripsheetsStockList.add(tripStockBean);
                                 }
