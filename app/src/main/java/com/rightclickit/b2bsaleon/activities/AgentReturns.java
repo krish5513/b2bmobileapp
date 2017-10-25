@@ -1,9 +1,9 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,17 +16,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.adapters.AgentDeliveriesAdapter;
 import com.rightclickit.b2bsaleon.adapters.AgentReturnsAdapter;
-import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentReturnsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.models.AgentReturnsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
-import com.rightclickit.b2bsaleon.util.Utility;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
-
-import static com.rightclickit.b2bsaleon.R.id.tv_deliveries;
 
 public class AgentReturns extends AppCompatActivity {
     LinearLayout sales;
@@ -34,11 +31,15 @@ public class AgentReturns extends AppCompatActivity {
     LinearLayout payments;
     LinearLayout deliveries;
     LinearLayout orders;
+
+    private TextView mNoDataText;
+
     Button view;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
     String tripsheetId,agentId="";
     AgentReturnsAdapter returnsAdapter;
+    AgentReturnsModel mAgentReturnsModel;
     ListView deliveriesList;
     private SearchView search;
     TextView rDelivered,r_returned,r_pending;
@@ -62,19 +63,25 @@ public class AgentReturns extends AppCompatActivity {
         orders.setVisibility(View.GONE);
 
 
-        rDelivered=(TextView)findViewById((R.id.tv_rDeliverd));
-        r_returned=(TextView)findViewById(R.id.tv_returned);
-        r_pending=(TextView)findViewById(R.id.tv_rpending);
+
+        // rDelivered=(TextView)findViewById((R.id.tv_rDeliverd));
+       // r_returned=(TextView)findViewById(R.id.tv_returned);
+       // r_pending=(TextView)findViewById(R.id.tv_rpending);
 
         deliveriesList=(ListView)findViewById(R.id.ordered_products_list_view) ;
+        mNoDataText = (TextView) findViewById(R.id.NoDataText);
+        deliveriesList.setEmptyView(mNoDataText);
+
+
         mDBHelper = new DBHelper(AgentReturns.this);
         mPreferences = new MMSharedPreferences(AgentReturns.this);
 
-
+        mAgentReturnsModel=new AgentReturnsModel(this,AgentReturns.this);
         //Bundle bundle = getIntent().getExtras();
         //if (bundle != null) {
         agentId = mPreferences.getString("agentId");
 
+/*
 
         deliveriess = mDBHelper.getReturnnumber(agentId, "tripsheet_returns_return_number");
         if(deliveriess.size()>0) {
@@ -88,13 +95,16 @@ public class AgentReturns extends AppCompatActivity {
         str_delivery= Double.parseDouble(String.valueOf((rdelivery.size())));
         str_returns= Double.parseDouble(String.valueOf(deliveriess.size()));
         str_pending=str_delivery-str_returns;
+*/
 
-        r_pending.setText(Utility.getFormattedCurrency(str_pending));
+        //r_pending.setText(Utility.getFormattedCurrency(str_pending));
 
         ArrayList<AgentReturnsBean> unUploadedDeliveries = mDBHelper.getreturnsDetails(agentId);
 
         if(unUploadedDeliveries.size()>0){
             loadReturns(unUploadedDeliveries);
+        }else {
+            mNoDataText.setText("No Returns found.");
         }
         this.getSupportActionBar().setTitle("RETURNS");
         this.getSupportActionBar().setSubtitle(null);
@@ -202,7 +212,7 @@ public class AgentReturns extends AppCompatActivity {
 
     }
 
-    private void loadReturns(ArrayList<AgentReturnsBean> unUploadedDeliveries) {
+    public void loadReturns(ArrayList<AgentReturnsBean> unUploadedDeliveries) {
         if (returnsAdapter != null) {
             returnsAdapter = null;
         }
@@ -223,6 +233,16 @@ public class AgentReturns extends AppCompatActivity {
 
             return true;
         }
+
+        if (id == R.id.autorenew) {
+            if (new NetworkConnectionDetector(AgentReturns.this).isNetworkConnected()) {
+                mAgentReturnsModel.getReturnsList(agentId);
+            } else {
+                new NetworkConnectionDetector(AgentReturns.this).displayNoNetworkError(AgentReturns.this);
+            }
+            return true;
+        }
+
 
         switch (item.getItemId()) {
             case android.R.id.home:

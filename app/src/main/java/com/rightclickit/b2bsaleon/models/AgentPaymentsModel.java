@@ -1,0 +1,198 @@
+package com.rightclickit.b2bsaleon.models;
+
+import android.content.Context;
+
+import com.rightclickit.b2bsaleon.activities.AgentPayments;
+import com.rightclickit.b2bsaleon.activities.Products_Activity;
+import com.rightclickit.b2bsaleon.beanclass.AgentPaymentsBean;
+import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
+import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.interfaces.OnAsyncRequestCompleteListener;
+import com.rightclickit.b2bsaleon.util.AsyncRequest;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+
+/**
+ * Created by PPS on 10/24/2017.
+ */
+
+public class AgentPaymentsModel implements OnAsyncRequestCompleteListener {
+    public static final String TAG = Products_Activity.class.getSimpleName();
+
+    private Context context;
+    private AgentPayments activity;
+    private MMSharedPreferences mPreferences;
+    private DBHelper mDBHelper;
+    private String type = "";
+    private ArrayList<String> regionIdsList = new ArrayList<String>();
+    private JSONArray routesArray;
+
+    private ArrayList<AgentPaymentsBean> mPaymentsBeansList = new ArrayList<AgentPaymentsBean>();
+
+    private String currentDate = "", fromDate = "";
+    private ArrayList<String> paymentNosList = new ArrayList<String>();
+    private ArrayList<String> paymentsDatesList = new ArrayList<String>();
+    private ArrayList<String> paymentsStatusList = new ArrayList<String>();
+    private ArrayList<String> paymentType = new ArrayList<String>();
+
+    private static HashMap<String, JSONArray> productsArray = new HashMap<String, JSONArray>();
+
+
+    public AgentPaymentsModel(Context context, AgentPayments activity) {
+
+        this.context = context;
+        this.activity = activity;
+        this.mPreferences = new MMSharedPreferences(context);
+        this.mDBHelper = new DBHelper(context);
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        currentDate = df.format(cal.getTime());
+
+        cal.add(Calendar.DATE, -30);
+        fromDate = df.format(cal.getTime());
+    }
+
+
+    public void getPaymentsList(String s) {
+
+        try {
+            if (mPaymentsBeansList.size() > 0) {
+                mPaymentsBeansList.clear();
+            }
+            if (paymentNosList.size() > 0) {
+                paymentNosList.clear();
+            }
+            if (paymentsDatesList.size() > 0) {
+                paymentsDatesList.clear();
+            }
+            if (paymentsStatusList.size() > 0) {
+                paymentsStatusList.clear();
+            }
+
+            if (paymentType.size() > 0) {
+                paymentType.clear();
+            }
+            if (productsArray.size() > 0) {
+                productsArray.clear();
+            }
+
+            if (new NetworkConnectionDetector(context).isNetworkConnected()) {
+                String ordersURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TAKE_ORDERS_PORT, Constants.AGENT_PAYMENTS);
+                JSONObject params = new JSONObject();
+                params.put("user_id", s);
+                params.put("from_date", fromDate);
+                params.put("to_date", currentDate);
+
+                AsyncRequest routeidRequest = new AsyncRequest(context, this, ordersURL, AsyncRequest.MethodType.POST, params);
+                routeidRequest.execute();
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    public void asyncResponse(String response, Constants.RequestCode requestCode) {
+        try {
+            CustomProgressDialog.hideProgressDialog();
+
+            //System.out.println("ORDERS RESPONSE::::::::: " + response);
+
+            JSONArray respArray = new JSONArray(response);
+            int resLength = respArray.length();
+            if (resLength > 0) {
+                for (int j = 0; j < resLength; j++) {
+                    JSONObject resObj = respArray.getJSONObject(j);
+
+                    // Returns No
+                    if (resObj.has("payment_no")) {
+                        paymentNosList.add(resObj.getString("payment_no"));
+                    }
+                    // Returns Date
+                    if (resObj.has("payment_date")) {
+                        paymentsDatesList.add(resObj.getString("payment_date"));
+                    }
+                    // Return Status
+                    if (resObj.has("status")) {
+                        paymentsStatusList.add(resObj.getString("status"));
+                    }
+                    // Returned By
+                    if (resObj.has("type")) {
+                        paymentType.add(resObj.getString("type"));
+                    }
+                    // Products Array
+                    if (resObj.has("productdata")) {
+                        JSONArray subPArray = resObj.getJSONArray("productdata");
+                        productsArray.put(String.valueOf(j), subPArray);
+                    }
+
+                }
+
+                for (int d = 0; d < productsArray.size(); d++) {
+
+
+                    JSONArray aaa = productsArray.get(String.valueOf(d));
+                    for (int s = 0; s < aaa.length(); s++) {
+                        AgentPaymentsBean paymentsBean = new AgentPaymentsBean();
+                        JSONObject jj = aaa.getJSONObject(s);
+                        paymentsBean.setPayment_Number(paymentNosList.get(d).toString());
+
+                        paymentsBean.setPayment_status(paymentsStatusList.get(d).toString());
+
+                        paymentsBean.setPayment_date(paymentsDatesList.get(d).toString());
+                        paymentsBean.setPayment_mop(paymentType.get(d).toString());
+
+
+                        mPaymentsBeansList.add(paymentsBean);
+                    }
+                }
+
+
+                synchronized (this) {
+                    if (mPaymentsBeansList.size() > 0) {
+                        mDBHelper.getpaymentDetails(String.valueOf(mPaymentsBeansList));
+                    }
+                }
+
+                synchronized (this) {
+                    if (mPaymentsBeansList.size() > 0) {
+                        activity.loadPayments(mPaymentsBeansList);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

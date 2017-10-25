@@ -167,4 +167,18 @@ public class Constants {
 
     // Retailers tdc sales list
     public static final String RETAILERS_TDC_SALESLIST = "/tdc_sales/list";
+
+    // Agent Deliveries List
+    public static final String AGENT_DELIVERIES_LIST = "/delivery_orders/byid";
+
+
+    // Agent Returns list
+    public static final String AGENT_RETURNS = "/return_orders/byid";
+
+
+
+    // Agent Payments list
+    public static final String AGENT_PAYMENTS = "/payment_orders/byid";
+
+
 }

@@ -3,9 +3,9 @@ package com.rightclickit.b2bsaleon.activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,14 +21,14 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentDeliveriesAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
-import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.models.AgentDeliveriesModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AgentDeliveries extends AppCompatActivity {
     LinearLayout sales;
@@ -37,6 +37,9 @@ public class AgentDeliveries extends AppCompatActivity {
     LinearLayout deliveries;
     LinearLayout orders;
     Button view;
+
+    private TextView mNoDataText;
+
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
     ArrayList<TripsheetSOList> tripsheetsoList;
@@ -50,6 +53,7 @@ public class AgentDeliveries extends AppCompatActivity {
     private double totalAmount=0 ;
     private double totalTaxAmount =0;
     private double subTotal=0 ;
+    AgentDeliveriesModel deliveriesmodel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,8 @@ public class AgentDeliveries extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+        deliveriesmodel=new AgentDeliveriesModel(this,AgentDeliveries.this);
+
 
         sales = (LinearLayout) findViewById(R.id.linear_sales);
         sales.setVisibility(View.GONE);
@@ -83,12 +89,18 @@ public class AgentDeliveries extends AppCompatActivity {
         orders = (LinearLayout) findViewById(R.id.linear_orders);
         orders.setVisibility(View.GONE);
 
-        tv_deliveries=(TextView)findViewById(R.id.tv_totalDeliveries);
-        tv_deliveriesValue=(TextView)findViewById(R.id.tv_value);
+
+        // tv_deliveries=(TextView)findViewById(R.id.tv_totalDeliveries);
+       // tv_deliveriesValue=(TextView)findViewById(R.id.tv_value);
        // tv_pendingvalue=(TextView)findViewById(R.id.tv_pendingvalue);
 
 
         deliveriesList=(ListView)findViewById(R.id.ordered_products_list_view) ;
+
+        mNoDataText = (TextView) findViewById(R.id.NoDataText);
+        deliveriesList.setEmptyView(mNoDataText);
+
+
         mDBHelper = new DBHelper(AgentDeliveries.this);
         mPreferences = new MMSharedPreferences(AgentDeliveries.this);
 
@@ -121,6 +133,8 @@ public class AgentDeliveries extends AppCompatActivity {
         }
         if(unUploadedDeliveries.size()>0){
             loadDeliveries(unUploadedDeliveries);
+        }else {
+            mNoDataText.setText("No Deliveries found.");
         }
 
 
@@ -209,7 +223,7 @@ public class AgentDeliveries extends AppCompatActivity {
 
     }
 
-    private void loadDeliveries(ArrayList<AgentDeliveriesBean> unUploadedDeliveries) {
+    public void loadDeliveries(ArrayList<AgentDeliveriesBean> unUploadedDeliveries) {
 
         if (deliveriesAdapter != null) {
             deliveriesAdapter = null;
@@ -264,6 +278,16 @@ public class AgentDeliveries extends AppCompatActivity {
 
             return true;
         }
+
+        if (id == R.id.autorenew) {
+            if (new NetworkConnectionDetector(AgentDeliveries.this).isNetworkConnected())
+                deliveriesmodel.getDeliveriesList(agentId);
+            else {
+                new NetworkConnectionDetector(AgentDeliveries.this).displayNoNetworkError(AgentDeliveries.this);
+            }
+            return true;
+        }
+
 
         switch (item.getItemId()) {
             case android.R.id.home:

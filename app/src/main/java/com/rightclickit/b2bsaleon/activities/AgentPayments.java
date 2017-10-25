@@ -20,7 +20,9 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentPaymentsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentPaymentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.models.AgentPaymentsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
 
@@ -40,6 +42,7 @@ public class AgentPayments extends AppCompatActivity {
     String ObAmount="",Ordervalue="",receivedAmount="",Due="";
 
     TextView tv_obAmount,tv_orderValue,tv_receivedAmount,tv_due;
+    AgentPaymentsModel  paymentsModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,8 @@ public class AgentPayments extends AppCompatActivity {
 
         mDBHelper = new DBHelper(AgentPayments.this);
         mPreferences = new MMSharedPreferences(AgentPayments.this);
+
+        paymentsModel=new AgentPaymentsModel(this,AgentPayments.this);
 
         ObAmount=mPreferences.getString("ObAmount");
         Ordervalue=mPreferences.getString("OrderValue");
@@ -219,7 +224,7 @@ public class AgentPayments extends AppCompatActivity {
 
     }
 
-    private void loadPayments(ArrayList<AgentPaymentsBean> unUploadedPayments) {
+    public void loadPayments(ArrayList<AgentPaymentsBean> unUploadedPayments) {
         if (paymentsAdapter != null) {
             paymentsAdapter = null;
         }
@@ -239,6 +244,15 @@ public class AgentPayments extends AppCompatActivity {
 
             return true;
         }
+        if (id == R.id.autorenew) {
+            if (new NetworkConnectionDetector(AgentPayments.this).isNetworkConnected())
+                paymentsModel.getPaymentsList(agentId);
+            else {
+                new NetworkConnectionDetector(AgentPayments.this).displayNoNetworkError(AgentPayments.this);
+            }
+            return true;
+        }
+
 
         switch (item.getItemId()) {
             case android.R.id.home:
