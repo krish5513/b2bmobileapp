@@ -1,39 +1,28 @@
 package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentDeliveries;
 import com.rightclickit.b2bsaleon.activities.AgentDeliveriesView;
-import com.rightclickit.b2bsaleon.activities.AgentTDC_Order;
-import com.rightclickit.b2bsaleon.activities.TripsheetDelivery;
 import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
-import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
-import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -65,7 +54,6 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
         this.filteredDeliveryProductsList.addAll(allDeliveryProductsList);
         this.selectedDeliveryProductsHashMap = new HashMap<>();
         this.mPreferences = new MMSharedPreferences(activity);
-
     }
 
     public class TripSheetDeliveriesViewHolder {
@@ -164,7 +152,6 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
                 }
             }
         }
-
         notifyDataSetChanged();
     }
 }

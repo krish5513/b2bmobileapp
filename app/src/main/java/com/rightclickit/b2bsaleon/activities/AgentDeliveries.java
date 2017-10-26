@@ -26,7 +26,6 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentDeliveriesModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
-import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 
@@ -114,7 +113,7 @@ public class AgentDeliveries extends AppCompatActivity {
 
         deliveriess=mDBHelper.getDeliverynumber(agentId,"tripsheet_delivery_number");
         if(deliveriess.size()>0) {
-            tv_deliveries.setText(Integer.toString(deliveriess.size()));
+           // tv_deliveries.setText(Integer.toString(deliveriess.size()));
         }
 
 
@@ -129,7 +128,7 @@ public class AgentDeliveries extends AppCompatActivity {
             totalAmount = totalAmount + Double.parseDouble(temp[3]);
             totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
             subTotal = totalAmount + totalTaxAmount;
-            tv_deliveriesValue.setText(Utility.getFormattedCurrency((subTotal)));
+         //   tv_deliveriesValue.setText(Utility.getFormattedCurrency((subTotal)));
         }
         if(unUploadedDeliveries.size()>0){
             loadDeliveries(unUploadedDeliveries);

@@ -49,6 +49,7 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
     private  ArrayList<String> statusList = new ArrayList<String>();
     private  ArrayList<String> DeliveryDateList = new ArrayList<String>();
     private  ArrayList<String> DeliverybyList = new ArrayList<String>();
+    private  ArrayList<String> Size = new ArrayList<String>();
     private  HashMap<String, JSONArray> productIdsList = new HashMap<String, JSONArray>();
     private  HashMap<String, JSONArray> productCodesList = new HashMap<String, JSONArray>();
     private  HashMap<String, JSONArray> quantitysList = new HashMap<String, JSONArray>();
@@ -123,6 +124,10 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
 
             if (statusList.size() > 0) {
                 statusList.clear();
+            }
+
+            if (Size.size() > 0) {
+                Size.clear();
             }
 
 
@@ -214,7 +219,6 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                         JSONArray subPArray = resObj.getJSONArray("productdata");
                         productsArray.put(String.valueOf(j), subPArray);
                     }
-
                 }
 
 //                System.out.println("ENQ :: " + enqIdsList.size());
@@ -254,7 +258,7 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
 
                         deliveriesBean.setTripDate(DeliveryDateList.get(d).toString());
                         deliveriesBean.setDeliveredBy(DeliverybyList.get(d).toString());
-
+                        deliveriesBean.setDeliveredItems(String.valueOf(mDeliveriesBeansList.size()));
 
                         mDeliveriesBeansList.add(deliveriesBean);
                     }
@@ -264,7 +268,6 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                         mDBHelper.getdeliveryDetails(String.valueOf(mDeliveriesBeansList));
                     }
                 }
-
                 synchronized (this) {
                     if (mDeliveriesBeansList.size() > 0) {
                         activity.loadDeliveries(mDeliveriesBeansList);

@@ -276,98 +276,139 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     JSONArray stockArray = new JSONArray(response);
                     int stockLen = stockArray.length();
 
-                    JSONArray productCodesArray, orderQuantityArray, productsInfoArray, leakQuantityArray, verifyQuantityArray;
+                    JSONArray productCodesArray = null, orderQuantityArray = null, productsInfoArray = null, leakQuantityArray = null,
+                            verifyQuantityArray = null;
 
                     for (int i = 0; i < stockLen; i++) {
 
                         JSONObject jb = stockArray.getJSONObject(i);
 
-                        productsInfoArray = jb.getJSONArray("productdata");
-                        productCodesArray = jb.getJSONArray("product_codes");
-                        orderQuantityArray = jb.getJSONArray("order_qty");
-                        leakQuantityArray = jb.getJSONArray("route_leakage_qty");
-                        verifyQuantityArray = jb.getJSONArray("verify_qty");
+                        if (jb.get("productdata") instanceof JSONArray) {
+                            productsInfoArray = jb.getJSONArray("productdata");
+                        }
+
+                        if (jb.get("product_codes") instanceof JSONArray) {
+                            productCodesArray = jb.getJSONArray("product_codes");
+                        }
+
+                        if (jb.get("order_qty") instanceof JSONArray) {
+                            orderQuantityArray = jb.getJSONArray("order_qty");
+                        }
+
+                        if (jb.get("route_leakage_qty") instanceof JSONArray) {
+                            leakQuantityArray = jb.getJSONArray("route_leakage_qty");
+                        }
+
+                        if (jb.get("verify_qty") instanceof JSONArray) {
+                            verifyQuantityArray = jb.getJSONArray("verify_qty");
+                        }
+
                         int noOfProducts = 0;
-                        if (productCodesArray.length() > 0) {
-                            // If products info array found.
-                            noOfProducts = productCodesArray.length();
-                            for (int j = 0; j < noOfProducts; j++) {
-                                JSONObject jj = productsInfoArray.getJSONObject(j);
-                                // Checking weather product code is null or not
-                                TripsheetsStockList tripStockBean = new TripsheetsStockList();
-
-                                tripStockBean.setmTripsheetStockTripsheetId(jb.getString("trip_id"));
-                                tripStockBean.setmTripsheetStockId(jb.getString("_id"));
-                                tripStockBean.setmTripsheetStockProductCode(productCodesArray.get(j).toString());
-                                if (jj.has("_id")) {
-                                    tripStockBean.setmTripsheetStockProductId(jj.getString("_id"));
-                                }
-                                if (jj.has("name")) {
-                                    tripStockBean.setmTripsheetStockProductName(jj.getString("name"));
-                                }
-                                tripStockBean.setmTripsheetStockProductOrderQuantity(orderQuantityArray.get(j).toString());
-                                tripStockBean.setmTripsheetStockDispatchBy("");
-                                tripStockBean.setmTripsheetStockDispatchDate("");
-                                tripStockBean.setmTripsheetStockDispatchQuantity("");
-                                tripStockBean.setmTripsheetStockVerifiedDate("");
-                                if (isRouteStockCalled) {
-                                    tripStockBean.setmTripsheetStockVerifiedQuantity(verifyQuantityArray.get(j).toString());
-                                } else {
-                                    tripStockBean.setmTripsheetStockVerifiedQuantity("");
-                                }
-                                tripStockBean.setmTripsheetStockVerifyBy("");
-
-                                // Added by Sekhar for close trip functionality
-                                //tripStockBean.setmDeliveryQuantity("");
-                                //tripStockBean.setmReturnQuantity("");
-                                //tripStockBean.setmCBQuantity("");
-                                if (leakQuantityArray.length() > 0) {
-                                    tripStockBean.setmLeakQuantity(leakQuantityArray.get(j).toString());
-                                }
-                                //tripStockBean.setmOtherQuantity("");
-
-                                mTripsheetsStockList.add(tripStockBean);
-                            }
-                        } else {
-                            // If products info array not found.
-                            noOfProducts = productCodesArray.length();
-                            for (int j = 0; j < noOfProducts; j++) {
-                                // Checking weather product code is null or not
-                                if (productCodesArray.get(j).toString() != "null") {
+                        if (productCodesArray != null) {
+                            if (productCodesArray.length() > 0) {
+                                // If products info array found.
+                                noOfProducts = productCodesArray.length();
+                                for (int j = 0; j < noOfProducts; j++) {
+                                    JSONObject jj = productsInfoArray.getJSONObject(j);
+                                    // Checking weather product code is null or not
                                     TripsheetsStockList tripStockBean = new TripsheetsStockList();
 
                                     tripStockBean.setmTripsheetStockTripsheetId(jb.getString("trip_id"));
                                     tripStockBean.setmTripsheetStockId(jb.getString("_id"));
                                     tripStockBean.setmTripsheetStockProductCode(productCodesArray.get(j).toString());
-
-                                    ProductsBean productsDetails = mDBHelper.fetchProductDetailsByProductCode(productCodesArray.get(j).toString());
-                                    if (productsDetails != null) {
-                                        tripStockBean.setmTripsheetStockProductId(productsDetails.getProductId());
-                                        tripStockBean.setmTripsheetStockProductName(productsDetails.getProductTitle());
+                                    if (jj.has("_id")) {
+                                        tripStockBean.setmTripsheetStockProductId(jj.getString("_id"));
                                     }
-
-                                    tripStockBean.setmTripsheetStockProductOrderQuantity(orderQuantityArray.get(j).toString());
+                                    if (jj.has("name")) {
+                                        tripStockBean.setmTripsheetStockProductName(jj.getString("name"));
+                                    }
+                                    if (orderQuantityArray != null) {
+                                        tripStockBean.setmTripsheetStockProductOrderQuantity(orderQuantityArray.get(j).toString());
+                                    } else {
+                                        tripStockBean.setmTripsheetStockProductOrderQuantity("");
+                                    }
                                     tripStockBean.setmTripsheetStockDispatchBy("");
                                     tripStockBean.setmTripsheetStockDispatchDate("");
                                     tripStockBean.setmTripsheetStockDispatchQuantity("");
                                     tripStockBean.setmTripsheetStockVerifiedDate("");
-                                    if (isRouteStockCalled) {
-                                        tripStockBean.setmTripsheetStockVerifiedQuantity(verifyQuantityArray.get(j).toString());
+                                    if (verifyQuantityArray != null) {
+                                        if (isRouteStockCalled) {
+                                            tripStockBean.setmTripsheetStockVerifiedQuantity(verifyQuantityArray.get(j).toString());
+                                        } else {
+                                            tripStockBean.setmTripsheetStockVerifiedQuantity("");
+                                        }
                                     } else {
                                         tripStockBean.setmTripsheetStockVerifiedQuantity("");
                                     }
+
                                     tripStockBean.setmTripsheetStockVerifyBy("");
 
                                     // Added by Sekhar for close trip functionality
                                     //tripStockBean.setmDeliveryQuantity("");
                                     //tripStockBean.setmReturnQuantity("");
-                                    // tripStockBean.setmCBQuantity("");
-                                    if (leakQuantityArray.length() > 0) {
-                                        tripStockBean.setmLeakQuantity(leakQuantityArray.get(j).toString());
+                                    //tripStockBean.setmCBQuantity("");
+                                    if (leakQuantityArray != null) {
+                                        if (leakQuantityArray.length() > 0) {
+                                            tripStockBean.setmLeakQuantity(leakQuantityArray.get(j).toString());
+                                        }
                                     }
                                     //tripStockBean.setmOtherQuantity("");
 
                                     mTripsheetsStockList.add(tripStockBean);
+                                }
+                            } else {
+                                // If products info array not found.
+                                if (productCodesArray != null) {
+                                    noOfProducts = productCodesArray.length();
+                                    for (int j = 0; j < noOfProducts; j++) {
+                                        // Checking weather product code is null or not
+                                        if (productCodesArray.get(j).toString() != "null") {
+                                            TripsheetsStockList tripStockBean = new TripsheetsStockList();
+
+                                            tripStockBean.setmTripsheetStockTripsheetId(jb.getString("trip_id"));
+                                            tripStockBean.setmTripsheetStockId(jb.getString("_id"));
+                                            tripStockBean.setmTripsheetStockProductCode(productCodesArray.get(j).toString());
+
+                                            ProductsBean productsDetails = mDBHelper.fetchProductDetailsByProductCode(productCodesArray.get(j).toString());
+                                            if (productsDetails != null) {
+                                                tripStockBean.setmTripsheetStockProductId(productsDetails.getProductId());
+                                                tripStockBean.setmTripsheetStockProductName(productsDetails.getProductTitle());
+                                            }
+
+                                            if (orderQuantityArray != null) {
+                                                tripStockBean.setmTripsheetStockProductOrderQuantity(orderQuantityArray.get(j).toString());
+                                            } else {
+                                                tripStockBean.setmTripsheetStockProductOrderQuantity("");
+                                            }
+                                            tripStockBean.setmTripsheetStockDispatchBy("");
+                                            tripStockBean.setmTripsheetStockDispatchDate("");
+                                            tripStockBean.setmTripsheetStockDispatchQuantity("");
+                                            tripStockBean.setmTripsheetStockVerifiedDate("");
+                                            if (verifyQuantityArray != null) {
+                                                if (isRouteStockCalled) {
+                                                    tripStockBean.setmTripsheetStockVerifiedQuantity(verifyQuantityArray.get(j).toString());
+                                                } else {
+                                                    tripStockBean.setmTripsheetStockVerifiedQuantity("");
+                                                }
+                                            } else {
+                                                tripStockBean.setmTripsheetStockVerifiedQuantity("");
+                                            }
+                                            tripStockBean.setmTripsheetStockVerifyBy("");
+
+                                            // Added by Sekhar for close trip functionality
+                                            //tripStockBean.setmDeliveryQuantity("");
+                                            //tripStockBean.setmReturnQuantity("");
+                                            // tripStockBean.setmCBQuantity("");
+                                            if (leakQuantityArray != null) {
+                                                if (leakQuantityArray.length() > 0) {
+                                                    tripStockBean.setmLeakQuantity(leakQuantityArray.get(j).toString());
+                                                }
+                                            }
+                                            //tripStockBean.setmOtherQuantity("");
+
+                                            mTripsheetsStockList.add(tripStockBean);
+                                        }
+                                    }
                                 }
                             }
                         }

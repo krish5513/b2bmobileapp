@@ -7,14 +7,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,21 +24,12 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeleveriesPreviewAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
-import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
-import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
-import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class AgentDeliveriesView extends AppCompatActivity {
     private ListView mAgentsList;
@@ -136,17 +123,17 @@ public class AgentDeliveriesView extends AppCompatActivity {
         tv_companyName.setText(sharedPreferences.getString("companyname"));
 
         user_Name = (TextView) findViewById(R.id.tv_user_Name);
-        user_Name.setText("by " + sharedPreferences.getString("loginusername"));
+        user_Name.setText(sharedPreferences.getString("loginusername"));
 
-        Route_Name = (TextView) findViewById(R.id.route_name);
+        /*Route_Name = (TextView) findViewById(R.id.route_name);
         Route_Name.setText(sharedPreferences.getString("routename"));
 
         RouteCode = (TextView) findViewById(R.id.tv_routecode);
         str_routecode = (sharedPreferences.getString("routecode") + ",");
         RouteCode.setText(str_routecode);
 
-
-        sale_orderNo = (TextView) findViewById(R.id.order_no);
+*/
+       /* sale_orderNo = (TextView) findViewById(R.id.order_no);
 
        if (sale_orderNo != null) {
             sale_orderNo.setText(mAgentSoCode);
@@ -160,7 +147,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
         } else {
             sale_orderDate.setText("-");
         }
-
+*/
 
         deliveryNo = (TextView) findViewById(R.id.agentname);
 
