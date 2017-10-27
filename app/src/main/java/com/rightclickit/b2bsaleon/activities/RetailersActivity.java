@@ -25,9 +25,10 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.RetailersListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.models.RetailersModel;
+import com.rightclickit.b2bsaleon.models.RetailersModel1;
 import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +51,8 @@ public class RetailersActivity extends AppCompatActivity {
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
     private boolean isSaveDeviceDetails, isMyProfilePrivilege;
     TextView tvrouts_customerN;
-    private RetailersModel mRetailersModel;
+    private RetailersModel1 mRetailersModel;
+    ArrayList<String> privilegeActionsData1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,7 @@ public class RetailersActivity extends AppCompatActivity {
 
             mPreferences = new MMSharedPreferences(RetailersActivity.this);
             mDBHelper = new DBHelper(RetailersActivity.this);
-            mRetailersModel = new RetailersModel(this, RetailersActivity.this);
+            mRetailersModel = new RetailersModel1(this, RetailersActivity.this);
 
             final ActionBar actionBar = getSupportActionBar();
             assert actionBar != null;
@@ -231,7 +233,7 @@ public class RetailersActivity extends AppCompatActivity {
             }
 
 
-            ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Retailers"));
+            privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Retailers"));
             System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
 
             boolean canWeShowRetailersListView = false;
@@ -246,15 +248,17 @@ public class RetailersActivity extends AppCompatActivity {
             }
 
             if (canWeShowRetailersListView) {
-                retailersList = mDBHelper.fetchRecordsFromTDCCustomers(1);
-
-                if (retailersList.size() <= 0) {
-                    mRetailerslistview.setVisibility(View.GONE);
-                    no_retailers_found_message.setVisibility(View.VISIBLE);
+                if (new NetworkConnectionDetector(RetailersActivity.this).isNetworkConnected()) {
+                    retailersList = mDBHelper.fetchRecordsFromTDCCustomers(1);
+                    if (retailersList.size() > 0) {
+                        loadRetailers(retailersList);
+                    } else {
+                        mRetailersModel.getAgentsList("retailers");
+                    }
+                } else {
+                    retailersList = mDBHelper.fetchRecordsFromTDCCustomers(1);
+                    loadRetailers(retailersList);
                 }
-
-                retailersListAdapter = new RetailersListAdapter(activityContext, this, retailersList, privilegeActionsData1);
-                mRetailerslistview.setAdapter(retailersListAdapter);
             }
 
         } catch (Exception e) {
@@ -262,6 +266,15 @@ public class RetailersActivity extends AppCompatActivity {
         }
 
         startService(new Intent(RetailersActivity.this, SyncNotificationsListService.class));
+    }
+
+    public void loadRetailers(List<TDCCustomer> retailersList) {
+        if (retailersList.size() <= 0) {
+            mRetailerslistview.setVisibility(View.GONE);
+            no_retailers_found_message.setVisibility(View.VISIBLE);
+        }
+        retailersListAdapter = new RetailersListAdapter(activityContext, this, retailersList, privilegeActionsData1);
+        mRetailerslistview.setAdapter(retailersListAdapter);
     }
 
     @Override
@@ -334,6 +347,18 @@ public class RetailersActivity extends AppCompatActivity {
 //            return true;
 //        }
 
+        if (id == R.id.autorenew) {
+            if (new NetworkConnectionDetector(RetailersActivity.this).isNetworkConnected()) {
+                mRetailersModel.getAgentsList("retailers");
+
+                }
+
+            else {
+               new NetworkConnectionDetector(RetailersActivity.this).displayNoNetworkError(RetailersActivity.this);
+           }
+           return true;
+       }
+
         if (id == R.id.action_search) {
             return true;
         }
@@ -376,7 +401,7 @@ public class RetailersActivity extends AppCompatActivity {
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.notifications).setVisible(true);
 
-        menu.findItem(R.id.autorenew).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(true);
         menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }

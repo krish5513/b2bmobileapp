@@ -1,30 +1,25 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetSoListPreviewAdapter;
@@ -119,8 +114,8 @@ public class TripSheetViewPreview extends AppCompatActivity {
             sales_print = (TextView) findViewById(R.id.tv_print);
             company_name = (TextView) findViewById(R.id.tdc_sales_company_name);
             user_name = (TextView) findViewById(R.id.tdc_sales_user_name);
-            route_name = (TextView) findViewById(R.id.tdc_sales_route_name);
-            route_code = (TextView) findViewById(R.id.tdc_sales_route_code);
+            //route_name = (TextView) findViewById(R.id.tdc_sales_route_name);
+           // route_code = (TextView) findViewById(R.id.tdc_sales_route_code);
             tripsheet_no_text_view = (TextView) findViewById(R.id.tripsheet_no);
             sale_date_time_text_view = (TextView) findViewById(R.id.tdc_sales_date_time);
             tdc_products_list_preview = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
@@ -128,8 +123,8 @@ public class TripSheetViewPreview extends AppCompatActivity {
 
             company_name.setText(mmSharedPreferences.getString("companyname"));
             user_name.setText("by " + loggedInUserName);
-            route_name.setText(mmSharedPreferences.getString("routename"));
-            route_code.setText(str_routecode);
+           // route_name.setText(mmSharedPreferences.getString("routename"));
+          //  route_code.setText(str_routecode);
             tripsheet_no_text_view.setText(str_Tripcode + ",");
             sale_date_time_text_view.setText(str_Tripdate);
 
@@ -360,11 +355,11 @@ public class TripSheetViewPreview extends AppCompatActivity {
             TextView mSOReceivedValue = (TextView) view.findViewById(R.id.received);
             TextView mSODueValue = (TextView) view.findViewById(R.id.due);
             mAgentCode.setText(temp[5]);
-            mOBValue.setText(temp[1]);
+            mOBValue.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[1])));
             mSOAgentName.setText(temp[0]);
-            mSOOrderedValue.setText(temp[2]);
-            mSOReceivedValue.setText(temp[3]);
-            mSODueValue.setText(temp[4]);
+            mSOOrderedValue.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[2])));
+            mSOReceivedValue.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[3])));
+            mSODueValue.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[4])));
 
             return view;
         }

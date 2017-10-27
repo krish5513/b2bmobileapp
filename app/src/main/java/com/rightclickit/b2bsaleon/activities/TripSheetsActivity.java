@@ -255,6 +255,18 @@ public class TripSheetsActivity extends AppCompatActivity {
             return true;
         }
 
+
+        if (id == R.id.autorenew) {
+            if (new NetworkConnectionDetector(TripSheetsActivity.this).isNetworkConnected()) {
+                mTripsheetsModel.getTripsheetsList(mNoTripsFoundText);
+            }
+
+            else {
+                new NetworkConnectionDetector(TripSheetsActivity.this).displayNoNetworkError(TripSheetsActivity.this);
+            }
+            return true;
+        }
+
         if (id == R.id.action_search) {
 
             return true;

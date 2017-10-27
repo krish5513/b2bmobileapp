@@ -30,6 +30,7 @@ public class TDCCustomer implements Serializable {
     private int isActive;
     private int isUploaded;
     private int isShopImageUploaded;
+    private String code;
 
     public long getId() {
         return id;
@@ -151,6 +152,15 @@ public class TDCCustomer implements Serializable {
                 ", isActive=" + isActive +
                 ", isUploaded=" + isUploaded +
                 ", isShopImageUploaded=" + isShopImageUploaded +
+                ", code=" + code +
                 '}';
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

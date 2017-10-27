@@ -196,12 +196,12 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         user_Name = (TextView) findViewById(R.id.tv_user_Name);
         user_Name.setText("by " + sharedPreferences.getString("loginusername"));
 
-        Route_Name = (TextView) findViewById(R.id.route_name);
-        Route_Name.setText(sharedPreferences.getString("routename"));
+       // Route_Name = (TextView) findViewById(R.id.route_name);
+       // Route_Name.setText(sharedPreferences.getString("routename"));
 
-        RouteCode = (TextView) findViewById(R.id.tv_routecode);
-        str_routecode = (sharedPreferences.getString("routecode") + ",");
-        RouteCode.setText(str_routecode);
+       // RouteCode = (TextView) findViewById(R.id.tv_routecode);
+       // str_routecode = (sharedPreferences.getString("routecode") + ",");
+       // RouteCode.setText(str_routecode);
 
 
         sale_orderNo = (TextView) findViewById(R.id.order_no);
@@ -248,9 +248,9 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                 canvas.drawText(sharedPreferences.getString("companyname"), 5, 50, paint);
                 paint.setTextSize(20);
-                canvas.drawText(str_routecode, 5, 80, paint);
+            //    canvas.drawText(str_routecode, 5, 80, paint);
                 paint.setTextSize(20);
-                canvas.drawText(sharedPreferences.getString("routename"), 200, 80, paint);
+               // canvas.drawText(sharedPreferences.getString("routename"), 200, 80, paint);
                 paint.setTextSize(20);
                 canvas.drawText("ROUTE DELEVERY,", 5, 120, paint);
                 paint.setTextSize(20);

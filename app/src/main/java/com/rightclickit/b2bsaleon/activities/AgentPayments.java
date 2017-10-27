@@ -40,6 +40,7 @@ public class AgentPayments extends AppCompatActivity {
     ListView paymentsList;
     FloatingActionButton fab;
     String ObAmount="",Ordervalue="",receivedAmount="",Due="";
+    private TextView mNoDataText;
 
     TextView tv_obAmount,tv_orderValue,tv_receivedAmount,tv_due;
     AgentPaymentsModel  paymentsModel;
@@ -85,15 +86,17 @@ public class AgentPayments extends AppCompatActivity {
         receivedAmount=mPreferences.getString("ReceivedAmount");
         Due=mPreferences.getString("due");
 
-        tv_obAmount=(TextView)findViewById(R.id.tv_obAmount) ;
-        tv_orderValue=(TextView)findViewById(R.id.tv_orderValue) ;
-        tv_receivedAmount=(TextView)findViewById(R.id.tv_receivedAmount) ;
-        tv_due=(TextView)findViewById(R.id.tv_due) ;
+        //tv_obAmount=(TextView)findViewById(R.id.tv_obAmount) ;
+        //tv_orderValue=(TextView)findViewById(R.id.tv_orderValue) ;
+       // tv_receivedAmount=(TextView)findViewById(R.id.tv_receivedAmount) ;
+       // tv_due=(TextView)findViewById(R.id.tv_due) ;
+/*
 
         tv_obAmount.setText(ObAmount);
         tv_orderValue.setText(Ordervalue);
         tv_receivedAmount.setText(receivedAmount);
         tv_due.setText(Due);
+*/
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
@@ -113,6 +116,8 @@ public class AgentPayments extends AppCompatActivity {
         });
 
         paymentsList=(ListView)findViewById(R.id.ordered_products_list_view) ;
+        mNoDataText = (TextView) findViewById(R.id.NoDataText);
+        paymentsList.setEmptyView(mNoDataText);
 
         agentId = mPreferences.getString("agentId");
 
@@ -126,6 +131,8 @@ public class AgentPayments extends AppCompatActivity {
 
         if(unUploadedPayments.size()>0){
             loadPayments(unUploadedPayments);
+        }else {
+            mNoDataText.setText("No Payments found.");
         }
 
         sales.setOnClickListener(new View.OnClickListener() {

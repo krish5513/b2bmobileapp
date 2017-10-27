@@ -104,7 +104,7 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
         final AgentDeliveriesBean currentDeliveryBean = allDeliveryProductsList.get(position);
 
         tripSheetDeliveriesViewHolder.Delivery_no.setText(currentDeliveryBean.getTripNo());
-        tripSheetDeliveriesViewHolder.Delivery_date.setText(getDate(currentDeliveryBean.getTripDate(),"dd-MM-yyyy"));
+        tripSheetDeliveriesViewHolder.Delivery_date.setText((currentDeliveryBean.getTripDate()));
         tripSheetDeliveriesViewHolder.delivery_status.setText(currentDeliveryBean.getDeliverdstatus());
         tripSheetDeliveriesViewHolder.items_count.setText(currentDeliveryBean.getDeliveredItems());
         tripSheetDeliveriesViewHolder.deliverd_by.setText(mdbhelper.getDeliveryName(currentDeliveryBean.getDeliveredBy()));
@@ -115,7 +115,7 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
                 //mPreferences.putString("DeliveryNo",currentDeliveryBean.getTripNo());
                 Intent i=new Intent(activity,AgentDeliveriesView.class);
                 i.putExtra("DeliveryNo",currentDeliveryBean.getTripNo());
-                i.putExtra("Deliverydate",getDate(currentDeliveryBean.getTripDate(),"dd-MM-yyyy"));
+                i.putExtra("Deliverydate",currentDeliveryBean.getTripDate());
                 activity.startActivity(i);
                 activity.finish();
             }

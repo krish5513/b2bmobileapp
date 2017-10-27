@@ -1,31 +1,22 @@
 package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity;
-import com.rightclickit.b2bsaleon.activities.TripsheetDelivery;
 import com.rightclickit.b2bsaleon.activities.TripsheetDeliveryPreview;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
-import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -44,6 +35,7 @@ public class TripSheetDeleveriesPreviewAdapter extends BaseAdapter {
     private Map<String, String> productOrderQuantitiesHashMap;
     private final String zero_cost = "0.000";
     private boolean isDeliveryInEditingMode = false;
+    private DBHelper mDBHelper;
 
     public TripSheetDeleveriesPreviewAdapter(Context activityContext,  TripSheetDeliveriesListener deliveriesListener, TripsheetDeliveryPreview deliveryActivity, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyDeliveredProductsHashMap, Map<String, String> productOrderQuantitiesHashMap) {
         this.ctxt = ctxt;
@@ -56,6 +48,7 @@ public class TripSheetDeleveriesPreviewAdapter extends BaseAdapter {
         this.selectedDeliveryProductsHashMap = new HashMap<>();
         this.previouslyDeliveredProductsHashMap = previouslyDeliveredProductsHashMap;
         this.productOrderQuantitiesHashMap = productOrderQuantitiesHashMap;
+        this.mDBHelper = new DBHelper(activity);
 
         // in order to update total amount's at the time of initial loading.
 
@@ -105,7 +98,7 @@ public class TripSheetDeleveriesPreviewAdapter extends BaseAdapter {
     }
 
         public class TripSheetDeliveriesViewHolder {
-        TextView order_preview_product_name, order_preview_quantity, order_preview_tax, order_preview_mrp, order_preview_amount;
+        TextView order_preview_product_name, order_preview_quantity, order_preview_tax, order_preview_mrp, order_preview_amount,cgst,sgst;
     }
 
     @Override
@@ -134,6 +127,8 @@ public class TripSheetDeleveriesPreviewAdapter extends BaseAdapter {
             tripSheetDeliveriesViewHolder.order_preview_mrp = (TextView) view.findViewById(R.id.order_preview_mrp);
             tripSheetDeliveriesViewHolder.order_preview_amount = (TextView) view.findViewById(R.id.order_preview_amount);
             tripSheetDeliveriesViewHolder.order_preview_tax = (TextView) view.findViewById(R.id.order_preview_tax);
+            tripSheetDeliveriesViewHolder.cgst = (TextView) view.findViewById(R.id.cgst);
+            tripSheetDeliveriesViewHolder.sgst = (TextView) view.findViewById(R.id.sgst);
             view.setTag(tripSheetDeliveriesViewHolder);
         } else {
             tripSheetDeliveriesViewHolder = (TripSheetDeleveriesPreviewAdapter.TripSheetDeliveriesViewHolder) view.getTag();
@@ -154,6 +149,22 @@ public class TripSheetDeleveriesPreviewAdapter extends BaseAdapter {
 
     //    updateSelectedProductsList(currentDeliveryBean);
 
+        if (currentDeliveryBean.getProductgst() != null) {
+            tripSheetDeliveriesViewHolder.cgst.setText(currentDeliveryBean.getProductgst() + "%");
+        } else if (mDBHelper.getGSTByProductId(currentDeliveryBean.getProductId()) > 0) {
+            String gst = String.valueOf(mDBHelper.getGSTByProductId(currentDeliveryBean.getProductId()));
+            tripSheetDeliveriesViewHolder.cgst.setText(gst + "%");
+        } else {
+            tripSheetDeliveriesViewHolder.cgst.setText("0.00%");
+        }
+        if (currentDeliveryBean.getProductvat() != null) {
+            tripSheetDeliveriesViewHolder.sgst.setText(currentDeliveryBean.getProductvat() + "%");
+        } else if (mDBHelper.getVATByProductId(currentDeliveryBean.getProductId()) > 0) {
+            String vat = String.valueOf(mDBHelper.getVATByProductId(currentDeliveryBean.getProductId()));
+            tripSheetDeliveriesViewHolder.sgst.setText(vat + "%");
+        } else {
+            tripSheetDeliveriesViewHolder.sgst.setText("0.00%");
+        }
 
         return view;
     }

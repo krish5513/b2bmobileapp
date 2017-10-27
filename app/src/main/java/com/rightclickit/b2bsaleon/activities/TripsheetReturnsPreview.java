@@ -182,14 +182,14 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
         user_Name = (TextView) findViewById(R.id.tv_user_Name);
         user_Name.setText("by " + sharedPreferences.getString("loginusername"));
 
-        Route_Name = (TextView) findViewById(R.id.route_name);
+     /*   Route_Name = (TextView) findViewById(R.id.route_name);
         Route_Name.setText(sharedPreferences.getString("routename"));
 
         RouteCode = (TextView) findViewById(R.id.tv_routecode);
         str_routecode = (sharedPreferences.getString("routecode") + ",");
         RouteCode.setText(str_routecode);
 
-
+*/
 
 
         deliveryNo = (TextView) findViewById(R.id.return_date);

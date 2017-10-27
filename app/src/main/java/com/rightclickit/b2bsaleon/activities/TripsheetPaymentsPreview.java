@@ -1,6 +1,5 @@
 package com.rightclickit.b2bsaleon.activities;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,16 +9,14 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +24,6 @@ import android.widget.Toast;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetsPaymentPreviewDeliveredProductsAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripSheetsPaymentPreviewReturnedProductsAdapter;
-import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderDeliveredProducts;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderReturnedProducts;
@@ -90,8 +86,8 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             print = (TextView) findViewById(R.id.tv_print_print);
 
             tv_companyName = (TextView) findViewById(R.id.tv_companyName);
-            tv_routecode = (TextView) findViewById(R.id.tv_routecode);
-            tv_route_name = (TextView) findViewById(R.id.tv_route_name);
+          //  tv_routecode = (TextView) findViewById(R.id.tv_routecode);
+          //  tv_route_name = (TextView) findViewById(R.id.tv_route_name);
             tv_delivered_user_Name = (TextView) findViewById(R.id.tv_delivered_user_Name);
             tv_sale_order_no = (TextView) findViewById(R.id.tv_sale_order_no);
             tv_sale_order_date = (TextView) findViewById(R.id.tv_sale_order_date);
@@ -134,8 +130,8 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
             // Updating UI with fetched values.
             tv_companyName.setText(companyName);
-            tv_routecode.setText(routeCode);
-            tv_route_name.setText(routeName);
+           // tv_routecode.setText(routeCode);
+           // tv_route_name.setText(routeName);
             tv_delivered_user_Name.setText("by " + loggedInUserName);
 
             if (saleOrdersDetails != null) {

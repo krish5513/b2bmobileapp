@@ -129,7 +129,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:paddingLeft="3dp"
-                            android:text="Delivered By: "
+                            android:text="By: "
                             android:textColor="@color/greydark"
                             android:textSize="14sp" />
 

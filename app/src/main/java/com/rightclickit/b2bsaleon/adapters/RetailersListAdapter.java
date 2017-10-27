@@ -90,7 +90,8 @@ public class RetailersListAdapter extends BaseAdapter {
 
         final TDCCustomer currentRetailer = getItem(position);
 
-        retailersViewHolder.retailer_id.setText(String.format("R%05d", currentRetailer.getId()));
+        //retailersViewHolder.retailer_id.setText(String.format("R%05d", currentRetailer.getId()));
+        retailersViewHolder.retailer_id.setText(currentRetailer.getCode());
         retailersViewHolder.retailer_name.setText(currentRetailer.getBusinessName());
         retailersViewHolder.retailer_mobile_no.setText(currentRetailer.getMobileNo());
 
@@ -119,8 +120,6 @@ public class RetailersListAdapter extends BaseAdapter {
         });
 
 
-
-
         retailersViewHolder.retailer_btn_payments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,7 +146,7 @@ public class RetailersListAdapter extends BaseAdapter {
             filteredRetailersList.addAll(allRetailersList);
         } else {
             for (TDCCustomer customer : allRetailersList) {
-                if (customer.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                if (customer.getBusinessName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredRetailersList.add(customer);
                 }
 
@@ -155,7 +154,7 @@ public class RetailersListAdapter extends BaseAdapter {
                     filteredRetailersList.add(customer);
                 }
 
-                if (String.valueOf(customer.getId()).toLowerCase(Locale.getDefault()).contains(charText)) {
+                if (String.valueOf(customer.getCode()).toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredRetailersList.add(customer);
                 }
             }

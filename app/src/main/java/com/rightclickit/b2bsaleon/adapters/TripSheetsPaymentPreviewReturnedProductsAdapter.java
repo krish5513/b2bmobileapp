@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentPaymentsView;
 import com.rightclickit.b2bsaleon.activities.TripsheetPaymentsPreview;
-import com.rightclickit.b2bsaleon.beanclass.SaleOrderDeliveredProducts;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderReturnedProducts;
 import com.rightclickit.b2bsaleon.util.Utility;
 
@@ -81,10 +80,10 @@ public class TripSheetsPaymentPreviewReturnedProductsAdapter extends BaseAdapter
         final SaleOrderReturnedProducts productBean = getItem(position);
 
         salesPreviewViewHolder.product_name.setText(productBean.getName() + " \n " + productBean.getCode());
-        salesPreviewViewHolder.ob.setText(productBean.getOpeningBalance());
-        salesPreviewViewHolder.delivered.setText(productBean.getDelivered());
-        salesPreviewViewHolder.returned.setText(productBean.getReturned());
-        salesPreviewViewHolder.cb.setText(productBean.getClosingBalance());
+        salesPreviewViewHolder.ob.setText(Utility.getFormattedCurrency(Double.parseDouble(productBean.getOpeningBalance())));
+        salesPreviewViewHolder.delivered.setText(Utility.getFormattedCurrency(Double.parseDouble(productBean.getDelivered())));
+        salesPreviewViewHolder.returned.setText(Utility.getFormattedCurrency(Double.parseDouble(productBean.getReturned())));
+        salesPreviewViewHolder.cb.setText(Utility.getFormattedCurrency(Double.parseDouble(productBean.getClosingBalance())));
 
         return convertView;
     }

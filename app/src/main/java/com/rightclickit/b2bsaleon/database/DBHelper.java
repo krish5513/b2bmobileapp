@@ -251,6 +251,9 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_CUSTOMER_UPLOAD_STATUS = "tdc_customer_upload_status";
     private final String KEY_TDC_CUSTOMER_ROUTECODE = "tdc_customer_routecode";
     private final String KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS = "tdc_customer_shop_image_upload_status";
+    private final String KEY_TDC_CUSTOMER_CODE = "tdc_customer_code";
+
+
 
     // Column names for Special price
     private final String KEY_USER_SPECIALID = "userid";
@@ -559,8 +562,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + TABLE_TDC_CUSTOMERS + "(" + KEY_TDC_CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_CUSTOMER_USER_ID + " VARCHAR, " + KEY_TDC_CUSTOMER_ROUTECODE + " VARCHAR, " + KEY_TDC_CUSTOMER_TYPE + " INTEGER, "
             + KEY_TDC_CUSTOMER_NAME + " VARCHAR, " + KEY_TDC_CUSTOMER_MOBILE_NO + " VARCHAR, " + KEY_TDC_CUSTOMER_BUSINESS_NAME + " VARCHAR, "
             + KEY_TDC_CUSTOMER_ADDRESS + " TEXT, " + KEY_TDC_CUSTOMER_LATITUDE + " TEXT, " + KEY_TDC_CUSTOMER_LONGITUDE + " TEXT, " + KEY_TDC_CUSTOMER_SHOP_IMAGE + " VARCHAR, "
-            + KEY_TDC_CUSTOMER_IS_ACTIVE + " INTEGER DEFAULT 1, " + KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS + " INTEGER DEFAULT 0, " + KEY_TDC_CUSTOMER_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
-
+            + KEY_TDC_CUSTOMER_IS_ACTIVE + " INTEGER DEFAULT 1, " + KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS + " INTEGER DEFAULT 0, " + KEY_TDC_CUSTOMER_CODE + " VARCHAR, "
+            + KEY_TDC_CUSTOMER_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // SpecialPrice Table Create Statement
     private final String CREATE_TABLE_SPECIALPRICE = "CREATE TABLE IF NOT EXISTS "
@@ -2019,11 +2022,19 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_CUSTOMER_LONGITUDE, customer.getLongitude());
             values.put(KEY_TDC_CUSTOMER_SHOP_IMAGE, customer.getShopImage());
             values.put(KEY_TDC_CUSTOMER_ROUTECODE, customer.getRoutecode());
+            values.put(KEY_TDC_CUSTOMER_CODE, customer.getCode());
 
             values.put(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS, customer.getIsShopImageUploaded());
 
-            customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
-
+            int val = checkRetailerExistsOrNot(customer.getUserId());
+            if (val == 0) {
+                System.out.println("RETAILER INSERTED+++++");
+                customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
+            } else {
+                System.out.println("RETAILER UPDATED+++++");
+                customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
+                        new String[]{String.valueOf(customer.getUserId())});
+            }
             values.clear();
             db.close();
         } catch (Exception e) {
@@ -2106,6 +2117,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     customer.setIsActive(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_IS_ACTIVE)));
                     customer.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_UPLOAD_STATUS)));
                     customer.setRoutecode(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_ROUTECODE)));
+                    customer.setCode(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_CODE)));
                     customer.setIsShopImageUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS)));
 
                     allRetailersList.add(customer);
@@ -5779,6 +5791,24 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return alltripsheetsReturns;
+    }
+
+    public int checkRetailerExistsOrNot(String s) {
+        int maxID = 0;
+
+        String selectQuery = "SELECT  * FROM " + TABLE_TDC_CUSTOMERS
+                + " WHERE " + KEY_TDC_CUSTOMER_USER_ID + "='" + s + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //System.out.println("DDDD::: "+ cursor.getCount());
+        if (cursor.moveToFirst()) {
+            do {
+                maxID = cursor.getInt(0);
+
+            } while (cursor.moveToNext());
+        }
+        //System.out.println("FGGHH::: "+maxID);
+        return maxID;
     }
 
 }
