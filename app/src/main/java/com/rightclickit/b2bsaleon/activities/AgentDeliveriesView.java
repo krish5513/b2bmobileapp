@@ -56,13 +56,13 @@ public class AgentDeliveriesView extends AppCompatActivity {
     private Map<String, String> previouslyDeliveredProductsHashMap; // this hash map contains previously delivered product quantity. key = product id & value = previously delivered quantity
     private Map<String, String> productOrderQuantitiesHashMap; // this hash map contains product codes & it's order quantity fetched from sale oder table.
 
-    private double totalAmount=0 ;
-    private double totalTaxAmount =0;
-    private double subTotal=0 ;
+    private double totalAmount = 0;
+    private double totalTaxAmount = 0;
+    private double subTotal = 0;
     private boolean isDeliveryDataSaved = false, isDeliveryInEditingMode = false;
 
-   // double amount, subtotal;
-   // double taxAmount;
+    // double amount, subtotal;
+    // double taxAmount;
     String name;
 
     private MMSharedPreferences sharedPreferences;
@@ -97,8 +97,8 @@ public class AgentDeliveriesView extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            mDeliveryNo= bundle.getString("DeliveryNo");
-            mDeliverydate=bundle.getString("Deliverydate");
+            mDeliveryNo = bundle.getString("DeliveryNo");
+            mDeliverydate = bundle.getString("Deliverydate");
         }
 
 
@@ -116,7 +116,6 @@ public class AgentDeliveriesView extends AppCompatActivity {
         tv_amount.setText(Utility.getFormattedCurrency(totalAmount));
 
         totalprice = (TextView) findViewById(R.id.totalAmount);
-
 
 
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
@@ -256,8 +255,6 @@ public class AgentDeliveriesView extends AppCompatActivity {
     }
 
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
@@ -349,14 +346,20 @@ public class AgentDeliveriesView extends AppCompatActivity {
             TextView order_preview_mrp = (TextView) view.findViewById(R.id.order_preview_mrp);
             TextView order_preview_amount = (TextView) view.findViewById(R.id.order_preview_amount);
             TextView order_preview_tax = (TextView) view.findViewById(R.id.order_preview_tax);
+            TextView hssnNumber = (TextView) view.findViewById(R.id.hssn_number);
+            TextView CGST = (TextView) view.findViewById(R.id.cgst);
+            TextView SGST = (TextView) view.findViewById(R.id.sgst);
             order_preview_product_name.setText(temp[0]);
             order_preview_quantity.setText(temp[1]);
             order_preview_mrp.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[2])));
             order_preview_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[3])));
             order_preview_tax.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[4])));
-            totalAmount= totalAmount+Double.parseDouble(temp[3]);
-            totalTaxAmount=totalTaxAmount+ Double.parseDouble(temp[4]);
-            subTotal=totalAmount+totalTaxAmount;
+            // hssnNumber.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[5])));
+//            CGST.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[6])));
+//            SGST.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[7])));
+            totalAmount = totalAmount + Double.parseDouble(temp[3]);
+            totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
+            subTotal = totalAmount + totalTaxAmount;
 
             return view;
         }

@@ -361,7 +361,6 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
     public void saveProductsVerifyList() {
         long currentTimeStamp = System.currentTimeMillis();
         String tripSheetId = "";
-
         for (Map.Entry<String, TripsheetsStockList> stockList : productsVerifyListHashMap.entrySet()) {
             TripsheetsStockList currentStock = stockList.getValue();
             currentStock.setmTripsheetStockVerifyBy(loggedInUserId);

@@ -28,46 +28,53 @@ import java.util.HashMap;
 public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
     public static final String TAG = Products_Activity.class.getSimpleName();
 
-    private  Context context;
+    private Context context;
     private AgentDeliveries activity;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private String type = "";
     private ArrayList<String> regionIdsList = new ArrayList<String>();
     private JSONArray routesArray;
-    private  ArrayList<TripSheetDeliveriesBean> mDeliveriesBeansList = new ArrayList<TripSheetDeliveriesBean>();
+    private ArrayList<TripSheetDeliveriesBean> mDeliveriesBeansList = new ArrayList<TripSheetDeliveriesBean>();
     private String mStock = "", mAgentPrice = "", mRetailerPrice = "", mConsumerPrice = "";
-    private  String currentDate = "";
-    private  String fromDate = "";
-    private  ArrayList<String> deliveryNoList = new ArrayList<String>();
-    private  ArrayList<String> tripIdsList = new ArrayList<String>();
-    private  ArrayList<String> saleorderIdList = new ArrayList<String>();
-    private  ArrayList<String> saleorderCodesList = new ArrayList<String>();
-    private  ArrayList<String> userIdsList = new ArrayList<String>();
-    private  ArrayList<String> userCodesList = new ArrayList<String>();
-    private  ArrayList<String> routeIdsList = new ArrayList<String>();
-    private  ArrayList<String> routeCodesList = new ArrayList<String>();
+    private String currentDate = "";
+    private String fromDate = "";
+    private ArrayList<String> deliveryNoList = new ArrayList<String>();
+    private ArrayList<String> tripIdsList = new ArrayList<String>();
+    private ArrayList<String> saleorderIdList = new ArrayList<String>();
+    private ArrayList<String> saleorderCodesList = new ArrayList<String>();
+    private ArrayList<String> userIdsList = new ArrayList<String>();
+    private ArrayList<String> userCodesList = new ArrayList<String>();
+    private ArrayList<String> routeIdsList = new ArrayList<String>();
+    private ArrayList<String> routeCodesList = new ArrayList<String>();
+    private ArrayList<String> productIdsList = new ArrayList<String>();
+    private ArrayList<String> productCodesList = new ArrayList<String>();
+    private ArrayList<String> taxPercentArray = new ArrayList<String>();
+    private ArrayList<String> unitPriceArray = new ArrayList<String>();
+    private ArrayList<String> quantitysList = new ArrayList<String>();
+    private ArrayList<String> amount = new ArrayList<String>();
+    private ArrayList<String> taxAmount = new ArrayList<String>();
 
-    private  HashMap<String, JSONArray> productIdsList = new HashMap<String, JSONArray>();
-    private  HashMap<String, JSONArray> productCodesList = new HashMap<String, JSONArray>();
-    private HashMap<String, JSONArray> taxPercentArray = new HashMap<String, JSONArray>();
-    private  HashMap<String, JSONArray> unitPriceArray = new HashMap<String, JSONArray>();
-    private  HashMap<String, JSONArray> quantitysList = new HashMap<String, JSONArray>();
-    private  HashMap<String, JSONArray> amount = new HashMap<String, JSONArray>();
-    private  HashMap<String, JSONArray> taxAmount = new HashMap<String, JSONArray>();
+//    private HashMap<String, JSONArray> productIdsList = new HashMap<String, JSONArray>();
+//    private HashMap<String, JSONArray> productCodesList = new HashMap<String, JSONArray>();
+//    private HashMap<String, JSONArray> taxPercentArray = new HashMap<String, JSONArray>();
+//    private HashMap<String, JSONArray> unitPriceArray = new HashMap<String, JSONArray>();
+//    private HashMap<String, JSONArray> quantitysList = new HashMap<String, JSONArray>();
+//    private HashMap<String, JSONArray> amount = new HashMap<String, JSONArray>();
+//    private HashMap<String, JSONArray> taxAmount = new HashMap<String, JSONArray>();
 
-    private  ArrayList<String> taxTotal = new ArrayList<String>();
-    private  ArrayList<String> saleValue = new ArrayList<String>();
-    private  ArrayList<String> statusList = new ArrayList<String>();
-    private  ArrayList<String> deleteList = new ArrayList<String>();
-    private  ArrayList<String> DeliveryDateList = new ArrayList<String>();
+    private ArrayList<String> taxTotal = new ArrayList<String>();
+    private ArrayList<String> saleValue = new ArrayList<String>();
+    private ArrayList<String> statusList = new ArrayList<String>();
+    private ArrayList<String> deleteList = new ArrayList<String>();
+    private ArrayList<String> DeliveryDateList = new ArrayList<String>();
 
 
-    private  ArrayList<String> createdBy = new ArrayList<String>();
-    private  ArrayList<String> createdOn = new ArrayList<String>();
-    private  ArrayList<String> updatedOn = new ArrayList<String>();
-    private  ArrayList<String> updatedBy = new ArrayList<String>();
-    private  ArrayList<String> Size = new ArrayList<String>();
+    private ArrayList<String> createdBy = new ArrayList<String>();
+    private ArrayList<String> createdOn = new ArrayList<String>();
+    private ArrayList<String> updatedOn = new ArrayList<String>();
+    private ArrayList<String> updatedBy = new ArrayList<String>();
+    private ArrayList<String> Size = new ArrayList<String>();
 
     private static HashMap<String, JSONArray> productsArray = new HashMap<String, JSONArray>();
 
@@ -87,7 +94,7 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
 
     }
 
-    public  void getDeliveriesList(String s) {
+    public void getDeliveriesList(String s) {
         try {
             if (mDeliveriesBeansList.size() > 0) {
                 mDeliveriesBeansList.clear();
@@ -266,50 +273,58 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                     // Product Ids
                     if (resObj.has("product_ids")) {
                         JSONArray pIdsArray = resObj.getJSONArray("product_ids");
-                        productIdsList.put(String.valueOf(j), pIdsArray);
+                        for (int z = 0; z < pIdsArray.length(); z++) {
+                            productIdsList.add(pIdsArray.get(z).toString());
+                        }
                     }
                     // Product Codes
                     if (resObj.has("product_codes")) {
                         JSONArray pCodesArray = resObj.getJSONArray("product_codes");
-                        productCodesList.put(String.valueOf(j), pCodesArray);
+                        for (int z = 0; z < pCodesArray.length(); z++) {
+                            productCodesList.add(pCodesArray.get(z).toString());
+                        }
                     }
 
                     // taxPercent
                     if (resObj.has("tax_percent")) {
                         JSONArray taxArray = resObj.getJSONArray("tax_percent");
-                        taxPercentArray.put(String.valueOf(j), taxArray);
+                        for (int z = 0; z < taxArray.length(); z++) {
+                            taxPercentArray.add(taxArray.get(z).toString());
+                        }
                     }
                     // Quantitys
                     if (resObj.has("quantity")) {
                         JSONArray quArray = resObj.getJSONArray("quantity");
-                        quantitysList.put(String.valueOf(j), quArray);
+                        for (int z2 = 0; z2 < quArray.length(); z2++) {
+                            quantitysList.add(quArray.get(z2).toString());
+                        }
                     }
 
                     // Unit price
                     if (resObj.has("unit_price")) {
                         JSONArray upArray = resObj.getJSONArray("unit_price");
-                        unitPriceArray.put(String.valueOf(j), upArray);
+                        for (int z = 0; z < upArray.length(); z++) {
+                            unitPriceArray.add(upArray.get(z).toString());
+                        }
                     }
-
                     // Amount
                     if (resObj.has("amount")) {
                         JSONArray amountArray = resObj.getJSONArray("amount");
-                        amount.put(String.valueOf(j), amountArray);
+                        for (int z = 0; z < amountArray.length(); z++) {
+                            amount.add(amountArray.get(z).toString());
+                        }
                     }
-
-
                     // TaxAmount
                     if (resObj.has("tax_amount")) {
                         JSONArray taxAmountArray = resObj.getJSONArray("tax_amount");
-                        taxAmount.put(String.valueOf(j), taxAmountArray);
+                        for (int z = 0; z < taxAmountArray.length(); z++) {
+                            taxAmount.add(taxAmountArray.get(z).toString());
+                        }
                     }
-
-
                     // TaxTotal
                     if (resObj.has("tax_total")) {
                         taxTotal.add(resObj.getString("tax_total"));
                     }
-
                     // SaleValue
                     if (resObj.has("sale_value")) {
                         saleValue.add(resObj.getString("sale_value"));
@@ -320,106 +335,46 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                     if (resObj.has("delete")) {
                         deleteList.add(resObj.getString("delete"));
                     }
-                    // Products Array
-                    if (resObj.has("productdata")) {
-                        JSONArray subPArray = resObj.getJSONArray("productdata");
-                        productsArray.put(String.valueOf(j), subPArray);
+                    if (mDeliveriesBeansList.size() > 0) {
+                        mDeliveriesBeansList.clear();
                     }
-                }
-
-
-                for (int d = 0; d < productsArray.size(); d++) {
-
-                    // Tax Percent
-                    ArrayList<String> taxList = new ArrayList<String>();
-                    JSONArray taxAr = taxPercentArray.get(String.valueOf(d));
-                    for (int z = 0; z < taxAr.length(); z++) {
-                        taxList.add(taxAr.get(z).toString());
-                    }
-
-                    // Quantity
-                    ArrayList<String> qList = new ArrayList<String>();
-                    JSONArray qAr = quantitysList.get(String.valueOf(d));
-                    for (int z2 = 0; z2 < qAr.length(); z2++) {
-                        qList.add(qAr.get(z2).toString());
-                    }
-
-                    // Unit prices
-                    ArrayList<String> upPriceList = new ArrayList<String>();
-                    JSONArray uPriceAr = unitPriceArray.get(String.valueOf(d));
-                    for (int z = 0; z < uPriceAr.length(); z++) {
-                        upPriceList.add(uPriceAr.get(z).toString());
-                    }
-
-
-                    // Amount
-                    ArrayList<String> amountList = new ArrayList<String>();
-                    JSONArray amountAr = amount.get(String.valueOf(d));
-                    for (int z = 0; z < amountAr.length(); z++) {
-                        amountList.add(amountAr.get(z).toString());
-                    }
-
-
-                    // taxAmount
-                    ArrayList<String> taxAmountList = new ArrayList<String>();
-                    JSONArray taxAmountAr = taxAmount.get(String.valueOf(d));
-                    for (int z = 0; z < taxAmountAr.length(); z++) {
-                        taxAmountList.add(taxAmountAr.get(z).toString());
-                    }
-
-                    // productId
-                    ArrayList<String> pIdList = new ArrayList<String>();
-                    JSONArray pIdAr = productIdsList.get(String.valueOf(d));
-                    for (int z = 0; z < pIdAr.length(); z++) {
-                        pIdList.add(pIdAr.get(z).toString());
-                    }
-
-                    // productCode
-                    ArrayList<String> pCodeList = new ArrayList<String>();
-                    JSONArray pCodeAr = productCodesList.get(String.valueOf(d));
-                    for (int z = 0; z < pCodeAr.length(); z++) {
-                        pCodeList.add(pCodeAr.get(z).toString());
-                    }
-
-                    JSONArray aaa = productsArray.get(String.valueOf(d));
-                    for (int s = 0; s < aaa.length(); s++) {
+                    for (int d = 0; d < productCodesList.size(); d++) {
                         TripSheetDeliveriesBean deliveriesBean = new TripSheetDeliveriesBean();
-                        JSONObject jj = aaa.getJSONObject(s);
-                        deliveriesBean.setmTripsheetDeliveryNo(deliveryNoList.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_tripId(tripIdsList.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_so_id(saleorderIdList.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_so_code(saleorderCodesList.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_userId(userIdsList.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_userCodes(userCodesList.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_routeId(routeIdsList.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_routeCodes(routeCodesList.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_productId(pIdList.get(s).toString());
-                        deliveriesBean.setmTripsheetDelivery_productCodes(pCodeList.get(s).toString());
-                        deliveriesBean.setmTripsheetDelivery_TaxPercent(taxList.get(s).toString());
-                        deliveriesBean.setmTripsheetDelivery_UnitPrice(upPriceList.get(s).toString());
-                        deliveriesBean.setmTripsheetDelivery_Quantity(qList.get(s).toString());
-                        deliveriesBean.setmTripsheetDelivery_Amount(amountList.get(s).toString());
-                        deliveriesBean.setmTripsheetDelivery_TaxAmount(taxAmountList.get(s).toString());
-                        deliveriesBean.setmTripsheetDelivery_TaxTotal(taxTotal.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_SaleValue(saleValue.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_Status(statusList.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_Delete(deleteList.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_CreatedOn(DeliveryDateList.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_CreatedBy(createdBy.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_UpdatedOn(updatedOn.get(d).toString());
-                        deliveriesBean.setmTripsheetDelivery_UpdatedBy(updatedBy.get(d).toString());
+                        deliveriesBean.setmTripsheetDeliveryNumber(deliveryNoList.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_tripId(tripIdsList.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_so_id(saleorderIdList.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_so_code(saleorderCodesList.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_userId(userIdsList.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_userCodes(userCodesList.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_routeId(routeIdsList.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_routeCodes(routeCodesList.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_productId(productIdsList.get(d).toString());
+                        deliveriesBean.setmTripsheetDelivery_productCodes(productCodesList.get(d).toString());
+                        deliveriesBean.setmTripsheetDelivery_TaxPercent(taxPercentArray.get(d).toString());
+                        deliveriesBean.setmTripsheetDelivery_UnitPrice(unitPriceArray.get(d).toString());
+                        deliveriesBean.setmTripsheetDelivery_Quantity(quantitysList.get(d).toString());
+                        deliveriesBean.setmTripsheetDelivery_Amount(amount.get(d).toString());
+                        deliveriesBean.setmTripsheetDelivery_TaxAmount(taxAmount.get(d).toString());
+                        deliveriesBean.setmTripsheetDelivery_TaxTotal(taxTotal.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_SaleValue(saleValue.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_Status(statusList.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_Delete(deleteList.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_CreatedOn(DeliveryDateList.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_CreatedBy(createdBy.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_UpdatedOn(updatedOn.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_UpdatedBy(updatedBy.get(j).toString());
 
                         mDeliveriesBeansList.add(deliveriesBean);
                     }
-                }
-                synchronized (this) {
-                    if (mDeliveriesBeansList.size() > 0) {
-                        mDBHelper.updateTripsheetsDeliveriesListData(mDeliveriesBeansList);
+                    synchronized (this) {
+                        if (mDeliveriesBeansList.size() > 0) {
+                            mDBHelper.updateTripsheetsDeliveriesListData(mDeliveriesBeansList);
+                        }
                     }
                 }
                 synchronized (this) {
                     if (mDeliveriesBeansList.size() > 0) {
-                        activity.loadDeliveries(mDeliveriesBeansList);
+                        activity.loadDeliveries1();
                     }
                 }
             }

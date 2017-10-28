@@ -30,7 +30,7 @@ import java.util.Map;
  * Created by PPS on 8/17/2017.
  */
 
-public class AgentDeliveriesAdapter extends BaseAdapter{
+public class AgentDeliveriesAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context ctxt;
     private Activity activity;
@@ -48,7 +48,7 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
         this.ctxt = ctxt;
         this.activity = deliveryActivity;
         this.mInflater = LayoutInflater.from(activity);
-        mdbhelper=new DBHelper(ctxt);
+        mdbhelper = new DBHelper(ctxt);
         this.allDeliveryProductsList = mdeliveriesBeanList;
         this.filteredDeliveryProductsList = new ArrayList<>();
         this.filteredDeliveryProductsList.addAll(allDeliveryProductsList);
@@ -58,7 +58,7 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
 
     public class TripSheetDeliveriesViewHolder {
         TextView Delivery_no, Delivery_date, delivery_status, items_count, deliverd_by;
-      Button View;
+        Button View;
     }
 
     @Override
@@ -71,7 +71,6 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
     public int getCount() {
         return filteredDeliveryProductsList.size();
     }
-
 
 
     @Override
@@ -103,19 +102,19 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
 
         final TripSheetDeliveriesBean currentDeliveryBean = allDeliveryProductsList.get(position);
 
-        tripSheetDeliveriesViewHolder.Delivery_no.setText(currentDeliveryBean.getmTripsheetDeliveryNo());
+        tripSheetDeliveriesViewHolder.Delivery_no.setText(currentDeliveryBean.getmTripsheetDeliveryNumber());
         tripSheetDeliveriesViewHolder.Delivery_date.setText(currentDeliveryBean.getmTripsheetDelivery_CreatedOn());
         tripSheetDeliveriesViewHolder.delivery_status.setText(currentDeliveryBean.getmTripsheetDelivery_Status());
-        tripSheetDeliveriesViewHolder.items_count.setText("2");
+        tripSheetDeliveriesViewHolder.items_count.setText(currentDeliveryBean.getDeliveredItemsCount());
         tripSheetDeliveriesViewHolder.deliverd_by.setText(mdbhelper.getDeliveryName(currentDeliveryBean.getmTripsheetDelivery_CreatedBy()));
 
         tripSheetDeliveriesViewHolder.View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //mPreferences.putString("DeliveryNo",currentDeliveryBean.getTripNo());
-                Intent i=new Intent(activity,AgentDeliveriesView.class);
-                i.putExtra("DeliveryNo",currentDeliveryBean.getmTripsheetDeliveryNo());
-                i.putExtra("Deliverydate",currentDeliveryBean.getmTripsheetDelivery_CreatedOn());
+                Intent i = new Intent(activity, AgentDeliveriesView.class);
+                i.putExtra("DeliveryNo", currentDeliveryBean.getmTripsheetDeliveryNumber());
+                i.putExtra("Deliverydate", currentDeliveryBean.getmTripsheetDelivery_CreatedOn());
                 activity.startActivity(i);
                 activity.finish();
             }
@@ -123,13 +122,13 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
         return view;
 
     }
-    public  String getDate(String time, String format) {
+
+    public String getDate(String time, String format) {
         try {
             Calendar cal = Calendar.getInstance(Locale.ENGLISH);
             cal.setTimeInMillis(Long.parseLong(time));
             return DateFormat.format(format, cal).toString();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return "XX-XX-XXXX";
         }
     }

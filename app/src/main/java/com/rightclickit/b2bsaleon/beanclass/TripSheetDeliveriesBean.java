@@ -31,6 +31,7 @@ public class TripSheetDeliveriesBean {
     private String mTripsheetDelivery_UpdatedBy;
     private String productRemainingInStock;
     private String productRemainingExtraStock;
+    private String deliveredItemsCount;
 
     public String getmTripsheetDeliveryNo() {
         return mTripsheetDeliveryNo;
@@ -270,5 +271,13 @@ public class TripSheetDeliveriesBean {
                 ", productRemainingInStock='" + productRemainingInStock + '\'' +
                 ", productRemainingExtraStock='" + productRemainingExtraStock + '\'' +
                 '}';
+    }
+
+    public String getDeliveredItemsCount() {
+        return deliveredItemsCount;
+    }
+
+    public void setDeliveredItemsCount(String deliveredItemsCount) {
+        this.deliveredItemsCount = deliveredItemsCount;
     }
 }
