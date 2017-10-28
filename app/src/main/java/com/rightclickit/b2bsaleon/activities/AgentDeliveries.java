@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentDeliveriesAdapter;
-import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentDeliveriesModel;
@@ -48,12 +48,13 @@ public class AgentDeliveries extends AppCompatActivity {
     private SearchView search;
     TextView tv_deliveries,tv_deliveriesValue,tv_pendingvalue;
     ArrayList<String> deliveriess=new ArrayList<>();
+    ArrayList<String> mtripsheetId=new ArrayList<>();
     String d_no;
     private double totalAmount=0 ;
     private double totalTaxAmount =0;
     private double subTotal=0 ;
     AgentDeliveriesModel deliveriesmodel;
-
+    private String mDeliveryNo = "", mDeliverydate = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,8 +105,13 @@ public class AgentDeliveries extends AppCompatActivity {
         mPreferences = new MMSharedPreferences(AgentDeliveries.this);
 
 
-        //Bundle bundle = getIntent().getExtras();
-        //if (bundle != null) {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mDeliveryNo= bundle.getString("DeliveryId");
+            mDeliverydate=bundle.getString("DeliveryDate");
+
+
+        }
             agentId = mPreferences.getString("agentId");
 
 
@@ -117,9 +123,12 @@ public class AgentDeliveries extends AppCompatActivity {
         }
 
 
-        ArrayList<AgentDeliveriesBean> unUploadedDeliveries = mDBHelper.getdeliveryDetails(agentId);
+        mtripsheetId=mDBHelper.getTripId(agentId,"tripsheet_delivery_trip_id");
+
+
+        ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesList(agentId);
         for (int i=0;i<unUploadedDeliveries.size();i++){
-             d_no=unUploadedDeliveries.get(i).getTripNo();
+             d_no=unUploadedDeliveries.get(i).getmTripsheetDeliveryNo();
         }
         ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(d_no);
         for (int i=0;i<arList.size();i++) {
@@ -222,7 +231,7 @@ public class AgentDeliveries extends AppCompatActivity {
 
     }
 
-    public void loadDeliveries(ArrayList<AgentDeliveriesBean> unUploadedDeliveries) {
+    public void loadDeliveries(ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries) {
 
         if (deliveriesAdapter != null) {
             deliveriesAdapter = null;

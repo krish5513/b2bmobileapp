@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentDeliveries;
 import com.rightclickit.b2bsaleon.activities.AgentDeliveriesView;
-import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -35,7 +35,7 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
     private Context ctxt;
     private Activity activity;
     private TripSheetDeliveriesListener listener;
-    private ArrayList<AgentDeliveriesBean> allDeliveryProductsList, filteredDeliveryProductsList;
+    private ArrayList<TripSheetDeliveriesBean> allDeliveryProductsList, filteredDeliveryProductsList;
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap; // Hash Map Key = Product Id
     private Map<String, String> previouslyDeliveredProductsHashMap;
     private Map<String, String> productOrderQuantitiesHashMap;
@@ -44,7 +44,7 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
     DBHelper mdbhelper;
     private MMSharedPreferences mPreferences;
 
-    public AgentDeliveriesAdapter(Context ctxt, AgentDeliveries deliveryActivity, ArrayList<AgentDeliveriesBean> mdeliveriesBeanList) {
+    public AgentDeliveriesAdapter(Context ctxt, AgentDeliveries deliveryActivity, ArrayList<TripSheetDeliveriesBean> mdeliveriesBeanList) {
         this.ctxt = ctxt;
         this.activity = deliveryActivity;
         this.mInflater = LayoutInflater.from(activity);
@@ -101,21 +101,21 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
 
         final AgentDeliveriesAdapter.TripSheetDeliveriesViewHolder currentTripSheetDeliveriesViewHolder = tripSheetDeliveriesViewHolder;
 
-        final AgentDeliveriesBean currentDeliveryBean = allDeliveryProductsList.get(position);
+        final TripSheetDeliveriesBean currentDeliveryBean = allDeliveryProductsList.get(position);
 
-        tripSheetDeliveriesViewHolder.Delivery_no.setText(currentDeliveryBean.getTripNo());
-        tripSheetDeliveriesViewHolder.Delivery_date.setText((currentDeliveryBean.getTripDate()));
-        tripSheetDeliveriesViewHolder.delivery_status.setText(currentDeliveryBean.getDeliverdstatus());
-        tripSheetDeliveriesViewHolder.items_count.setText(currentDeliveryBean.getDeliveredItems());
-        tripSheetDeliveriesViewHolder.deliverd_by.setText(mdbhelper.getDeliveryName(currentDeliveryBean.getDeliveredBy()));
+        tripSheetDeliveriesViewHolder.Delivery_no.setText(currentDeliveryBean.getmTripsheetDeliveryNo());
+        tripSheetDeliveriesViewHolder.Delivery_date.setText(currentDeliveryBean.getmTripsheetDelivery_CreatedOn());
+        tripSheetDeliveriesViewHolder.delivery_status.setText(currentDeliveryBean.getmTripsheetDelivery_Status());
+        tripSheetDeliveriesViewHolder.items_count.setText("2");
+        tripSheetDeliveriesViewHolder.deliverd_by.setText(mdbhelper.getDeliveryName(currentDeliveryBean.getmTripsheetDelivery_CreatedBy()));
 
         tripSheetDeliveriesViewHolder.View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //mPreferences.putString("DeliveryNo",currentDeliveryBean.getTripNo());
                 Intent i=new Intent(activity,AgentDeliveriesView.class);
-                i.putExtra("DeliveryNo",currentDeliveryBean.getTripNo());
-                i.putExtra("Deliverydate",currentDeliveryBean.getTripDate());
+                i.putExtra("DeliveryNo",currentDeliveryBean.getmTripsheetDeliveryNo());
+                i.putExtra("Deliverydate",currentDeliveryBean.getmTripsheetDelivery_CreatedOn());
                 activity.startActivity(i);
                 activity.finish();
             }
@@ -144,10 +144,10 @@ public class AgentDeliveriesAdapter extends BaseAdapter{
         if (charText.length() == 0) {
             filteredDeliveryProductsList.addAll(allDeliveryProductsList);
         } else {
-            for (AgentDeliveriesBean deliverysBean : allDeliveryProductsList) {
-                if (deliverysBean.getTripNo().toLowerCase(Locale.getDefault()).contains(charText)) {
+            for (TripSheetDeliveriesBean deliverysBean : allDeliveryProductsList) {
+                if (deliverysBean.getmTripsheetDeliveryNo().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredDeliveryProductsList.add(deliverysBean);
-                } else if (deliverysBean.getTripDate().toLowerCase(Locale.getDefault()).contains(charText)) {
+                } else if (deliverysBean.getmTripsheetDelivery_CreatedOn().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredDeliveryProductsList.add(deliverysBean);
                 }
             }

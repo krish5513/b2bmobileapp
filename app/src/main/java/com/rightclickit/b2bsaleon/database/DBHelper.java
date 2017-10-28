@@ -3110,6 +3110,65 @@ public class DBHelper extends SQLiteOpenHelper {
         return alltripsheetsDeliveries;
     }
 
+
+
+
+    /**
+     * Method to update the mTripsheetsDeliveriesList.
+     *
+     * @param mTripsheetsDeliveriesList
+     */
+    public void updateTripsheetsDeliveriesListData(ArrayList<TripSheetDeliveriesBean> mTripsheetsDeliveriesList) {
+        try {
+            for (TripSheetDeliveriesBean tripSheetDeliveriesBean : mTripsheetsDeliveriesList) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_TRIPSHEET_DELIVERY_TRIP_ID, tripSheetDeliveriesBean.getmTripsheetDelivery_tripId());
+                values.put(KEY_TRIPSHEET_DELIVERY_SO_ID, tripSheetDeliveriesBean.getmTripsheetDelivery_so_id());
+                values.put(KEY_TRIPSHEET_DELIVERY_SO_CODE, tripSheetDeliveriesBean.getmTripsheetDelivery_so_code());
+                values.put(KEY_TRIPSHEET_DELIVERY_USER_ID, tripSheetDeliveriesBean.getmTripsheetDelivery_userId());
+                values.put(KEY_TRIPSHEET_DELIVERY_USER_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_userCodes());
+                values.put(KEY_TRIPSHEET_DELIVERY_ROUTE_ID, tripSheetDeliveriesBean.getmTripsheetDelivery_routeId());
+                values.put(KEY_TRIPSHEET_DELIVERY_ROUTE_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_routeCodes());
+                values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS, tripSheetDeliveriesBean.getmTripsheetDelivery_productId());
+                values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes());
+                values.put(KEY_TRIPSHEET_DELIVERY_TAXPERCENT, tripSheetDeliveriesBean.getmTripsheetDelivery_TaxPercent());
+                values.put(KEY_TRIPSHEET_DELIVERY_UNITPRICE, tripSheetDeliveriesBean.getmTripsheetDelivery_UnitPrice());
+                values.put(KEY_TRIPSHEET_DELIVERY_QUANTITY, tripSheetDeliveriesBean.getmTripsheetDelivery_Quantity());
+                values.put(KEY_TRIPSHEET_DELIVERY_AMOUNT, tripSheetDeliveriesBean.getmTripsheetDelivery_Amount());
+                values.put(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT, tripSheetDeliveriesBean.getmTripsheetDelivery_TaxAmount());
+                values.put(KEY_TRIPSHEET_DELIVERY_TAXTOTAL, tripSheetDeliveriesBean.getmTripsheetDelivery_TaxTotal());
+                values.put(KEY_TRIPSHEET_DELIVERY_SALEVALUE, tripSheetDeliveriesBean.getmTripsheetDelivery_SaleValue());
+                values.put(KEY_TRIPSHEET_DELIVERY_STATUS, tripSheetDeliveriesBean.getmTripsheetDelivery_Status());
+                values.put(KEY_TRIPSHEET_DELIVERY_DELETE, tripSheetDeliveriesBean.getmTripsheetDelivery_Delete());
+                values.put(KEY_TRIPSHEET_DELIVERY_CREATEDBY, tripSheetDeliveriesBean.getmTripsheetDelivery_CreatedBy());
+                values.put(KEY_TRIPSHEET_DELIVERY_CREATEDON, tripSheetDeliveriesBean.getmTripsheetDelivery_CreatedOn());
+                values.put(KEY_TRIPSHEET_DELIVERY_UPDATEDON, tripSheetDeliveriesBean.getmTripsheetDelivery_UpdatedOn());
+                values.put(KEY_TRIPSHEET_DELIVERY_UPDATEDBY, tripSheetDeliveriesBean.getmTripsheetDelivery_UpdatedBy());
+                values.put(KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS, 0);
+
+                int noOfRecordsExisted = checkProductExistsInTripSheetDeliveryTable(tripSheetDeliveriesBean.getmTripsheetDelivery_so_id(), tripSheetDeliveriesBean.getmTripsheetDelivery_userId(), tripSheetDeliveriesBean.getmTripsheetDelivery_productId());
+
+                SQLiteDatabase db = this.getWritableDatabase();
+                long status;
+
+                if (noOfRecordsExisted == 0) {
+                    status = db.insert(TABLE_TRIPSHEETS_DELIVERIES_LIST, null, values);
+                } else {
+                    status = db.update(TABLE_TRIPSHEETS_DELIVERIES_LIST, values, KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + " = ? AND " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + " = ? AND " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = ?", new String[]{tripSheetDeliveriesBean.getmTripsheetDelivery_tripId(), tripSheetDeliveriesBean.getmTripsheetDelivery_so_id(), tripSheetDeliveriesBean.getmTripsheetDelivery_productId(), tripSheetDeliveriesBean.getmTripsheetDelivery_userId()});
+                }
+
+                values.clear();
+                db.close();
+
+                if (status > 0) {
+                    updateProductStockInTripSheetStockTable(tripSheetDeliveriesBean.getmTripsheetDelivery_tripId(), tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes(), tripSheetDeliveriesBean.getProductRemainingInStock(), tripSheetDeliveriesBean.getProductRemainingExtraStock());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Method to insert the mTripsheetsReturnsList.
      *
@@ -3210,7 +3269,56 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return alltripsheetsReturns;
     }
+    /**
+     * Method to insert the mTripsheetsReturnsList.
+     *
+     * @param mTripsheetsReturnsList
+     */
+    public void updateTripsheetsReturnsListData(ArrayList<TripSheetReturnsBean> mTripsheetsReturnsList) {
+        try {
+            for (TripSheetReturnsBean tripSheetReturnsBean : mTripsheetsReturnsList) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_TRIPSHEET_RETURNS_TRIP_ID, tripSheetReturnsBean.getmTripshhetReturnsTrip_id());
+                values.put(KEY_TRIPSHEET_RETURNS_SO_ID, tripSheetReturnsBean.getmTripshhetReturns_so_id());
+                values.put(KEY_TRIPSHEET_RETURNS_SO_CODE, tripSheetReturnsBean.getmTripshhetReturns_so_code());
+                values.put(KEY_TRIPSHEET_RETURNS_USER_ID, tripSheetReturnsBean.getmTripshhetReturnsUser_id());
+                values.put(KEY_TRIPSHEET_RETURNS_USER_CODES, tripSheetReturnsBean.getmTripshhetReturnsUser_codes());
+                values.put(KEY_TRIPSHEET_RETURNS_ROUTE_ID, tripSheetReturnsBean.getmTripshhetReturnsRoute_id());
+                values.put(KEY_TRIPSHEET_RETURNS_ROUTE_CODES, tripSheetReturnsBean.getmTripshhetReturnsRoute_codes());
+                values.put(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS, tripSheetReturnsBean.getmTripshhetReturnsProduct_ids());
+                values.put(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES, tripSheetReturnsBean.getmTripshhetReturnsProduct_codes());
+                values.put(KEY_TRIPSHEET_RETURNS_QUANTITY, tripSheetReturnsBean.getmTripshhetReturnsQuantity());
+                values.put(KEY_TRIPSHEET_RETURNS_TYPE, tripSheetReturnsBean.getmTripshhetReturnsType());
+                values.put(KEY_TRIPSHEET_RETURNS_STATUS, tripSheetReturnsBean.getmTripshhetReturnsStatus());
+                values.put(KEY_TRIPSHEET_RETURNS_DELETE, tripSheetReturnsBean.getmTripshhetReturnsDelete());
+                values.put(KEY_TRIPSHEET_RETURNS_CREATED_BY, tripSheetReturnsBean.getmTripshhetReturnsCreated_by());
+                values.put(KEY_TRIPSHEET_RETURNS_CREATED_ON, tripSheetReturnsBean.getmTripshhetReturnsCreated_on());
+                values.put(KEY_TRIPSHEET_RETURNS_UPDATED_ON, tripSheetReturnsBean.getmTripshhetReturnsUpdated_on());
+                values.put(KEY_TRIPSHEET_RETURNS_UPDATED_BY, tripSheetReturnsBean.getmTripshhetReturnsUpdated_by());
+                values.put(KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS, 0);
 
+                int noOfRecordsExisted = checkProductExistsInTripSheetReturnsTable(tripSheetReturnsBean.getmTripshhetReturns_so_id(), tripSheetReturnsBean.getmTripshhetReturnsUser_id(), tripSheetReturnsBean.getmTripshhetReturnsProduct_ids());
+
+                SQLiteDatabase db = this.getWritableDatabase();
+
+                long status;
+
+                if (noOfRecordsExisted == 0) {
+                    status = db.insert(TABLE_TRIPSHEETS_RETURNS_LIST, null, values);
+                } else {
+                    status = db.update(TABLE_TRIPSHEETS_RETURNS_LIST, values, KEY_TRIPSHEET_RETURNS_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_RETURNS_SO_ID + " = ? AND " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = ?", new String[]{tripSheetReturnsBean.getmTripshhetReturnsTrip_id(), tripSheetReturnsBean.getmTripshhetReturns_so_id(), tripSheetReturnsBean.getmTripshhetReturnsProduct_ids()});
+                }
+
+                values.clear();
+                db.close();
+
+
+                values.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Method to insert the mTripsheetsPaymentsList.
@@ -4683,6 +4791,30 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return deliverynumber;
+    }
+
+
+    public ArrayList<String> getTripId(String agentId, String type) {
+        ArrayList<String> tripid = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT  *  FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + agentId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                tripid.add((cursor.getString(cursor.getColumnIndex(type))));
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return tripid;
     }
 
     public ArrayList<String> getReturnnumber(String agentId, String type) {

@@ -7,10 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,19 +17,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetStockPreviewAdapter;
-import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
-import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
-import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
-import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,8 +104,8 @@ public class TripsheetStockPreview extends AppCompatActivity {
             sales_print = (TextView) findViewById(R.id.stock_print);
             company_name = (TextView) findViewById(R.id.tdc_sales_company_name);
             user_name = (TextView) findViewById(R.id.tdc_sales_user_name);
-            route_name = (TextView) findViewById(R.id.tdc_sales_route_name);
-            route_code = (TextView) findViewById(R.id.tdc_sales_route_code);
+          //  route_name = (TextView) findViewById(R.id.tdc_sales_route_name);
+          //  route_code = (TextView) findViewById(R.id.tdc_sales_route_code);
             tripsheet_no_text_view = (TextView) findViewById(R.id.tripsheet_no);
             sale_date_time_text_view = (TextView) findViewById(R.id.tdc_sales_date_time);
 
@@ -119,8 +113,8 @@ public class TripsheetStockPreview extends AppCompatActivity {
 
             company_name.setText(mmSharedPreferences.getString("companyname"));
             user_name.setText("by " + loggedInUserName);
-            route_name.setText(mmSharedPreferences.getString("routename"));
-            route_code.setText(str_routecode);
+           // route_name.setText(mmSharedPreferences.getString("routename"));
+           // route_code.setText(str_routecode);
 
             if (str_Tripcode != null && str_Tripcode.length() > 0)
                 tripsheet_no_text_view.setText(str_Tripcode + ",");
@@ -154,13 +148,12 @@ public class TripsheetStockPreview extends AppCompatActivity {
                 str_Dispatch = tripsheetsStockLists.get(i).getmTripsheetStockDispatchQuantity();
                 str_Verify = tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity();
                 // str_Uom=mmSharedPreferences.getString("UOM");
-                String[] temp = new String[6];
+                String[] temp = new String[5];
                 temp[0] = str_ProductName;
-                temp[1] = str_Uom;
-                temp[2] = str_Order;
-                temp[3] = str_Dispatch;
+                temp[1] = str_ProductCode ;
+                temp[2] =str_Uom  ;
+                temp[3] =str_Order ;
                 temp[4] = str_Verify;
-                temp[5] = str_ProductCode;
 
                 selectedList.add(temp);
             }
@@ -180,7 +173,7 @@ public class TripsheetStockPreview extends AppCompatActivity {
             sales_print.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pageheight = 300 + selectedList.size() * 60;
+                    int pageheight = 320 + selectedList.size() * 130;
                     Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                     Canvas canvas = new Canvas(bmOverlay);
                     canvas.drawColor(Color.WHITE);
@@ -192,7 +185,64 @@ public class TripsheetStockPreview extends AppCompatActivity {
                     paint.setTextSize(26);
 
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                    canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
+
+
+
+                    canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 20, paint);
+
+                    paint.setTextSize(20);
+                    canvas.drawText(mmSharedPreferences.getString("loginusername"), 5, 50, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("-------------------------------------------", 5, 80, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("TRUCK STOCK QUANTITY", 50, 110, paint);
+
+                    paint.setTextSize(20);
+                    canvas.drawText("TRIP# ", 5, 140, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + str_Tripcode, 150, 140, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("DATE ", 5, 170, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + str_Tripdate, 150, 170, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("-------------------------------------------", 5, 200, paint);
+
+                    int st = 230;
+                    paint.setTextSize(17);
+                    // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+
+                    for (int i = 0; i < selectedList.size(); i++) {
+                        String[] temp = selectedList.get(i);
+
+                        paint.setTextSize(20);
+                        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                        canvas.drawText( temp[0]  + "," + temp[1] + "(" + temp[2] +")", 5, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("ORDER QTY ", 5, st, paint);
+                        paint.setTextSize(20);
+                        canvas.drawText(": " +  temp[3], 150, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("TRUCK QTY ", 5, st, paint);
+                        paint.setTextSize(20);
+                        canvas.drawText(": " +  temp[4], 150, st, paint);
+
+                        st = st + 40;
+                        //  canvas.drawText("----------------------------------------------------", 5, st, paint);
+                    }
+
+
+
+
+
+
+
+
+/*
+
+                        canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 50, paint);
                     paint.setTextSize(20);
                     canvas.drawText(str_routecode, 5, 80, paint);
                     paint.setTextSize(20);
@@ -244,6 +294,7 @@ public class TripsheetStockPreview extends AppCompatActivity {
                         //  canvas.drawText("----------------------------------------------------", 5, st, paint);
                     }
 
+*/
 
                     st = st + 20;
                     canvas.drawText("--------X---------", 100, st, paint);

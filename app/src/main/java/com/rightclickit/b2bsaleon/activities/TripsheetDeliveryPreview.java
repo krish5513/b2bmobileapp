@@ -214,7 +214,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         sale_orderDate = (TextView) findViewById(R.id.tv_date);
 
         if (sale_orderDate != null) {
-            sale_orderDate.setText(str_deliveryDate);
+            sale_orderDate.setText(mAgentSoDate);
         } else {
             sale_orderDate.setText("-");
         }

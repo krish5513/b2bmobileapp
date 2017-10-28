@@ -302,8 +302,8 @@ public class AgentDeliveriesView extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, AgentDeliveries.class);
-        //intent.putExtra("DeliveryId", mDeliveryNo);
-
+        intent.putExtra("DeliveryId", mDeliveryNo);
+        intent.putExtra("DeliveryDate", mDeliverydate);
         startActivity(intent);
         finish();
     }

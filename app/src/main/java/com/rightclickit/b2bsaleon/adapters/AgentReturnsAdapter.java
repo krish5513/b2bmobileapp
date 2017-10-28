@@ -12,22 +12,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.AgentDeliveries;
-import com.rightclickit.b2bsaleon.activities.AgentDeliveriesView;
 import com.rightclickit.b2bsaleon.activities.AgentReturns;
 import com.rightclickit.b2bsaleon.activities.AgentReturnsView;
-import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
-import com.rightclickit.b2bsaleon.beanclass.AgentReturnsBean;
-import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * Created by PPS on 8/19/2017.
@@ -38,14 +32,14 @@ public class AgentReturnsAdapter extends BaseAdapter{
     private Context ctxt;
     private Activity activity;
     private TripSheetDeliveriesListener listener;
-    private ArrayList<AgentReturnsBean> allDeliveryProductsList, filteredDeliveryProductsList;
+    private ArrayList<TripSheetReturnsBean> allDeliveryProductsList, filteredDeliveryProductsList;
 
     private final String zero_cost = "0.000";
     private boolean isDeliveryInEditingMode = false;
     DBHelper mdbhelper;
     private MMSharedPreferences mPreferences;
 
-    public AgentReturnsAdapter(Context ctxt, AgentReturns returnsActivity, ArrayList<AgentReturnsBean> mdeliveriesBeanList) {
+    public AgentReturnsAdapter(Context ctxt, AgentReturns returnsActivity, ArrayList<TripSheetReturnsBean> mdeliveriesBeanList) {
         this.ctxt = ctxt;
         this.activity = returnsActivity;
         this.mInflater = LayoutInflater.from(activity);
@@ -102,21 +96,21 @@ public class AgentReturnsAdapter extends BaseAdapter{
 
         final AgentReturnsAdapter.TripSheetDeliveriesViewHolder currentTripSheetDeliveriesViewHolder = tripSheetDeliveriesViewHolder;
 
-        final AgentReturnsBean currentReturnsBean = allDeliveryProductsList.get(position);
+        final TripSheetReturnsBean currentReturnsBean = allDeliveryProductsList.get(position);
 
-        tripSheetDeliveriesViewHolder.returns_no.setText(currentReturnsBean.getReturnNo());
-        tripSheetDeliveriesViewHolder.returns_date.setText(getDate(currentReturnsBean.getReturnDate(),"dd-MM-yyyy"));
-        tripSheetDeliveriesViewHolder.return_status.setText(currentReturnsBean.getReturnStatus());
-        tripSheetDeliveriesViewHolder.items_count.setText(currentReturnsBean.getReturnedItems());
-        tripSheetDeliveriesViewHolder.returns_by.setText(mdbhelper.getDeliveryName(currentReturnsBean.getReturnedBy()));
+        tripSheetDeliveriesViewHolder.returns_no.setText(currentReturnsBean.getmTripshhetReturnsReturn_no());
+        tripSheetDeliveriesViewHolder.returns_date.setText(currentReturnsBean.getmTripshhetReturnsCreated_on());
+        tripSheetDeliveriesViewHolder.return_status.setText(currentReturnsBean.getmTripshhetReturnsStatus());
+        tripSheetDeliveriesViewHolder.items_count.setText("2");
+        tripSheetDeliveriesViewHolder.returns_by.setText(mdbhelper.getDeliveryName(currentReturnsBean.getmTripshhetReturnsCreated_by()));
 
         tripSheetDeliveriesViewHolder.View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //mPreferences.putString("DeliveryNo",currentDeliveryBean.getTripNo());
                 Intent i=new Intent(activity,AgentReturnsView.class);
-                i.putExtra("ReturnNo",currentReturnsBean.getReturnNo());
-                i.putExtra("Returndate",getDate(currentReturnsBean.getReturnDate(),"dd-MM-yyyy"));
+                i.putExtra("ReturnNo",currentReturnsBean.getmTripshhetReturnsReturn_no());
+                i.putExtra("Returndate",currentReturnsBean.getmTripshhetReturnsCreated_on());
                 activity.startActivity(i);
                 activity.finish();
             }
@@ -145,10 +139,10 @@ public class AgentReturnsAdapter extends BaseAdapter{
         if (charText.length() == 0) {
             filteredDeliveryProductsList.addAll(allDeliveryProductsList);
         } else {
-            for (AgentReturnsBean deliverysBean : allDeliveryProductsList) {
-                if (deliverysBean.getReturnNo().toLowerCase(Locale.getDefault()).contains(charText)) {
+            for (TripSheetReturnsBean deliverysBean : allDeliveryProductsList) {
+                if (deliverysBean.getmTripshhetReturnsReturn_no().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredDeliveryProductsList.add(deliverysBean);
-                } else if (deliverysBean.getReturnDate().toLowerCase(Locale.getDefault()).contains(charText)) {
+                } else if (deliverysBean.getmTripshhetReturnsCreated_on().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredDeliveryProductsList.add(deliverysBean);
                 }
             }

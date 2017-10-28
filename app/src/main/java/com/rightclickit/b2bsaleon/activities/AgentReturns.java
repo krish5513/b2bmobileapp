@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentReturnsAdapter;
-import com.rightclickit.b2bsaleon.beanclass.AgentReturnsBean;
+import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentReturnsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -99,7 +99,7 @@ public class AgentReturns extends AppCompatActivity {
 
         //r_pending.setText(Utility.getFormattedCurrency(str_pending));
 
-        ArrayList<AgentReturnsBean> unUploadedDeliveries = mDBHelper.getreturnsDetails(agentId);
+        ArrayList<TripSheetReturnsBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsReturnsList(agentId);
 
         if(unUploadedDeliveries.size()>0){
             loadReturns(unUploadedDeliveries);
@@ -212,7 +212,7 @@ public class AgentReturns extends AppCompatActivity {
 
     }
 
-    public void loadReturns(ArrayList<AgentReturnsBean> unUploadedDeliveries) {
+    public void loadReturns(ArrayList<TripSheetReturnsBean> unUploadedDeliveries) {
         if (returnsAdapter != null) {
             returnsAdapter = null;
         }
