@@ -125,25 +125,27 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
 
         final ArrayList<String[]> arList = new ArrayList<String[]>();
 
-            SortedSet<String> keys = new TreeSet<String>(mData.keySet());
-            for (String key : keys) {
-                //String value = mData.get(key);
-                // do something
+        SortedSet<String> keys = new TreeSet<String>(mData.keySet());
+        for (String key : keys) {
+            //String value = mData.get(key);
+            // do something
 
-                DeliverysBean d = mData.get(key);
-                String[] temp = new String[4];
+            DeliverysBean d = mData.get(key);
+            String[] temp = new String[4];
 
-                for( int i=0;i<tripsheetsStockLists.size();i++){
-                    str_ProductCode=tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
-                    myList=mDBHelper.getProductUnitByProductCode(str_ProductCode);
-                    str_Uom=myList;
-                }
-                temp[0] = d.getProductTitle();
-                temp[1] = str_Uom;
-                temp[2] = String.valueOf(d.getSelectedQuantity());
-                temp[3] = "Sale Return";
-                arList.add(temp);
+            for( int i=0;i<tripsheetsStockLists.size();i++){
+                str_ProductCode=tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
+
             }
+            myList=mDBHelper.getProductUnitByProductCode(str_ProductCode);
+            str_Uom=myList;
+
+            temp[0] = d.getProductTitle();
+            temp[1] = str_Uom;
+            temp[2] = String.valueOf(d.getSelectedQuantity());
+            temp[3] = "Sale Return";
+            arList.add(temp);
+        }
 
         // mAgentSoDate=this.getIntent().getStringExtra("agentSoDate");
 
@@ -209,7 +211,7 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int pageheight = 300 + arList.size() * 60;
+                int pageheight = 570 + arList.size() * 150;
                 Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawColor(Color.WHITE);
@@ -221,67 +223,93 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
                 paint.setTextSize(26);
 
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                canvas.drawText(sharedPreferences.getString("companyname"), 5, 50, paint);
-                paint.setTextSize(22);
-                canvas.drawText(str_routecode, 5, 80, paint);
-                paint.setTextSize(22);
-                canvas.drawText(sharedPreferences.getString("routename"), 200, 80, paint);
-                paint.setTextSize(22);
-                canvas.drawText("ROUTE DELEVERY,", 5, 120, paint);
-                paint.setTextSize(22);
-                canvas.drawText("by " + sharedPreferences.getString("loginusername"), 200, 120, paint);
-                paint.setTextSize(22);
-                canvas.drawText(str_deliveryNo, 5, 180, paint);
-                paint.setTextSize(22);
-                canvas.drawText(str_deliveryDate, 200, 180, paint);
-                paint.setTextSize(22);
+                canvas.drawText(sharedPreferences.getString("companyname"), 5, 20, paint);
+                paint.setTextSize(20);
+                canvas.drawText(sharedPreferences.getString("loginusername"), 5, 50, paint);
 
-                canvas.drawText("----------------------------------------------------", 5, 200, paint);
-                canvas.drawText("Product", 5, 220, paint);
-                paint.setTextSize(22);
-                canvas.drawText("UOM", 100, 220, paint);
-                paint.setTextSize(22);
-                canvas.drawText("Qty", 160, 220, paint);
-                paint.setTextSize(22);
-                canvas.drawText("Return Type", 230, 220, paint);
+                paint.setTextSize(20);
+                canvas.drawText("-------------------------------------------", 5, 80, paint);
+
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                paint.setTextSize(20);
+                canvas.drawText("RETURNS", 100, 110, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("TRIP # ", 5, 140, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + "804405", 150, 140, paint);
+                paint.setTextSize(20);
+                canvas.drawText("DATE ", 5, 170, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + "17-09-2017", 150, 170, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("SO No ", 5, 200, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + "1028153773", 150, 200, paint);
+                paint.setTextSize(20);
+                canvas.drawText("DATE ", 5, 230, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + "18-09-2017", 150, 230, paint);
 
 
-                canvas.drawText("----------------------------------------------------", 5, 235, paint);
+                paint.setTextSize(20);
+                canvas.drawText("CUSTOMER ", 5, 260, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + "DEVI MILK POINT", 150, 260, paint);
+                paint.setTextSize(20);
+                canvas.drawText("CODE ", 5, 290, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + "120060", 150, 290, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("RETURN # ", 5, 320, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + "RR-000001", 150, 320, paint);
+                paint.setTextSize(20);
+                canvas.drawText("DATE ", 5, 350, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + "18-09-2017", 150, 350, paint);
 
 
-                int st = 250;
+
+                paint.setTextSize(20);
+                canvas.drawText("-------------------------------------------", 5, 380, paint);
+
+                int st = 410;
                 paint.setTextSize(17);
-//                    for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+
                 for (int i = 0; i < arList.size(); i++) {
-                    String[] temps = arList.get(i);
-                    //String[] temps = selectedList.get(i-1);
-                    canvas.drawText(temps[0], 5, st, paint);
-                    canvas.drawText(temps[1], 115, st, paint);
-
-
-                    canvas.drawText(temps[2], 175, st, paint);
-
-                    canvas.drawText(temps[3], 245, st, paint);
-                  //  canvas.drawText(temps[4], 315, st, paint);
-
-
-                    // canvas.drawText("FROM:" + temps[7], 100, st, paint);
-                    //canvas.drawText("TO:" + temps[8], 250, st, paint);
+                    String[] temp = arList.get(i);
+                    paint.setTextSize(20);
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    // canvas.drawText(temps[0] + "," + temps[1] + "( " + temps[2] + " )", 5, st, paint);
+                    canvas.drawText(temp[0] + "," + str_ProductCode +  "( " + temp[1] +" )", 5, st, paint);
 
                     st = st + 30;
-                    //  canvas.drawText("----------------------------------------------------", 5, st, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("OB QTY ", 5, st, paint);
+                    canvas.drawText(": " + "50.000" , 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("DELIVERY QTY ", 5, st, paint);
+                    canvas.drawText(": " + "50.000", 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("RETURN QTY ", 5, st, paint);
+                    canvas.drawText(": " + "45.000", 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("CB QTY ", 5, st, paint);
+                    canvas.drawText(": " + "55.000", 150, st, paint);
 
 
+                    st = st + 40;
                 }
-                canvas.drawText("----------------------------------------------------", 5, st, paint);
 
-               // st = st + 20;
-                //canvas.drawText("Total:", 5, st, paint);
-                //canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(totalTaxAmount)), 70, st, paint);
-               // canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(totalAmount)), 170, st, paint);
-               // canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(subTotal)), 280, st, paint);
-                st = st + 20;
-                canvas.drawText("--------X---------", 100, st, paint);
+                st = st + 30;
+                canvas.drawText("--------X---------", 100,st , paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
             }
         });

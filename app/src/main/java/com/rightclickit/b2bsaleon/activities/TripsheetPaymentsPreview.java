@@ -86,8 +86,8 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             print = (TextView) findViewById(R.id.tv_print_print);
 
             tv_companyName = (TextView) findViewById(R.id.tv_companyName);
-          //  tv_routecode = (TextView) findViewById(R.id.tv_routecode);
-          //  tv_route_name = (TextView) findViewById(R.id.tv_route_name);
+            //  tv_routecode = (TextView) findViewById(R.id.tv_routecode);
+            //  tv_route_name = (TextView) findViewById(R.id.tv_route_name);
             tv_delivered_user_Name = (TextView) findViewById(R.id.tv_delivered_user_Name);
             tv_sale_order_no = (TextView) findViewById(R.id.tv_sale_order_no);
             tv_sale_order_date = (TextView) findViewById(R.id.tv_sale_order_date);
@@ -130,8 +130,8 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
             // Updating UI with fetched values.
             tv_companyName.setText(companyName);
-           // tv_routecode.setText(routeCode);
-           // tv_route_name.setText(routeName);
+            // tv_routecode.setText(routeCode);
+            // tv_route_name.setText(routeName);
             tv_delivered_user_Name.setText("by " + loggedInUserName);
 
             if (saleOrdersDetails != null) {
@@ -160,8 +160,8 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     temp[0] = products.getName();
                     temp[1] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(products.getQuantity())));
                     temp[2] = Utility.getFormattedCurrency(Double.parseDouble(products.getUnitRate()));
-                    temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(products.getProductTax())));
                     temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(products.getProductAmount())));
+                    temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(products.getProductTax())));
                     temp[5] = products.getCode();
                     selectedList.add(temp);
                 }
@@ -222,8 +222,9 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Toast.makeText(getApplicationContext(), "print", Toast.LENGTH_LONG).show();
-                int pageheight = 600 + selectedList.size() * 60;
+                int pageheight = 1050 + selectedList.size() * 200 + cratesList.size() * 200  ;
                 Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawColor(Color.WHITE);
@@ -234,126 +235,229 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 paint.setColor(Color.parseColor("#000000"));
                 paint.setTextSize(26);
 
+
+
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                canvas.drawText(companyName, 5, 50, paint);
+                canvas.drawText(companyName, 5, 20, paint);
                 paint.setTextSize(20);
-                canvas.drawText(routeCode, 5, 80, paint);
-                canvas.drawText(routeName, 200, 80, paint);
-                canvas.drawText("PAYMENT INFO,", 5, 120, paint);
-                canvas.drawText("by " + loggedInUserName, 200, 120, paint);
-                canvas.drawText(String.format("Sale # %s", saleOrdersDetails.getmTripshetSOCode()), 5, 150, paint);
-                canvas.drawText(saleOrdersDetails.getmTripshetSODate(), 200, 150, paint);
-                canvas.drawText(String.format("Delivery # RD%03d", deliveredProduct.getDeliveryNo()), 5, 180, paint);
-                canvas.drawText(Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT), 200, 180, paint);
-                paint.setTextSize(30);
-                canvas.drawText("------------------------------------", 5, 200, paint);
+                canvas.drawText( loggedInUserName, 5, 50, paint);
                 paint.setTextSize(20);
-                canvas.drawText("Product", 5, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Qty", 100, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Price", 160, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Amount", 230, 220, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Tax", 320, 220, paint);
+                canvas.drawText("GST NO. 33AABCT7907M1Z2" , 5, 80, paint);
 
-                canvas.drawText("-------------------------------------", 5, 235, paint);
+                paint.setTextSize(20);
+                canvas.drawText("------------------------------------", 5, 110, paint);
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                paint.setTextSize(20);
+                canvas.drawText("DELIVERY CUM PROFORMA", 5, 140, paint);
 
+                paint.setTextSize(20);
+                canvas.drawText("TRIP #", 5, 170, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + String.format("RD%03d", deliveredProduct.getDeliveryNo()), 150, 170, paint);
 
-                int st = 250;
+                paint.setTextSize(20);
+                canvas.drawText("DATE", 5, 200, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT), 150, 200, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("SO NO", 5, 230, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + String.format( saleOrdersDetails.getmTripshetSOCode()), 150, 230, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("DATE", 5, 260, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT), 150, 260, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("CUSTOMER", 5, 290, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + "DEVI MILK POINT_____", 150, 290, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("CODE", 5, 320, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + "120060", 150, 320, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("-------------------------------------", 5, 350, paint);
+
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                paint.setTextSize(20);
+                canvas.drawText( String.format("Delivery # RD%03d", deliveredProduct.getDeliveryNo()), 5, 380, paint);
+                paint.setTextSize(20);
+                canvas.drawText(", " + Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT), 170, 380, paint);
+
+                int st = 410;
                 paint.setTextSize(17);
-//                    for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+
                 for (int i = 0; i < selectedList.size(); i++) {
-                    String[] temps = selectedList.get(i);
-                    //String[] temps = selectedList.get(i-1);
-                    canvas.drawText(temps[0], 5, st, paint);
-                    canvas.drawText(temps[1], 115, st, paint);
-                    canvas.drawText(temps[2], 175, st, paint);
-                    canvas.drawText(temps[3], 245, st, paint);
-                    canvas.drawText(temps[4], 315, st, paint);
+                    String[] temp = selectedList.get(i);
+                    paint.setTextSize(20);
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    // canvas.drawText(temps[0] + "," + temps[1] + "( " + temps[2] + " )", 5, st, paint);
+                    canvas.drawText(temp[0] + "," + "10004" +  "(UOM)", 5, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("HSSN CODE ", 5, st, paint);
+                    canvas.drawText(": " + "<number>", 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    // canvas.drawText("CGST,SGST " + ": " + temps[4] + " + " + temps[5] + " = " + temps[6], 5, st, paint);
+                    canvas.drawText("CGST,SGST " + ": " + " 2.50 % + 2.50 % = 5.00 % ", 5, st, paint);
 
                     st = st + 30;
-                    canvas.drawText(temps[5], 5, st, paint);
-
-
+                    paint.setTextSize(20);
+                    canvas.drawText("QUANTITY ", 5, st, paint);
+                    canvas.drawText(": " + temp[1] , 150, st, paint);
                     st = st + 30;
-                    //  canvas.drawText("----------------------------------------------------", 5, st, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("RATE ", 5, st, paint);
+                    canvas.drawText(": " + temp[2], 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("VALUE ", 5, st, paint);
+                    canvas.drawText(": " + temp[3], 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("TAX VALUE ", 5, st, paint);
+                    canvas.drawText(": " + temp[4], 150, st, paint);
 
 
+                    st = st + 40;
                 }
 
                 canvas.drawText("----------------------------------------------------", 5, st, paint);
 
-                st = st + 20;
-                canvas.drawText("Total:", 5, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())), 70, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(totalAmount), 170, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())), 280, st, paint);
+
+                st = st + 30;
+                paint.setTextSize(20);
+                canvas.drawText(" DELIVERY  ", 5, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())) , 150, st, paint);
+                st = st + 30;
+                paint.setTextSize(20);
+                canvas.drawText(" Value  ", 5, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText("(" + Utility.getFormattedCurrency(totalAmount) + " + " + Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())) + ")", 150, st, paint);
+                st = st + 30;
+                canvas.drawText("----------------------------------------------------", 5, st, paint);
+
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                 st = st + 30;
                 canvas.drawText("PAYMENT INFO", 5, st, paint);
                 st = st + 30;
-                if (paymentsDetails.getPayments_type().equals("0")) {
-                    canvas.drawText("MOP", 5, st, paint);
-                    canvas.drawText("Cash Paid", 60, st, paint);
-                    st = st + 20;
-                } else {
-                    canvas.drawText("MOP", 5, st, paint);
-                    canvas.drawText("Cheque", 60, st, paint);
-                    st = st + 20;
-                    canvas.drawText(paymentsDetails.getPayments_chequeNumber(), 5, st, paint);
-                    canvas.drawText(paymentsDetails.getPayments_chequeDate(), 120, st, paint);
-                    canvas.drawText(paymentsDetails.getPayments_bankName(), 250, st, paint);
-                }
-                st = st + 30;
+                paint.setTextSize(20);
                 canvas.drawText("OB", 5, st, paint);
                 paint.setTextSize(20);
-                canvas.drawText("S.Order", 120, st, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Received", 210, st, paint);
-                paint.setTextSize(20);
-                canvas.drawText("CB", 330, st, paint);
+                canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOOpAmount())), 150, st, paint);
                 st = st + 30;
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOOpAmount())), 5, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOValue())), 120, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOReceivedAmount())), 210, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOCBAmount())), 300, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText("Order", 5, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOValue())), 150, st, paint);
                 st = st + 30;
-                canvas.drawText("CRATES", 5, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText("Received", 5, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOReceivedAmount())), 150, st, paint);
                 st = st + 30;
-                canvas.drawText("Product", 5, st, paint);
                 paint.setTextSize(20);
-                canvas.drawText("OB", 100, st, paint);
+                canvas.drawText("CB", 5, st, paint);
                 paint.setTextSize(20);
-                canvas.drawText("Delivery", 160, st, paint);
+                canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(saleOrdersDetails.getmTripshetSOCBAmount())), 150, st, paint);
+
+
+
+                st = st + 40;
+                if (paymentsDetails.getPayments_type().equals("0")) {
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    paint.setTextSize(20);
+                    canvas.drawText( String.format("RD%03d", deliveredProduct.getDeliveryNo()), 5, st, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(", " + Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT), 100, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("AMOUNT ", 5, st, paint);
+                    canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())) , 150, st, paint);
+                    st = st + 30;
+                    canvas.drawText("MOP", 5, st, paint);
+                    canvas.drawText(": " + "CASH PAID", 150, st, paint);
+                    st = st + 20;
+                } else {
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    paint.setTextSize(20);
+                    canvas.drawText( String.format("RD%03d", deliveredProduct.getDeliveryNo()), 5, st, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(", " + Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT), 100, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("AMOUNT ", 5, st, paint);
+                    canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())) , 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("MOP", 5, st, paint);
+                    canvas.drawText(": " +  "CHEQUE", 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("CHEQUE NO", 5, st, paint);
+                    canvas.drawText(": " + paymentsDetails.getPayments_chequeNumber() , 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("CHEQUE DT", 5, st, paint);
+                    canvas.drawText(": " + paymentsDetails.getPayments_chequeDate(), 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("BANK NAME", 5, st, paint);
+                    canvas.drawText(": " + paymentsDetails.getPayments_bankName() , 150, st, paint);
+
+
+                }
+
+                st = st + 40;
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                 paint.setTextSize(20);
-                canvas.drawText("Return", 230, st, paint);
-                paint.setTextSize(20);
-                canvas.drawText("CB", 320, st, paint);
+                canvas.drawText("CRATES INFO", 5, st, paint);
+
                 st = st + 30;
                 paint.setTextSize(17);
-//                    for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
                 for (int i = 0; i < cratesList.size(); i++) {
-                    String[] temps = cratesList.get(i);
-                    //String[] temps = selectedList.get(i-1);
-                    canvas.drawText(temps[0], 5, st, paint);
-                    canvas.drawText(temps[1], 115, st, paint);
-                    canvas.drawText(temps[2], 175, st, paint);
-                    canvas.drawText(temps[3], 245, st, paint);
-                    canvas.drawText(temps[4], 315, st, paint);
-
+                    String[] temp = cratesList.get(i);
+                    paint.setTextSize(20);
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    // canvas.drawText(temps[0] + "," + temps[1] + "( " + temps[2] + " )", 5, st, paint);
+                    canvas.drawText(temp[0] + "," + temp[5] +  "(UOM)", 5, st, paint);
                     st = st + 30;
-                    canvas.drawText(temps[5], 5, st, paint);
-
-
+                    paint.setTextSize(20);
+                    canvas.drawText("OB QTY ", 5, st, paint);
+                    canvas.drawText(": " + temp[1] , 150, st, paint);
                     st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("DELIVER QTY ", 5, st, paint);
+                    canvas.drawText(": " + temp[2], 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("RETURN QTY ", 5, st, paint);
+                    canvas.drawText(": " + temp[3], 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("CB QTY ", 5, st, paint);
+                    canvas.drawText(": " + temp[4], 150, st, paint);
+
+
+                    st = st + 40;
                 }
+
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
                 saveBitmap(bmOverlay);
             }
         });
     }
+
+
 
     public void saveBitmap(Bitmap bm) {
         String root = Environment.getExternalStorageDirectory().toString();
