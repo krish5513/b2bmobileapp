@@ -1,745 +1,745 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-339:12
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-339:12
 	package
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:4:5-41
-		INJECTED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml
-		INJECTED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:4:5-41
+		INJECTED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml
-		INJECTED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml
 	xmlns:tools
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:3:5-51
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:3:5-51
 	xmlns:android
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:2:11-69
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:2:11-69
 	android:versionCode
-		INJECTED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml
-		INJECTED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml
 uses-permission#android.permission.INTERNET
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:6:5-67
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\PPS\.android\build-cache\8a5354c618498e7f7c56b60d4393f1a231795a89\output\AndroidManifest.xml:20:5-66
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\PPS\.android\build-cache\df7e9165b8dcc98d2f09c0ab6987c9a200fab6f8\output\AndroidManifest.xml:29:5-67
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:6:5-67
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\Raj\.android\build-cache\c7c4b57fd3d7681d2e4a606c91b1249d89b7bb52\output\AndroidManifest.xml:20:5-66
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\Raj\.android\build-cache\f000de0c9adb17b2677ed4bf58e532e7d678199b\output\AndroidManifest.xml:29:5-67
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:6:22-64
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:6:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:7:5-79
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\PPS\.android\build-cache\8a5354c618498e7f7c56b60d4393f1a231795a89\output\AndroidManifest.xml:19:5-78
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:7:5-79
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\Raj\.android\build-cache\c7c4b57fd3d7681d2e4a606c91b1249d89b7bb52\output\AndroidManifest.xml:19:5-78
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:7:22-76
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:7:22-76
 uses-feature#android.hardware.camera
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:9:5-11:35
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:9:5-11:35
 	android:required
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:11:9-32
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:11:9-32
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:10:9-47
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:10:9-47
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:13:5-81
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:13:5-81
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:13:22-78
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:13:22-78
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:14:5-80
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:14:5-80
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:14:22-77
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:14:22-77
 user-permission
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:16:5-91
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:16:5-91
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:16:22-88
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:16:22-88
 uses-permission#com.google.android.providers.gsf.permission.READ_GSERVICES
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:18:5-98
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:18:5-98
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:18:22-95
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:18:22-95
 uses-permission#android.permission.ACCESS_COARSE_LOCATION
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:19:5-81
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:19:5-81
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:19:22-78
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:19:22-78
 uses-permission#android.permission.ACCESS_FINE_LOCATION
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:20:5-79
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:20:5-79
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:20:22-76
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:20:22-76
 uses-permission#android.permission.INSTALL_LOCATION_PROVIDER
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:21:5-22:47
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:21:5-22:47
 	tools:ignore
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:22:9-44
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:22:9-44
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:21:22-81
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:21:22-81
 application
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:24:5-337:19
-MERGED from [com.android.support:design:25.3.1] C:\Users\PPS\.android\build-cache\3550bdcdab06637fa638b9d3d2dc6f93eb1a8e5f\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:transition:25.3.1] C:\Users\PPS\.android\build-cache\fc3f822b6534f214f0dcc1aa03ea883f3fd42a39\output\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\PPS\.android\build-cache\00212c1c5d0f09061694889587fad00736037373\output\AndroidManifest.xml:9:5-20
-MERGED from [com.android.volley:volley:1.0.0] C:\Users\PPS\.android\build-cache\092c2fee7182cdc5b59700b08795a9059de1ee20\output\AndroidManifest.xml:9:5-20
-MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\PPS\.android\build-cache\3e0a81283d6435e05cc802f928b876b5022d9a38\output\AndroidManifest.xml:11:5-12:19
-MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\PPS\.android\build-cache\dd477c8b9899c26d5739de0ca5a81322fe3dc9e7\output\AndroidManifest.xml:18:5-19
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\PPS\.android\build-cache\8a5354c618498e7f7c56b60d4393f1a231795a89\output\AndroidManifest.xml:24:5-19
-MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\PPS\.android\build-cache\14b088cd2601ca47d60c09dd88a9a2ff0ef748a8\output\AndroidManifest.xml:4:5-19
-MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\PPS\.android\build-cache\45a0a9aee7a14d6654f4dfd39f6393be8304f1d2\output\AndroidManifest.xml:18:5-20:19
-MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\PPS\.android\build-cache\46f3336dd3030bf3458d8df48d31414041608ce6\output\AndroidManifest.xml:4:5-19
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\PPS\.android\build-cache\76775e422208545e76eb6a3c6176ceb717a70ca0\output\AndroidManifest.xml:19:5-21:19
-MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\PPS\.android\build-cache\6924e8f2a38711d554205a9629be545edcac7de3\output\AndroidManifest.xml:11:5-20
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\PPS\.android\build-cache\a6a7d751529e517a8da6c10df6d9a4362795808e\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\PPS\.android\build-cache\7ce44687113f7c12de585abe137f1f5c31e3aef1\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\PPS\.android\build-cache\8591740007eebeba11ee5343ae5f71db664aaf95\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\PPS\.android\build-cache\22ce7eab14e830d17db0f4cf37fb64b5445f0b35\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\PPS\.android\build-cache\d79142fc376571d4b28125fb188ccf9d0e074e05\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\PPS\.android\build-cache\70cafcf24007a7a3202910ac3724c20d4b2f0d3a\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\PPS\.android\build-cache\2e4355f2db91f1b63f4e931386733f3041194249\output\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\PPS\.android\build-cache\03fe93890a1643579e1e0e418b0806f53774a05d\output\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\PPS\.android\build-cache\50ea5f7a13774fd697bf379373ac66e8e4533fe7\output\AndroidManifest.xml:29:5-20
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\PPS\.android\build-cache\df7e9165b8dcc98d2f09c0ab6987c9a200fab6f8\output\AndroidManifest.xml:32:5-38:19
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:24:5-337:19
+MERGED from [com.android.support:design:25.3.1] C:\Users\Raj\.android\build-cache\06379d673606c9e9df4614fe27450271959ed799\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:transition:25.3.1] C:\Users\Raj\.android\build-cache\a9daa24ab3b7549bdce10cbf3cc324d278c9c73a\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Raj\.android\build-cache\34391ea41e2f4ab258f8dad375dcf2f5f238a194\output\AndroidManifest.xml:9:5-20
+MERGED from [com.android.volley:volley:1.0.0] C:\Users\Raj\.android\build-cache\042e41fdcd539876894780d5a5057a5e460c93c8\output\AndroidManifest.xml:9:5-20
+MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\Raj\.android\build-cache\084599bef3ea9c788c434f8d9ebfffd2a24d28c5\output\AndroidManifest.xml:11:5-12:19
+MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\Raj\.android\build-cache\f4852b642e79c8dbf51399f236da00624d63689d\output\AndroidManifest.xml:18:5-19
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\Raj\.android\build-cache\c7c4b57fd3d7681d2e4a606c91b1249d89b7bb52\output\AndroidManifest.xml:24:5-19
+MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\Raj\.android\build-cache\d102821a9cb05188d61692fea9c0574762c68acf\output\AndroidManifest.xml:4:5-19
+MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\Raj\.android\build-cache\fab5a1006d1769420bb725cbce65f69468ce75a6\output\AndroidManifest.xml:18:5-20:19
+MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\Raj\.android\build-cache\6c37b1f8388c91513758331e9ff87cfa6bac1720\output\AndroidManifest.xml:4:5-19
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\Raj\.android\build-cache\75918d2a33b942a2c8cefa0cfe2921ac172dca85\output\AndroidManifest.xml:19:5-21:19
+MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\Raj\.android\build-cache\1bf5db4a21f40408e8009b84ca93ccee44a00f03\output\AndroidManifest.xml:11:5-20
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Raj\.android\build-cache\47cbf74065ee09835847285d68498b13c9f42d60\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Raj\.android\build-cache\0a138205247c521b22124fc71715cb4fe7e8a7e9\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Raj\.android\build-cache\e61b5ef4e031b5b9cc495cf5cbc440871f059507\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Raj\.android\build-cache\3243804d6bfd1ff1e1f72cd843f58cec439b6e64\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Raj\.android\build-cache\f88ef92021350047006e4b3c16d0c9c2c6ac7566\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Raj\.android\build-cache\88fed48356f2863bea2a2f8a0c9518efe46243ee\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Raj\.android\build-cache\c0ce7c6eed33700c1a0cf2b5c58525de577189c8\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Raj\.android\build-cache\61083a3ed2802a0b022b84b7214f66a032a6a889\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Raj\.android\build-cache\72e600eb3e04d43ce46bbb988107de3d29f93dcc\output\AndroidManifest.xml:29:5-20
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\Raj\.android\build-cache\f000de0c9adb17b2677ed4bf58e532e7d678199b\output\AndroidManifest.xml:32:5-38:19
 	android:label
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:28:9-41
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:28:9-41
 	android:supportsRtl
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:31:9-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:31:9-35
 	android:hardwareAccelerated
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:26:9-43
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:26:9-43
 	android:roundIcon
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:30:9-44
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:30:9-44
 	android:allowBackup
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:25:9-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:25:9-35
 	android:icon
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:27:9-39
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:27:9-39
 	android:largeHeap
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:29:9-33
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:29:9-33
 	android:theme
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:32:9-40
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:32:9-40
 meta-data#com.google.android.geo.API_KEY
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:33:9-35:71
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:33:9-35:71
 	android:value
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:35:13-68
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:35:13-68
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:34:13-58
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:34:13-58
 meta-data#com.google.android.gms.version
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:36:9-38:69
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\PPS\.android\build-cache\76775e422208545e76eb6a3c6176ceb717a70ca0\output\AndroidManifest.xml:20:9-121
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:36:9-38:69
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\Raj\.android\build-cache\75918d2a33b942a2c8cefa0cfe2921ac172dca85\output\AndroidManifest.xml:20:9-121
 	android:value
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:38:13-66
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:38:13-66
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:37:13-58
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:37:13-58
 activity#com.rightclickit.b2bsaleon.activities.SplashScreenActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:40:9-50:20
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:40:9-50:20
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:43:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:43:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:44:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:44:13-52
 	android:configChanges
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:42:13-74
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:42:13-74
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:41:13-60
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:41:13-60
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:45:13-49:29
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:45:13-49:29
 action#android.intent.action.MAIN
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:46:17-69
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:46:17-69
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:46:25-66
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:46:25-66
 category#android.intent.category.LAUNCHER
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:48:17-77
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:48:17-77
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:48:27-74
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:48:27-74
 activity#com.rightclickit.b2bsaleon.activities.LoginActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:51:9-55:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:51:9-55:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:54:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:54:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:55:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:55:13-52
 	android:configChanges
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:53:13-74
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:53:13-74
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:52:13-53
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:52:13-53
 activity#com.rightclickit.b2bsaleon.activities.DashboardActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:56:9-60:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:56:9-60:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:59:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:59:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:60:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:60:13-52
 	android:configChanges
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:58:13-74
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:58:13-74
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:57:13-57
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:57:13-57
 activity#com.rightclickit.b2bsaleon.activities.SettingsActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:61:9-64:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:61:9-64:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:63:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:63:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:64:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:64:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:62:13-56
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:62:13-56
 activity#com.rightclickit.b2bsaleon.activities.NotificationsActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:65:9-68:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:65:9-68:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:67:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:67:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:68:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:68:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:66:13-61
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:66:13-61
 service#com.rightclickit.b2bsaleon.services.SyncRoutesMasterDetailsService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:71:9-74:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:71:9-74:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:73:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:73:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:74:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:74:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:72:13-68
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:72:13-68
 service#com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:77:9-80:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:77:9-80:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:79:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:79:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:80:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:80:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:78:13-63
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:78:13-63
 service#com.rightclickit.b2bsaleon.services.SyncTakeOrdersService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:83:9-86:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:83:9-86:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:85:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:85:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:86:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:86:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:84:13-59
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:84:13-59
 activity#com.rightclickit.b2bsaleon.activities.Products_Activity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:88:9-91:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:88:9-91:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:90:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:90:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:91:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:91:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:89:13-57
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:89:13-57
 activity#com.rightclickit.b2bsaleon.activities.AgentsActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:92:9-95:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:92:9-95:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:94:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:94:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:95:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:95:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:93:13-54
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:93:13-54
 activity#com.rightclickit.b2bsaleon.activities.AgentsInfoActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:96:9-99:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:96:9-99:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:98:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:98:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:99:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:99:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:97:13-58
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:97:13-58
 activity#com.rightclickit.b2bsaleon.activities.ProductInfoActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:100:9-103:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:100:9-103:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:102:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:102:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:103:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:103:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:101:13-59
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:101:13-59
 activity#com.rightclickit.b2bsaleon.activities.Agents_AddActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:104:9-107:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:104:9-107:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:106:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:106:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:107:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:107:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:105:13-58
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:105:13-58
 activity#com.rightclickit.b2bsaleon.activities.AgentTakeOrderScreen
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:108:9-111:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:108:9-111:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:110:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:110:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:111:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:111:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:109:13-60
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:109:13-60
 activity#com.rightclickit.b2bsaleon.activities.AgentViewActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:112:9-115:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:112:9-115:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:114:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:114:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:115:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:115:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:113:13-57
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:113:13-57
 activity#com.rightclickit.b2bsaleon.activities.TDCSalesActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:116:9-119:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:116:9-119:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:118:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:118:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:119:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:119:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:117:13-56
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:117:13-56
 activity#com.rightclickit.b2bsaleon.activities.TripSheetsActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:120:9-123:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:120:9-123:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:122:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:122:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:123:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:123:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:121:13-58
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:121:13-58
 activity#com.rightclickit.b2bsaleon.activities.TripSheetView
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:124:9-127:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:124:9-127:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:126:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:126:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:127:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:127:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:125:13-53
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:125:13-53
 activity#com.rightclickit.b2bsaleon.activities.TripSheetStock
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:128:9-131:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:128:9-131:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:130:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:130:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:131:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:131:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:129:13-54
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:129:13-54
 activity#com.rightclickit.b2bsaleon.activities.TripSheetViewPreview
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:132:9-135:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:132:9-135:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:134:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:134:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:135:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:135:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:133:13-60
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:133:13-60
 activity#com.rightclickit.b2bsaleon.activities.TripsheetStockPreview
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:136:9-139:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:136:9-139:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:138:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:138:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:139:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:139:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:137:13-61
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:137:13-61
 activity#com.rightclickit.b2bsaleon.activities.AgentDeliveries
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:140:9-143:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:140:9-143:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:142:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:142:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:143:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:143:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:141:13-55
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:141:13-55
 activity#com.rightclickit.b2bsaleon.activities.AgentTDC_Order
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:144:9-147:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:144:9-147:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:146:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:146:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:147:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:147:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:145:13-54
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:145:13-54
 activity#com.rightclickit.b2bsaleon.activities.AgentPayments
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:148:9-151:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:148:9-151:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:150:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:150:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:151:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:151:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:149:13-53
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:149:13-53
 activity#com.rightclickit.b2bsaleon.activities.AgentReturns
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:152:9-155:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:152:9-155:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:154:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:154:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:155:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:155:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:153:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:153:13-52
 activity#com.rightclickit.b2bsaleon.activities.AgentDeliveriesView
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:156:9-159:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:156:9-159:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:158:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:158:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:159:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:159:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:157:13-59
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:157:13-59
 activity#com.rightclickit.b2bsaleon.activities.ProductStock
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:160:9-163:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:160:9-163:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:162:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:162:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:163:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:163:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:161:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:161:13-52
 activity#com.rightclickit.b2bsaleon.activities.AgentPaymentsView
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:164:9-167:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:164:9-167:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:166:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:166:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:167:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:167:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:165:13-57
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:165:13-57
 activity#com.rightclickit.b2bsaleon.activities.AgentReturnsView
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:168:9-171:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:168:9-171:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:170:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:170:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:171:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:171:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:169:13-56
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:169:13-56
 activity#com.rightclickit.b2bsaleon.activities.AgentsTDC_View
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:172:9-175:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:172:9-175:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:174:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:174:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:175:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:175:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:173:13-54
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:173:13-54
 activity#com.rightclickit.b2bsaleon.activities.TDCSalesCustomerSelectionActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:176:9-179:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:176:9-179:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:178:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:178:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:179:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:179:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:177:13-73
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:177:13-73
 activity#com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:180:9-183:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:180:9-183:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:182:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:182:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:183:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:183:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:181:13-70
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:181:13-70
 activity#com.rightclickit.b2bsaleon.activities.TDCSalesListActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:184:9-187:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:184:9-187:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:186:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:186:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:187:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:187:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:185:13-60
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:185:13-60
 activity#com.rightclickit.b2bsaleon.activities.DashboardTakeorder
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:188:9-191:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:188:9-191:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:190:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:190:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:191:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:191:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:189:13-58
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:189:13-58
 activity#com.rightclickit.b2bsaleon.activities.DashboardTakeorderPreview
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:192:9-195:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:192:9-195:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:194:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:194:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:195:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:195:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:193:13-65
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:193:13-65
 activity#com.rightclickit.b2bsaleon.activities.DashboardDelivery
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:196:9-199:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:196:9-199:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:198:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:198:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:199:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:199:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:197:13-57
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:197:13-57
 activity#com.rightclickit.b2bsaleon.activities.DashboardReturns
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:200:9-203:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:200:9-203:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:202:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:202:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:203:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:203:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:201:13-56
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:201:13-56
 activity#com.rightclickit.b2bsaleon.activities.DashboardPayments
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:204:9-207:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:204:9-207:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:206:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:206:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:207:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:207:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:205:13-57
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:205:13-57
 activity#com.rightclickit.b2bsaleon.activities.DashboardDeliveryPreview
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:208:9-211:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:208:9-211:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:210:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:210:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:211:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:211:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:209:13-64
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:209:13-64
 activity#com.rightclickit.b2bsaleon.activities.RetailersActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:212:9-215:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:212:9-215:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:214:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:214:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:215:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:215:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:213:13-57
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:213:13-57
 activity#com.rightclickit.b2bsaleon.activities.Retailers_AddActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:216:9-219:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:216:9-219:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:218:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:218:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:219:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:219:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:217:13-61
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:217:13-61
 activity#com.rightclickit.b2bsaleon.activities.Retailers_PaymentsActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:220:9-223:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:220:9-223:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:222:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:222:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:223:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:223:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:221:13-66
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:221:13-66
 activity#com.rightclickit.b2bsaleon.activities.AgentTakeOrderPreview
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:224:9-226:52
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:224:9-226:52
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:226:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:226:13-49
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:225:13-61
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:225:13-61
 activity#com.rightclickit.b2bsaleon.activities.TripsheetTakeorder
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:227:9-230:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:227:9-230:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:229:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:229:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:230:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:230:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:228:13-58
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:228:13-58
 activity#com.rightclickit.b2bsaleon.activities.TripsheetDelivery
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:231:9-234:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:231:9-234:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:233:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:233:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:234:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:234:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:232:13-57
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:232:13-57
 activity#com.rightclickit.b2bsaleon.activities.TripsheetTakeorderPreview
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:235:9-237:52
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:235:9-237:52
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:237:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:237:13-49
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:236:13-65
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:236:13-65
 activity#com.rightclickit.b2bsaleon.activities.TripsheetReturns
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:238:9-241:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:238:9-241:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:240:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:240:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:241:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:241:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:239:13-56
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:239:13-56
 activity#com.rightclickit.b2bsaleon.activities.TripsheetDeliveryPreview
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:242:9-245:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:242:9-245:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:244:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:244:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:245:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:245:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:243:13-64
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:243:13-64
 activity#com.rightclickit.b2bsaleon.activities.TripsheetPayments
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:246:9-249:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:246:9-249:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:248:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:248:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:249:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:249:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:247:13-57
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:247:13-57
 activity#com.rightclickit.b2bsaleon.activities.RouteStock
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:250:9-253:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:250:9-253:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:252:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:252:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:253:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:253:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:251:13-50
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:251:13-50
 service#com.rightclickit.b2bsaleon.services.SyncSpecialPriceService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:255:9-258:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:255:9-258:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:257:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:257:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:258:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:258:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:256:13-61
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:256:13-61
 service#com.rightclickit.b2bsaleon.services.SyncTDCSalesOrderService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:261:9-264:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:261:9-264:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:263:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:263:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:264:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:264:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:262:13-62
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:262:13-62
 service#com.rightclickit.b2bsaleon.services.SyncStakeHolderTypesService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:267:9-270:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:267:9-270:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:269:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:269:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:270:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:270:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:268:13-65
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:268:13-65
 service#com.rightclickit.b2bsaleon.services.SyncTripSheetsListService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:273:9-276:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:273:9-276:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:275:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:275:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:276:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:276:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:274:13-63
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:274:13-63
 service#com.rightclickit.b2bsaleon.services.SyncTDCCustomersService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:279:9-282:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:279:9-282:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:281:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:281:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:282:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:282:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:280:13-61
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:280:13-61
 service#com.rightclickit.b2bsaleon.services.SyncNotificationsListService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:283:9-286:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:283:9-286:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:285:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:285:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:286:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:286:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:284:13-66
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:284:13-66
 service#com.rightclickit.b2bsaleon.services.SyncTripSheetsStockService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:289:9-292:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:289:9-292:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:291:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:291:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:292:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:292:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:290:13-64
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:290:13-64
 service#com.rightclickit.b2bsaleon.services.SyncTripSheetsPaymentsService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:295:9-298:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:295:9-298:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:297:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:297:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:298:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:298:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:296:13-67
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:296:13-67
 service#com.rightclickit.b2bsaleon.services.SyncTripsheetDeliveriesService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:299:9-302:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:299:9-302:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:301:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:301:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:302:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:302:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:300:13-68
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:300:13-68
 service#com.rightclickit.b2bsaleon.services.SyncTripsheetReturnsService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:303:9-306:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:303:9-306:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:305:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:305:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:306:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:306:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:304:13-65
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:304:13-65
 activity#com.rightclickit.b2bsaleon.activities.TripsheetReturnsPreview
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:308:9-311:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:308:9-311:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:310:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:310:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:311:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:311:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:309:13-63
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:309:13-63
 activity#com.rightclickit.b2bsaleon.activities.TripsheetPaymentsPreview
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:312:9-315:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:312:9-315:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:314:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:314:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:315:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:315:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:313:13-64
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:313:13-64
 activity#com.rightclickit.b2bsaleon.activities.AgentAddPayment
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:316:9-319:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:316:9-319:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:318:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:318:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:319:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:319:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:317:13-55
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:317:13-55
 activity#com.rightclickit.b2bsaleon.activities.AgentAddPaymentPreview
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:320:9-323:55
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:320:9-323:55
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:322:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:322:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:323:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:323:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:321:13-62
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:321:13-62
 activity#com.rightclickit.b2bsaleon.activities.AgentStockActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:324:9-327:64
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:324:9-327:64
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:326:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:326:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:327:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:327:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:325:13-58
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:325:13-58
 activity#com.rightclickit.b2bsaleon.activities.AgentStockDeliveryActivity
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:328:9-331:64
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:328:9-331:64
 	android:screenOrientation
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:330:13-49
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:330:13-49
 	android:windowSoftInputMode
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:331:13-52
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:331:13-52
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:329:13-66
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:329:13-66
 service#com.rightclickit.b2bsaleon.services.SyncAgentStockDeliveriesService
-ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:333:9-336:39
+ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:333:9-336:39
 	android:enabled
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:335:13-35
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:335:13-35
 	android:exported
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:336:13-36
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:336:13-36
 	android:name
-		ADDED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml:334:13-69
+		ADDED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml:334:13-69
 uses-sdk
-INJECTED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-MERGED from [com.android.support:design:25.3.1] C:\Users\PPS\.android\build-cache\3550bdcdab06637fa638b9d3d2dc6f93eb1a8e5f\output\AndroidManifest.xml:21:5-23:62
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\PPS\.android\build-cache\34cf3136924e741a49de8a25711372941cd6cde6\output\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:transition:25.3.1] C:\Users\PPS\.android\build-cache\fc3f822b6534f214f0dcc1aa03ea883f3fd42a39\output\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\PPS\.android\build-cache\00212c1c5d0f09061694889587fad00736037373\output\AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.volley:volley:1.0.0] C:\Users\PPS\.android\build-cache\092c2fee7182cdc5b59700b08795a9059de1ee20\output\AndroidManifest.xml:7:5-43
-MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\PPS\.android\build-cache\3e0a81283d6435e05cc802f928b876b5022d9a38\output\AndroidManifest.xml:7:5-9:41
-MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\PPS\.android\build-cache\dd477c8b9899c26d5739de0ca5a81322fe3dc9e7\output\AndroidManifest.xml:17:5-43
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\PPS\.android\build-cache\8a5354c618498e7f7c56b60d4393f1a231795a89\output\AndroidManifest.xml:23:5-43
-MERGED from [com.yayandroid:LocationManager:2.0.1] C:\Users\PPS\.android\build-cache\09be60268ee1479ea7ade5782f0698eec532b2c3\output\AndroidManifest.xml:8:5-10:41
-MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\PPS\.android\build-cache\14b088cd2601ca47d60c09dd88a9a2ff0ef748a8\output\AndroidManifest.xml:3:5-43
-MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\PPS\.android\build-cache\45a0a9aee7a14d6654f4dfd39f6393be8304f1d2\output\AndroidManifest.xml:17:5-43
-MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\PPS\.android\build-cache\46f3336dd3030bf3458d8df48d31414041608ce6\output\AndroidManifest.xml:3:5-43
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\PPS\.android\build-cache\76775e422208545e76eb6a3c6176ceb717a70ca0\output\AndroidManifest.xml:17:5-43
-MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\PPS\.android\build-cache\6924e8f2a38711d554205a9629be545edcac7de3\output\AndroidManifest.xml:7:5-9:41
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\PPS\.android\build-cache\a6a7d751529e517a8da6c10df6d9a4362795808e\output\AndroidManifest.xml:21:5-23:78
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\PPS\.android\build-cache\7ce44687113f7c12de585abe137f1f5c31e3aef1\output\AndroidManifest.xml:21:5-23:54
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\PPS\.android\build-cache\8591740007eebeba11ee5343ae5f71db664aaf95\output\AndroidManifest.xml:21:5-23:60
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\PPS\.android\build-cache\22ce7eab14e830d17db0f4cf37fb64b5445f0b35\output\AndroidManifest.xml:21:5-23:63
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\PPS\.android\build-cache\d79142fc376571d4b28125fb188ccf9d0e074e05\output\AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\PPS\.android\build-cache\70cafcf24007a7a3202910ac3724c20d4b2f0d3a\output\AndroidManifest.xml:21:5-23:61
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\PPS\.android\build-cache\2e4355f2db91f1b63f4e931386733f3041194249\output\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\PPS\.android\build-cache\03fe93890a1643579e1e0e418b0806f53774a05d\output\AndroidManifest.xml:20:5-43
-MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\PPS\.android\build-cache\33028776910d70bdfbde54a76da229ef903b4923\output\AndroidManifest.xml:5:5-43
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\PPS\.android\build-cache\50ea5f7a13774fd697bf379373ac66e8e4533fe7\output\AndroidManifest.xml:21:5-23:58
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\PPS\.android\build-cache\df7e9165b8dcc98d2f09c0ab6987c9a200fab6f8\output\AndroidManifest.xml:25:5-27:41
+INJECTED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.android.support:design:25.3.1] C:\Users\Raj\.android\build-cache\06379d673606c9e9df4614fe27450271959ed799\output\AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\Raj\.android\build-cache\55b3149c454c53f65e3b53d0e4933209af977ccd\output\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:transition:25.3.1] C:\Users\Raj\.android\build-cache\a9daa24ab3b7549bdce10cbf3cc324d278c9c73a\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Raj\.android\build-cache\34391ea41e2f4ab258f8dad375dcf2f5f238a194\output\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.volley:volley:1.0.0] C:\Users\Raj\.android\build-cache\042e41fdcd539876894780d5a5057a5e460c93c8\output\AndroidManifest.xml:7:5-43
+MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\Raj\.android\build-cache\084599bef3ea9c788c434f8d9ebfffd2a24d28c5\output\AndroidManifest.xml:7:5-9:41
+MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\Raj\.android\build-cache\f4852b642e79c8dbf51399f236da00624d63689d\output\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\Raj\.android\build-cache\c7c4b57fd3d7681d2e4a606c91b1249d89b7bb52\output\AndroidManifest.xml:23:5-43
+MERGED from [com.yayandroid:LocationManager:2.0.1] C:\Users\Raj\.android\build-cache\d6e1268cccb703acae3761abb9e3bfe7283192da\output\AndroidManifest.xml:8:5-10:41
+MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\Raj\.android\build-cache\d102821a9cb05188d61692fea9c0574762c68acf\output\AndroidManifest.xml:3:5-43
+MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\Raj\.android\build-cache\fab5a1006d1769420bb725cbce65f69468ce75a6\output\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\Raj\.android\build-cache\6c37b1f8388c91513758331e9ff87cfa6bac1720\output\AndroidManifest.xml:3:5-43
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\Raj\.android\build-cache\75918d2a33b942a2c8cefa0cfe2921ac172dca85\output\AndroidManifest.xml:17:5-43
+MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\Raj\.android\build-cache\1bf5db4a21f40408e8009b84ca93ccee44a00f03\output\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Raj\.android\build-cache\47cbf74065ee09835847285d68498b13c9f42d60\output\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Raj\.android\build-cache\0a138205247c521b22124fc71715cb4fe7e8a7e9\output\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Raj\.android\build-cache\e61b5ef4e031b5b9cc495cf5cbc440871f059507\output\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Raj\.android\build-cache\3243804d6bfd1ff1e1f72cd843f58cec439b6e64\output\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Raj\.android\build-cache\f88ef92021350047006e4b3c16d0c9c2c6ac7566\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Raj\.android\build-cache\88fed48356f2863bea2a2f8a0c9518efe46243ee\output\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Raj\.android\build-cache\c0ce7c6eed33700c1a0cf2b5c58525de577189c8\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Raj\.android\build-cache\61083a3ed2802a0b022b84b7214f66a032a6a889\output\AndroidManifest.xml:20:5-43
+MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\Raj\.android\build-cache\19a2990cd2de6b97cd36443a0f6868312035f1ee\output\AndroidManifest.xml:5:5-43
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Raj\.android\build-cache\72e600eb3e04d43ce46bbb988107de3d29f93dcc\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\Raj\.android\build-cache\f000de0c9adb17b2677ed4bf58e532e7d678199b\output\AndroidManifest.xml:25:5-27:41
 	tools:overrideLibrary
-		ADDED from [com.android.support:design:25.3.1] C:\Users\PPS\.android\build-cache\3550bdcdab06637fa638b9d3d2dc6f93eb1a8e5f\output\AndroidManifest.xml:23:9-59
+		ADDED from [com.android.support:design:25.3.1] C:\Users\Raj\.android\build-cache\06379d673606c9e9df4614fe27450271959ed799\output\AndroidManifest.xml:23:9-59
 	android:targetSdkVersion
-		INJECTED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml
-		INJECTED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml
-		INJECTED from D:\24Git\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Sekhar\workspace\b2bmobileapp\app\src\main\AndroidManifest.xml
 meta-data#android.support.VERSION
-ADDED from [com.android.support:design:25.3.1] C:\Users\PPS\.android\build-cache\3550bdcdab06637fa638b9d3d2dc6f93eb1a8e5f\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\PPS\.android\build-cache\34cf3136924e741a49de8a25711372941cd6cde6\output\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:transition:25.3.1] C:\Users\PPS\.android\build-cache\fc3f822b6534f214f0dcc1aa03ea883f3fd42a39\output\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\PPS\.android\build-cache\a6a7d751529e517a8da6c10df6d9a4362795808e\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\PPS\.android\build-cache\7ce44687113f7c12de585abe137f1f5c31e3aef1\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\PPS\.android\build-cache\8591740007eebeba11ee5343ae5f71db664aaf95\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\PPS\.android\build-cache\22ce7eab14e830d17db0f4cf37fb64b5445f0b35\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\PPS\.android\build-cache\d79142fc376571d4b28125fb188ccf9d0e074e05\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\PPS\.android\build-cache\70cafcf24007a7a3202910ac3724c20d4b2f0d3a\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\PPS\.android\build-cache\2e4355f2db91f1b63f4e931386733f3041194249\output\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\PPS\.android\build-cache\03fe93890a1643579e1e0e418b0806f53774a05d\output\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\PPS\.android\build-cache\50ea5f7a13774fd697bf379373ac66e8e4533fe7\output\AndroidManifest.xml:25:5-27:34
+ADDED from [com.android.support:design:25.3.1] C:\Users\Raj\.android\build-cache\06379d673606c9e9df4614fe27450271959ed799\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\Raj\.android\build-cache\55b3149c454c53f65e3b53d0e4933209af977ccd\output\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:transition:25.3.1] C:\Users\Raj\.android\build-cache\a9daa24ab3b7549bdce10cbf3cc324d278c9c73a\output\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\Raj\.android\build-cache\47cbf74065ee09835847285d68498b13c9f42d60\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\Raj\.android\build-cache\0a138205247c521b22124fc71715cb4fe7e8a7e9\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\Raj\.android\build-cache\e61b5ef4e031b5b9cc495cf5cbc440871f059507\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\Raj\.android\build-cache\3243804d6bfd1ff1e1f72cd843f58cec439b6e64\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\Raj\.android\build-cache\f88ef92021350047006e4b3c16d0c9c2c6ac7566\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\Raj\.android\build-cache\88fed48356f2863bea2a2f8a0c9518efe46243ee\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\Raj\.android\build-cache\c0ce7c6eed33700c1a0cf2b5c58525de577189c8\output\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\Raj\.android\build-cache\61083a3ed2802a0b022b84b7214f66a032a6a889\output\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\Raj\.android\build-cache\72e600eb3e04d43ce46bbb988107de3d29f93dcc\output\AndroidManifest.xml:25:5-27:34
 	android:value
-		ADDED from [com.android.support:design:25.3.1] C:\Users\PPS\.android\build-cache\3550bdcdab06637fa638b9d3d2dc6f93eb1a8e5f\output\AndroidManifest.xml:27:9-31
+		ADDED from [com.android.support:design:25.3.1] C:\Users\Raj\.android\build-cache\06379d673606c9e9df4614fe27450271959ed799\output\AndroidManifest.xml:27:9-31
 	android:name
-		ADDED from [com.android.support:design:25.3.1] C:\Users\PPS\.android\build-cache\3550bdcdab06637fa638b9d3d2dc6f93eb1a8e5f\output\AndroidManifest.xml:26:9-47
+		ADDED from [com.android.support:design:25.3.1] C:\Users\Raj\.android\build-cache\06379d673606c9e9df4614fe27450271959ed799\output\AndroidManifest.xml:26:9-47
 uses-feature#0x00020000
-ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\PPS\.android\build-cache\8a5354c618498e7f7c56b60d4393f1a231795a89\output\AndroidManifest.xml:21:5-77
+ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\Raj\.android\build-cache\c7c4b57fd3d7681d2e4a606c91b1249d89b7bb52\output\AndroidManifest.xml:21:5-77
 	android:glEsVersion
-		ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\PPS\.android\build-cache\8a5354c618498e7f7c56b60d4393f1a231795a89\output\AndroidManifest.xml:21:19-51
+		ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\Raj\.android\build-cache\c7c4b57fd3d7681d2e4a606c91b1249d89b7bb52\output\AndroidManifest.xml:21:19-51
 	android:required
-		ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\PPS\.android\build-cache\8a5354c618498e7f7c56b60d4393f1a231795a89\output\AndroidManifest.xml:21:52-75
+		ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\Raj\.android\build-cache\c7c4b57fd3d7681d2e4a606c91b1249d89b7bb52\output\AndroidManifest.xml:21:52-75
 activity#com.google.android.gms.common.api.GoogleApiActivity
-ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\PPS\.android\build-cache\45a0a9aee7a14d6654f4dfd39f6393be8304f1d2\output\AndroidManifest.xml:19:9-172
+ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\Raj\.android\build-cache\fab5a1006d1769420bb725cbce65f69468ce75a6\output\AndroidManifest.xml:19:9-172
 	android:exported
-		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\PPS\.android\build-cache\45a0a9aee7a14d6654f4dfd39f6393be8304f1d2\output\AndroidManifest.xml:19:146-170
+		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\Raj\.android\build-cache\fab5a1006d1769420bb725cbce65f69468ce75a6\output\AndroidManifest.xml:19:146-170
 	android:theme
-		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\PPS\.android\build-cache\45a0a9aee7a14d6654f4dfd39f6393be8304f1d2\output\AndroidManifest.xml:19:86-145
+		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\Raj\.android\build-cache\fab5a1006d1769420bb725cbce65f69468ce75a6\output\AndroidManifest.xml:19:86-145
 	android:name
-		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\PPS\.android\build-cache\45a0a9aee7a14d6654f4dfd39f6393be8304f1d2\output\AndroidManifest.xml:19:19-85
+		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\Raj\.android\build-cache\fab5a1006d1769420bb725cbce65f69468ce75a6\output\AndroidManifest.xml:19:19-85
 uses-permission#android.permission.ACCESS_WIFI_STATE
-ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\PPS\.android\build-cache\df7e9165b8dcc98d2f09c0ab6987c9a200fab6f8\output\AndroidManifest.xml:30:5-76
+ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\Raj\.android\build-cache\f000de0c9adb17b2677ed4bf58e532e7d678199b\output\AndroidManifest.xml:30:5-76
 	android:name
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\PPS\.android\build-cache\df7e9165b8dcc98d2f09c0ab6987c9a200fab6f8\output\AndroidManifest.xml:30:22-73
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\Raj\.android\build-cache\f000de0c9adb17b2677ed4bf58e532e7d678199b\output\AndroidManifest.xml:30:22-73
 provider#com.amitshekhar.DebugDBInitProvider
-ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\PPS\.android\build-cache\df7e9165b8dcc98d2f09c0ab6987c9a200fab6f8\output\AndroidManifest.xml:33:9-37:40
+ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\Raj\.android\build-cache\f000de0c9adb17b2677ed4bf58e532e7d678199b\output\AndroidManifest.xml:33:9-37:40
 	android:authorities
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\PPS\.android\build-cache\df7e9165b8dcc98d2f09c0ab6987c9a200fab6f8\output\AndroidManifest.xml:35:13-71
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\Raj\.android\build-cache\f000de0c9adb17b2677ed4bf58e532e7d678199b\output\AndroidManifest.xml:35:13-71
 	android:enabled
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\PPS\.android\build-cache\df7e9165b8dcc98d2f09c0ab6987c9a200fab6f8\output\AndroidManifest.xml:36:13-35
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\Raj\.android\build-cache\f000de0c9adb17b2677ed4bf58e532e7d678199b\output\AndroidManifest.xml:36:13-35
 	android:exported
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\PPS\.android\build-cache\df7e9165b8dcc98d2f09c0ab6987c9a200fab6f8\output\AndroidManifest.xml:37:13-37
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\Raj\.android\build-cache\f000de0c9adb17b2677ed4bf58e532e7d678199b\output\AndroidManifest.xml:37:13-37
 	android:name
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\PPS\.android\build-cache\df7e9165b8dcc98d2f09c0ab6987c9a200fab6f8\output\AndroidManifest.xml:34:13-63
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\Raj\.android\build-cache\f000de0c9adb17b2677ed4bf58e532e7d678199b\output\AndroidManifest.xml:34:13-63

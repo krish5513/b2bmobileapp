@@ -42,7 +42,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
     private DBHelper mDBHelper;
 
     private SearchView search;
-    private TextView companyName,agentcode;
+    private TextView companyName, agentcode;
     private ListView tripSheetReturnProductsList;
     private LinearLayout trip_sheet_returns_save, trip_sheet_returns_preview;
     private TripSheetReturnsAdapter mTripSheetReturnsAdapter;
@@ -96,7 +96,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
 
             companyName.setText(mAgentName);
 
-            agentcode.setText("("+mAgentCode+")");
+            agentcode.setText("(" + mAgentCode + ")");
 
             isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
 
@@ -135,6 +135,21 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
                         productsBean.setProductStock(allProductsListFromStock.get(i).getProductStock());
                         productsBean.setProductExtraQuantity(allProductsListFromStock.get(i).getProductExtraQuantity());
                         productsBean.setProductReturnableUnit(allProductsListFromStock.get(i).getProductReturnableUnit());
+
+                        if (allProductsListFromStock.get(i).getProductCode().equals("2600005")) {
+                            String due = mDBHelper.fetchCansorCratesDueByIds(mTripSheetId,mAgentSoId,mAgentId,allProductsListFromStock.get(i).getProductCode(),"cans");
+                            // CANS DUE
+                            productsBean.setCansDueQuantity(Double.parseDouble(due));
+                            productsBean.setCratesDueQuantity(Double.parseDouble("0.0"));
+                        } else if (allProductsListFromStock.get(i).getProductCode().equals("2600006")) {
+                            String due = mDBHelper.fetchCansorCratesDueByIds(mTripSheetId,mAgentSoId,mAgentId,allProductsListFromStock.get(i).getProductCode(),"crates");
+                            // CRATES DUE
+                            productsBean.setCansDueQuantity(Double.parseDouble(due));
+                            productsBean.setCratesDueQuantity(Double.parseDouble("0.0"));
+                        } else {
+                            productsBean.setCansDueQuantity(Double.parseDouble("0.0"));
+                            productsBean.setCratesDueQuantity(Double.parseDouble("0.0"));
+                        }
 
                         allReturnablesListFromStock.add(productsBean);
                     }
@@ -247,7 +262,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
             startActivity(i);
             finish();
         } else {
-           // Toast.makeText(activityContext, "This Preview is unavailable untill you saved the tripsheet returns data.", Toast.LENGTH_LONG).show();
+            // Toast.makeText(activityContext, "This Preview is unavailable untill you saved the tripsheet returns data.", Toast.LENGTH_LONG).show();
             CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.returnsfail));
         }
     }
