@@ -4,11 +4,11 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
@@ -361,7 +360,6 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
     public void saveProductsVerifyList() {
         long currentTimeStamp = System.currentTimeMillis();
         String tripSheetId = "";
-
         for (Map.Entry<String, TripsheetsStockList> stockList : productsVerifyListHashMap.entrySet()) {
             TripsheetsStockList currentStock = stockList.getValue();
             currentStock.setmTripsheetStockVerifyBy(loggedInUserId);

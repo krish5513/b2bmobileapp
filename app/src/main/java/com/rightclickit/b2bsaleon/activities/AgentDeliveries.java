@@ -42,19 +42,20 @@ public class AgentDeliveries extends AppCompatActivity {
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
     ArrayList<TripsheetSOList> tripsheetsoList;
-    String tripsheetId,agentId="";
+    String tripsheetId, agentId = "";
     AgentDeliveriesAdapter deliveriesAdapter;
     ListView deliveriesList;
     private SearchView search;
-    TextView tv_deliveries,tv_deliveriesValue,tv_pendingvalue;
-    ArrayList<String> deliveriess=new ArrayList<>();
-    ArrayList<String> mtripsheetId=new ArrayList<>();
+    TextView tv_deliveries, tv_deliveriesValue, tv_pendingvalue;
+    ArrayList<String> deliveriess = new ArrayList<>();
+    ArrayList<String> mtripsheetId = new ArrayList<>();
     String d_no;
-    private double totalAmount=0 ;
-    private double totalTaxAmount =0;
-    private double subTotal=0 ;
+    private double totalAmount = 0;
+    private double totalTaxAmount = 0;
+    private double subTotal = 0;
     AgentDeliveriesModel deliveriesmodel;
     private String mDeliveryNo = "", mDeliverydate = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +76,7 @@ public class AgentDeliveries extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        deliveriesmodel=new AgentDeliveriesModel(this,AgentDeliveries.this);
+        deliveriesmodel = new AgentDeliveriesModel(this, AgentDeliveries.this);
 
 
         sales = (LinearLayout) findViewById(R.id.linear_sales);
@@ -91,11 +92,11 @@ public class AgentDeliveries extends AppCompatActivity {
 
 
         // tv_deliveries=(TextView)findViewById(R.id.tv_totalDeliveries);
-       // tv_deliveriesValue=(TextView)findViewById(R.id.tv_value);
-       // tv_pendingvalue=(TextView)findViewById(R.id.tv_pendingvalue);
+        // tv_deliveriesValue=(TextView)findViewById(R.id.tv_value);
+        // tv_pendingvalue=(TextView)findViewById(R.id.tv_pendingvalue);
 
 
-        deliveriesList=(ListView)findViewById(R.id.ordered_products_list_view) ;
+        deliveriesList = (ListView) findViewById(R.id.ordered_products_list_view);
 
         mNoDataText = (TextView) findViewById(R.id.NoDataText);
         deliveriesList.setEmptyView(mNoDataText);
@@ -107,41 +108,39 @@ public class AgentDeliveries extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            mDeliveryNo= bundle.getString("DeliveryId");
-            mDeliverydate=bundle.getString("DeliveryDate");
+            mDeliveryNo = bundle.getString("DeliveryId");
+            mDeliverydate = bundle.getString("DeliveryDate");
 
 
         }
-            agentId = mPreferences.getString("agentId");
+        agentId = mPreferences.getString("agentId");
 
 
-
-
-        deliveriess=mDBHelper.getDeliverynumber(agentId,"tripsheet_delivery_number");
-        if(deliveriess.size()>0) {
-           // tv_deliveries.setText(Integer.toString(deliveriess.size()));
+        deliveriess = mDBHelper.getDeliverynumber(agentId, "tripsheet_delivery_number");
+        if (deliveriess.size() > 0) {
+            // tv_deliveries.setText(Integer.toString(deliveriess.size()));
         }
 
 
-        mtripsheetId=mDBHelper.getTripId(agentId,"tripsheet_delivery_trip_id");
+        mtripsheetId = mDBHelper.getTripId(agentId, "tripsheet_delivery_trip_id");
 
 
         ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesList(agentId);
-        for (int i=0;i<unUploadedDeliveries.size();i++){
-             d_no=unUploadedDeliveries.get(i).getmTripsheetDeliveryNo();
+        for (int i = 0; i < unUploadedDeliveries.size(); i++) {
+            d_no = unUploadedDeliveries.get(i).getmTripsheetDeliveryNo();
         }
         ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(d_no);
-        for (int i=0;i<arList.size();i++) {
+        for (int i = 0; i < arList.size(); i++) {
             String[] temp = arList.get(i);
 
             totalAmount = totalAmount + Double.parseDouble(temp[3]);
             totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
             subTotal = totalAmount + totalTaxAmount;
-         //   tv_deliveriesValue.setText(Utility.getFormattedCurrency((subTotal)));
+            //   tv_deliveriesValue.setText(Utility.getFormattedCurrency((subTotal)));
         }
-        if(unUploadedDeliveries.size()>0){
+        if (unUploadedDeliveries.size() > 0) {
             loadDeliveries(unUploadedDeliveries);
-        }else {
+        } else {
             mNoDataText.setText("No Deliveries found.");
         }
 
@@ -240,6 +239,28 @@ public class AgentDeliveries extends AppCompatActivity {
         deliveriesList.setAdapter(deliveriesAdapter);
 
     }
+
+    public void loadDeliveries1() {
+        ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries1 = mDBHelper.fetchAllTripsheetsDeliveriesList(agentId);
+        for (int i = 0; i < unUploadedDeliveries1.size(); i++) {
+            d_no = unUploadedDeliveries1.get(i).getmTripsheetDeliveryNo();
+        }
+        ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(d_no);
+        for (int i = 0; i < arList.size(); i++) {
+            String[] temp = arList.get(i);
+
+            totalAmount = totalAmount + Double.parseDouble(temp[3]);
+            totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
+            subTotal = totalAmount + totalTaxAmount;
+            //   tv_deliveriesValue.setText(Utility.getFormattedCurrency((subTotal)));
+        }
+        if (unUploadedDeliveries1.size() > 0) {
+            loadDeliveries(unUploadedDeliveries1);
+        } else {
+            mNoDataText.setText("No Deliveries found.");
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
@@ -279,6 +300,7 @@ public class AgentDeliveries extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -314,11 +336,12 @@ public class AgentDeliveries extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.Add).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(true);
         menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
