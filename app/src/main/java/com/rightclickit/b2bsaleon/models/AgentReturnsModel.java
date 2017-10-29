@@ -48,14 +48,19 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
     private  ArrayList<String> routeIdsList = new ArrayList<String>();
     private  ArrayList<String> routeCodesList = new ArrayList<String>();
 
-    private  HashMap<String, JSONArray> productIdsList = new HashMap<String, JSONArray>();
-    private  HashMap<String, JSONArray> productCodesList = new HashMap<String, JSONArray>();
-    private HashMap<String, JSONArray> returntype = new HashMap<String, JSONArray>();
+    private  ArrayList<String> productIdsList = new ArrayList<String>();
+    private  ArrayList<String> productCodesList = new ArrayList<String>();
+    private  ArrayList<String> returntype = new ArrayList<String>();
+    private  ArrayList<String> quantitysList = new ArrayList<String>();
 
-    private  HashMap<String, JSONArray> quantitysList = new HashMap<String, JSONArray>();
+
+    //private  HashMap<String, JSONArray> productIdsList = new HashMap<String, JSONArray>();
+    // private  HashMap<String, JSONArray> productCodesList = new HashMap<String, JSONArray>();
+    // private HashMap<String, JSONArray> returntype = new HashMap<String, JSONArray>();
+    // private  HashMap<String, JSONArray> quantitysList = new HashMap<String, JSONArray>();
 
 
- ;
+    ;
     private  ArrayList<String> statusList = new ArrayList<String>();
     private  ArrayList<String> deleteList = new ArrayList<String>();
     private  ArrayList<String> returnDateList = new ArrayList<String>();
@@ -65,6 +70,9 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
     private  ArrayList<String> createdOn = new ArrayList<String>();
     private  ArrayList<String> updatedOn = new ArrayList<String>();
     private  ArrayList<String> updatedBy = new ArrayList<String>();
+
+    private ArrayList<String> Size = new ArrayList<String>();
+
 
     private static HashMap<String, JSONArray> productsArray = new HashMap<String, JSONArray>();
 
@@ -159,6 +167,9 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
             if (deleteList.size() > 0) {
                 deleteList.clear();
             }
+            if (Size.size() > 0) {
+                Size.clear();
+            }
 
 
 
@@ -246,29 +257,41 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                     }
 
 
+
                     // Product Ids
                     if (resObj.has("product_ids")) {
                         JSONArray pIdsArray = resObj.getJSONArray("product_ids");
-                        productIdsList.put(String.valueOf(j), pIdsArray);
+                        for (int z = 0; z < pIdsArray.length(); z++) {
+                            productIdsList.add(pIdsArray.get(z).toString());
+                        }
                     }
+
+
+
                     // Product Codes
                     if (resObj.has("product_codes")) {
-                        JSONArray pCodesArray = resObj.getJSONArray("product_codes");
-                        productCodesList.put(String.valueOf(j), pCodesArray);
+                        JSONArray pIdsArray = resObj.getJSONArray("product_codes");
+                        for (int z = 0; z < pIdsArray.length(); z++) {
+                            productCodesList.add(pIdsArray.get(z).toString());
+                        }
                     }
 
-                    // type
+
+                    //type
                     if (resObj.has("type")) {
-                        JSONArray typeArray = resObj.getJSONArray("type");
-                        returntype.put(String.valueOf(j), typeArray);
+                        JSONArray pIdsArray = resObj.getJSONArray("type");
+                        for (int z = 0; z < pIdsArray.length(); z++) {
+                            returntype.add(pIdsArray.get(z).toString());
+                        }
                     }
+
                     // Quantitys
                     if (resObj.has("quantity")) {
-                        JSONArray quArray = resObj.getJSONArray("quantity");
-                        quantitysList.put(String.valueOf(j), quArray);
+                        JSONArray pIdsArray = resObj.getJSONArray("quantity");
+                        for (int z = 0; z < pIdsArray.length(); z++) {
+                            quantitysList.add(pIdsArray.get(z).toString());
+                        }
                     }
-
-
 
 
                     if (resObj.has("status")) {
@@ -282,49 +305,21 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                         JSONArray subPArray = resObj.getJSONArray("productdata");
                         productsArray.put(String.valueOf(j), subPArray);
                     }
-                }
 
 
-                for (int d = 0; d < productsArray.size(); d++) {
-
-                    // Type
-                    ArrayList<String> typeList = new ArrayList<String>();
-                    JSONArray typeAr = returntype.get(String.valueOf(d));
-                    for (int z = 0; z < typeAr.length(); z++) {
-                        typeList.add(typeAr.get(z).toString());
-                    }
-
-                    // Quantity
-                    ArrayList<String> qList = new ArrayList<String>();
-                    JSONArray qAr = quantitysList.get(String.valueOf(d));
-                    for (int z2 = 0; z2 < qAr.length(); z2++) {
-                        qList.add(qAr.get(z2).toString());
+                    if (mReturnsBeansList.size() > 0) {
+                        mReturnsBeansList.clear();
                     }
 
 
+                    for (int d = 0; d < productCodesList.size(); d++) {
 
 
-
-
-                    // productId
-                    ArrayList<String> pIdList = new ArrayList<String>();
-                    JSONArray pIdAr = productIdsList.get(String.valueOf(d));
-                    for (int z = 0; z < pIdAr.length(); z++) {
-                        pIdList.add(pIdAr.get(z).toString());
-                    }
-
-                    // productCode
-                    ArrayList<String> pCodeList = new ArrayList<String>();
-                    JSONArray pCodeAr = productCodesList.get(String.valueOf(d));
-                    for (int z = 0; z < pCodeAr.length(); z++) {
-                        pCodeList.add(pCodeAr.get(z).toString());
-                    }
-
-                    JSONArray aaa = productsArray.get(String.valueOf(d));
-                    for (int s = 0; s < aaa.length(); s++) {
+                        //  JSONArray aaa = productsArray.get(String.valueOf(d));
+                        //  for (int s = 0; s < aaa.length(); s++) {
                         TripSheetReturnsBean returnsBean = new TripSheetReturnsBean();
-                        JSONObject jj = aaa.getJSONObject(s);
-                        returnsBean.setmTripshhetReturnsReturn_no(returnsNoList.get(d).toString());
+                        //   JSONObject jj = aaa.getJSONObject(s);
+                        returnsBean.setmTripshhetReturnsReturn_number(returnsNoList.get(d).toString());
                         returnsBean.setmTripshhetReturnsTrip_id(tripIdsList.get(d).toString());
                         returnsBean.setmTripshhetReturns_so_id(saleorderIdList.get(d).toString());
                         returnsBean.setmTripshhetReturns_so_code(saleorderCodesList.get(d).toString());
@@ -332,11 +327,13 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                         returnsBean.setmTripshhetReturnsUser_codes(userCodesList.get(d).toString());
                         returnsBean.setmTripshhetReturnsRoute_id(routeIdsList.get(d).toString());
                         returnsBean.setmTripshhetReturnsRoute_codes(routeCodesList.get(d).toString());
-                        returnsBean.setmTripshhetReturnsProduct_ids(pIdList.get(s).toString());
-                        returnsBean.setmTripshhetReturnsProduct_codes(pCodeList.get(s).toString());
-                        returnsBean.setmTripshhetReturns_productTitle(jj.getString("name"));
-                        returnsBean.setmTripshhetReturnsType(typeList.get(s).toString());
-                        returnsBean.setmTripshhetReturnsQuantity(qList.get(s).toString());
+
+
+                        returnsBean.setmTripshhetReturnsProduct_ids(productIdsList.get(d).toString());
+                        returnsBean.setmTripshhetReturnsProduct_codes(productCodesList.get(d).toString());
+                        // returnsBean.setmTripshhetReturns_productTitle(jj.getString("name"));
+                        returnsBean.setmTripshhetReturnsType(returntype.get(d).toString());
+                        returnsBean.setmTripshhetReturnsQuantity(quantitysList.get(d).toString());
 
                         returnsBean.setmTripshhetReturnsStatus(statusList.get(d).toString());
                         returnsBean.setmTripshhetReturnsDelete(deleteList.get(d).toString());
@@ -346,16 +343,23 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                         returnsBean.setmTripshhetReturnsUpdated_by(updatedBy.get(d).toString());
 
                         mReturnsBeansList.add(returnsBean);
+                        // }
+
                     }
+                    synchronized (this) {
+                        if (mReturnsBeansList.size() > 0) {
+                            mDBHelper.updateTripsheetsReturnsListData(mReturnsBeansList);
+                        }
+                    }
+
+
                 }
+
+
+
                 synchronized (this) {
                     if (mReturnsBeansList.size() > 0) {
-                        mDBHelper.updateTripsheetsReturnsListData(mReturnsBeansList);
-                    }
-                }
-                synchronized (this) {
-                    if (mReturnsBeansList.size() > 0) {
-                        activity.loadReturns(mReturnsBeansList);
+                        activity.loadReturns1();
                     }
                 }
             }

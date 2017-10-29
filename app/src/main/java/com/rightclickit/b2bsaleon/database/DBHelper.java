@@ -3342,7 +3342,7 @@ public class DBHelper extends SQLiteOpenHelper {
      *
      * @param mTripsheetsReturnsList
      */
-    public void updateTripsheetsReturnsListData(ArrayList<TripSheetReturnsBean> mTripsheetsReturnsList) {
+    /*public void updateTripsheetsReturnsListData(ArrayList<TripSheetReturnsBean> mTripsheetsReturnsList) {
         try {
             for (TripSheetReturnsBean tripSheetReturnsBean : mTripsheetsReturnsList) {
                 ContentValues values = new ContentValues();
@@ -3386,7 +3386,66 @@ public class DBHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }*/
+
+
+    public void updateTripsheetsReturnsListData(ArrayList<TripSheetReturnsBean> mTripsheetsReturnsList) {
+        try {
+            for (TripSheetReturnsBean tripSheetReturnsBean : mTripsheetsReturnsList) {
+                ContentValues values = new ContentValues();
+                ContentValues values1 = new ContentValues();
+                values.put(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER, tripSheetReturnsBean.getmTripshhetReturnsReturn_number());
+                values.put(KEY_TRIPSHEET_RETURNS_TRIP_ID, tripSheetReturnsBean.getmTripshhetReturnsTrip_id());
+                values.put(KEY_TRIPSHEET_RETURNS_SO_ID, tripSheetReturnsBean.getmTripshhetReturns_so_id());
+                values.put(KEY_TRIPSHEET_RETURNS_SO_CODE, tripSheetReturnsBean.getmTripshhetReturns_so_code());
+                values.put(KEY_TRIPSHEET_RETURNS_USER_ID, tripSheetReturnsBean.getmTripshhetReturnsUser_id());
+                values.put(KEY_TRIPSHEET_RETURNS_USER_CODES, tripSheetReturnsBean.getmTripshhetReturnsUser_codes());
+                values.put(KEY_TRIPSHEET_RETURNS_ROUTE_ID, tripSheetReturnsBean.getmTripshhetReturnsRoute_id());
+                values.put(KEY_TRIPSHEET_RETURNS_ROUTE_CODES, tripSheetReturnsBean.getmTripshhetReturnsRoute_codes());
+                values.put(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS, tripSheetReturnsBean.getmTripshhetReturnsProduct_ids());
+                values.put(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES, tripSheetReturnsBean.getmTripshhetReturnsProduct_codes());
+                values.put(KEY_TRIPSHEET_RETURNS_QUANTITY, tripSheetReturnsBean.getmTripshhetReturnsQuantity());
+                values.put(KEY_TRIPSHEET_RETURNS_TYPE, tripSheetReturnsBean.getmTripshhetReturnsType());
+                values.put(KEY_TRIPSHEET_RETURNS_STATUS, tripSheetReturnsBean.getmTripshhetReturnsStatus());
+                values.put(KEY_TRIPSHEET_RETURNS_DELETE, tripSheetReturnsBean.getmTripshhetReturnsDelete());
+                values.put(KEY_TRIPSHEET_RETURNS_CREATED_BY, tripSheetReturnsBean.getmTripshhetReturnsCreated_by());
+                values.put(KEY_TRIPSHEET_RETURNS_CREATED_ON, tripSheetReturnsBean.getmTripshhetReturnsCreated_on());
+                values.put(KEY_TRIPSHEET_RETURNS_UPDATED_ON, tripSheetReturnsBean.getmTripshhetReturnsUpdated_on());
+                values.put(KEY_TRIPSHEET_RETURNS_UPDATED_BY, tripSheetReturnsBean.getmTripshhetReturnsUpdated_by());
+                values.put(KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS, 0);
+
+                int noOfRecordsExisted = checkProductExistsInTripSheetDeliveryTable(tripSheetReturnsBean.getmTripshhetReturns_so_id(), tripSheetReturnsBean.getmTripshhetReturnsUser_id(), tripSheetReturnsBean.getmTripshhetReturnsProduct_ids());
+                System.out.println("AGENT RET RECORD EXISTS++++++++" + noOfRecordsExisted);
+                SQLiteDatabase db = this.getWritableDatabase();
+                long status;
+
+                if (noOfRecordsExisted == 0) {
+                    status = db.insert(TABLE_TRIPSHEETS_RETURNS_LIST, null, values);
+                    System.out.println("AGENT RET INSERTED++++++++" + status);
+                } else {
+                    values1.put(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER, tripSheetReturnsBean.getmTripshhetReturnsReturn_number());
+                    values1.put(KEY_TRIPSHEET_RETURNS_QUANTITY, tripSheetReturnsBean.getmTripshhetReturnsQuantity());
+                    status = db.update(TABLE_TRIPSHEETS_RETURNS_LIST, values1, KEY_TRIPSHEET_RETURNS_TRIP_ID + " = ? AND "
+                                    + KEY_TRIPSHEET_RETURNS_SO_ID + " = ? AND " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = ? AND "
+                                    + KEY_TRIPSHEET_RETURNS_USER_ID + " = ?",
+                            new String[]{tripSheetReturnsBean.getmTripshhetReturnsTrip_id(),
+                                    tripSheetReturnsBean.getmTripshhetReturns_so_id(),
+                                    tripSheetReturnsBean.getmTripshhetReturnsProduct_ids(),
+                                    tripSheetReturnsBean.getmTripshhetReturnsUser_id()});
+                    System.out.println("AGENT RET UPDATED++++++++" + status);
+                }
+
+                values.clear();
+                values1.clear();
+                db.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+
+
 
     /**
      * Method to insert the mTripsheetsPaymentsList.

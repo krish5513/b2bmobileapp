@@ -70,9 +70,9 @@ public class AgentDeliveriesView extends AppCompatActivity {
     DBHelper mDBHelper;
     private double mProductsPriceAmountSum = 0.0, mTotalProductsPriceAmountSum = 0.0, mTotalProductsTax = 0.0;
     String currentDate, str_routecode, str_deliveryDate, str_deliveryNo;
+double taxes;
 
-
-    private String mDeliveryNo = "", mDeliverydate = "", productID="",mTripSheetCode="",mTripSheetDate="",mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDate;
+    private String mDeliveryNo = "", mDeliverydate = "", productID="",mTripSheetCode="",mTripSheetDate="",mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +98,8 @@ public class AgentDeliveriesView extends AppCompatActivity {
 
         mTripSheetDate = sharedPreferences.getString("tripsheetDate");
         mTripSheetCode = sharedPreferences.getString("tripsheetCode");
-        mAgentSoCode= sharedPreferences.getString("SaleOrderId");
-                mAgentSoDate= sharedPreferences.getString("mAgentSoDate");
+        //mAgentSoCode= sharedPreferences.getString("SaleOrderId");
+        mAgentSoDates= sharedPreferences.getString("saleOrderDate");
         mAgentName=sharedPreferences.getString("agentName");
         mAgentCode=sharedPreferences.getString("agentCode");
         Bundle bundle = getIntent().getExtras();
@@ -107,6 +107,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
             mDeliveryNo = bundle.getString("DeliveryNo");
             mDeliverydate = bundle.getString("Deliverydate");
             productID=bundle.getString("productId");
+            mAgentSoCode=bundle.getString("SaleOId");
         }
         if (mDBHelper.getHSSNNUMBERByProductId(productID) != null  && mDBHelper.getHSSNNUMBERByProductId(productID).length() > 0) {
 
@@ -127,6 +128,26 @@ public class AgentDeliveriesView extends AppCompatActivity {
         } else {
             sgst = "0.00%";
         }
+
+
+
+
+
+            Double gst = 0.0, vat = 0.0;
+        if(gst!=null) {
+            gst = mDBHelper.getGSTByProductId(productID);
+        }else {
+            gst= 0.00;
+        }
+
+
+
+           if(vat!=null){
+               vat = mDBHelper.getVATByProductId(productID);
+           }
+
+
+            taxes = gst + vat;
 
         final ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(mDeliveryNo);
 
@@ -226,7 +247,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText("DATE ", 5, 230, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + mAgentSoDate, 150, 230, paint);
+                canvas.drawText(": " + mAgentSoDates, 150, 230, paint);
 
 
                 paint.setTextSize(20);
@@ -241,11 +262,11 @@ public class AgentDeliveriesView extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText("DELIVERY # ", 5, 320, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " +  str_deliveryNo, 150, 320, paint);
+                canvas.drawText(": " +  mDeliveryNo, 150, 320, paint);
                 paint.setTextSize(20);
                 canvas.drawText("DATE ", 5, 350, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + str_deliveryDate, 150, 350, paint);
+                canvas.drawText(": " + mDeliverydate, 150, 350, paint);
                 paint.setTextSize(20);
                 canvas.drawText("-------------------------------------------", 5, 380, paint);
 
@@ -267,7 +288,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
                     st = st + 30;
                     paint.setTextSize(20);
                     // canvas.drawText("CGST,SGST " + ": " + temps[4] + " + " + temps[5] + " = " + temps[6], 5, st, paint);
-                    canvas.drawText("CGST,SGST " + ": " + cgst  + sgst + " = "  + "0", 5, st, paint);
+                    canvas.drawText("CGST,SGST " + ": " + cgst  + sgst + " = "  +taxes, 5, st, paint);
 
                     st = st + 30;
                     paint.setTextSize(20);

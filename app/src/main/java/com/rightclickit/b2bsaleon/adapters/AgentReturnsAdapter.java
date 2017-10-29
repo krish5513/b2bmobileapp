@@ -47,7 +47,7 @@ public class AgentReturnsAdapter extends BaseAdapter{
         this.allDeliveryProductsList = mdeliveriesBeanList;
         this.filteredDeliveryProductsList = new ArrayList<>();
         this.filteredDeliveryProductsList.addAll(allDeliveryProductsList);
-         this.mPreferences = new MMSharedPreferences(activity);
+        this.mPreferences = new MMSharedPreferences(activity);
 
     }
 
@@ -98,7 +98,7 @@ public class AgentReturnsAdapter extends BaseAdapter{
 
         final TripSheetReturnsBean currentReturnsBean = allDeliveryProductsList.get(position);
 
-        tripSheetDeliveriesViewHolder.returns_no.setText(currentReturnsBean.getmTripshhetReturnsReturn_no());
+        tripSheetDeliveriesViewHolder.returns_no.setText(currentReturnsBean.getmTripshhetReturnsReturn_number());
         tripSheetDeliveriesViewHolder.returns_date.setText(currentReturnsBean.getmTripshhetReturnsCreated_on());
         tripSheetDeliveriesViewHolder.return_status.setText(currentReturnsBean.getmTripshhetReturnsStatus());
         tripSheetDeliveriesViewHolder.items_count.setText("2");
@@ -109,7 +109,7 @@ public class AgentReturnsAdapter extends BaseAdapter{
             public void onClick(View v) {
                 //mPreferences.putString("DeliveryNo",currentDeliveryBean.getTripNo());
                 Intent i=new Intent(activity,AgentReturnsView.class);
-                i.putExtra("ReturnNo",currentReturnsBean.getmTripshhetReturnsReturn_no());
+                i.putExtra("ReturnNo",currentReturnsBean.getmTripshhetReturnsReturn_number());
                 i.putExtra("Returndate",currentReturnsBean.getmTripshhetReturnsCreated_on());
                 activity.startActivity(i);
                 activity.finish();

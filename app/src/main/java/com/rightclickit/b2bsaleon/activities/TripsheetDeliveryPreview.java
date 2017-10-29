@@ -74,7 +74,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
     String currentDate, str_routecode, str_deliveryDate, str_deliveryNo;
     private ArrayList<SaleOrderDeliveredProducts> deliveredProductsList;
 
-    private String mTripSheetId = "", mAgentId = "",mTripSheetDate="",mTripSheetCode="", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDate;
+    private String mTripSheetId = "",saleorderno="", mAgentId = "",mTripSheetDate="",mTripSheetCode="", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -254,22 +254,27 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
 
             if (tripSheetSOList != null) {
                 if (tripSheetSOList.get(i).getmTripshetSOCode().isEmpty())
-                    sale_orderNo.setText("Sale # -");
+                    saleorderno="Sale # -";
+
+
                 else
-                    sale_orderNo.setText(String.format("Sale # %s", tripSheetSOList.get(i).getmTripshetSOCode()));
-                sharedPreferences.putString("SaleOrderId", String.valueOf(sale_orderNo));
+                    saleorderno=String.format("Sale # %s", tripSheetSOList.get(i).getmTripshetSOCode());
+
+
                 if (tripSheetSOList.get(i).getmTripshetSODate().isEmpty())
                     sale_orderDate.setText("-");
 
                 else
                     mAgentSoDate=tripSheetSOList.get(i).getmTripshetSODate();
                     sale_orderDate.setText(mAgentSoDate);
-                sharedPreferences.putString("saleOrderDate",mAgentSoDate);
+
             }
 
 
         }
-
+        sale_orderNo.setText(saleorderno);
+        sharedPreferences.putString("SaleOrderId", saleorderno);
+        sharedPreferences.putString("saleOrderDate",mAgentSoDate);
 
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
         tv_companyName.setText(sharedPreferences.getString("companyname"));

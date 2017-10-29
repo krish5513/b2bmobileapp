@@ -34,6 +34,8 @@ public class AgentReturns extends AppCompatActivity {
 
     private TextView mNoDataText;
 
+    String return_no;
+
     Button view;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
@@ -65,8 +67,8 @@ public class AgentReturns extends AppCompatActivity {
 
 
         // rDelivered=(TextView)findViewById((R.id.tv_rDeliverd));
-       // r_returned=(TextView)findViewById(R.id.tv_returned);
-       // r_pending=(TextView)findViewById(R.id.tv_rpending);
+        // r_returned=(TextView)findViewById(R.id.tv_returned);
+        // r_pending=(TextView)findViewById(R.id.tv_rpending);
 
         deliveriesList=(ListView)findViewById(R.id.ordered_products_list_view) ;
         mNoDataText = (TextView) findViewById(R.id.NoDataText);
@@ -99,13 +101,33 @@ public class AgentReturns extends AppCompatActivity {
 
         //r_pending.setText(Utility.getFormattedCurrency(str_pending));
 
-        ArrayList<TripSheetReturnsBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsReturnsList(agentId);
 
-        if(unUploadedDeliveries.size()>0){
-            loadReturns(unUploadedDeliveries);
-        }else {
+        ArrayList<TripSheetReturnsBean> unUploadedReturns = mDBHelper.fetchAllTripsheetsReturnsList(agentId);
+        for (int i = 0; i < unUploadedReturns.size(); i++) {
+            return_no = unUploadedReturns.get(i).getmTripshhetReturnsReturn_no();
+        }
+        ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(return_no);
+        for (int i = 0; i < arList.size(); i++) {
+            String[] temp = arList.get(i);
+
+          /*  totalAmount = totalAmount + Double.parseDouble(temp[3]);
+            totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
+            subTotal = totalAmount + totalTaxAmount;
+            //   tv_deliveriesValue.setText(Utility.getFormattedCurrency((subTotal)));*/
+        }
+        if (unUploadedReturns.size() > 0) {
+            loadReturns(unUploadedReturns);
+        } else {
             mNoDataText.setText("No Returns found.");
         }
+
+
+
+
+
+
+
+
         this.getSupportActionBar().setTitle("RETURNS");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
@@ -126,7 +148,7 @@ public class AgentReturns extends AppCompatActivity {
         sales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  Toast.makeText(Agents_ReturnsActivity.this, "Clicked on TPC Orders", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(Agents_ReturnsActivity.this, "Clicked on TPC Orders", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 sales.startAnimation(animation1);
@@ -139,7 +161,7 @@ public class AgentReturns extends AppCompatActivity {
         deliveries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Toast.makeText(Agents_ReturnsActivity.this, "Clicked on Deliveries", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Agents_ReturnsActivity.this, "Clicked on Deliveries", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 deliveries.startAnimation(animation1);
@@ -153,7 +175,7 @@ public class AgentReturns extends AppCompatActivity {
         payments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Toast.makeText(Agents_ReturnsActivity.this, "Clicked on payments", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Agents_ReturnsActivity.this, "Clicked on payments", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 payments.startAnimation(animation1);
@@ -166,7 +188,7 @@ public class AgentReturns extends AppCompatActivity {
         returns.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Toast.makeText(Agents_ReturnsActivity.this, "Clicked on returns", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Agents_ReturnsActivity.this, "Clicked on returns", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 returns.startAnimation(animation1);
@@ -212,14 +234,50 @@ public class AgentReturns extends AppCompatActivity {
 
     }
 
-    public void loadReturns(ArrayList<TripSheetReturnsBean> unUploadedDeliveries) {
+ /*   public void loadReturns(ArrayList<TripSheetReturnsBean> unUploadedDeliveries) {
         if (returnsAdapter != null) {
             returnsAdapter = null;
         }
         returnsAdapter = new AgentReturnsAdapter(this, AgentReturns.this, unUploadedDeliveries);
         deliveriesList.setAdapter(returnsAdapter);
 
+    }*/
+
+    public void loadReturns(ArrayList<TripSheetReturnsBean> unUploadedReturns) {
+
+        if (returnsAdapter != null) {
+            returnsAdapter = null;
+        }
+        returnsAdapter = new AgentReturnsAdapter(this, AgentReturns.this, unUploadedReturns);
+        deliveriesList.setAdapter(returnsAdapter);
+
     }
+
+    public void loadReturns1() {
+        ArrayList<TripSheetReturnsBean> unUploadedReturns = mDBHelper.fetchAllTripsheetsReturnsList(agentId);
+        for (int i = 0; i < unUploadedReturns.size(); i++) {
+            return_no = unUploadedReturns.get(i).getmTripshhetReturnsReturn_no();
+        }
+        ArrayList<String[]> arList = mDBHelper.getreturnDetailsPreview(return_no);
+        for (int i = 0; i < arList.size(); i++) {
+            String[] temp = arList.get(i);
+
+           /* totalAmount = totalAmount + Double.parseDouble(temp[3]);
+            totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
+            subTotal = totalAmount + totalTaxAmount;
+            //   tv_deliveriesValue.setText(Utility.getFormattedCurrency((subTotal)));*/
+        }
+
+        if (unUploadedReturns.size() > 0) {
+            loadReturns(unUploadedReturns);
+        } else {
+            mNoDataText.setText("No Returns found.");
+        }
+    }
+
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
