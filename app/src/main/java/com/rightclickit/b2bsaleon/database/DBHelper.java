@@ -4993,15 +4993,15 @@ public class DBHelper extends SQLiteOpenHelper {
             // boolean rerun=true;
             if (c.moveToFirst()) {
                 do {
-                    String[] temp = new String[5];
+                    String[] temp = new String[8];
                     temp[0] = getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)), KEY_PRODUCT_TITLE);
                     temp[1] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_QUANTITY));
                     temp[2] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UNITPRICE));
                     temp[3] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_AMOUNT));
                     temp[4] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT));
-                    //temp[5] = getHSSNNUMBERByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)));
-                    //temp[6] = String.valueOf(getGSTByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS))));
-                    //temp[7] = String.valueOf(getVATByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS))));
+                    temp[5] = getHSSNNUMBERByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)));
+                    temp[6] = String.valueOf(getGSTByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS))));
+                    temp[7] = String.valueOf(getVATByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS))));
                     arList.add(temp);
 
 

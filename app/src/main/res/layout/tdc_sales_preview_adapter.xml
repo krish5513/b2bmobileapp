@@ -95,7 +95,7 @@
             android:gravity="center|left"
             android:maxLines="2"
             android:paddingLeft="2dp"
-            android:text="HSSN Number"
+            android:text="-"
             android:textAllCaps="true"
             android:textColor="@color/greydark"
             android:textSize="12sp" />

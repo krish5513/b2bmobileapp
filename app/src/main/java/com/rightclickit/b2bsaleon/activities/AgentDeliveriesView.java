@@ -354,9 +354,18 @@ public class AgentDeliveriesView extends AppCompatActivity {
             order_preview_mrp.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[2])));
             order_preview_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[3])));
             order_preview_tax.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[4])));
-            // hssnNumber.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[5])));
-//            CGST.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[6])));
-//            SGST.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[7])));
+            try {
+                hssnNumber.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[5])));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            if(CGST!=null) {
+                CGST.setText(temp[6]);
+            }
+            else {
+                CGST.setText("-");
+            }
+            SGST.setText(temp[7]);
             totalAmount = totalAmount + Double.parseDouble(temp[3]);
             totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
             subTotal = totalAmount + totalTaxAmount;
