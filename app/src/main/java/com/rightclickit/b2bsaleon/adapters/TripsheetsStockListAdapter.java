@@ -107,7 +107,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
             tripSheetStockViewHolder.mDispatchQuantity.setVisibility(View.VISIBLE);
             tripSheetStockViewHolder.mDispatchDecrement.setVisibility(View.VISIBLE);
             tripSheetStockViewHolder.mDispatchIncrement.setVisibility(View.VISIBLE);
-            
+
             if (currentStockList.getIsStockDispatched() == 0) {
                 if (dispatchProductsListHashMapTemp.get(currentStockList.getmTripsheetStockProductId()) != null) {
                     Double oq = Double.parseDouble(dispatchProductsListHashMapTemp.get(currentStockList.getmTripsheetStockProductId()));
