@@ -257,12 +257,14 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                     sale_orderNo.setText("Sale # -");
                 else
                     sale_orderNo.setText(String.format("Sale # %s", tripSheetSOList.get(i).getmTripshetSOCode()));
-
+                sharedPreferences.putString("SaleOrderId", String.valueOf(sale_orderNo));
                 if (tripSheetSOList.get(i).getmTripshetSODate().isEmpty())
                     sale_orderDate.setText("-");
+
                 else
                     mAgentSoDate=tripSheetSOList.get(i).getmTripshetSODate();
                     sale_orderDate.setText(mAgentSoDate);
+                sharedPreferences.putString("saleOrderDate",mAgentSoDate);
             }
 
 

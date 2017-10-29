@@ -4986,6 +4986,54 @@ public class DBHelper extends SQLiteOpenHelper {
         return deliveriesBean;
     }
 
+
+    public String getProductCode(String productId, String type) {
+        String productcode = "";
+
+        try {
+            String selectQuery = "SELECT  *  FROM " + TABLE_PRODUCTS + " WHERE " + KEY_PRODUCT_ID + " = '" + productId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                productcode = (cursor.getString(cursor.getColumnIndex(type)));
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return productcode;
+    }
+
+
+    public String getProductUOM(String productId, String type) {
+        String productuom = "";
+
+        try {
+            String selectQuery = "SELECT  *  FROM " + TABLE_PRODUCTS + " WHERE " + KEY_PRODUCT_ID + " = '" + productId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(selectQuery, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                productuom = (cursor.getString(cursor.getColumnIndex(type)));
+            }
+
+            cursor.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return productuom;
+    }
+
     public ArrayList<String[]> getdeliveryDetailsPreview(String userId) {
 
         ArrayList<String[]> arList = null;
@@ -5004,9 +5052,12 @@ public class DBHelper extends SQLiteOpenHelper {
                     temp[2] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UNITPRICE));
                     temp[3] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_AMOUNT));
                     temp[4] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT));
-                    temp[5] = getHSSNNUMBERByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)));
-                    temp[6] = String.valueOf(getGSTByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS))));
-                    temp[7] = String.valueOf(getVATByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS))));
+
+                    temp[5]=getProductCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)),KEY_PRODUCT_CODE);
+                    temp[6]=getProductUOM(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)),KEY_PRODUCT_UOM);
+                   // temp[5] = getHSSNNUMBERByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)));
+                   // temp[6] = String.valueOf(getGSTByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS))));
+                   // temp[7] = String.valueOf(getVATByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS))));
                     arList.add(temp);
 
 
