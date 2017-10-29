@@ -7,9 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +23,9 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeleveriesPreviewAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
+import com.rightclickit.b2bsaleon.beanclass.SaleOrderReturnedProducts;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -75,12 +77,15 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
     private double mProductsPriceAmountSum = 0.0, mTotalProductsPriceAmountSum = 0.0, mTotalProductsTax = 0.0;
     String currentDate, str_routecode, str_deliveryDate, str_deliveryNo;
 
-
+    private String openingBalance ="";
+    private String Deliverdquantity="";
+    private String returnQuantity="";
+    public String closingBalance="";
 
     String myList,str_ProductCode,str_Uom ;
+    private ArrayList<SaleOrderReturnedProducts> returnedProductsList;
 
-
-    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode,mAgentSoDate;
+    private String mTripSheetId = "", mAgentId = "",mTripSheetDate="",mTripSheetCode="" ,mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode,mAgentSoDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +108,8 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
 
         mDBHelper = new DBHelper(TripsheetReturnsPreview.this);
         sharedPreferences = new MMSharedPreferences(TripsheetReturnsPreview.this);
-
+        mTripSheetDate = sharedPreferences.getString("tripsheetDate");
+        mTripSheetCode = sharedPreferences.getString("tripsheetCode");
         mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
         mAgentId = this.getIntent().getStringExtra("agentId");
         mAgentCode = this.getIntent().getStringExtra("agentCode");
@@ -131,7 +137,7 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
             // do something
 
             DeliverysBean d = mData.get(key);
-            String[] temp = new String[4];
+            String[] temp = new String[8];
 
             for( int i=0;i<tripsheetsStockLists.size();i++){
                 str_ProductCode=tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
@@ -144,6 +150,10 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
             temp[1] = str_Uom;
             temp[2] = String.valueOf(d.getSelectedQuantity());
             temp[3] = "Sale Return";
+            temp[4]=str_ProductCode;
+            temp[5]= String.valueOf(d.getDeliveredQuantity());
+            temp[6]= String.valueOf(d.getProductOrderedQuantity());
+            temp[7]= String.valueOf(d.getProductStock());
             arList.add(temp);
         }
 
@@ -168,16 +178,58 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
 
         TripsheetReturnsPreview.CustomListView adapter = new TripsheetReturnsPreview.CustomListView(arList,this);
         mAgentsList.setAdapter(adapter);
+
+
+        deliveryNo = (TextView) findViewById(R.id.return_no);
+        deliveryDate = (TextView) findViewById(R.id.return_date);
+
+       /* returnedProductsList = mDBHelper.getReturnsProductsListForSaleOrder(mTripSheetId, mAgentSoId, mAgentId);
+
+        for (int j = 0; j < returnedProductsList.size(); j++) {
+
+
+            if (returnedProductsList != null) {
+
+             openingBalance=returnedProductsList.get(j).getOpeningBalance();
+                Deliverdquantity=returnedProductsList.get(j).getOpeningBalance();
+                Ret=returnedProductsList.get(j).getOpeningBalance();
+                openingBalance=returnedProductsList.get(j).getOpeningBalance();
+
+            }
+
+
+        }*/
+
         List<TripSheetReturnsBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsReturnsList(mTripSheetId);
         for (int i = 0; i < unUploadedDeliveries.size(); i++) {
             TripSheetReturnsBean currentDelivery = unUploadedDeliveries.get(i);
             str_deliveryNo=currentDelivery.getmTripshhetReturnsReturn_no();
             str_deliveryDate= Utility.formatTime(Long.parseLong(currentDelivery.getmTripshhetReturnsCreated_on()), Constants.TRIP_SHEETS_DELIVERY_DATE_FORMAT);
         }
+        deliveryNo.setText(str_deliveryNo);
+        deliveryDate.setText(str_deliveryDate);
 
 
+        ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
+        for (int i = 0; i < tripSheetSOList.size(); i++) {
 
 
+            if (tripSheetSOList != null) {
+                if (tripSheetSOList.get(i).getmTripshetSOCode().isEmpty())
+                    mAgentSoCode="Sale # -";
+
+                else
+                    mAgentSoCode=String.format("Sale # %s", tripSheetSOList.get(i).getmTripshetSOCode());
+
+                if (tripSheetSOList.get(i).getmTripshetSODate().isEmpty())
+                    mAgentSoDate="-";
+                else
+                    mAgentSoDate=tripSheetSOList.get(i).getmTripshetSODate();
+
+            }
+
+
+        }
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
         tv_companyName.setText(sharedPreferences.getString("companyname"));
 
@@ -192,14 +244,6 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
         RouteCode.setText(str_routecode);
 
 */
-
-
-        deliveryNo = (TextView) findViewById(R.id.return_date);
-
-        deliveryNo.setText(str_deliveryNo);
-
-        deliveryDate = (TextView) findViewById(R.id.return_date);
-        deliveryDate.setText(str_deliveryDate);
 
 
 
@@ -237,39 +281,39 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText("TRIP # ", 5, 140, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "804405", 150, 140, paint);
+                canvas.drawText(": " + mTripSheetCode, 150, 140, paint);
                 paint.setTextSize(20);
                 canvas.drawText("DATE ", 5, 170, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "17-09-2017", 150, 170, paint);
+                canvas.drawText(": " + mTripSheetDate, 150, 170, paint);
 
                 paint.setTextSize(20);
                 canvas.drawText("SO No ", 5, 200, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "1028153773", 150, 200, paint);
+                canvas.drawText(": " + mAgentSoCode, 150, 200, paint);
                 paint.setTextSize(20);
                 canvas.drawText("DATE ", 5, 230, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "18-09-2017", 150, 230, paint);
+                canvas.drawText(": " + mAgentSoDate, 150, 230, paint);
 
 
                 paint.setTextSize(20);
                 canvas.drawText("CUSTOMER ", 5, 260, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "DEVI MILK POINT", 150, 260, paint);
+                canvas.drawText(": " + mAgentName, 150, 260, paint);
                 paint.setTextSize(20);
                 canvas.drawText("CODE ", 5, 290, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "120060", 150, 290, paint);
+                canvas.drawText(": " + mAgentCode, 150, 290, paint);
 
                 paint.setTextSize(20);
                 canvas.drawText("RETURN # ", 5, 320, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "RR-000001", 150, 320, paint);
+                canvas.drawText(": " + str_deliveryNo, 150, 320, paint);
                 paint.setTextSize(20);
                 canvas.drawText("DATE ", 5, 350, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "18-09-2017", 150, 350, paint);
+                canvas.drawText(": " +str_deliveryDate, 150, 350, paint);
 
 
 
@@ -285,24 +329,24 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
                     paint.setTextSize(20);
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     // canvas.drawText(temps[0] + "," + temps[1] + "( " + temps[2] + " )", 5, st, paint);
-                    canvas.drawText(temp[0] + "," + str_ProductCode +  "( " + temp[1] +" )", 5, st, paint);
+                    canvas.drawText(temp[0] + "," + temp[4] +  "( " + temp[1] +" )", 5, st, paint);
 
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("OB QTY ", 5, st, paint);
-                    canvas.drawText(": " + "50.000" , 150, st, paint);
+                    canvas.drawText(": " + temp[2] , 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("DELIVERY QTY ", 5, st, paint);
-                    canvas.drawText(": " + "50.000", 150, st, paint);
+                    canvas.drawText(": " + temp[5], 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("RETURN QTY ", 5, st, paint);
-                    canvas.drawText(": " + "45.000", 150, st, paint);
+                    canvas.drawText(": " + temp[6], 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("CB QTY ", 5, st, paint);
-                    canvas.drawText(": " + "55.000", 150, st, paint);
+                    canvas.drawText(": " + temp[7], 150, st, paint);
 
 
                     st = st + 40;

@@ -53,7 +53,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
     TextView totalprice;
     TextView print;
 
-
+    double taxes;
     private ArrayList<DeliverysBean> allProductsListFromStock = new ArrayList<>();
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap;
     private Map<String, String> previouslyDeliveredProductsHashMap; // this hash map contains previously delivered product quantity. key = product id & value = previously delivered quantity
@@ -66,7 +66,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
 
     double amount, subtotal;
     double taxAmount;
-    String name;
+    String name,hssnnumber,cgst,sgst;
 
     private MMSharedPreferences sharedPreferences;
     DBHelper mDBHelper;
@@ -74,7 +74,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
     String currentDate, str_routecode, str_deliveryDate, str_deliveryNo;
     private ArrayList<SaleOrderDeliveredProducts> deliveredProductsList;
 
-    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDate;
+    private String mTripSheetId = "", mAgentId = "",mTripSheetDate="",mTripSheetCode="", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +99,8 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
         mDBHelper = new DBHelper(TripsheetDeliveryPreview.this);
         sharedPreferences = new MMSharedPreferences(TripsheetDeliveryPreview.this);
 
+        mTripSheetDate = sharedPreferences.getString("tripsheetDate");
+        mTripSheetCode = sharedPreferences.getString("tripsheetCode");
         mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
         mAgentId = this.getIntent().getStringExtra("agentId");
         mAgentCode = this.getIntent().getStringExtra("agentCode");
@@ -127,13 +129,15 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
 
             if (deliveredProductsList != null) {
 
-                deliveryNo.setText(String.format("Delivery # RD%03d", deliveredProductsList.get(j).getDeliveryNo()));
+                str_deliveryNo=(String.format("Delivery # RD%03d", deliveredProductsList.get(j).getDeliveryNo()));
+                deliveryNo.setText(str_deliveryNo);
 
                 if (deliveredProductsList.get(j).getCreatedTime().isEmpty())
                     deliveryDate.setText("-");
                 else
                     try {
-                        deliveryDate.setText(deliveredProductsList.get(j).getCreatedTime());
+                        str_deliveryDate=(deliveredProductsList.get(j).getCreatedTime());
+                        deliveryDate.setText(str_deliveryDate);
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -162,7 +166,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
             // do something
 
             DeliverysBean d = mData.get(key);
-            String[] temp = new String[5];
+            String[] temp = new String[11];
             temp[0] = d.getProductTitle();
             temp[1] = (String.valueOf(d.getProductOrderedQuantity()));
             if (d.getProductAgentPrice() != null) {
@@ -172,6 +176,51 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
             }
             temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(d.getTaxAmount())));
             temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(d.getProductAmount())));
+            temp[5]=d.getProductCode();
+            temp[6]= mDBHelper.getProductUnitByProductCode(d.getProductCode());
+            if (mDBHelper.getHSSNNUMBERByProductId(d.getProductId()) != null && mDBHelper.getHSSNNUMBERByProductId(d.getProductId()).length()> 0) {
+
+                    hssnnumber = mDBHelper.getHSSNNUMBERByProductId(d.getProductId());
+                }
+             else {
+                hssnnumber = "-";
+            }
+
+
+             if (mDBHelper.getGSTByProductId(d.getProductId()) > 0) {
+                cgst = String.valueOf(mDBHelper.getGSTByProductId(d.getProductId())) + "%";
+            } else {
+                cgst = "0.00%";
+            }
+
+           if (mDBHelper.getVATByProductId(d.getProductId()) > 0) {
+                sgst = String.valueOf(mDBHelper.getVATByProductId(d.getProductId())) + "%";
+            } else {
+                sgst = "0.00%";
+            }
+
+            try {
+                Double gst = 0.0, vat = 0.0;
+                if (d.getProductgst() != null) {
+                    gst = Double.parseDouble(d.getProductgst());
+                } else {
+                    gst = mDBHelper.getGSTByProductId(d.getProductId());
+                }
+                if (d.getProductvat() != null) {
+                    vat = Double.parseDouble(d.getProductvat());
+                } else {
+                    vat = mDBHelper.getVATByProductId(d.getProductId());
+                }
+                taxes = gst + vat;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            temp[7]=hssnnumber;
+            temp[8]=cgst;
+            temp[9]=sgst;
+            temp[10]= String.valueOf(taxes);
+
+
             arList.add(temp);
 
         }
@@ -195,13 +244,6 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
 
         CustomListView adapter = new CustomListView(arList, this);
         mAgentsList.setAdapter(adapter);
-        /*List<TripSheetDeliveriesBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesList(mTripSheetId);
-
-        for (int i = 0; i < unUploadedDeliveries.size(); i++) {
-            TripSheetDeliveriesBean currentDelivery = unUploadedDeliveries.get(i);
-            str_deliveryNo = currentDelivery.getmTripsheetDeliveryNo();
-            str_deliveryDate = Utility.formatTime(Long.parseLong(currentDelivery.getmTripsheetDelivery_CreatedOn()), Constants.TRIP_SHEETS_DELIVERY_DATE_FORMAT);
-        }*/
 
         sale_orderNo = (TextView) findViewById(R.id.order_no);
         sale_orderDate = (TextView) findViewById(R.id.tv_date);
@@ -219,7 +261,8 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                 if (tripSheetSOList.get(i).getmTripshetSODate().isEmpty())
                     sale_orderDate.setText("-");
                 else
-                    sale_orderDate.setText(tripSheetSOList.get(i).getmTripshetSODate());
+                    mAgentSoDate=tripSheetSOList.get(i).getmTripshetSODate();
+                    sale_orderDate.setText(mAgentSoDate);
             }
 
 
@@ -275,11 +318,11 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText("TRIP # ", 5, 140, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "804405", 150, 140, paint);
+                canvas.drawText(": " + mTripSheetCode, 150, 140, paint);
                 paint.setTextSize(20);
                 canvas.drawText("DATE ", 5, 170, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "17-09-2017", 150, 170, paint);
+                canvas.drawText(": " + mTripSheetDate, 150, 170, paint);
 
                 paint.setTextSize(20);
                 canvas.drawText("SO No ", 5, 200, paint);
@@ -294,16 +337,16 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText("CUSTOMER ", 5, 260, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "DEVI MILK POINT", 150, 260, paint);
+                canvas.drawText(": " + mAgentName, 150, 260, paint);
                 paint.setTextSize(20);
                 canvas.drawText("CODE ", 5, 290, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "120060", 150, 290, paint);
+                canvas.drawText(": " + mAgentCode, 150, 290, paint);
 
                 paint.setTextSize(20);
                 canvas.drawText("DELIVERY # ", 5, 320, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + str_deliveryNo, 150, 320, paint);
+                canvas.drawText(": " +  str_deliveryNo, 150, 320, paint);
                 paint.setTextSize(20);
                 canvas.drawText("DATE ", 5, 350, paint);
                 paint.setTextSize(20);
@@ -321,15 +364,15 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                     paint.setTextSize(20);
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     // canvas.drawText(temps[0] + "," + temps[1] + "( " + temps[2] + " )", 5, st, paint);
-                    canvas.drawText(temp[0] + "," + "10004" + "(UOM)", 5, st, paint);
+                    canvas.drawText(temp[0] + "," + temp[5]+   temp[6], 5, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("HSSN CODE ", 5, st, paint);
-                    canvas.drawText(": " + "<number>", 150, st, paint);
+                    canvas.drawText(": " + temp[7], 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     // canvas.drawText("CGST,SGST " + ": " + temps[4] + " + " + temps[5] + " = " + temps[6], 5, st, paint);
-                    canvas.drawText("CGST,SGST " + ": " + " 2.50 % + 2.50 % = 5.00 % ", 5, st, paint);
+                    canvas.drawText("CGST,SGST " + ": " + temp[8]+ " + " + temp[9] + " = "  + temp[10], 5, st, paint);
 
                     st = st + 30;
                     paint.setTextSize(20);
@@ -470,13 +513,17 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
             TextView order_preview_mrp = (TextView) view.findViewById(R.id.order_preview_mrp);
             TextView order_preview_amount = (TextView) view.findViewById(R.id.order_preview_amount);
             TextView order_preview_tax = (TextView) view.findViewById(R.id.order_preview_tax);
+            TextView hsssn_number=(TextView)view.findViewById(R.id.hssn_number);
+            TextView tv_cgst=(TextView)view.findViewById(R.id.cgst);
+            TextView tv_sgst=(TextView)view.findViewById(R.id.sgst);
             order_preview_product_name.setText(temp[0]);
             order_preview_quantity.setText(temp[1]);
             order_preview_mrp.setText(temp[2]);
             order_preview_amount.setText(temp[3]);
             order_preview_tax.setText(temp[4]);
-
-
+            hsssn_number.setText(temp[7]);
+            tv_cgst.setText(temp[8]);
+            tv_sgst.setText(temp[9]);
             return view;
         }
     }
