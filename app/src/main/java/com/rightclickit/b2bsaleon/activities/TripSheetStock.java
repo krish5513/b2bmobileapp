@@ -107,9 +107,10 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
             privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("TripSheets"));
             //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
-            if (privilegeActionsData.contains("Stock_Dispatch")) {
-                dispatchTitle.setVisibility(View.VISIBLE);
-            }
+            dispatchTitle.setVisibility(View.VISIBLE);
+//            if (privilegeActionsData.contains("Stock_Dispatch")) {
+//                dispatchTitle.setVisibility(View.VISIBLE);
+//            }
 
             if (privilegeActionsData.contains("Stock_Verify")) {
                 verifyTitle.setVisibility(View.VISIBLE);
@@ -160,7 +161,6 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
         // Checking weather this stock already verified or not.
         if (tripsStockList.size() > 0) {
             TripsheetsStockList stockList = tripsStockList.get(0);
-
             if (stockList.getIsStockDispatched() == 1) {
                 isStockDispatched = true;
             }
@@ -214,6 +214,16 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        if (id == R.id.autorenew) {
+
+            if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
+                mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
+            }else {
+                new NetworkConnectionDetector(TripSheetStock.this).displayNoNetworkError(TripSheetStock.this);
+            }
+            return true;
+        }
 
         switch (id) {
             case android.R.id.home:
