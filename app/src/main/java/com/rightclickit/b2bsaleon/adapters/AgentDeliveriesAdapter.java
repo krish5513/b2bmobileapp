@@ -115,6 +115,7 @@ public class AgentDeliveriesAdapter extends BaseAdapter {
                 Intent i = new Intent(activity, AgentDeliveriesView.class);
                 i.putExtra("DeliveryNo", currentDeliveryBean.getmTripsheetDeliveryNumber());
                 i.putExtra("Deliverydate", currentDeliveryBean.getmTripsheetDelivery_CreatedOn());
+                i.putExtra("productId",currentDeliveryBean.getmTripsheetDelivery_productId());
                 activity.startActivity(i);
                 activity.finish();
             }
