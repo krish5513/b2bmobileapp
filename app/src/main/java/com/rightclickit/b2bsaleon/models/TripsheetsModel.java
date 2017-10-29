@@ -488,6 +488,9 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                             tripStockBean.setmTripshetSOAgentLongitude(latLangDetails.get(agentData.getString("_id") + "_Lang"));
                             tripStockBean.setmTripshetSOProductsCount(String.valueOf(productsLen));
 
+                            tripStockBean.setmTripshetSOCansDue(jb.getString("cans_due"));
+                            tripStockBean.setmTripshetSOCratesDue(jb.getString("crates_due"));
+
                             mTripsheetsSOList.add(tripStockBean);
                         }
                     }

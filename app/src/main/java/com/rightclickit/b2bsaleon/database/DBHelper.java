@@ -431,6 +431,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_SO_AGENTLATITUDE = "tripsheet_so_agentlatitude";
     private final String KEY_TRIPSHEET_SO_AGENTLONGITUDE = "tripsheet_so_agentlongitude";
     private final String KEY_TRIPSHEET_SO_PRODUCTS_COUNT = "tripsheet_so_products_count";
+    private final String KEY_TRIPSHEET_SO_CANS_DUE = "tripsheet_so_cans_due";
+    private final String KEY_TRIPSHEET_SO_CRATES_DUE = "tripsheet_so_crates_due";
 
     // Column names for Notifications List  Table
     private final String KEY_NOTIFICATIONS_ID = "notification_id";
@@ -734,7 +736,9 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_SO_APPROVEDBY + " VARCHAR,"
             + KEY_TRIPSHEET_SO_AGENTLATITUDE + " VARCHAR,"
             + KEY_TRIPSHEET_SO_AGENTLONGITUDE + " VARCHAR,"
-            + KEY_TRIPSHEET_SO_PRODUCTS_COUNT + " INTEGER)";
+            + KEY_TRIPSHEET_SO_PRODUCTS_COUNT + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_CRATES_DUE + " VARCHAR,"
+            + KEY_TRIPSHEET_SO_CANS_DUE + " INTEGER)";
 
 
     // Notifications Table Create Statements
@@ -3550,6 +3554,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_SO_AGENTLATITUDE, mTripsheetsList.get(i).getmTripshetSOAgentLatitude());
                 values.put(KEY_TRIPSHEET_SO_AGENTLONGITUDE, mTripsheetsList.get(i).getmTripshetSOAgentLongitude());
                 values.put(KEY_TRIPSHEET_SO_PRODUCTS_COUNT, mTripsheetsList.get(i).getmTripshetSOProductsCount());
+                values.put(KEY_TRIPSHEET_SO_CANS_DUE, mTripsheetsList.get(i).getmTripshetSOCansDue());
+                values.put(KEY_TRIPSHEET_SO_CRATES_DUE, mTripsheetsList.get(i).getmTripshetSOCratesDue());
 
                 int noOfRecords = checkTripsheetSOExistsOrNot(mTripsheetsList.get(i).getmTripshetSOTripId(), mTripsheetsList.get(i).getmTripshetSOId());
 
@@ -3855,7 +3861,6 @@ public class DBHelper extends SQLiteOpenHelper {
                     productsBean.setProductgst((c.getString(c.getColumnIndex(KEY_PRODUCT_GST_PRICE))));
                     productsBean.setProductvat((c.getString(c.getColumnIndex(KEY_PRODUCT_VAT_PRICE))));
                     productsBean.setProductOrderedQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_ORDER_QUANTITY))));
-                    System.out.println("In STOK QUA::: " + c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY)));
                     productsBean.setProductStock(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY))));
                     productsBean.setProductExtraQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_EXTRA_QUANTITY))));
                     productsBean.setProductReturnableUnit(c.getString(c.getColumnIndex(KEY_PRODUCT_RETURNABLE)));
@@ -6009,6 +6014,49 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         //System.out.println("FGGHH::: "+maxID);
         return maxID;
+    }
+
+    public String fetchCansorCratesDueByIds(String tripsheetId, String saleOrderId, String agentId, String prodCode, String type) {
+        String due = "0.0";
+
+        try {
+            String selectQuery = null;
+            SQLiteDatabase db = this.getReadableDatabase();
+            if (type.equals("cans")) {
+                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_SO_LIST
+                        + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = " + "'" + tripsheetId + "' AND "
+                        + KEY_TRIPSHEET_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_SO_AGENTID + " = '" + agentId + "' AND " +
+                        KEY_TRIPSHEET_SO_PRODUCTCODE + " = '" + prodCode + "'";
+
+
+                Cursor c = db.rawQuery(selectQuery, null);
+                if (c.moveToFirst()) {
+                    do {
+                        due = c.getString(c.getColumnIndex(KEY_TRIPSHEET_SO_CANS_DUE));
+                    } while (c.moveToNext());
+                }
+                c.close();
+
+            } else if (type.equals("crates")) {
+                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_SO_LIST
+                        + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = " + "'" + tripsheetId + "' AND "
+                        + KEY_TRIPSHEET_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_SO_AGENTID + " = '" + agentId + "' AND " +
+                        KEY_TRIPSHEET_SO_PRODUCTCODE + " = '" + prodCode + "'";
+
+                Cursor c = db.rawQuery(selectQuery, null);
+                if (c.moveToFirst()) {
+                    do {
+                        due = c.getString(c.getColumnIndex(KEY_TRIPSHEET_SO_CRATES_DUE));
+                    } while (c.moveToNext());
+                }
+                c.close();
+            }
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return due;
     }
 
 }

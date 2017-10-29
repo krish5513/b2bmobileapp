@@ -27,6 +27,8 @@ public class TripsheetSOList {
     private String mTripshetSOReceivedAmount;
     private String mTripshetSODueAmount;
     private Long distance = 0L;
+    private String mTripshetSOCansDue;
+    private String mTripshetSOCratesDue;
 
     public String getmTripshetSOId() {
         return mTripshetSOId;
@@ -194,5 +196,21 @@ public class TripsheetSOList {
 
     public void setDistance(Long distance) {
         this.distance = distance;
+    }
+
+    public String getmTripshetSOCansDue() {
+        return mTripshetSOCansDue;
+    }
+
+    public void setmTripshetSOCansDue(String mTripshetSOCansDue) {
+        this.mTripshetSOCansDue = mTripshetSOCansDue;
+    }
+
+    public String getmTripshetSOCratesDue() {
+        return mTripshetSOCratesDue;
+    }
+
+    public void setmTripshetSOCratesDue(String mTripshetSOCratesDue) {
+        this.mTripshetSOCratesDue = mTripshetSOCratesDue;
     }
 }

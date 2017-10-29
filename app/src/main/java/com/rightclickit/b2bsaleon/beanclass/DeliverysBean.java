@@ -35,6 +35,8 @@ public class DeliverysBean implements Serializable {
     private double productRatePerUnit;
     private double productTaxPerUnit;
     private double deliveredQuantity;
+    private double cansDueQuantity;
+    private double cratesDueQuantity;
 
     public String getProductgst() {
         return productgst;
@@ -178,5 +180,21 @@ public class DeliverysBean implements Serializable {
 
     public void setDeliveredQuantity(double deliveredQuantity) {
         this.deliveredQuantity = deliveredQuantity;
+    }
+
+    public double getCansDueQuantity() {
+        return cansDueQuantity;
+    }
+
+    public void setCansDueQuantity(double cansDueQuantity) {
+        this.cansDueQuantity = cansDueQuantity;
+    }
+
+    public double getCratesDueQuantity() {
+        return cratesDueQuantity;
+    }
+
+    public void setCratesDueQuantity(double cratesDueQuantity) {
+        this.cratesDueQuantity = cratesDueQuantity;
     }
 }
