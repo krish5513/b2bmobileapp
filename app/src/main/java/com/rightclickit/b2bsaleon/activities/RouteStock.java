@@ -11,7 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentStockAdapter;
@@ -21,14 +23,18 @@ import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.interfaces.RouteStockListener;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
+import com.rightclickit.b2bsaleon.services.SyncCloseTripSheetsStockService;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
-public class RouteStock extends AppCompatActivity {
+public class RouteStock extends AppCompatActivity implements RouteStockListener {
     private Context applicationContext, activityContext;
     private SearchView search;
     private String tripSheetId;
@@ -36,8 +42,13 @@ public class RouteStock extends AppCompatActivity {
     private DBHelper mDBHelper;
     private TripsheetsModel mTripsheetsModel;
     ListView Routestocklist;
+    private LinearLayout mCloseTripsLayout;
     private HashMap<String, String> deliveryQuantityListMap = new HashMap<String, String>();
     private HashMap<String, String> returnQuantityListMap = new HashMap<String, String>();
+    private Map<String, String> selectedCBListMap, selectedLeakListMap, selectedOthersListMap,
+            selectedPNamesListMap, selectedPDelsListMap, selectedPReturnsListMap;
+    private String cbNotZeroStrings = "";
+    private ArrayList<TripsheetsStockList> mTripsheetsStockList = new ArrayList<TripsheetsStockList>();
 
     // ArrayList<AgentsStockBean> stockBeanArrayList;
 
@@ -68,7 +79,115 @@ public class RouteStock extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         Routestocklist = (ListView) findViewById(R.id.RouteStockList);
         mTripsheetsModel = new TripsheetsModel(this, RouteStock.this);
-        ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
+        final ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
+
+        mCloseTripsLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
+        mCloseTripsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cbNotZeroStrings = "";
+                synchronized (this) {
+                    if (selectedCBListMap.size() > 0) {
+                        for (Map.Entry<String, String> productsBeanEntry : selectedCBListMap.entrySet()) {
+                            System.out.println("ASDF:::: " + productsBeanEntry.getValue());
+                            Double val = Double.parseDouble(productsBeanEntry.getValue());
+                            if (val != 0) {
+                                if (cbNotZeroStrings.length() == 0) {
+                                    cbNotZeroStrings = productsBeanEntry.getKey();
+                                } else {
+                                    cbNotZeroStrings = cbNotZeroStrings + ", " + productsBeanEntry.getKey();
+                                }
+                            }
+                        }
+                    }
+                }
+                System.out.println("STR:::: " + cbNotZeroStrings);
+                System.out.println("TSSSS:::: " + tripsheetsStockLists.size());
+                synchronized (this) {
+                    if (cbNotZeroStrings.length() > 0) {
+                        CustomAlertDialog.showAlertDialog(activityContext, "Failed", "Please make the closing balance as 0 for the following products.\n" + cbNotZeroStrings);
+                    } else {
+                        if (mTripsheetsStockList.size() > 0) {
+                            mTripsheetsStockList.clear();
+                        }
+                        if (selectedCBListMap.size() > 0) {
+                            for (int q = 0; q < tripsheetsStockLists.size(); q++) {
+                                TripsheetsStockList tripStockBean = new TripsheetsStockList();
+
+                                if (selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()) != null) {
+                                    //System.out.println("CB QUANTITY::: " + selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
+                                    tripStockBean.setmCBQuantity(selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
+                                }
+                                if (selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
+                                    //System.out.println("LEAK QUANTITY::: " + selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    tripStockBean.setmLeakQuantity(selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                }
+
+                                if (selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
+                                    //System.out.println("OTHER QUANTITY::: " + selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    tripStockBean.setmOtherQuantity(selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                }
+
+                                if (selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
+                                    //System.out.println("DEL QUANTITY::: " + selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    tripStockBean.setmDeliveryQuantity(selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                }
+
+                                if (selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
+                                    //System.out.println("RETU QUANTITY::: " + selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    tripStockBean.setmReturnQuantity(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                }
+
+                                tripStockBean.setmTripsheetStockProductId(tripsheetsStockLists.get(q).getmTripsheetStockProductId());
+                                tripStockBean.setmTripsheetStockTripsheetId(tripsheetsStockLists.get(q).getmTripsheetStockTripsheetId());
+                                tripStockBean.setmTripsheetStockId(tripsheetsStockLists.get(q).getmTripsheetStockId());
+
+                                mTripsheetsStockList.add(tripStockBean);
+                            }
+                        }
+                    }
+                }
+                synchronized (this) {
+                    if (mTripsheetsStockList.size() > 0) {
+                        System.out.println("HURRYYYY::: " + mTripsheetsStockList.size());
+                        // Update the data into tripsheers stock list table and then api
+                        mDBHelper.updateTripsheetsStockListDataForCloseTrips(mTripsheetsStockList);
+                    } else {
+                        System.out.println("BURRRYYYYY::: " + mTripsheetsStockList.size());
+                    }
+                }
+
+                synchronized (this) {
+                    if (mTripsheetsStockList.size() > 0) {
+                        System.out.println("HURRYYYY 11111::: " + mTripsheetsStockList.size());
+                        // Update the data into tripsheers stock list table and then api
+                        if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                            Intent syncTDCOrderServiceIntent = new Intent(activityContext, SyncCloseTripSheetsStockService.class);
+                            //syncTDCOrderServiceIntent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER, currentOrder);
+                            startService(syncTDCOrderServiceIntent);
+                        }
+                    } else {
+                        System.out.println("BURRRYYYYY 11111::: " + mTripsheetsStockList.size());
+                    }
+                }
+
+                synchronized (this) {
+                    if (mTripsheetsStockList.size() > 0) {
+                        int status = mDBHelper.updateTripSheetClosingStatus(tripSheetId);
+
+                        if (status > 0) {
+                            Toast.makeText(activityContext, "Trip sheet closed successfully.", Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(activityContext, TripSheetsActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(activityContext, "Trip sheet closing failed.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            }
+        });
 
 
         if (new NetworkConnectionDetector(RouteStock.this).isNetworkConnected()) {
@@ -124,8 +243,6 @@ public class RouteStock extends AppCompatActivity {
 
         routestockadapter = new RouteStockAdapter(this, RouteStock.this, this, tripsStockList, deliveryQuantityListMap, returnQuantityListMap);
         Routestocklist.setAdapter(routestockadapter);
-
-
     }
 
     @Override
@@ -218,4 +335,36 @@ public class RouteStock extends AppCompatActivity {
     }
 
 
+    @Override
+    public void updateSelectedCBList(Map<String, String> selectedCBList) {
+        this.selectedCBListMap = selectedCBList;
+        System.out.println("CB LSIT:::: " + selectedCBList.size());
+    }
+
+    @Override
+    public void updateSelectedLeakageQuantityList(Map<String, String> selectedLeakList) {
+        this.selectedLeakListMap = selectedLeakList;
+        System.out.println("LEAK LSIT:::: " + selectedLeakListMap.size());
+    }
+
+    @Override
+    public void updateSelectedOthersQuantityList(Map<String, String> selectedOthersList) {
+        this.selectedOthersListMap = selectedOthersList;
+        System.out.println("OTHERS LSIT:::: " + selectedOthersListMap.size());
+    }
+
+    @Override
+    public void updateSelectedPNamesQuantityList(Map<String, String> selectedPNamesList) {
+        this.selectedPNamesListMap = selectedPNamesList;
+    }
+
+    @Override
+    public void updateSelectedPDelsQuantityList(Map<String, String> selectedPDelsList) {
+        this.selectedPDelsListMap = selectedPDelsList;
+    }
+
+    @Override
+    public void updateSelectedPRetunsQuantityList(Map<String, String> selectedPReturnsList) {
+        this.selectedPReturnsListMap = selectedPReturnsList;
+    }
 }

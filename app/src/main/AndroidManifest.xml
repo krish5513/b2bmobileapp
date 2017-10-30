@@ -334,6 +334,11 @@
             android:name=".services.SyncAgentStockDeliveriesService"
             android:enabled="true"
             android:exported="true" />
+
+        <service
+            android:name=".services.SyncCloseTripSheetsStockService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
