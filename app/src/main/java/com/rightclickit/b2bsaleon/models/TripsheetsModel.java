@@ -1,6 +1,5 @@
 package com.rightclickit.b2bsaleon.models;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.widget.TextView;
 
@@ -392,6 +391,9 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                         mDBHelper.updateTripSheetStockVerifyList(tripStockBean);
 
                                         mDBHelper.updateTripSheetStockTable(tripStockBean.getmTripsheetStockId(), "verify");
+
+                                        mDBHelper.updateTripSheetStockVerifyStatus(tripStockBean.getmTripsheetStockTripsheetId());
+
                                     } else {
                                         tripStockBean.setmTripsheetStockVerifiedQuantity("");
                                         tripStockBean.setmTripsheetStockVerifyBy("");

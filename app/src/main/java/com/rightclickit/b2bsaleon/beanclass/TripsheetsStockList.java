@@ -28,6 +28,7 @@ public class TripsheetsStockList {
     private String mCBQuantity;
     private String mLeakQuantity;
     private String mOtherQuantity;
+    private String mRouteReturnQuantity;
 
     public String getmTripsheetStockTripsheetId() {
         return mTripsheetStockTripsheetId;
@@ -171,6 +172,7 @@ public class TripsheetsStockList {
                 ", mCBQuantity='" + mCBQuantity + '\'' +
                 ", mLeakQuantity='" + mLeakQuantity + '\'' +
                 ", mOtherQuantity='" + mOtherQuantity + '\'' +
+                ", mRouteReturnQuantity='" + mRouteReturnQuantity + '\'' +
                 '}';
     }
 
@@ -212,5 +214,13 @@ public class TripsheetsStockList {
 
     public void setmOtherQuantity(String mOtherQuantity) {
         this.mOtherQuantity = mOtherQuantity;
+    }
+
+    public String getmRouteReturnQuantity() {
+        return mRouteReturnQuantity;
+    }
+
+    public void setmRouteReturnQuantity(String mRouteReturnQuantity) {
+        this.mRouteReturnQuantity = mRouteReturnQuantity;
     }
 }

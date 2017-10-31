@@ -333,6 +333,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_STOCK_CB_QUANTITY = "tripsheet_stock_cb_quantity";
     private final String KEY_TRIPSHEET_STOCK_LEAK_QUANTITY = "tripsheet_stock_leak_quantity";
     private final String KEY_TRIPSHEET_STOCK_OTHER_QUANTITY = "tripsheet_stock_other_quantity";
+    private final String KEY_TRIPSHEET_STOCK_ROUTE_RETURN_QUANTITY = "tripsheet_stock_route_return_quantity";
+    private final String KEY_TRIPSHEET_STOCK_CLOSETRIP_UPLOAD_STATUS = "tripsheet_stock_closetrip_upload_status";
 
     // Column names for Tripsheets deliveries List  Table
     private final String KEY_TRIPSHEET_DELIVERY_NO = "tripsheet_delivery_no";
@@ -634,7 +636,9 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_STOCK_RETURN_QUANTITY + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_CB_QUANTITY + " VARCHAR,"
             + KEY_TRIPSHEET_STOCK_LEAK_QUANTITY + " VARCHAR,"
-            + KEY_TRIPSHEET_STOCK_OTHER_QUANTITY + " VARCHAR)";
+            + KEY_TRIPSHEET_STOCK_OTHER_QUANTITY + " VARCHAR,"
+            + KEY_TRIPSHEET_STOCK_CLOSETRIP_UPLOAD_STATUS + " INTEGER DEFAULT 0,"
+            + KEY_TRIPSHEET_STOCK_ROUTE_RETURN_QUANTITY + " VARCHAR)";
 
     // Tripsheets Deliveries list Table Create Statements
     private final String CREATE_TRIPSHEETS_DELIVERIES_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
@@ -3077,6 +3081,7 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
+
     /**
      * Method to fetch all tripsheets deliveries list
      */
@@ -3131,6 +3136,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return alltripsheetsDeliveries;
     }
+
     /**
      * Method to fetch all tripsheets deliveries list
      */
@@ -3460,8 +3466,6 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }*/
-
-
     public void updateTripsheetsReturnsListData(ArrayList<TripSheetReturnsBean> mTripsheetsReturnsList) {
         try {
             for (TripSheetReturnsBean tripSheetReturnsBean : mTripsheetsReturnsList) {
@@ -3516,8 +3520,6 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
-
-
 
 
     /**
@@ -5185,11 +5187,11 @@ public class DBHelper extends SQLiteOpenHelper {
                     temp[3] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_AMOUNT));
                     temp[4] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT));
 
-                    temp[5]=getProductCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)),KEY_PRODUCT_CODE);
-                    temp[6]=getProductUOM(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)),KEY_PRODUCT_UOM);
-                   // temp[5] = getHSSNNUMBERByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)));
-                   // temp[6] = String.valueOf(getGSTByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS))));
-                   // temp[7] = String.valueOf(getVATByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS))));
+                    temp[5] = getProductCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)), KEY_PRODUCT_CODE);
+                    temp[6] = getProductUOM(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)), KEY_PRODUCT_UOM);
+                    // temp[5] = getHSSNNUMBERByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)));
+                    // temp[6] = String.valueOf(getGSTByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS))));
+                    // temp[7] = String.valueOf(getVATByProductId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS))));
                     arList.add(temp);
 
 
@@ -6241,5 +6243,88 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return due;
     }
+
+    /**
+     * Method to insert the mTripsheetsStockList.
+     *
+     * @param mTripsheetsStockList
+     */
+    public void updateTripsheetsStockListDataForCloseTrips(ArrayList<TripsheetsStockList> mTripsheetsStockList) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0; i < mTripsheetsStockList.size(); i++) {
+                ContentValues values = new ContentValues();
+
+                values.put(KEY_TRIPSHEET_STOCK_CB_QUANTITY, mTripsheetsStockList.get(i).getmCBQuantity());
+                values.put(KEY_TRIPSHEET_STOCK_DELIVERY_QUANTITY, mTripsheetsStockList.get(i).getmDeliveryQuantity());
+                values.put(KEY_TRIPSHEET_STOCK_ROUTE_RETURN_QUANTITY, mTripsheetsStockList.get(i).getmRouteReturnQuantity());
+                values.put(KEY_TRIPSHEET_STOCK_LEAK_QUANTITY, mTripsheetsStockList.get(i).getmLeakQuantity());
+                values.put(KEY_TRIPSHEET_STOCK_OTHER_QUANTITY, mTripsheetsStockList.get(i).getmOtherQuantity());
+
+                values.put(KEY_TRIPSHEET_STOCK_CLOSETRIP_UPLOAD_STATUS, 2); // 0 is default and 1 is close trip and 2 is temp close
+
+
+                long l = db.update(TABLE_TRIPSHEETS_STOCK_LIST, values, KEY_TRIPSHEET_STOCK_TRIPSHEET_ID + " = ?" + " AND " + KEY_TRIPSHEET_STOCK_ID + " = ?" + " AND " + KEY_TRIPSHEET_STOCK_PRODUCT_ID + " = ?",
+                        new String[]{String.valueOf(mTripsheetsStockList.get(i).getmTripsheetStockTripsheetId()),
+                                String.valueOf(mTripsheetsStockList.get(i).getmTripsheetStockId()), String.valueOf(mTripsheetsStockList.get(i).getmTripsheetStockProductId())});
+                System.out.println("+++++++++++++++++++++++++ TRIP SHEET STOCK UPDATED CLOSE TRIP++++++++++++++++++++++" + l);
+
+                values.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        db.close();
+    }
+
+    /**
+     * Method to fetch un uploaded trip sheets stock list group by stock id
+     */
+    public ArrayList<String> fetchUnUploadedTripSheetUniqueStockIdsForCloseTrip() {
+        ArrayList<String> stockIds = new ArrayList<>();
+
+        try {
+            String selectQuery;
+
+            selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_STOCK_ID + " FROM " + TABLE_TRIPSHEETS_STOCK_LIST
+                    + " WHERE " + KEY_TRIPSHEET_STOCK_CLOSETRIP_UPLOAD_STATUS + " = 2";
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    stockIds.add(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_ID)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return stockIds;
+    }
+
+    public void updateTripSheetStockTableCloseTrip(String stockId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+
+            values.put(KEY_TRIPSHEET_STOCK_CLOSETRIP_UPLOAD_STATUS, 1);
+
+            int status = db.update(TABLE_TRIPSHEETS_STOCK_LIST, values, KEY_TRIPSHEET_STOCK_ID + " = ?", new String[]{String.valueOf(stockId)});
+
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
 
 }
