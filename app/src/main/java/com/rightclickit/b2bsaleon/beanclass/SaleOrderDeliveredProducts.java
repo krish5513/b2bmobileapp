@@ -19,6 +19,35 @@ public class SaleOrderDeliveredProducts implements Serializable {
     private String totalAmount;
     private String subTotal;
     private String createdTime;
+    private String str_hssn;
+
+    public String getStr_hssn() {
+        return str_hssn;
+    }
+
+    public void setStr_hssn(String str_hssn) {
+        this.str_hssn = str_hssn;
+    }
+
+    public String getStr_cgst() {
+        return str_cgst;
+    }
+
+    public void setStr_cgst(String str_cgst) {
+        this.str_cgst = str_cgst;
+    }
+
+    public String getStr_sgst() {
+        return str_sgst;
+    }
+
+    public void setStr_sgst(String str_sgst) {
+        this.str_sgst = str_sgst;
+    }
+
+    private String str_cgst;
+    private String str_sgst;
+
 
     public int getDeliveryNo() {
         return deliveryNo;

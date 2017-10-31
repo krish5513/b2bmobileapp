@@ -22,7 +22,6 @@ import com.rightclickit.b2bsaleon.beanclass.AgentPaymentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentPaymentsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
-import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
 
@@ -251,14 +250,14 @@ public class AgentPayments extends AppCompatActivity {
 
             return true;
         }
-        if (id == R.id.autorenew) {
+     /*   if (id == R.id.autorenew) {
             if (new NetworkConnectionDetector(AgentPayments.this).isNetworkConnected())
                 paymentsModel.getPaymentsList(agentId);
             else {
                 new NetworkConnectionDetector(AgentPayments.this).displayNoNetworkError(AgentPayments.this);
             }
             return true;
-        }
+        }*/
 
 
         switch (item.getItemId()) {

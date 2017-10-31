@@ -161,10 +161,10 @@ public class TripSheetViewPreview extends AppCompatActivity {
 
                 String[] temp = new String[6];
                 temp[0] = str_AgentName;
-                temp[1] = str_OB;
-                temp[2] = str_Order;
-                temp[3] = str_Received;
-                temp[4] = str_Due;
+                temp[1] = Utility.getFormattedCurrency(Double.parseDouble(str_OB));
+                temp[2] = Utility.getFormattedCurrency(Double.parseDouble(str_Order));
+                temp[3] = Utility.getFormattedCurrency(Double.parseDouble(str_Received));
+                temp[4] = Utility.getFormattedCurrency(Double.parseDouble(str_Due));
                 temp[5] = str_AgentCode;
 
                 selectedList.add(temp);
@@ -302,7 +302,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
                     paint.setTextSize(20);
                     canvas.drawText("CUSTOMER WISE CRATES SUMMARY", 5, st, paint);
                     st = st + 30;
-                    for (int i = 0; i < selectedList.size(); i++) {
+                   /* for (int i = 0; i < selectedList.size(); i++) {
                         String[] temp = selectedList.get(i);
                         paint.setTextSize(20);
                         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
@@ -333,7 +333,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
                         st = st + 40;
                     }
 
-
+*/
                     canvas.drawText("--------X---------", 100, st, paint);
                     com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
                 }
@@ -432,11 +432,11 @@ public class TripSheetViewPreview extends AppCompatActivity {
             TextView mSOReceivedValue = (TextView) view.findViewById(R.id.received);
             TextView mSODueValue = (TextView) view.findViewById(R.id.due);
             mAgentCode.setText(temp[5]);
-            mOBValue.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[1])));
+            mOBValue.setText((temp[1]));
             mSOAgentName.setText(temp[0]);
-            mSOOrderedValue.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[2])));
-            mSOReceivedValue.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[3])));
-            mSODueValue.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[4])));
+            mSOOrderedValue.setText((temp[2]));
+            mSOReceivedValue.setText((temp[3]));
+            mSODueValue.setText((temp[4]));
 
             return view;
         }

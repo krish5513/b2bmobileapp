@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.TripsheetPaymentsPreview;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderDeliveredProducts;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class TripSheetsPaymentPreviewDeliveredProductsAdapter extends BaseAdapte
     private LayoutInflater mInflater;
     private Activity activity;
     private Context ctxt;
+    private DBHelper mDBHelper;
     private ArrayList<SaleOrderDeliveredProducts> deliveredProductsList;
 
     public TripSheetsPaymentPreviewDeliveredProductsAdapter(Context ctxt, TripsheetPaymentsPreview activity, ArrayList<SaleOrderDeliveredProducts> productsList) {
@@ -30,6 +32,7 @@ public class TripSheetsPaymentPreviewDeliveredProductsAdapter extends BaseAdapte
         this.activity = activity;
         this.mInflater = LayoutInflater.from(activity);
         this.deliveredProductsList = productsList;
+        this.mDBHelper = new DBHelper(activity);
     }
    /* public TripSheetsPaymentPreviewDeliveredProductsAdapter(Context ctxt, AgentPaymentsView activity, ArrayList<SaleOrderDeliveredProducts> productsList) {
         this.ctxt = ctxt;
@@ -39,7 +42,7 @@ public class TripSheetsPaymentPreviewDeliveredProductsAdapter extends BaseAdapte
     }*/
 
     private class TDCSalesPreviewViewHolder {
-        TextView product_name, quantity, price, amount, tax;
+        TextView product_name, quantity, price, amount, tax,tv_hssn,tv_cgst,tv_sgst;
     }
 
     @Override
@@ -70,6 +73,9 @@ public class TripSheetsPaymentPreviewDeliveredProductsAdapter extends BaseAdapte
             salesPreviewViewHolder.amount = (TextView) convertView.findViewById(R.id.amount);
             salesPreviewViewHolder.tax = (TextView) convertView.findViewById(R.id.tax);
             salesPreviewViewHolder.price = (TextView) convertView.findViewById(R.id.price);
+            salesPreviewViewHolder.tv_hssn = (TextView) convertView.findViewById(R.id.hssn_number);
+            salesPreviewViewHolder.tv_cgst = (TextView) convertView.findViewById(R.id.cgst);
+            salesPreviewViewHolder.tv_sgst = (TextView) convertView.findViewById(R.id.sgst);
 
             convertView.setTag(salesPreviewViewHolder);
         } else {
@@ -78,7 +84,29 @@ public class TripSheetsPaymentPreviewDeliveredProductsAdapter extends BaseAdapte
 
         final SaleOrderDeliveredProducts productBean = getItem(position);
 
-        salesPreviewViewHolder.product_name.setText(productBean.getName() + " \n " + productBean.getCode());
+         if (mDBHelper.getHSSNNUMBERByProductId(productBean.getId()) != null) {
+            if (mDBHelper.getHSSNNUMBERByProductId(productBean.getId()).length() > 0) {
+                salesPreviewViewHolder.tv_hssn.setText(mDBHelper.getHSSNNUMBERByProductId(productBean.getId()));
+            }
+        } else {
+            salesPreviewViewHolder.tv_hssn.setText("-");
+        }
+
+        if (mDBHelper.getGSTByProductId(productBean.getId()) > 0) {
+            String gst = String.valueOf(mDBHelper.getGSTByProductId(productBean.getId()));
+            salesPreviewViewHolder.tv_cgst.setText(gst + "%");
+        } else {
+            salesPreviewViewHolder.tv_cgst.setText("0.00%");
+        }
+
+
+         if (mDBHelper.getVATByProductId(productBean.getId()) > 0) {
+            String vat = String.valueOf(mDBHelper.getVATByProductId(productBean.getId()));
+            salesPreviewViewHolder.tv_sgst.setText(vat + "%");
+        } else {
+            salesPreviewViewHolder.tv_sgst.setText("0.00%");
+        }
+        salesPreviewViewHolder.product_name.setText(productBean.getName());
         salesPreviewViewHolder.quantity.setText(productBean.getQuantity());
         salesPreviewViewHolder.price.setText(Utility.getFormattedCurrency(Double.parseDouble(productBean.getUnitRate())));
         salesPreviewViewHolder.amount.setText(Utility.getFormattedCurrency(Double.parseDouble(productBean.getProductAmount())));

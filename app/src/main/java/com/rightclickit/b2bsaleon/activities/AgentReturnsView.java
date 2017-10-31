@@ -7,9 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,18 +23,11 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeleveriesPreviewAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
-import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
-import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
-import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
-import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class AgentReturnsView extends AppCompatActivity {
     private ListView mAgentsList;
@@ -324,12 +317,12 @@ public class AgentReturnsView extends AppCompatActivity {
             TextView return_preview_product_name = (TextView) view.findViewById(R.id.productName);
             TextView return_uom = (TextView) view.findViewById(R.id.uom);
             TextView return_qty= (TextView) view.findViewById(R.id.productQt);
-            TextView returnType = (TextView) view.findViewById(R.id.returnType);
+          //  TextView returnType = (TextView) view.findViewById(R.id.returnType);
 
             return_preview_product_name.setText(temp[0]);
             return_uom.setText(temp[1]);
             return_qty.setText(temp[2]);
-            returnType.setText(temp[3]);
+           // returnType.setText(temp[3]);
 
 
 

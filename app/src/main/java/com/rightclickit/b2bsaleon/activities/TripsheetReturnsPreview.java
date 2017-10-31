@@ -10,6 +10,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,16 +25,14 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeleveriesPreviewAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderReturnedProducts;
-import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
-import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
-import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Locale;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -146,14 +145,22 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
             myList=mDBHelper.getProductUnitByProductCode(str_ProductCode);
             str_Uom=myList;
 
+            if (d.getProductCode().equals("2600005")) {
+                temp[6] =(String.valueOf(d.getCansDueQuantity()));
+            } else if (d.getProductCode().equals("2600006")) {
+                temp[6] =(String.valueOf(d.getCratesDueQuantity()));
+            } else {
+                temp[6] =("0.0");
+            }
             temp[0] = d.getProductTitle();
             temp[1] = str_Uom;
-            temp[2] = String.valueOf(d.getSelectedQuantity());
-            temp[3] = "Sale Return";
+             temp[2]= String.valueOf(d.getSelectedQuantity());
+
             temp[4]=str_ProductCode;
             temp[5]= String.valueOf(d.getDeliveredQuantity());
-            temp[6]= String.valueOf(d.getProductOrderedQuantity());
-            temp[7]= String.valueOf(d.getProductStock());
+            temp[7]= String.valueOf(Double.parseDouble(temp[6])+d.getDeliveredQuantity()-d.getSelectedQuantity());
+
+
             arList.add(temp);
         }
 
@@ -183,31 +190,31 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
         deliveryNo = (TextView) findViewById(R.id.return_no);
         deliveryDate = (TextView) findViewById(R.id.return_date);
 
-       /* returnedProductsList = mDBHelper.getReturnsProductsListForSaleOrder(mTripSheetId, mAgentSoId, mAgentId);
+
+        returnedProductsList = mDBHelper.getReturnsProductsListForSaleOrder(mTripSheetId, mAgentSoId, mAgentId);
 
         for (int j = 0; j < returnedProductsList.size(); j++) {
 
 
             if (returnedProductsList != null) {
 
-             openingBalance=returnedProductsList.get(j).getOpeningBalance();
-                Deliverdquantity=returnedProductsList.get(j).getOpeningBalance();
-                Ret=returnedProductsList.get(j).getOpeningBalance();
-                openingBalance=returnedProductsList.get(j).getOpeningBalance();
+                str_deliveryNo=returnedProductsList.get(j).getReturnno();
+                deliveryNo.setText(str_deliveryNo);
+
+                if (returnedProductsList.get(j).getReturndate().isEmpty())
+                    deliveryDate.setText("-");
+                else
+                    try {
+                        str_deliveryDate=(getDate(returnedProductsList.get(j).getReturndate(),"dd-MM-yyyy"));
+                        deliveryDate.setText(str_deliveryDate);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
 
             }
 
 
-        }*/
-
-        List<TripSheetReturnsBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsReturnsList(mTripSheetId);
-        for (int i = 0; i < unUploadedDeliveries.size(); i++) {
-            TripSheetReturnsBean currentDelivery = unUploadedDeliveries.get(i);
-            str_deliveryNo=currentDelivery.getmTripshhetReturnsReturn_no();
-            str_deliveryDate= Utility.formatTime(Long.parseLong(currentDelivery.getmTripshhetReturnsCreated_on()), Constants.TRIP_SHEETS_DELIVERY_DATE_FORMAT);
         }
-        deliveryNo.setText(str_deliveryNo);
-        deliveryDate.setText(str_deliveryDate);
 
 
         ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
@@ -334,7 +341,7 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("OB QTY ", 5, st, paint);
-                    canvas.drawText(": " + temp[2] , 150, st, paint);
+                    canvas.drawText(": " + temp[6] , 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("DELIVERY QTY ", 5, st, paint);
@@ -342,11 +349,13 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("RETURN QTY ", 5, st, paint);
-                    canvas.drawText(": " + temp[6], 150, st, paint);
+                    canvas.drawText(": " +  temp[2], 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("CB QTY ", 5, st, paint);
-                    canvas.drawText(": " + temp[7], 150, st, paint);
+                    canvas.drawText(": " +  temp[7], 150, st, paint);
+
+
 
 
                     st = st + 40;
@@ -360,7 +369,15 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
 
 
     }
-
+public String getDate(String time, String format) {
+        try {
+            Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+            cal.setTimeInMillis(Long.parseLong(time));
+            return DateFormat.format(format, cal).toString();
+        } catch (Exception e) {
+            return "XX-XX-XXXX";
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
@@ -457,12 +474,14 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
             TextView return_preview_product_name = (TextView) view.findViewById(R.id.productName);
             TextView return_uom = (TextView) view.findViewById(R.id.uom);
             TextView return_qty= (TextView) view.findViewById(R.id.productQt);
-            TextView returnType = (TextView) view.findViewById(R.id.returnType);
+            TextView ob = (TextView) view.findViewById(R.id.productOB);
+            TextView dqty = (TextView) view.findViewById(R.id.productDQ);
 
             return_preview_product_name.setText(temp[0]);
             return_uom.setText(temp[1]);
             return_qty.setText(temp[2]);
-            returnType.setText(temp[3]);
+            ob.setText(temp[6]);
+            dqty.setText(temp[5]);
 
 
 

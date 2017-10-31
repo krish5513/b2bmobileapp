@@ -879,6 +879,26 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
+     * Method to get count of the agents table
+     */
+    public int getDeliveriesTableCount() {
+        int noOfEvents = 0;
+        try {
+            String countQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST;
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfEvents = cursor.getCount();
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return noOfEvents;
+    }
+
+    /**
      * Method to clear values in agents table
      */
     public void deleteValuesFromAgentsTable() {
@@ -3057,11 +3077,64 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
-
     /**
      * Method to fetch all tripsheets deliveries list
      */
     public ArrayList<TripSheetDeliveriesBean> fetchAllTripsheetsDeliveriesList(String tripsheetId) {
+        ArrayList<TripSheetDeliveriesBean> alltripsheetsDeliveries = new ArrayList<TripSheetDeliveriesBean>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "'"
+                    + " AND " + KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS + " = 0";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    TripSheetDeliveriesBean tripDeliveriesBean = new TripSheetDeliveriesBean();
+
+                    tripDeliveriesBean.setmTripsheetDeliveryNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NO)));
+                    tripDeliveriesBean.setmTripsheetDeliveryNumber(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NUMBER)));
+                    tripDeliveriesBean.setmTripsheetDelivery_tripId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TRIP_ID)));
+                    tripDeliveriesBean.setmTripsheetDelivery_so_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SO_ID)));
+                    tripDeliveriesBean.setmTripsheetDelivery_so_code(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SO_CODE)));
+                    tripDeliveriesBean.setmTripsheetDelivery_userId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_USER_ID)));
+                    tripDeliveriesBean.setmTripsheetDelivery_userCodes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_USER_CODES)));
+                    tripDeliveriesBean.setmTripsheetDelivery_routeId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_ROUTE_ID)));
+                    tripDeliveriesBean.setmTripsheetDelivery_routeCodes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_ROUTE_CODES)));
+                    tripDeliveriesBean.setmTripsheetDelivery_productId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)));
+                    tripDeliveriesBean.setmTripsheetDelivery_productCodes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES)));
+                    tripDeliveriesBean.setmTripsheetDelivery_TaxPercent(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXPERCENT)));
+                    tripDeliveriesBean.setmTripsheetDelivery_UnitPrice(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UNITPRICE)));
+                    tripDeliveriesBean.setmTripsheetDelivery_Quantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_QUANTITY)));
+                    tripDeliveriesBean.setmTripsheetDelivery_Amount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_AMOUNT)));
+                    tripDeliveriesBean.setmTripsheetDelivery_TaxAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXAMOUNT)));
+                    tripDeliveriesBean.setmTripsheetDelivery_TaxTotal(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXTOTAL)));
+                    tripDeliveriesBean.setmTripsheetDelivery_SaleValue(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SALEVALUE)));
+                    tripDeliveriesBean.setmTripsheetDelivery_Status(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_STATUS)));
+                    tripDeliveriesBean.setmTripsheetDelivery_Delete(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_DELETE)));
+                    tripDeliveriesBean.setmTripsheetDelivery_CreatedBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDBY)));
+                    tripDeliveriesBean.setmTripsheetDelivery_CreatedOn(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
+                    tripDeliveriesBean.setmTripsheetDelivery_UpdatedOn(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UPDATEDON)));
+                    tripDeliveriesBean.setmTripsheetDelivery_UpdatedBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UPDATEDBY)));
+
+                    alltripsheetsDeliveries.add(tripDeliveriesBean);
+
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return alltripsheetsDeliveries;
+    }
+    /**
+     * Method to fetch all tripsheets deliveries list
+     */
+    public ArrayList<TripSheetDeliveriesBean> fetchAllTripsheetsDeliveriesListForAgents(String tripsheetId) {
         ArrayList<TripSheetDeliveriesBean> alltripsheetsDeliveries = new ArrayList<TripSheetDeliveriesBean>();
 
         try {
@@ -4698,7 +4771,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             Map<String, String> deliveredProductsHashMap = fetchDeliveriesListByTripSheetId(tripSheetId, saleOrderId, agentId);
 
-            String selectQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY + ", " + KEY_PRODUCT_RETURNABLE
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_NO + ", " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + ", " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY + ", " + KEY_PRODUCT_RETURNABLE
                     + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " R LEFT JOIN " + TABLE_PRODUCTS + " P ON R." + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = P." + KEY_PRODUCT_ID
                     + " WHERE P." + KEY_PRODUCT_RETURNABLE + " = 'Y' AND " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = '" + tripSheetId + "' AND " + KEY_TRIPSHEET_RETURNS_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + agentId + "'";
 

@@ -62,7 +62,7 @@ public class SyncTripsheetDeliveriesService extends Service {
 
             for (String tripSheetId : unUploadedDeliveriesTripSheetIds) {
                 List<TripSheetDeliveriesBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesList(tripSheetId);
-
+                System.out.println("TRIP DELE::: "+ unUploadedDeliveries.size());
                 TripSheetDeliveriesBeanWithProducts tripSheetDeliveriesBeanWithProducts = null;
                 JSONArray productIdsArray = new JSONArray();
                 JSONArray productCodesArray = new JSONArray();
@@ -94,7 +94,7 @@ public class SyncTripsheetDeliveriesService extends Service {
                         tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_UpdatedBy(currentDelivery.getmTripsheetDelivery_UpdatedBy());
                         tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_UpdatedOn(currentDelivery.getmTripsheetDelivery_UpdatedOn());
                     }
-
+                    System.out.println("TRIP DELE PID ARRAY::: "+ currentDelivery.getmTripsheetDelivery_productId());
                     productIdsArray.put(currentDelivery.getmTripsheetDelivery_productId());
                     productCodesArray.put(currentDelivery.getmTripsheetDelivery_productCodes());
                     taxPercentArray.put(currentDelivery.getmTripsheetDelivery_TaxPercent());

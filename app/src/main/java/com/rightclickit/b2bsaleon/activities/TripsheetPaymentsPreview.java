@@ -47,7 +47,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             mode_of_payment, cheque_number, cheque_date, bank_name, opening_balance, sale_order_amount, received_amount, closing_balance;
     ListView delivered_products_list_view, returned_products_list_view;
 
-    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
+    private String mTripSheetId = "", mAgentId = "", mAgentName = "",mTripSheetDate="",mTripSheetCode="", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
     private String loggedInUserId, loggedInUserName, companyName, routeCode, routeName, currentDate;
     private TripsheetSOList saleOrdersDetails = null;
     private ArrayList<SaleOrderDeliveredProducts> deliveredProductsList;
@@ -57,7 +57,8 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
     private TripSheetsPaymentPreviewDeliveredProductsAdapter tripSheetsPaymentPreviewDeliveredProductsAdapter;
     private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
     TextView print;
-
+    String name,hssnnumber, cgst, sgst,uom;
+    double taxes;
     ArrayList<String[]> selectedList, cratesList;
     SaleOrderDeliveredProducts deliveredProduct;
 
@@ -96,17 +97,18 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             price_total = (TextView) findViewById(R.id.price_total);
             tax_total_amount = (TextView) findViewById(R.id.tax_total_amount);
             sub_total = (TextView) findViewById(R.id.sub_total);
-            mode_of_payment = (TextView) findViewById(R.id.mode_of_payment);
-            cheque_number = (TextView) findViewById(R.id.cheque_number);
-            cheque_date = (TextView) findViewById(R.id.cheque_date);
-            bank_name = (TextView) findViewById(R.id.bank_name);
+            //mode_of_payment = (TextView) findViewById(R.id.mode_of_payment);
+            //cheque_number = (TextView) findViewById(R.id.cheque_number);
+            //cheque_date = (TextView) findViewById(R.id.cheque_date);
+           // bank_name = (TextView) findViewById(R.id.bank_name);
             opening_balance = (TextView) findViewById(R.id.opening_balance);
             sale_order_amount = (TextView) findViewById(R.id.sale_order_amount);
             received_amount = (TextView) findViewById(R.id.received_amount);
             closing_balance = (TextView) findViewById(R.id.closing_balance);
             delivered_products_list_view = (ListView) findViewById(R.id.delivered_products_list_view);
             returned_products_list_view = (ListView) findViewById(R.id.returned_products_list_view);
-
+            mTripSheetDate = mmSharedPreferences.getString("tripsheetDate");
+            mTripSheetCode = mmSharedPreferences.getString("tripsheetCode");
             mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
             mAgentId = this.getIntent().getStringExtra("agentId");
             mAgentCode = this.getIntent().getStringExtra("agentCode");
@@ -156,13 +158,61 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             if (deliveredProductsList.size() > 0) {
                 for (SaleOrderDeliveredProducts products : deliveredProductsList) {
                     totalAmount = totalAmount + Double.parseDouble(products.getProductAmount());
-                    String[] temp = new String[6];
+                    String[] temp = new String[11];
                     temp[0] = products.getName();
+
+                    if (mDBHelper.getHSSNNUMBERByProductId(products.getId()) != null  && mDBHelper.getHSSNNUMBERByProductId(products.getId()).length() > 0) {
+
+                        hssnnumber = mDBHelper.getHSSNNUMBERByProductId(products.getId());
+                    }
+                    else {
+                        hssnnumber = "-";
+                    }
+
+                    if (mDBHelper.getGSTByProductId(products.getId() )> 0) {
+                        cgst = String.valueOf(mDBHelper.getGSTByProductId(products.getId()) + "%");
+                    } else {
+                        cgst = "0.00%";
+                    }
+
+                    if (mDBHelper.getVATByProductId(products.getId()) > 0) {
+                        sgst = String.valueOf(mDBHelper.getVATByProductId(products.getId()) + "%");
+                    } else {
+                        sgst = "0.00%";
+                    }
+
+
+
+
+
+                    Double gst = 0.0, vat = 0.0;
+                    if(gst!=null) {
+                        gst = mDBHelper.getGSTByProductId(products.getId());
+                    }else {
+                        gst= 0.00;
+                    }
+
+
+
+                    if(vat!=null){
+                        vat = mDBHelper.getVATByProductId(products.getId());
+                    }
+
+
+                    taxes = gst + vat;
+
                     temp[1] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(products.getQuantity())));
                     temp[2] = Utility.getFormattedCurrency(Double.parseDouble(products.getUnitRate()));
                     temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(products.getProductAmount())));
                     temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(products.getProductTax())));
                     temp[5] = products.getCode();
+                    temp[6]=hssnnumber;
+                    temp[7]=cgst;
+                    temp[8]=sgst;
+                    temp[9]= String.valueOf(taxes);
+
+                    uom = mDBHelper.getProductUnitByProductCode(products.getCode());
+                    temp[10]=uom;
                     selectedList.add(temp);
                 }
                 deliveredProduct = deliveredProductsList.get(0);
@@ -179,7 +229,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 Utility.setListViewHeightBasedOnChildren(delivered_products_list_view);
             }
 
-            if (paymentsDetails != null) {
+           /* if (paymentsDetails != null) {
                 mode_of_payment.setText(paymentsDetails.getPayments_type().equals("0") ? "Cash" : "Cheque");
 
                 if (paymentsDetails.getPayments_type().equals("1")) {
@@ -192,7 +242,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     bank_name.setVisibility(View.GONE);
                 }
             }
-
+*/
             cratesList = new ArrayList<>(returnedProductsList.size());
 
 
@@ -200,13 +250,15 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
                 for (SaleOrderReturnedProducts crates : returnedProductsList) {
 
-                    String[] temp = new String[6];
+                    String[] temp = new String[7];
                     temp[0] = crates.getName();
                     temp[1] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getOpeningBalance())));
                     temp[2] = Utility.getFormattedCurrency(Double.parseDouble(crates.getDelivered()));
                     temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getReturned())));
                     temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getOpeningBalance())));
                     temp[5] = crates.getCode();
+                    uom = mDBHelper.getProductUnitByProductCode(crates.getCode());
+                    temp[6]=uom;
                     cratesList.add(temp);
                 }
 
@@ -224,7 +276,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             public void onClick(View view) {
 
                 Toast.makeText(getApplicationContext(), "print", Toast.LENGTH_LONG).show();
-                int pageheight = 1050 + selectedList.size() * 200 + cratesList.size() * 200  ;
+                int pageheight = 1000 + selectedList.size() * 200 + cratesList.size() * 200  ;
                 Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawColor(Color.WHITE);
@@ -253,12 +305,12 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText("TRIP #", 5, 170, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + String.format("RD%03d", deliveredProduct.getDeliveryNo()), 150, 170, paint);
+                canvas.drawText(": " + mTripSheetCode, 150, 170, paint);
 
                 paint.setTextSize(20);
                 canvas.drawText("DATE", 5, 200, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT), 150, 200, paint);
+                canvas.drawText(": " + mTripSheetDate, 150, 200, paint);
 
                 paint.setTextSize(20);
                 canvas.drawText("SO NO", 5, 230, paint);
@@ -268,17 +320,17 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 paint.setTextSize(20);
                 canvas.drawText("DATE", 5, 260, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT), 150, 260, paint);
+                canvas.drawText(": " + saleOrdersDetails.getmTripshetSODate(), 150, 260, paint);
 
                 paint.setTextSize(20);
                 canvas.drawText("CUSTOMER", 5, 290, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "DEVI MILK POINT_____", 150, 290, paint);
+                canvas.drawText(": " + mAgentName, 150, 290, paint);
 
                 paint.setTextSize(20);
                 canvas.drawText("CODE", 5, 320, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + "120060", 150, 320, paint);
+                canvas.drawText(": " + mAgentCode, 150, 320, paint);
 
                 paint.setTextSize(20);
                 canvas.drawText("-------------------------------------", 5, 350, paint);
@@ -298,15 +350,15 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     paint.setTextSize(20);
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     // canvas.drawText(temps[0] + "," + temps[1] + "( " + temps[2] + " )", 5, st, paint);
-                    canvas.drawText(temp[0] + "," + "10004" +  "(UOM)", 5, st, paint);
+                    canvas.drawText(temp[0] + "," + temp[5]  + "( " +  temp[10]  + " ) ", 5, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("HSSN CODE ", 5, st, paint);
-                    canvas.drawText(": " + "<number>", 150, st, paint);
+                    canvas.drawText(": " +temp[6], 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
-                    // canvas.drawText("CGST,SGST " + ": " + temps[4] + " + " + temps[5] + " = " + temps[6], 5, st, paint);
-                    canvas.drawText("CGST,SGST " + ": " + " 2.50 % + 2.50 % = 5.00 % ", 5, st, paint);
+                     canvas.drawText("CGST,SGST " + ": " + temp[7] + " + " + temp[8] + " = " + temp[9], 5, st, paint);
+                    //canvas.drawText("CGST,SGST " + ": " + " 2.50 % + 2.50 % = 5.00 % ", 5, st, paint);
 
                     st = st + 30;
                     paint.setTextSize(20);
@@ -371,7 +423,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
 
 
-                st = st + 40;
+             /*   st = st + 40;
                 if (paymentsDetails.getPayments_type().equals("0")) {
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     paint.setTextSize(20);
@@ -414,7 +466,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     canvas.drawText(": " + paymentsDetails.getPayments_bankName() , 150, st, paint);
 
 
-                }
+                }*/
 
                 st = st + 40;
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
@@ -428,7 +480,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     paint.setTextSize(20);
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     // canvas.drawText(temps[0] + "," + temps[1] + "( " + temps[2] + " )", 5, st, paint);
-                    canvas.drawText(temp[0] + "," + temp[5] +  "(UOM)", 5, st, paint);
+                    canvas.drawText(temp[0] + "," + temp[5] + "( " + temp[6] + " )", 5, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("OB QTY ", 5, st, paint);

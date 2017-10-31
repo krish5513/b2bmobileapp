@@ -55,7 +55,7 @@ public class AgentDeliveries extends AppCompatActivity {
     private double subTotal = 0;
     AgentDeliveriesModel deliveriesmodel;
     private String mDeliveryNo = "", mDeliverydate = "";
-
+    ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,7 +125,10 @@ public class AgentDeliveries extends AppCompatActivity {
         mtripsheetId = mDBHelper.getTripId(agentId, "tripsheet_delivery_trip_id");
 
 
-        ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesList(agentId);
+
+
+
+        ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesListForAgents(agentId);
         for (int i = 0; i < unUploadedDeliveries.size(); i++) {
             d_no = unUploadedDeliveries.get(i).getmTripsheetDeliveryNo();
         }
@@ -136,14 +139,13 @@ public class AgentDeliveries extends AppCompatActivity {
             totalAmount = totalAmount + Double.parseDouble(temp[3]);
             totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
             subTotal = totalAmount + totalTaxAmount;
-            //   tv_deliveriesValue.setText(Utility.getFormattedCurrency((subTotal)));
+// tv_deliveriesValue.setText(Utility.getFormattedCurrency((subTotal)));
         }
         if (unUploadedDeliveries.size() > 0) {
             loadDeliveries(unUploadedDeliveries);
         } else {
             mNoDataText.setText("No Deliveries found.");
         }
-
 
         sales.setOnClickListener(new View.OnClickListener() {
             @Override

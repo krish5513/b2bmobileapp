@@ -14,6 +14,26 @@ public class SaleOrderReturnedProducts implements Serializable {
     private String delivered;
     private String returned;
     private String closingBalance;
+    private String returnno;
+
+
+    public String getReturnno() {
+        return returnno;
+    }
+
+    public void setReturnno(String returnno) {
+        this.returnno = returnno;
+    }
+
+    public String getReturndate() {
+        return returndate;
+    }
+
+    public void setReturndate(String returndate) {
+        this.returndate = returndate;
+    }
+
+    private String returndate;
 
     public String getId() {
         return id;
@@ -81,6 +101,8 @@ public class SaleOrderReturnedProducts implements Serializable {
                 ", delivered='" + delivered + '\'' +
                 ", returned='" + returned + '\'' +
                 ", closingBalance='" + closingBalance + '\'' +
+                ", rno='" + returnno + '\'' +
+                ", rdate='" + returndate + '\'' +
                 '}';
     }
 }

@@ -371,7 +371,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                     paint.setTextSize(20);
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     // canvas.drawText(temps[0] + "," + temps[1] + "( " + temps[2] + " )", 5, st, paint);
-                    canvas.drawText(temp[0] + "," + temp[5]+   temp[6], 5, st, paint);
+                    canvas.drawText(temp[0] + "," + temp[5]  + "( " +   temp[6]   + " ) ", 5, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("HSSN CODE ", 5, st, paint);
