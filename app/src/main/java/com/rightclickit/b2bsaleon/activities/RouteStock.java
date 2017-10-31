@@ -46,12 +46,12 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
     private DBHelper mDBHelper;
     private TripsheetsModel mTripsheetsModel;
     ListView Routestocklist;
-    private LinearLayout mCloseTripsLayout;
+    private LinearLayout mCloseTripsLayout,mCloseTripApproveLayout, mCloseTripPrintLayout;;
     private HashMap<String, String> deliveryQuantityListMap = new HashMap<String, String>();
     private HashMap<String, String> returnQuantityListMap = new HashMap<String, String>();
     private Map<String, String> selectedCBListMap, selectedLeakListMap, selectedOthersListMap,
             selectedPNamesListMap, selectedPDelsListMap, selectedPReturnsListMap;
-    private String cbNotZeroStrings = "";
+    private String cbNotZeroStrings = "",mCloseTripSave = "", mCloseTripApprove = "", mCloseTripPrint = "";
     private ArrayList<TripsheetsStockList> mTripsheetsStockList = new ArrayList<TripsheetsStockList>();
     ArrayList<String[]> selectedList,cratesList;
     // ArrayList<AgentsStockBean> stockBeanArrayList;
@@ -62,6 +62,8 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
     double tq = 0.0, dq = 0.0, rq = 0.0, leq = 0.0, oq = 0.0;
     private MMSharedPreferences mmSharedPreferences;
     double cb;
+    private boolean isTripSheetClosed = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,13 +91,56 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         Routestocklist = (ListView) findViewById(R.id.RouteStockList);
         mTripsheetsModel = new TripsheetsModel(this, RouteStock.this);
-     tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
+
+        ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("TripSheets"));
+        //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        for (int z = 0; z < privilegeActionsData.size(); z++) {
+            //    System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+
+            if (privilegeActionsData.get(z).toString().equals("close_trip_save")) {
+                mCloseTripSave = privilegeActionsData.get(z).toString();
+            } else if (privilegeActionsData.get(z).toString().equals("close_trip_approve")) {
+                mCloseTripApprove = privilegeActionsData.get(z).toString();
+            } else if (privilegeActionsData.get(z).toString().equals("preview_print")) {
+                mCloseTripPrint = privilegeActionsData.get(z).toString();
+            }
+        }
+
+        tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
 
         this.selectedLeakageProductsListHashMapTemp = new HashMap<>();
         this.selectedOthersProductsListHashMapTemp = new HashMap<>();
         this.selectedCBListMap = new HashMap<>();
         print=(TextView)findViewById(R.id.tv_printroute) ;
+
+        isTripSheetClosed = mDBHelper.isTripSheetClosed(tripSheetId);
+
+
         mCloseTripsLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
+        if(isTripSheetClosed){
+            mCloseTripsLayout.setVisibility(View.GONE);
+        }else {
+            if (mCloseTripSave.equals("close_trip_save")) {
+                mCloseTripsLayout.setVisibility(View.VISIBLE);
+            } else {
+                mCloseTripsLayout.setVisibility(View.GONE);
+            }
+        }
+
+        mCloseTripApproveLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
+        if (mCloseTripApprove.equals("close_trip_approve")) {
+            mCloseTripApproveLayout.setVisibility(View.VISIBLE);
+        } else {
+            mCloseTripApproveLayout.setVisibility(View.GONE);
+        }
+
+        mCloseTripPrintLayout = (LinearLayout) findViewById(R.id.TDCLayout);
+        if (mCloseTripPrint.equals("preview_print")) {
+            mCloseTripPrintLayout.setVisibility(View.VISIBLE);
+        } else {
+            mCloseTripPrintLayout.setVisibility(View.GONE);
+        }
+
         mCloseTripsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,7 +148,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                 synchronized (this) {
                     if (selectedCBListMap.size() > 0) {
                         for (Map.Entry<String, String> productsBeanEntry : selectedCBListMap.entrySet()) {
-                            System.out.println("ASDF:::: " + productsBeanEntry.getValue());
+                           // System.out.println("ASDF:::: " + productsBeanEntry.getValue());
                             Double val = Double.parseDouble(productsBeanEntry.getValue());
                             if (val != 0) {
                                 if (cbNotZeroStrings.length() == 0) {
@@ -115,8 +160,8 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                         }
                     }
                 }
-                System.out.println("STR:::: " + cbNotZeroStrings);
-                System.out.println("TSSSS:::: " + tripsheetsStockLists.size());
+                //System.out.println("STR:::: " + cbNotZeroStrings);
+                //System.out.println("TSSSS:::: " + tripsheetsStockLists.size());
                 synchronized (this) {
                     if (cbNotZeroStrings.length() > 0) {
                         CustomAlertDialog.showAlertDialog(activityContext, "Failed", "Please make the closing balance as 0 for the following products.\n" + cbNotZeroStrings);
@@ -196,6 +241,187 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                         }
                     }
                 }
+            }
+        });
+
+        mCloseTripApproveLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cbNotZeroStrings = "";
+                synchronized (this) {
+                    if (selectedCBListMap.size() > 0) {
+                        for (Map.Entry<String, String> productsBeanEntry : selectedCBListMap.entrySet()) {
+                            //System.out.println("ASDF:::: " + productsBeanEntry.getValue());
+                            Double val = Double.parseDouble(productsBeanEntry.getValue());
+                            if (val != 0) {
+                                if (cbNotZeroStrings.length() == 0) {
+                                    cbNotZeroStrings = productsBeanEntry.getKey();
+                                } else {
+                                    cbNotZeroStrings = cbNotZeroStrings + ", " + productsBeanEntry.getKey();
+                                }
+                            }
+                        }
+                    }
+                }
+                //System.out.println("STR:::: " + cbNotZeroStrings);
+                //System.out.println("TSSSS:::: " + tripsheetsStockLists.size());
+                synchronized (this) {
+                    if (cbNotZeroStrings.length() > 0) {
+                        CustomAlertDialog.showAlertDialog(activityContext, "Failed", "Please make the closing balance as 0 for the following products.\n" + cbNotZeroStrings);
+                    } else {
+                        if (mTripsheetsStockList.size() > 0) {
+                            mTripsheetsStockList.clear();
+                        }
+                        if (selectedCBListMap.size() > 0) {
+                            for (int q = 0; q < tripsheetsStockLists.size(); q++) {
+                                TripsheetsStockList tripStockBean = new TripsheetsStockList();
+
+                                tripStockBean.setmTripsheetStockProductId(tripsheetsStockLists.get(q).getmTripsheetStockProductId());
+                                tripStockBean.setmTripsheetStockTripsheetId(tripsheetsStockLists.get(q).getmTripsheetStockTripsheetId());
+                                tripStockBean.setmTripsheetStockId(tripsheetsStockLists.get(q).getmTripsheetStockId());
+
+                                if (selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()) != null) {
+                                    // System.out.println("CB QUANTITY::: " + selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
+                                    tripStockBean.setmCBQuantity(selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
+                                }
+                                if (selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
+                                    //System.out.println("LEAK QUANTITY::: " + selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    tripStockBean.setmLeakQuantity(selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                }
+
+                                if (selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
+                                    //System.out.println("OTHER QUANTITY::: " + selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    tripStockBean.setmOtherQuantity(selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                }
+
+                                if (selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
+                                    //System.out.println("DEL QUANTITY::: " + selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    tripStockBean.setmDeliveryQuantity(selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                }
+
+                                if (selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
+                                    //System.out.println("RETU QUANTITY::: " + selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    tripStockBean.setmReturnQuantity(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                }
+
+                                mTripsheetsStockList.add(tripStockBean);
+                            }
+                        }
+                    }
+                }
+                synchronized (this) {
+                    if (mTripsheetsStockList.size() > 0) {
+                        //System.out.println("HURRYYYY::: " + mTripsheetsStockList.size());
+                        // Update the data into tripsheers stock list table and then api
+                        mDBHelper.updateTripsheetsStockListDataForCloseTrips(mTripsheetsStockList);
+                    }
+                }
+
+                synchronized (this) {
+                    if (mTripsheetsStockList.size() > 0) {
+                        //System.out.println("HURRYYYY 11111::: " + mTripsheetsStockList.size());
+                        // Update the data into tripsheers stock list table and then api
+                        if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                            Intent syncTDCOrderServiceIntent = new Intent(activityContext, SyncCloseTripSheetsStockService.class);
+                            //syncTDCOrderServiceIntent.putExtra(Constants.BUNDLE_TDC_SALE_ORDER, currentOrder);
+                            startService(syncTDCOrderServiceIntent);
+                        }
+                    }
+                }
+
+                synchronized (this) {
+                    if (mTripsheetsStockList.size() > 0) {
+                        int status = mDBHelper.updateTripSheetClosingStatus(tripSheetId);
+
+                        if (status > 0) {
+                            Toast.makeText(activityContext, "Trip sheet closed/approved successfully.", Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(activityContext, TripSheetsActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Toast.makeText(activityContext, "Trip sheet closing failed.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+            }
+        });
+
+        mCloseTripPrintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pageheight = 450 + selectedList.size() * 200;
+                Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
+                Canvas canvas = new Canvas(bmOverlay);
+                canvas.drawColor(Color.WHITE);
+                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                paint.setAntiAlias(true);
+                paint.setFilterBitmap(true);
+                paint.setDither(true);
+                paint.setColor(Color.parseColor("#000000"));
+                paint.setTextSize(26);
+
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 20, paint);
+                paint.setTextSize(20);
+                canvas.drawText(mmSharedPreferences.getString("loginusername"), 5, 50, paint);
+                paint.setTextSize(20);
+                canvas.drawText("-------------------------------------------", 5, 80, paint);
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                paint.setTextSize(20);
+                canvas.drawText("TRUCK STOCK SUMMARY", 50, 110, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("TRIP# ", 5, 140, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + "804405", 150, 140, paint);
+                paint.setTextSize(20);
+                canvas.drawText("DATE ", 5, 170, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + "17-09-2017", 150, 170, paint);
+                paint.setTextSize(20);
+                canvas.drawText("-------------------------------------------", 5, 200, paint);
+
+                int st = 230;
+                paint.setTextSize(17);
+                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+
+                for (int i = 0; i < selectedList.size(); i++) {
+                    String[] temp = selectedList.get(i);
+                    paint.setTextSize(20);
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    canvas.drawText(temp[0] + "," +  temp[1] + " ( " + temp[2] +" )", 5, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("TRUCK QTY ", 5, st, paint);
+                    canvas.drawText(": " + temp[3], 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("DELIVERY QTY ", 5, st, paint);
+                    canvas.drawText(": " + temp[4], 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("RETURN QTY ", 5, st, paint);
+                    canvas.drawText(": " + temp[5], 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("LEAK QTY ", 5, st, paint);
+                    canvas.drawText(": " + temp[6], 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("OTHER QTY", 5, st, paint);
+                    canvas.drawText(": " + temp[7], 150, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("CB", 5, st, paint);
+                    canvas.drawText(": " + temp[8], 150, st, paint);
+
+
+                    st = st + 40;
+                }
+
+                canvas.drawText("--------X---------", 100, st, paint);
+                com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
             }
         });
 
@@ -389,94 +615,11 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
             selectedList.add(temp);
         }
 
-
-
-
-        if (new NetworkConnectionDetector(RouteStock.this).isNetworkConnected()) {
-            mTripsheetsModel.getTripsheetsStockList(tripSheetId);
-        } else if (tripsheetsStockLists.size() > 0) {
-            loadTripsData(tripsheetsStockLists);
-        }
-
-
-
-        print.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int pageheight = 450 + selectedList.size() * 200;
-                Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
-                Canvas canvas = new Canvas(bmOverlay);
-                canvas.drawColor(Color.WHITE);
-                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                paint.setAntiAlias(true);
-                paint.setFilterBitmap(true);
-                paint.setDither(true);
-                paint.setColor(Color.parseColor("#000000"));
-                paint.setTextSize(26);
-
-                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 20, paint);
-                paint.setTextSize(20);
-                canvas.drawText(mmSharedPreferences.getString("loginusername"), 5, 50, paint);
-                paint.setTextSize(20);
-                canvas.drawText("-------------------------------------------", 5, 80, paint);
-                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                paint.setTextSize(20);
-                canvas.drawText("TRUCK STOCK SUMMARY", 50, 110, paint);
-
-                paint.setTextSize(20);
-                canvas.drawText("TRIP# ", 5, 140, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + "804405", 150, 140, paint);
-                paint.setTextSize(20);
-                canvas.drawText("DATE ", 5, 170, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + "17-09-2017", 150, 170, paint);
-                paint.setTextSize(20);
-                canvas.drawText("-------------------------------------------", 5, 200, paint);
-
-                int st = 230;
-                paint.setTextSize(17);
-                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-
-                for (int i = 0; i < selectedList.size(); i++) {
-                    String[] temp = selectedList.get(i);
-                    paint.setTextSize(20);
-                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                    canvas.drawText(temp[0] + "," +  temp[1] + " ( " + temp[2] +" )", 5, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("TRUCK QTY ", 5, st, paint);
-                    canvas.drawText(": " + temp[3], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("DELIVERY QTY ", 5, st, paint);
-                    canvas.drawText(": " + temp[4], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("RETURN QTY ", 5, st, paint);
-                    canvas.drawText(": " + temp[5], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("LEAK QTY ", 5, st, paint);
-                    canvas.drawText(": " + temp[6], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("OTHER QTY", 5, st, paint);
-                    canvas.drawText(": " + temp[7], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("CB", 5, st, paint);
-                    canvas.drawText(": " + temp[8], 150, st, paint);
-
-
-                    st = st + 40;
-                }
-
-                canvas.drawText("--------X---------", 100, st, paint);
-                com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
-            }
-        });
+//        if (new NetworkConnectionDetector(RouteStock.this).isNetworkConnected()) {
+//            mTripsheetsModel.getTripsheetsStockList(tripSheetId);
+//        } else if (tripsheetsStockLists.size() > 0) {
+//            loadTripsData(tripsheetsStockLists);
+//        }
     }
 
     @Override

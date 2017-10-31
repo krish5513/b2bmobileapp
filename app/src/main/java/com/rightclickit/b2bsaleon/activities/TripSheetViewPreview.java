@@ -145,9 +145,9 @@ public class TripSheetViewPreview extends AppCompatActivity {
             returnedProductsList = mDBHelper.getReturnsProductsListForSaleOrder(tripSheetId, mAgentSoId, mAgentId);
 
 
-            if (isTripSheetClosed) {
-                close_trip_layout.setVisibility(View.GONE);
-            }
+//            if (isTripSheetClosed) {
+//                close_trip_layout.setVisibility(View.GONE);
+//            }
 
             currentTripSheetDetails = mDBHelper.fetchTripSheetDetails(tripSheetId);
 

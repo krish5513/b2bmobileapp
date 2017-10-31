@@ -277,7 +277,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     int stockLen = stockArray.length();
 
                     JSONArray productCodesArray = null, orderQuantityArray = null, productsInfoArray = null, leakQuantityArray = null,
-                            verifyQuantityArray = null, dispatchQuantity = null;
+                            verifyQuantityArray = null, dispatchQuantity = null, otherQuantity = null;
 
                     for (int i = 0; i < stockLen; i++) {
 
@@ -304,6 +304,9 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                         }
                         if (jb.get("dispatch_qty") instanceof JSONArray) {
                             dispatchQuantity = jb.getJSONArray("dispatch_qty");
+                        }
+                        if (jb.get("free_qty") instanceof JSONArray) {
+                            otherQuantity = jb.getJSONArray("free_qty");
                         }
 
                         int noOfProducts = 0;
@@ -422,12 +425,17 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                     //tripStockBean.setmCBQuantity("");
                                     if (leakQuantityArray instanceof JSONArray) {
                                         if (leakQuantityArray.length() > 0) {
-                                            if (leakQuantityArray.length() > 0) {
-                                                tripStockBean.setmLeakQuantity(leakQuantityArray.get(j).toString());
-                                            }
+                                            tripStockBean.setmLeakQuantity(leakQuantityArray.get(j).toString());
                                         }
                                     }
                                     //tripStockBean.setmOtherQuantity("");
+
+                                    // OTHER QUANTITY
+                                    if (otherQuantity instanceof JSONArray) {
+                                        if (otherQuantity.length() > 0) {
+                                            tripStockBean.setmOtherQuantity(otherQuantity.get(j).toString());
+                                        }
+                                    }
 
                                     mTripsheetsStockList.add(tripStockBean);
                                 }
@@ -524,6 +532,13 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                                 }
                                             }
                                             //tripStockBean.setmOtherQuantity("");
+
+                                            // OTHER QUANTITY
+                                            if (otherQuantity instanceof JSONArray) {
+                                                if (otherQuantity.length() > 0) {
+                                                    tripStockBean.setmOtherQuantity(otherQuantity.get(j).toString());
+                                                }
+                                            }
 
                                             mTripsheetsStockList.add(tripStockBean);
                                         }

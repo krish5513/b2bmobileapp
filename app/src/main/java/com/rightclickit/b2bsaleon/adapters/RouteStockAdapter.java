@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
@@ -121,6 +122,10 @@ public class RouteStockAdapter extends BaseAdapter {
             mHolder.mRouteReturnQtyInc = (ImageButton) view.findViewById(R.id.route_return_inc);
             mHolder.mRouteReturnQtyDec = (ImageButton) view.findViewById(R.id.route_return_dec);
 
+            mHolder.mReturnQtyLayout = (LinearLayout) view.findViewById(R.id.ReturnQuantityLayout);
+
+            mHolder.mLeakOtherLayout = (LinearLayout) view.findViewById(R.id.LeakOtherLayout);
+
 
             view.setTag(mHolder);
         } else {
@@ -134,6 +139,14 @@ public class RouteStockAdapter extends BaseAdapter {
         mHolder.mRouteCode.setText(currentStockList.getmTripsheetStockProductCode());
 
         selectedPNamesListMap.put(currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockProductName());
+
+        if (currentStockList.getmTripsheetStockProductCode().equals("2600005") || currentStockList.getmTripsheetStockProductCode().equals("2600006")) {
+            mHolder.mReturnQtyLayout.setVisibility(View.VISIBLE);
+            mHolder.mLeakOtherLayout.setVisibility(View.GONE);
+        } else {
+            mHolder.mReturnQtyLayout.setVisibility(View.GONE);
+            mHolder.mLeakOtherLayout.setVisibility(View.VISIBLE);
+        }
 
         // TRUCK QUANTITY
         if (currentStockList.getmTripsheetStockVerifiedQuantity().length() > 0) {
@@ -157,17 +170,29 @@ public class RouteStockAdapter extends BaseAdapter {
             selectedDelListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(0.0));
         }
 
-        // RETUNS QUANTITY
-        if (selectedReturnsListMap.get(currentStockList.getmTripsheetStockProductId()) != null) {
-            Double delQua = Double.parseDouble(selectedReturnsListMap.get(currentStockList.getmTripsheetStockProductId()));
+        // RETURNS QUANTITY
+        if (returnsQuanListMap1.get(currentStockList.getmTripsheetStockProductId()) != null) {
+            Double delQua = Double.parseDouble(returnsQuanListMap1.get(currentStockList.getmTripsheetStockProductId()));
             mHolder.mReturnQty.setText(String.format("%.3f", delQua));
-            rq = delQua;
-            selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(delQua));
+            //dq = delQua;
+            //selectedDelListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(delQua));
         } else {
             mHolder.mReturnQty.setText(String.format("%.3f", 0.0));
-            rq = 0.0;
-            selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(0.0));
+            //dq = 0.0;
+            //selectedDelListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(0.0));
         }
+
+        // ROUTE RETUNS QUANTITY
+//        if (selectedReturnsListMap.get(currentStockList.getmTripsheetStockProductId()) != null) {
+//            Double delQua = Double.parseDouble(selectedReturnsListMap.get(currentStockList.getmTripsheetStockProductId()));
+//            mHolder.mReturnQty.setText(String.format("%.3f", delQua));
+//            rq = delQua;
+//            selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(delQua));
+//        } else {
+//            mHolder.mReturnQty.setText(String.format("%.3f", 0.0));
+//            rq = 0.0;
+//            selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(0.0));
+//        }
 
         // LEAKAGE
         if (selectedLeakageProductsListHashMapTemp.get(currentStockList.getmTripsheetStockProductId()) != null) {
@@ -227,14 +252,26 @@ public class RouteStockAdapter extends BaseAdapter {
         }
 
         // CB formula ---- ClosingBalance = (TruckQuantity + ReturnsQuantity) - (DeliveryQunatity+LeakQuantity+OthersQuantity)
-        double cb1 = tq + rq;
-        System.out.println("CB11:::: " + cb1);
-        double cb2 = dq + leq + oq;
-        System.out.println("CB22:::: " + cb2);
-        double cb = cb1 - cb2;
-        System.out.println("CB:::: " + cb);
-        mHolder.mClosingBal.setText(String.format("%.3f", cb));
-        selectedCBListMap.put(currentStockList.getmTripsheetStockProductCode(), String.valueOf(cb));
+        if (currentStockList.getmTripsheetStockProductCode().equals("2600005") || currentStockList.getmTripsheetStockProductCode().equals("2600006")) {
+            double cb1 = tq + rq;
+            //System.out.println("CB11:::: " + cb1);
+            double cb2 = dq + leq + oq;
+            //System.out.println("CB22:::: " + cb2);
+            double cb = cb1 - cb2;
+            //System.out.println("CB:::: " + cb);
+            mHolder.mClosingBal.setText(String.format("%.3f", cb));
+            selectedCBListMap.put(currentStockList.getmTripsheetStockProductCode(), String.valueOf(0.0));
+        } else {
+            double cb1 = tq + rq;
+            //System.out.println("CB11:::: " + cb1);
+            double cb2 = dq + leq + oq;
+            //System.out.println("CB22:::: " + cb2);
+            double cb = cb1 - cb2;
+            //System.out.println("CB:::: " + cb);
+            mHolder.mClosingBal.setText(String.format("%.3f", cb));
+            selectedCBListMap.put(currentStockList.getmTripsheetStockProductCode(), String.valueOf(cb));
+        }
+
 
         // ROUTE RETURNS
         mHolder.mRouteReturnQtyInc.setOnClickListener(new View.OnClickListener() {
@@ -469,6 +506,9 @@ public class RouteStockAdapter extends BaseAdapter {
         EditText mRouteReturnQty;
         public ImageButton mRouteReturnQtyInc;
         public ImageButton mRouteReturnQtyDec;
+
+        LinearLayout mReturnQtyLayout;
+        LinearLayout mLeakOtherLayout;
     }
 
     /**
