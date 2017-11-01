@@ -9,12 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.RouteStock;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
-import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.interfaces.RouteStockListener;
 
 import java.util.ArrayList;
@@ -288,7 +286,7 @@ public class RouteStockAdapter extends BaseAdapter {
                         EditText quantityEditText = (EditText) view;
                         Double presentQuantity = Double.parseDouble(quantityEditText.getText().toString().trim());
                         Double actCB = Double.parseDouble(mHolder.mClosingBal.getText().toString().trim());
-                        if (actCB > 0 && presentQuantity < actCB) {
+                        if (actCB > 0 && presentQuantity <= actCB) {
                             selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(presentQuantity));
                             setCbVal(mHolder, currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockProductCode());
                             if (listener != null) {
@@ -296,7 +294,6 @@ public class RouteStockAdapter extends BaseAdapter {
                             }
                         } else {
                             quantityEditText.setText(String.format("%.3f", 0.0));
-                            Toast.makeText(activity, "Please enter valid quantity", Toast.LENGTH_SHORT).show();
                         }
                     }
                 } catch (Exception e) {
@@ -358,7 +355,7 @@ public class RouteStockAdapter extends BaseAdapter {
                         EditText quantityEditText = (EditText) view;
                         Double presentQuantity = Double.parseDouble(quantityEditText.getText().toString().trim());
                         Double actCB = Double.parseDouble(mHolder.mClosingBal.getText().toString().trim());
-                        if (actCB > 0 && presentQuantity < actCB) {
+                        if (actCB > 0 && presentQuantity <= actCB) {
                             selectedLeakageProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(presentQuantity));
                             setCbVal(mHolder, currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockProductCode());
                             if (listener != null) {
@@ -366,7 +363,6 @@ public class RouteStockAdapter extends BaseAdapter {
                             }
                         } else {
                             quantityEditText.setText(String.format("%.3f", 0.0));
-                            Toast.makeText(activity, "Please enter valid quantity", Toast.LENGTH_SHORT).show();
                         }
                     }
                 } catch (Exception e) {
@@ -425,7 +421,7 @@ public class RouteStockAdapter extends BaseAdapter {
                         EditText quantityEditText = (EditText) view;
                         Double presentQuantity = Double.parseDouble(quantityEditText.getText().toString().trim());
                         Double actCB = Double.parseDouble(mHolder.mClosingBal.getText().toString().trim());
-                        if (actCB > 0 && presentQuantity < actCB) {
+                        if (actCB > 0 && presentQuantity <= actCB) {
                             selectedOthersProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(presentQuantity));
                             setCbVal(mHolder, currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockProductCode());
                             if (listener != null) {
@@ -433,7 +429,6 @@ public class RouteStockAdapter extends BaseAdapter {
                             }
                         } else {
                             quantityEditText.setText(String.format("%.3f", 0.0));
-                            Toast.makeText(activity, "Please enter valid quantity", Toast.LENGTH_SHORT).show();
                         }
                     }
                 } catch (Exception e) {

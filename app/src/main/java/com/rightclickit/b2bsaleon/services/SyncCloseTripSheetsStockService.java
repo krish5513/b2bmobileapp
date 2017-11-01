@@ -12,7 +12,6 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.NetworkManager;
-import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -159,37 +158,24 @@ public class SyncCloseTripSheetsStockService extends Service {
 
                     productCodesArray.put(currentStockDetails.getmTripsheetStockProductCode());
 
+                    System.out.println("RETURN QUA:: " + currentStockDetails.getmRouteReturnQuantity());
                     if (currentStockDetails.getmRouteReturnQuantity() != null) {
                         routeReturnsArray.put(currentStockDetails.getmRouteReturnQuantity());
                     } else {
                         routeReturnsArray.put("0.0");
                     }
-
+                    System.out.println("LEAK QUA:: " + currentStockDetails.getmLeakQuantity());
                     if (currentStockDetails.getmLeakQuantity() != null) {
                         leakageArray.put(currentStockDetails.getmLeakQuantity());
                     } else {
                         leakageArray.put("0.0");
                     }
+                    System.out.println("OTHERS QUA:: " + currentStockDetails.getmOtherQuantity());
                     if (currentStockDetails.getmOtherQuantity() != null) {
                         othersArray.put(currentStockDetails.getmOtherQuantity());
                     } else {
                         othersArray.put("0.0");
                     }
-
-//                    if (actionType.equals("dispatch")) {
-//                        if (i == 0) {
-//                            stockListWithProducts.setAction_by(currentStockDetails.getmTripsheetStockDispatchBy());
-//                            stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockDispatchDate()), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
-//                        }
-//
-//                        quantitiesArray.put(currentStockDetails.getmTripsheetStockDispatchQuantity());
-//                    } else {
-//                        if (i == 0) {
-//                            stockListWithProducts.setAction_by(currentStockDetails.getmTripsheetStockVerifyBy());
-//                            stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockVerifiedDate()), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
-//                        }
-//                        quantitiesArray.put(currentStockDetails.getmTripsheetStockVerifiedQuantity());
-//                    }
                 }
 
                 stockListWithProducts.setProductCodesArray(productCodesArray);
@@ -222,27 +208,30 @@ public class SyncCloseTripSheetsStockService extends Service {
                 requestObj.put("product_codes", currentStock.getProductCodesArray());
                 requestObj.put("leakage_qty", currentStock.getLeakageArray());
                 requestObj.put("others_qty", currentStock.getOthersArray());
-                requestObj.put("route_return_qty", currentStock.getRouteReturnsArray());
+                requestObj.put("free_qty", currentStock.getRouteReturnsArray());
+                requestObj.put("free_by", mPreferences.getString("userId").toString());
+                requestObj.put("free_date", currentDate);
                 requestObj.put("action_by", mPreferences.getString("userId").toString());
                 requestObj.put("date", currentDate);
+
                 System.out.println("requestObj = " + requestObj.toString());
 
-//                String requestURL = String.format("%s%s%s/update", Constants.MAIN_URL, Constants.SYNC_TRIPSHEETS_PORT, Constants.GET_TRIPSHEETS_STOCK_LIST);
-//                System.out.println("requestObj = " + requestObj);
-//                System.out.println("requestURL = " + requestURL);
-//
-//                String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
-//                System.out.println("responseString = " + responseString);
-//                if (responseString != null && !(responseString == "error" || responseString == "failure")) {
-//                    JSONObject resultObj = new JSONObject(responseString);
-//
-//                    if (resultObj.getInt("result_status") == 1) {
-//                        // if success, we are updating stock status as uploaded in local db.
-//                        mDBHelper.updateTripSheetStockTable(currentStock.getmTripsheetStockId(), actionType);
-//                    }
-//
-//                    unUploadedTripSheetsStockIdsCount--;
-//                }
+                String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TRIPSHEETS_PORT, Constants.CLOSE_TRIP_API_URL);
+                System.out.println("requestObj = " + requestObj);
+                System.out.println("requestURL = " + requestURL);
+
+                String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
+                System.out.println("responseString = " + responseString);
+                if (responseString != null && !(responseString == "error" || responseString == "failure")) {
+                    JSONObject resultObj = new JSONObject(responseString);
+
+                    if (resultObj.getInt("result_status") == 1) {
+                        // if success, we are updating stock status as uploaded in local db.
+                        mDBHelper.updateTripSheetStockTableCloseTrip(currentStock.getmTripsheetStockId());
+                    }
+
+                    unUploadedTripSheetsStockIdsCount--;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

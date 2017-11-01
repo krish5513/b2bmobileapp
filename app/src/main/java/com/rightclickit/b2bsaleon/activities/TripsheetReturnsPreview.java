@@ -199,7 +199,7 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
             if (returnedProductsList != null) {
 
                 str_deliveryNo=returnedProductsList.get(j).getReturnno();
-                deliveryNo.setText(str_deliveryNo);
+                deliveryNo.setText("Return #"+str_deliveryNo);
 
                 if (returnedProductsList.get(j).getReturndate().isEmpty())
                     deliveryDate.setText("-");

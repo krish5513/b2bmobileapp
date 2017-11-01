@@ -179,6 +179,7 @@ public class Constants {
 
     // Agent Payments list
     public static final String AGENT_PAYMENTS = "/payment_orders/byid";
-
+    // Close trip API URL
+    public static final String CLOSE_TRIP_API_URL = "/tripsheet/stock/update1";
 
 }

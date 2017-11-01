@@ -23,7 +23,9 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetSoListPreviewAdapter;
+import com.rightclickit.b2bsaleon.adapters.TripSheetsPaymentPreviewReturnedProductsAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripsheetStockPreviewAdapter;
+import com.rightclickit.b2bsaleon.beanclass.SaleOrderReturnedProducts;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
@@ -49,12 +51,12 @@ public class TripSheetViewPreview extends AppCompatActivity {
     private String loggedInUserId, loggedInUserName;
     private DBHelper mDBHelper;
 
-    String str_routecode, str_Tripcode, str_Tripdate, str_AgentName, str_AgentCode, str_OB, str_Order, str_Received, str_Due;
+    String str_routecode, str_Tripcode, str_Tripdate, str_AgentName, str_AgentCode, str_OB, str_Order, str_Received, str_Due,mAgentSoId,mAgentId,uom;
     TextView company_name, route_name, route_code, user_name, sales_print;
     private ListView tdc_products_list_preview;
     private LinearLayout close_trip_layout;
 
-    ArrayList<String[]> selectedList;
+    ArrayList<String[]> selectedList,cratesList;
     private TextView ts_ob_amount, ts_order_value, ts_total_received, ts_total_due;
 
     private TripsheetsModel mTripsheetsModel;
@@ -67,7 +69,9 @@ public class TripSheetViewPreview extends AppCompatActivity {
     private NetworkConnectionDetector networkConnectionDetector;
     TripsheetsList currentTripSheetDetails;
     private boolean isTripSheetClosed = false;
-
+    private ArrayList<SaleOrderReturnedProducts> returnedProductsList;
+    private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
+    ListView  returned_products_list_view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +91,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
             mDBHelper = new DBHelper(TripSheetViewPreview.this);
             networkConnectionDetector = new NetworkConnectionDetector(activityContext);
             listView = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
+            returned_products_list_view = (ListView) findViewById(R.id.tdc_sales_crates_list);
 
             this.getSupportActionBar().setTitle("DAILY TRIPSHEET");
             this.getSupportActionBar().setSubtitle(null);
@@ -111,6 +116,9 @@ public class TripSheetViewPreview extends AppCompatActivity {
                 //str_Tripdate=bundle.getString("tripsheetDate");
             }
 
+
+            mAgentSoId=mDBHelper.fetchTripSheetSaleorderNo(tripSheetId);
+            mAgentId=mDBHelper.fetchTripSheetagentid(tripSheetId);
             sales_print = (TextView) findViewById(R.id.tv_print);
             company_name = (TextView) findViewById(R.id.tdc_sales_company_name);
             user_name = (TextView) findViewById(R.id.tdc_sales_user_name);
@@ -134,6 +142,8 @@ public class TripSheetViewPreview extends AppCompatActivity {
             ts_total_due = (TextView) findViewById(R.id.due_amount);
 
             isTripSheetClosed = mDBHelper.isTripSheetClosed(tripSheetId);
+            returnedProductsList = mDBHelper.getReturnsProductsListForSaleOrder(tripSheetId, mAgentSoId, mAgentId);
+
 
             if (isTripSheetClosed) {
                 close_trip_layout.setVisibility(View.GONE);
@@ -172,7 +182,35 @@ public class TripSheetViewPreview extends AppCompatActivity {
 
             TripSheetViewPreview.CustomListView adapter = new TripSheetViewPreview.CustomListView(selectedList, this);
             listView.setAdapter(adapter);
+            Utility.setListViewHeightBasedOnChildren(listView);
 
+
+
+
+            cratesList = new ArrayList<>(returnedProductsList.size());
+
+
+            if (returnedProductsList.size() > 0) {
+
+                for (SaleOrderReturnedProducts crates : returnedProductsList) {
+
+                    String[] temp = new String[7];
+                    temp[0] = crates.getName();
+                    temp[1] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getOpeningBalance())));
+                    temp[2] = Utility.getFormattedCurrency(Double.parseDouble(crates.getDelivered()));
+                    temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getReturned())));
+                    temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getOpeningBalance())));
+                    temp[5] = crates.getCode();
+                    uom = mDBHelper.getProductUnitByProductCode(crates.getCode());
+                    temp[6] = uom;
+                    cratesList.add(temp);
+                }
+
+            }
+
+            tripSheetsPaymentPreviewReturnedProductsAdapter = new TripSheetsPaymentPreviewReturnedProductsAdapter(activityContext, this, returnedProductsList);
+            returned_products_list_view.setAdapter(tripSheetsPaymentPreviewReturnedProductsAdapter);
+            Utility.setListViewHeightBasedOnChildren(returned_products_list_view);
             sales_print.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -302,38 +340,38 @@ public class TripSheetViewPreview extends AppCompatActivity {
                     paint.setTextSize(20);
                     canvas.drawText("CUSTOMER WISE CRATES SUMMARY", 5, st, paint);
                     st = st + 30;
-                   /* for (int i = 0; i < selectedList.size(); i++) {
-                        String[] temp = selectedList.get(i);
+                   for (int i = 0; i < cratesList.size(); i++) {
+                        String[] temp = cratesList.get(i);
                         paint.setTextSize(20);
                         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                         canvas.drawText("DEVI MILK" + "," + "120060" , 5, st, paint);
                         st = st + 30;
                         paint.setTextSize(20);
                         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                        canvas.drawText("CRATES" + "," +"2600005" + "(" + "UOM" + ")", 5, st, paint);
+                        canvas.drawText(temp[0] + "," +temp[5] + "(" +temp[6] + ")", 5, st, paint);
 
                         st = st + 30;
                         paint.setTextSize(20);
                         canvas.drawText("OB QTY ", 5, st, paint);
-                        canvas.drawText(": " + "50.000" , 150, st, paint);
+                        canvas.drawText(": " + temp[1] , 150, st, paint);
                         st = st + 30;
                         paint.setTextSize(20);
                         canvas.drawText("DELIVER QTY ", 5, st, paint);
-                        canvas.drawText(": " + "50.000", 150, st, paint);
+                        canvas.drawText(": " + temp[2], 150, st, paint);
                         st = st + 30;
                         paint.setTextSize(20);
                         canvas.drawText("RETURN QTY ", 5, st, paint);
-                        canvas.drawText(": " + "45.000", 150, st, paint);
+                        canvas.drawText(": " + temp[3], 150, st, paint);
                         st = st + 30;
                         paint.setTextSize(20);
                         canvas.drawText("CB QTY", 5, st, paint);
-                        canvas.drawText(": " +"55.000", 150, st, paint);
+                        canvas.drawText(": " +temp[4], 150, st, paint);
 
 
                         st = st + 40;
                     }
 
-*/
+
                     canvas.drawText("--------X---------", 100, st, paint);
                     com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
                 }

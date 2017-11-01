@@ -3908,6 +3908,12 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripStockBean.setIsStockDispatched(c.getInt(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IS_DISPATCHED)));
                     tripStockBean.setIsStockVerified(c.getInt(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IS_VERIFIED)));
 
+                    tripStockBean.setmDeliveryQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_DELIVERY_QUANTITY)));
+                    tripStockBean.setmRouteReturnQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_ROUTE_RETURN_QUANTITY)));
+                    tripStockBean.setmCBQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_CB_QUANTITY)));
+                    tripStockBean.setmOtherQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_OTHER_QUANTITY)));
+                    tripStockBean.setmLeakQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_LEAK_QUANTITY)));
+
                     tripsheetsStockLists.add(tripStockBean);
 
                 } while (c.moveToNext());
@@ -3922,6 +3928,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return tripsheetsStockLists;
     }
+
 
     public void updateTripSheetStockTable(String stockId, String actionType) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -4515,6 +4522,59 @@ public class DBHelper extends SQLiteOpenHelper {
         return receivedAmount;
     }
 
+
+
+    public String fetchTripSheetSaleorderNo(String tripSheetId) {
+        String no = "";
+
+        try {
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_SO_ID + " FROM " + TABLE_TRIPSHEETS_SO_LIST + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = '" + tripSheetId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    no = (c.getString(c.getColumnIndex(KEY_TRIPSHEET_SO_ID)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return no;
+    }
+
+
+    public String fetchTripSheetagentid(String tripSheetId) {
+        String no = "";
+
+        try {
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_SO_AGENTID + " FROM " + TABLE_TRIPSHEETS_SO_LIST + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = '" + tripSheetId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    no = (c.getString(c.getColumnIndex(KEY_TRIPSHEET_SO_AGENTID)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return no;
+    }
+
     public ArrayList<TripsheetSOList> getTripSheetSaleOrderDetails(String tripSheetId) {
         ArrayList<TripsheetSOList> saleOrdersList = new ArrayList<>();
 
@@ -4773,7 +4833,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             Map<String, String> deliveredProductsHashMap = fetchDeliveriesListByTripSheetId(tripSheetId, saleOrderId, agentId);
 
-            String selectQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_NO + ", " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + ", " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY + ", " + KEY_PRODUCT_RETURNABLE
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_RETURN_NO + ", " + KEY_TRIPSHEET_RETURNS_CREATED_ON + ", "  + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY + ", " + KEY_PRODUCT_RETURNABLE
                     + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " R LEFT JOIN " + TABLE_PRODUCTS + " P ON R." + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = P." + KEY_PRODUCT_ID
                     + " WHERE P." + KEY_PRODUCT_RETURNABLE + " = 'Y' AND " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = '" + tripSheetId + "' AND " + KEY_TRIPSHEET_RETURNS_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + agentId + "'";
 
@@ -4783,6 +4843,8 @@ public class DBHelper extends SQLiteOpenHelper {
             if (c.moveToFirst()) {
                 do {
                     SaleOrderReturnedProducts returnedProduct = new SaleOrderReturnedProducts();
+                    returnedProduct.setReturnno(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NO)));
+                    returnedProduct.setReturndate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_ON)));
                     returnedProduct.setId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)));
                     returnedProduct.setName(c.getString(c.getColumnIndex(KEY_PRODUCT_TITLE)));
                     returnedProduct.setCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));

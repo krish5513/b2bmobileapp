@@ -4,11 +4,11 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
@@ -88,8 +87,9 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             trip_sheet_deliveries_save = (LinearLayout) findViewById(R.id.trip_sheet_deliveries_save);
             trip_sheet_deliveries_preview = (LinearLayout) findViewById(R.id.trip_sheet_deliveries_preview);
             trip_sheet_returns = (LinearLayout) findViewById(R.id.trip_sheet_returns);
+            trip_sheet_returns.setVisibility(View.GONE);
             trip_sheet_payments = (LinearLayout) findViewById(R.id.trip_sheet_payments);
-
+            trip_sheet_payments.setVisibility(View.GONE);
             activityContext = TripsheetDelivery.this;
             mDBHelper = new DBHelper(activityContext);
             mPreferences = new MMSharedPreferences(activityContext);

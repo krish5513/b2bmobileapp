@@ -273,12 +273,11 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     break;
 
                 case 1:
-                    CustomProgressDialog.showProgressDialog(activity1,"Please wait..");
                     JSONArray stockArray = new JSONArray(response);
                     int stockLen = stockArray.length();
 
                     JSONArray productCodesArray = null, orderQuantityArray = null, productsInfoArray = null, leakQuantityArray = null,
-                            verifyQuantityArray = null,dispatchQuantity = null;
+                            verifyQuantityArray = null, dispatchQuantity = null;
 
                     for (int i = 0; i < stockLen; i++) {
 
@@ -348,23 +347,34 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 //                                    tripStockBean.setmTripsheetStockVerifyBy("");
 
                                     // DISPATCH QUANTITY STUFF
-                                    if (dispatchQuantity != null) {
-                                        tripStockBean.setmTripsheetStockDispatchQuantity(dispatchQuantity.get(j).toString());
-                                        tripStockBean.setmTripsheetStockDispatchBy(jb.getString("dispatch_by"));
-                                        tripStockBean.setmTripsheetStockDispatchDate(jb.getString("dispatch_date"));
-                                        tripStockBean.setIsStockDispatched(1);
+                                    if (dispatchQuantity instanceof JSONArray) {
+                                        System.out.println("dspatch::: " + dispatchQuantity);
+                                        System.out.println("dspatch length::: " + dispatchQuantity.length());
+                                        if (dispatchQuantity.length() > 0) {
+                                            tripStockBean.setmTripsheetStockDispatchQuantity(dispatchQuantity.get(j).toString());
+                                            tripStockBean.setmTripsheetStockDispatchBy(jb.getString("dispatch_by"));
+                                            tripStockBean.setmTripsheetStockDispatchDate(jb.getString("dispatch_date"));
+                                            tripStockBean.setIsStockDispatched(1);
 
-                                        mDBHelper.updateTripSheetStockDispatchList(tripStockBean);
+                                            mDBHelper.updateTripSheetStockDispatchList(tripStockBean);
 
-                                        mDBHelper.updateTripSheetStockTable(tripStockBean.getmTripsheetStockId(), "dispatch");
+                                            mDBHelper.updateTripSheetStockTable(tripStockBean.getmTripsheetStockId(), "dispatch");
+                                        } else {
+                                            tripStockBean.setmTripsheetStockDispatchBy("");
+                                            tripStockBean.setmTripsheetStockDispatchDate("");
+                                            tripStockBean.setmTripsheetStockDispatchQuantity("");
+                                        }
                                     } else {
+                                        System.out.println("IN ELSEEEEEE");
                                         tripStockBean.setmTripsheetStockDispatchBy("");
                                         tripStockBean.setmTripsheetStockDispatchDate("");
                                         tripStockBean.setmTripsheetStockDispatchQuantity("");
                                     }
 
+
                                     // VERIFY QUANTITY STUFF
-                                    if (verifyQuantityArray != null) {
+                                    if (verifyQuantityArray instanceof JSONArray) {
+                                        if (verifyQuantityArray.length() > 0) {
 //                                        if (isRouteStockCalled) {
 //                                            tripStockBean.setmTripsheetStockVerifiedQuantity(verifyQuantityArray.get(j).toString());
 //                                            tripStockBean.setmTripsheetStockVerifyBy(jb.getString("verify_by"));
@@ -374,39 +384,47 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 //                                            tripStockBean.setmTripsheetStockVerifyBy("");
 //                                            tripStockBean.setmTripsheetStockVerifiedDate("");
 //                                        }
-                                        tripStockBean.setmTripsheetStockVerifiedQuantity(verifyQuantityArray.get(j).toString());
-                                        tripStockBean.setmTripsheetStockVerifyBy(jb.getString("verify_by"));
-                                        tripStockBean.setmTripsheetStockVerifiedDate(jb.getString("verify_date"));
-                                        tripStockBean.setIsStockVerified(1);
+                                            tripStockBean.setmTripsheetStockVerifiedQuantity(verifyQuantityArray.get(j).toString());
+                                            tripStockBean.setmTripsheetStockVerifyBy(jb.getString("verify_by"));
+                                            tripStockBean.setmTripsheetStockVerifiedDate(jb.getString("verify_date"));
+                                            tripStockBean.setIsStockVerified(1);
 
-                                        double extraQuantity = Double.parseDouble(tripStockBean.getmTripsheetStockVerifiedQuantity()) - Double.parseDouble(tripStockBean.getmTripsheetStockProductOrderQuantity());
-                                        if (extraQuantity > 0) {
-                                            tripStockBean.setInStockQuantity(tripStockBean.getmTripsheetStockProductOrderQuantity());
-                                            tripStockBean.setExtraQuantity(String.valueOf(extraQuantity));
+                                            double extraQuantity = Double.parseDouble(tripStockBean.getmTripsheetStockVerifiedQuantity()) - Double.parseDouble(tripStockBean.getmTripsheetStockProductOrderQuantity());
+                                            if (extraQuantity > 0) {
+                                                tripStockBean.setInStockQuantity(tripStockBean.getmTripsheetStockProductOrderQuantity());
+                                                tripStockBean.setExtraQuantity(String.valueOf(extraQuantity));
+                                            } else {
+                                                tripStockBean.setInStockQuantity(tripStockBean.getmTripsheetStockVerifiedQuantity());
+                                                tripStockBean.setExtraQuantity(String.valueOf(0));
+                                            }
+
+                                            mDBHelper.updateTripSheetStockVerifyList(tripStockBean);
+
+                                            mDBHelper.updateTripSheetStockTable(tripStockBean.getmTripsheetStockId(), "verify");
+
+                                            mDBHelper.updateTripSheetStockVerifyStatus(tripStockBean.getmTripsheetStockTripsheetId());
+
                                         } else {
-                                            tripStockBean.setInStockQuantity(tripStockBean.getmTripsheetStockVerifiedQuantity());
-                                            tripStockBean.setExtraQuantity(String.valueOf(0));
+                                            tripStockBean.setmTripsheetStockVerifiedQuantity("");
+                                            tripStockBean.setmTripsheetStockVerifyBy("");
+                                            tripStockBean.setmTripsheetStockVerifiedDate("");
                                         }
-
-                                        mDBHelper.updateTripSheetStockVerifyList(tripStockBean);
-
-                                        mDBHelper.updateTripSheetStockTable(tripStockBean.getmTripsheetStockId(), "verify");
-
-                                        mDBHelper.updateTripSheetStockVerifyStatus(tripStockBean.getmTripsheetStockTripsheetId());
-
                                     } else {
                                         tripStockBean.setmTripsheetStockVerifiedQuantity("");
                                         tripStockBean.setmTripsheetStockVerifyBy("");
                                         tripStockBean.setmTripsheetStockVerifiedDate("");
                                     }
 
+
                                     // Added by Sekhar for close trip functionality
                                     //tripStockBean.setmDeliveryQuantity("");
                                     //tripStockBean.setmReturnQuantity("");
                                     //tripStockBean.setmCBQuantity("");
-                                    if (leakQuantityArray != null) {
+                                    if (leakQuantityArray instanceof JSONArray) {
                                         if (leakQuantityArray.length() > 0) {
-                                            tripStockBean.setmLeakQuantity(leakQuantityArray.get(j).toString());
+                                            if (leakQuantityArray.length() > 0) {
+                                                tripStockBean.setmLeakQuantity(leakQuantityArray.get(j).toString());
+                                            }
                                         }
                                     }
                                     //tripStockBean.setmOtherQuantity("");
@@ -453,7 +471,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 //                                            tripStockBean.setmTripsheetStockVerifyBy("");
 
                                             // DISPATCH QUANTITY STUFF
-                                            if (dispatchQuantity != null) {
+                                            if (dispatchQuantity.length() > 0) {
                                                 tripStockBean.setmTripsheetStockDispatchQuantity(dispatchQuantity.get(j).toString());
                                                 tripStockBean.setmTripsheetStockDispatchBy(jb.getString("dispatch_by"));
                                                 tripStockBean.setmTripsheetStockDispatchDate(jb.getString("dispatch_date"));
@@ -468,7 +486,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                             }
 
                                             // VERIFY QUANTITY STUFF
-                                            if (verifyQuantityArray != null) {
+                                            if (verifyQuantityArray.length() > 0) {
 //                                        if (isRouteStockCalled) {
 //                                            tripStockBean.setmTripsheetStockVerifiedQuantity(verifyQuantityArray.get(j).toString());
 //                                            tripStockBean.setmTripsheetStockVerifyBy(jb.getString("verify_by"));
@@ -500,7 +518,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                             //tripStockBean.setmDeliveryQuantity("");
                                             //tripStockBean.setmReturnQuantity("");
                                             // tripStockBean.setmCBQuantity("");
-                                            if (leakQuantityArray != null) {
+                                            if (leakQuantityArray.length() > 0) {
                                                 if (leakQuantityArray.length() > 0) {
                                                     tripStockBean.setmLeakQuantity(leakQuantityArray.get(j).toString());
                                                 }
@@ -523,7 +541,6 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     }
 
                     synchronized (this) {
-                        CustomProgressDialog.hideProgressDialog();
                         if (mTripsheetsStockList.size() > 0) {
                             if (isRouteStockCalled) {
                                 activity5.loadTripsData(mTripsheetsStockList);
