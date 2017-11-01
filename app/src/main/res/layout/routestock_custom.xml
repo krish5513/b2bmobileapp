@@ -176,6 +176,33 @@
 
                             </LinearLayout>
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_weight="0.5"
+                                android:id="@+id/ReturnQuantityLayout">
+                                <TextView
+                                    android:id="@+id/tv_address28"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Return"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
+                                <TextView
+                                    android:id="@+id/return_quantity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="580.000"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_gravity="center"
+                                    android:textColor="@color/colorPrimary"
+                                    android:textSize="12sp" />
+
+
+                            </LinearLayout>
+
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -187,20 +214,10 @@
                                     android:id="@+id/tv_address2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Return"
+                                    android:text="Route Rtn"
                                     android:layout_gravity="center"
                                     android:textColor="@color/black"
                                     android:textSize="12sp" />
-                                <TextView
-                                    android:id="@+id/return_quantity"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="000.000"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_gravity="center"
-                                    android:textColor="@color/colorPrimary"
-                                    android:textSize="12sp"
-                                    android:visibility="gone"/>
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
@@ -250,7 +267,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:id="@+id/LeakOtherLayout">
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
