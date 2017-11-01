@@ -130,10 +130,14 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
         }
 
         mCloseTripApproveLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
-        if (mCloseTripApprove.equals("close_trip_approve")) {
-            mCloseTripApproveLayout.setVisibility(View.VISIBLE);
-        } else {
+        if(isTripSheetClosed){
             mCloseTripApproveLayout.setVisibility(View.GONE);
+        }else{
+            if (mCloseTripApprove.equals("close_trip_approve")) {
+                mCloseTripApproveLayout.setVisibility(View.VISIBLE);
+            } else {
+                mCloseTripApproveLayout.setVisibility(View.GONE);
+            }
         }
 
         mCloseTripPrintLayout = (LinearLayout) findViewById(R.id.TDCLayout);
@@ -179,28 +183,58 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                                 tripStockBean.setmTripsheetStockTripsheetId(tripsheetsStockLists.get(q).getmTripsheetStockTripsheetId());
                                 tripStockBean.setmTripsheetStockId(tripsheetsStockLists.get(q).getmTripsheetStockId());
 
+//                                if (selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()) != null) {
+//                                    // System.out.println("CB QUANTITY::: " + selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
+//                                    tripStockBean.setmCBQuantity(selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
+//                                }
+//                                if (selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
+//                                    //System.out.println("LEAK QUANTITY::: " + selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+//                                    tripStockBean.setmLeakQuantity(selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+//                                }
+//
+//                                if (selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
+//                                    //System.out.println("OTHER QUANTITY::: " + selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+//                                    tripStockBean.setmOtherQuantity(selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+//                                }
+//
+//                                if (selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
+//                                    //System.out.println("DEL QUANTITY::: " + selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+//                                    tripStockBean.setmDeliveryQuantity(selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+//                                }
+//
+//                                if (selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
+//                                    //System.out.println("RETU QUANTITY::: " + selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+//                                    tripStockBean.setmRouteReturnQuantity(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+//                                }
+
                                 if (selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()) != null) {
                                     // System.out.println("CB QUANTITY::: " + selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
                                     tripStockBean.setmCBQuantity(selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
+                                    cb= Double.parseDouble(selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
                                 }
                                 if (selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
                                     //System.out.println("LEAK QUANTITY::: " + selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     tripStockBean.setmLeakQuantity(selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    leq= Double.parseDouble(selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                 }
 
                                 if (selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
                                     //System.out.println("OTHER QUANTITY::: " + selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     tripStockBean.setmOtherQuantity(selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    oq= Double.parseDouble(selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                 }
 
                                 if (selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
                                     //System.out.println("DEL QUANTITY::: " + selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     tripStockBean.setmDeliveryQuantity(selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+
                                 }
 
                                 if (selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
                                     //System.out.println("RETU QUANTITY::: " + selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
-                                    tripStockBean.setmReturnQuantity(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    tripStockBean.setmRouteReturnQuantity(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    rq= Double.parseDouble(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+
                                 }
 
                                 mTripsheetsStockList.add(tripStockBean);
@@ -307,7 +341,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
 
                                 if (selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
                                     //System.out.println("RETU QUANTITY::: " + selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
-                                    tripStockBean.setmReturnQuantity(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    tripStockBean.setmRouteReturnQuantity(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     rq= Double.parseDouble(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
 
                                 }
@@ -782,5 +816,6 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
     @Override
     public void updateSelectedPRetunsQuantityList(Map<String, String> selectedPReturnsList) {
         this.selectedPReturnsListMap = selectedPReturnsList;
+        System.out.println("RRTN LSIT:::: " + selectedPReturnsListMap.size());
     }
 }

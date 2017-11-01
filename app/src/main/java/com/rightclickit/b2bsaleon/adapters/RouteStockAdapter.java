@@ -36,7 +36,7 @@ public class RouteStockAdapter extends BaseAdapter {
     private HashMap<String, String> deliveriesQuanListMap1, returnsQuanListMap1;
 
     private final String zero_cost = "0.000";
-    double tq = 0.0, dq = 0.0, rq = 0.0, leq = 0.0, oq = 0.0;
+    double tq = 0.0, dq = 0.0, rq = 0.0, leq = 0.0, oq = 0.0,rq1 = 0.0; // rq1 is for returnable products
 
     public RouteStockAdapter(Context ctxt, RouteStock agentsActivity, RouteStockListener tripSheetStockListener,
                              ArrayList<TripsheetsStockList> tripSheetStockList, HashMap<String, String> deliveriesQuanListMap,
@@ -174,25 +174,25 @@ public class RouteStockAdapter extends BaseAdapter {
         if (returnsQuanListMap1.get(currentStockList.getmTripsheetStockProductId()) != null) {
             Double delQua = Double.parseDouble(returnsQuanListMap1.get(currentStockList.getmTripsheetStockProductId()));
             mHolder.mReturnQty.setText(String.format("%.3f", delQua));
-            //dq = delQua;
+            rq1 = delQua;
             //selectedDelListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(delQua));
         } else {
             mHolder.mReturnQty.setText(String.format("%.3f", 0.0));
-            //dq = 0.0;
+            rq1 = 0.0;
             //selectedDelListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(0.0));
         }
 
         // ROUTE RETUNS QUANTITY
-//        if (selectedReturnsListMap.get(currentStockList.getmTripsheetStockProductId()) != null) {
-//            Double delQua = Double.parseDouble(selectedReturnsListMap.get(currentStockList.getmTripsheetStockProductId()));
-//            mHolder.mReturnQty.setText(String.format("%.3f", delQua));
-//            rq = delQua;
-//            selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(delQua));
-//        } else {
-//            mHolder.mReturnQty.setText(String.format("%.3f", 0.0));
-//            rq = 0.0;
-//            selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(0.0));
-//        }
+        if (selectedReturnsListMap.get(currentStockList.getmTripsheetStockProductId()) != null) {
+            Double delQua = Double.parseDouble(selectedReturnsListMap.get(currentStockList.getmTripsheetStockProductId()));
+            mHolder.mRouteReturnQty.setText(String.format("%.3f", delQua));
+            rq = delQua;
+            selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(delQua));
+        } else {
+            mHolder.mRouteReturnQty.setText(String.format("%.3f", 0.0));
+            rq = 0.0;
+            selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(0.0));
+        }
 
         // LEAKAGE
         if (selectedLeakageProductsListHashMapTemp.get(currentStockList.getmTripsheetStockProductId()) != null) {
@@ -252,19 +252,19 @@ public class RouteStockAdapter extends BaseAdapter {
         }
 
         // CB formula ---- ClosingBalance = (TruckQuantity + ReturnsQuantity) - (DeliveryQunatity+LeakQuantity+OthersQuantity)
-        if (currentStockList.getmTripsheetStockProductCode().equals("2600005") || currentStockList.getmTripsheetStockProductCode().equals("2600006")) {
-            double cb1 = tq + rq;
+        if (currentStockList.getmTripsheetStockProductCode().equals("2600005") || currentStockList.getmTripsheetStockProductCode().equals("2600004")) {
+            double cb1 = tq + rq1;
             //System.out.println("CB11:::: " + cb1);
-            double cb2 = dq + leq + oq;
+            double cb2 = dq + rq;
             //System.out.println("CB22:::: " + cb2);
             double cb = cb1 - cb2;
             //System.out.println("CB:::: " + cb);
             mHolder.mClosingBal.setText(String.format("%.3f", cb));
-            selectedCBListMap.put(currentStockList.getmTripsheetStockProductCode(), String.valueOf(0.0));
+            selectedCBListMap.put(currentStockList.getmTripsheetStockProductCode(), String.valueOf(cb));
         } else {
-            double cb1 = tq + rq;
+            double cb1 = tq ;
             //System.out.println("CB11:::: " + cb1);
-            double cb2 = dq + leq + oq;
+            double cb2 = dq +rq+ leq + oq;
             //System.out.println("CB22:::: " + cb2);
             double cb = cb1 - cb2;
             //System.out.println("CB:::: " + cb);
@@ -320,8 +320,8 @@ public class RouteStockAdapter extends BaseAdapter {
             public void onFocusChange(View view, boolean hasFocus) {
                 try {
                     if (!hasFocus) {
-                        EditText quantityEditText = (EditText) view;
-                        Double presentQuantity = Double.parseDouble(quantityEditText.getText().toString().trim());
+                        EditText quantityEditText1 = (EditText) view;
+                        Double presentQuantity = Double.parseDouble(quantityEditText1.getText().toString().trim());
                         Double actCB = Double.parseDouble(mHolder.mClosingBal.getText().toString().trim());
                         if (actCB > 0 && presentQuantity <= actCB) {
                             selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(presentQuantity));
@@ -329,9 +329,10 @@ public class RouteStockAdapter extends BaseAdapter {
                             if (listener != null) {
                                 listener.updateSelectedPRetunsQuantityList(selectedReturnsListMap);
                             }
-                        } else {
-                            quantityEditText.setText(String.format("%.3f", 0.0));
                         }
+//                        else {
+//                            quantityEditText1.setText(String.format("%.3f", 0.0));
+//                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -389,8 +390,8 @@ public class RouteStockAdapter extends BaseAdapter {
             public void onFocusChange(View view, boolean hasFocus) {
                 try {
                     if (!hasFocus) {
-                        EditText quantityEditText = (EditText) view;
-                        Double presentQuantity = Double.parseDouble(quantityEditText.getText().toString().trim());
+                        EditText quantityEditText2 = (EditText) view;
+                        Double presentQuantity = Double.parseDouble(quantityEditText2.getText().toString().trim());
                         Double actCB = Double.parseDouble(mHolder.mClosingBal.getText().toString().trim());
                         if (actCB > 0 && presentQuantity <= actCB) {
                             selectedLeakageProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(presentQuantity));
@@ -398,9 +399,10 @@ public class RouteStockAdapter extends BaseAdapter {
                             if (listener != null) {
                                 listener.updateSelectedLeakageQuantityList(selectedLeakageProductsListHashMapTemp);
                             }
-                        } else {
-                            quantityEditText.setText(String.format("%.3f", 0.0));
                         }
+//                        else {
+//                            quantityEditText2.setText(String.format("%.3f", 0.0));
+//                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -455,8 +457,8 @@ public class RouteStockAdapter extends BaseAdapter {
             public void onFocusChange(View view, boolean hasFocus) {
                 try {
                     if (!hasFocus) {
-                        EditText quantityEditText = (EditText) view;
-                        Double presentQuantity = Double.parseDouble(quantityEditText.getText().toString().trim());
+                        EditText quantityEditText3 = (EditText) view;
+                        Double presentQuantity = Double.parseDouble(quantityEditText3.getText().toString().trim());
                         Double actCB = Double.parseDouble(mHolder.mClosingBal.getText().toString().trim());
                         if (actCB > 0 && presentQuantity <= actCB) {
                             selectedOthersProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(presentQuantity));
@@ -464,9 +466,10 @@ public class RouteStockAdapter extends BaseAdapter {
                             if (listener != null) {
                                 listener.updateSelectedOthersQuantityList(selectedOthersProductsListHashMapTemp);
                             }
-                        } else {
-                            quantityEditText.setText(String.format("%.3f", 0.0));
                         }
+//                        else {
+//                            quantityEditText3.setText(String.format("%.3f", 0.0));
+//                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -524,14 +527,37 @@ public class RouteStockAdapter extends BaseAdapter {
         double dq = Double.parseDouble(mHolder.mDeliveryQty.getText().toString().trim());
         double leq = Double.parseDouble(mHolder.mLeakQty.getText().toString().trim());
         double oq = Double.parseDouble(mHolder.mOthersQty.getText().toString().trim());
-        double cb1 = tq + rq;
-        System.out.println("CB11:::: " + cb1);
-        double cb2 = dq + leq + oq;
-        System.out.println("CB22:::: " + cb2);
-        double cb = cb1 - cb2;
-        System.out.println("CB:::: " + cb);
-        mHolder.mClosingBal.setText(String.format("%.3f", cb));
-        selectedCBListMap.put(pCode, String.valueOf(cb));
+        double rq1 = Double.parseDouble(mHolder.mReturnQty.getText().toString().trim()); // For returnable
+
+        if (pCode.equals("2600005") || pCode.equals("2600004")) {
+            double cb1 = tq + rq1;
+            //System.out.println("CB11:::: " + cb1);
+            double cb2 = dq + rq;
+            //System.out.println("CB22:::: " + cb2);
+            double cb = cb1 - cb2;
+            //System.out.println("CB:::: " + cb);
+            mHolder.mClosingBal.setText(String.format("%.3f", cb));
+            selectedCBListMap.put(pCode, String.valueOf(cb));
+        } else {
+            double cb1 = tq ;
+            //System.out.println("CB11:::: " + cb1);
+            double cb2 = dq +rq+ leq + oq;
+            //System.out.println("CB22:::: " + cb2);
+            double cb = cb1 - cb2;
+            //System.out.println("CB:::: " + cb);
+            mHolder.mClosingBal.setText(String.format("%.3f", cb));
+            selectedCBListMap.put(pCode, String.valueOf(cb));
+        }
+
+
+//        double cb1 = tq + rq;
+//        System.out.println("CB11:::: " + cb1);
+//        double cb2 = dq + leq + oq;
+//        System.out.println("CB22:::: " + cb2);
+//        double cb = cb1 - cb2;
+//        System.out.println("CB:::: " + cb);
+//        mHolder.mClosingBal.setText(String.format("%.3f", cb));
+//        selectedCBListMap.put(pCode, String.valueOf(cb));
 
         if (listener != null) {
             listener.updateSelectedCBList(selectedCBListMap);
