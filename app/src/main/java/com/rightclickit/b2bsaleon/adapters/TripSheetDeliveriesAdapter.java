@@ -33,7 +33,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
     private Activity activity;
     private TripSheetDeliveriesListener listener;
     private ArrayList<DeliverysBean> allDeliveryProductsList, filteredDeliveryProductsList;
-    private Map<String, DeliverysBean> selectedDeliveryProductsHashMap; // Hash Map Key = Product Id
+    private Map<String, DeliverysBean> selectedDeliveryProductsHashMap,selectedDeliveryProductsHashMapForPreview; // Hash Map Key = Product Id
     private Map<String, String> previouslyDeliveredProductsHashMap;
     private Map<String, String> productOrderQuantitiesHashMap;
     private final String zero_cost = "0.000";
@@ -50,6 +50,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         this.filteredDeliveryProductsList = new ArrayList<>();
         this.filteredDeliveryProductsList.addAll(allDeliveryProductsList);
         this.selectedDeliveryProductsHashMap = new HashMap<>();
+        this.selectedDeliveryProductsHashMapForPreview = new HashMap<>();
         this.previouslyDeliveredProductsHashMap = previouslyDeliveredProducts;
         this.productOrderQuantitiesHashMap = productOrderQuantities;
         this.selectedDeliveryProductsHashMapTemp = new HashMap<>();
@@ -135,7 +136,13 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
     }
 
     public Map<String, DeliverysBean> getData() {
-        return selectedDeliveryProductsHashMap;
+        for (Map.Entry<String, DeliverysBean> deliverysBeanEntry : selectedDeliveryProductsHashMap.entrySet()) {
+            DeliverysBean deliverysBean = deliverysBeanEntry.getValue();
+            if(deliverysBean.getSelectedQuantity()>0){
+                selectedDeliveryProductsHashMapForPreview.put(deliverysBean.getProductId(),deliverysBean);
+            }
+        }
+        return selectedDeliveryProductsHashMapForPreview;
     }
 
     @Override

@@ -4002,8 +4002,18 @@ public class DBHelper extends SQLiteOpenHelper {
                     productsBean.setProductgst((c.getString(c.getColumnIndex(KEY_PRODUCT_GST_PRICE))));
                     productsBean.setProductvat((c.getString(c.getColumnIndex(KEY_PRODUCT_VAT_PRICE))));
                     productsBean.setProductOrderedQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_ORDER_QUANTITY))));
-                    productsBean.setProductStock(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY))));
-                    productsBean.setProductExtraQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_EXTRA_QUANTITY))));
+                    String inStQ = c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY));
+                    if(inStQ!=null){
+                        productsBean.setProductStock(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY))));
+                    }else {
+                        productsBean.setProductStock(0.0);
+                    }
+                    String extraStQ = c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_EXTRA_QUANTITY));
+                    if(extraStQ!=null){
+                        productsBean.setProductExtraQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_EXTRA_QUANTITY))));
+                    }else {
+                        productsBean.setProductExtraQuantity(0.0);
+                    }
                     productsBean.setProductReturnableUnit(c.getString(c.getColumnIndex(KEY_PRODUCT_RETURNABLE)));
 
                     deliverysBeanArrayList.add(productsBean);
@@ -6013,7 +6023,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
             if (cursor1.moveToFirst()) {
                 do {
-                    gst = Double.parseDouble(cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_GST_PRICE)));
+                    String gsts = cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_GST_PRICE));
+                    if(gsts!=null){
+                        gst = Double.parseDouble(cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_GST_PRICE)));
+                    }else {
+                        gst = 0.0;
+                    }
                 } while (cursor1.moveToNext());
             }
 
@@ -6041,7 +6056,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
             if (cursor1.moveToFirst()) {
                 do {
-                    vat = Double.parseDouble(cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_VAT_PRICE)));
+                    String gsts1 = cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_VAT_PRICE));
+                    if(gsts1!=null){
+                        vat = Double.parseDouble(cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_VAT_PRICE)));
+                    }else {
+                        vat = 0.0;
+                    }
+
                 } while (cursor1.moveToNext());
             }
 
