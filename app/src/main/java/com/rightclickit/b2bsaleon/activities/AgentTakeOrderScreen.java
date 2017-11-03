@@ -118,7 +118,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
         mTakeOrderListView = (ListView) findViewById(R.id.TakeOrdersList);
         if (productsList.size() > 0) {
             mTakeOrderAdapter = new TakeOrdersAdapter(this, this, productsList, mTakeOrderListView, mPreference.getString("agentId"), mTakeOrderBeansList,
-                    selectedTakeOrderQuantityListMap, selectedTakeOrderFromDatesListMap, selectedTakeOrderToDatesListMap);
+                    selectedTakeOrderQuantityListMap, selectedTakeOrderFromDatesListMap, selectedTakeOrderToDatesListMap,TroipsTakeorder,tripSheetId);
             mTakeOrderListView.setAdapter(mTakeOrderAdapter);
         }
 
@@ -369,7 +369,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
                         mTakeOrderAdapter = null;
                     }
                     mTakeOrderAdapter = new TakeOrdersAdapter(this, this, productsListSort, mTakeOrderListView, mPreference.getString("agentId"), mTakeOrderBeansList,
-                            selectedTakeOrderQuantityListMap, selectedTakeOrderFromDatesListMap, selectedTakeOrderToDatesListMap);
+                            selectedTakeOrderQuantityListMap, selectedTakeOrderFromDatesListMap, selectedTakeOrderToDatesListMap,TroipsTakeorder,tripSheetId);
                     mTakeOrderListView.setAdapter(mTakeOrderAdapter);
                     mTakeOrderAdapter.notifyDataSetChanged();
                 }

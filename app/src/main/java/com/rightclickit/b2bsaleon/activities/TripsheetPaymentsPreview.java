@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetsPaymentPreviewDeliveredProductsAdapter;
@@ -201,7 +200,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
                     taxes = gst + vat;
 
-                    temp[1] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(products.getQuantity())));
+                    temp[1] = products.getQuantity();
                     temp[2] = Utility.getFormattedCurrency(Double.parseDouble(products.getUnitRate()));
                     temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(products.getProductAmount())));
                     temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(products.getProductTax())));
@@ -254,8 +253,8 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     temp[0] = crates.getName();
                     temp[1] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getOpeningBalance())));
                     temp[2] = Utility.getFormattedCurrency(Double.parseDouble(crates.getDelivered()));
-                    temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getReturned())));
-                    temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getOpeningBalance())));
+                    temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getClosingBalance())));
+                    temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getReturned())));
                     temp[5] = crates.getCode();
                     uom = mDBHelper.getProductUnitByProductCode(crates.getCode());
                     temp[6]=uom;
@@ -275,8 +274,8 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(getApplicationContext(), "print", Toast.LENGTH_LONG).show();
-                int pageheight = 1000 + selectedList.size() * 200 + cratesList.size() * 200  ;
+             //   Toast.makeText(getApplicationContext(), "print", Toast.LENGTH_LONG).show();
+                int pageheight = 900 + selectedList.size() * 120 + cratesList.size() * 200  ;
                 Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawColor(Color.WHITE);
@@ -291,66 +290,94 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                 canvas.drawText(companyName, 5, 20, paint);
+                //paint.setTextSize(20);
+               // canvas.drawText( loggedInUserName, 5, 50, paint);
                 paint.setTextSize(20);
-                canvas.drawText( loggedInUserName, 5, 50, paint);
-                paint.setTextSize(20);
-                canvas.drawText("GST NO. 33AABCT7907M1Z2" , 5, 80, paint);
+                canvas.drawText("GST NO. 33AABCT7907M1Z2" , 5, 50, paint);
 
                 paint.setTextSize(20);
-                canvas.drawText("------------------------------------", 5, 110, paint);
+                canvas.drawText("------------------------------------", 5, 80, paint);
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                paint.setTextSize(23);
+                canvas.drawText("DELIVERY CUM PROFORMA", 5, 110, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("TRIP #,DT.", 5, 140, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + mTripSheetCode +", " + mTripSheetDate, 130, 140, paint);
+
+                //paint.setTextSize(20);
+               // canvas.drawText("DATE", 5, 200, paint);
+                //paint.setTextSize(20);
+                //canvas.drawText(", " + mTripSheetDate, 230, 170, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("SO NO,DT.", 5, 170, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + String.format( saleOrdersDetails.getmTripshetSOCode())   +", " + saleOrdersDetails.getmTripshetSODate()  , 130, 170, paint);
+
+                //paint.setTextSize(20);
+               // canvas.drawText("DATE", 5, 260, paint);
+               // paint.setTextSize(20);
+                //canvas.drawText(": " + saleOrdersDetails.getmTripshetSODate(), 240, 260, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("CUSTOMER", 5, 200, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + mAgentName, 130, 200, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("CODE", 5, 230, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + mAgentCode, 130, 230, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("-------------------------------------", 5, 260, paint);
+
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                 paint.setTextSize(20);
-                canvas.drawText("DELIVERY CUM PROFORMA", 5, 140, paint);
+                canvas.drawText( String.format("Delivery # RD%03d", deliveredProduct.getDeliveryNo()), 5, 290, paint);
+                paint.setTextSize(20);
+                canvas.drawText(", " + Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT), 170, 290, paint);
 
-                paint.setTextSize(20);
-                canvas.drawText("TRIP #", 5, 170, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + mTripSheetCode, 150, 170, paint);
-
-                paint.setTextSize(20);
-                canvas.drawText("DATE", 5, 200, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + mTripSheetDate, 150, 200, paint);
-
-                paint.setTextSize(20);
-                canvas.drawText("SO NO", 5, 230, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + String.format( saleOrdersDetails.getmTripshetSOCode()), 150, 230, paint);
-
-                paint.setTextSize(20);
-                canvas.drawText("DATE", 5, 260, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + saleOrdersDetails.getmTripshetSODate(), 150, 260, paint);
-
-                paint.setTextSize(20);
-                canvas.drawText("CUSTOMER", 5, 290, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + mAgentName, 150, 290, paint);
-
-                paint.setTextSize(20);
-                canvas.drawText("CODE", 5, 320, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + mAgentCode, 150, 320, paint);
-
-                paint.setTextSize(20);
-                canvas.drawText("-------------------------------------", 5, 350, paint);
-
-                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                paint.setTextSize(20);
-                canvas.drawText( String.format("Delivery # RD%03d", deliveredProduct.getDeliveryNo()), 5, 380, paint);
-                paint.setTextSize(20);
-                canvas.drawText(", " + Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT), 170, 380, paint);
-
-                int st = 410;
+                int st = 320;
                 paint.setTextSize(17);
                 // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
 
                 for (int i = 0; i < selectedList.size(); i++) {
                     String[] temp = selectedList.get(i);
-                    paint.setTextSize(20);
+                    paint.setTextSize(23);
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     // canvas.drawText(temps[0] + "," + temps[1] + "( " + temps[2] + " )", 5, st, paint);
                     canvas.drawText(temp[0] + "," + temp[5]  + "( " +  temp[10]  + " ) ", 5, st, paint);
+
+
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("HSSN: " +temp[6] + "," + "GST: " + temp[9]+ "%" , 5, st, paint);
+
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    //canvas.drawText("QTY ", 5, st, paint);
+                    canvas.drawText("QTY: " + temp[1] , 5, st, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("RATE: " + temp[2], 200, st, paint);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("TOT: " + temp[3], 5, st, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("GST: " + temp[4], 200, st, paint);
+
+
+
+
+
+
+
+
+
+/*
+
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("HSSN CODE ", 5, st, paint);
@@ -376,6 +403,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     paint.setTextSize(20);
                     canvas.drawText("TAX VALUE ", 5, st, paint);
                     canvas.drawText(": " + temp[4], 150, st, paint);
+*/
 
 
                     st = st + 40;
@@ -385,13 +413,15 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
 
                 st = st + 30;
-                paint.setTextSize(20);
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                paint.setTextSize(23);
                 canvas.drawText(" DELIVERY  ", 5, st, paint);
                 paint.setTextSize(20);
                 canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())) , 150, st, paint);
                 st = st + 30;
-                paint.setTextSize(20);
-                canvas.drawText(" Value  ", 5, st, paint);
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                paint.setTextSize(23);
+                canvas.drawText(" Value + GST  ", 5, st, paint);
                 paint.setTextSize(20);
                 canvas.drawText("(" + Utility.getFormattedCurrency(totalAmount) + " + " + Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())) + ")", 150, st, paint);
                 st = st + 30;
@@ -399,6 +429,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                 st = st + 30;
+                paint.setTextSize(23);
                 canvas.drawText("PAYMENT INFO", 5, st, paint);
                 st = st + 30;
                 paint.setTextSize(20);
@@ -470,7 +501,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
                 st = st + 40;
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                paint.setTextSize(20);
+                paint.setTextSize(23);
                 canvas.drawText("CRATES INFO", 5, st, paint);
 
                 st = st + 30;
@@ -502,12 +533,19 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     st = st + 40;
                 }
 
+                paint.setTextSize(20);
+                canvas.drawText( "BY", 150, st, paint);
+                st = st + 30;
+
+                paint.setTextSize(20);
+                canvas.drawText( loggedInUserName, 100, st, paint);
+                st = st + 30;
+
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
                 saveBitmap(bmOverlay);
             }
-        });
-    }
+        });    }
 
 
 

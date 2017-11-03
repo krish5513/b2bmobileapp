@@ -46,19 +46,20 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
     private DBHelper mDBHelper;
     private TripsheetsModel mTripsheetsModel;
     ListView Routestocklist;
-    private LinearLayout mCloseTripsLayout,mCloseTripApproveLayout, mCloseTripPrintLayout;;
+    private LinearLayout mCloseTripsLayout, mCloseTripApproveLayout, mCloseTripPrintLayout;
+    ;
     private HashMap<String, String> deliveryQuantityListMap = new HashMap<String, String>();
     private HashMap<String, String> returnQuantityListMap = new HashMap<String, String>();
     private Map<String, String> selectedCBListMap, selectedLeakListMap, selectedOthersListMap,
             selectedPNamesListMap, selectedPDelsListMap, selectedPReturnsListMap;
-    private String cbNotZeroStrings = "",mCloseTripSave = "", mCloseTripApprove = "", mCloseTripPrint = "";
+    private String cbNotZeroStrings = "", mCloseTripSave = "", mCloseTripApprove = "", mCloseTripPrint = "";
     private ArrayList<TripsheetsStockList> mTripsheetsStockList = new ArrayList<TripsheetsStockList>();
-    ArrayList<String[]> selectedList,cratesList;
+    ArrayList<String[]> selectedList, cratesList;
     // ArrayList<AgentsStockBean> stockBeanArrayList;
-     ArrayList<TripsheetsStockList> tripsheetsStockLists;
+    ArrayList<TripsheetsStockList> tripsheetsStockLists;
     TextView print;
-    private Map<String, String> selectedLeakageProductsListHashMapTemp,selectedOthersProductsListHashMapTemp;
-    String str_ProductName, str_ProductCode,str_Uom,  str_DelQty, str_RetQty, str_LeakQty,str_OtherQty,str_CB;
+    private Map<String, String> selectedLeakageProductsListHashMapTemp, selectedOthersProductsListHashMapTemp;
+    String str_ProductName, str_ProductCode, str_Uom, str_DelQty, str_RetQty, str_LeakQty, str_OtherQty, str_CB;
     double tq = 0.0, dq = 0.0, rq = 0.0, leq = 0.0, oq = 0.0;
     private MMSharedPreferences mmSharedPreferences;
     double cb;
@@ -111,17 +112,17 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
 
         this.selectedLeakageProductsListHashMapTemp = new HashMap<>();
         this.selectedOthersProductsListHashMapTemp = new HashMap<>();
-        this.selectedPDelsListMap=new HashMap<>();
+        this.selectedPDelsListMap = new HashMap<>();
         this.selectedCBListMap = new HashMap<>();
-        print=(TextView)findViewById(R.id.tv_printroute) ;
+        print = (TextView) findViewById(R.id.tv_printroute);
 
         isTripSheetClosed = mDBHelper.isTripSheetClosed(tripSheetId);
 
 
         mCloseTripsLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
-        if(isTripSheetClosed){
+        if (isTripSheetClosed) {
             mCloseTripsLayout.setVisibility(View.GONE);
-        }else {
+        } else {
             if (mCloseTripSave.equals("close_trip_save")) {
                 mCloseTripsLayout.setVisibility(View.VISIBLE);
             } else {
@@ -130,9 +131,9 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
         }
 
         mCloseTripApproveLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
-        if(isTripSheetClosed){
+        if (isTripSheetClosed) {
             mCloseTripApproveLayout.setVisibility(View.GONE);
-        }else{
+        } else {
             if (mCloseTripApprove.equals("close_trip_approve")) {
                 mCloseTripApproveLayout.setVisibility(View.VISIBLE);
             } else {
@@ -154,7 +155,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                 synchronized (this) {
                     if (selectedCBListMap.size() > 0) {
                         for (Map.Entry<String, String> productsBeanEntry : selectedCBListMap.entrySet()) {
-                           // System.out.println("ASDF:::: " + productsBeanEntry.getValue());
+                            // System.out.println("ASDF:::: " + productsBeanEntry.getValue());
                             Double val = Double.parseDouble(productsBeanEntry.getValue());
                             if (val != 0) {
                                 if (cbNotZeroStrings.length() == 0) {
@@ -210,30 +211,30 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                                 if (selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()) != null) {
                                     // System.out.println("CB QUANTITY::: " + selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
                                     tripStockBean.setmCBQuantity(selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
-                                    cb= Double.parseDouble(selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
+                                    cb = Double.parseDouble(selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
                                 }
                                 if (selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
                                     //System.out.println("LEAK QUANTITY::: " + selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     tripStockBean.setmLeakQuantity(selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
-                                    leq= Double.parseDouble(selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    leq = Double.parseDouble(selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                 }
 
                                 if (selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
                                     //System.out.println("OTHER QUANTITY::: " + selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     tripStockBean.setmOtherQuantity(selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
-                                    oq= Double.parseDouble(selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    oq = Double.parseDouble(selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                 }
 
                                 if (selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
                                     //System.out.println("DEL QUANTITY::: " + selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     tripStockBean.setmDeliveryQuantity(selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
-
+                                    dq = Double.parseDouble(selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                 }
 
                                 if (selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
                                     //System.out.println("RETU QUANTITY::: " + selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     tripStockBean.setmRouteReturnQuantity(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
-                                    rq= Double.parseDouble(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    rq = Double.parseDouble(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
 
                                 }
 
@@ -319,31 +320,30 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                                 if (selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()) != null) {
                                     // System.out.println("CB QUANTITY::: " + selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
                                     tripStockBean.setmCBQuantity(selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
-                                    cb= Double.parseDouble(selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
+                                    cb = Double.parseDouble(selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
                                 }
                                 if (selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
                                     //System.out.println("LEAK QUANTITY::: " + selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     tripStockBean.setmLeakQuantity(selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
-                                    leq= Double.parseDouble(selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    leq = Double.parseDouble(selectedLeakListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                 }
 
                                 if (selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
                                     //System.out.println("OTHER QUANTITY::: " + selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     tripStockBean.setmOtherQuantity(selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
-                                    oq= Double.parseDouble(selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    oq = Double.parseDouble(selectedOthersListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                 }
 
                                 if (selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
                                     //System.out.println("DEL QUANTITY::: " + selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     tripStockBean.setmDeliveryQuantity(selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
-
+                                    dq = Double.parseDouble(selectedPDelsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                 }
 
                                 if (selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
                                     //System.out.println("RETU QUANTITY::: " + selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     tripStockBean.setmRouteReturnQuantity(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
-                                    rq= Double.parseDouble(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
-
+                                    rq = Double.parseDouble(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                 }
 
                                 mTripsheetsStockList.add(tripStockBean);
@@ -390,241 +390,140 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
         });
 
 
-        for (int i = 0; i < tripsheetsStockLists.size(); i++) {
-            str_ProductName = tripsheetsStockLists.get(i).getmTripsheetStockProductName();
-            str_ProductCode = tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
-
-
-
-           /* tq = Double.parseDouble(tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity());
-            dq = Double.parseDouble(tripsheetsStockLists.get(i).getmDeliveryQuantity());
-            rq = Double.parseDouble(tripsheetsStockLists.get(i).getmReturnQuantity());
-            leq = Double.parseDouble(tripsheetsStockLists.get(i).getmLeakQuantity());
-            oq = Double.parseDouble(tripsheetsStockLists.get(i).getmOtherQuantity());
-            cb = Double.parseDouble(tripsheetsStockLists.get(i).getmCBQuantity());
-
-*/
-
-
-
-            // TRUCK QUANTITY
-            //str_TrccuQty = tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity();
-            if (tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity().length() > 0) {
-                Double verifiedQuantity = Double.parseDouble(tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity());
-                tq =verifiedQuantity;
-            } else {
-                tq = 0.0;
-            }
-
-            // DELIVERY QUANTITY
-            // str_DelQty = tripsheetsStockLists.get(i).getmDeliveryQuantity();
-            if (tripsheetsStockLists.get(i).getmDeliveryQuantity() != null) {
-                Double deliveryQuantity = Double.parseDouble(tripsheetsStockLists.get(i).getmDeliveryQuantity());
-                dq = Double.parseDouble(String.format("%.3f", deliveryQuantity));
-                System.out.println("ksjdfhkjf " + dq);
-            } else {
-                dq = Double.parseDouble(String.format("%.3f", 0.0));
-            }
-           /* ArrayList<TripSheetDeliveriesBean> deliveriesBeenList = mDBHelper.fetchAllTripsheetsDeliveriesListByTripAndProductId(tripSheetId, "");
-            System.out.println("ALL DELIVERIES:::: " + deliveriesBeenList.size());
-            if (deliveriesBeenList.size() > 0) {
-                for (int g = 0; g < deliveriesBeenList.size(); g++) {
-                    if (deliveryQuantityListMap.get(deliveriesBeenList.get(g).getmTripsheetDelivery_productId()) != null) {
-                        double quantity = Double.parseDouble(deliveryQuantityListMap.get(deliveriesBeenList.get(g).getmTripsheetDelivery_productId()));
-
-                        double sumQuantity = quantity + Double.parseDouble(deliveriesBeenList.get(g).getmTripsheetDelivery_Quantity());
-                        dq=sumQuantity;
-                        deliveryQuantityListMap.put(deliveriesBeenList.get(g).getmTripsheetDelivery_productId(),
-                                String.valueOf(sumQuantity));
-                    } else {
-                        deliveryQuantityListMap.put(deliveriesBeenList.get(g).getmTripsheetDelivery_productId(),
-                                deliveriesBeenList.get(g).getmTripsheetDelivery_Quantity());
-                    }
-                }
-            }
-*/
-           /* if (deliveryQuantityListMap.get(tripsheetsStockLists.get(i).getmTripsheetStockProductId()) != null) {
-                Double delQua = Double.parseDouble(selectedPDelsListMap.get(tripsheetsStockLists.get(i).getmTripsheetStockProductId()));
-                dq= Double.parseDouble((String.format("%.3f", delQua)));
-
-                //selectedDelListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(delQua));
-            } else {
-             dq= Double.parseDouble((String.format("%.3f", 0.0)));
-                //dq = 0.0;
-               // selectedDelListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(0.0));
-            }
-*/
-
-            // RETUNS QUANTITY
-            //str_RetQty = tripsheetsStockLists.get(i).getmReturnQuantity();
-            if (tripsheetsStockLists.get(i).getmReturnQuantity() != null) {
-                Double returnQuantity = Double.parseDouble(tripsheetsStockLists.get(i).getmReturnQuantity());
-                rq = Double.parseDouble(String.format("%.3f", returnQuantity));
-            } else {
-                rq = Double.parseDouble(String.format("%.3f", 0.0));
-            }
-
-
-
-            // LEAKAGE
-            //str_LeakQty = tripsheetsStockLists.get(i).getmLeakQuantity();
-
-            if (selectedLeakageProductsListHashMapTemp.get(tripsheetsStockLists.get(i).getmLeakQuantity()) != null) {
-                Double leakequantity = Double.parseDouble(selectedLeakageProductsListHashMapTemp.get(tripsheetsStockLists.get(i).getmLeakQuantity()));
-                leq = Double.parseDouble(String.format("%.3f", leakequantity));
-            } else if (tripsheetsStockLists.get(i).getmLeakQuantity() != null) {
-                String lq = tripsheetsStockLists.get(i).getmLeakQuantity();
-                if (lq.length() > 0) {
-                    Double leakequantity = Double.parseDouble(lq);
-                    if (leakequantity > 0) {
-                        leq = Double.parseDouble(String.format("%.3f", leakequantity));
-                    } else {
-                        leq = Double.parseDouble(String.format("%.3f", 0.0));
-                    }
-                } else {
-                    leq = Double.parseDouble(String.format("%.3f", 0.0));
-                }
-            } else {
-                leq = Double.parseDouble(String.format("%.3f", 0.0));
-            }
-
-
-
-
-
-            // OTHERS
-            //str_OtherQty = tripsheetsStockLists.get(i).getmOtherQuantity();
-            if (selectedOthersProductsListHashMapTemp.get(tripsheetsStockLists.get(i).getmOtherQuantity()) != null) {
-                Double otherquantity = Double.parseDouble(selectedOthersProductsListHashMapTemp.get(tripsheetsStockLists.get(i).getmOtherQuantity()));
-                oq = Double.parseDouble(String.format("%.3f", otherquantity));
-            } else if (tripsheetsStockLists.get(i).getmOtherQuantity() != null) {
-                String lq = tripsheetsStockLists.get(i).getmOtherQuantity();
-                if (lq.length() > 0) {
-                    Double otherquantity = Double.parseDouble(lq);
-                    if (otherquantity > 0) {
-                        oq = Double.parseDouble(String.format("%.3f", otherquantity));
-                    } else {
-                        oq = Double.parseDouble(String.format("%.3f", 0.0));
-                    }
-                } else {
-                    oq = Double.parseDouble(String.format("%.3f", 0.0));
-                }
-            } else {
-                oq = Double.parseDouble(String.format("%.3f", 0.0));
-            }
-
-
-
-
-            // CB formula
-
-            try {
-                double cb1 = tq + rq;
-                System.out.println("CB11:::: " + cb1);
-                double cb2 = dq + leq + oq;
-                System.out.println("CB22:::: " + cb2);
-                 cb = cb1 - cb2;
-
-                System.out.println("CB:::: " + str_CB);
-
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-
-
-            String[] temp = new String[9];
-            temp[0] = str_ProductName;
-            temp[1] = str_ProductCode;
-            str_Uom = mDBHelper.getProductUnitByProductCode(str_ProductCode);
-            temp[2] =str_Uom;
-            temp[3] = String.valueOf(tq);
-            temp[4] = String.valueOf(dq);
-            temp[5] = String.valueOf(rq);
-            temp[6] = String.valueOf(leq);
-            temp[7] = String.valueOf(oq);
-            temp[8] = String.valueOf(cb);
-
-            selectedList.add(temp);
-        }
-
         mCloseTripPrintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int pageheight = 450 + selectedList.size() * 200;
-                Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
-                Canvas canvas = new Canvas(bmOverlay);
-                canvas.drawColor(Color.WHITE);
-                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                paint.setAntiAlias(true);
-                paint.setFilterBitmap(true);
-                paint.setDither(true);
-                paint.setColor(Color.parseColor("#000000"));
-                paint.setTextSize(26);
+                synchronized (this) {
+                    for (int i = 0; i < tripsheetsStockLists.size(); i++) {
+                        double  tq = 0.0,cb = 0.0,leq = 0.0,oq = 0.0,dq=0.0,rq=0.0;
+                        str_ProductName = tripsheetsStockLists.get(i).getmTripsheetStockProductName();
+                        str_ProductCode = tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
 
-                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 20, paint);
-                paint.setTextSize(20);
-                canvas.drawText(mmSharedPreferences.getString("loginusername"), 5, 50, paint);
-                paint.setTextSize(20);
-                canvas.drawText("-------------------------------------------", 5, 80, paint);
-                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                paint.setTextSize(20);
-                canvas.drawText("TRUCK STOCK SUMMARY", 50, 110, paint);
+                        // TRUCK QUANTITY
+                        if (tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity().length() > 0) {
+                            Double verifiedQuantity = Double.parseDouble(tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity());
+                            tq = verifiedQuantity;
+                        }
+                        // CB QUANTITY
+                        if (selectedCBListMap.get(tripsheetsStockLists.get(i).getmTripsheetStockProductCode()) != null) {
+                            cb = Double.parseDouble(selectedCBListMap.get(tripsheetsStockLists.get(i).getmTripsheetStockProductCode()));
+                        }
+                        // LEAK QUANTITY
+                        if (selectedLeakListMap.get(tripsheetsStockLists.get(i).getmTripsheetStockProductId()) != null) {
+                            leq = Double.parseDouble(selectedLeakListMap.get(tripsheetsStockLists.get(i).getmTripsheetStockProductId()));
+                        }
+                        // OTHER QUANTITY
+                        if (selectedOthersListMap.get(tripsheetsStockLists.get(i).getmTripsheetStockProductId()) != null) {
+                            oq = Double.parseDouble(selectedOthersListMap.get(tripsheetsStockLists.get(i).getmTripsheetStockProductId()));
+                        }
+                        // DELIVERY QUANTITY
+                        if (selectedPDelsListMap.get(tripsheetsStockLists.get(i).getmTripsheetStockProductId()) != null) {
+                            dq = Double.parseDouble(selectedPDelsListMap.get(tripsheetsStockLists.get(i).getmTripsheetStockProductId()));
+                        }
+                        // RETURNS QUANTITY
+                        if (selectedPReturnsListMap.get(tripsheetsStockLists.get(i).getmTripsheetStockProductId()) != null) {
+                            rq = Double.parseDouble(selectedPReturnsListMap.get(tripsheetsStockLists.get(i).getmTripsheetStockProductId()));
+                        }
 
-                paint.setTextSize(20);
-                canvas.drawText("TRIP# ", 5, 140, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + "804405", 150, 140, paint);
-                paint.setTextSize(20);
-                canvas.drawText("DATE ", 5, 170, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + "17-09-2017", 150, 170, paint);
-                paint.setTextSize(20);
-                canvas.drawText("-------------------------------------------", 5, 200, paint);
-
-                int st = 230;
-                paint.setTextSize(17);
-                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-
-                for (int i = 0; i < selectedList.size(); i++) {
-                    String[] temp = selectedList.get(i);
-                    paint.setTextSize(20);
-                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                    canvas.drawText(temp[0] + "," +  temp[1] + " ( " + temp[2] +" )", 5, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("TRUCK QTY ", 5, st, paint);
-                    canvas.drawText(": " + temp[3], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("DELIVERY QTY ", 5, st, paint);
-                    canvas.drawText(": " + temp[4], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("RETURN QTY ", 5, st, paint);
-                    canvas.drawText(": " + temp[5], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("LEAK QTY ", 5, st, paint);
-                    canvas.drawText(": " + temp[6], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("OTHER QTY", 5, st, paint);
-                    canvas.drawText(": " + temp[7], 150, st, paint);
-                    st = st + 30;
-                    paint.setTextSize(20);
-                    canvas.drawText("CB", 5, st, paint);
-                    canvas.drawText(": " + temp[8], 150, st, paint);
+                        // CB formula
+                        try {
+                            double cb1 = tq;
+                            double cb2 = dq + rq + leq + oq;
+                            cb = cb1 - cb2;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
 
-                    st = st + 40;
+                        String[] temp = new String[9];
+                        temp[0] = str_ProductName;
+                        temp[1] = str_ProductCode;
+                        str_Uom = mDBHelper.getProductUnitByProductCode(str_ProductCode);
+                        temp[2] = str_Uom;
+                        temp[3] = String.valueOf(tq);
+                        temp[4] = String.valueOf(dq);
+                        temp[5] = String.valueOf(rq);
+                        temp[6] = String.valueOf(leq);
+                        temp[7] = String.valueOf(oq);
+                        temp[8] = String.valueOf(cb);
+
+                        selectedList.add(temp);
+                    }
                 }
+                synchronized (this) {
+                    int pageheight = 450 + selectedList.size() * 200;
+                    Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
+                    Canvas canvas = new Canvas(bmOverlay);
+                    canvas.drawColor(Color.WHITE);
+                    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                    paint.setAntiAlias(true);
+                    paint.setFilterBitmap(true);
+                    paint.setDither(true);
+                    paint.setColor(Color.parseColor("#000000"));
+                    paint.setTextSize(26);
 
-                canvas.drawText("--------X---------", 100, st, paint);
-                com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 20, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(mmSharedPreferences.getString("loginusername"), 5, 50, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("-------------------------------------------", 5, 80, paint);
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    paint.setTextSize(20);
+                    canvas.drawText("TRUCK STOCK SUMMARY", 50, 110, paint);
+
+                    paint.setTextSize(20);
+                    canvas.drawText("TRIP# ", 5, 140, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + "804405", 150, 140, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("DATE ", 5, 170, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + "17-09-2017", 150, 170, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("-------------------------------------------", 5, 200, paint);
+
+                    int st = 230;
+                    paint.setTextSize(17);
+                    // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+
+                    for (int i = 0; i < selectedList.size(); i++) {
+                        String[] temp = selectedList.get(i);
+                        paint.setTextSize(20);
+                        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                        canvas.drawText(temp[0] + "," +  temp[1] + " ( " + temp[2] +" )", 5, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("TRUCK QTY ", 5, st, paint);
+                        canvas.drawText(": " + temp[3], 150, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("DELIVERY QTY ", 5, st, paint);
+                        canvas.drawText(": " + temp[4], 150, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("RETURN QTY ", 5, st, paint);
+                        canvas.drawText(": " + temp[5], 150, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("LEAK QTY ", 5, st, paint);
+                        canvas.drawText(": " + temp[6], 150, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("OTHER QTY", 5, st, paint);
+                        canvas.drawText(": " + temp[7], 150, st, paint);
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("CB", 5, st, paint);
+                        canvas.drawText(": " + temp[8], 150, st, paint);
+
+
+                        st = st + 40;
+                    }
+
+                    canvas.drawText("--------X---------", 100, st, paint);
+                    com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+                }
             }
         });
 
@@ -682,10 +581,6 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
 
         routestockadapter = new RouteStockAdapter(this, RouteStock.this, this, tripsStockList, deliveryQuantityListMap, returnQuantityListMap);
         Routestocklist.setAdapter(routestockadapter);
-
-
-
-
 
 
 //        if (new NetworkConnectionDetector(RouteStock.this).isNetworkConnected()) {

@@ -35,11 +35,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
-                    android:text="Fcm 500"
+                    android:text="Fcm 5001qwertyuiwd"
                     android:textAllCaps="true"
+                    android:layout_weight="0.3"
                     android:textColor="@color/greydark"
                     android:textSize="12sp" />
-
+                <TextView
+                    android:id="@+id/productCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:text="123456"
+                    android:textAllCaps="true"
+                    android:layout_weight="0.4"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout

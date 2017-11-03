@@ -59,13 +59,16 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 
     double amount, subtotal;
     double taxAmount;
-    String name,p_code,p_uom;
+    String name, p_code, p_uom;
 
-  //  Map<String, String[]> selectedList = new HashMap<String, String[]>();
+    //  Map<String, String[]> selectedList = new HashMap<String, String[]>();
 
     ArrayList<String[]> selectedList;
+
+    private String TRIPID = "", ISFROM = "";
+
     @Override
- protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent_take_order_preview);
 
@@ -90,169 +93,175 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         Bundle args = intent.getBundleExtra("BUNDLE");
         mProductIdsList = (ArrayList<TakeOrderBean>) args.getSerializable("productIdsList");
         System.out.println("SIZE::: " + mProductIdsList.size());
+        Bundle bundle = this.getIntent().getExtras();
+        if (bundle != null) {
+            ISFROM = bundle.getString("From");
+            TRIPID = bundle.getString("tripsheetId");
+        }
+
         ArrayList<ProductsBean> productsList = mDBHelper.fetchAllRecordsFromProductsTable();
         ArrayList<SpecialPriceBean> specialPriceBeanArrayList = mDBHelper.fetchAllRecordsFromSpecialPriceTable();
         System.out.println("SIZE111::: " + productsList.size());
         System.out.println("SIZE222::: " + specialPriceBeanArrayList.size());
-       // for (int l = 0; l < specialPriceBeanArrayList.size(); l++) {
-               selectedList=new ArrayList<>(mProductIdsList.size());
+        // for (int l = 0; l < specialPriceBeanArrayList.size(); l++) {
+        selectedList = new ArrayList<>(mProductIdsList.size());
 
-   if(mProductIdsList.size()>0){
-     for (int k = 0; k < mProductIdsList.size(); k++) {
-       if(productsList.size()>0) {
-         for (int i = 0; i < productsList.size(); i++) {
-            if (mProductIdsList.get(k).getmProductId().toString().equals(productsList.get(i).getProductId())) {
-               System.out.println("P TITLE IS::: " + productsList.get(i).getProductTitle());
+        if (mProductIdsList.size() > 0) {
+            for (int k = 0; k < mProductIdsList.size(); k++) {
+                if (productsList.size() > 0) {
+                    for (int i = 0; i < productsList.size(); i++) {
+                        if (mProductIdsList.get(k).getmProductId().toString().equals(productsList.get(i).getProductId())) {
+                            System.out.println("P TITLE IS::: " + productsList.get(i).getProductTitle());
 
-               TakeOrderPreviewBean topBean = new TakeOrderPreviewBean();
+                            TakeOrderPreviewBean topBean = new TakeOrderPreviewBean();
 
-               topBean.setpName(mProductIdsList.get(k).getmProductTitle());
-               topBean.setpQuantity(mProductIdsList.get(k).getmProductQuantity());
-              if (specialPriceBeanArrayList.size() > 0) {
-                 for (int l = 0; l < specialPriceBeanArrayList.size(); l++) {
-                    if (specialPriceBeanArrayList.get(l).getSpecialProductId().equals(productsList.get(i).getProductId())
-                            && specialPriceBeanArrayList.get(i).getSpecialUserId().equals(sharedPreferences.getString("agentId"))) {
-                        if (!specialPriceBeanArrayList.get(l).getSpecialPrice().equals("")) {
-                            topBean.setpPrice(specialPriceBeanArrayList.get(l).getSpecialPrice());
-                        } else {
-                            topBean.setpPrice(productsList.get(i).getProductAgentPrice());
-                        }
-                    } else {
-                        topBean.setpPrice(productsList.get(i).getProductAgentPrice());
-                    }
-                 }
-              }
-               topBean.setmProductTaxGST(productsList.get(i).getProductgst());
-               topBean.setmProductTaxVAT(productsList.get(i).getProductvat());
-               topBean.setmProductFromDate(mProductIdsList.get(k).getmProductFromDate());
-               topBean.setmProductToDate(mProductIdsList.get(k).getmProductToDate());
-               //topBean.setTaxPercentage(productsList.get(i).getProductgst());
-               // topBean.setTaxName(productsList.get(i).getProductvat());
-               topBean.setmProductToDate(mProductIdsList.get(k).getmProductToDate());
+                            topBean.setpName(mProductIdsList.get(k).getmProductTitle());
+                            topBean.setpQuantity(mProductIdsList.get(k).getmProductQuantity());
+                            if (specialPriceBeanArrayList.size() > 0) {
+                                for (int l = 0; l < specialPriceBeanArrayList.size(); l++) {
+                                    if (specialPriceBeanArrayList.get(l).getSpecialProductId().equals(productsList.get(i).getProductId())
+                                            && specialPriceBeanArrayList.get(i).getSpecialUserId().equals(sharedPreferences.getString("agentId"))) {
+                                        if (!specialPriceBeanArrayList.get(l).getSpecialPrice().equals("")) {
+                                            topBean.setpPrice(specialPriceBeanArrayList.get(l).getSpecialPrice());
+                                        } else {
+                                            topBean.setpPrice(productsList.get(i).getProductAgentPrice());
+                                        }
+                                    } else {
+                                        topBean.setpPrice(productsList.get(i).getProductAgentPrice());
+                                    }
+                                }
+                            }
+                            topBean.setmProductTaxGST(productsList.get(i).getProductgst());
+                            topBean.setmProductTaxVAT(productsList.get(i).getProductvat());
+                            topBean.setmProductFromDate(mProductIdsList.get(k).getmProductFromDate());
+                            topBean.setmProductToDate(mProductIdsList.get(k).getmProductToDate());
+                            //topBean.setTaxPercentage(productsList.get(i).getProductgst());
+                            // topBean.setTaxName(productsList.get(i).getProductvat());
+                            topBean.setmProductToDate(mProductIdsList.get(k).getmProductToDate());
 
-               float tax = 0.0f;
-               String str_Taxname = "";
-               if (productsList.get(i).getProductvat() != null) {
-                   tax = Float.parseFloat(productsList.get(i).getProductvat());
-                   str_Taxname = "SGST:";
-               } else if (productsList.get(i).getProductgst() != null) {
-                   tax = Float.parseFloat(productsList.get(i).getProductgst());
-                   str_Taxname = "CGST:";
-               }
+                            float tax = 0.0f;
+                            String str_Taxname = "";
+                            if (productsList.get(i).getProductvat() != null) {
+                                tax = Float.parseFloat(productsList.get(i).getProductvat());
+                                str_Taxname = "SGST:";
+                            } else if (productsList.get(i).getProductgst() != null) {
+                                tax = Float.parseFloat(productsList.get(i).getProductgst());
+                                str_Taxname = "CGST:";
+                            }
 
-               name = String.valueOf(mProductIdsList.get(k).getmProductTitle().replace(",", ""));
-                p_code = String.valueOf(mProductIdsList.get(k).getMtakeorderProductCode().replace(",", ""));
-                p_uom =String.valueOf(mProductIdsList.get(k).getUom().replace(",", ""));
+                            name = String.valueOf(mProductIdsList.get(k).getmProductTitle().replace(",", ""));
+                            p_code = String.valueOf(mProductIdsList.get(k).getMtakeorderProductCode().replace(",", ""));
+                            p_uom = String.valueOf(mProductIdsList.get(k).getUom().replace(",", ""));
 
-               double price ;
-                if(productsList.get(i).getProductAgentPrice()!=null){
-                    price = Double.parseDouble(productsList.get(i).getProductAgentPrice().replace(",", ""));
-                }else{
-                    price = 0.0f;
-                }
-               double quantity = Double.parseDouble(mProductIdsList.get(k).getmProductQuantity().replace(",", ""));
+                            double price;
+                            if (productsList.get(i).getProductAgentPrice() != null) {
+                                price = Double.parseDouble(productsList.get(i).getProductAgentPrice().replace(",", ""));
+                            } else {
+                                price = 0.0f;
+                            }
+                            double quantity = Double.parseDouble(mProductIdsList.get(k).getmProductQuantity().replace(",", ""));
 
-               currentDate = mProductIdsList.get(k).getmAgentTakeOrderDate();
+                            currentDate = mProductIdsList.get(k).getmAgentTakeOrderDate();
 
-               taxAmount = ((quantity * price) * tax) / 100;
-               //  amount = price + taxAmount;
-               amount = price;
+                            taxAmount = ((quantity * price) * tax) / 100;
+                            //  amount = price + taxAmount;
+                            amount = price;
 
-               subtotal = (price * quantity);
+                            subtotal = (price * quantity);
 
-               mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
-                    * Double.parseDouble(mProductIdsList.get(k).getmProductQuantity())));
-               System.out.println("P PRICE IS::: " + mProductsPriceAmountSum);
+                            mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
+                                    * Double.parseDouble(mProductIdsList.get(k).getmProductQuantity())));
+                            System.out.println("P PRICE IS::: " + mProductsPriceAmountSum);
 
-               mTotalProductsTax = (mTotalProductsTax + taxAmount);
+                            mTotalProductsTax = (mTotalProductsTax + taxAmount);
 
-               mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
-               System.out.println("FINAL AMOUNT PRICE IS::: " + mTotalProductsPriceAmountSum);
-               String[] temp = new String[6];
-               temp[0] = name;
-                temp[1] = p_code;
-                temp[2] = p_uom;
-               temp[3] = String.valueOf(quantity);
-               temp[4] = String.valueOf(price);
-               temp[5] = String.valueOf(subtotal);
+                            mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
+                            System.out.println("FINAL AMOUNT PRICE IS::: " + mTotalProductsPriceAmountSum);
+                            String[] temp = new String[6];
+                            temp[0] = name;
+                            temp[1] = p_code;
+                            temp[2] = p_uom;
+                            temp[3] = String.valueOf(quantity);
+                            temp[4] = String.valueOf(price);
+                            temp[5] = String.valueOf(subtotal);
                /*temp[4] = String.valueOf(taxAmount);
                temp[5] = String.valueOf(str_Taxname);
                temp[6] = String.valueOf("(" + tax + "%)");
                temp[7] = mProductIdsList.get(k).getmProductFromDate();
                temp[8] = mProductIdsList.get(k).getmProductToDate();*/
-               selectedList.add(temp);
-               Log.i("takeordertemp", temp + "");
-               takeOrderPreviewBeanArrayList.add(topBean);
+                            selectedList.add(temp);
+                            Log.i("takeordertemp", temp + "");
+                            takeOrderPreviewBeanArrayList.add(topBean);
+                        }
+                    }
+                }
             }
-         }
-       }
-     }
-   }
+        }
 
-            tv_companyName = (TextView) findViewById(R.id.tv_companyName);
-            tv_companyName.setText(sharedPreferences.getString("companyname"));
+        tv_companyName = (TextView) findViewById(R.id.tv_companyName);
+        tv_companyName.setText(sharedPreferences.getString("companyname"));
 
-           // user_Name = (TextView) findViewById(R.id.tv_user_Name);
-           // user_Name.setText("by " + sharedPreferences.getString("loginusername"));
+        // user_Name = (TextView) findViewById(R.id.tv_user_Name);
+        // user_Name.setText("by " + sharedPreferences.getString("loginusername"));
 
-           // Route_Name = (TextView) findViewById(R.id.route_name);
-           // Route_Name.setText(sharedPreferences.getString("routename"));
+        // Route_Name = (TextView) findViewById(R.id.route_name);
+        // Route_Name.setText(sharedPreferences.getString("routename"));
 
-            //RouteCode = (TextView) findViewById(R.id.tv_routecode);
-            //str_routecode = (sharedPreferences.getString("routecode") + ",");
-            //RouteCode.setText(str_routecode);
+        //RouteCode = (TextView) findViewById(R.id.tv_routecode);
+        //str_routecode = (sharedPreferences.getString("routecode") + ",");
+        //RouteCode.setText(str_routecode);
 
 
-            orderNo = (TextView) findViewById(R.id.order_no);
-            str_enguiryid = (sharedPreferences.getString("enquiryid") + ",");
-            orderNo.setText(str_enguiryid);
+        orderNo = (TextView) findViewById(R.id.order_no);
+        str_enguiryid = (sharedPreferences.getString("enquiryid") + ",");
+        orderNo.setText(str_enguiryid);
 
-            orderDate = (TextView) findViewById(R.id.tv_date);
+        orderDate = (TextView) findViewById(R.id.tv_date);
        /* Calendar cal = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         currentDate = df.format(cal.getTime());*/
-            orderDate.setText(currentDate);
-            sharedPreferences.putString("orderdate", currentDate);
+        orderDate.setText(currentDate);
+        sharedPreferences.putString("orderdate", currentDate);
 
-            agentName = (TextView) findViewById(R.id.agentname);
-            str_agentname = (sharedPreferences.getString("agentName") + ",");
-            agentName.setText(str_agentname);
+        agentName = (TextView) findViewById(R.id.agentname);
+        str_agentname = (sharedPreferences.getString("agentName") + ",");
+        agentName.setText(str_agentname);
 
-            agentCode = (TextView) findViewById(R.id.tv_AgentCode);
-            agentCode.setText(sharedPreferences.getString("agentCode"));
-
-
-            taxprice = (TextView) findViewById(R.id.taxAmount);
-            taxprice.setText(Utility.getFormattedCurrency(mTotalProductsTax));
-            taxprice.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(20, 2)});
-
-            tv_amount = (TextView) findViewById(R.id.Amount);
-            tv_amount.setText(Utility.getFormattedCurrency(mProductsPriceAmountSum));
-            tv_amount.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(20, 2)});
-
-            totalprice = (TextView) findViewById(R.id.totalAmount);
-            totalprice.setText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
-            totalprice.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(20, 3)});
-            sharedPreferences.putString("totalprice", Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
+        agentCode = (TextView) findViewById(R.id.tv_AgentCode);
+        agentCode.setText(sharedPreferences.getString("agentCode"));
 
 
-            print = (TextView) findViewById(R.id.tv_print);
+        taxprice = (TextView) findViewById(R.id.taxAmount);
+        taxprice.setText(Utility.getFormattedCurrency(mTotalProductsTax));
+        taxprice.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(20, 2)});
+
+        tv_amount = (TextView) findViewById(R.id.Amount);
+        tv_amount.setText(Utility.getFormattedCurrency(mProductsPriceAmountSum));
+        tv_amount.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(20, 2)});
+
+        totalprice = (TextView) findViewById(R.id.totalAmount);
+        totalprice.setText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
+        totalprice.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(20, 3)});
+        sharedPreferences.putString("totalprice", Utility.getFormattedCurrency(mTotalProductsPriceAmountSum));
 
 
-            print.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(getApplicationContext(),"print",Toast.LENGTH_LONG).show();
-                    int pageheight = 430 + selectedList.size() * 150;
-                    Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
-                    Canvas canvas = new Canvas(bmOverlay);
-                    canvas.drawColor(Color.WHITE);
-                    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                    paint.setAntiAlias(true);
-                    paint.setFilterBitmap(true);
-                    paint.setDither(true);
-                    paint.setColor(Color.parseColor("#000000"));
-                    paint.setTextSize(26);
+        print = (TextView) findViewById(R.id.tv_print);
+
+
+        print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "print", Toast.LENGTH_LONG).show();
+                int pageheight = 430 + selectedList.size() * 150;
+                Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
+                Canvas canvas = new Canvas(bmOverlay);
+                canvas.drawColor(Color.WHITE);
+                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                paint.setAntiAlias(true);
+                paint.setFilterBitmap(true);
+                paint.setDither(true);
+                paint.setColor(Color.parseColor("#000000"));
+                paint.setTextSize(26);
 /*
 
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
@@ -327,88 +336,87 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 */
 
 
+                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                canvas.drawText(sharedPreferences.getString("companyname"), 5, 20, paint);
+                paint.setTextSize(20);
+                canvas.drawText(sharedPreferences.getString("loginusername"), 5, 50, paint);
+                paint.setTextSize(20);
+                canvas.drawText("----------------------------------------------------", 5, 80, paint);
+                paint.setTextSize(20);
+                canvas.drawText("PURCHASE REQUEST", 100, 110, paint);
 
-                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                    canvas.drawText(sharedPreferences.getString("companyname"), 5, 20, paint);
-                    paint.setTextSize(20);
-                    canvas.drawText(sharedPreferences.getString("loginusername"), 5, 50, paint);
-                    paint.setTextSize(20);
-                    canvas.drawText("----------------------------------------------------", 5, 80, paint);
-                    paint.setTextSize(20);
-                    canvas.drawText("PURCHASE REQUEST", 100, 110, paint);
+                paint.setTextSize(20);
+                canvas.drawText("CUSTOMER", 5, 140, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + str_agentname, 150, 140, paint);
+                paint.setTextSize(20);
+                canvas.drawText("CODE", 5, 170, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + sharedPreferences.getString("agentCode"), 150, 170, paint);
+                paint.setTextSize(20);
+                canvas.drawText("PR#", 5, 200, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + str_enguiryid, 150, 200, paint);
+                paint.setTextSize(20);
+                canvas.drawText("DATE", 5, 230, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + currentDate, 150, 230, paint);
 
-                    paint.setTextSize(20);
-                    canvas.drawText("CUSTOMER", 5, 140, paint);
-                    paint.setTextSize(20);
-                    canvas.drawText(": " + str_agentname, 150, 140, paint);
-                    paint.setTextSize(20);
-                    canvas.drawText("CODE", 5, 170, paint);
-                    paint.setTextSize(20);
-                    canvas.drawText(": " + sharedPreferences.getString("agentCode"), 150, 170, paint);
-                    paint.setTextSize(20);
-                    canvas.drawText("PR#", 5, 200, paint);
-                    paint.setTextSize(20);
-                    canvas.drawText(": " + str_enguiryid, 150, 200, paint);
-                    paint.setTextSize(20);
-                    canvas.drawText("DATE", 5, 230, paint);
-                    paint.setTextSize(20);
-                    canvas.drawText(": " + currentDate, 150, 230, paint);
-
-                    paint.setTextSize(20);
-                    canvas.drawText("----------------------------------------------------", 5, 260, paint);
-
-
-                    int st = 290;
-                    paint.setTextSize(17);
-                    // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-                    for (int i = 0; i <selectedList.size(); i++) {
-                        String[] temps = selectedList.get(i);
-                        canvas.drawText(temps[0], 5, st, paint);
-                        canvas.drawText("," + temps[1], 150, st, paint);
-                        canvas.drawText("(" + temps[2] + ")", 220, st, paint);
-
-                        st = st + 30;
-                        canvas.drawText("Qty", 5, st, paint);
-                        canvas.drawText( ": " + temps[3], 150, st, paint);
-
-                        st = st + 30;
-                        canvas.drawText("Rate", 5, st, paint);
-                        canvas.drawText(": " + temps[4], 150, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText("----------------------------------------------------", 5, 260, paint);
 
 
-                        st = st + 30;
-                        canvas.drawText("Value", 5, st, paint);
-                        canvas.drawText(": " + temps[5], 150, st, paint);
+                int st = 290;
+                paint.setTextSize(17);
+                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                for (int i = 0; i < selectedList.size(); i++) {
+                    String[] temps = selectedList.get(i);
+                    canvas.drawText(temps[0], 5, st, paint);
+                    canvas.drawText("," + temps[1], 150, st, paint);
+                    canvas.drawText("(" + temps[2] + ")", 220, st, paint);
 
-                        st = st + 45;
+                    st = st + 30;
+                    canvas.drawText("Qty", 5, st, paint);
+                    canvas.drawText(": " + temps[3], 150, st, paint);
+
+                    st = st + 30;
+                    canvas.drawText("Rate", 5, st, paint);
+                    canvas.drawText(": " + temps[4], 150, st, paint);
 
 
-                    }
+                    st = st + 30;
+                    canvas.drawText("Value", 5, st, paint);
+                    canvas.drawText(": " + temps[5], 150, st, paint);
 
-                    canvas.drawText("----------------------------------------------------", 5, st, paint);
+                    st = st + 45;
 
-                    st = st + 20;
-                    canvas.drawText("PR VALUE:", 5, st, paint);
-                    canvas.drawText( ": " + Utility.getFormattedCurrency(mProductsPriceAmountSum), 150, st, paint);
 
-                    //  canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
-                    //  canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
-                    // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
-                    st = st + 20;
-                    canvas.drawText("--------X---------", 100, st, paint);
-                    com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
                 }
-            });
 
+                canvas.drawText("----------------------------------------------------", 5, st, paint);
 
-            mAgentsList = (ListView) findViewById(R.id.AgentsList);
-            // ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
-            //System.out.println("ELSE::: "+a.size());
+                st = st + 20;
+                canvas.drawText("PR VALUE:", 5, st, paint);
+                canvas.drawText(": " + Utility.getFormattedCurrency(mProductsPriceAmountSum), 150, st, paint);
 
-            //   ArrayList<TakeOrderPreviewBean> previewArrayList = new ArrayList<>();
-            if (takeOrderPreviewBeanArrayList.size() > 0) {
-                loadAgentsList(takeOrderPreviewBeanArrayList);
+                //  canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
+                //  canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
+                // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
+                st = st + 20;
+                canvas.drawText("--------X---------", 100, st, paint);
+                com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
             }
+        });
+
+
+        mAgentsList = (ListView) findViewById(R.id.AgentsList);
+        // ArrayList<AgentsBean> a = mDBHelper.fetchAllRecordsFromAgentsTable();
+        //System.out.println("ELSE::: "+a.size());
+
+        //   ArrayList<TakeOrderPreviewBean> previewArrayList = new ArrayList<>();
+        if (takeOrderPreviewBeanArrayList.size() > 0) {
+            loadAgentsList(takeOrderPreviewBeanArrayList);
+        }
 
 
     }
@@ -464,6 +472,8 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, AgentTakeOrderScreen.class);
+        intent.putExtra("tripsheetId", TRIPID);
+        intent.putExtra("From", ISFROM);
         startActivity(intent);
         finish();
     }

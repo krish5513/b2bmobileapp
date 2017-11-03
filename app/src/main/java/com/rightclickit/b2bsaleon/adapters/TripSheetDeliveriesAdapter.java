@@ -115,7 +115,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
     }
 
     public class TripSheetDeliveriesViewHolder {
-        TextView product_name, quantity_stock, price, tax, amount;
+        TextView product_name, quantity_stock, price, tax, amount,product_code;
         EditText product_quantity;
         ImageView product_quantity_decrement, product_quantity_increment;
     }
@@ -158,6 +158,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
             tripSheetDeliveriesViewHolder = new TripSheetDeliveriesViewHolder();
             tripSheetDeliveriesViewHolder.product_name = (TextView) view.findViewById(R.id.productName);
+            tripSheetDeliveriesViewHolder.product_code= (TextView) view.findViewById(R.id.productCode);
             tripSheetDeliveriesViewHolder.quantity_stock = (TextView) view.findViewById(R.id.quantity_in_stock);
             tripSheetDeliveriesViewHolder.price = (TextView) view.findViewById(R.id.productPrice);
             tripSheetDeliveriesViewHolder.tax = (TextView) view.findViewById(R.id.taxAmount);
@@ -197,6 +198,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         currentDeliveryBean.setTaxAmount(taxAmount);*/
 
         tripSheetDeliveriesViewHolder.product_name.setText(String.format("%s", currentDeliveryBean.getProductTitle()));
+        tripSheetDeliveriesViewHolder.product_code.setText(","+currentDeliveryBean.getProductCode());
         tripSheetDeliveriesViewHolder.quantity_stock.setText(String.format("%.3f + %.3f", currentDeliveryBean.getProductStock(), currentDeliveryBean.getProductExtraQuantity()));
         if (currentDeliveryBean.getProductAgentPrice() != null) {
             tripSheetDeliveriesViewHolder.price.setText(Utility.getFormattedCurrency(Double.parseDouble(currentDeliveryBean.getProductAgentPrice())));

@@ -30,9 +30,7 @@ import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.AgentTakeOrderListener;
-import com.rightclickit.b2bsaleon.services.SyncTakeOrdersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
-import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.io.Serializable;
@@ -79,10 +77,11 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     private Map<String, String> updateTakeOrderData = new HashMap<String, String>();
     private Map<String, String> updateFromDatesTakeOrderData = new HashMap<String, String>();
     private Map<String, String> updateToDatesTakeOrderData = new HashMap<String, String>();
+    private String ISFROM = "",TRIPID = "";
 
     public TakeOrdersAdapter(Activity productsActivity, AgentTakeOrderListener listener, ArrayList<ProductsBean> mTakeOrderBeansList, ListView mTakeOrderListView, String agentId,
                              ArrayList<TakeOrderBean> takeOrderBeansList, Map<String, String> quantityListMap,
-                             Map<String, String> fromDatesListMap, Map<String, String> toDatesListMap) {
+                             Map<String, String> fromDatesListMap, Map<String, String> toDatesListMap,String isFrom,String tripId) {
         this.activity = productsActivity;
         this.mTakeOrderBeansList1 = mTakeOrderBeansList;
         this.mInflater = LayoutInflater.from(activity);
@@ -96,6 +95,8 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         this.updateTakeOrderData = quantityListMap;
         this.updateFromDatesTakeOrderData = fromDatesListMap;
         this.updateToDatesTakeOrderData = toDatesListMap;
+        this.ISFROM = isFrom;
+        this.TRIPID = tripId;
         try {
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -439,13 +440,13 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     }
 
                     // Temporary call api from here....
-                    synchronized (this) {
-                        if (temptoList.size() > 0) {
-                            if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
-                                activity.startService(new Intent(activity, SyncTakeOrdersService.class));
-                            }
-                        }
-                    }
+//                    synchronized (this) {
+//                        if (temptoList.size() > 0) {
+//                            if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
+//                                activity.startService(new Intent(activity, SyncTakeOrdersService.class));
+//                            }
+//                        }
+//                    }
                     synchronized (this) {
                         showAlertDialogTakeorder(activity, "Success", activity.getString(R.string.order));
                     }
@@ -596,6 +597,8 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                         Bundle args = new Bundle();
                         args.putSerializable("productIdsList", (Serializable) temptoList);
                         ii.putExtra("BUNDLE", args);
+                        ii.putExtra("tripsheetId", TRIPID);
+                        ii.putExtra("From", ISFROM);
                         activity.startActivity(ii);
                         activity.finish();
                     } else {
