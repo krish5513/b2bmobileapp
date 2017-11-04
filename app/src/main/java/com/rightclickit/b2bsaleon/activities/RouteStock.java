@@ -64,6 +64,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
     private MMSharedPreferences mmSharedPreferences;
     double cb;
     private boolean isTripSheetClosed = false;
+    private MenuItem mItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -395,7 +396,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
             public void onClick(View view) {
                 synchronized (this) {
                     for (int i = 0; i < tripsheetsStockLists.size(); i++) {
-                        double  tq = 0.0,cb = 0.0,leq = 0.0,oq = 0.0,dq=0.0,rq=0.0;
+                        double tq = 0.0, cb = 0.0, leq = 0.0, oq = 0.0, dq = 0.0, rq = 0.0;
                         str_ProductName = tripsheetsStockLists.get(i).getmTripsheetStockProductName();
                         str_ProductCode = tripsheetsStockLists.get(i).getmTripsheetStockProductCode();
 
@@ -491,7 +492,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                         String[] temp = selectedList.get(i);
                         paint.setTextSize(20);
                         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                        canvas.drawText(temp[0] + "," +  temp[1] + " ( " + temp[2] +" )", 5, st, paint);
+                        canvas.drawText(temp[0] + "," + temp[1] + " ( " + temp[2] + " )", 5, st, paint);
                         st = st + 30;
                         paint.setTextSize(20);
                         canvas.drawText("TRUCK QTY ", 5, st, paint);
@@ -540,6 +541,9 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
     public void loadTripsData(ArrayList<TripsheetsStockList> tripsStockList) {
         // ALL DELIVIRES
         ArrayList<TripSheetDeliveriesBean> deliveriesBeenList = mDBHelper.fetchAllTripsheetsDeliveriesListByTripAndProductId(tripSheetId, "");
+        if (deliveryQuantityListMap.size() > 0) {
+            deliveryQuantityListMap.clear();
+        }
         if (deliveriesBeenList.size() > 0) {
             // This for Sales man
             for (int g = 0; g < deliveriesBeenList.size(); g++) {
@@ -558,6 +562,9 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
         } else {
             // This for Dispatch Manager
             ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
+            if (deliveryQuantityListMap.size() > 0) {
+                deliveryQuantityListMap.clear();
+            }
             if (tripsheetsStockLists.size() > 0) {
                 for (int g1 = 0; g1 < tripsheetsStockLists.size(); g1++) {
                     if (deliveryQuantityListMap.get(tripsheetsStockLists.get(g1).getmTripsheetStockProductId()) != null) {
@@ -584,6 +591,9 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
 
         // ALL RETURNS
         ArrayList<TripSheetReturnsBean> returnsBeenList = mDBHelper.fetchAllTripsheetsReturnsListByTripId(tripSheetId);
+        if (returnQuantityListMap.size() > 0) {
+            returnQuantityListMap.clear();
+        }
         if (returnsBeenList.size() > 0) {
             for (int g = 0; g < returnsBeenList.size(); g++) {
                 if (returnQuantityListMap.get(returnsBeenList.get(g).getmTripshhetReturnsProduct_ids()) != null) {
@@ -599,6 +609,9 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                 }
             }
         } else {
+            if (returnQuantityListMap.size() > 0) {
+                returnQuantityListMap.clear();
+            }
             // This for Dispatch Manager
             ArrayList<TripsheetsStockList> tripsheetsStockLists1 = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
             if (tripsheetsStockLists1.size() > 0) {
@@ -638,6 +651,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
 //        } else if (tripsheetsStockLists.size() > 0) {
 //            loadTripsData(tripsheetsStockLists);
 //        }
+        mItem.setEnabled(true);
     }
 
     @Override
@@ -682,6 +696,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        this.mItem = item;
         int id = item.getItemId();
         if (id == R.id.action_search) {
 
@@ -690,6 +705,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
 
         if (id == R.id.autorenew) {
             if (new NetworkConnectionDetector(RouteStock.this).isNetworkConnected()) {
+                mItem.setEnabled(false);
                 mTripsheetsModel.getTripsheetsStockList(tripSheetId);
             } else {
                 new NetworkConnectionDetector(RouteStock.this).displayNoNetworkError(RouteStock.this);

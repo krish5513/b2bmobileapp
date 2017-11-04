@@ -56,6 +56,7 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
     private Map<String, TripsheetsStockList> productsDispatchListHashMap, productsVerifyListHashMap; // Hash Map Key = Product Id
     private String loggedInUserId;
     private boolean isStockDispatched = false, isStockVerified = false, isTripSheetClosed = false;
+    private MenuItem mItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +175,8 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
                 tps_stock_save_layout.setVisibility(View.VISIBLE);
             }
         }
+
+        mItem.setEnabled(true);
     }
 
     @Override
@@ -218,11 +221,13 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        this.mItem = item;
         int id = item.getItemId();
 
         if (id == R.id.autorenew) {
 
             if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
+                mItem.setEnabled(false);
                 mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
             } else {
                 new NetworkConnectionDetector(TripSheetStock.this).displayNoNetworkError(TripSheetStock.this);
