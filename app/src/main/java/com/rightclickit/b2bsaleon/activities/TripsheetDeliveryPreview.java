@@ -2,11 +2,6 @@ package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -294,9 +289,10 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
 
 
 
-        print = (TextView) findViewById(R.id.tv_print);
+        //print = (TextView) findViewById(R.id.tv_print);
 
 
+/*
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -419,6 +415,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
             }
         });
+*/
 
 
     }

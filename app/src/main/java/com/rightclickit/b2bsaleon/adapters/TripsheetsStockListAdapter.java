@@ -1,7 +1,9 @@
 package com.rightclickit.b2bsaleon.adapters;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,7 +115,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                 Double oq = Double.parseDouble(dispatchProductsListHashMapTemp.get(currentStockList.getmTripsheetStockProductId()));
                 tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", oq));
                 currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(oq));
-            }else if (!currentStockList.getmTripsheetStockDispatchQuantity().equals("")) {
+            } else if (!currentStockList.getmTripsheetStockDispatchQuantity().equals("")) {
                 Double dispatchQuantity = Double.parseDouble(currentStockList.getmTripsheetStockDispatchQuantity());
                 tripSheetStockViewHolder.mDispatchQuantity.setText(String.format("%.3f", dispatchQuantity));
                 currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(dispatchQuantity));
@@ -202,6 +204,24 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                     }
                 }
             });
+
+            tripSheetStockViewHolder.mDispatchQuantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean hasFocus) {
+                    try {
+                        if(!hasFocus){
+                            EditText quantityEditText = (EditText) view;
+                            Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
+
+                            currentStockList.setmTripsheetStockDispatchQuantity(String.valueOf(enteredQuantity));
+                            dispatchProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockDispatchQuantity());
+                            updateProductsDispatchList(currentStockList);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
 
         if (privilegeActionsData.contains("Stock_Verify")) {
@@ -214,7 +234,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                     Double vq = Double.parseDouble(verifyProductsListHashMapTemp.get(currentStockList.getmTripsheetStockProductId()));
                     tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", vq));
                     currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(vq));
-                }else if (!currentStockList.getmTripsheetStockVerifiedQuantity().equals("")) {
+                } else if (!currentStockList.getmTripsheetStockVerifiedQuantity().equals("")) {
                     Double verifyQuantity = Double.parseDouble(currentStockList.getmTripsheetStockVerifiedQuantity());
                     tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", verifyQuantity));
                     currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(verifyQuantity));
@@ -263,14 +283,67 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                 public void onClick(View view) {
                     try {
                         Double presentQuantity = Double.parseDouble(tripSheetStockViewHolder.mVerifyQuantity.getText().toString());
-                        presentQuantity++;
+                        Double dispatchQuantity = Double.parseDouble(tripSheetStockViewHolder.mDispatchQuantity.getText().toString().trim());
+                        if (presentQuantity > dispatchQuantity) {
+                            //tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", 0.0));
+                            //currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(0.0));
+                            new AlertDialog.Builder(activity)
+                                    .setTitle("Alert..!")
+                                    .setMessage("Verify Quantity should not be greater than Dispatch quantity.")
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        } else {
+//                            currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(enteredQuantity));
+//                            verifyProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockVerifiedQuantity());
+//
+//                            updateProductsVerifyList(currentStockList);
+                            presentQuantity++;
+                            currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(presentQuantity));
+                            verifyProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockVerifiedQuantity());
+                            tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", presentQuantity));
 
-                        currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(presentQuantity));
-                        verifyProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockVerifiedQuantity());
-                        tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", presentQuantity));
+                            updateProductsVerifyList(currentStockList);
+                        }
 
-                        updateProductsVerifyList(currentStockList);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
+            tripSheetStockViewHolder.mVerifyQuantity.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean hasFocus) {
+                    try {
+                        if (!hasFocus) {
+                            EditText quantityEditText = (EditText) view;
+                            Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
+                            Double dispatchQuantity = Double.parseDouble(tripSheetStockViewHolder.mDispatchQuantity.getText().toString().trim());
+                            if (enteredQuantity > dispatchQuantity) {
+                                quantityEditText.setText(zero_cost);
+                                currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(0.0));
+                                new AlertDialog.Builder(activity)
+                                        .setTitle("Alert..!")
+                                        .setMessage("Verify Quantity should not be greater than Dispatch quantity.")
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            } else {
+                                currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(enteredQuantity));
+                                verifyProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockVerifiedQuantity());
+
+                                updateProductsVerifyList(currentStockList);
+                            }
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

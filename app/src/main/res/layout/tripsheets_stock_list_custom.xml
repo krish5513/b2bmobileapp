@@ -48,7 +48,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/ic_remove_circle_black_24dp"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <EditText
                 android:id="@+id/ts_stock_dispatch_quantity"
@@ -64,14 +64,14 @@
                 android:text="0.123"
                 android:textColor="@color/greydark"
                 android:textSize="12sp"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <ImageButton
                 android:id="@+id/ts_stock_dispatch_increment"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/ic_add_circle_black_24dp"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
         </LinearLayout>
 
@@ -89,7 +89,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/ic_remove_circle_black_24dp"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <EditText
                 android:id="@+id/ts_stock_verify_quantity"
@@ -97,21 +97,19 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.25"
-                android:clickable="false"
                 android:gravity="center"
                 android:inputType="number"
-                android:longClickable="false"
                 android:text="0.456"
                 android:textColor="@color/greydark"
                 android:textSize="12sp"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
             <ImageButton
                 android:id="@+id/ts_stock_verify_increment"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/ic_add_circle_black_24dp"
-                android:visibility="gone" />
+                android:visibility="invisible" />
 
         </LinearLayout>
 

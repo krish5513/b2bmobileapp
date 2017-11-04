@@ -15,10 +15,8 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentTakeOrderScreen;
 import com.rightclickit.b2bsaleon.activities.TripSheetView;
 import com.rightclickit.b2bsaleon.activities.TripsheetDelivery;
-import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
@@ -36,16 +34,18 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Activity activity;
     private ArrayList<TripsheetSOList> allSaleOrdersList, filteredSaleOrdersList;
-    private String mTakeOrderPrivilege = "", mStockVerifyPrivilege = "";
+    private String mTakeOrderPrivilege = "", mStockVerifyPrivilege = "",mhidePrevilige="";
     private boolean isTripSheetClosed;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
 
-    public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege, boolean isTripSheetClosed) {
+    public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege, boolean isTripSheetClosed, String mhidePrevilige) {
         this.activity = tripSheetView;
         this.mInflater = LayoutInflater.from(activity);
         this.mTakeOrderPrivilege = mTakeOrderPrivilege;
         this.isTripSheetClosed = isTripSheetClosed;
+        this.mhidePrevilige = mhidePrevilige;
+
         this.allSaleOrdersList = tripsSOList;
         this.filteredSaleOrdersList = new ArrayList<>();
         this.filteredSaleOrdersList.addAll(allSaleOrdersList);
@@ -97,6 +97,9 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
             mHolder.mSOTakeOrder = (Button) view.findViewById(R.id.btn_sale_ord1);
             mHolder.mSOTakeOrder.setVisibility(View.GONE);
             mHolder.mSOMapIconParent = (LinearLayout) view.findViewById(R.id.gotoCustomer);
+            mHolder.mSOMapIconParent.setVisibility(View.GONE);
+
+            mHolder.hideParent = (LinearLayout) view.findViewById(R.id.hide);
             mHolder.mSOAgentDistance = (TextView) view.findViewById(R.id.tv_km);
             mHolder.mEmptyLayout = (LinearLayout) view.findViewById(R.id.EmptyView);
             mHolder.so_status = (TextView) view.findViewById(R.id.tv_status);
@@ -115,6 +118,14 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
 
         if (mTakeOrderPrivilege.equals("list_view_takeorder")) {
             mHolder.mSOTakeOrder.setVisibility(View.VISIBLE);
+        }
+
+
+        if (mhidePrevilige.equals("list_view_delivery")) {
+            mHolder.mSOMapIconParent.setVisibility(View.VISIBLE);
+        }
+        else {
+            mHolder.hideParent.setVisibility(View.VISIBLE);
         }
 
         final TripsheetSOList currentSaleOrder = getItem(position);
@@ -243,7 +254,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         TextView mSOReceivedValue;
         TextView mSODueValue;
         Button mSOTakeOrder;
-        LinearLayout mSOMapIconParent;
+        LinearLayout mSOMapIconParent,hideParent;
         TextView mSOAgentDistance;
         LinearLayout mEmptyLayout;
         TextView so_status;

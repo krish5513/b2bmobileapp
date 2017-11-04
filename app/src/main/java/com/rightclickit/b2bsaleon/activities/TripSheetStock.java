@@ -167,6 +167,11 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
             if (stockList.getIsStockVerified() == 1) {
                 isStockVerified = true;
+                tps_stock_verify_layout.setVisibility(View.GONE);
+            }
+            if (stockList.getIsStockVerified() == 1 && privilegeActionsData.contains("Stock_Dispatch") && !isTripSheetClosed ||
+                    privilegeActionsData.contains("Stock_Dispatch") && !isTripSheetClosed) {
+                tps_stock_save_layout.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -219,7 +224,7 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
             if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
                 mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
-            }else {
+            } else {
                 new NetworkConnectionDetector(TripSheetStock.this).displayNoNetworkError(TripSheetStock.this);
             }
             return true;
@@ -264,7 +269,7 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
         Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
         ts_stock_preview.startAnimation(animation1);
         if (!isStockVerified)
-           // Toast.makeText(activityContext, "This Preview is unavailable untill the tripsheet stock is verified", Toast.LENGTH_LONG).show();
+            // Toast.makeText(activityContext, "This Preview is unavailable untill the tripsheet stock is verified", Toast.LENGTH_LONG).show();
             CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.preview));
         else {
             Intent i = new Intent(TripSheetStock.this, TripsheetStockPreview.class);
@@ -286,7 +291,7 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
     public void verifyTripSheetStock(View view) {
         if (!isStockDispatched)
             //Toast.makeText(activityContext, "This Trip Sheet Stock is not yet dispatched.", Toast.LENGTH_LONG).show();
-        CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.stock));
+            CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.stock));
         else {
             //if (!isStockVerified)
             //showAlertDialogWithCancelButton(activityContext, "User Action!", "Are you sure want to verify?\n\nOnce you verified you can't edit.", "Verify");

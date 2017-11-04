@@ -540,8 +540,8 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
     public void loadTripsData(ArrayList<TripsheetsStockList> tripsStockList) {
         // ALL DELIVIRES
         ArrayList<TripSheetDeliveriesBean> deliveriesBeenList = mDBHelper.fetchAllTripsheetsDeliveriesListByTripAndProductId(tripSheetId, "");
-        System.out.println("ALL DELIVERIES:::: " + deliveriesBeenList.size());
         if (deliveriesBeenList.size() > 0) {
+            // This for Sales man
             for (int g = 0; g < deliveriesBeenList.size(); g++) {
                 if (deliveryQuantityListMap.get(deliveriesBeenList.get(g).getmTripsheetDelivery_productId()) != null) {
                     double quantity = Double.parseDouble(deliveryQuantityListMap.get(deliveriesBeenList.get(g).getmTripsheetDelivery_productId()));
@@ -555,11 +555,35 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                             deliveriesBeenList.get(g).getmTripsheetDelivery_Quantity());
                 }
             }
+        } else {
+            // This for Dispatch Manager
+            ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
+            if (tripsheetsStockLists.size() > 0) {
+                for (int g1 = 0; g1 < tripsheetsStockLists.size(); g1++) {
+                    if (deliveryQuantityListMap.get(tripsheetsStockLists.get(g1).getmTripsheetStockProductId()) != null) {
+                        double quantity = Double.parseDouble(deliveryQuantityListMap.get(tripsheetsStockLists.get(g1).getmTripsheetStockProductId()));
+
+                        if (tripsheetsStockLists.get(g1).getmDeliveryQuantity() != null) {
+                            double sumQuantity = quantity + Double.parseDouble(tripsheetsStockLists.get(g1).getmDeliveryQuantity());
+
+                            deliveryQuantityListMap.put(tripsheetsStockLists.get(g1).getmTripsheetStockProductId(),
+                                    String.valueOf(sumQuantity));
+                        }
+
+                    } else {
+                        if (tripsheetsStockLists.get(g1).getmDeliveryQuantity() != null) {
+                            deliveryQuantityListMap.put(tripsheetsStockLists.get(g1).getmTripsheetStockProductId(),
+                                    tripsheetsStockLists.get(g1).getmDeliveryQuantity());
+                        } else {
+                            deliveryQuantityListMap.put(tripsheetsStockLists.get(g1).getmTripsheetStockProductId(), String.valueOf(0.0));
+                        }
+                    }
+                }
+            }
         }
 
         // ALL RETURNS
         ArrayList<TripSheetReturnsBean> returnsBeenList = mDBHelper.fetchAllTripsheetsReturnsListByTripId(tripSheetId);
-        System.out.println("ALL RETURNS:::: " + returnsBeenList.size());
         if (returnsBeenList.size() > 0) {
             for (int g = 0; g < returnsBeenList.size(); g++) {
                 if (returnQuantityListMap.get(returnsBeenList.get(g).getmTripshhetReturnsProduct_ids()) != null) {
@@ -574,7 +598,33 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                             returnsBeenList.get(g).getmTripshhetReturnsQuantity());
                 }
             }
+        } else {
+            // This for Dispatch Manager
+            ArrayList<TripsheetsStockList> tripsheetsStockLists1 = mDBHelper.fetchAllTripsheetsStockList(tripSheetId);
+            if (tripsheetsStockLists1.size() > 0) {
+                for (int g1 = 0; g1 < tripsheetsStockLists1.size(); g1++) {
+                    if (returnQuantityListMap.get(tripsheetsStockLists1.get(g1).getmTripsheetStockProductId()) != null) {
+                        double quantity = Double.parseDouble(returnQuantityListMap.get(tripsheetsStockLists1.get(g1).getmTripsheetStockProductId()));
+
+                        if (tripsheetsStockLists1.get(g1).getmReturnQuantity() != null) {
+                            double sumQuantity = quantity + Double.parseDouble(tripsheetsStockLists1.get(g1).getmReturnQuantity());
+
+                            returnQuantityListMap.put(tripsheetsStockLists1.get(g1).getmTripsheetStockProductId(),
+                                    String.valueOf(sumQuantity));
+                        }
+
+                    } else {
+                        if (tripsheetsStockLists1.get(g1).getmReturnQuantity() != null) {
+                            returnQuantityListMap.put(tripsheetsStockLists1.get(g1).getmTripsheetStockProductId(),
+                                    tripsheetsStockLists1.get(g1).getmReturnQuantity());
+                        } else {
+                            returnQuantityListMap.put(tripsheetsStockLists1.get(g1).getmTripsheetStockProductId(), String.valueOf(0.0));
+                        }
+                    }
+                }
+            }
         }
+
         if (routestockadapter != null) {
             routestockadapter = null;
         }

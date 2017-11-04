@@ -448,7 +448,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
             startActivity(intent);
             finish();
         } else {
-            Intent intent = new Intent(this, AgentsActivity.class);
+            Intent intent = new Intent(this, AgentTDC_Order.class);
             startActivity(intent);
             finish();
         }

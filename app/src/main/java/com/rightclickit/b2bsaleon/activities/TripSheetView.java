@@ -9,13 +9,13 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -60,7 +60,6 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -114,7 +113,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private ListView mTripsheetsSOListView;
     private TripsheetsModel mTripsheetsModel;
     private TripsheetsSOListAdapter mTripsheetSOAdapter;
-    private String mTripSheetId = "", mTakeOrderPrivilege = "", mTripSheetCode = "", mTripSheetDate = "";
+    private String mTripSheetId = "", mTakeOrderPrivilege = "", mTripSheetCode = "", mTripSheetDate = "",mhidePrevilige="";
     private double mCurrentLocationLat = 0.0, mCurrentLocationLongitude = 0.0;
     private ArrayList<TripsheetSOList> tripSheetSOList = new ArrayList<>();
     private ArrayList<AgentLatLong> agentsLatLongList = new ArrayList<>(); // this list contains all valid agents lat long details
@@ -345,6 +344,9 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 if (privilegeActionsData.get(z).toString().equals("list_view_takeorder")) {
                     mTakeOrderPrivilege = privilegeActionsData.get(z).toString();
                 }
+                if (privilegeActionsData.get(z).toString().equals("list_view_delivery")) {
+                    mhidePrevilige = privilegeActionsData.get(z).toString();
+                }
             }
 
             mLatitude = userMapData.get("latitude");
@@ -379,7 +381,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
             isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
 
-            mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege, isTripSheetClosed);
+            mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege, isTripSheetClosed,mhidePrevilige);
             mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
 
             if (networkConnectionDetector.isNetworkConnected()) {

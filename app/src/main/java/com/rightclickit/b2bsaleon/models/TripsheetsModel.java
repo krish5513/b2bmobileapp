@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -273,6 +274,8 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     break;
 
                 case 1:
+                    HashMap<String, String> delMapList = new HashMap<String, String>();
+                    HashMap<String, String> retMapList = new HashMap<String, String>();
                     JSONArray stockArray = new JSONArray(response);
                     int stockLen = stockArray.length();
 
@@ -307,6 +310,28 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                         }
                         if (jb.get("free_qty") instanceof JSONArray) {
                             otherQuantity = jb.getJSONArray("free_qty");
+                        }
+                        if (jb.has("delivery_res")) {
+                            if (jb.get("delivery_res") instanceof JSONObject) {
+                                JSONObject delResponse = jb.getJSONObject("delivery_res");
+                                Iterator x = delResponse.keys();
+                                JSONArray jsonArray = new JSONArray();
+                                while (x.hasNext()) {
+                                    String key = (String) x.next();
+                                    delMapList.put(key, delResponse.get(key).toString());
+                                }
+                            }
+                        }
+                        if (jb.has("return_res")) {
+                            if (jb.get("return_res") instanceof JSONObject) {
+                                JSONObject retResponse = jb.getJSONObject("return_res");
+                                Iterator x = retResponse.keys();
+                                JSONArray jsonArray = new JSONArray();
+                                while (x.hasNext()) {
+                                    String key = (String) x.next();
+                                    retMapList.put(key, retResponse.get(key).toString());
+                                }
+                            }
                         }
 
                         int noOfProducts = 0;
@@ -351,8 +376,8 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
                                     // DISPATCH QUANTITY STUFF
                                     if (dispatchQuantity instanceof JSONArray) {
-                                        System.out.println("dspatch::: " + dispatchQuantity);
-                                        System.out.println("dspatch length::: " + dispatchQuantity.length());
+                                        //System.out.println("dspatch::: " + dispatchQuantity);
+                                        //System.out.println("dspatch length::: " + dispatchQuantity.length());
                                         if (dispatchQuantity.length() > 0) {
                                             tripStockBean.setmTripsheetStockDispatchQuantity(dispatchQuantity.get(j).toString());
                                             tripStockBean.setmTripsheetStockDispatchBy(jb.getString("dispatch_by"));
@@ -368,7 +393,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                             tripStockBean.setmTripsheetStockDispatchQuantity("");
                                         }
                                     } else {
-                                        System.out.println("IN ELSEEEEEE");
+                                        ///System.out.println("IN ELSEEEEEE");
                                         tripStockBean.setmTripsheetStockDispatchBy("");
                                         tripStockBean.setmTripsheetStockDispatchDate("");
                                         tripStockBean.setmTripsheetStockDispatchQuantity("");
@@ -435,6 +460,30 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                         if (otherQuantity.length() > 0) {
                                             tripStockBean.setmOtherQuantity(otherQuantity.get(j).toString());
                                         }
+                                    }
+
+                                    // DEL QUANTITY
+                                    if (delMapList.get(productCodesArray.get(j).toString()) != null) {
+                                        String deq = delMapList.get(productCodesArray.get(j).toString());
+                                        if (!deq.equals("null")) {
+                                            tripStockBean.setmDeliveryQuantity(deq);
+                                        } else {
+                                            tripStockBean.setmDeliveryQuantity("0.0");
+                                        }
+                                    } else {
+                                        tripStockBean.setmDeliveryQuantity("0.0");
+                                    }
+
+                                    // RETURN QUANTITY
+                                    if (retMapList.get(productCodesArray.get(j).toString()) != null) {
+                                        String req = retMapList.get(productCodesArray.get(j).toString());
+                                        if (!req.equals("null")) {
+                                            tripStockBean.setmReturnQuantity(req);
+                                        } else {
+                                            tripStockBean.setmReturnQuantity("0.0");
+                                        }
+                                    } else {
+                                        tripStockBean.setmReturnQuantity("0.0");
                                     }
 
                                     mTripsheetsStockList.add(tripStockBean);
@@ -538,6 +587,30 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                                 if (otherQuantity.length() > 0) {
                                                     tripStockBean.setmOtherQuantity(otherQuantity.get(j).toString());
                                                 }
+                                            }
+
+                                            // DEL QUANTITY
+                                            if (delMapList.get(productCodesArray.get(j).toString()) != null) {
+                                                String deq = delMapList.get(productCodesArray.get(j).toString());
+                                                if (!deq.equals("null")) {
+                                                    tripStockBean.setmDeliveryQuantity(deq);
+                                                } else {
+                                                    tripStockBean.setmDeliveryQuantity("0.0");
+                                                }
+                                            } else {
+                                                tripStockBean.setmDeliveryQuantity("0.0");
+                                            }
+
+                                            // RETURN QUANTITY
+                                            if (retMapList.get(productCodesArray.get(j).toString()) != null) {
+                                                String req = retMapList.get(productCodesArray.get(j).toString());
+                                                if (!req.equals("null")) {
+                                                    tripStockBean.setmReturnQuantity(req);
+                                                } else {
+                                                    tripStockBean.setmReturnQuantity("0.0");
+                                                }
+                                            } else {
+                                                tripStockBean.setmReturnQuantity("0.0");
                                             }
 
                                             mTripsheetsStockList.add(tripStockBean);

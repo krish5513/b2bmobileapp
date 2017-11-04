@@ -323,6 +323,18 @@
     </LinearLayout>
 
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        app:backgroundTint="@color/colorPrimary"
+        android:layout_above="@id/tpsBottomOptionsLayout"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
 
 
     <LinearLayout
@@ -442,8 +454,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:drawableTop="@drawable/pr_icon_green"
-                            android:text="@string/orders_btm"
+                            android:drawableTop="@drawable/sales_list_green"
+                            android:text="@string/sales_list"
                             android:textColor="@color/colorPrimary"
                             android:textSize="12sp" />
 

@@ -2934,7 +2934,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return noOfEvents;
     }
 
-
     /**
      * Method to insert the mTripsheetsStockList.
      *
@@ -2957,6 +2956,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_STOCK_VERIFY_QUANTITY, mTripsheetsStockList.get(i).getmTripsheetStockVerifiedQuantity());
                 values.put(KEY_TRIPSHEET_STOCK_VERIFY_DATE, mTripsheetsStockList.get(i).getmTripsheetStockVerifiedDate());
                 values.put(KEY_TRIPSHEET_STOCK_VERIFY_BY, mTripsheetsStockList.get(i).getmTripsheetStockVerifyBy());
+                values.put(KEY_TRIPSHEET_STOCK_DELIVERY_QUANTITY, mTripsheetsStockList.get(i).getmDeliveryQuantity());
+                values.put(KEY_TRIPSHEET_STOCK_RETURN_QUANTITY, mTripsheetsStockList.get(i).getmReturnQuantity());
 
                 long l;
                 int checkVal = checkTripsheetStockExistsOrNot(mTripsheetsStockList.get(i).getmTripsheetStockTripsheetId(),
@@ -3011,6 +3012,9 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripStockBean.setIsStockVerified(c.getInt(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IS_VERIFIED)));
                     tripStockBean.setInStockQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY)));
                     tripStockBean.setExtraQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_EXTRA_QUANTITY)));
+
+                    tripStockBean.setmDeliveryQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_DELIVERY_QUANTITY)));
+                    tripStockBean.setmReturnQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_RETURN_QUANTITY)));
 
                     alltripsheetsStock.add(tripStockBean);
 

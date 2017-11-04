@@ -275,7 +275,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             public void onClick(View view) {
 
              //   Toast.makeText(getApplicationContext(), "print", Toast.LENGTH_LONG).show();
-                int pageheight = 900 + selectedList.size() * 120 + cratesList.size() * 200  ;
+                int pageheight = 850 + selectedList.size() * 120 + cratesList.size() * 200  ;
                 Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawColor(Color.WHITE);
@@ -534,12 +534,12 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 }
 
                 paint.setTextSize(20);
-                canvas.drawText( "BY", 150, st, paint);
+                canvas.drawText( "* Please take photocopy of the Bill *", 17, st, paint);
                 st = st + 30;
 
-                paint.setTextSize(20);
-                canvas.drawText( loggedInUserName, 100, st, paint);
-                st = st + 30;
+               // paint.setTextSize(20);
+                //canvas.drawText( loggedInUserName, 100, st, paint);
+                //st = st + 30;
 
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);

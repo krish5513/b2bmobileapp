@@ -62,6 +62,9 @@
     <string name="sales_btm">Sales</string>
     <string name="dashboard_btm">Home</string>
     <string name="orders_btm">Take Orders</string>
+    <string name="sales_list">Sales</string>
+
+    Sales List
     <string name="tpcorders_btm">Orders</string>
     <string name="print_btm">Print</string>
     <string name="closeTrip_btm">Close Trips</string>

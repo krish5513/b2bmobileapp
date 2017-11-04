@@ -40,7 +40,7 @@
             android:text="Dispatch"
             android:textColor="@color/greydark"
             android:textSize="14sp"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/verifyTitle"
@@ -50,10 +50,10 @@
             android:layout_marginRight="7dp"
             android:layout_weight="0.17"
             android:gravity="center"
-            android:text="Verify"
+            android:text="Truck"
             android:textColor="@color/greydark"
             android:textSize="14sp"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
     </LinearLayout>
 
