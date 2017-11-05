@@ -196,7 +196,7 @@ public class AgentPayments extends AppCompatActivity {
                         R.anim.blink);
                 orders.startAnimation(animation1);
 
-                Intent i =new Intent(AgentPayments.this,AgentTakeOrderScreen.class);
+                Intent i =new Intent(AgentPayments.this,TDCSalesListActivity.class);
                 startActivity(i);
                 finish();
             }

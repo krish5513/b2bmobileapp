@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.RouteStockAdapter;
@@ -269,13 +268,14 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                         int status = mDBHelper.updateTripSheetClosingStatus(tripSheetId);
 
                         if (status > 0) {
-                            Toast.makeText(activityContext, "Trip sheet closed successfully.", Toast.LENGTH_LONG).show();
-
+                            //Toast.makeText(activityContext, "Trip sheet closed successfully.", Toast.LENGTH_LONG).show();
+                           CustomAlertDialog.showAlertDialog(activityContext, "Success",  getResources().getString(R.string.tripsave));
                             Intent intent = new Intent(activityContext, TripSheetsActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
-                            Toast.makeText(activityContext, "Trip sheet closing failed.", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(activityContext, "Trip sheet closing failed.", Toast.LENGTH_LONG).show();
+                            CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.tripfail));
                         }
                     }
                 }
@@ -377,13 +377,14 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                         int status = mDBHelper.updateTripSheetClosingStatus(tripSheetId);
 
                         if (status > 0) {
-                            Toast.makeText(activityContext, "Trip sheet closed/approved successfully.", Toast.LENGTH_LONG).show();
-
+                          //  Toast.makeText(activityContext, "Trip sheet closed/approved successfully.", Toast.LENGTH_LONG).show();
+                            CustomAlertDialog.showAlertDialog(activityContext, "Success",  getResources().getString(R.string.tripsave));
                             Intent intent = new Intent(activityContext, TripSheetsActivity.class);
                             startActivity(intent);
                             finish();
                         } else {
-                            Toast.makeText(activityContext, "Trip sheet closing failed.", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(activityContext, "Trip sheet closing failed.", Toast.LENGTH_LONG).show();
+                            CustomAlertDialog.showAlertDialog(activityContext, "Failed",  getResources().getString(R.string.tripfail));
                         }
                     }
                 }

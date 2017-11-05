@@ -192,9 +192,9 @@ public class TripSheetsActivity extends AppCompatActivity {
         }
 
         ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("UserActivity"));
-        System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
+        //System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
         for (int z = 0; z < privilegeActionsData1.size(); z++) {
-            System.out.println("Name::: " + privilegeActionsData1.get(z).toString());
+            //System.out.println("Name::: " + privilegeActionsData1.get(z).toString());
             if (privilegeActionsData1.get(z).toString().equals("Notification")) {
                 mNotifications = privilegeActionsData1.get(z).toString();
             } else if (privilegeActionsData1.get(z).toString().equals("tdc_home_screen")) {

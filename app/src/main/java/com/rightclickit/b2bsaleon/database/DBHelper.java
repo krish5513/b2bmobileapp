@@ -2841,7 +2841,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             //String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_STATUS + " = " + "'" + "A" + "'";
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST;
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " ORDER BY "+ KEY_TRIPSHEET_DATE + " DESC ";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -4803,7 +4803,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             String selectQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_NO + ", " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES + ", "
                     + KEY_TRIPSHEET_DELIVERY_QUANTITY + ", " + KEY_TRIPSHEET_DELIVERY_UNITPRICE + ", " + KEY_TRIPSHEET_DELIVERY_TAXAMOUNT + ", " + KEY_TRIPSHEET_DELIVERY_AMOUNT + ", "
-                    + KEY_TRIPSHEET_DELIVERY_TAXTOTAL + ", " + KEY_TRIPSHEET_DELIVERY_SALEVALUE + ", " + KEY_TRIPSHEET_DELIVERY_CREATEDON
+                    + KEY_TRIPSHEET_DELIVERY_TAXTOTAL + ", " + KEY_TRIPSHEET_DELIVERY_SALEVALUE + ", " + KEY_TRIPSHEET_DELIVERY_CREATEDON + ", " + KEY_PRODUCT_RETURNABLE
                     + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " D LEFT JOIN " + TABLE_PRODUCTS + " P ON D." + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + " = P." + KEY_PRODUCT_ID
                     + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = '" + tripSheetId + "' AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + agentId + "'";
 
@@ -4824,6 +4824,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     deliveredProduct.setTotalTax(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXTOTAL)));
                     deliveredProduct.setSubTotal(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SALEVALUE)));
                     deliveredProduct.setCreatedTime(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
+                    deliveredProduct.setProductReturnable(c.getString(c.getColumnIndex(KEY_PRODUCT_RETURNABLE)));
 
                     if (Double.parseDouble(deliveredProduct.getQuantity()) > 0)
                         deliveredProductsList.add(deliveredProduct);
@@ -4840,14 +4841,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return deliveredProductsList;
     }
-
     public ArrayList<SaleOrderReturnedProducts> getReturnsProductsListForSaleOrder(String tripSheetId, String saleOrderId, String agentId) {
         ArrayList<SaleOrderReturnedProducts> returnedProductsList = new ArrayList<>();
 
         try {
+            String obamount = "0.0";
             Map<String, String> deliveredProductsHashMap = fetchDeliveriesListByTripSheetId(tripSheetId, saleOrderId, agentId);
 
-            String selectQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_RETURN_NO + ", " + KEY_TRIPSHEET_RETURNS_CREATED_ON + ", "  + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY + ", " + KEY_PRODUCT_RETURNABLE
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_RETURN_NO + ", " + KEY_TRIPSHEET_RETURNS_CREATED_ON + ", " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY + ", " + KEY_PRODUCT_RETURNABLE
                     + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " R LEFT JOIN " + TABLE_PRODUCTS + " P ON R." + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = P." + KEY_PRODUCT_ID
                     + " WHERE P." + KEY_PRODUCT_RETURNABLE + " = 'Y' AND " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = '" + tripSheetId + "' AND " + KEY_TRIPSHEET_RETURNS_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + agentId + "'";
 
@@ -4862,7 +4863,18 @@ public class DBHelper extends SQLiteOpenHelper {
                     returnedProduct.setId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)));
                     returnedProduct.setName(c.getString(c.getColumnIndex(KEY_PRODUCT_TITLE)));
                     returnedProduct.setCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
-                    returnedProduct.setOpeningBalance("0");
+                    String cc = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES));
+                    if (cc.equals("2600005")) {
+                        obamount = fetchCansorCratesDueByIds(tripSheetId,saleOrderId,agentId, cc,"cans");
+                        // CANS DUE
+                        returnedProduct.setOpeningBalance(obamount);
+                    } else if (cc.equals("2600006")) {
+                        obamount = fetchCansorCratesDueByIds(tripSheetId,saleOrderId,agentId, cc,"crates");
+                        // CRATES DUE
+                        returnedProduct.setOpeningBalance(obamount);
+                    } else {
+                        returnedProduct.setOpeningBalance(obamount);
+                    }
                     returnedProduct.setReturned(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY)));
                     returnedProduct.setDelivered(deliveredProductsHashMap.get(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS))));
 
@@ -4883,6 +4895,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return returnedProductsList;
     }
+
 
     public PaymentsBean getSaleOrderPaymentDetails(String tripSheetId, String saleOrderId) {
         PaymentsBean paymentsBean = null;
@@ -6412,6 +6425,133 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+    /**
+     * Method to get the all sale orders by tripid
+     *
+     * @param tripSheetId
+     * @return
+     */
+    public ArrayList<SaleOrderReturnedProducts> getReturnsProductsListForSaleOrder1(String tripSheetId) {
+        ArrayList<SaleOrderReturnedProducts> returnedProductsList = new ArrayList<>();
 
+        try {
+            String obamount = "0.0";
+            Map<String, String> deliveredProductsHashMap = fetchDeliveriesListByTripSheetId1(tripSheetId);
+
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_RETURN_NO + ", " + KEY_TRIPSHEET_RETURNS_CREATED_ON + ", " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY + ", " + KEY_PRODUCT_RETURNABLE
+                    + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " R LEFT JOIN " + TABLE_PRODUCTS + " P ON R." + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = P." + KEY_PRODUCT_ID
+                    + " WHERE P." + KEY_PRODUCT_RETURNABLE + " = 'Y' AND " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = '" + tripSheetId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    SaleOrderReturnedProducts returnedProduct = new SaleOrderReturnedProducts();
+                    returnedProduct.setReturnno(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NO)));
+                    returnedProduct.setReturndate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_ON)));
+                    returnedProduct.setId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)));
+                    returnedProduct.setName(c.getString(c.getColumnIndex(KEY_PRODUCT_TITLE)));
+                    returnedProduct.setCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
+                    String cc = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES));
+                    if (cc.equals("2600005")) {
+                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc,"cans");
+                        // CANS DUE
+                        returnedProduct.setOpeningBalance(obamount);
+                    } else if (cc.equals("2600006")) {
+                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc,"crates");
+                        // CRATES DUE
+                        returnedProduct.setOpeningBalance(obamount);
+                    } else {
+                        returnedProduct.setOpeningBalance(obamount);
+                    }
+                    returnedProduct.setReturned(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY)));
+                    returnedProduct.setDelivered(deliveredProductsHashMap.get(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS))));
+
+                    double closingBalance = Double.parseDouble(returnedProduct.getOpeningBalance()) + Double.parseDouble(returnedProduct.getDelivered()) - Double.parseDouble(returnedProduct.getReturned());
+                    returnedProduct.setClosingBalance(String.valueOf(closingBalance));
+
+                    returnedProductsList.add(returnedProduct);
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return returnedProductsList;
+    }
+
+    /*
+    Method to get the deliveires
+     */
+    public Map<String, String> fetchDeliveriesListByTripSheetId1(String tripsheetId) {
+        Map<String, String> tripsheetsDeliveries = new HashMap<>();
+
+        try {
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + ", " + KEY_TRIPSHEET_DELIVERY_QUANTITY + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST
+                    + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    tripsheetsDeliveries.put(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)), c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_QUANTITY)));
+                } while (c.moveToNext());
+            }
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return tripsheetsDeliveries;
+    }
+
+    public String fetchCansorCratesDueByIds1(String tripsheetId, String prodCode, String type) {
+        String due = "0.0";
+
+        try {
+            String selectQuery = null;
+            SQLiteDatabase db = this.getReadableDatabase();
+            if (type.equals("cans")) {
+                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_SO_LIST
+                        + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = " + "'" + tripsheetId + "' AND "
+                        + KEY_TRIPSHEET_SO_PRODUCTCODE + " = '" + prodCode + "'";
+
+
+                Cursor c = db.rawQuery(selectQuery, null);
+                if (c.moveToFirst()) {
+                    do {
+                        due = c.getString(c.getColumnIndex(KEY_TRIPSHEET_SO_CANS_DUE));
+                    } while (c.moveToNext());
+                }
+                c.close();
+
+            } else if (type.equals("crates")) {
+                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_SO_LIST
+                        + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = " + "'" + tripsheetId + "' AND " +
+                        KEY_TRIPSHEET_SO_PRODUCTCODE + " = '" + prodCode + "'";
+
+                Cursor c = db.rawQuery(selectQuery, null);
+                if (c.moveToFirst()) {
+                    do {
+                        due = c.getString(c.getColumnIndex(KEY_TRIPSHEET_SO_CRATES_DUE));
+                    } while (c.moveToNext());
+                }
+                c.close();
+            }
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return due;
+    }
 
 }

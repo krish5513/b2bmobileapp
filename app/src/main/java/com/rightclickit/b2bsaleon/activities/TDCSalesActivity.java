@@ -256,6 +256,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                     dialog.dismiss();
                     Intent i = new Intent(TDCSalesActivity.this, TDCSalesListActivity.class);
                     i.putExtra("CustomerName", str_selectedretailername);
+                    i.putExtra("From", "TDC");
                     startActivity(i);
                     finish();
                 }

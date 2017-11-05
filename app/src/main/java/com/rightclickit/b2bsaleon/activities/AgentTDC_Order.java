@@ -37,7 +37,6 @@ public class AgentTDC_Order extends AppCompatActivity {
     public LinearLayout agentOrders, noOrders;
     FloatingActionButton fab;
 
-
     public TextView tv_enquiryId;
 
     public TextView date;

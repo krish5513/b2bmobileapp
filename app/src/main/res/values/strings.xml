@@ -31,6 +31,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="print">Please save details before print</string>
+    <string name="tripsave">Trip sheet closed successfully.</string>
+    <string name="tripfail">"Trip sheet closing failed.</string>
 
     <string name="action_settings">Settings</string>
     <string name="email">Email Id</string>

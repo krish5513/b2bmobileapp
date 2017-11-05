@@ -204,7 +204,7 @@ public class AgentReturns extends AppCompatActivity {
                         R.anim.blink);
                 orders.startAnimation(animation1);
 
-                Intent i =new Intent(AgentReturns.this,AgentTakeOrderScreen.class);
+                Intent i =new Intent(AgentReturns.this,TDCSalesListActivity.class);
                 startActivity(i);
                 finish();
             }

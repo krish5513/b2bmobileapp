@@ -5,14 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +28,6 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
-import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.services.SyncTripSheetsPaymentsService;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
@@ -39,9 +37,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class TripsheetPayments extends AppCompatActivity {
@@ -203,6 +199,7 @@ public class TripsheetPayments extends AppCompatActivity {
                     i.putExtra("agentSoId", mAgentSoId);
                     i.putExtra("agentSoCode", mAgentSoCode);
                     startActivity(i);
+                    finish();
                 }
             });
 
@@ -327,10 +324,10 @@ public class TripsheetPayments extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-            Intent intent = new Intent(this, TripSheetView.class);
-            intent.putExtra("tripsheetId", mTripSheetId);
-            startActivity(intent);
-            finish();
+        Intent intent = new Intent(this, TripSheetView.class);
+        intent.putExtra("tripsheetId", mTripSheetId);
+        startActivity(intent);
+        finish();
 
     }
 
@@ -521,12 +518,26 @@ public class TripsheetPayments extends AppCompatActivity {
                 mDBHelper.insertTripsheetsPaymentsListData(paymentsBean);
             }
 
-           // Toast.makeText(TripsheetPayments.this, "Payment details saved successfully.", Toast.LENGTH_SHORT).show();
-            CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
+            Toast.makeText(TripsheetPayments.this, getResources().getString(R.string.database_details), Toast.LENGTH_SHORT).show();
+//            CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
             synchronized (this) {
                 if (new NetworkConnectionDetector(TripsheetPayments.this).isNetworkConnected()) {
                     startService(new Intent(TripsheetPayments.this, SyncTripSheetsPaymentsService.class));
                 }
+            }
+
+            synchronized (this){
+                Intent i = new Intent(TripsheetPayments.this, TripsheetPaymentsPreview.class);
+                i.putExtra("tripsheetId", mTripSheetId);
+                i.putExtra("agentId", mAgentId);
+                i.putExtra("agentCode", mAgentCode);
+                i.putExtra("agentName", mAgentName);
+                i.putExtra("agentRouteId", mAgentRouteId);
+                i.putExtra("agentRouteCode", mAgentRouteCode);
+                i.putExtra("agentSoId", mAgentSoId);
+                i.putExtra("agentSoCode", mAgentSoCode);
+                startActivity(i);
+                finish();
             }
         }
     }

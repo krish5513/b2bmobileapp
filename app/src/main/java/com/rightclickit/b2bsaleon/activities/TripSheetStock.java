@@ -109,12 +109,13 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
             privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("TripSheets"));
             //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
             dispatchTitle.setVisibility(View.VISIBLE);
+            verifyTitle.setVisibility(View.VISIBLE);
 //            if (privilegeActionsData.contains("Stock_Dispatch")) {
 //                dispatchTitle.setVisibility(View.VISIBLE);
 //            }
 
             if (privilegeActionsData.contains("Stock_Verify")) {
-                verifyTitle.setVisibility(View.VISIBLE);
+                //verifyTitle.setVisibility(View.VISIBLE);
                 tps_stock_verify_layout.setVisibility(View.VISIBLE);
             }
 
@@ -164,19 +165,22 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
             TripsheetsStockList stockList = tripsStockList.get(0);
             if (stockList.getIsStockDispatched() == 1) {
                 isStockDispatched = true;
+                tps_stock_save_layout.setVisibility(View.GONE);
             }
 
             if (stockList.getIsStockVerified() == 1) {
                 isStockVerified = true;
                 tps_stock_verify_layout.setVisibility(View.GONE);
             }
-            if (stockList.getIsStockVerified() == 1 && privilegeActionsData.contains("Stock_Dispatch") && !isTripSheetClosed ||
-                    privilegeActionsData.contains("Stock_Dispatch") && !isTripSheetClosed) {
-                tps_stock_save_layout.setVisibility(View.VISIBLE);
-            }
+//            if (stockList.getIsStockVerified() == 1 && privilegeActionsData.contains("Stock_Dispatch") && !isTripSheetClosed ||
+//                    privilegeActionsData.contains("Stock_Dispatch") && !isTripSheetClosed) {
+//                tps_stock_save_layout.setVisibility(View.VISIBLE);
+//            }
         }
 
-        mItem.setEnabled(true);
+        if(mItem!=null) {
+            mItem.setEnabled(true);
+        }
     }
 
     @Override

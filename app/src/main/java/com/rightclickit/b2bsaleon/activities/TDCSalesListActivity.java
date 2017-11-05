@@ -56,7 +56,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
 
     String str_selectedretailername;
     private List<TDCCustomer> customerList;
-    String name,code;
+    String name,code,TroipsTakeorder="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +100,12 @@ public class TDCSalesListActivity extends AppCompatActivity {
 
             tdcSalesListView = (ListView) findViewById(R.id.tdc_sales_list_view);
 
+            Bundle bundle = this.getIntent().getExtras();
+            if (bundle != null) {
+                TroipsTakeorder = bundle.getString("From");
 
+
+            }
 
             tdcSalesListAdapter = new TDCSalesListAdapter(activityContext, this);
             tdcSalesListView.setAdapter(tdcSalesListAdapter);
@@ -360,9 +365,16 @@ public class TDCSalesListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, TDCSalesActivity.class);
-        startActivity(intent);
-        finish();
+        if (TroipsTakeorder.equals("TDC")) {
+            Intent intent = new Intent(this, TDCSalesActivity.class);
+
+            startActivity(intent);
+            finish();
+        } else {
+            Intent intent = new Intent(this, AgentsActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     public void loadTDCSalesList(View view) {

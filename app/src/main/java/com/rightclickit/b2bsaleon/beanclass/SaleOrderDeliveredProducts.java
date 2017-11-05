@@ -20,6 +20,7 @@ public class SaleOrderDeliveredProducts implements Serializable {
     private String subTotal;
     private String createdTime;
     private String str_hssn;
+    private String productReturnable;
 
     public String getStr_hssn() {
         return str_hssn;
@@ -161,5 +162,13 @@ public class SaleOrderDeliveredProducts implements Serializable {
                 ", subTotal='" + subTotal + '\'' +
                 ", createdTime='" + createdTime + '\'' +
                 '}';
+    }
+
+    public String getProductReturnable() {
+        return productReturnable;
+    }
+
+    public void setProductReturnable(String productReturnable) {
+        this.productReturnable = productReturnable;
     }
 }
