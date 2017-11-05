@@ -15,6 +15,7 @@ public class SaleOrderReturnedProducts implements Serializable {
     private String returned;
     private String closingBalance;
     private String returnno;
+    private String agentId;
 
 
     public String getReturnno() {
@@ -104,5 +105,13 @@ public class SaleOrderReturnedProducts implements Serializable {
                 ", rno='" + returnno + '\'' +
                 ", rdate='" + returndate + '\'' +
                 '}';
+    }
+
+    public String getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(String agentId) {
+        this.agentId = agentId;
     }
 }

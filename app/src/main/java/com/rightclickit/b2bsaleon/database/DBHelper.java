@@ -6436,9 +6436,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             String obamount = "0.0";
-            Map<String, String> deliveredProductsHashMap = fetchDeliveriesListByTripSheetId1(tripSheetId);
 
-            String selectQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_RETURN_NO + ", " + KEY_TRIPSHEET_RETURNS_CREATED_ON + ", " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY + ", " + KEY_PRODUCT_RETURNABLE
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_RETURN_NO + ", " + KEY_TRIPSHEET_RETURNS_CREATED_ON + ", " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY + ", " + KEY_PRODUCT_RETURNABLE + ", "+ KEY_TRIPSHEET_RETURNS_USER_CODES
                     + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " R LEFT JOIN " + TABLE_PRODUCTS + " P ON R." + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = P." + KEY_PRODUCT_ID
                     + " WHERE P." + KEY_PRODUCT_RETURNABLE + " = 'Y' AND " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = '" + tripSheetId + "'";
 
@@ -6465,11 +6464,13 @@ public class DBHelper extends SQLiteOpenHelper {
                     } else {
                         returnedProduct.setOpeningBalance(obamount);
                     }
+                    Map<String, String> deliveredProductsHashMap = fetchDeliveriesListByTripSheetId1(tripSheetId,c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_CODES)),c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
                     returnedProduct.setReturned(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY)));
                     returnedProduct.setDelivered(deliveredProductsHashMap.get(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS))));
 
                     double closingBalance = Double.parseDouble(returnedProduct.getOpeningBalance()) + Double.parseDouble(returnedProduct.getDelivered()) - Double.parseDouble(returnedProduct.getReturned());
                     returnedProduct.setClosingBalance(String.valueOf(closingBalance));
+                    returnedProduct.setAgentId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_CODES)));
 
                     returnedProductsList.add(returnedProduct);
 
@@ -6489,12 +6490,14 @@ public class DBHelper extends SQLiteOpenHelper {
     /*
     Method to get the deliveires
      */
-    public Map<String, String> fetchDeliveriesListByTripSheetId1(String tripsheetId) {
+    public Map<String, String> fetchDeliveriesListByTripSheetId1(String tripsheetId,String agentId,String proCode) {
         Map<String, String> tripsheetsDeliveries = new HashMap<>();
 
         try {
-            String selectQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + ", " + KEY_TRIPSHEET_DELIVERY_QUANTITY + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST
-                    + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "'";
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + ", " + KEY_TRIPSHEET_DELIVERY_QUANTITY + ", " + KEY_TRIPSHEET_DELIVERY_USER_CODES + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST
+                    + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "' AND "+
+                     KEY_TRIPSHEET_DELIVERY_USER_CODES + " = " + "'" + agentId + "' AND "+
+                    KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES + " = " + "'" + proCode + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -6552,6 +6555,35 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return due;
+    }
+
+    /**
+     * Method to get the agent name by id
+     * @param agentId
+     * @return
+     */
+    public String getAgentNameById(String agentId) {
+        String name = "";
+
+        try {
+            String selectQuery = "SELECT " + KEY_AGENT_FIRSTNAME + " FROM " + TABLE_AGENTS + " WHERE " + KEY_AGENT_CODE + "='" + agentId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    name = c.getString(c.getColumnIndex(KEY_AGENT_FIRSTNAME));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return name;
     }
 
 }

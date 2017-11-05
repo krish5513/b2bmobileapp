@@ -19,7 +19,6 @@
             android:layout_weight="0.17"
             android:ellipsize="end"
             android:gravity="center|left"
-            android:maxLines="2"
             android:paddingLeft="2dp"
             android:text="FCM 1000 ML"
             android:textAllCaps="true"
