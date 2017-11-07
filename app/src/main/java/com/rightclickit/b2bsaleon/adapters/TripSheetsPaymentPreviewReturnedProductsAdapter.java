@@ -14,7 +14,6 @@ import com.rightclickit.b2bsaleon.activities.TripSheetViewPreview;
 import com.rightclickit.b2bsaleon.activities.TripsheetPaymentsPreview;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderReturnedProducts;
 import com.rightclickit.b2bsaleon.database.DBHelper;
-import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 
@@ -99,10 +98,11 @@ public class TripSheetsPaymentPreviewReturnedProductsAdapter extends BaseAdapter
         } else {
             salesPreviewViewHolder.product_name.setText(productBean.getName() + " \n " + productBean.getCode());
         }
-        salesPreviewViewHolder.ob.setText(Utility.getFormattedCurrency(Double.parseDouble(productBean.getOpeningBalance())));
-        salesPreviewViewHolder.delivered.setText(Utility.getFormattedCurrency(Double.parseDouble(productBean.getDelivered())));
-        salesPreviewViewHolder.returned.setText(Utility.getFormattedCurrency(Double.parseDouble(productBean.getReturned())));
-        salesPreviewViewHolder.cb.setText(Utility.getFormattedCurrency(Double.parseDouble(productBean.getClosingBalance())));
+        // Added by Sekhar
+        salesPreviewViewHolder.ob.setText(productBean.getOpeningBalance());
+        salesPreviewViewHolder.delivered.setText(productBean.getDelivered());
+        salesPreviewViewHolder.returned.setText(productBean.getReturned());
+        salesPreviewViewHolder.cb.setText(productBean.getClosingBalance());
 
         return convertView;
     }

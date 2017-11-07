@@ -6586,4 +6586,35 @@ public class DBHelper extends SQLiteOpenHelper {
         return name;
     }
 
+
+
+    /**
+     * Method to get the agent name by id
+     * @param agentId
+     * @return
+     */
+    public String getAgentCodeById(String agentId) {
+        String code = "";
+
+        try {
+            String selectQuery = "SELECT " + KEY_AGENT_CODE + " FROM " + TABLE_AGENTS + " WHERE " + KEY_AGENT_CODE + "='" + agentId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    code = c.getString(c.getColumnIndex(KEY_AGENT_CODE));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return code;
+    }
+
 }

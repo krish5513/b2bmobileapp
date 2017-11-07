@@ -110,7 +110,7 @@ public class RetailersModel implements OnAsyncRequestCompleteListener {
                 customerArray.put(s);
                 JSONObject params = new JSONObject();
                 params.put("customer", customerArray);
-                params.put("filter_by_filed", "created_by");
+                params.put("filter_by_filed", "user_id");//created_by
                 params.put("from_date", fromDate);
                 params.put("to_date", currentDate);
 
