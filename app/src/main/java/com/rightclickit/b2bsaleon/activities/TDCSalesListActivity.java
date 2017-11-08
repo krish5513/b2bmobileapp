@@ -57,6 +57,8 @@ public class TDCSalesListActivity extends AppCompatActivity {
     String str_selectedretailername;
     private List<TDCCustomer> customerList;
     String name,code,TroipsTakeorder="";
+    String screenType="";
+    String custId="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +105,18 @@ public class TDCSalesListActivity extends AppCompatActivity {
             Bundle bundle = this.getIntent().getExtras();
             if (bundle != null) {
                 TroipsTakeorder = bundle.getString("From");
+              //custId = bundle.getString("custId");
+               // screenType = bundle.getString("screenType"); //AgentOrder
             }
 
+
+/*
+            Bundle bundle1 = this.getIntent().getExtras();
+            if (bundle1 != null) {
+
+                custId = bundle.getString("custId");
+                screenType = bundle.getString("screenType"); //AgentOrder
+            }*/
             tdcSalesListAdapter = new TDCSalesListAdapter(activityContext, this);
             tdcSalesListView.setAdapter(tdcSalesListAdapter);
 
@@ -132,8 +144,11 @@ public class TDCSalesListActivity extends AppCompatActivity {
             String startDateStr = Utility.formatDate(startingDate, Constants.TDC_SALES_ORDER_DATE_SAVE_FORMAT);
             String endDateStr = Utility.formatDate(endingDate, Constants.TDC_SALES_ORDER_DATE_SAVE_FORMAT);
 
-
-            allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr);
+           // if(screenType.equals("customerDetails")){
+               // allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, custId);
+           // }else{
+                allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, "");
+           // }
 
             customerList = new ArrayList<>();
 
@@ -438,7 +453,12 @@ public class TDCSalesListActivity extends AppCompatActivity {
             String endDateStr = Utility.formatDate(endingDate, Constants.TDC_SALES_ORDER_DATE_SAVE_FORMAT);
 
 
-            allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr);
+            if(screenType.equals("customerDetails")){
+                allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, custId);
+            }else{
+                allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, "");
+            }
+           // allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, "");
             if (allTDCSaleOrders.size() <= 0) {
                 tdcSalesListView.setVisibility(View.GONE);
                 no_sales_found_message.setVisibility(View.VISIBLE);

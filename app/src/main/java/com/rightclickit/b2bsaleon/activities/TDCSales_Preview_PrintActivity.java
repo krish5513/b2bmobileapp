@@ -525,7 +525,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 if (isOrderAlreadySaved) {
 
 
-                    int pageheight = 550 + selectedList.size() * 200; // 2000 is old
+                    int pageheight = 500 + selectedList.size() * 200; // 2000 is old
                     Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                     Canvas canvas = new Canvas(bmOverlay);
                     canvas.drawColor(Color.WHITE);
@@ -714,6 +714,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+
     }
 
     public void updateUIWithBundleValues(TDCSaleOrder saleOrder) {

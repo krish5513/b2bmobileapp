@@ -197,6 +197,8 @@ public class AgentPayments extends AppCompatActivity {
                 orders.startAnimation(animation1);
 
                 Intent i =new Intent(AgentPayments.this,TDCSalesListActivity.class);
+               // i.putExtra("custId",mPreferences.getString("agentId"));
+               // i.putExtra("screenType","customerDetails");
                 startActivity(i);
                 finish();
             }

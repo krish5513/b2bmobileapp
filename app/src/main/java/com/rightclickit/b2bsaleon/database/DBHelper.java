@@ -2358,12 +2358,17 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch records for selected duration from TDC Sales Orders Table
      */
-    public List<TDCSaleOrder> fetchAllTDCSalesOrdersForSelectedDuration(String startDate, String endDate) {
+    public List<TDCSaleOrder> fetchAllTDCSalesOrdersForSelectedDuration(String startDate, String endDate, String customerId) {
         List<TDCSaleOrder> allOrdersList = new ArrayList<>();
 
         try {
+            Cursor c = null;
             SQLiteDatabase db = this.getReadableDatabase();
-            Cursor c = db.rawQuery("SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_DATE + " BETWEEN ? AND ?", new String[]{startDate, endDate});
+            if(customerId != null && !(customerId.equals(""))){
+                c = db.rawQuery("SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE "+  KEY_TDC_SALES_ORDER_CUSTOMER_ID + " = " + customerId + "AND WHERE " + KEY_TDC_SALES_ORDER_DATE + " BETWEEN ? AND ?", new String[]{startDate, endDate});
+            }else{
+                c = db.rawQuery("SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_DATE + " BETWEEN ? AND ?", new String[]{startDate, endDate});
+            }
 
             if (c.moveToFirst()) {
                 do {

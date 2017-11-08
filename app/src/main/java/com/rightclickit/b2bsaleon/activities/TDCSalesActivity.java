@@ -61,10 +61,11 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     HashMap<String, String> availableStockProductsListTemp = new HashMap<String, String>();
     private Map<String, String> selectedProductsStockListHashMap = new HashMap<String, String>();
     private Map<String, String> previousselectedProductsStockListHashMap;
-
+    String screenType="";
+    String custId="";
     private boolean isAscendingSort;
     String str_selectedretailername;
-
+    String  agentId = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +91,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
             userId = mmSharedPreferences.getString("userId");
 
-
+            agentId = mmSharedPreferences.getString("agentId");
             //Log.e(allProductsList.size())
 
 
@@ -257,6 +258,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                     Intent i = new Intent(TDCSalesActivity.this, TDCSalesListActivity.class);
                     i.putExtra("CustomerName", str_selectedretailername);
                     i.putExtra("From", "TDC");
+
                     startActivity(i);
                     finish();
                 }

@@ -121,7 +121,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
                         currentOrder.setSelectedCustomerUserId(selectedCustomer.getUserId());
                         currentOrder.setSelectedCustomerType(selectedCustomer.getCustomerType());
                         isCustomerSelected = true;
-                        customer = selectedCustomer.getName();
+                        customer = selectedCustomer.getBusinessName();
 
 
                         if (selectedCustomer.getCustomerType() == 1) {

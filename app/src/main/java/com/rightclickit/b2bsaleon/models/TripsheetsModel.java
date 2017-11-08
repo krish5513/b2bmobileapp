@@ -1,6 +1,7 @@
 package com.rightclickit.b2bsaleon.models;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.activities.RouteStock;
@@ -339,7 +340,8 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                             if (productCodesArray.length() > 0) {
                                 // If products info array found.
                                 noOfProducts = productCodesArray.length();
-                                for (int j = 0; j < noOfProducts; j++) {
+                                Log.i("length 1..."+noOfProducts,"length 2..."+productsInfoArray.length());
+                                for (int j = 0; j < productsInfoArray.length(); j++) {//productCodesArray
                                     JSONObject jj = productsInfoArray.getJSONObject(j);
                                     // Checking weather product code is null or not
                                     TripsheetsStockList tripStockBean = new TripsheetsStockList();

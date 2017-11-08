@@ -205,6 +205,8 @@ public class AgentDeliveries extends AppCompatActivity {
                 orders.startAnimation(animation1);
 
                 Intent i = new Intent(AgentDeliveries.this, TDCSalesListActivity.class);
+               // i.putExtra("custId",mPreferences.getString("agentId"));
+               // i.putExtra("screenType","customerDetails");
                 startActivity(i);
                 finish();
             }

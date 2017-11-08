@@ -183,7 +183,9 @@ public class AgentsAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 mPreferences.putString("agentName", mAgentsBeansList1.get(position).getmFirstname());
+
                 mPreferences.putString("agentId", mAgentsBeansList1.get(position).getmAgentId());
+                Log.i("agentId",mAgentsBeansList1.get(position).getmAgentId()+"");
                 mPreferences.putString("agentrouteId", mAgentsBeansList1.get(position).getmAgentRouteId());
                 mPreferences.putString("enqId", String.valueOf(position + 1));
                 mPreferences.putString("agentCode", mAgentsBeansList1.get(position).getmAgentCode());

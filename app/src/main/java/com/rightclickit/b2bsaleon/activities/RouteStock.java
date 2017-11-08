@@ -2,6 +2,7 @@ package com.rightclickit.b2bsaleon.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -9,12 +10,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -269,10 +273,8 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
 
                         if (status > 0) {
                             //Toast.makeText(activityContext, "Trip sheet closed successfully.", Toast.LENGTH_LONG).show();
-                           CustomAlertDialog.showAlertDialog(activityContext, "Success",  getResources().getString(R.string.tripsave));
-                            Intent intent = new Intent(activityContext, TripSheetsActivity.class);
-                            startActivity(intent);
-                            finish();
+                            showAlertDialogWithCancelButton(RouteStock.this, "Success", "Trip sheet closed successfully.");
+
                         } else {
                             //Toast.makeText(activityContext, "Trip sheet closing failed.", Toast.LENGTH_LONG).show();
                             CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.tripfail));
@@ -378,10 +380,9 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
 
                         if (status > 0) {
                           //  Toast.makeText(activityContext, "Trip sheet closed/approved successfully.", Toast.LENGTH_LONG).show();
-                            CustomAlertDialog.showAlertDialog(activityContext, "Success",  getResources().getString(R.string.tripsave));
-                            Intent intent = new Intent(activityContext, TripSheetsActivity.class);
-                            startActivity(intent);
-                            finish();
+                            //CustomAlertDialog.showAlertDialog(activityContext, "Success",  getResources().getString(R.string.tripsave));
+                            showAlertDialogWithCancelButton(RouteStock.this, "Success", "Trip sheet closed/approved successfully.");
+
                         } else {
                             //Toast.makeText(activityContext, "Trip sheet closing failed.", Toast.LENGTH_LONG).show();
                             CustomAlertDialog.showAlertDialog(activityContext, "Failed",  getResources().getString(R.string.tripfail));
@@ -780,4 +781,44 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
         this.selectedPReturnsListMap = selectedPReturnsList;
         System.out.println("RRTN LSIT:::: " + selectedPReturnsListMap.size());
     }
+
+
+
+    private void showAlertDialogWithCancelButton(Context context, String title, String message) {
+        try {
+            AlertDialog alertDialog = null;
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    Intent intent = new Intent(activityContext, TripSheetsActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button cancelButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            if (cancelButton != null)
+                cancelButton.setTextColor(ContextCompat.getColor(context, R.color.alert_dialog_color_accent));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
