@@ -117,6 +117,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 str_agentname = bundle.getString("CustomerName");
+                System.out.println("NAME::: "+ str_agentname);
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW);
                 requestCameFrom = bundle.getString(Constants.BUNDLE_REQUEST_FROM);
                 id = bundle.getString("incid");
@@ -525,7 +526,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 if (isOrderAlreadySaved) {
 
 
-                    int pageheight = 500 + selectedList.size() * 200; // 2000 is old
+                    int pageheight = 550 + selectedList.size() * 200; // 2000 is old
                     Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                     Canvas canvas = new Canvas(bmOverlay);
                     canvas.drawColor(Color.WHITE);
@@ -638,7 +639,12 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     canvas.drawText("(VALUE+TAX) :" + "(" + subAmount + " + " + subtaxAmount + ")", 5, st, paint);
                     //paint.setTextSize(20);
                     //canvas.drawText("(" +  subAmount + " + " +  subtaxAmount + ")", 100, st, paint);
+
+
+                    paint.setTextSize(20);
+                    canvas.drawText("* Please take photocopy of the Bill *", 17, st, paint);
                     st = st + 30;
+
                     canvas.drawText("--------X---------", 100, st, paint);
                     com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
 
@@ -714,7 +720,6 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-
     }
 
     public void updateUIWithBundleValues(TDCSaleOrder saleOrder) {

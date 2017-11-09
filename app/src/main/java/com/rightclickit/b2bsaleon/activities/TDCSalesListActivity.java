@@ -39,7 +39,6 @@ import java.util.List;
 public class TDCSalesListActivity extends AppCompatActivity {
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
-
     private SearchView search;
     private ListView tdcSalesListView;
     private TextView no_sales_found_message, tdc_sales_count, tdc_sales_total_amount, tdc_sales_items_count,sales_print;

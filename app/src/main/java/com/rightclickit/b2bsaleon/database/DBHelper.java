@@ -2099,6 +2099,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     customer.setIsActive(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_IS_ACTIVE)));
                     customer.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_UPLOAD_STATUS)));
                     customer.setRoutecode(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_ROUTECODE)));
+                    customer.setCode(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_CODE)));
                     customer.setIsShopImageUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS)));
 
                     allTDCCustomersList.add(customer);

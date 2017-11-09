@@ -47,7 +47,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     private TextView tdc_sales_list, tdc_sales_preview, totalTaxAmountTextView, totalAmountTextView, subTotalAmountTextView;
 
     private DBHelper mDBHelper;
-    private ArrayList<ProductsBean> allProductsList, allProductsListSort;
+    private ArrayList<ProductsBean> allProductsList, allProductsListSort,allProductsListNew;
     private Map<String, ProductsBean> selectedProductsListHashMap, previouslySelectedProductsListHashMap; // Hash Map Key = Product Id
     private TDCSalesAdapter tdcSalesAdapter;
     private boolean showProductsListView = false;
@@ -61,11 +61,10 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     HashMap<String, String> availableStockProductsListTemp = new HashMap<String, String>();
     private Map<String, String> selectedProductsStockListHashMap = new HashMap<String, String>();
     private Map<String, String> previousselectedProductsStockListHashMap;
-    String screenType="";
-    String custId="";
+
     private boolean isAscendingSort;
     String str_selectedretailername;
-    String  agentId = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +90,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
             userId = mmSharedPreferences.getString("userId");
 
-            agentId = mmSharedPreferences.getString("agentId");
+
             //Log.e(allProductsList.size())
 
 
@@ -139,6 +138,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
 
             allProductsList = new ArrayList<>();
             allProductsListSort = new ArrayList<>();
+            allProductsListNew = new ArrayList<>();
             selectedProductsListHashMap = new HashMap<>();
             previouslySelectedProductsListHashMap = new HashMap<>();
             previousselectedProductsStockListHashMap = new HashMap<String, String>();
@@ -181,6 +181,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
             System.out.println("ALL PRODs LIST:: " + allProductsList.size());
             stockBeanArrayList = mDBHelper.fetchAllStockByAgentId(userId);
+            System.out.println("ALL PRODs STOCK BEAN LIST:: " + stockBeanArrayList.size());
             //availableStockProductsList = new ArrayList<String>();
             //availableStockProductsListTemp = new ArrayList<String>();
             if (availableStockProductsList.size() > 0) {
@@ -230,8 +231,37 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             // Log.i("available actual", availableStockProductsList.size() + "\n");
             if (showProductsListView) {
                 allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
+                for (int g = 0;g<allProductsList.size();g++){
+                    for (int g1 = 0; g1 < stockBeanArrayList.size(); g1++) {
+                        if (allProductsList.get(g).getProductId().equals(stockBeanArrayList.get(g1).getmProductId())) {
+                            // If match add this cb quantity to temp string array
+                            Double stock =  Double.parseDouble(stockBeanArrayList.get(g1).getmProductCBQuantity());
+                            System.out.println("STOCK QUA::: "+ stock);
+                            if(stock>0) {
+                                ProductsBean productsBean = new ProductsBean();
 
-                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsList, previouslySelectedProductsListHashMap, availableStockProductsList, userId, previousselectedProductsStockListHashMap);
+                                productsBean.setProductId(allProductsList.get(g).getProductId());
+                                productsBean.setProductCode(allProductsList.get(g).getProductCode());
+                                productsBean.setProductTitle(allProductsList.get(g).getProductTitle());
+                                productsBean.setProductDescription(allProductsList.get(g).getProductDescription());
+                                productsBean.setProductImageUrl(allProductsList.get(g).getProductImageUrl());
+                                productsBean.setProductReturnable(allProductsList.get(g).getProductReturnable());
+                                productsBean.setProductMOQ(allProductsList.get(g).getProductMOQ());
+                                productsBean.setProductUOM(allProductsList.get(g).getProductUOM());
+                                productsBean.setProductAgentPrice(allProductsList.get(g).getProductAgentPrice());
+                                productsBean.setProductConsumerPrice(allProductsList.get(g).getProductConsumerPrice());
+                                productsBean.setProductRetailerPrice(allProductsList.get(g).getProductRetailerPrice());
+                                productsBean.setProductgst(allProductsList.get(g).getProductgst());
+                                productsBean.setProductvat(allProductsList.get(g).getProductvat());
+                                productsBean.setControlCode(allProductsList.get(g).getControlCode());
+
+                                allProductsListNew.add(productsBean);
+                            }
+                        }
+                    }
+                }
+                System.out.println("Filter::: "+ allProductsListNew.size());
+                tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsListNew, previouslySelectedProductsListHashMap, availableStockProductsList, userId, previousselectedProductsStockListHashMap);
                 tdc_products_list_view.setAdapter(tdcSalesAdapter);
             }
 
@@ -258,7 +288,6 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                     Intent i = new Intent(TDCSalesActivity.this, TDCSalesListActivity.class);
                     i.putExtra("CustomerName", str_selectedretailername);
                     i.putExtra("From", "TDC");
-
                     startActivity(i);
                     finish();
                 }
@@ -345,33 +374,33 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                         allProductsListSort.clear();
                     }
                     synchronized (this) {
-                        for (int k = 0; k < allProductsList.size(); k++) {
+                        for (int k = 0; k < allProductsListNew.size(); k++) {
                             Double selectedQua = 0.0, stockQuantity = 0.0;
-                            if (selectedProductsStockListHashMap.get(allProductsList.get(k).getProductId()) != null) {
-                                selectedQua = Double.parseDouble(selectedProductsStockListHashMap.get(allProductsList.get(k).getProductId()));
+                            if (selectedProductsStockListHashMap.get(allProductsListNew.get(k).getProductId()) != null) {
+                                selectedQua = Double.parseDouble(selectedProductsStockListHashMap.get(allProductsListNew.get(k).getProductId()));
                             }
 
-                            if (availableStockProductsList.get(allProductsList.get(k).getProductId()) != null) {
-                                stockQuantity = Double.parseDouble(availableStockProductsList.get(allProductsList.get(k).getProductId()));
+                            if (availableStockProductsList.get(allProductsListNew.get(k).getProductId()) != null) {
+                                stockQuantity = Double.parseDouble(availableStockProductsList.get(allProductsListNew.get(k).getProductId()));
                             }
 
                             // Sorting code
                             ProductsBean productsBean1 = new ProductsBean();
 
-                            productsBean1.setProductId(allProductsList.get(k).getProductId());
-                            productsBean1.setProductCode(allProductsList.get(k).getProductCode());
-                            productsBean1.setProductTitle(allProductsList.get(k).getProductTitle());
-                            productsBean1.setProductDescription(allProductsList.get(k).getProductDescription());
-                            productsBean1.setProductImageUrl(allProductsList.get(k).getProductImageUrl());
-                            productsBean1.setProductReturnable(allProductsList.get(k).getProductReturnable());
-                            productsBean1.setProductMOQ(allProductsList.get(k).getProductMOQ());
-                            productsBean1.setProductUOM(allProductsList.get(k).getProductUOM());
-                            productsBean1.setProductAgentPrice(allProductsList.get(k).getProductAgentPrice());
-                            productsBean1.setProductConsumerPrice(allProductsList.get(k).getProductConsumerPrice());
-                            productsBean1.setProductRetailerPrice(allProductsList.get(k).getProductRetailerPrice());
-                            productsBean1.setProductgst(allProductsList.get(k).getProductgst());
-                            productsBean1.setProductvat(allProductsList.get(k).getProductvat());
-                            productsBean1.setControlCode(allProductsList.get(k).getControlCode());
+                            productsBean1.setProductId(allProductsListNew.get(k).getProductId());
+                            productsBean1.setProductCode(allProductsListNew.get(k).getProductCode());
+                            productsBean1.setProductTitle(allProductsListNew.get(k).getProductTitle());
+                            productsBean1.setProductDescription(allProductsListNew.get(k).getProductDescription());
+                            productsBean1.setProductImageUrl(allProductsListNew.get(k).getProductImageUrl());
+                            productsBean1.setProductReturnable(allProductsListNew.get(k).getProductReturnable());
+                            productsBean1.setProductMOQ(allProductsListNew.get(k).getProductMOQ());
+                            productsBean1.setProductUOM(allProductsListNew.get(k).getProductUOM());
+                            productsBean1.setProductAgentPrice(allProductsListNew.get(k).getProductAgentPrice());
+                            productsBean1.setProductConsumerPrice(allProductsListNew.get(k).getProductConsumerPrice());
+                            productsBean1.setProductRetailerPrice(allProductsListNew.get(k).getProductRetailerPrice());
+                            productsBean1.setProductgst(allProductsListNew.get(k).getProductgst());
+                            productsBean1.setProductvat(allProductsListNew.get(k).getProductvat());
+                            productsBean1.setControlCode(allProductsListNew.get(k).getControlCode());
                             productsBean1.setSelectedQuantity(selectedQua);
                             productsBean1.setmStockQuantity(stockQuantity);
 
@@ -380,10 +409,12 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                     }
                     synchronized (this) {
                         if (!isAscendingSort) {
+                            System.out.println("1111111111111111111111");
                             // Ascending order
                             isAscendingSort = true;
                             Collections.sort(allProductsListSort, StringAscComparator);
                         } else {
+                            System.out.println("2222222222222222");
                             // Descending order
                             isAscendingSort = false;
                             Collections.sort(allProductsListSort, StringDescComparator);

@@ -402,7 +402,11 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                 //  canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
                 //  canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
                 // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
-                st = st + 20;
+
+                paint.setTextSize(20);
+                canvas.drawText("* Please take photocopy of the Bill *", 17, st, paint);
+                st = st + 30;
+
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
             }

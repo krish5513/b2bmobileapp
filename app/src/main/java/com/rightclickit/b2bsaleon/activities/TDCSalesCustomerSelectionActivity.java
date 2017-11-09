@@ -128,7 +128,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
                             code=(String.format("R%05d", selectedCustomer.getId()));
 
                         } else {
-                           code=(String.format("C%05d", selectedCustomer.getId()));
+                            code=(String.format("C%05d", selectedCustomer.getId()));
 
                         }
 

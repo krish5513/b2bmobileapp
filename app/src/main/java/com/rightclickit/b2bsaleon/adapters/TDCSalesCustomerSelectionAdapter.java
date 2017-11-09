@@ -92,14 +92,16 @@ public class TDCSalesCustomerSelectionAdapter extends BaseAdapter {
         final TDCCustomer currentCustomer = getItem(position);
 
         if (currentCustomer.getCustomerType() == 1) {
-            tdcSalesCustomerSelectionViewHolder.customer_id.setText(String.format("R%05d", currentCustomer.getId()));
+            tdcSalesCustomerSelectionViewHolder.customer_name.setText(currentCustomer.getBusinessName());
+            tdcSalesCustomerSelectionViewHolder.customer_id.setText(currentCustomer.getCode());
             tdcSalesCustomerSelectionViewHolder.customer_type_image.setImageResource(R.drawable.ic_store_black_24dp);
         } else {
+            tdcSalesCustomerSelectionViewHolder.customer_name.setText(currentCustomer.getName());
             tdcSalesCustomerSelectionViewHolder.customer_id.setText(String.format("C%05d", currentCustomer.getId()));
             tdcSalesCustomerSelectionViewHolder.customer_type_image.setImageResource(R.drawable.ic_person_pin_black_24dp);
         }
 
-        tdcSalesCustomerSelectionViewHolder.customer_name.setText(currentCustomer.getBusinessName());
+
         tdcSalesCustomerSelectionViewHolder.customer_mobile_no.setText(currentCustomer.getMobileNo());
 
         if (currentCustomer.getId() == currentOrder.getSelectedCustomerId()) {
