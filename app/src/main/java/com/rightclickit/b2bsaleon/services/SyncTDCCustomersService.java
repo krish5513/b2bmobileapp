@@ -110,7 +110,7 @@ public class SyncTDCCustomersService extends Service {
                 requestObj.put("phone", currentTDCCustomer.getMobileNo());
                 requestObj.put("email", "");
                 requestObj.put("password", Utility.getMd5String("123456789"));
-                requestObj.put("code", "");
+                requestObj.put("code", currentTDCCustomer.getCode());
                 requestObj.put("reporting_to", "");
                 requestObj.put("verify_code", "");
                 requestObj.put("address", currentTDCCustomer.getAddress());

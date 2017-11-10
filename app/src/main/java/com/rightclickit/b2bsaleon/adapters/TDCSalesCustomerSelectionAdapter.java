@@ -97,7 +97,7 @@ public class TDCSalesCustomerSelectionAdapter extends BaseAdapter {
             tdcSalesCustomerSelectionViewHolder.customer_type_image.setImageResource(R.drawable.ic_store_black_24dp);
         } else {
             tdcSalesCustomerSelectionViewHolder.customer_name.setText(currentCustomer.getName());
-            tdcSalesCustomerSelectionViewHolder.customer_id.setText(String.format("C%05d", currentCustomer.getId()));
+            tdcSalesCustomerSelectionViewHolder.customer_id.setText(currentCustomer.getCode());
             tdcSalesCustomerSelectionViewHolder.customer_type_image.setImageResource(R.drawable.ic_person_pin_black_24dp);
         }
 

@@ -31,6 +31,7 @@ public class TDCCustomer implements Serializable {
     private int isUploaded;
     private int isShopImageUploaded;
     private String code;
+    private String isUploasStatus;
 
     public long getId() {
         return id;
@@ -153,6 +154,7 @@ public class TDCCustomer implements Serializable {
                 ", isUploaded=" + isUploaded +
                 ", isShopImageUploaded=" + isShopImageUploaded +
                 ", code=" + code +
+                ", isUploasStatus=" + isUploasStatus +
                 '}';
     }
 
@@ -162,5 +164,13 @@ public class TDCCustomer implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getIsUploasStatus() {
+        return isUploasStatus;
+    }
+
+    public void setIsUploasStatus(String isUploasStatus) {
+        this.isUploasStatus = isUploasStatus;
     }
 }

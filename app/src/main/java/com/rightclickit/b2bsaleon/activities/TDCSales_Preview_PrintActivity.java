@@ -640,6 +640,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     //paint.setTextSize(20);
                     //canvas.drawText("(" +  subAmount + " + " +  subtaxAmount + ")", 100, st, paint);
 
+                    st = st + 30;
 
                     paint.setTextSize(20);
                     canvas.drawText("* Please take photocopy of the Bill *", 17, st, paint);

@@ -57,7 +57,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
 
     private String saleQunatity = "";
     private Map<String, String> saleQuantityListMap = new HashMap<String, String>();
-    private String customer = "",code="";
+    private String customer = "", code = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
         try {
             applicationContext = getApplicationContext();
             activityContext = TDCSalesCustomerSelectionActivity.this;
-            mmSharedPreferences=new MMSharedPreferences(this);
+            mmSharedPreferences = new MMSharedPreferences(this);
 
             final ActionBar actionBar = getSupportActionBar();
             assert actionBar != null;
@@ -120,20 +120,31 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
                         currentOrder.setSelectedCustomerId(selectedCustomer.getId());
                         currentOrder.setSelectedCustomerUserId(selectedCustomer.getUserId());
                         currentOrder.setSelectedCustomerType(selectedCustomer.getCustomerType());
+                        currentOrder.setSelectedCustomerCode(selectedCustomer.getCode());
                         isCustomerSelected = true;
-                        customer = selectedCustomer.getBusinessName();
-
-
+                        System.out.println("CUSTOMER TYPE::: " + selectedCustomer.getCustomerType());
                         if (selectedCustomer.getCustomerType() == 1) {
-                            code=(String.format("R%05d", selectedCustomer.getId()));
-
+                            // Retailer so get buisiness name
+                            customer = selectedCustomer.getBusinessName();
+                            currentOrder.setSelectedCustomerName(selectedCustomer.getBusinessName());
+                            System.out.println("CUSTOMER TYPE NAME R::: " + selectedCustomer.getBusinessName());
                         } else {
-                            code=(String.format("C%05d", selectedCustomer.getId()));
-
+                            // Consumer so get consumer name
+                            customer = selectedCustomer.getName();
+                            currentOrder.setSelectedCustomerName(selectedCustomer.getName());
+                            System.out.println("CUSTOMER TYPE NAME C::: " + selectedCustomer.getName());
                         }
 
-                        mmSharedPreferences.putString("CustomerName",customer);
-                        mmSharedPreferences.putString("CustomerCode",code);
+//                        if (selectedCustomer.getCustomerType() == 1) {
+//                            code=(String.format("R%05d", selectedCustomer.getId()));
+//
+//                        } else {
+//                            code=(String.format("C%05d", selectedCustomer.getId()));
+//
+//                        }
+
+                        mmSharedPreferences.putString("CustomerName", customer);
+                        mmSharedPreferences.putString("CustomerCode", selectedCustomer.getCode());
 
                         showTDCSalesOrderPreview(null);
                     }
@@ -288,6 +299,11 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
 
     public void addNewCustomer(String name, String mobileNo) {
         try {
+            int dbCount = mDBHelper.getTDCCustomersTableCount();
+            HashMap<String, String> userMapData = mDBHelper.getUsersData();
+            int fdbc = dbCount + 1;
+            String consumerCode = userMapData.get("user_code") + "-C" + fdbc;
+
             TDCCustomer customer = new TDCCustomer();
             customer.setUserId(""); // later we will update this value by fetching from service.
             customer.setCustomerType(0);
@@ -299,6 +315,8 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
             customer.setLongitude("");
             customer.setShopImage("");
             customer.setIsShopImageUploaded(1);
+            customer.setCode(consumerCode);
+            customer.setIsUploasStatus("0");
 
             long customerId = mDBHelper.insertIntoTDCCustomers(customer);
 

@@ -22,6 +22,8 @@ public class TDCSaleOrder implements Serializable {
     private String orderDate;
     private long createdOn;
     private String createdBy;
+    private String selectedCustomerName;
+    private String selectedCustomerCode;
     private List<TDCSalesOrderProductBean> orderProductsList; // this list is used while syncing data with server
 
     public long getOrderId() {
@@ -153,6 +155,24 @@ public class TDCSaleOrder implements Serializable {
                 ", createdOn=" + createdOn +
                 ", createdBy='" + createdBy + '\'' +
                 ", orderProductsList=" + orderProductsList +
+                ", selectedCustomerName=" + selectedCustomerName +
+                ", selectedCustomerCode=" + selectedCustomerCode +
                 '}';
+    }
+
+    public String getSelectedCustomerName() {
+        return selectedCustomerName;
+    }
+
+    public void setSelectedCustomerName(String selectedCustomerName) {
+        this.selectedCustomerName = selectedCustomerName;
+    }
+
+    public String getSelectedCustomerCode() {
+        return selectedCustomerCode;
+    }
+
+    public void setSelectedCustomerCode(String selectedCustomerCode) {
+        this.selectedCustomerCode = selectedCustomerCode;
     }
 }

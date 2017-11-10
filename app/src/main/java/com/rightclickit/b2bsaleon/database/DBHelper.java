@@ -271,6 +271,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_SALES_ORDER_CREATED_ON = "tdc_sales_order_created_on"; // this column contains order created date in unix time stamp format
     private final String KEY_TDC_SALES_ORDER_CREATED_BY = "tdc_sales_order_created_by";
     private final String KEY_TDC_SALES_ORDER_UPLOAD_STATUS = "tdc_sale_order_upload_status";
+    private final String KEY_TDC_SALES_ORDER_CUSTOMER_CODE = "tdc_sale_order_customer_code";
+    private final String KEY_TDC_SALES_ORDER_CUSTOMER_NAME = "tdc_sale_order_customer_name";
 
     // Column names for TDC Sales Order Products Table
     private final String KEY_TDC_SOP_ID = "tdc_sop_id";
@@ -578,7 +580,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + TABLE_TDC_SALES_ORDERS + "(" + KEY_TDC_SALES_ORDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_SALES_ORDER_NO_OF_ITEMS + " INTEGER, "
             + KEY_TDC_SALES_ORDER_TOTAL_AMOUNT + " VARCHAR, " + KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT + " VARCHAR, " + KEY_TDC_SALES_ORDER_SUB_TOTAL + " VARCHAR, "
             + KEY_TDC_SALES_ORDER_CUSTOMER_ID + " INTEGER, " + KEY_TDC_SALES_ORDER_CUSTOMER_USER_ID + " VARCHAR, " + KEY_TDC_SALES_ORDER_DATE + " TEXT, "
-            + KEY_TDC_SALES_ORDER_CREATED_ON + " TEXT, " + KEY_TDC_SALES_ORDER_CREATED_BY + " VARCHAR, " + KEY_TDC_SALES_ORDER_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
+            + KEY_TDC_SALES_ORDER_CREATED_ON + " TEXT, " + KEY_TDC_SALES_ORDER_CREATED_BY + " VARCHAR, " + KEY_TDC_SALES_ORDER_UPLOAD_STATUS + " INTEGER DEFAULT 0, "
+            + KEY_TDC_SALES_ORDER_CUSTOMER_CODE + " VARCHAR, " + KEY_TDC_SALES_ORDER_CUSTOMER_NAME + " VARCHAR)";
 
     // TDC Sales Order Products Table Create Statement
     private final String CREATE_TDC_SALES_ORDER_PRODUCTS_TABLE = "CREATE TABLE IF NOT EXISTS "
@@ -2053,6 +2056,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
             values.put(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS, customer.getIsShopImageUploaded());
 
+            values.put(KEY_TDC_CUSTOMER_UPLOAD_STATUS, customer.getIsUploasStatus());
+
             int val = checkRetailerExistsOrNot(customer.getUserId());
             if (val == 0) {
                 System.out.println("RETAILER INSERTED+++++");
@@ -2387,6 +2392,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
                     order.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_UPLOAD_STATUS)));
                     order.setProductsList(fetchTDCSalesOrderProductsListForOrderId(orderId));
+                    order.setSelectedCustomerCode(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_CODE)));
+                    order.setSelectedCustomerName(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_NAME)));
 
                     allOrdersList.add(order);
 
@@ -2401,6 +2408,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return allOrdersList;
     }
+
 
     /**
      * Method to fetch all products for particular order from TDC Sales Order Products Table
@@ -2498,6 +2506,8 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_SALES_ORDER_DATE, order.getOrderDate());
             values.put(KEY_TDC_SALES_ORDER_CREATED_ON, order.getCreatedOn());
             values.put(KEY_TDC_SALES_ORDER_CREATED_BY, order.getCreatedBy());
+            values.put(KEY_TDC_SALES_ORDER_CUSTOMER_CODE, order.getSelectedCustomerCode());
+            values.put(KEY_TDC_SALES_ORDER_CUSTOMER_NAME, order.getSelectedCustomerName());
 
             orderId = db.insert(TABLE_TDC_SALES_ORDERS, null, values);
 
@@ -2513,7 +2523,25 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return orderId;
     }
-
+    /**
+     * Method to get count of the tdc customers table
+     */
+    public int getTDCCustomersTableCount() {
+        int noOfEvents = 0;
+        try {
+            String countQuery = "SELECT * FROM " + TABLE_TDC_CUSTOMERS;
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfEvents = cursor.getCount();
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return noOfEvents;
+    }
     /**
      * Method to insert record into TDC Sales Order Products Table
      */

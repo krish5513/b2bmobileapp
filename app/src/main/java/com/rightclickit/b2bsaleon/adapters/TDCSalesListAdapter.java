@@ -41,12 +41,12 @@ public class TDCSalesListAdapter extends BaseAdapter {
         this.activity = salesListActivity;
         this.mInflater = LayoutInflater.from(activity);
         this.filteredTDCSalesOrders = new ArrayList<>();
-        sp=new MMSharedPreferences(context);
+        sp = new MMSharedPreferences(context);
         this.mDBHelper = new DBHelper(activity);
     }
 
     private class TDCSalesListViewHolder {
-        TextView tdc_sale_bill_no, tdc_sale_order_date, tdc_sale_order_amount, tdc_sale_order_items_count,customer;
+        TextView tdc_sale_bill_no, tdc_sale_order_date, tdc_sale_order_amount, tdc_sale_order_items_count, customer;
         Button view_button;
     }
 
@@ -83,7 +83,7 @@ public class TDCSalesListAdapter extends BaseAdapter {
                 tdcSalesListViewHolder.tdc_sale_bill_no = (TextView) convertView.findViewById(R.id.tdc_sale_bill_no);
                 tdcSalesListViewHolder.tdc_sale_order_date = (TextView) convertView.findViewById(R.id.tdc_sale_order_date);
                 tdcSalesListViewHolder.tdc_sale_order_amount = (TextView) convertView.findViewById(R.id.tdc_sale_order_amount);
-               // tdcSalesListViewHolder.tdc_sale_order_items_count = (TextView) convertView.findViewById(R.id.tdc_sale_order_items_count);
+                // tdcSalesListViewHolder.tdc_sale_order_items_count = (TextView) convertView.findViewById(R.id.tdc_sale_order_items_count);
                 tdcSalesListViewHolder.customer = (TextView) convertView.findViewById(R.id.name);
                 tdcSalesListViewHolder.view_button = (Button) convertView.findViewById(R.id.tdc_sale_order_btn_view);
 
@@ -94,13 +94,13 @@ public class TDCSalesListAdapter extends BaseAdapter {
 
             final TDCSaleOrder currentOrder = getItem(position);
 
-            tdcSalesListViewHolder.tdc_sale_bill_no.setText(String.format("TDC%05d", currentOrder.getOrderId()));
+            tdcSalesListViewHolder.tdc_sale_bill_no.setText(currentOrder.getSelectedCustomerCode());
             tdcSalesListViewHolder.tdc_sale_order_date.setText(Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT));
             tdcSalesListViewHolder.tdc_sale_order_amount.setText(Utility.getFormattedCurrency(currentOrder.getOrderSubTotal()));
             //tdcSalesListViewHolder.tdc_sale_order_items_count.setText(Utility.getFormattedNumber(currentOrder.getNoOfItems()));
             String name = mDBHelper.getNameById(currentOrder.getSelectedCustomerUserId(), currentOrder.getSelectedCustomerType());
 
-            tdcSalesListViewHolder.customer.setText(name);
+            tdcSalesListViewHolder.customer.setText(currentOrder.getSelectedCustomerName());
 
             tdcSalesListViewHolder.view_button.setOnClickListener(new View.OnClickListener() {
                 @Override

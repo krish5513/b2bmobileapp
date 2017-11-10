@@ -272,6 +272,7 @@ public class RetailersModel1 implements OnAsyncRequestCompleteListener {
                         customer.setCustomerType(1);
                         customer.setShopImage("");
                         customer.setIsShopImageUploaded(0);
+                        customer.setIsUploasStatus("1");
 
                         TDCCustomerList.add(customer);
 

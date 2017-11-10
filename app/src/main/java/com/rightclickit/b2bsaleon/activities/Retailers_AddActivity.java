@@ -414,6 +414,11 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
     public void addNewRetailer(String name, String mobileNo, String businessName, String retailerAddress) {
         try {
+            int dbCount = mDBHelper.getTDCCustomersTableCount();
+            int fdbc = dbCount + 1;
+            HashMap<String, String> userMapData = mDBHelper.getUsersData();
+            String retailerCode = userMapData.get("user_code") + "-R"+fdbc;
+
             customer = new TDCCustomer();
             customer.setUserId(""); // later we will update this value by fetching from service.
             customer.setCustomerType(1);
@@ -422,6 +427,8 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             customer.setBusinessName(businessName);
             customer.setAddress(retailerAddress);
             customer.setRoutecode(selected_val);
+            customer.setCode(retailerCode);
+            customer.setIsUploasStatus("0");
 
 
             if (latitude > 0)
@@ -538,7 +545,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                         googleMap.clear();
                         Marker marker = googleMap.addMarker(new MarkerOptions().position(loc));
                         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
-                      //  Geocoder geocoder = new Geocoder(activityContext, Locale.getDefault());
+                        //  Geocoder geocoder = new Geocoder(activityContext, Locale.getDefault());
 
                         /*try {
                             List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
