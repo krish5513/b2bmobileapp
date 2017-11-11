@@ -273,6 +273,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_SALES_ORDER_UPLOAD_STATUS = "tdc_sale_order_upload_status";
     private final String KEY_TDC_SALES_ORDER_CUSTOMER_CODE = "tdc_sale_order_customer_code";
     private final String KEY_TDC_SALES_ORDER_CUSTOMER_NAME = "tdc_sale_order_customer_name";
+    private final String KEY_TDC_SALES_ORDER_CUSTOMER_TYPE = "tdc_sale_order_customer_type";
+    private final String KEY_TDC_SALES_ORDER_BILL_NUMBER = "tdc_sale_order_bill_number";
 
     // Column names for TDC Sales Order Products Table
     private final String KEY_TDC_SOP_ID = "tdc_sop_id";
@@ -574,14 +576,13 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String CREATE_TABLE_SPECIALPRICE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_SPECIALPRICE + "(" + KEY_USER_SPECIALID + " VARCHAR, " + KEY_PRODUCT_SPECIALID + " INTEGER, "
             + KEY_SPECIALPRICE + " VARCHAR)";
-
     // TDC Sales Orders Table Create Statement
     private final String CREATE_TDC_SALES_ORDERS_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_TDC_SALES_ORDERS + "(" + KEY_TDC_SALES_ORDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_SALES_ORDER_NO_OF_ITEMS + " INTEGER, "
             + KEY_TDC_SALES_ORDER_TOTAL_AMOUNT + " VARCHAR, " + KEY_TDC_SALES_ORDER_TOTAL_TAX_AMOUNT + " VARCHAR, " + KEY_TDC_SALES_ORDER_SUB_TOTAL + " VARCHAR, "
             + KEY_TDC_SALES_ORDER_CUSTOMER_ID + " INTEGER, " + KEY_TDC_SALES_ORDER_CUSTOMER_USER_ID + " VARCHAR, " + KEY_TDC_SALES_ORDER_DATE + " TEXT, "
             + KEY_TDC_SALES_ORDER_CREATED_ON + " TEXT, " + KEY_TDC_SALES_ORDER_CREATED_BY + " VARCHAR, " + KEY_TDC_SALES_ORDER_UPLOAD_STATUS + " INTEGER DEFAULT 0, "
-            + KEY_TDC_SALES_ORDER_CUSTOMER_CODE + " VARCHAR, " + KEY_TDC_SALES_ORDER_CUSTOMER_NAME + " VARCHAR)";
+            + KEY_TDC_SALES_ORDER_CUSTOMER_CODE + " VARCHAR, " + KEY_TDC_SALES_ORDER_CUSTOMER_NAME + " VARCHAR, " + KEY_TDC_SALES_ORDER_BILL_NUMBER + " VARCHAR, " + KEY_TDC_SALES_ORDER_CUSTOMER_TYPE + " VARCHAR)";
 
     // TDC Sales Order Products Table Create Statement
     private final String CREATE_TDC_SALES_ORDER_PRODUCTS_TABLE = "CREATE TABLE IF NOT EXISTS "
@@ -2195,6 +2196,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     customer.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_UPLOAD_STATUS)));
                     customer.setRoutecode(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_ROUTECODE)));
                     customer.setIsShopImageUploaded(c.getInt(c.getColumnIndex(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS)));
+                    customer.setCode(c.getString(c.getColumnIndex(KEY_TDC_CUSTOMER_CODE)));
 
                     allTDCCustomersList.add(customer);
                 } while (c.moveToNext());
@@ -2346,7 +2348,9 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
                     order.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_UPLOAD_STATUS)));
                     order.setProductsList(fetchTDCSalesOrderProductsListForOrderId(orderId));
-
+                    order.setSelectedCustomerCode(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_CODE)));
+                    order.setSelectedCustomerName(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_NAME)));
+                    order.setOrderBillNumber(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_BILL_NUMBER)));
                     allOrdersList.add(order);
 
                 } while (c.moveToNext());
@@ -2360,7 +2364,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return allOrdersList;
     }
-
     /**
      * Method to fetch records for selected duration from TDC Sales Orders Table
      */
@@ -2370,9 +2373,9 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             Cursor c = null;
             SQLiteDatabase db = this.getReadableDatabase();
-            if(customerId != null && !(customerId.equals(""))){
-                c = db.rawQuery("SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE "+  KEY_TDC_SALES_ORDER_CUSTOMER_ID + " = " + customerId + "AND WHERE " + KEY_TDC_SALES_ORDER_DATE + " BETWEEN ? AND ?", new String[]{startDate, endDate});
-            }else{
+            if (customerId != null && !(customerId.equals(""))) {
+                c = db.rawQuery("SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_CUSTOMER_ID + " = " + customerId + "AND WHERE " + KEY_TDC_SALES_ORDER_DATE + " BETWEEN ? AND ?", new String[]{startDate, endDate});
+            } else {
                 c = db.rawQuery("SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_DATE + " BETWEEN ? AND ?", new String[]{startDate, endDate});
             }
 
@@ -2394,6 +2397,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setProductsList(fetchTDCSalesOrderProductsListForOrderId(orderId));
                     order.setSelectedCustomerCode(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_CODE)));
                     order.setSelectedCustomerName(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_NAME)));
+                    order.setSelectedCustomerType(Long.parseLong(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CUSTOMER_TYPE))));
+                    order.setOrderBillNumber(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_BILL_NUMBER)));
 
                     allOrdersList.add(order);
 
@@ -2486,7 +2491,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return allOrdersProductsList;
     }
-
     /**
      * Method to insert record into TDC Sales Orders Table
      */
@@ -2508,6 +2512,8 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_SALES_ORDER_CREATED_BY, order.getCreatedBy());
             values.put(KEY_TDC_SALES_ORDER_CUSTOMER_CODE, order.getSelectedCustomerCode());
             values.put(KEY_TDC_SALES_ORDER_CUSTOMER_NAME, order.getSelectedCustomerName());
+            values.put(KEY_TDC_SALES_ORDER_CUSTOMER_TYPE, order.getSelectedCustomerType());
+            values.put(KEY_TDC_SALES_ORDER_BILL_NUMBER, order.getOrderBillNumber());
 
             orderId = db.insert(TABLE_TDC_SALES_ORDERS, null, values);
 
@@ -2523,6 +2529,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return orderId;
     }
+
     /**
      * Method to get count of the tdc customers table
      */
@@ -2624,6 +2631,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     order.setCreatedBy(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_CREATED_BY)));
                     order.setIsUploaded(c.getInt(c.getColumnIndex(KEY_TDC_SALES_ORDER_UPLOAD_STATUS)));
                     order.setOrderProductsList(fetchTDCSalesOrderProductsListByOrderId(orderId));
+                    order.setOrderBillNumber(c.getString(c.getColumnIndex(KEY_TDC_SALES_ORDER_BILL_NUMBER)));
 
                     allOrdersList.add(order);
 
@@ -6530,7 +6538,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             String selectQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + ", " + KEY_TRIPSHEET_DELIVERY_QUANTITY + ", " + KEY_TRIPSHEET_DELIVERY_USER_CODES + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST
                     + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "' AND "+
-                     KEY_TRIPSHEET_DELIVERY_USER_CODES + " = " + "'" + agentId + "' AND "+
+                    KEY_TRIPSHEET_DELIVERY_USER_CODES + " = " + "'" + agentId + "' AND "+
                     KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES + " = " + "'" + proCode + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();

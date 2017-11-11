@@ -94,12 +94,14 @@ public class RetailersPaymentsAdapter extends BaseAdapter {
 
             final TDCSaleOrder currentOrder = getItem(position);
 
-            paymentsListViewHolder.tdc_sale_bill_no.setText(String.format("TDC%05d", currentOrder.getOrderId()));
+            //paymentsListViewHolder.tdc_sale_bill_no.setText(String.format("TDC%05d", currentOrder.getOrderId()));
+            paymentsListViewHolder.tdc_sale_bill_no.setText(currentOrder.getOrderBillNumber());
             paymentsListViewHolder.tdc_sale_order_date.setText(Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT));
             paymentsListViewHolder.tdc_sale_order_amount.setText(Utility.getFormattedCurrency(currentOrder.getOrderSubTotal()));
             //paymentsListViewHolder.tdc_sale_order_items_count.setText(Utility.getFormattedNumber(currentOrder.getNoOfItems()));
             String name = mDBHelper.getNameById(currentOrder.getSelectedCustomerUserId(),currentOrder.getSelectedCustomerType());
-            paymentsListViewHolder.name.setText(name);
+            //paymentsListViewHolder.name.setText(name);
+            paymentsListViewHolder.name.setText(currentOrder.getSelectedCustomerName());
             paymentsListViewHolder.view_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -130,9 +132,12 @@ public class RetailersPaymentsAdapter extends BaseAdapter {
                 filteredTDCSalesOrders.addAll(allTDCSalesOrders);
             } else {
                 for (TDCSaleOrder order : allTDCSalesOrders) {
-                    if (String.valueOf(order.getOrderId()).toLowerCase(Locale.getDefault()).contains(charText)) {
+                    if (String.valueOf(order.getOrderBillNumber()).toLowerCase(Locale.getDefault()).contains(charText)) {
                         filteredTDCSalesOrders.add(order);
                     } else if (Utility.formatTime(order.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT).toLowerCase(Locale.getDefault()).contains(charText)) {
+                        filteredTDCSalesOrders.add(order);
+                    }
+                  else   if (String.valueOf(order.getSelectedCustomerName()).toLowerCase(Locale.getDefault()).contains(charText)) {
                         filteredTDCSalesOrders.add(order);
                     }
                 }

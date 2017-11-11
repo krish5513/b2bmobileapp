@@ -108,9 +108,9 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             mDBHelper = new DBHelper(activityContext);
 
             retailer_add_scrollview = (ScrollView) findViewById(R.id.retailer_add_scrollview);
-            retailer_name = (EditText) findViewById(R.id.retailer_name);
+            retailer_name = (EditText) findViewById(R.id.retailer_business_name);
             mobile_no = (EditText) findViewById(R.id.retailer_mobile_no);
-            business_name = (EditText) findViewById(R.id.retailer_business_name);
+            business_name = (EditText) findViewById(R.id.retailer_name);
             address = (EditText) findViewById(R.id.retailer_address);
             paymentTypeSpinner = (Spinner) findViewById(R.id.paymentTypeSpinner);
             shop_image = (ImageView) findViewById(R.id.retailer_shop_image);

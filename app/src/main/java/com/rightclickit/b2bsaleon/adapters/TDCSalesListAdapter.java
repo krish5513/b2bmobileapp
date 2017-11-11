@@ -94,7 +94,7 @@ public class TDCSalesListAdapter extends BaseAdapter {
 
             final TDCSaleOrder currentOrder = getItem(position);
 
-            tdcSalesListViewHolder.tdc_sale_bill_no.setText(currentOrder.getSelectedCustomerCode());
+            tdcSalesListViewHolder.tdc_sale_bill_no.setText(currentOrder.getOrderBillNumber());
             tdcSalesListViewHolder.tdc_sale_order_date.setText(Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT));
             tdcSalesListViewHolder.tdc_sale_order_amount.setText(Utility.getFormattedCurrency(currentOrder.getOrderSubTotal()));
             //tdcSalesListViewHolder.tdc_sale_order_items_count.setText(Utility.getFormattedNumber(currentOrder.getNoOfItems()));
@@ -134,11 +134,14 @@ public class TDCSalesListAdapter extends BaseAdapter {
                 filteredTDCSalesOrders.addAll(allTDCSalesOrders);
             } else {
                 for (TDCSaleOrder order : allTDCSalesOrders) {
-                    if (String.valueOf(order.getOrderId()).toLowerCase(Locale.getDefault()).contains(charText)) {
+                    if (String.valueOf(order.getOrderBillNumber()).toLowerCase(Locale.getDefault()).contains(charText)) {
                         filteredTDCSalesOrders.add(order);
                     } else if (Utility.formatTime(order.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT).toLowerCase(Locale.getDefault()).contains(charText)) {
                         filteredTDCSalesOrders.add(order);
                     }
+                 else if (String.valueOf(order.getSelectedCustomerName()).toLowerCase(Locale.getDefault()).contains(charText)) {
+                        filteredTDCSalesOrders.add(order);
+                }
                 }
             }
         }

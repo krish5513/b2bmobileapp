@@ -41,7 +41,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
     private MMSharedPreferences mmSharedPreferences;
     private SearchView search;
     private ListView tdcSalesListView;
-    private TextView no_sales_found_message, tdc_sales_count, tdc_sales_total_amount, tdc_sales_items_count,sales_print;
+    private TextView no_sales_found_message, tdc_sales_count, tdc_sales_total_amount, tdc_sales_items_count, sales_print;
     private TextView tdc_sales_today, tdc_sales_weekly, tdc_sales_monthly;
 
     private TDCSalesListAdapter tdcSalesListAdapter;
@@ -51,13 +51,13 @@ public class TDCSalesListActivity extends AppCompatActivity {
     private int colorAccent, colorPrimary;
     private Drawable border_accent, border_btn;
     ArrayList<String[]> selectedList;
-    String billno,billdate,billamount,billitems;
+    String billno, billdate, billamount, billitems;
 
     String str_selectedretailername;
     private List<TDCCustomer> customerList;
-    String name,code,TroipsTakeorder="";
-    String screenType="";
-    String custId="";
+    String name, code, TroipsTakeorder = "";
+    String screenType = "";
+    String custId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +89,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
             tdc_sales_items_count = (TextView) findViewById(R.id.tdc_sales_items_count);
             tdc_sales_today = (TextView) findViewById(R.id.tdc_sales_today);
             tdc_sales_weekly = (TextView) findViewById(R.id.tdc_sales_weekly);
-          //  tdc_sales_monthly = (TextView) findViewById(R.id.tdc_sales_monthly);
+            //  tdc_sales_monthly = (TextView) findViewById(R.id.tdc_sales_monthly);
 
             sales_print = (TextView) findViewById(R.id.tv_print);
 
@@ -104,8 +104,8 @@ public class TDCSalesListActivity extends AppCompatActivity {
             Bundle bundle = this.getIntent().getExtras();
             if (bundle != null) {
                 TroipsTakeorder = bundle.getString("From");
-              //custId = bundle.getString("custId");
-               // screenType = bundle.getString("screenType"); //AgentOrder
+                //custId = bundle.getString("custId");
+                // screenType = bundle.getString("screenType"); //AgentOrder
             }
 
 
@@ -125,7 +125,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
             Calendar calendar = Calendar.getInstance();
             calendar.setFirstDayOfWeek(Calendar.SUNDAY);
 
-            int duration=0;
+            int duration = 0;
 
             if (duration == 0) {
                 startingDate = currentDate;
@@ -143,11 +143,11 @@ public class TDCSalesListActivity extends AppCompatActivity {
             String startDateStr = Utility.formatDate(startingDate, Constants.TDC_SALES_ORDER_DATE_SAVE_FORMAT);
             String endDateStr = Utility.formatDate(endingDate, Constants.TDC_SALES_ORDER_DATE_SAVE_FORMAT);
 
-           // if(screenType.equals("customerDetails")){
-               // allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, custId);
-           // }else{
-                allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, "");
-           // }
+            // if(screenType.equals("customerDetails")){
+            // allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, custId);
+            // }else{
+            allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, "");
+            // }
 
             customerList = new ArrayList<>();
 
@@ -164,36 +164,43 @@ public class TDCSalesListActivity extends AppCompatActivity {
             }
 
 */
-                int noOfSales = allTDCSaleOrders.size();
+            int noOfSales = allTDCSaleOrders.size();
 
-                int noOfItems = 0;
-                double amount = 0;
+            int noOfItems = 0;
+            double amount = 0;
 
-                for (TDCSaleOrder order : allTDCSaleOrders) {
-                    amount = amount + order.getOrderSubTotal();
-                    noOfItems = noOfItems + order.getNoOfItems();
-                }
+            for (TDCSaleOrder order : allTDCSaleOrders) {
+                amount = amount + order.getOrderSubTotal();
+                noOfItems = noOfItems + order.getNoOfItems();
+            }
 
 
-                tdc_sales_total_amount.setText(Utility.getFormattedCurrency(amount));
-
+            tdc_sales_total_amount.setText(Utility.getFormattedCurrency(amount));
 
 
             selectedList = new ArrayList<>(allTDCSaleOrders.size());
 
             for (int i = 0; i < allTDCSaleOrders.size(); i++) {
-                billno = (String.format("TDC%05d", allTDCSaleOrders.get(i).getOrderId()));
+                System.out.println("CODE:: " + allTDCSaleOrders.get(i).getSelectedCustomerCode());
+                System.out.println("TYPE:: " + allTDCSaleOrders.get(i).getSelectedCustomerType());
+                String[] ss = allTDCSaleOrders.get(i).getSelectedCustomerCode().split("-");
+                String ssss = ss[0];
+                if (allTDCSaleOrders.get(i).getSelectedCustomerType() == 1) {
+                    billno = "B" + ssss + "R-" + allTDCSaleOrders.get(i).getOrderId();
+                } else {
+                    billno = "C" + ssss + "C-" + allTDCSaleOrders.get(i).getOrderId();
+                }
                 billamount = Utility.getFormattedCurrency(allTDCSaleOrders.get(i).getOrderSubTotal());
                 billdate = Utility.formatTime(allTDCSaleOrders.get(i).getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT);
-                billitems =Utility.getFormattedNumber(allTDCSaleOrders.get(i).getNoOfItems());
+                billitems = Utility.getFormattedNumber(allTDCSaleOrders.get(i).getNoOfItems());
                 name = mDBHelper.getNameById(allTDCSaleOrders.get(i).getSelectedCustomerUserId(), allTDCSaleOrders.get(i).getSelectedCustomerType());
 
 
                 if (allTDCSaleOrders.get(i).getSelectedCustomerType() == 1) {
-                    code=(String.format("R%05d", allTDCSaleOrders.get(i).getSelectedCustomerId()));
+                    code = (String.format("R%05d", allTDCSaleOrders.get(i).getSelectedCustomerId()));
 
                 } else {
-                    code=(String.format("C%05d", allTDCSaleOrders.get(i).getSelectedCustomerId()));
+                    code = (String.format("C%05d", allTDCSaleOrders.get(i).getSelectedCustomerId()));
 
                 }
               /*  for (int j=0;j<customerList.size();j++){
@@ -208,9 +215,9 @@ public class TDCSalesListActivity extends AppCompatActivity {
                 }
 */
 
-                    String[] temp = new String[6];
+                String[] temp = new String[6];
 
-                temp[0] =name;
+                temp[0] = name;
                 temp[1] = code;
                 temp[2] = billno;
                 temp[3] = billdate;
@@ -224,75 +231,73 @@ public class TDCSalesListActivity extends AppCompatActivity {
 
             final double finalAmount = amount;
             sales_print.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        int pageheight = 300 + selectedList.size() * 150;
-        Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
-        Canvas canvas = new Canvas(bmOverlay);
-        canvas.drawColor(Color.WHITE);
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setAntiAlias(true);
-        paint.setFilterBitmap(true);
-        paint.setDither(true);
-        paint.setColor(Color.parseColor("#000000"));
-        paint.setTextSize(26);
+                @Override
+                public void onClick(View v) {
+                    int pageheight = 300 + selectedList.size() * 150;
+                    Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
+                    Canvas canvas = new Canvas(bmOverlay);
+                    canvas.drawColor(Color.WHITE);
+                    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                    paint.setAntiAlias(true);
+                    paint.setFilterBitmap(true);
+                    paint.setDither(true);
+                    paint.setColor(Color.parseColor("#000000"));
+                    paint.setTextSize(26);
 
-        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 20, paint);
-        paint.setTextSize(20);
-        canvas.drawText(mmSharedPreferences.getString("loginusername"), 5, 50, paint);
-        paint.setTextSize(20);
-        canvas.drawText("----------------------------------------------------", 5, 80, paint);
-        paint.setTextSize(20);
-        canvas.drawText("SALES LIST", 100, 110, paint);
-
-
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 20, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(mmSharedPreferences.getString("loginusername"), 5, 50, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("----------------------------------------------------", 5, 80, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("SALES LIST", 100, 110, paint);
 
 
-        int st = 130;
-        paint.setTextSize(20);
-        // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-        for (int i = 0; i <selectedList.size(); i++) {
-            String[] temps = selectedList.get(i);
-            canvas.drawText(temps[0], 5, st, paint);
-           // canvas.drawText("," + "(" +temps[1] + ")", 150, st, paint);
+                    int st = 130;
+                    paint.setTextSize(20);
+                    // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                    for (int i = 0; i < selectedList.size(); i++) {
+                        String[] temps = selectedList.get(i);
+                        canvas.drawText(temps[0], 5, st, paint);
+                        // canvas.drawText("," + "(" +temps[1] + ")", 150, st, paint);
 
 
-            st = st + 30;
-            canvas.drawText("BILL #", 5, st, paint);
-            canvas.drawText( ": " + temps[2], 150, st, paint);
+                        st = st + 30;
+                        canvas.drawText("BILL #", 5, st, paint);
+                        canvas.drawText(": " + temps[2], 150, st, paint);
 
-            st = st + 30;
-            canvas.drawText("DATE", 5, st, paint);
-            canvas.drawText( ": " + temps[3], 150, st, paint);
-
-
-            st = st + 30;
-            canvas.drawText("VALUE", 5, st, paint);
-            canvas.drawText( ": " + temps[4], 150, st, paint);
-
-            st = st + 45;
+                        st = st + 30;
+                        canvas.drawText("DATE", 5, st, paint);
+                        canvas.drawText(": " + temps[3], 150, st, paint);
 
 
-        }
+                        st = st + 30;
+                        canvas.drawText("VALUE", 5, st, paint);
+                        canvas.drawText(": " + temps[4], 150, st, paint);
 
-        canvas.drawText("----------------------------------------------------", 5, st, paint);
-
-        st = st + 20;
-        canvas.drawText("VALUE:", 5, st, paint);
-        //canvas.drawText( ": " + Utility.getFormattedCurrency(mProductsPriceAmountSum), 150, st, paint);
-        canvas.drawText( ": " + Utility.getFormattedCurrency(finalAmount), 150, st, paint);
+                        st = st + 45;
 
 
-        //  canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
-        //  canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
-        // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
-        st = st + 20;
-        canvas.drawText("--------X---------", 100, st, paint);
-        com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
-    }
+                    }
 
-});
+                    canvas.drawText("----------------------------------------------------", 5, st, paint);
+
+                    st = st + 20;
+                    canvas.drawText("VALUE:", 5, st, paint);
+                    //canvas.drawText( ": " + Utility.getFormattedCurrency(mProductsPriceAmountSum), 150, st, paint);
+                    canvas.drawText(": " + Utility.getFormattedCurrency(finalAmount), 150, st, paint);
+
+
+                    //  canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
+                    //  canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
+                    // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
+                    st = st + 20;
+                    canvas.drawText("--------X---------", 100, st, paint);
+                    com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+                }
+
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -401,8 +406,8 @@ public class TDCSalesListActivity extends AppCompatActivity {
             tdc_sales_weekly.setBackground(border_btn);
             tdc_sales_weekly.setTextColor(colorPrimary);
 
-           // tdc_sales_monthly.setBackground(border_btn);
-           // tdc_sales_monthly.setTextColor(colorPrimary);
+            // tdc_sales_monthly.setBackground(border_btn);
+            // tdc_sales_monthly.setTextColor(colorPrimary);
         } else if (tag == 1) {
             tdc_sales_today.setBackground(border_btn);
             tdc_sales_today.setTextColor(colorPrimary);
@@ -410,8 +415,8 @@ public class TDCSalesListActivity extends AppCompatActivity {
             tdc_sales_weekly.setBackground(border_accent);
             tdc_sales_weekly.setTextColor(colorAccent);
 
-           // tdc_sales_monthly.setBackground(border_btn);
-           // tdc_sales_monthly.setTextColor(colorPrimary);
+            // tdc_sales_monthly.setBackground(border_btn);
+            // tdc_sales_monthly.setTextColor(colorPrimary);
         } else if (tag == 2) {
             tdc_sales_today.setBackground(border_btn);
             tdc_sales_today.setTextColor(colorPrimary);
@@ -419,8 +424,8 @@ public class TDCSalesListActivity extends AppCompatActivity {
             tdc_sales_weekly.setBackground(border_btn);
             tdc_sales_weekly.setTextColor(colorPrimary);
 
-           // tdc_sales_monthly.setBackground(border_accent);
-           // tdc_sales_monthly.setTextColor(colorAccent);
+            // tdc_sales_monthly.setBackground(border_accent);
+            // tdc_sales_monthly.setTextColor(colorAccent);
         }
 
         loadSalesList(tag);
@@ -452,12 +457,12 @@ public class TDCSalesListActivity extends AppCompatActivity {
             String endDateStr = Utility.formatDate(endingDate, Constants.TDC_SALES_ORDER_DATE_SAVE_FORMAT);
 
 
-            if(screenType.equals("customerDetails")){
+            if (screenType.equals("customerDetails")) {
                 allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, custId);
-            }else{
+            } else {
                 allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, "");
             }
-           // allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, "");
+            // allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, "");
             if (allTDCSaleOrders.size() <= 0) {
                 tdcSalesListView.setVisibility(View.GONE);
                 no_sales_found_message.setVisibility(View.VISIBLE);
@@ -478,7 +483,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
                 double amount = 0;
 
                 for (TDCSaleOrder order : allTDCSaleOrders) {
-                    amount =  amount+ order.getOrderSubTotal();
+                    amount = amount + order.getOrderSubTotal();
                     noOfItems = noOfItems + order.getNoOfItems();
                 }
 

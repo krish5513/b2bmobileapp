@@ -117,7 +117,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 str_agentname = bundle.getString("CustomerName");
-                System.out.println("NAME::: "+ str_agentname);
+                System.out.println("NAME::: " + str_agentname);
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW);
                 requestCameFrom = bundle.getString(Constants.BUNDLE_REQUEST_FROM);
                 id = bundle.getString("incid");
@@ -139,7 +139,14 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     currentDate = Utility.formatTime(currentTimeStamp, Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
 
                     previousOrderId = mDBHelper.getTDCSalesMaxOrderNumber();
-                    currentOrderId = String.format("TDC%05d", previousOrderId + 1);
+                    //currentOrderId = String.format("TDC%05d", previousOrderId + 1);
+                    String[] ss = currentOrder.getSelectedCustomerCode().split("-");
+                    String ssss = ss[0];
+                    if (currentOrder.getSelectedCustomerType() == 1) {
+                        currentOrderId = "B" + ssss + "-R" + String.valueOf(previousOrderId + 1);
+                    } else {
+                        currentOrderId = "B" + ssss + "-C" + String.valueOf(previousOrderId + 1);
+                    }
 
                     // Checking weather the selected customer is retailer or not, if yes checking weather he has any special prices.
                     // if (currentOrder.getSelectedCustomerId() > 0 && currentOrder.getSelectedCustomerType() == 1) {
@@ -275,7 +282,21 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     tdc_sales_save_layout.setVisibility(View.GONE);
                     isOrderAlreadySaved = true;
                     long oId = currentOrder.getOrderId();
-                    currentOrderId = String.format("TDC%05d", oId);
+                    //currentOrderId = String.format("TDC%05d", oId);
+                    System.out.println("1111uuuuu::: " + currentOrder.getOrderId());
+                  //  if (currentOrder.ge)
+
+                    String[] ss = currentOrder.getSelectedCustomerCode().split("-");
+                    System.out.println("2222uuuuuuuu::: " +  currentOrder.getSelectedCustomerCode());
+                    String ssss = ss[0];
+
+                    System.out.println("11111111111111111111111111111111::: " + currentOrder.getSelectedCustomerType());
+                    System.out.println("222222222222222222222222222222222::: " + oId);
+                    if (currentOrder.getSelectedCustomerType() == 1) {
+                        currentOrderId = "B" + ssss + "-C" + String.valueOf(oId);
+                    } else {
+                        currentOrderId = "B" + ssss + "-R" + String.valueOf(oId);
+                    }
                     currentDate = Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
                     // Retailer
                     Map<String, String> specialPriceList = mDBHelper.fetchSpecialPricesForUserId(currentOrder.getSelectedCustomerUserId()); // Getting special prices for selected retailer from local db.
@@ -346,7 +367,19 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     tdc_sales_save_layout.setVisibility(View.GONE);
                     isOrderAlreadySaved = true;
                     long oId = currentOrder.getOrderId();
-                    currentOrderId = String.format("TDC%05d", oId);
+                    //currentOrderId = String.format("TDC%05d", oId);
+
+                    System.out.println("1111uuuuu::: " + currentOrder.getOrderId());
+                    String[] ss = currentOrder.getSelectedCustomerCode().split("-");
+                    System.out.println("2222uuuuuuuu::: " +  currentOrder.getSelectedCustomerCode());
+                    String ssss = ss[0];
+                    System.out.println("1111::: " + currentOrder.getSelectedCustomerType());
+                    System.out.println("2222::: " + oId);
+                    if (currentOrder.getSelectedCustomerType() == 1) {
+                        currentOrderId = "B" + ssss + "-R" + String.valueOf(oId);
+                    } else {
+                        currentOrderId = "B" + ssss + "-C" + String.valueOf(oId);
+                    }
                     currentDate = Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
                     // Retailer
                     Map<String, String> specialPriceList = mDBHelper.fetchSpecialPricesForUserId(currentOrder.getSelectedCustomerUserId()); // Getting special prices for selected retailer from local db.
@@ -419,7 +452,16 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     currentOrder.setOrderTotalTaxAmount(totalTaxAmount);
                     currentOrder.setOrderSubTotal(subTotal);
                 } else {
-                    currentOrderId = String.format("TDC%05d", currentOrder.getOrderId());
+                    //currentOrderId = String.format("TDC%05d", currentOrder.getOrderId());
+                    String[] ss = currentOrder.getSelectedCustomerCode().split("-");
+                    String ssss = ss[0];
+                    System.out.println("1111::: " + currentOrder.getSelectedCustomerType());
+                    System.out.println("2222::: " + currentOrder.getOrderId());
+                    if (currentOrder.getSelectedCustomerType() == 1) {
+                        currentOrderId = "B" + ssss + "-R" + String.valueOf(currentOrder.getOrderId());
+                    } else {
+                        currentOrderId = "B" + ssss + "-C" + String.valueOf(currentOrder.getOrderId());
+                    }
                     currentDate = Utility.formatTime(currentOrder.getCreatedOn(), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
 
                     tdc_sales_save_layout.setVisibility(View.GONE);
@@ -557,7 +599,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     paint.setTextSize(20);
                     canvas.drawText("BILL# ", 5, 110, paint);
                     paint.setTextSize(20);
-                    canvas.drawText(": " + "TDC-" + str_enguiryid + "-" + currentOrderId, 150, 110, paint);
+                    canvas.drawText(": " + currentOrderId, 150, 110, paint);
                     paint.setTextSize(20);
                     canvas.drawText("DATE ", 5, 140, paint);
                     paint.setTextSize(20);
@@ -753,6 +795,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 currentOrder.setCreatedBy(loggedInUserId);
                 currentOrder.setCreatedOn(currentTimeStamp);
                 currentOrder.setOrderDate(Utility.formatTime(currentTimeStamp, Constants.TDC_SALES_ORDER_DATE_SAVE_FORMAT));
+                currentOrder.setOrderBillNumber(currentOrderId);
 
                 long orderId = mDBHelper.insertIntoTDCSalesOrdersTable(currentOrder);
 

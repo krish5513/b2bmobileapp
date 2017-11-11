@@ -6,13 +6,9 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
-import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.beanclass.TDCSalesOrderProductBean;
-import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -23,10 +19,6 @@ import com.rightclickit.b2bsaleon.util.Utility;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -121,7 +113,7 @@ public class SyncTDCSalesOrderService extends Service {
                 }
 
                 JSONObject requestObj = new JSONObject();
-                requestObj.put("bill_no", "");
+                requestObj.put("bill_no", currentOrder.getOrderBillNumber());
                 requestObj.put("user_id", userId);
                 requestObj.put("route_id", routeId);
                 requestObj.put("product_ids", productIdsArray);

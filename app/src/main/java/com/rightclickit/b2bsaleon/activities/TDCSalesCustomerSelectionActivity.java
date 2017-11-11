@@ -34,6 +34,10 @@ import com.rightclickit.b2bsaleon.services.SyncTDCCustomersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +62,11 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
     private String saleQunatity = "";
     private Map<String, String> saleQuantityListMap = new HashMap<String, String>();
     private String customer = "", code = "";
+
+
+    private JSONArray routeCodesArray;
+    String selected_val;
+    ArrayList<String> idsArray = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -304,6 +313,34 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
             int fdbc = dbCount + 1;
             String consumerCode = userMapData.get("user_code") + "-C" + fdbc;
 
+            HashMap<String, String> userRouteIds = mDBHelper.getUserRouteIds();
+
+            try {
+                routeCodesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            for (int i = 0; i < routeCodesArray.length(); i++) {
+
+                try {
+                    idsArray.add(routeCodesArray.get(i).toString());
+
+                    selected_val = idsArray.get(i).toString();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+
+
+
+
+
+
             TDCCustomer customer = new TDCCustomer();
             customer.setUserId(""); // later we will update this value by fetching from service.
             customer.setCustomerType(0);
@@ -317,6 +354,8 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
             customer.setIsShopImageUploaded(1);
             customer.setCode(consumerCode);
             customer.setIsUploasStatus("0");
+            customer.setRoutecode(selected_val);
+
 
             long customerId = mDBHelper.insertIntoTDCCustomers(customer);
 
