@@ -91,7 +91,11 @@ public class RetailersListAdapter extends BaseAdapter {
         final TDCCustomer currentRetailer = getItem(position);
 
         //retailersViewHolder.retailer_id.setText(String.format("R%05d", currentRetailer.getId()));
-        retailersViewHolder.retailer_id.setText(currentRetailer.getCode());
+        if (currentRetailer.getCode().equals("")) {
+            retailersViewHolder.retailer_id.setText("Null");
+        } else {
+            retailersViewHolder.retailer_id.setText(currentRetailer.getCode());
+        }
         retailersViewHolder.retailer_name.setText(currentRetailer.getBusinessName());
         retailersViewHolder.retailer_mobile_no.setText(currentRetailer.getMobileNo());
 
@@ -126,6 +130,7 @@ public class RetailersListAdapter extends BaseAdapter {
                 Intent intent = new Intent(activity, Retailers_PaymentsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putLong(Constants.BUNDLE_SELECTED_CUSTOMER_ID, currentRetailer.getId());
+                bundle.putString("AgentId", currentRetailer.getUserId());
                 intent.putExtras(bundle);
                 activity.startActivity(intent);
                 activity.finish();

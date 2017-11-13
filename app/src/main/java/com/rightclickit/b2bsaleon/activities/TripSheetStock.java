@@ -178,7 +178,7 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 //            }
         }
 
-        if(mItem!=null) {
+        if (mItem != null) {
             mItem.setEnabled(true);
         }
     }
@@ -229,12 +229,15 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
         int id = item.getItemId();
 
         if (id == R.id.autorenew) {
-
-            if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
-                mItem.setEnabled(false);
-                mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
+            if (isStockDispatched || isStockVerified) {
+                CustomAlertDialog.showAlertDialog(activityContext, "Failed", "Stock is already Dispached/Verified.");
             } else {
-                new NetworkConnectionDetector(TripSheetStock.this).displayNoNetworkError(TripSheetStock.this);
+                if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
+                    mItem.setEnabled(false);
+                    mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
+                } else {
+                    new NetworkConnectionDetector(TripSheetStock.this).displayNoNetworkError(TripSheetStock.this);
+                }
             }
             return true;
         }

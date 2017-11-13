@@ -1,10 +1,12 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -28,14 +30,18 @@ import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
+import com.rightclickit.b2bsaleon.models.RetailersModel;
 import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
+import com.rightclickit.b2bsaleon.services.SyncTDCSalesOrderService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListener {
@@ -47,7 +53,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     private TextView tdc_sales_list, tdc_sales_preview, totalTaxAmountTextView, totalAmountTextView, subTotalAmountTextView;
 
     private DBHelper mDBHelper;
-    private ArrayList<ProductsBean> allProductsList, allProductsListSort,allProductsListNew;
+    private ArrayList<ProductsBean> allProductsList, allProductsListSort, allProductsListNew;
     private Map<String, ProductsBean> selectedProductsListHashMap, previouslySelectedProductsListHashMap; // Hash Map Key = Product Id
     private TDCSalesAdapter tdcSalesAdapter;
     private boolean showProductsListView = false;
@@ -64,6 +70,13 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
 
     private boolean isAscendingSort;
     String str_selectedretailername;
+    private RetailersModel mRetailersModel;
+    private String mAgentId = "";
+    private int uploadedCount = 0, uploadedCount1 = 0;
+    private Runnable mRunnable;
+    private Handler mHandler = new Handler();
+    private android.support.v7.app.AlertDialog alertDialog1 = null;
+    private android.support.v7.app.AlertDialog.Builder alertDialogBuilder1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +104,10 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             userId = mmSharedPreferences.getString("userId");
 
 
-            //Log.e(allProductsList.size())
+            mRetailersModel = new RetailersModel(this, TDCSalesActivity.this);
 
+            HashMap<String, String> userMapData = mDBHelper.getUsersData();
+            mAgentId = userMapData.get("user_id");
 
             ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mmSharedPreferences.getString("UserActivity"));
             //System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
@@ -231,13 +246,13 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             // Log.i("available actual", availableStockProductsList.size() + "\n");
             if (showProductsListView) {
                 allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
-                for (int g = 0;g<allProductsList.size();g++){
+                for (int g = 0; g < allProductsList.size(); g++) {
                     for (int g1 = 0; g1 < stockBeanArrayList.size(); g1++) {
                         if (allProductsList.get(g).getProductId().equals(stockBeanArrayList.get(g1).getmProductId())) {
                             // If match add this cb quantity to temp string array
-                            Double stock =  Double.parseDouble(stockBeanArrayList.get(g1).getmProductCBQuantity());
-                            System.out.println("STOCK QUA::: "+ stock);
-                            if(stock>0) {
+                            Double stock = Double.parseDouble(stockBeanArrayList.get(g1).getmProductCBQuantity());
+                            //System.out.println("STOCK QUA::: " + stock);
+                            if (stock > 0) {
                                 ProductsBean productsBean = new ProductsBean();
 
                                 productsBean.setProductId(allProductsList.get(g).getProductId());
@@ -260,7 +275,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                         }
                     }
                 }
-                System.out.println("Filter::: "+ allProductsListNew.size());
+                //System.out.println("Filter::: " + allProductsListNew.size());
                 tdcSalesAdapter = new TDCSalesAdapter(activityContext, this, this, tdc_products_list_view, allProductsListNew, previouslySelectedProductsListHashMap, availableStockProductsList, userId, previousselectedProductsStockListHashMap);
                 tdc_products_list_view.setAdapter(tdcSalesAdapter);
             }
@@ -355,6 +370,15 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        if (id == R.id.autorenew) {
+            if (new NetworkConnectionDetector(TDCSalesActivity.this).isNetworkConnected()) {
+                showAlertDialog(TDCSalesActivity.this, "Sync process", "Are you sure, you want start the sync process?");
+            } else {
+                new NetworkConnectionDetector(TDCSalesActivity.this).displayNoNetworkError(TDCSalesActivity.this);
+            }
+            return true;
+        }
 
         if (id == R.id.notifications) {
             loadNotifications();
@@ -508,7 +532,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
         menu.findItem(R.id.settings).setVisible(true);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.notifications).setVisible(true);
-        menu.findItem(R.id.autorenew).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(true);
         menu.findItem(R.id.sort).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -602,5 +626,147 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
 
     public void showTDCSalesList(View view) {
         showAlertDialogWithCancelButton(TDCSalesActivity.this, "User Action!", "Are you sure want to leave sales?");
+    }
+
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    showCustomValidationAlertForSync(TDCSalesActivity.this, "upload");
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to display alert without field.
+     *
+     * @param context
+     * @param message
+     */
+    private void showCustomValidationAlertForSync(Activity context, String message) {
+        // custom dialog
+        try {
+
+            alertDialogBuilder1 = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder1.setTitle("Sync Process");
+            alertDialogBuilder1.setCancelable(false);
+            if (message.equals("down")) {
+                alertDialogBuilder1.setMessage("Downloading sales... Please wait.. ");
+                synchronized (this) {
+                    mRetailersModel.getRetailersListSales(mAgentId);
+                }
+            } else {
+                List<TDCSaleOrder> unUploadedTDCSalesOrders = mDBHelper.fetchAllUnUploadedTDCSalesOrders();
+                uploadedCount = unUploadedTDCSalesOrders.size();
+                if (uploadedCount > 0) {
+                    alertDialogBuilder1.setMessage("Uploading pending sales... Please wait.. ");
+                    fetchCountFromDB(uploadedCount);
+                    if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                        Intent syncTDCOrderServiceIntent = new Intent(activityContext, SyncTDCSalesOrderService.class);
+                        startService(syncTDCOrderServiceIntent);
+                    }
+                } else {
+                    alertDialogBuilder1.setMessage("Downloading sales... Please wait.. ");
+                    synchronized (this) {
+                        mRetailersModel.getRetailersListSales(mAgentId);
+                    }
+                }
+            }
+
+//            alertDialogBuilder1.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    if (uploadedCount == 0 && isDataDisplayed) {
+//                        isDataDisplayed = false;
+//                        dialog.dismiss();
+//                    }
+//                }
+//            });
+
+            alertDialog1 = alertDialogBuilder1.create();
+            alertDialog1.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fetchCountFromDB(final int uploadedCount11) {
+        if (uploadedCount11 > 0) {
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    List<TDCSaleOrder> unUploadedTDCSalesOrders = mDBHelper.fetchAllUnUploadedTDCSalesOrders();
+                    if (unUploadedTDCSalesOrders.size() < uploadedCount) {
+                        uploadedCount1++;
+                    }
+                    fetchCountFromDB(unUploadedTDCSalesOrders.size());
+                }
+            };
+            mHandler.postDelayed(mRunnable, 1000);
+        } else {
+            uploadedCount = 0;
+            mHandler.removeCallbacks(mRunnable);
+            synchronized (this) {
+                if (alertDialogBuilder1 != null) {
+                    alertDialog1.dismiss();
+                    alertDialogBuilder1 = null;
+                }
+            }
+            synchronized (this) {
+                showCustomValidationAlertForSync(TDCSalesActivity.this, "down");
+            }
+//            synchronized (this) {
+//                mRetailersModel.getRetailersListSales(mAgentId);
+//            }
+        }
+    }
+
+    public void showAlertDialog1(Context context, String title, String message) {
+        try {
+            if (alertDialog1 != null) {
+                alertDialog1.dismiss();
+            }
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

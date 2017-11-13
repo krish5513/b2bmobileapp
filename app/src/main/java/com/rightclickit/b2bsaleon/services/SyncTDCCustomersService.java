@@ -97,7 +97,7 @@ public class SyncTDCCustomersService extends Service {
 
 
                 String rId = currentTDCCustomer.getRoutecode();
-                System.out.println("AGENT SEL R ID:: "+ rId);
+                System.out.println("AGENT SEL R ID:: " + rId);
                 JSONArray agentRouteArray = new JSONArray();
                 agentRouteArray.put(rId);
 
@@ -105,8 +105,12 @@ public class SyncTDCCustomersService extends Service {
                 JSONObject requestObj = new JSONObject();
                 requestObj.put("route_id", agentRouteArray);
                 requestObj.put("stakeholder_id", (currentTDCCustomer.getCustomerType() == 1 ? retailerStakeTypeId : consumerStakeTypeId));
-                requestObj.put("first_name", currentTDCCustomer.getName());
-                requestObj.put("last_name", currentTDCCustomer.getBusinessName());
+                if (currentTDCCustomer.getBusinessName().length() == 0) {
+                    requestObj.put("first_name", currentTDCCustomer.getName());// Consumer Name
+                } else {
+                    requestObj.put("first_name", currentTDCCustomer.getBusinessName());// Business Name Retailer
+                }
+                requestObj.put("last_name", currentTDCCustomer.getName()); // Last Name
                 requestObj.put("phone", currentTDCCustomer.getMobileNo());
                 requestObj.put("email", "");
                 requestObj.put("password", Utility.getMd5String("123456789"));

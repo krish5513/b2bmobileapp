@@ -252,6 +252,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_CUSTOMER_ROUTECODE = "tdc_customer_routecode";
     private final String KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS = "tdc_customer_shop_image_upload_status";
     private final String KEY_TDC_CUSTOMER_CODE = "tdc_customer_code";
+    private final String KEY_TDC_CUSTOMER_CHECK_UNIQUE_ID = "tdc_customer_check_unique_id";
 
 
     // Column names for Special price
@@ -566,7 +567,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // TDC Customers Table Create Statement
     private final String CREATE_TDC_CUSTOMERS_TABLE = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_TDC_CUSTOMERS + "(" + KEY_TDC_CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_CUSTOMER_USER_ID + " VARCHAR, " + KEY_TDC_CUSTOMER_ROUTECODE + " VARCHAR, " + KEY_TDC_CUSTOMER_TYPE + " INTEGER, "
+            + TABLE_TDC_CUSTOMERS + "(" + KEY_TDC_CUSTOMER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_CUSTOMER_USER_ID + " VARCHAR, " + KEY_TDC_CUSTOMER_CHECK_UNIQUE_ID + " VARCHAR, " + KEY_TDC_CUSTOMER_ROUTECODE + " VARCHAR, " + KEY_TDC_CUSTOMER_TYPE + " INTEGER, "
             + KEY_TDC_CUSTOMER_NAME + " VARCHAR, " + KEY_TDC_CUSTOMER_MOBILE_NO + " VARCHAR, " + KEY_TDC_CUSTOMER_BUSINESS_NAME + " VARCHAR, "
             + KEY_TDC_CUSTOMER_ADDRESS + " TEXT, " + KEY_TDC_CUSTOMER_LATITUDE + " TEXT, " + KEY_TDC_CUSTOMER_LONGITUDE + " TEXT, " + KEY_TDC_CUSTOMER_SHOP_IMAGE + " VARCHAR, "
             + KEY_TDC_CUSTOMER_IS_ACTIVE + " INTEGER DEFAULT 1, " + KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS + " INTEGER DEFAULT 0, " + KEY_TDC_CUSTOMER_CODE + " VARCHAR, "
@@ -2037,7 +2038,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to insert record into TDC Customers Table
      */
-    public long insertIntoTDCCustomers(TDCCustomer customer) {
+    public long insertIntoTDCCustomers(TDCCustomer customer, String loginId) {
         long customerId = 0;
         try {
             SQLiteDatabase db = this.getWritableDatabase();
@@ -2054,20 +2055,35 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_CUSTOMER_SHOP_IMAGE, customer.getShopImage());
             values.put(KEY_TDC_CUSTOMER_ROUTECODE, customer.getRoutecode());
             values.put(KEY_TDC_CUSTOMER_CODE, customer.getCode());
+            values.put(KEY_TDC_CUSTOMER_CHECK_UNIQUE_ID, loginId);
 
             values.put(KEY_TDC_CUSTOMER_SHOP_IMAGE_UPLOAD_STATUS, customer.getIsShopImageUploaded());
 
             values.put(KEY_TDC_CUSTOMER_UPLOAD_STATUS, customer.getIsUploasStatus());
 
-            int val = checkRetailerExistsOrNot(customer.getUserId());
-            if (val == 0) {
+            if (customer.getUserId().equals("")) {
                 System.out.println("RETAILER INSERTED+++++");
                 customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
             } else {
-                System.out.println("RETAILER UPDATED+++++");
-                customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
-                        new String[]{String.valueOf(customer.getUserId())});
+                int val = checkRetailerExistsOrNot(customer.getUserId(), loginId);
+                System.out.println("VAL IS::: " + val);
+                if (val == 0) {
+                    System.out.println("RETAILER INSERTED 111+++++");
+                    customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
+                } else {
+                    System.out.println("RETAILER UPDATED+++++");
+                    customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
+                            new String[]{String.valueOf(customer.getUserId())});
+                }
             }
+//            if (val == 0) {
+//                System.out.println("RETAILER INSERTED+++++");
+//                customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
+//            } else {
+//                System.out.println("RETAILER UPDATED+++++");
+//                customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
+//                        new String[]{String.valueOf(customer.getUserId())});
+//            }
             values.clear();
             db.close();
         } catch (Exception e) {
@@ -2126,11 +2142,12 @@ public class DBHelper extends SQLiteOpenHelper {
      *
      * @param customerType = 0 for Consumers & 1 for Retailers
      */
-    public List<TDCCustomer> fetchRecordsFromTDCCustomers(int customerType) {
+    public List<TDCCustomer> fetchRecordsFromTDCCustomers(int customerType, String loginId) {
         List<TDCCustomer> allRetailersList = new ArrayList<>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TDC_CUSTOMERS + " WHERE " + KEY_TDC_CUSTOMER_IS_ACTIVE + " = 1 AND " + KEY_TDC_CUSTOMER_TYPE + " = " + customerType;
+            String selectQuery = "SELECT * FROM " + TABLE_TDC_CUSTOMERS + " WHERE " + KEY_TDC_CUSTOMER_IS_ACTIVE + " = 1 AND " + KEY_TDC_CUSTOMER_TYPE + " = " + customerType
+                    + " AND " + KEY_TDC_CUSTOMER_CHECK_UNIQUE_ID + " = '" + loginId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -2364,6 +2381,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return allOrdersList;
     }
+
     /**
      * Method to fetch records for selected duration from TDC Sales Orders Table
      */
@@ -2491,6 +2509,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return allOrdersProductsList;
     }
+
     /**
      * Method to insert record into TDC Sales Orders Table
      */
@@ -2515,7 +2534,15 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_SALES_ORDER_CUSTOMER_TYPE, order.getSelectedCustomerType());
             values.put(KEY_TDC_SALES_ORDER_BILL_NUMBER, order.getOrderBillNumber());
 
-            orderId = db.insert(TABLE_TDC_SALES_ORDERS, null, values);
+            int val = checkTdcSaleIsExistsOrNot(order.getOrderBillNumber());
+            //System.out.println("BILL EXISTS::: " + val);
+            if (val == 0) {
+                orderId = db.insert(TABLE_TDC_SALES_ORDERS, null, values);
+                //System.out.println("INSERT:::::" + orderId);
+            } else {
+                orderId = db.update(TABLE_TDC_SALES_ORDERS, values, KEY_TDC_SALES_ORDER_BILL_NUMBER + " = ?", new String[]{String.valueOf(order.getOrderBillNumber())});
+                //System.out.println("UPDATE::::::::::" + orderId);
+            }
 
             for (Map.Entry<String, ProductsBean> productsBeanEntry : order.getProductsList().entrySet()) {
                 this.insertIntoTDCSalesOrderProductsTable(orderId, productsBeanEntry.getValue());
@@ -2549,6 +2576,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return noOfEvents;
     }
+
     /**
      * Method to insert record into TDC Sales Order Products Table
      */
@@ -2883,7 +2911,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             //String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_STATUS + " = " + "'" + "A" + "'";
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " ORDER BY "+ KEY_TRIPSHEET_DATE + " DESC ";
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " ORDER BY " + KEY_TRIPSHEET_DATE + " DESC ";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -4049,15 +4077,15 @@ public class DBHelper extends SQLiteOpenHelper {
                     productsBean.setProductvat((c.getString(c.getColumnIndex(KEY_PRODUCT_VAT_PRICE))));
                     productsBean.setProductOrderedQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_ORDER_QUANTITY))));
                     String inStQ = c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY));
-                    if(inStQ!=null){
+                    if (inStQ != null) {
                         productsBean.setProductStock(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY))));
-                    }else {
+                    } else {
                         productsBean.setProductStock(0.0);
                     }
                     String extraStQ = c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_EXTRA_QUANTITY));
-                    if(extraStQ!=null){
+                    if (extraStQ != null) {
                         productsBean.setProductExtraQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_EXTRA_QUANTITY))));
-                    }else {
+                    } else {
                         productsBean.setProductExtraQuantity(0.0);
                     }
                     productsBean.setProductReturnableUnit(c.getString(c.getColumnIndex(KEY_PRODUCT_RETURNABLE)));
@@ -4579,7 +4607,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-
     public String fetchTripSheetSaleorderNo(String tripSheetId) {
         String no = "";
 
@@ -4883,6 +4910,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return deliveredProductsList;
     }
+
     public ArrayList<SaleOrderReturnedProducts> getReturnsProductsListForSaleOrder(String tripSheetId, String saleOrderId, String agentId) {
         ArrayList<SaleOrderReturnedProducts> returnedProductsList = new ArrayList<>();
 
@@ -4907,11 +4935,11 @@ public class DBHelper extends SQLiteOpenHelper {
                     returnedProduct.setCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
                     String cc = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES));
                     if (cc.equals("2600005")) {
-                        obamount = fetchCansorCratesDueByIds(tripSheetId,saleOrderId,agentId, cc,"cans");
+                        obamount = fetchCansorCratesDueByIds(tripSheetId, saleOrderId, agentId, cc, "cans");
                         // CANS DUE
                         returnedProduct.setOpeningBalance(obamount);
                     } else if (cc.equals("2600006")) {
-                        obamount = fetchCansorCratesDueByIds(tripSheetId,saleOrderId,agentId, cc,"crates");
+                        obamount = fetchCansorCratesDueByIds(tripSheetId, saleOrderId, agentId, cc, "crates");
                         // CRATES DUE
                         returnedProduct.setOpeningBalance(obamount);
                     } else {
@@ -6083,9 +6111,9 @@ public class DBHelper extends SQLiteOpenHelper {
             if (cursor1.moveToFirst()) {
                 do {
                     String gsts = cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_GST_PRICE));
-                    if(gsts!=null){
+                    if (gsts != null) {
                         gst = Double.parseDouble(cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_GST_PRICE)));
-                    }else {
+                    } else {
                         gst = 0.0;
                     }
                 } while (cursor1.moveToNext());
@@ -6116,9 +6144,9 @@ public class DBHelper extends SQLiteOpenHelper {
             if (cursor1.moveToFirst()) {
                 do {
                     String gsts1 = cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_VAT_PRICE));
-                    if(gsts1!=null){
+                    if (gsts1 != null) {
                         vat = Double.parseDouble(cursor1.getString(cursor1.getColumnIndex(KEY_PRODUCT_VAT_PRICE)));
-                    }else {
+                    } else {
                         vat = 0.0;
                     }
 
@@ -6325,11 +6353,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return alltripsheetsReturns;
     }
 
-    public int checkRetailerExistsOrNot(String s) {
+    public int checkRetailerExistsOrNot(String s, String loginId) {
         int maxID = 0;
 
         String selectQuery = "SELECT  * FROM " + TABLE_TDC_CUSTOMERS
-                + " WHERE " + KEY_TDC_CUSTOMER_USER_ID + "='" + s + "'";
+                + " WHERE " + KEY_TDC_CUSTOMER_USER_ID + "='" + s + "'"
+                + " AND " + KEY_TDC_CUSTOMER_CHECK_UNIQUE_ID + "='" + loginId + "'";
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         //System.out.println("DDDD::: "+ cursor.getCount());
@@ -6467,6 +6496,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+
     /**
      * Method to get the all sale orders by tripid
      *
@@ -6479,7 +6509,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             String obamount = "0.0";
 
-            String selectQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_RETURN_NO + ", " + KEY_TRIPSHEET_RETURNS_CREATED_ON + ", " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY + ", " + KEY_PRODUCT_RETURNABLE + ", "+ KEY_TRIPSHEET_RETURNS_USER_CODES
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_RETURN_NO + ", " + KEY_TRIPSHEET_RETURNS_CREATED_ON + ", " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_RETURNS_PRODUCT_CODES + ", " + KEY_TRIPSHEET_RETURNS_QUANTITY + ", " + KEY_PRODUCT_RETURNABLE + ", " + KEY_TRIPSHEET_RETURNS_USER_CODES
                     + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " R LEFT JOIN " + TABLE_PRODUCTS + " P ON R." + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = P." + KEY_PRODUCT_ID
                     + " WHERE P." + KEY_PRODUCT_RETURNABLE + " = 'Y' AND " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = '" + tripSheetId + "'";
 
@@ -6496,17 +6526,17 @@ public class DBHelper extends SQLiteOpenHelper {
                     returnedProduct.setCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
                     String cc = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES));
                     if (cc.equals("2600005")) {
-                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc,"cans");
+                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc, "cans");
                         // CANS DUE
                         returnedProduct.setOpeningBalance(obamount);
                     } else if (cc.equals("2600006")) {
-                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc,"crates");
+                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc, "crates");
                         // CRATES DUE
                         returnedProduct.setOpeningBalance(obamount);
                     } else {
                         returnedProduct.setOpeningBalance(obamount);
                     }
-                    Map<String, String> deliveredProductsHashMap = fetchDeliveriesListByTripSheetId1(tripSheetId,c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_CODES)),c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
+                    Map<String, String> deliveredProductsHashMap = fetchDeliveriesListByTripSheetId1(tripSheetId, c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_CODES)), c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
                     returnedProduct.setReturned(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY)));
                     returnedProduct.setDelivered(deliveredProductsHashMap.get(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS))));
 
@@ -6532,13 +6562,13 @@ public class DBHelper extends SQLiteOpenHelper {
     /*
     Method to get the deliveires
      */
-    public Map<String, String> fetchDeliveriesListByTripSheetId1(String tripsheetId,String agentId,String proCode) {
+    public Map<String, String> fetchDeliveriesListByTripSheetId1(String tripsheetId, String agentId, String proCode) {
         Map<String, String> tripsheetsDeliveries = new HashMap<>();
 
         try {
             String selectQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + ", " + KEY_TRIPSHEET_DELIVERY_QUANTITY + ", " + KEY_TRIPSHEET_DELIVERY_USER_CODES + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST
-                    + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "' AND "+
-                    KEY_TRIPSHEET_DELIVERY_USER_CODES + " = " + "'" + agentId + "' AND "+
+                    + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "' AND " +
+                    KEY_TRIPSHEET_DELIVERY_USER_CODES + " = " + "'" + agentId + "' AND " +
                     KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES + " = " + "'" + proCode + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
@@ -6601,6 +6631,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to get the agent name by id
+     *
      * @param agentId
      * @return
      */
@@ -6629,9 +6660,9 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-
     /**
      * Method to get the agent name by id
+     *
      * @param agentId
      * @return
      */
@@ -6657,6 +6688,30 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return code;
+    }
+
+    /**
+     * Method to check the tadc sale is exists or not
+     *
+     * @param billNumber
+     * @return
+     */
+    public int checkTdcSaleIsExistsOrNot(String billNumber) {
+        int maxID = 0;
+
+        String selectQuery = "SELECT  * FROM " + TABLE_TDC_SALES_ORDERS
+                + " WHERE " + KEY_TDC_SALES_ORDER_BILL_NUMBER + "='" + billNumber + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //System.out.println("DDDD::: "+ cursor.getCount());
+        if (cursor.moveToFirst()) {
+            do {
+                maxID = cursor.getInt(0);
+
+            } while (cursor.moveToNext());
+        }
+        //System.out.println("FGGHH::: "+maxID);
+        return maxID;
     }
 
 }

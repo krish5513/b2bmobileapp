@@ -90,6 +90,9 @@ public class RetailersModel1 implements OnAsyncRequestCompleteListener {
             if (mAgentsBeansList_MyPrivilege.size() > 0) {
                 mAgentsBeansList_MyPrivilege.clear();
             }
+            if(TDCCustomerList.size()>0){
+                TDCCustomerList.clear();
+            }
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
             isMyProfilePrivilege = false;
             UserCode = userMapData.get("user_id");
@@ -107,7 +110,7 @@ public class RetailersModel1 implements OnAsyncRequestCompleteListener {
                 String logInURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_LIST);
                 JSONObject job = new JSONObject();
                 ArrayList<String> stakeHolderId = mDBHelper.getStakeTypeIdByStakeTypeForAgents("3");
-                System.out.println("STAKES::::: " + stakeHolderId);
+                //System.out.println("STAKES::::: " + stakeHolderId);
                 JSONArray stakesArray = new JSONArray();
                 for (int k = 0; k < stakeHolderId.size(); k++) {
                     stakesArray.put(stakeHolderId.get(k));
@@ -133,14 +136,14 @@ public class RetailersModel1 implements OnAsyncRequestCompleteListener {
             this.mAgentsBeansList1 = list;
 
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-                System.out.println("STAKE HOLDER ID IS:: " + stakeTypeIdByStakeType);
+                //System.out.println("STAKE HOLDER ID IS:: " + stakeTypeIdByStakeType);
                 String customerAdd = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_ADD);
                 // HashMap<String,String> params = new HashMap<String,String>();
 
                 JSONObject paramsc = new JSONObject();
 
                 String rId = mAgentsBeansList1.get(0).getmAgentRouteId();
-                System.out.println("AGENT SEL R ID:: " + rId);
+                //System.out.println("AGENT SEL R ID:: " + rId);
                 JSONArray agentRouteArray = new JSONArray();
                 agentRouteArray.put(rId);
                 paramsc.put("route_id", agentRouteArray);
@@ -198,7 +201,7 @@ public class RetailersModel1 implements OnAsyncRequestCompleteListener {
 
                 }
                 //JSONObject logInResponse = new JSONObject(response);
-                getAgentsList("retailers");
+                //getAgentsList("retailers");
 //                if (logInResponse.getInt("result_status") == 1) {
 //
 //                } else {
@@ -276,7 +279,7 @@ public class RetailersModel1 implements OnAsyncRequestCompleteListener {
 
                         TDCCustomerList.add(customer);
 
-                        long customerId = mDBHelper.insertIntoTDCCustomers(customer);
+                        long customerId = mDBHelper.insertIntoTDCCustomers(customer,UserCode);
 
                     }
                     synchronized (this) {

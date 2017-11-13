@@ -61,7 +61,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
 
     private String saleQunatity = "";
     private Map<String, String> saleQuantityListMap = new HashMap<String, String>();
-    private String customer = "", code = "";
+    private String customer = "", mUserId = "";
 
 
     private JSONArray routeCodesArray;
@@ -110,6 +110,8 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
 
             mDBHelper = new DBHelper(activityContext);
             customerList = new ArrayList<>();
+            HashMap<String, String> userMapData = mDBHelper.getUsersData();
+            mUserId = userMapData.get("user_id");
 
             customerList = mDBHelper.fetchAllRecordsFromTDCCustomers();
 
@@ -334,13 +336,6 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
             }
 
 
-
-
-
-
-
-
-
             TDCCustomer customer = new TDCCustomer();
             customer.setUserId(""); // later we will update this value by fetching from service.
             customer.setCustomerType(0);
@@ -357,7 +352,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
             customer.setRoutecode(selected_val);
 
 
-            long customerId = mDBHelper.insertIntoTDCCustomers(customer);
+            long customerId = mDBHelper.insertIntoTDCCustomers(customer, mUserId);
 
             if (customerId == -1)
                 Toast.makeText(activityContext, "An error occurred while adding new consumer.", Toast.LENGTH_LONG).show();

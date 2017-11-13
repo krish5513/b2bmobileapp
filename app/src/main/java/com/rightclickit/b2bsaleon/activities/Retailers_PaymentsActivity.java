@@ -167,4 +167,103 @@ public class Retailers_PaymentsActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+
+    /**
+     * Method to display alert without field.
+     *
+     * @param context
+     * @param message
+     */
+//    private void showCustomValidationAlertForSync(Activity context, String message) {
+//        // custom dialog
+//        try {
+//
+//            alertDialogBuilder1 = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+//            alertDialogBuilder1.setTitle("Sync Process");
+//            alertDialogBuilder1.setCancelable(false);
+//            if (message.equals("down")) {
+//                alertDialogBuilder1.setMessage("Downloading retailers/consumers... Please wait.. ");
+//                synchronized (this) {
+//                    mRetailersModel.getAgentsList("retailers");
+//                }
+//            } else {
+//                List<TDCCustomer> unUploadedTDCCustomers = mDBHelper.fetchAllUnUploadedRecordsFromTDCCustomers();
+//                uploadedCount = unUploadedTDCCustomers.size();
+//                if (uploadedCount > 0) {
+//                    alertDialogBuilder1.setMessage("Uploading retailers/consumers... Please wait.. ");
+//                    fetchCountFromDB(uploadedCount);
+//                    if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+//                        Intent syncTDCCustomersServiceIntent = new Intent(activityContext, SyncTDCCustomersService.class);
+//                        startService(syncTDCCustomersServiceIntent);
+//                    }
+//                } else {
+//                    alertDialogBuilder1.setMessage("Downloading retailers/consumers... Please wait.. ");
+//                    synchronized (this) {
+//                        mRetailersModel.getAgentsList("retailers");
+//                    }
+//                }
+//            }
+//
+//            alertDialogBuilder1.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    if (uploadedCount == 0 && isDataDisplayed) {
+//                        isDataDisplayed = false;
+//                        dialog.dismiss();
+//                    }
+//                }
+//            });
+//
+//            alertDialog1 = alertDialogBuilder1.create();
+//            alertDialog1.show();
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+//    private void fetchCountFromDB(final int uploadedCount11) {
+//        if (uploadedCount11 > 0) {
+//            //mSyncText.setText("Uploading " + String.valueOf(this.uploadedCount1) + " of " + String.valueOf(uploadedCount));
+//            //mSyncText.setText("Uploading retailers/consumers... Please wait.. ");
+//            mRunnable = new Runnable() {
+//                @Override
+//                public void run() {
+//                    List<TDCCustomer> unUploadedTDCCustomers = mDBHelper.fetchAllUnUploadedRecordsFromTDCCustomers();
+//                    if (unUploadedTDCCustomers.size() < uploadedCount) {
+//                        uploadedCount1++;
+//                    }
+//                    fetchCountFromDB(unUploadedTDCCustomers.size());
+//                }
+//            };
+//            mHandler.postDelayed(mRunnable, 1000);
+//        } else {
+//            uploadedCount = 0;
+//            mHandler.removeCallbacks(mRunnable);
+//            //mSyncText.setText("Downloading retailers/consumers... Please wait.. ");
+//            synchronized (this) {
+//                if (alertDialogBuilder1 != null) {
+//                    alertDialog1.dismiss();
+//                    alertDialogBuilder1 = null;
+//                }
+//            }
+//            synchronized (this) {
+//                showCustomValidationAlertForSync(RetailersActivity.this, "down");
+//            }
+//            synchronized (this) {
+//                mRetailersModel.getAgentsList("retailers");
+//            }
+//            mRunnable = new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (isDataDisplayed) {
+//                        //isDataDisplayed = false;
+//                        mHandler.removeCallbacks(mRunnable);
+//                    }
+//                }
+//            };
+//            mHandler.postDelayed(mRunnable, 1000);
+//        }
+//    }
 }
