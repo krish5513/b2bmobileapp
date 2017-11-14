@@ -675,7 +675,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             if (message.equals("down")) {
                 alertDialogBuilder1.setMessage("Downloading sales... Please wait.. ");
                 synchronized (this) {
-                    mRetailersModel.getRetailersListSales(mAgentId);
+                    mRetailersModel.getRetailersListSales(mAgentId, "tdc");
                 }
             } else {
                 List<TDCSaleOrder> unUploadedTDCSalesOrders = mDBHelper.fetchAllUnUploadedTDCSalesOrders();
@@ -690,7 +690,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                 } else {
                     alertDialogBuilder1.setMessage("Downloading sales... Please wait.. ");
                     synchronized (this) {
-                        mRetailersModel.getRetailersListSales(mAgentId);
+                        mRetailersModel.getRetailersListSales(mAgentId, "tdc");
                     }
                 }
             }

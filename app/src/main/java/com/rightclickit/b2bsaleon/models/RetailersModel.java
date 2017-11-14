@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
 import com.rightclickit.b2bsaleon.activities.TDCSalesActivity;
+import com.rightclickit.b2bsaleon.activities.TDCSalesListActivity;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
@@ -37,6 +38,7 @@ public class RetailersModel implements OnAsyncRequestCompleteListener {
 
     private Context context;
     private TDCSalesActivity activity;
+    private TDCSalesListActivity activity1;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private String type = "", mAgentId = "";
@@ -80,9 +82,25 @@ public class RetailersModel implements OnAsyncRequestCompleteListener {
 
     }
 
-    public void getRetailersListSales(String s) {
+    public RetailersModel(Context context, TDCSalesListActivity activity) {
+        this.context = context;
+        this.activity1 = activity;
+        this.mPreferences = new MMSharedPreferences(context);
+        this.mDBHelper = new DBHelper(context);
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        currentDate = df.format(cal.getTime());
+
+        cal.add(Calendar.DATE, -30);
+        fromDate = df.format(cal.getTime());
+
+    }
+
+    public void getRetailersListSales(String s, String isFrom) {
         try {
             mAgentId = s;
+            this.type = isFrom;
             if (mTDCCustomerList.size() > 0) {
                 mTDCCustomerList.clear();
             }
@@ -144,7 +162,11 @@ public class RetailersModel implements OnAsyncRequestCompleteListener {
                 customerArray.put(s);
                 JSONObject params = new JSONObject();
                 params.put("customer", customerArray);
-                params.put("filter_by_filed", "created_by");//created_by for all sales
+                if (type.equals("agents")) {
+                    params.put("filter_by_filed", "user_id");//created_by for all sales
+                } else if (type.equals("tdc")) {
+                    params.put("filter_by_filed", "created_by");//created_by for all sales
+                }
                 params.put("from_date", fromDate);
                 params.put("to_date", currentDate);
 
@@ -310,7 +332,19 @@ public class RetailersModel implements OnAsyncRequestCompleteListener {
                     }
                 }
                 synchronized (this) {
-                    activity.showAlertDialog1(activity, "Sync Process", "Sales sync completed succssfully.");
+                    if (type.equals("agents")) {
+                        activity1.showAlertDialog1(activity, "Sync Process", "Sales sync completed succssfully.");
+                    } else if (type.equals("tdc")) {
+                        activity.showAlertDialog1(activity, "Sync Process", "Sales sync completed succssfully.");
+                    }
+                }
+            }else {
+                synchronized (this) {
+                    if (type.equals("agents")) {
+                        activity1.showAlertDialog1(activity, "Sync Process", "Sales sync completed succssfully.");
+                    } else if (type.equals("tdc")) {
+                        activity.showAlertDialog1(activity, "Sync Process", "Sales sync completed succssfully.");
+                    }
                 }
             }
         } catch (Exception e) {

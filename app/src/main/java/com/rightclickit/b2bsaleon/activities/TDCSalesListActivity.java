@@ -1,7 +1,9 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -10,6 +12,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +31,10 @@ import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.models.RetailersModel;
+import com.rightclickit.b2bsaleon.services.SyncTDCSalesOrderService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
@@ -58,6 +64,12 @@ public class TDCSalesListActivity extends AppCompatActivity {
     String name, code, TroipsTakeorder = "";
     String screenType = "";
     String custId = "";
+    private RetailersModel mRetailersModel;
+    private int uploadedCount = 0, uploadedCount1 = 0;
+    private Runnable mRunnable;
+    private Handler mHandler = new Handler();
+    private android.support.v7.app.AlertDialog alertDialog1 = null;
+    private android.support.v7.app.AlertDialog.Builder alertDialogBuilder1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +81,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
             activityContext = TDCSalesListActivity.this;
             mmSharedPreferences = new MMSharedPreferences(activityContext);
             mDBHelper = new DBHelper(activityContext);
-
+            mRetailersModel = new RetailersModel(this, TDCSalesListActivity.this);
             this.getSupportActionBar().setTitle("SALES LIST");
             this.getSupportActionBar().setSubtitle(null);
             this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
@@ -104,7 +116,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
             Bundle bundle = this.getIntent().getExtras();
             if (bundle != null) {
                 TroipsTakeorder = bundle.getString("From");
-                //custId = bundle.getString("custId");
+                custId = bundle.getString("custId");
                 // screenType = bundle.getString("screenType"); //AgentOrder
             }
 
@@ -348,6 +360,15 @@ public class TDCSalesListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        if (id == R.id.autorenew) {
+            if (new NetworkConnectionDetector(TDCSalesListActivity.this).isNetworkConnected()) {
+                showAlertDialog(TDCSalesListActivity.this, "Sync process", "Are you sure, you want start the sync process?");
+            } else {
+                new NetworkConnectionDetector(TDCSalesListActivity.this).displayNoNetworkError(TDCSalesListActivity.this);
+            }
+            return true;
+        }
+
         if (id == R.id.action_search) {
             return true;
         }
@@ -496,5 +517,186 @@ public class TDCSalesListActivity extends AppCompatActivity {
         }
 
         CustomProgressDialog.hideProgressDialog();
+    }
+
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    showCustomValidationAlertForSync(TDCSalesListActivity.this, "upload");
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to display alert without field.
+     *
+     * @param context
+     * @param message
+     */
+    private void showCustomValidationAlertForSync(Activity context, String message) {
+        // custom dialog
+        try {
+
+            alertDialogBuilder1 = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder1.setTitle("Sync Process");
+            alertDialogBuilder1.setCancelable(false);
+            if (message.equals("down")) {
+                alertDialogBuilder1.setMessage("Downloading sales... Please wait.. ");
+                synchronized (this) {
+                    mRetailersModel.getRetailersListSales(custId,"agents");
+                }
+            } else {
+                List<TDCSaleOrder> unUploadedTDCSalesOrders = mDBHelper.fetchAllUnUploadedTDCSalesOrders();
+                uploadedCount = unUploadedTDCSalesOrders.size();
+                if (uploadedCount > 0) {
+                    alertDialogBuilder1.setMessage("Uploading pending sales... Please wait.. ");
+                    fetchCountFromDB(uploadedCount);
+                    if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                        Intent syncTDCOrderServiceIntent = new Intent(activityContext, SyncTDCSalesOrderService.class);
+                        startService(syncTDCOrderServiceIntent);
+                    }
+                } else {
+                    alertDialogBuilder1.setMessage("Downloading sales... Please wait.. ");
+                    synchronized (this) {
+                        mRetailersModel.getRetailersListSales(custId,"agents");
+                    }
+                }
+            }
+
+//            alertDialogBuilder1.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    if (uploadedCount == 0 && isDataDisplayed) {
+//                        isDataDisplayed = false;
+//                        dialog.dismiss();
+//                    }
+//                }
+//            });
+
+            alertDialog1 = alertDialogBuilder1.create();
+            alertDialog1.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fetchCountFromDB(final int uploadedCount11) {
+        if (uploadedCount11 > 0) {
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    List<TDCSaleOrder> unUploadedTDCSalesOrders = mDBHelper.fetchAllUnUploadedTDCSalesOrders();
+                    if (unUploadedTDCSalesOrders.size() < uploadedCount) {
+                        uploadedCount1++;
+                    }
+                    fetchCountFromDB(unUploadedTDCSalesOrders.size());
+                }
+            };
+            mHandler.postDelayed(mRunnable, 1000);
+        } else {
+            uploadedCount = 0;
+            mHandler.removeCallbacks(mRunnable);
+            synchronized (this) {
+                if (alertDialogBuilder1 != null) {
+                    alertDialog1.dismiss();
+                    alertDialogBuilder1 = null;
+                }
+            }
+            synchronized (this) {
+                showCustomValidationAlertForSync(TDCSalesListActivity.this, "down");
+            }
+//            synchronized (this) {
+//                mRetailersModel.getRetailersListSales(mAgentId);
+//            }
+        }
+    }
+
+    public void showAlertDialog1(Context context, String title, String message) {
+        try {
+            if (alertDialog1 != null) {
+                alertDialog1.dismiss();
+            }
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    loadTDCSalesList1(0);
+
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadTDCSalesList1(int val) {
+        int tag = val;
+
+        CustomProgressDialog.showProgressDialog(activityContext, Constants.LOADING_MESSAGE);
+
+        if (tag == 0) {
+            tdc_sales_today.setBackground(border_accent);
+            tdc_sales_today.setTextColor(colorAccent);
+
+            tdc_sales_weekly.setBackground(border_btn);
+            tdc_sales_weekly.setTextColor(colorPrimary);
+
+            // tdc_sales_monthly.setBackground(border_btn);
+            // tdc_sales_monthly.setTextColor(colorPrimary);
+        } else if (tag == 1) {
+            tdc_sales_today.setBackground(border_btn);
+            tdc_sales_today.setTextColor(colorPrimary);
+
+            tdc_sales_weekly.setBackground(border_accent);
+            tdc_sales_weekly.setTextColor(colorAccent);
+
+            // tdc_sales_monthly.setBackground(border_btn);
+            // tdc_sales_monthly.setTextColor(colorPrimary);
+        } else if (tag == 2) {
+            tdc_sales_today.setBackground(border_btn);
+            tdc_sales_today.setTextColor(colorPrimary);
+
+            tdc_sales_weekly.setBackground(border_btn);
+            tdc_sales_weekly.setTextColor(colorPrimary);
+
+            // tdc_sales_monthly.setBackground(border_accent);
+            // tdc_sales_monthly.setTextColor(colorAccent);
+        }
+
+        loadSalesList(tag);
     }
 }
