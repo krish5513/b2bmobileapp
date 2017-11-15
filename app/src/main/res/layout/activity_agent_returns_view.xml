@@ -22,6 +22,7 @@
             android:paddingTop="5dp"
             android:textColor="@color/greydark"
             />
+<!--
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,6 +65,7 @@
                 android:textColor="@color/greydark"
                 />
         </LinearLayout>
+-->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -143,7 +145,7 @@
                 android:layout_gravity="center|left"
                 android:layout_weight="0.17"
                 android:gravity="center|left"
-                android:text="Product"
+                android:text="PRODUCT"
                 android:textColor="@color/greydark"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -159,6 +161,27 @@
                 android:textColor="@color/greydark"
                 android:textSize="14sp"
                 android:textStyle="bold" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_weight="0.17"
+                android:gravity="center"
+                android:text="OB"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:layout_weight="0.17"
+                android:gravity="center"
+                android:text="DQ"
+                android:textColor="@color/greydark"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -172,16 +195,6 @@
                 android:textStyle="bold" />
 
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:layout_weight="0.18"
-                android:gravity="center"
-                android:text="Return Type"
-                android:textColor="@color/greydark"
-                android:textSize="14sp"
-                android:textStyle="bold" />
 
 
 

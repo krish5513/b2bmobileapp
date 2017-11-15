@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.RetailersPaymentsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
-import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
@@ -32,6 +31,7 @@ public class Retailers_PaymentsActivity extends AppCompatActivity {
     private TextView no_payments_found_message;
 
     private long selectedCustomerId;
+    private String selectedCustomerId1;
     private DBHelper mDBHelper;
     private RetailersPaymentsAdapter paymentsListAdapter;
     private List<TDCSaleOrder> selectedRetailerAllOrders;
@@ -64,11 +64,12 @@ public class Retailers_PaymentsActivity extends AppCompatActivity {
 
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
-                selectedCustomerId = bundle.getLong(Constants.BUNDLE_SELECTED_CUSTOMER_ID);
+                // selectedCustomerId = bundle.getLong(Constants.BUNDLE_SELECTED_CUSTOMER_ID);
+                selectedCustomerId1 = bundle.getString("AgentId");
             }
-
-            selectedRetailerAllOrders = mDBHelper.fetchTDCSalesOrdersForSelectedCustomer(selectedCustomerId);
-
+            //System.out.println("RETAILER ID::: "+ selectedCustomerId1);
+            selectedRetailerAllOrders = mDBHelper.fetchTDCSalesOrdersForSelectedCustomer(selectedCustomerId1);
+            //System.out.println("RETAILER SALE SIZE::: "+ selectedRetailerAllOrders.size());
             if (selectedRetailerAllOrders.size() <= 0) {
                 retailers_sales_list_view.setVisibility(View.GONE);
                 no_payments_found_message.setVisibility(View.VISIBLE);

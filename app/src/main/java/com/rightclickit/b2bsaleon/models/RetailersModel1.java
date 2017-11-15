@@ -90,7 +90,7 @@ public class RetailersModel1 implements OnAsyncRequestCompleteListener {
             if (mAgentsBeansList_MyPrivilege.size() > 0) {
                 mAgentsBeansList_MyPrivilege.clear();
             }
-            if(TDCCustomerList.size()>0){
+            if (TDCCustomerList.size() > 0) {
                 TDCCustomerList.clear();
             }
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
@@ -109,11 +109,16 @@ public class RetailersModel1 implements OnAsyncRequestCompleteListener {
                 routesArray = routesJob.getJSONArray("routeArray");
                 String logInURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_LIST);
                 JSONObject job = new JSONObject();
-                ArrayList<String> stakeHolderId = mDBHelper.getStakeTypeIdByStakeTypeForAgents("3");
+                ArrayList<String> stakeHolderId = mDBHelper.getStakeTypeIdByStakeTypeForAgents("3"); // For retailer
+                ArrayList<String> stakeHolderIdConsumer = mDBHelper.getStakeTypeIdByStakeTypeForAgents("4");// For consumer
                 //System.out.println("STAKES::::: " + stakeHolderId);
+                //System.out.println("STAKES1::::: " + stakeHolderIdConsumer);
                 JSONArray stakesArray = new JSONArray();
                 for (int k = 0; k < stakeHolderId.size(); k++) {
                     stakesArray.put(stakeHolderId.get(k));
+                }
+                for (int k1 = 0; k1 < stakeHolderIdConsumer.size(); k1++) {
+                    stakesArray.put(stakeHolderIdConsumer.get(k1));
                 }
                 job.put("route_ids", routesArray);
                 job.put("_ids", stakesArray);
@@ -271,19 +276,26 @@ public class RetailersModel1 implements OnAsyncRequestCompleteListener {
                                 customer.setRoutecode(jo.getString("route_id"));
                             }
                         }
-
-                        customer.setCustomerType(1);
+                        if (jo.has("stakeholder_id")) {
+                            if (jo.getString("stakeholder_id").equals("6")) {
+                                // Consumer
+                                customer.setCustomerType(0);
+                            } else {
+                                // Retailer
+                                customer.setCustomerType(1);
+                            }
+                        }
                         customer.setShopImage("");
                         customer.setIsShopImageUploaded(0);
                         customer.setIsUploasStatus("1");
 
                         TDCCustomerList.add(customer);
 
-                        long customerId = mDBHelper.insertIntoTDCCustomers(customer,UserCode);
+                        long customerId = mDBHelper.insertIntoTDCCustomers(customer, UserCode);
 
                     }
                     synchronized (this) {
-                        activity.loadRetailers(TDCCustomerList);
+                        activity.loadRetailers(TDCCustomerList,"api");
                     }
                 }
             }

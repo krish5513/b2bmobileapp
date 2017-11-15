@@ -63,7 +63,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
     private String requestCameFrom, saleQuantity = "", actualSaleQuantity = "";
     private Map<String, String> saleQuantityListMap = new HashMap<String, String>();
 
-    String totalRate = "";
+    String totalRate = "", mAgentId = "";
     double taxes;
     double rate = 0.0, ratetax = 0.0, taxvalue = 0.0;
     Map<String, ProductsBean> productsList, productsListRetailer;
@@ -113,7 +113,8 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
             tdc_sales_save_layout = (LinearLayout) findViewById(R.id.tdc_sales_save_layout);
 
             productsListRetailer = new HashMap<String, ProductsBean>();
-
+            HashMap<String, String> userMapData = mDBHelper.getUsersData();
+            mAgentId = userMapData.get("user_id");
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 str_agentname = bundle.getString("CustomerName");
@@ -284,10 +285,10 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     long oId = currentOrder.getOrderId();
                     //currentOrderId = String.format("TDC%05d", oId);
                     System.out.println("1111uuuuu::: " + currentOrder.getOrderId());
-                  //  if (currentOrder.ge)
+                    //  if (currentOrder.ge)
 
                     String[] ss = currentOrder.getSelectedCustomerCode().split("-");
-                    System.out.println("2222uuuuuuuu::: " +  currentOrder.getSelectedCustomerCode());
+                    System.out.println("2222uuuuuuuu::: " + currentOrder.getSelectedCustomerCode());
                     String ssss = ss[0];
 
                     System.out.println("11111111111111111111111111111111::: " + currentOrder.getSelectedCustomerType());
@@ -371,7 +372,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
 
                     System.out.println("1111uuuuu::: " + currentOrder.getOrderId());
                     String[] ss = currentOrder.getSelectedCustomerCode().split("-");
-                    System.out.println("2222uuuuuuuu::: " +  currentOrder.getSelectedCustomerCode());
+                    System.out.println("2222uuuuuuuu::: " + currentOrder.getSelectedCustomerCode());
                     String ssss = ss[0];
                     System.out.println("1111::: " + currentOrder.getSelectedCustomerType());
                     System.out.println("2222::: " + oId);
@@ -760,6 +761,14 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
             finish();
         } else if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_TDC_SALES_LIST)) {
             Intent intent = new Intent(TDCSales_Preview_PrintActivity.this, TDCSalesListActivity.class);
+            intent.putExtra("custId", mAgentId);
+            intent.putExtra("From", "TDC");
+            startActivity(intent);
+            finish();
+        } else if (requestCameFrom.equals("Agents")) {
+            Intent intent = new Intent(TDCSales_Preview_PrintActivity.this, TDCSalesListActivity.class);
+            intent.putExtra("custId", mmSharedPreferences.getString("agentId"));
+            intent.putExtra("From", "Agents");
             startActivity(intent);
             finish();
         }

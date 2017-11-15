@@ -24,7 +24,17 @@ public class TripSheetReturnsBean {
     private String mTripshhetReturnsCreated_by;
     private String mTripshhetReturnsCreated_on;
     private String mTripshhetReturnsUpdated_on;
+
+    public String getReturnsItemsCount() {
+        return returnsItemsCount;
+    }
+
+    public void setReturnsItemsCount(String returnsItemsCount) {
+        this.returnsItemsCount = returnsItemsCount;
+    }
+
     private String mTripshhetReturnsUpdated_by;
+    private String returnsItemsCount;
 
     public String getmTripshhetReturnsReturn_no() {
         return mTripshhetReturnsReturn_no;

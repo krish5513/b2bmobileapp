@@ -102,7 +102,7 @@ public class AgentReturns extends AppCompatActivity {
         //r_pending.setText(Utility.getFormattedCurrency(str_pending));
 
 
-        ArrayList<TripSheetReturnsBean> unUploadedReturns = mDBHelper.fetchAllTripsheetsReturnsList(agentId);
+        ArrayList<TripSheetReturnsBean> unUploadedReturns = mDBHelper.fetchAllTripsheetsReturnsListForAgents(agentId);
         for (int i = 0; i < unUploadedReturns.size(); i++) {
             return_no = unUploadedReturns.get(i).getmTripshhetReturnsReturn_no();
         }

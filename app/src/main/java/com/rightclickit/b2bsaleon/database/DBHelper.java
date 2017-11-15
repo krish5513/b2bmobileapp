@@ -2340,11 +2340,11 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch customer specific orders from TDC Sales Orders Table
      */
-    public List<TDCSaleOrder> fetchTDCSalesOrdersForSelectedCustomer(long customerId) {
+    public List<TDCSaleOrder> fetchTDCSalesOrdersForSelectedCustomer(String customerId) {
         List<TDCSaleOrder> allOrdersList = new ArrayList<>();
 
         try {
-            String selectQuery = "SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_CUSTOMER_ID + " = " + customerId;
+            String selectQuery = "SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_CUSTOMER_USER_ID + " = " + "'"+customerId+"'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -2392,7 +2392,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Cursor c = null;
             SQLiteDatabase db = this.getReadableDatabase();
             if (customerId != null && !(customerId.equals(""))) {
-                c = db.rawQuery("SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_CUSTOMER_ID + " = " + customerId + "AND WHERE " + KEY_TDC_SALES_ORDER_DATE + " BETWEEN ? AND ?", new String[]{startDate, endDate});
+                c = db.rawQuery("SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_CREATED_BY + " = " + "'" + customerId + "'" + "  AND " + KEY_TDC_SALES_ORDER_DATE + " BETWEEN ? AND ?", new String[]{startDate, endDate});
             } else {
                 c = db.rawQuery("SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_DATE + " BETWEEN ? AND ?", new String[]{startDate, endDate});
             }
@@ -2533,20 +2533,30 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_SALES_ORDER_CUSTOMER_NAME, order.getSelectedCustomerName());
             values.put(KEY_TDC_SALES_ORDER_CUSTOMER_TYPE, order.getSelectedCustomerType());
             values.put(KEY_TDC_SALES_ORDER_BILL_NUMBER, order.getOrderBillNumber());
+            values.put(KEY_TDC_SALES_ORDER_UPLOAD_STATUS, 1);
 
-            int val = checkTdcSaleIsExistsOrNot(order.getOrderBillNumber());
-            //System.out.println("BILL EXISTS::: " + val);
-            if (val == 0) {
-                orderId = db.insert(TABLE_TDC_SALES_ORDERS, null, values);
-                //System.out.println("INSERT:::::" + orderId);
-            } else {
-                orderId = db.update(TABLE_TDC_SALES_ORDERS, values, KEY_TDC_SALES_ORDER_BILL_NUMBER + " = ?", new String[]{String.valueOf(order.getOrderBillNumber())});
-                //System.out.println("UPDATE::::::::::" + orderId);
-            }
-
+            orderId = db.insert(TABLE_TDC_SALES_ORDERS, null, values);
+            System.out.println("INSERT:::::" + orderId);
             for (Map.Entry<String, ProductsBean> productsBeanEntry : order.getProductsList().entrySet()) {
                 this.insertIntoTDCSalesOrderProductsTable(orderId, productsBeanEntry.getValue());
             }
+
+//            int val = checkTdcSaleIsExistsOrNot(order.getOrderBillNumber());
+//            System.out.println("BILL EXISTS::: " + val);
+//            if (val == 0) {
+//                orderId = db.insert(TABLE_TDC_SALES_ORDERS, null, values);
+//                System.out.println("INSERT:::::" + orderId);
+//                for (Map.Entry<String, ProductsBean> productsBeanEntry : order.getProductsList().entrySet()) {
+//                    this.insertIntoTDCSalesOrderProductsTable(orderId, productsBeanEntry.getValue());
+//                }
+//            }else {
+//                System.out.println("UPDATE:::::");
+//            }
+//            else {
+//                orderId = db.update(TABLE_TDC_SALES_ORDERS, values, KEY_TDC_SALES_ORDER_BILL_NUMBER + " = ?", new String[]{String.valueOf(order.getOrderBillNumber())});
+//                //System.out.println("UPDATE::::::::::" + orderId);
+//            }
+
 
             values.clear();
             db.close();
@@ -3323,6 +3333,74 @@ public class DBHelper extends SQLiteOpenHelper {
         return alltripsheetsDeliveries;
     }
 
+    public ArrayList<TripSheetReturnsBean> fetchAllTripsheetsReturnsListForAgents(String userId) {
+        ArrayList<TripSheetReturnsBean> agentsreturnsBean = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT DISTINCT(tripsheet_returns_return_number) AS Tripsheet_Return_Number" +
+                    ", COUNT(tripsheet_returns_return_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + userId + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+            HashMap<String, String> records = new HashMap<>();
+            if (c.moveToFirst()) {
+                do {
+                    records.put(c.getString(c.getColumnIndex("Tripsheet_Return_Number")), c.getString(c.getColumnIndex("Total_COUNT")));
+//                    AgentDeliveriesBean returndeliveriesBean = new AgentDeliveriesBean();
+//                    returndeliveriesBean.setTripNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NUMBER)));
+//                    returndeliveriesBean.setTripDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
+//                    returndeliveriesBean.setDeliverdstatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_STATUS)));
+//                    returndeliveriesBean.setDeliveredItems(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SALEVALUE)));
+//                    returndeliveriesBean.setDeliveredBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDBY)));
+//                    deliveriesBean.add(returndeliveriesBean);
+                } while (c.moveToNext());
+            }
+            for (Map.Entry<String, String> entry : records.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + key + "'";
+                c = db.rawQuery(selectQuery, null);
+                boolean rerun = true;
+                if (c.moveToFirst()) {
+                    do {
+                        if (rerun) {
+                            TripSheetReturnsBean tripReturnsBean = new TripSheetReturnsBean();
+                            tripReturnsBean.setmTripshhetReturnsReturn_no(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NO)));
+                            tripReturnsBean.setmTripshhetReturnsReturn_number(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER)));
+                            tripReturnsBean.setmTripshhetReturnsTrip_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TRIP_ID)));
+                            tripReturnsBean.setmTripshhetReturns_so_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_SO_ID)));
+                            tripReturnsBean.setmTripshhetReturns_so_code(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_SO_CODE)));
+                            tripReturnsBean.setmTripshhetReturnsUser_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_ID)));
+                            tripReturnsBean.setmTripshhetReturnsUser_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_CODES)));
+                            tripReturnsBean.setmTripshhetReturnsRoute_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_ROUTE_ID)));
+                            tripReturnsBean.setmTripshhetReturnsRoute_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_ROUTE_CODES)));
+                            tripReturnsBean.setmTripshhetReturnsProduct_ids(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)));
+                            tripReturnsBean.setmTripshhetReturnsProduct_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
+                            tripReturnsBean.setmTripshhetReturnsQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY)));
+                            tripReturnsBean.setmTripshhetReturnsType(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TYPE)));
+                            tripReturnsBean.setmTripshhetReturnsStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_STATUS)));
+                            tripReturnsBean.setmTripshhetReturnsDelete(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_DELETE)));
+                            tripReturnsBean.setmTripshhetReturnsCreated_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_BY)));
+                            tripReturnsBean.setmTripshhetReturnsCreated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_ON)));
+                            tripReturnsBean.setmTripshhetReturnsUpdated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_UPDATED_ON)));
+                            tripReturnsBean.setmTripshhetReturnsUpdated_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_UPDATED_BY)));
+                            tripReturnsBean.setReturnsItemsCount(value);
+                            agentsreturnsBean.add(tripReturnsBean);
+                            rerun = false;
+                        }
+                    } while (c.moveToNext());
+                }
+
+            }
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return agentsreturnsBean;
+    }
 
     /**
      * Method to update the mTripsheetsDeliveriesList.
@@ -5480,7 +5558,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<String[]> getreturnDetailsPreview(String userId) {
-
+        String obamount = "0.0";
         ArrayList<String[]> arList = null;
         try {
             String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + userId + "'";
@@ -5491,12 +5569,28 @@ public class DBHelper extends SQLiteOpenHelper {
             // boolean rerun=true;
             if (c.moveToFirst()) {
                 do {
-                    String[] temp = new String[4];
+                    String[] temp = new String[7];
                     temp[0] = getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)), KEY_PRODUCT_TITLE);
                     temp[1] = getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)), KEY_PRODUCT_UOM);
                     temp[2] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY));
                     temp[3] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TYPE));
+                    //  temp[4] = fetchCansorCratesDueByIds(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)), KEY_PRODUCT_UOM);
 
+                    String cc = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES));
+                    if (cc.equals("2600005")) {
+                        obamount = fetchCansorCratesDueByIds1(userId, cc, "cans");
+                        // CANS DUE
+                        temp[5]=obamount;
+                    } else if (cc.equals("2600006")) {
+                        obamount = fetchCansorCratesDueByIds1(userId, cc, "crates");
+                        // CRATES DUE
+                        temp[5]=obamount;
+                    } else {
+                        temp[5]=obamount;
+                    }
+
+                    Map<String, String> deliveredProductsHashMap = fetchDeliveriesListByTripSheetId(userId, c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_CODES)), c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
+                    temp[6]=(deliveredProductsHashMap.get(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS))));
                     arList.add(temp);
 
 
@@ -5513,6 +5607,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return arList;
     }
+
+
 
     public ArrayList<AgentPaymentsBean> getpaymentDetails(String userId) {
         ArrayList<AgentPaymentsBean> paymentsBean = new ArrayList<>();

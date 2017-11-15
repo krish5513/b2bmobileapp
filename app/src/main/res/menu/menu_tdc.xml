@@ -43,7 +43,7 @@
         android:id="@+id/autorenew"
         android:icon="@drawable/ic_autorenew_black_24dp"
         android:title="autorenew"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:visible="false"/>
 
     <item

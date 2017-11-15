@@ -73,7 +73,7 @@ public class AgentReturnsView extends AppCompatActivity {
     String myList,str_ProductCode,str_Uom ;
 
 
-    private String mReturnNo = "", mReturndate = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode,mAgentSoDate;
+    private String mReturnNo = "", mReturndate = "", mTripSheetDate="",mAgentName = "",mTripSheetCode="", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode,mAgentSoDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +101,8 @@ public class AgentReturnsView extends AppCompatActivity {
             mReturnNo= bundle.getString("ReturnNo");
             mReturndate=bundle.getString("Returndate");
         }
-
+        mTripSheetDate = sharedPreferences.getString("tripsheetDate");
+        mTripSheetCode = sharedPreferences.getString("tripsheetCode");
 
         final ArrayList<String[]> arList = mDBHelper.getreturnDetailsPreview(mReturnNo);
 
@@ -121,12 +122,12 @@ public class AgentReturnsView extends AppCompatActivity {
         user_Name = (TextView) findViewById(R.id.tv_user_Name);
         user_Name.setText("by " + sharedPreferences.getString("loginusername"));
 
-        Route_Name = (TextView) findViewById(R.id.route_name);
+       /* Route_Name = (TextView) findViewById(R.id.route_name);
         Route_Name.setText(sharedPreferences.getString("routename"));
 
         RouteCode = (TextView) findViewById(R.id.tv_routecode);
         str_routecode = (sharedPreferences.getString("routecode") + ",");
-        RouteCode.setText(str_routecode);
+        RouteCode.setText(str_routecode);*/
 
 
 
@@ -148,7 +149,7 @@ public class AgentReturnsView extends AppCompatActivity {
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int pageheight = 300 + arList.size() * 60;
+             /*   int pageheight = 300 + arList.size() * 60;
                 Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawColor(Color.WHITE);
@@ -223,9 +224,112 @@ public class AgentReturnsView extends AppCompatActivity {
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
             }
-        });
+        });*/
+
+        int pageheight = 570 + arList.size() * 150;
+        Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
+        Canvas canvas = new Canvas(bmOverlay);
+        canvas.drawColor(Color.WHITE);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
+        paint.setDither(true);
+        paint.setColor(Color.parseColor("#000000"));
+        paint.setTextSize(26);
+
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        canvas.drawText(sharedPreferences.getString("companyname"), 5, 20, paint);
+        paint.setTextSize(20);
+        canvas.drawText(sharedPreferences.getString("loginusername"), 5, 50, paint);
+
+        paint.setTextSize(20);
+        canvas.drawText("-------------------------------------------", 5, 80, paint);
+
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        paint.setTextSize(20);
+        canvas.drawText("RETURNS", 100, 110, paint);
+
+        paint.setTextSize(20);
+        canvas.drawText("TRIP # ", 5, 140, paint);
+        paint.setTextSize(20);
+        canvas.drawText(": " + mTripSheetCode, 150, 140, paint);
+        paint.setTextSize(20);
+        canvas.drawText("DATE ", 5, 170, paint);
+        paint.setTextSize(20);
+        canvas.drawText(": " + mTripSheetDate, 150, 170, paint);
+
+        paint.setTextSize(20);
+        canvas.drawText("SO No ", 5, 200, paint);
+        paint.setTextSize(20);
+        canvas.drawText(": " + mAgentSoCode, 150, 200, paint);
+        paint.setTextSize(20);
+        canvas.drawText("DATE ", 5, 230, paint);
+        paint.setTextSize(20);
+        canvas.drawText(": " + mAgentSoDate, 150, 230, paint);
 
 
+        paint.setTextSize(20);
+        canvas.drawText("CUSTOMER ", 5, 260, paint);
+        paint.setTextSize(20);
+        canvas.drawText(": " + mAgentName, 150, 260, paint);
+        paint.setTextSize(20);
+        canvas.drawText("CODE ", 5, 290, paint);
+        paint.setTextSize(20);
+        canvas.drawText(": " + mAgentCode, 150, 290, paint);
+
+        paint.setTextSize(20);
+        canvas.drawText("RETURN # ", 5, 320, paint);
+        paint.setTextSize(20);
+        canvas.drawText(": " + mReturnNo, 150, 320, paint);
+        paint.setTextSize(20);
+        canvas.drawText("DATE ", 5, 350, paint);
+        paint.setTextSize(20);
+        canvas.drawText(": " +mReturndate, 150, 350, paint);
+
+
+
+        paint.setTextSize(20);
+        canvas.drawText("-------------------------------------------", 5, 380, paint);
+
+        int st = 410;
+        paint.setTextSize(17);
+        // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+
+        for (int i = 0; i < arList.size(); i++) {
+            String[] temp = arList.get(i);
+            paint.setTextSize(20);
+            paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            // canvas.drawText(temps[0] + "," + temps[1] + "( " + temps[2] + " )", 5, st, paint);
+            canvas.drawText(temp[0] + "," + temp[4] +  "( " + temp[1] +" )", 5, st, paint);
+
+            st = st + 30;
+            paint.setTextSize(20);
+            canvas.drawText("OB QTY ", 5, st, paint);
+            canvas.drawText(": " + temp[6] , 150, st, paint);
+            st = st + 30;
+            paint.setTextSize(20);
+            canvas.drawText("DELIVERY QTY ", 5, st, paint);
+            canvas.drawText(": " + temp[5], 150, st, paint);
+            st = st + 30;
+            paint.setTextSize(20);
+            canvas.drawText("RETURN QTY ", 5, st, paint);
+            canvas.drawText(": " +  temp[2], 150, st, paint);
+            st = st + 30;
+            paint.setTextSize(20);
+            canvas.drawText("CB QTY ", 5, st, paint);
+            canvas.drawText(": " +  temp[7], 150, st, paint);
+
+
+
+
+            st = st + 40;
+        }
+
+        st = st + 30;
+        canvas.drawText("--------X---------", 100,st , paint);
+        com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+    }
+});
     }
 
     @Override
@@ -317,14 +421,18 @@ public class AgentReturnsView extends AppCompatActivity {
             TextView return_preview_product_name = (TextView) view.findViewById(R.id.productName);
             TextView return_uom = (TextView) view.findViewById(R.id.uom);
             TextView return_qty= (TextView) view.findViewById(R.id.productQt);
-          //  TextView returnType = (TextView) view.findViewById(R.id.returnType);
+            TextView ob = (TextView) view.findViewById(R.id.productOB);
+            TextView dqty = (TextView) view.findViewById(R.id.productDQ);
+
+            //  TextView returnType = (TextView) view.findViewById(R.id.returnType);
 
             return_preview_product_name.setText(temp[0]);
             return_uom.setText(temp[1]);
             return_qty.setText(temp[2]);
            // returnType.setText(temp[3]);
 
-
+            ob.setText(temp[5]);
+            dqty.setText(temp[6]);
 
             return view;
         }

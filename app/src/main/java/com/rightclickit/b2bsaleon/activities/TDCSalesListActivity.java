@@ -120,7 +120,6 @@ public class TDCSalesListActivity extends AppCompatActivity {
                 // screenType = bundle.getString("screenType"); //AgentOrder
             }
 
-
 /*
             Bundle bundle1 = this.getIntent().getExtras();
             if (bundle1 != null) {
@@ -128,7 +127,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
                 custId = bundle.getString("custId");
                 screenType = bundle.getString("screenType"); //AgentOrder
             }*/
-            tdcSalesListAdapter = new TDCSalesListAdapter(activityContext, this);
+            tdcSalesListAdapter = new TDCSalesListAdapter(activityContext, this,TroipsTakeorder);
             tdcSalesListView.setAdapter(tdcSalesListAdapter);
 
             loadSalesList(0);
@@ -158,7 +157,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
             // if(screenType.equals("customerDetails")){
             // allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, custId);
             // }else{
-            allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, "");
+            allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, custId);
             // }
 
             customerList = new ArrayList<>();
@@ -481,7 +480,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
             if (screenType.equals("customerDetails")) {
                 allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, custId);
             } else {
-                allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, "");
+                allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, custId);
             }
             // allTDCSaleOrders = mDBHelper.fetchAllTDCSalesOrdersForSelectedDuration(startDateStr, endDateStr, "");
             if (allTDCSaleOrders.size() <= 0) {

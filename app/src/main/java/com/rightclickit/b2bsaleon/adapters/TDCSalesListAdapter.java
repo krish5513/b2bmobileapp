@@ -35,14 +35,16 @@ public class TDCSalesListAdapter extends BaseAdapter {
     private MMSharedPreferences sp;
     private List<TDCSaleOrder> allTDCSalesOrders, filteredTDCSalesOrders;
     private DBHelper mDBHelper;
+    private String isFrom = "";
 
-    public TDCSalesListAdapter(Context ctxt, TDCSalesListActivity salesListActivity) {
+    public TDCSalesListAdapter(Context ctxt, TDCSalesListActivity salesListActivity, String troipsTakeorder) {
         this.context = ctxt;
         this.activity = salesListActivity;
         this.mInflater = LayoutInflater.from(activity);
         this.filteredTDCSalesOrders = new ArrayList<>();
         sp = new MMSharedPreferences(context);
         this.mDBHelper = new DBHelper(activity);
+        this.isFrom = troipsTakeorder;
     }
 
     private class TDCSalesListViewHolder {
@@ -109,7 +111,11 @@ public class TDCSalesListAdapter extends BaseAdapter {
                     Bundle bundle = new Bundle();
                     bundle.putString("incid", String.valueOf(position + 1));
                     bundle.putSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
-                    intent.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_TDC_SALES_LIST);
+                    if (isFrom.equals("TDC")) {
+                        intent.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_TDC_SALES_LIST);
+                    } else {
+                        intent.putExtra(Constants.BUNDLE_REQUEST_FROM, "Agents");
+                    }
                     intent.putExtras(bundle);
                     activity.startActivity(intent);
                     activity.finish();
@@ -138,10 +144,9 @@ public class TDCSalesListAdapter extends BaseAdapter {
                         filteredTDCSalesOrders.add(order);
                     } else if (Utility.formatTime(order.getCreatedOn(), Constants.TDC_SALES_LIST_DATE_DISPLAY_FORMAT).toLowerCase(Locale.getDefault()).contains(charText)) {
                         filteredTDCSalesOrders.add(order);
-                    }
-                 else if (String.valueOf(order.getSelectedCustomerName()).toLowerCase(Locale.getDefault()).contains(charText)) {
+                    } else if (String.valueOf(order.getSelectedCustomerName()).toLowerCase(Locale.getDefault()).contains(charText)) {
                         filteredTDCSalesOrders.add(order);
-                }
+                    }
                 }
             }
         }

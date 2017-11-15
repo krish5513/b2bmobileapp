@@ -59,7 +59,7 @@ public class RetailersActivity extends AppCompatActivity {
     private RetailersModel1 mRetailersModel;
     ArrayList<String> privilegeActionsData1;
     public static TextView mSyncText;
-    private String upload = "";
+    private String upload = "", userId = "";
     private int uploadedCount = 0, uploadedCount1 = 0;
     public static RetailersActivity context;
     private Runnable mRunnable;
@@ -195,6 +195,7 @@ public class RetailersActivity extends AppCompatActivity {
             });
 
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
+            userId = userMapData.get("user_id");
             ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
             //System.out.println("F 11111 ***COUNT === " + privilegesData.size());
             if (privilegesData.contains("Dashboard")) {
@@ -271,7 +272,7 @@ public class RetailersActivity extends AppCompatActivity {
                     }
                     retailersList = mDBHelper.fetchRecordsFromTDCCustomers(1, userMapData.get("user_id"));
                     if (retailersList.size() > 0) {
-                        loadRetailers(retailersList);
+                        loadRetailers(retailersList, "");
                     } else {
                         mRetailersModel.getAgentsList("retailers");
                     }
@@ -282,7 +283,7 @@ public class RetailersActivity extends AppCompatActivity {
                         }
                     }
                     retailersList = mDBHelper.fetchRecordsFromTDCCustomers(1, userMapData.get("user_id"));
-                    loadRetailers(retailersList);
+                    loadRetailers(retailersList, "");
                 }
             }
 
@@ -293,14 +294,25 @@ public class RetailersActivity extends AppCompatActivity {
         startService(new Intent(RetailersActivity.this, SyncNotificationsListService.class));
     }
 
-    public void loadRetailers(List<TDCCustomer> retailersList) {
+    public void loadRetailers(List<TDCCustomer> retailersList, String s) {
         synchronized (this) {
-            if (retailersList.size() <= 0) {
+            List<TDCCustomer> list = null;
+            list = mDBHelper.fetchRecordsFromTDCCustomers(1, userId);
+            //System.out.println("RETAILERS::: " + list.size());
+            if (list.size() <= 0) {
                 mRetailerslistview.setVisibility(View.GONE);
                 no_retailers_found_message.setVisibility(View.VISIBLE);
+            } else {
+//                if (s.equals("")) {
+//                    retailersListAdapter = new RetailersListAdapter(activityContext, this, list, privilegeActionsData1);
+//                    mRetailerslistview.setAdapter(retailersListAdapter);
+//                } else {
+//                    retailersListAdapter = new RetailersListAdapter(activityContext, this, list, privilegeActionsData1);
+//                    mRetailerslistview.setAdapter(retailersListAdapter);
+//                }
+                retailersListAdapter = new RetailersListAdapter(activityContext, this, list, privilegeActionsData1);
+                mRetailerslistview.setAdapter(retailersListAdapter);
             }
-            retailersListAdapter = new RetailersListAdapter(activityContext, this, retailersList, privilegeActionsData1);
-            mRetailerslistview.setAdapter(retailersListAdapter);
         }
         synchronized (this) {
             isDataDisplayed = true;

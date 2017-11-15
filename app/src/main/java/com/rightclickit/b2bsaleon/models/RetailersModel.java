@@ -304,7 +304,9 @@ public class RetailersModel implements OnAsyncRequestCompleteListener {
                         JSONArray quantityA = new JSONArray(quantityArray);
                         JSONArray amountA = new JSONArray(amountArray);
                         JSONArray taxAmountA = new JSONArray(taxAmountArray);
-
+                        if (pBeanMapList.size() > 0) {
+                            pBeanMapList.clear();
+                        }
                         if (prA.length() > 0) {
                             for (int r = 0; r < prA.length(); r++) {
                                 String title = mDBHelper.getProductName(prA.get(r).toString(), "product_title");
@@ -328,7 +330,7 @@ public class RetailersModel implements OnAsyncRequestCompleteListener {
 
 //                    System.out.println("BI::" + saleOrder.getOrderBillNumber());
 //                    System.out.println("NAME::" + saleOrder.getSelectedCustomerName());
-//                    System.out.println("MAP LSIT::" + saleOrder.getProductsList().size());
+                        System.out.println("MAP LSIT::" + saleOrder.getProductsList().size());
                     }
                 }
                 synchronized (this) {
@@ -338,7 +340,7 @@ public class RetailersModel implements OnAsyncRequestCompleteListener {
                         activity.showAlertDialog1(activity, "Sync Process", "Sales sync completed succssfully.");
                     }
                 }
-            }else {
+            } else {
                 synchronized (this) {
                     if (type.equals("agents")) {
                         activity1.showAlertDialog1(activity, "Sync Process", "Sales sync completed succssfully.");

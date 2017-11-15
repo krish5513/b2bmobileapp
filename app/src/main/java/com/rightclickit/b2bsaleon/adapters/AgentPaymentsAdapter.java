@@ -13,11 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.AgentDeliveries;
-import com.rightclickit.b2bsaleon.activities.AgentDeliveriesView;
 import com.rightclickit.b2bsaleon.activities.AgentPayments;
 import com.rightclickit.b2bsaleon.activities.AgentPaymentsView;
-import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentPaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -113,7 +110,15 @@ public class AgentPaymentsAdapter extends BaseAdapter {
         final AgentPaymentsAdapter.TripSheetDeliveriesViewHolder currentTripSheetDeliveriesViewHolder = tripSheetDeliveriesViewHolder;
 
         final AgentPaymentsBean currentDeliveryBean = allDeliveryProductsList.get(position);
+
+
+
         if (currentDeliveryBean != null) {
+
+            tripSheetDeliveriesViewHolder.Payment_no.setText(currentDeliveryBean.getPayment_Number());
+            tripSheetDeliveriesViewHolder.Paymeent_date.setText(currentDeliveryBean.getPayment_checkDate());
+            tripSheetDeliveriesViewHolder.Payment_status.setText(currentDeliveryBean.getPayment_status());
+            tripSheetDeliveriesViewHolder.payment_Amount.setText(mPreferences.getString("ReceivedAmount"));
             tripSheetDeliveriesViewHolder.payment_mop.setText(currentDeliveryBean.getPayment_mop().equals("0") ? "Cash" : "Cheque");
 
             if (currentDeliveryBean.getPayment_mop().equals("1")) {
@@ -126,10 +131,6 @@ public class AgentPaymentsAdapter extends BaseAdapter {
         }
 
 
-        tripSheetDeliveriesViewHolder.Payment_no.setText(currentDeliveryBean.getPayment_Number());
-        tripSheetDeliveriesViewHolder.Paymeent_date.setText(currentDeliveryBean.getPayment_checkDate());
-        tripSheetDeliveriesViewHolder.Payment_status.setText(currentDeliveryBean.getPayment_status());
-        tripSheetDeliveriesViewHolder.payment_Amount.setText(mPreferences.getString("ReceivedAmount"));
 
         tripSheetDeliveriesViewHolder.View.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,7 +138,7 @@ public class AgentPaymentsAdapter extends BaseAdapter {
 
                 Intent i=new Intent(activity,AgentPaymentsView.class);
                 i.putExtra("PaymentNo",currentDeliveryBean.getPayment_Number());
-                i.putExtra("Paymentdate",getDate(currentDeliveryBean.getPayment_date(),"dd-MM-yyyy"));
+                i.putExtra("Paymentdate",getDate(currentDeliveryBean.getPayment_checkDate(),"dd-MM-yyyy"));
                 activity.startActivity(i);
                 activity.finish();
             }

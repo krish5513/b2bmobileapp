@@ -194,9 +194,9 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
             }
 
             allProductsList = mDBHelper.fetchAllRecordsFromProductsTable();
-            System.out.println("ALL PRODs LIST:: " + allProductsList.size());
+            //System.out.println("ALL PRODs LIST:: " + allProductsList.size());
             stockBeanArrayList = mDBHelper.fetchAllStockByAgentId(userId);
-            System.out.println("ALL PRODs STOCK BEAN LIST:: " + stockBeanArrayList.size());
+            //System.out.println("ALL PRODs STOCK BEAN LIST:: " + stockBeanArrayList.size());
             //availableStockProductsList = new ArrayList<String>();
             //availableStockProductsListTemp = new ArrayList<String>();
             if (availableStockProductsList.size() > 0) {
@@ -302,6 +302,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
                     dialog.dismiss();
                     Intent i = new Intent(TDCSalesActivity.this, TDCSalesListActivity.class);
                     i.putExtra("CustomerName", str_selectedretailername);
+                    i.putExtra("custId",mAgentId);
                     i.putExtra("From", "TDC");
                     startActivity(i);
                     finish();
