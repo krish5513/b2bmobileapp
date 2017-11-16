@@ -163,7 +163,7 @@ public class RetailersModel implements OnAsyncRequestCompleteListener {
                 JSONObject params = new JSONObject();
                 params.put("customer", customerArray);
                 if (type.equals("agents")) {
-                    params.put("filter_by_filed", "user_id");//created_by for all sales
+                    params.put("filter_by_filed", "created_by");//created_by for all sales
                 } else if (type.equals("tdc")) {
                     params.put("filter_by_filed", "created_by");//created_by for all sales
                 }
@@ -325,6 +325,7 @@ public class RetailersModel implements OnAsyncRequestCompleteListener {
                             }
                         }
                         saleOrder.setProductsList(pBeanMapList);
+                        saleOrder.setIsUploaded(1);
 
                         mDBHelper.insertIntoTDCSalesOrdersTable(saleOrder);
 

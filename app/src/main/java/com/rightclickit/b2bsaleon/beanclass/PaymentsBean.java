@@ -33,6 +33,16 @@ public class PaymentsBean implements Serializable {
     private String Payments_cheque_image_path;
     private int Payments_cheque_upload_status;
 
+    public String getPayment_date() {
+        return Payment_date;
+    }
+
+    public void setPayment_date(String payment_date) {
+        Payment_date = payment_date;
+    }
+
+    private String Payment_date;
+
     public String getPayments_paymentsNo() {
         return Payments_paymentsNo;
     }

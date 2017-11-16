@@ -15,8 +15,8 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.AgentPayments;
 import com.rightclickit.b2bsaleon.activities.AgentPaymentsView;
-import com.rightclickit.b2bsaleon.beanclass.AgentPaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
+import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -37,7 +37,7 @@ public class AgentPaymentsAdapter extends BaseAdapter {
     private Context ctxt;
     private Activity activity;
     private TripSheetDeliveriesListener listener;
-    private ArrayList<AgentPaymentsBean> allDeliveryProductsList, filteredDeliveryProductsList;
+    private ArrayList<PaymentsBean> allDeliveryProductsList, filteredDeliveryProductsList;
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap; // Hash Map Key = Product Id
     private Map<String, String> previouslyDeliveredProductsHashMap;
     private Map<String, String> productOrderQuantitiesHashMap;
@@ -46,7 +46,7 @@ public class AgentPaymentsAdapter extends BaseAdapter {
     DBHelper mdbhelper;
     private MMSharedPreferences mPreferences;
 
-    public AgentPaymentsAdapter(Context ctxt, AgentPayments deliveryActivity, ArrayList<AgentPaymentsBean> mdeliveriesBeanList) {
+    public AgentPaymentsAdapter(Context ctxt, AgentPayments deliveryActivity, ArrayList<PaymentsBean> mdeliveriesBeanList) {
         this.ctxt = ctxt;
         this.activity = deliveryActivity;
         this.mInflater = LayoutInflater.from(activity);
@@ -109,22 +109,22 @@ public class AgentPaymentsAdapter extends BaseAdapter {
 
         final AgentPaymentsAdapter.TripSheetDeliveriesViewHolder currentTripSheetDeliveriesViewHolder = tripSheetDeliveriesViewHolder;
 
-        final AgentPaymentsBean currentDeliveryBean = allDeliveryProductsList.get(position);
+        final PaymentsBean currentDeliveryBean = allDeliveryProductsList.get(position);
 
 
 
         if (currentDeliveryBean != null) {
 
-            tripSheetDeliveriesViewHolder.Payment_no.setText(currentDeliveryBean.getPayment_Number());
-            tripSheetDeliveriesViewHolder.Paymeent_date.setText(currentDeliveryBean.getPayment_checkDate());
-            tripSheetDeliveriesViewHolder.Payment_status.setText(currentDeliveryBean.getPayment_status());
-            tripSheetDeliveriesViewHolder.payment_Amount.setText(mPreferences.getString("ReceivedAmount"));
-            tripSheetDeliveriesViewHolder.payment_mop.setText(currentDeliveryBean.getPayment_mop().equals("0") ? "Cash" : "Cheque");
+            tripSheetDeliveriesViewHolder.Payment_no.setText(currentDeliveryBean.getPayments_paymentsNumber());
+            tripSheetDeliveriesViewHolder.Paymeent_date.setText(currentDeliveryBean.getPayment_date());
+            tripSheetDeliveriesViewHolder.Payment_status.setText(currentDeliveryBean.getPayments_status());
+            tripSheetDeliveriesViewHolder.payment_Amount.setText(String.valueOf(currentDeliveryBean.getPayments_receivedAmount()));
+            tripSheetDeliveriesViewHolder.payment_mop.setText(currentDeliveryBean.getPayments_type().equals("0") ? "Cash" : "Cheque");
 
-            if (currentDeliveryBean.getPayment_mop().equals("1")) {
-                tripSheetDeliveriesViewHolder.payment_chechno.setText("Cheque #" + currentDeliveryBean.getPayment_checkno());
-                tripSheetDeliveriesViewHolder.payment_checkdate.setText("Date : " + currentDeliveryBean.getPayment_checkDate());
-                tripSheetDeliveriesViewHolder.payment_bankName.setText(currentDeliveryBean.getPayment_bankName() + " Bank");
+            if (currentDeliveryBean.getPayments_type().equals("1")) {
+                tripSheetDeliveriesViewHolder.payment_chechno.setText("Cheque #" + currentDeliveryBean.getPayments_chequeNumber());
+                tripSheetDeliveriesViewHolder.payment_checkdate.setText("Date : " + currentDeliveryBean.getPayments_chequeDate());
+                tripSheetDeliveriesViewHolder.payment_bankName.setText(currentDeliveryBean.getPayments_bankName() + " Bank");
             } else {
                 tripSheetDeliveriesViewHolder.paymentcash.setVisibility(View.GONE);
             }
@@ -137,8 +137,8 @@ public class AgentPaymentsAdapter extends BaseAdapter {
             public void onClick(View v) {
 
                 Intent i=new Intent(activity,AgentPaymentsView.class);
-                i.putExtra("PaymentNo",currentDeliveryBean.getPayment_Number());
-                i.putExtra("Paymentdate",getDate(currentDeliveryBean.getPayment_checkDate(),"dd-MM-yyyy"));
+                i.putExtra("PaymentNo",currentDeliveryBean.getPayments_paymentsNumber());
+                i.putExtra("Paymentdate",getDate(currentDeliveryBean.getPayment_date(),"dd-MM-yyyy"));
                 activity.startActivity(i);
                 activity.finish();
             }
@@ -167,10 +167,10 @@ public class AgentPaymentsAdapter extends BaseAdapter {
         if (charText.length() == 0) {
             filteredDeliveryProductsList.addAll(allDeliveryProductsList);
         } else {
-            for (AgentPaymentsBean deliverysBean : allDeliveryProductsList) {
-                if (deliverysBean.getPayment_Number().toLowerCase(Locale.getDefault()).contains(charText)) {
+            for (PaymentsBean deliverysBean : allDeliveryProductsList) {
+                if (deliverysBean.getPayments_paymentsNumber().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredDeliveryProductsList.add(deliverysBean);
-                } else if (deliverysBean.getPayment_date().toLowerCase(Locale.getDefault()).contains(charText)) {
+                } else if (deliverysBean.getPayments_chequeDate().toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredDeliveryProductsList.add(deliverysBean);
                 }
             }

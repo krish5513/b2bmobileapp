@@ -805,6 +805,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                 currentOrder.setCreatedOn(currentTimeStamp);
                 currentOrder.setOrderDate(Utility.formatTime(currentTimeStamp, Constants.TDC_SALES_ORDER_DATE_SAVE_FORMAT));
                 currentOrder.setOrderBillNumber(currentOrderId);
+                currentOrder.setIsUploaded(0);
 
                 long orderId = mDBHelper.insertIntoTDCSalesOrdersTable(currentOrder);
 

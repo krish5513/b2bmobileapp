@@ -640,7 +640,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
                 alertDialog1.dismiss();
             }
             android.support.v7.app.AlertDialog alertDialog = null;
-            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(TDCSalesListActivity.this, R.style.AppCompatAlertDialogStyle);
             alertDialogBuilder.setTitle(title);
             alertDialogBuilder.setMessage(message);
             alertDialogBuilder.setCancelable(false);

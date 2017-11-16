@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentPaymentsAdapter;
-import com.rightclickit.b2bsaleon.beanclass.AgentPaymentsBean;
+import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentPaymentsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -125,7 +125,7 @@ public class AgentPayments extends AppCompatActivity {
 
 
 
-        ArrayList<AgentPaymentsBean> unUploadedPayments = mDBHelper.getpaymentDetails(agentId);
+        ArrayList<PaymentsBean> unUploadedPayments = mDBHelper.getpaymentDetailsForAgents(agentId);
 
 
 
@@ -233,13 +233,15 @@ public class AgentPayments extends AppCompatActivity {
 
     }
 
-    public void loadPayments(ArrayList<AgentPaymentsBean> unUploadedPayments) {
+    public void loadPayments(ArrayList<PaymentsBean> unUploadedPayments) {
         if (paymentsAdapter != null) {
             paymentsAdapter = null;
         }
         paymentsAdapter = new AgentPaymentsAdapter(this, AgentPayments.this, unUploadedPayments);
         paymentsList.setAdapter(paymentsAdapter);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -292,5 +294,18 @@ public class AgentPayments extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    public void loadPayments1() {
+        ArrayList<PaymentsBean> unUploadedPayments = mDBHelper.getpaymentDetailsForAgents(agentId);
+
+
+
+        if(unUploadedPayments.size()>0){
+            loadPayments(unUploadedPayments);
+        }else {
+            mNoDataText.setText("No Payments found.");
+        }
+    }
+
 
 }

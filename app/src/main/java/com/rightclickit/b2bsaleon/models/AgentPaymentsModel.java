@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.rightclickit.b2bsaleon.activities.AgentPayments;
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
-import com.rightclickit.b2bsaleon.beanclass.AgentPaymentsBean;
+import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -33,16 +33,18 @@ public class AgentPaymentsModel implements OnAsyncRequestCompleteListener {
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private String type = "";
+
     private ArrayList<String> regionIdsList = new ArrayList<String>();
     private JSONArray routesArray;
 
-    private ArrayList<AgentPaymentsBean> mPaymentsBeansList = new ArrayList<AgentPaymentsBean>();
+    private ArrayList<PaymentsBean> mPaymentsBeansList = new ArrayList<PaymentsBean>();
 
     private String currentDate = "", fromDate = "";
     private ArrayList<String> paymentNosList = new ArrayList<String>();
     private ArrayList<String> paymentsDatesList = new ArrayList<String>();
     private ArrayList<String> paymentsStatusList = new ArrayList<String>();
     private ArrayList<String> paymentType = new ArrayList<String>();
+    private ArrayList<String> receivedAmount = new ArrayList<String>();
 
     private static HashMap<String, JSONArray> productsArray = new HashMap<String, JSONArray>();
 
@@ -81,6 +83,9 @@ public class AgentPaymentsModel implements OnAsyncRequestCompleteListener {
 
             if (paymentType.size() > 0) {
                 paymentType.clear();
+            }
+            if (receivedAmount.size() > 0) {
+                receivedAmount.clear();
             }
             if (productsArray.size() > 0) {
                 productsArray.clear();
@@ -134,43 +139,50 @@ public class AgentPaymentsModel implements OnAsyncRequestCompleteListener {
                     if (resObj.has("type")) {
                         paymentType.add(resObj.getString("type"));
                     }
+
+
+                    // Returned By
+                    if (resObj.has("recieved_amt")) {
+                        receivedAmount.add(resObj.getString("recieved_amt"));
+                    }
                     // Products Array
                     if (resObj.has("productdata")) {
                         JSONArray subPArray = resObj.getJSONArray("productdata");
                         productsArray.put(String.valueOf(j), subPArray);
                     }
 
-                }
 
-                for (int d = 0; d < productsArray.size(); d++) {
-
-
-                    JSONArray aaa = productsArray.get(String.valueOf(d));
-                    for (int s = 0; s < aaa.length(); s++) {
-                        AgentPaymentsBean paymentsBean = new AgentPaymentsBean();
-                        JSONObject jj = aaa.getJSONObject(s);
-                        paymentsBean.setPayment_Number(paymentNosList.get(d).toString());
-
-                        paymentsBean.setPayment_status(paymentsStatusList.get(d).toString());
-
-                        paymentsBean.setPayment_date(paymentsDatesList.get(d).toString());
-                        paymentsBean.setPayment_mop(paymentType.get(d).toString());
+                    for (int d = 0; d < productsArray.size(); d++) {
 
 
-                        mPaymentsBeansList.add(paymentsBean);
+                        JSONArray aaa = productsArray.get(String.valueOf(d));
+                        for (int s = 0; s < aaa.length(); s++) {
+                            PaymentsBean paymentsBean = new PaymentsBean();
+                            //    JSONObject jj = aaa.getJSONObject(s);
+                            paymentsBean.setPayments_paymentsNumber(paymentNosList.get(d).toString());
+
+                            paymentsBean.setPayments_status(paymentsStatusList.get(d).toString());
+
+                            paymentsBean.setPayment_date(paymentsDatesList.get(d).toString());
+                            paymentsBean.setPayments_type(paymentType.get(d).toString());
+                          //  paymentsBean.setPayments_receivedAmount(Double.parseDouble(receivedAmount.get(d).toString()));
+
+
+                            mPaymentsBeansList.add(paymentsBean);
+                        }
+                    }
+
+
+                    synchronized (this) {
+                        if (mPaymentsBeansList.size() > 0) {
+                            mDBHelper.updateTripsheetsPaymentsListData(mPaymentsBeansList);
+                        }
                     }
                 }
 
-
                 synchronized (this) {
                     if (mPaymentsBeansList.size() > 0) {
-                        mDBHelper.getpaymentDetails(String.valueOf(mPaymentsBeansList));
-                    }
-                }
-
-                synchronized (this) {
-                    if (mPaymentsBeansList.size() > 0) {
-                        activity.loadPayments(mPaymentsBeansList);
+                        activity.loadPayments1();
                     }
                 }
             }
@@ -180,6 +192,7 @@ public class AgentPaymentsModel implements OnAsyncRequestCompleteListener {
 
     }
 }
+
 
 
 
