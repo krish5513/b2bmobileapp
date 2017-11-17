@@ -65,22 +65,22 @@ public class Constants {
     /**
      * Port number
      */
-    public static final String PORT_LOGIN = ":3003";
+   /* public static final String PORT_LOGIN = ":3003";
     public static final String PORT_ADD = ":3007";
 
-    /**
+    *//**
      * Port number 1
-     */
+     *//*
     public static final String PORT_ROUTES_MASTER_DATA = ":3000";
 
-    /**
+    *//**
      * Port for user previleges.
-     */
+     *//*
     public static final String PORT_USER_PREVILEGES = ":3001";
 
-    /**
+    *//**
      * Port for agents list.
-     */
+     *//*
 
     public static final String PORT_AGENTS_LIST = ":3004";
 
@@ -92,7 +92,37 @@ public class Constants {
     public static final String SYNC_TRIPSHEETS_PORT = ":3009";
 
     //Port for notifications list
-    public static final String SYNC_NOTIFICATIONS_PORT = ":3010";
+    public static final String SYNC_NOTIFICATIONS_PORT = ":3010";*/
+
+
+
+
+
+
+
+
+
+      public static final String PORT_LOGIN = ":3211";
+    public static final String PORT_ADD = ":3210";
+
+
+    public static final String PORT_ROUTES_MASTER_DATA = ":3210";
+
+
+    public static final String PORT_USER_PREVILEGES = ":3210";
+
+
+    public static final String PORT_AGENTS_LIST = ":3210";
+
+
+    public static final String PORT_PRODUCTSLIST = ":3210";
+
+    public static final String SYNC_TAKE_ORDERS_PORT = ":3210";
+
+    public static final String SYNC_TRIPSHEETS_PORT = ":3210";
+
+    //Port for notifications list
+    public static final String SYNC_NOTIFICATIONS_PORT = ":3210";
 
     //Production
     public static final String MAIN_URL = "http://111.93.17.12";
@@ -119,7 +149,7 @@ public class Constants {
     // Routes List master
     public static final String ROUTEID_SERVICE = "/route/list";
     // User previleges 4&\n
-    public static final String GET_USER_PREVILEGES_SERVICE = "/b2b/common/getactions_mobile?stake_id=";
+    public static final String GET_USER_PREVILEGES_SERVICE = "/b2b_quality/common/getactions_mobile?stake_id=";
     // Chnage Password {pass user id parameter in url}
     public static final String CHANGE_PASSWORD_SERVICE = "/user/edit/";
     //Get routeid and transporter

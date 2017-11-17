@@ -1,7 +1,6 @@
 package com.rightclickit.b2bsaleon.models;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.constants.Constants;
@@ -16,8 +15,6 @@ import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import static com.rightclickit.b2bsaleon.util.NetworkConnectionDetector.displayNoNetworkError;
 
 /**
  * Created by venkat on 02/07/16.
@@ -73,7 +70,10 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                     userCode = logInResponse.getString("code");
                 }
                 if (logInResponse.has("first_name") || logInResponse.has("last_name")) {
-                    userName = logInResponse.getString("first_name") + " " + logInResponse.getString("last_name");
+                  //  userName = logInResponse.getString("first_name") + " " + logInResponse.getString("last_name");
+                    userName = logInResponse.getString("last_name");
+
+                    companyname=logInResponse.getString("first_name");
                     mPreferences.putString("userName", userName);
                 }
                 if (logInResponse.has("email")) {

@@ -92,6 +92,10 @@ public class SyncRoutesMasterDetailsService extends Service {
                 if (mStoredRouteIds == null) {
                     mStoredRouteIds = "";
                 }
+           // JSONArray regionidArray=new JSONArray();
+             //   regionidArray.put(mStoredRouteIds);
+             //  JSONObject parm=new JSONObject();
+              //  parm.put("route_ids",regionidArray);
 
                 if (mDBHelper.getRouteId().length() > 0) {
                     // Clear the db first and then insert..
