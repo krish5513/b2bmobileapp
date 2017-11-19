@@ -419,7 +419,18 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                             tripStockBean.setmTripsheetStockVerifiedDate(jb.getString("verify_date"));
                                             tripStockBean.setIsStockVerified(1);
 
-                                            double extraQuantity = Double.parseDouble(tripStockBean.getmTripsheetStockVerifiedQuantity()) - Double.parseDouble(tripStockBean.getmTripsheetStockProductOrderQuantity());
+                                            double verq = 0, ordq = 0;
+                                            if (tripStockBean.getmTripsheetStockVerifiedQuantity().equals("")) {
+                                                verq = 0;
+                                            } else {
+                                                verq = Double.parseDouble(tripStockBean.getmTripsheetStockVerifiedQuantity());
+                                            }
+                                            if (tripStockBean.getmTripsheetStockProductOrderQuantity().equals("")) {
+                                                ordq = 0;
+                                            } else {
+                                                ordq = Double.parseDouble(tripStockBean.getmTripsheetStockProductOrderQuantity());
+                                            }
+                                            double extraQuantity = verq - ordq;
                                             if (extraQuantity > 0) {
                                                 tripStockBean.setInStockQuantity(tripStockBean.getmTripsheetStockProductOrderQuantity());
                                                 tripStockBean.setExtraQuantity(String.valueOf(extraQuantity));
@@ -559,7 +570,18 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                                 tripStockBean.setmTripsheetStockVerifyBy(jb.getString("verify_by"));
                                                 tripStockBean.setmTripsheetStockVerifiedDate(jb.getString("verify_date"));
 
-                                                double extraQuantity = Double.parseDouble(tripStockBean.getmTripsheetStockVerifiedQuantity()) - Double.parseDouble(tripStockBean.getmTripsheetStockProductOrderQuantity());
+                                                double verq = 0, ordq = 0;
+                                                if (tripStockBean.getmTripsheetStockVerifiedQuantity().equals("")) {
+                                                    verq = 0;
+                                                } else {
+                                                    verq = Double.parseDouble(tripStockBean.getmTripsheetStockVerifiedQuantity());
+                                                }
+                                                if (tripStockBean.getmTripsheetStockProductOrderQuantity().equals("")) {
+                                                    ordq = 0;
+                                                } else {
+                                                    ordq = Double.parseDouble(tripStockBean.getmTripsheetStockProductOrderQuantity());
+                                                }
+                                                double extraQuantity = verq - ordq;
                                                 if (extraQuantity > 0) {
                                                     tripStockBean.setInStockQuantity(tripStockBean.getmTripsheetStockProductOrderQuantity());
                                                     tripStockBean.setExtraQuantity(String.valueOf(extraQuantity));

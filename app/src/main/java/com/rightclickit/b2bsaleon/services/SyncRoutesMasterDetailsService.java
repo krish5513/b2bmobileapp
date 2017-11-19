@@ -89,14 +89,22 @@ public class SyncRoutesMasterDetailsService extends Service {
                 routeIdsMap = mDBHelper.getUserRouteIds();
                 mStoredRouteIds = routeIdsMap.get("route_ids").toString();
                 // System.out.println("S ROUTE IDSSSS::: "+ routeIdsMap.get("route_ids").toString());
+
+                System.out.println("The ROUTEID IS:: " + mStoredRouteIds);
                 if (mStoredRouteIds == null) {
                     mStoredRouteIds = "";
                 }
-           // JSONArray regionidArray=new JSONArray();
-             //   regionidArray.put(mStoredRouteIds);
-             //  JSONObject parm=new JSONObject();
-              //  parm.put("route_ids",regionidArray);
+               /* JSONObject parm=new JSONObject();
+                try{
+                    JSONObject jsonObject = new JSONObject(mStoredRouteIds);
+                    System.out.println("JSON obj : " + jsonObject.toString());
+                    JSONArray regionidArray=jsonObject.getJSONArray("routeArray");
+                            regionidArray.put(mStoredRouteIds);
+                    parm.put("route_ids",regionidArray);
+                }
+                catch (Exception e){
 
+                }*/
                 if (mDBHelper.getRouteId().length() > 0) {
                     // Clear the db first and then insert..
                     mDBHelper.deleteValuesFromRoutesTable();

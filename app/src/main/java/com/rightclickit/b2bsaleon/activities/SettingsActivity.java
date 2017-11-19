@@ -56,7 +56,6 @@ import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -377,7 +376,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                         long f = mDBHelper.updateUserDetails(mPreferences.getString("userId"), companyName.getText().toString(), "", userName.getText().toString(),
                                 "", mobile.getText().toString(), "", "", "", "", "", "", "", dId, transporterName.getText().toString(),
                                 vehicleNo.getText().toString(), "", "");
-                        mPreferences.putString("companyname", companyName.getText().toString());
+                      // mPreferences.putString("companyname", companyName.getText().toString());
 
                         companyName.setCursorVisible(false);
                         routeNo.setCursorVisible(false);

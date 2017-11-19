@@ -74,6 +74,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                     userName = logInResponse.getString("last_name");
 
                     companyname=logInResponse.getString("first_name");
+                    mPreferences.putString("companyname", companyname);
                     mPreferences.putString("userName", userName);
                 }
                 if (logInResponse.has("email")) {

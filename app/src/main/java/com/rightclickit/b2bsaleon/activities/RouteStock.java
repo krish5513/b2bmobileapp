@@ -44,7 +44,7 @@ import java.util.Map;
 public class RouteStock extends AppCompatActivity implements RouteStockListener {
     private Context applicationContext, activityContext;
     private SearchView search;
-    private String tripSheetId;
+    private String tripSheetId, syncPrivilege = "";
     RouteStockAdapter routestockadapter;
     private DBHelper mDBHelper;
     private TripsheetsModel mTripsheetsModel;
@@ -108,6 +108,8 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                 mCloseTripApprove = privilegeActionsData.get(z).toString();
             } else if (privilegeActionsData.get(z).toString().equals("preview_print")) {
                 mCloseTripPrint = privilegeActionsData.get(z).toString();
+            } else if (privilegeActionsData.get(z).toString().equals("trip_ct_sync")) {
+                syncPrivilege = privilegeActionsData.get(z).toString();
             }
         }
 
@@ -379,13 +381,13 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                         int status = mDBHelper.updateTripSheetClosingStatus(tripSheetId);
 
                         if (status > 0) {
-                          //  Toast.makeText(activityContext, "Trip sheet closed/approved successfully.", Toast.LENGTH_LONG).show();
+                            //  Toast.makeText(activityContext, "Trip sheet closed/approved successfully.", Toast.LENGTH_LONG).show();
                             //CustomAlertDialog.showAlertDialog(activityContext, "Success",  getResources().getString(R.string.tripsave));
                             showAlertDialogWithCancelButton(RouteStock.this, "Success", "Trip sheet closed/approved successfully.");
 
                         } else {
                             //Toast.makeText(activityContext, "Trip sheet closing failed.", Toast.LENGTH_LONG).show();
-                            CustomAlertDialog.showAlertDialog(activityContext, "Failed",  getResources().getString(R.string.tripfail));
+                            CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.tripfail));
                         }
                     }
                 }
@@ -531,11 +533,12 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
         });
 
 
-        if (new NetworkConnectionDetector(RouteStock.this).isNetworkConnected()) {
-            mTripsheetsModel.getTripsheetsStockList(tripSheetId);
-        } else if (tripsheetsStockLists.size() > 0) {
-            loadTripsData(tripsheetsStockLists);
-        }
+//        if (new NetworkConnectionDetector(RouteStock.this).isNetworkConnected()) {
+//            mTripsheetsModel.getTripsheetsStockList(tripSheetId);
+//        } else if (tripsheetsStockLists.size() > 0) {
+//            loadTripsData(tripsheetsStockLists);
+//        }
+        loadTripsData(tripsheetsStockLists);
 
     }
 
@@ -653,7 +656,9 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
 //        } else if (tripsheetsStockLists.size() > 0) {
 //            loadTripsData(tripsheetsStockLists);
 //        }
-        mItem.setEnabled(true);
+        if (mItem != null) {
+            mItem.setEnabled(true);
+        }
     }
 
     @Override
@@ -706,11 +711,14 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
         }
 
         if (id == R.id.autorenew) {
-            if (new NetworkConnectionDetector(RouteStock.this).isNetworkConnected()) {
-                mItem.setEnabled(false);
-                mTripsheetsModel.getTripsheetsStockList(tripSheetId);
+            if (syncPrivilege.equals("trip_ct_sync")) {
+                if (new NetworkConnectionDetector(RouteStock.this).isNetworkConnected()) {
+                    showAlertDialog(RouteStock.this, "Sync process", "Are you sure, you want start the sync process?");
+                } else {
+                    new NetworkConnectionDetector(RouteStock.this).displayNoNetworkError(RouteStock.this);
+                }
             } else {
-                new NetworkConnectionDetector(RouteStock.this).displayNoNetworkError(RouteStock.this);
+                CustomAlertDialog.showAlertDialog(RouteStock.this, "Failed", "Please contact administrator");
             }
             return true;
         }
@@ -783,7 +791,6 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
     }
 
 
-
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {
         try {
             AlertDialog alertDialog = null;
@@ -821,4 +828,35 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
         }
     }
 
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    mItem.setEnabled(false);
+                    mTripsheetsModel.getTripsheetsStockList(tripSheetId);
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
