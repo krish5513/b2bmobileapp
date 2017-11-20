@@ -65,22 +65,15 @@ public class Constants {
     /**
      * Port number
      */
-   /* public static final String PORT_LOGIN = ":3003";
+  /* public static final String PORT_LOGIN = ":3003";
     public static final String PORT_ADD = ":3007";
 
-    *//**
-     * Port number 1
-     *//*
+
     public static final String PORT_ROUTES_MASTER_DATA = ":3000";
 
-    *//**
-     * Port for user previleges.
-     *//*
+
     public static final String PORT_USER_PREVILEGES = ":3001";
 
-    *//**
-     * Port for agents list.
-     *//*
 
     public static final String PORT_AGENTS_LIST = ":3004";
 
@@ -123,6 +116,12 @@ public class Constants {
 
     //Port for notifications list
     public static final String SYNC_NOTIFICATIONS_PORT = ":3210";
+
+
+
+
+
+
 
     //Production
     public static final String MAIN_URL = "http://111.93.17.12";

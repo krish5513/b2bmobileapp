@@ -3,30 +3,18 @@ package com.rightclickit.b2bsaleon.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
-import com.rightclickit.b2bsaleon.activities.AgentTDC_Order;
-import com.rightclickit.b2bsaleon.activities.AgentsActivity;
-import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
-import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
 import com.rightclickit.b2bsaleon.activities.TripSheetView;
 import com.rightclickit.b2bsaleon.activities.TripSheetsActivity;
-import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
-import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
@@ -50,7 +38,7 @@ public class TripsheetsListAdapter extends BaseAdapter {
     private MMSharedPreferences mPreferences;
     private ArrayList<TripsheetsList> arraylist;
     private DBHelper mDBHelper;
-    private String mViewPrivilege = "", mStockPrivilege = "";
+    private String mViewPrivilege = "", mStockPrivilege = "",tripCode="";
 
     public TripsheetsListAdapter(Context ctxt, TripSheetsActivity agentsActivity, ArrayList<TripsheetsList> mAgentsBeansList, String mTripSheetViewPrivilege, String mTripSheetStockPrivilege) {
         this.ctxt = ctxt;
@@ -118,12 +106,17 @@ public class TripsheetsListAdapter extends BaseAdapter {
 
         if (currentTripSheet.getmTripshhetCode() != null) {
             if (currentTripSheet.getmTripshhetCode().length() == 0) {
-                mHolder.mTripsheetCode.setText("TR-"+currentTripSheet.getMy_Id());
+
+                tripCode=("TR-"+currentTripSheet.getMy_Id());
+                mHolder.mTripsheetCode.setText(tripCode);
             } else {
-                mHolder.mTripsheetCode.setText(currentTripSheet.getmTripshhetCode());
+
+                tripCode=currentTripSheet.getmTripshhetCode();
+                mHolder.mTripsheetCode.setText(tripCode);
             }
         } else {
-            mHolder.mTripsheetCode.setText("TR-"+currentTripSheet.getMy_Id());
+            tripCode=("TR-"+currentTripSheet.getMy_Id());
+            mHolder.mTripsheetCode.setText(tripCode);
         }
 
 
@@ -144,7 +137,7 @@ public class TripsheetsListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Intent stockIntent = new Intent(activity, TripSheetStock.class);
                 stockIntent.putExtra("tripsheetId", currentTripSheet.getmTripshhetId());
-                stockIntent.putExtra("tripsheetCode", currentTripSheet.getmTripshhetCode());
+                stockIntent.putExtra("tripsheetCode", tripCode);
                 stockIntent.putExtra("tripsheetDate", currentTripSheet.getmTripshhetDate());
                 activity.startActivity(stockIntent);
                 activity.finish();
@@ -156,11 +149,11 @@ public class TripsheetsListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 if (currentTripSheet.getmTripshhetVerifyStatus().equals("1")) {
                     mPreferences.putString("TripId", currentTripSheet.getmTripshhetId());
-                    mPreferences.putString("tripsheetCode", currentTripSheet.getmTripshhetCode());
+                    mPreferences.putString("tripsheetCode",tripCode);
                     mPreferences.putString("tripsheetDate", currentTripSheet.getmTripshhetDate());
                     Intent stockIntent = new Intent(activity, TripSheetView.class);
                     stockIntent.putExtra("tripsheetId", currentTripSheet.getmTripshhetId());
-                    stockIntent.putExtra("tripsheetCode", currentTripSheet.getmTripshhetCode());
+                    stockIntent.putExtra("tripsheetCode",tripCode);
                     stockIntent.putExtra("tripsheetDate", currentTripSheet.getmTripshhetDate());
                     activity.startActivity(stockIntent);
                     activity.finish();

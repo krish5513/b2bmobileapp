@@ -2,6 +2,7 @@ package com.rightclickit.b2bsaleon.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -56,6 +57,7 @@ public class AgentDeliveries extends AppCompatActivity {
     AgentDeliveriesModel deliveriesmodel;
     private String mDeliveryNo = "", mDeliverydate = "";
     ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,9 +125,6 @@ public class AgentDeliveries extends AppCompatActivity {
 
 
         mtripsheetId = mDBHelper.getTripId(agentId, "tripsheet_delivery_trip_id");
-
-
-
 
 
         ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesListForAgents(agentId);
@@ -205,8 +204,8 @@ public class AgentDeliveries extends AppCompatActivity {
                 orders.startAnimation(animation1);
 
                 Intent i = new Intent(AgentDeliveries.this, TDCSalesListActivity.class);
-               // i.putExtra("custId",mPreferences.getString("agentId"));
-               // i.putExtra("screenType","customerDetails");
+                // i.putExtra("custId",mPreferences.getString("agentId"));
+                // i.putExtra("screenType","customerDetails");
                 startActivity(i);
                 finish();
             }
@@ -214,10 +213,10 @@ public class AgentDeliveries extends AppCompatActivity {
 
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
-        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
         for (int z = 0; z < privilegeActionsData.size(); z++) {
 
-            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+            //System.out.println("Name::: " + privilegeActionsData.get(z).toString());
             if (privilegeActionsData.get(z).toString().equals("Orders_List")) {
                 sales.setVisibility(View.VISIBLE);
             } else if (privilegeActionsData.get(z).toString().equals("Delivery_List")) {
@@ -235,7 +234,6 @@ public class AgentDeliveries extends AppCompatActivity {
     }
 
     public void loadDeliveries(ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries) {
-
         if (deliveriesAdapter != null) {
             deliveriesAdapter = null;
         }
@@ -245,7 +243,8 @@ public class AgentDeliveries extends AppCompatActivity {
     }
 
     public void loadDeliveries1() {
-        ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries1 = mDBHelper.fetchAllTripsheetsDeliveriesList(agentId);
+        //ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries1 = mDBHelper.fetchAllTripsheetsDeliveriesList(agentId);
+        ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries1 = mDBHelper.fetchAllTripsheetsDeliveriesListForAgents(agentId);
         for (int i = 0; i < unUploadedDeliveries1.size(); i++) {
             d_no = unUploadedDeliveries1.get(i).getmTripsheetDeliveryNo();
         }
@@ -314,9 +313,9 @@ public class AgentDeliveries extends AppCompatActivity {
         }
 
         if (id == R.id.autorenew) {
-            if (new NetworkConnectionDetector(AgentDeliveries.this).isNetworkConnected())
-                deliveriesmodel.getDeliveriesList(agentId);
-            else {
+            if (new NetworkConnectionDetector(AgentDeliveries.this).isNetworkConnected()) {
+                showAlertDialog(AgentDeliveries.this, "Sync process", "Are you sure, you want start the sync process?");
+            } else {
                 new NetworkConnectionDetector(AgentDeliveries.this).displayNoNetworkError(AgentDeliveries.this);
             }
             return true;
@@ -352,6 +351,37 @@ public class AgentDeliveries extends AppCompatActivity {
         Intent intent = new Intent(this, AgentsActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    deliveriesmodel.getDeliveriesList(agentId);
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -359,23 +359,23 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                         deliveriesBean.setmTripsheetDelivery_SaleValue(saleValue.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_Status(statusList.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_Delete(deleteList.get(j).toString());
-                        deliveriesBean.setmTripsheetDelivery_CreatedOn(DeliveryDateList.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_CreatedOn(createdOn.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_CreatedBy(createdBy.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_UpdatedOn(updatedOn.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_UpdatedBy(updatedBy.get(j).toString());
 
                         mDeliveriesBeansList.add(deliveriesBean);
                     }
-                    synchronized (this) {
-                        if (mDeliveriesBeansList.size() > 0) {
-                            mDBHelper.updateTripsheetsDeliveriesListData(mDeliveriesBeansList);
-                        }
-                    }
                 }
-                synchronized (this) {
-                    if (mDeliveriesBeansList.size() > 0) {
-                        activity.loadDeliveries1();
-                    }
+            }
+            synchronized (this) {
+                if (mDeliveriesBeansList.size() > 0) {
+                    mDBHelper.updateTripsheetsDeliveriesListData(mDeliveriesBeansList);
+                }
+            }
+            synchronized (this) {
+                if (mDeliveriesBeansList.size() > 0) {
+                    activity.loadDeliveries1();
                 }
             }
         } catch (Exception e) {

@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeleveriesPreviewAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -51,7 +52,6 @@ public class AgentDeliveriesView extends AppCompatActivity {
     TextView print;
 
 
-
     private ArrayList<DeliverysBean> allProductsListFromStock = new ArrayList<>();
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap;
     private Map<String, String> previouslyDeliveredProductsHashMap; // this hash map contains previously delivered product quantity. key = product id & value = previously delivered quantity
@@ -64,15 +64,16 @@ public class AgentDeliveriesView extends AppCompatActivity {
 
     // double amount, subtotal;
     // double taxAmount;
-    String name,hssnnumber, cgst, sgst;
+    String name, hssnnumber, cgst, sgst;
 
     private MMSharedPreferences sharedPreferences;
     DBHelper mDBHelper;
     private double mProductsPriceAmountSum = 0.0, mTotalProductsPriceAmountSum = 0.0, mTotalProductsTax = 0.0;
     String currentDate, str_routecode, str_deliveryDate, str_deliveryNo;
-double taxes;
+    double taxes;
 
-    private String mDeliveryNo = "", mDeliverydate = "", productID="",mTripSheetCode="",mTripSheetDate="",mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDates;
+    private String mDeliveryNo = "", mDeliverydate = "", productID = "", mTripSheetCode = "", mTripSheetDate = "", mAgentName = "", mAgentCode = "", mAgentTripId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDates;
+    private ArrayList<String> deliveredProdIdsList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,57 +100,50 @@ double taxes;
         mTripSheetDate = sharedPreferences.getString("tripsheetDate");
         mTripSheetCode = sharedPreferences.getString("tripsheetCode");
         //mAgentSoCode= sharedPreferences.getString("SaleOrderId");
-        mAgentSoDates= sharedPreferences.getString("saleOrderDate");
-        mAgentName=sharedPreferences.getString("agentName");
-        mAgentCode=sharedPreferences.getString("agentCode");
+       // mAgentSoDates = sharedPreferences.getString("saleOrderDate");
+        if (mAgentName!=null){
+            mAgentName = sharedPreferences.getString("agentName");
+        }
+        else {
+            mAgentName="-";
+        }
+
+        mAgentCode = sharedPreferences.getString("agentCode");
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             mDeliveryNo = bundle.getString("DeliveryNo");
             mDeliverydate = bundle.getString("Deliverydate");
-            productID=bundle.getString("productId");
-            mAgentSoCode=bundle.getString("SaleOId");
+            productID = bundle.getString("productId");
+          //  mAgentSoCode = bundle.getString("SaleOId");
+            mAgentTripId=bundle.getString("tripsheetId");
         }
-        if (mDBHelper.getHSSNNUMBERByProductId(productID) != null  && mDBHelper.getHSSNNUMBERByProductId(productID).length() > 0) {
+        ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mAgentTripId);
+        for (int i = 0; i < tripSheetSOList.size(); i++) {
 
-            hssnnumber = mDBHelper.getHSSNNUMBERByProductId(productID);
+
+            if (tripSheetSOList != null) {
+                if (tripSheetSOList.get(i).getmTripshetSOCode().isEmpty())
+                    mAgentSoCode="-";
+
+
+                else
+                    mAgentSoCode=String.format("Sale # %s", tripSheetSOList.get(i).getmTripshetSOCode());
+
+
+                if (tripSheetSOList.get(i).getmTripshetSODate().isEmpty())
+                    mAgentSoDates=("-");
+
+                else
+                    mAgentSoDates=tripSheetSOList.get(i).getmTripshetSODate();
+
+
+            }
+
+
         }
-        else {
-            hssnnumber = "-";
-        }
-
-        if (mDBHelper.getGSTByProductId(productID) > 0) {
-            cgst = String.valueOf(mDBHelper.getGSTByProductId(productID)) + "%";
-        } else {
-            cgst = "0.00%";
-        }
-
-        if (mDBHelper.getVATByProductId(productID) > 0) {
-            sgst = String.valueOf(mDBHelper.getVATByProductId(productID)) + "%";
-        } else {
-            sgst = "0.00%";
-        }
-
-
-
-
-
-            Double gst = 0.0, vat = 0.0;
-        if(gst!=null) {
-            gst = mDBHelper.getGSTByProductId(productID);
-        }else {
-            gst= 0.00;
-        }
-
-
-
-           if(vat!=null){
-               vat = mDBHelper.getVATByProductId(productID);
-           }
-
-
-            taxes = gst + vat;
-
         final ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(mDeliveryNo);
+
+        deliveredProdIdsList = mDBHelper.getdeliveryDetailsPreviewProdIdsList(mDeliveryNo);
 
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
 
@@ -209,7 +203,7 @@ double taxes;
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int pageheight = 700 + arList.size() * 210;
+                int pageheight = 500 + arList.size() * 210;
                 Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawColor(Color.WHITE);
@@ -223,15 +217,15 @@ double taxes;
 
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                 canvas.drawText(sharedPreferences.getString("companyname"), 5, 20, paint);
-                paint.setTextSize(20);
+              /*  paint.setTextSize(20);
                 canvas.drawText(sharedPreferences.getString("loginusername"), 5, 50, paint);
-                paint.setTextSize(20);
-                canvas.drawText("-------------------------------------------", 5, 80, paint);
+                */paint.setTextSize(20);
+                canvas.drawText("-------------------------------------------", 5, 50, paint);
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                 paint.setTextSize(20);
-                canvas.drawText("DELIVERY", 100, 110, paint);
+                canvas.drawText("DELIVERY", 100, 80, paint);
 
-                paint.setTextSize(20);
+               /* paint.setTextSize(20);
                 canvas.drawText("TRIP # ", 5, 140, paint);
                 paint.setTextSize(20);
                 canvas.drawText(": " + mTripSheetCode, 150, 140, paint);
@@ -239,56 +233,114 @@ double taxes;
                 canvas.drawText("DATE ", 5, 170, paint);
                 paint.setTextSize(20);
                 canvas.drawText(": " + mTripSheetDate, 150, 170, paint);
-
-                paint.setTextSize(20);
-                canvas.drawText("SO No ", 5, 200, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + mAgentSoCode, 150, 200, paint);
-                paint.setTextSize(20);
-                canvas.drawText("DATE ", 5, 230, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + mAgentSoDates, 150, 230, paint);
+*/
 
 
                 paint.setTextSize(20);
-                canvas.drawText("CUSTOMER ", 5, 260, paint);
+                canvas.drawText("TRIP #,DT.", 5, 110, paint);
                 paint.setTextSize(20);
-                canvas.drawText(": " + mAgentName, 150, 260, paint);
-                paint.setTextSize(20);
-                canvas.drawText("CODE ", 5, 290, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + mAgentCode, 150, 290, paint);
-
-                paint.setTextSize(20);
-                canvas.drawText("DELIVERY # ", 5, 320, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " +  mDeliveryNo, 150, 320, paint);
-                paint.setTextSize(20);
-                canvas.drawText("DATE ", 5, 350, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + mDeliverydate, 150, 350, paint);
-                paint.setTextSize(20);
-                canvas.drawText("-------------------------------------------", 5, 380, paint);
+                canvas.drawText(": " + mTripSheetCode + ", " + mTripSheetDate, 130, 110, paint);
 
 
-                int st = 410;
+              /*  paint.setTextSize(20);
+                canvas.drawText("SO No ", 5, 140, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + mAgentSoCode, 150, 140, paint);
+                paint.setTextSize(20);
+                canvas.drawText("DATE ", 5, 170, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + mAgentSoDates, 150, 170, paint);
+*/
+
+                paint.setTextSize(20);
+                canvas.drawText("SO NO,DT.", 5, 140, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + mAgentSoCode + ", " + mAgentSoDates, 130, 140, paint);
+
+
+
+
+
+                paint.setTextSize(20);
+                canvas.drawText("CUSTOMER ", 5, 170, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + mAgentName, 150, 170, paint);
+                paint.setTextSize(20);
+                canvas.drawText("CODE ", 5, 200, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + mAgentCode, 150, 200, paint);
+
+                paint.setTextSize(20);
+                canvas.drawText("DELIVERY # ", 5, 230, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + mDeliveryNo, 150, 230, paint);
+                paint.setTextSize(20);
+                canvas.drawText("DATE ", 5, 260, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + mDeliverydate, 150, 260, paint);
+                paint.setTextSize(20);
+                canvas.drawText("-------------------------------------------", 5, 290, paint);
+
+
+                int st = 320;
                 paint.setTextSize(17);
                 // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
 
                 for (int i = 0; i < arList.size(); i++) {
+                    Double gst = 0.0, vat = 0.0;
+                    if (mDBHelper.getHSSNNUMBERByProductId(deliveredProdIdsList.get(i).toString()) != null
+                            && mDBHelper.getHSSNNUMBERByProductId(deliveredProdIdsList.get(i).toString()).length() > 0) {
+
+                        hssnnumber = mDBHelper.getHSSNNUMBERByProductId(deliveredProdIdsList.get(i).toString());
+                    } else {
+                        hssnnumber = "-";
+                    }
+                    if (mDBHelper.getGSTByProductId(deliveredProdIdsList.get(i).toString()) > 0) {
+                        cgst = String.valueOf(mDBHelper.getGSTByProductId(deliveredProdIdsList.get(i).toString())) + "%";
+                        gst = mDBHelper.getGSTByProductId(deliveredProdIdsList.get(i).toString());
+                    } else {
+                        cgst = "0.00%";
+                        gst = 0.0;
+                    }
+
+                    if (mDBHelper.getVATByProductId(deliveredProdIdsList.get(i).toString()) > 0) {
+                        sgst = String.valueOf(mDBHelper.getVATByProductId(deliveredProdIdsList.get(i).toString())) + "%";
+                        vat = mDBHelper.getVATByProductId(deliveredProdIdsList.get(i).toString());
+                    } else {
+                        sgst = "0.00%";
+                        vat = 0.0;
+                    }
+
+                    taxes = gst + vat;
+
+
                     String[] temp = arList.get(i);
                     paint.setTextSize(20);
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     // canvas.drawText(temps[0] + "," + temps[1] + "( " + temps[2] + " )", 5, st, paint);
-                    canvas.drawText(temp[0] + "," + temp[5]+   temp[6], 5, st, paint);
-                    st = st + 30;
+                    canvas.drawText(temp[0] + "," + temp[5] + temp[6], 5, st, paint);
+
+
+                 /*   st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("HSSN CODE ", 5, st, paint);
-                    canvas.drawText(": " +hssnnumber, 150, st, paint);
+                    canvas.drawText(": " + hssnnumber, 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
                     // canvas.drawText("CGST,SGST " + ": " + temps[4] + " + " + temps[5] + " = " + temps[6], 5, st, paint);
-                    canvas.drawText("CGST,SGST " + ": " + cgst  + sgst + " = "  +taxes, 5, st, paint);
+                    canvas.drawText("CGST,SGST " + ": " + cgst + sgst + " = " + taxes, 5, st, paint);
+
+*/
+
+                    paint.setTextSize(20);
+                    st = st + 30;
+                    paint.setTextSize(20);
+                    canvas.drawText("HSSN: " + hssnnumber + "," + "GST: " + taxes + "%", 5, st, paint);
+
+
+
+
+
 
                     st = st + 30;
                     paint.setTextSize(20);
@@ -297,15 +349,15 @@ double taxes;
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("RATE ", 5, st, paint);
-                    canvas.drawText(": " + temp[2], 150, st, paint);
+                    canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(temp[2])), 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
-                    canvas.drawText("VALUE ", 5, st, paint);
-                    canvas.drawText(": " + temp[3], 150, st, paint);
+                    canvas.drawText("TOT ", 5, st, paint);
+                    canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(temp[3])), 150, st, paint);
                     st = st + 30;
                     paint.setTextSize(20);
-                    canvas.drawText("TAX VALUE ", 5, st, paint);
-                    canvas.drawText(": " + temp[4], 150, st, paint);
+                    canvas.drawText("GST ", 5, st, paint);
+                    canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(temp[4])), 150, st, paint);
 
 
                     st = st + 40;
@@ -324,6 +376,13 @@ double taxes;
                 paint.setTextSize(20);
                 canvas.drawText("(" + Utility.getFormattedCurrency((totalAmount)) + "+" + Utility.getFormattedCurrency((totalTaxAmount)) + ")", 150, st, paint);
                 st = st + 30;
+
+
+
+                paint.setTextSize(20);
+                canvas.drawText("* Please take photocopy of the Bill *", 17, st, paint);
+                st = st + 30;
+
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
             }
@@ -437,19 +496,36 @@ double taxes;
             TextView hssnNumber = (TextView) view.findViewById(R.id.hssn_number);
             TextView CGST = (TextView) view.findViewById(R.id.cgst);
             TextView SGST = (TextView) view.findViewById(R.id.sgst);
+
             order_preview_product_name.setText(temp[0]);
             order_preview_quantity.setText(temp[1]);
             order_preview_mrp.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[2])));
             order_preview_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[3])));
             order_preview_tax.setText(Utility.getFormattedCurrency(Double.parseDouble(temp[4])));
-            hssnNumber.setText(hssnnumber);
 
+            String hssnnumber2331 = mDBHelper.getHSSNNUMBERByProductId(deliveredProdIdsList.get(position).toString());
+            if (hssnnumber2331 != null && hssnnumber2331.length() > 0) {
+                hssnNumber.setText(hssnnumber2331);
+            } else {
+                hssnNumber.setText("-");
+            }
+            String cgst1, sgst1;
+            if (mDBHelper.getGSTByProductId(productID) > 0) {
+                cgst1 = String.valueOf(mDBHelper.getGSTByProductId(deliveredProdIdsList.get(position).toString())) + "%";
+            } else {
+                cgst1 = "0.00%";
+            }
 
-            CGST.setText(cgst);
+            if (mDBHelper.getVATByProductId(productID) > 0) {
+                sgst1 = String.valueOf(mDBHelper.getVATByProductId(deliveredProdIdsList.get(position).toString())) + "%";
+            } else {
+                sgst1 = "0.00%";
+            }
 
+            CGST.setText(cgst1);
 
+            SGST.setText(sgst1);
 
-            SGST.setText(sgst);
             totalAmount = totalAmount + Double.parseDouble(temp[3]);
             totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
             subTotal = totalAmount + totalTaxAmount;

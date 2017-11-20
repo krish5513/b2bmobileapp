@@ -176,13 +176,13 @@ public class AgentsAdapter extends BaseAdapter {
         }
 
 
-        mPreferences.putString("agentNameAdapter", mAgentsBeansList1.get(position).getmLastname());
+        mPreferences.putString("agentNameAdapter", mAgentsBeansList1.get(position).getmFirstname());
         mPreferences.putString("agentCodeAdapter", mAgentsBeansList1.get(position).getmAgentCode());
         mPreferences.putString("incId", String.valueOf(position + 1));
         mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPreferences.putString("agentName", mAgentsBeansList1.get(position).getmLastname());
+                mPreferences.putString("agentName", mAgentsBeansList1.get(position).getmFirstname());
 
                 mPreferences.putString("agentId", mAgentsBeansList1.get(position).getmAgentId());
                 Log.i("agentId",mAgentsBeansList1.get(position).getmAgentId()+"");

@@ -3434,7 +3434,6 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_DELIVERY_CREATEDON, tripSheetDeliveriesBean.getmTripsheetDelivery_CreatedOn());
                 values.put(KEY_TRIPSHEET_DELIVERY_UPDATEDON, tripSheetDeliveriesBean.getmTripsheetDelivery_UpdatedOn());
                 values.put(KEY_TRIPSHEET_DELIVERY_UPDATEDBY, tripSheetDeliveriesBean.getmTripsheetDelivery_UpdatedBy());
-                values.put(KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS, 1);
 
                 int noOfRecordsExisted = checkProductExistsInTripSheetDeliveryTable(tripSheetDeliveriesBean.getmTripsheetDelivery_so_id(), tripSheetDeliveriesBean.getmTripsheetDelivery_userId(), tripSheetDeliveriesBean.getmTripsheetDelivery_productId());
                 System.out.println("AGENT DEL RECORD EXISTS++++++++" + noOfRecordsExisted);
@@ -3442,12 +3441,14 @@ public class DBHelper extends SQLiteOpenHelper {
                 long status;
 
                 if (noOfRecordsExisted == 0) {
+                    values.put(KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS, 0);
                     status = db.insert(TABLE_TRIPSHEETS_DELIVERIES_LIST, null, values);
                     System.out.println("AGENT DEL INSERTED++++++++" + status);
                 } else {
-                    values1.put(KEY_TRIPSHEET_DELIVERY_NUMBER, tripSheetDeliveriesBean.getmTripsheetDeliveryNumber());
-                    values1.put(KEY_TRIPSHEET_DELIVERY_QUANTITY, tripSheetDeliveriesBean.getmTripsheetDelivery_Quantity());
-                    status = db.update(TABLE_TRIPSHEETS_DELIVERIES_LIST, values1, KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = ? AND "
+                    values.put(KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS, 1);
+                    //values1.put(KEY_TRIPSHEET_DELIVERY_NUMBER, tripSheetDeliveriesBean.getmTripsheetDeliveryNumber());
+                    //values1.put(KEY_TRIPSHEET_DELIVERY_QUANTITY, tripSheetDeliveriesBean.getmTripsheetDelivery_Quantity());
+                    status = db.update(TABLE_TRIPSHEETS_DELIVERIES_LIST, values, KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = ? AND "
                                     + KEY_TRIPSHEET_DELIVERY_SO_ID + " = ? AND " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + " = ? AND "
                                     + KEY_TRIPSHEET_DELIVERY_USER_ID + " = ?",
                             new String[]{tripSheetDeliveriesBean.getmTripsheetDelivery_tripId(),
@@ -5795,7 +5796,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-
     /**
      * This method is used to check the product exists or not.
      *
@@ -6946,4 +6946,35 @@ public class DBHelper extends SQLiteOpenHelper {
         return maxID;
     }
 
+    /**
+     * Method to get all the delivered product ids list
+     *
+     * @param userId
+     * @return
+     */
+    public ArrayList<String> getdeliveryDetailsPreviewProdIdsList(String userId) {
+
+        ArrayList<String> arList = null;
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE tripsheet_delivery_number  = '" + userId + "'";
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+            arList = new ArrayList<>(c.getCount());
+            if (c.moveToFirst()) {
+                do {
+                    arList.add(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)));
+
+                } while (c.moveToNext());
+            }
+
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return arList;
+    }
 }

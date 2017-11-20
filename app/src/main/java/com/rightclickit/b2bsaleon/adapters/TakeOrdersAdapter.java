@@ -30,7 +30,9 @@ import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.AgentTakeOrderListener;
+import com.rightclickit.b2bsaleon.services.SyncTakeOrdersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.io.Serializable;
@@ -77,11 +79,11 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     private Map<String, String> updateTakeOrderData = new HashMap<String, String>();
     private Map<String, String> updateFromDatesTakeOrderData = new HashMap<String, String>();
     private Map<String, String> updateToDatesTakeOrderData = new HashMap<String, String>();
-    private String ISFROM = "",TRIPID = "";
+    private String ISFROM = "", TRIPID = "";
 
     public TakeOrdersAdapter(Activity productsActivity, AgentTakeOrderListener listener, ArrayList<ProductsBean> mTakeOrderBeansList, ListView mTakeOrderListView, String agentId,
                              ArrayList<TakeOrderBean> takeOrderBeansList, Map<String, String> quantityListMap,
-                             Map<String, String> fromDatesListMap, Map<String, String> toDatesListMap,String isFrom,String tripId) {
+                             Map<String, String> fromDatesListMap, Map<String, String> toDatesListMap, String isFrom, String tripId) {
         this.activity = productsActivity;
         this.mTakeOrderBeansList1 = mTakeOrderBeansList;
         this.mInflater = LayoutInflater.from(activity);
@@ -167,9 +169,9 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         }
 
         holder.productName.setText(mTakeOrderBeansList1.get(position).getProductTitle());
-        holder.code.setText( mTakeOrderBeansList1.get(position).getProductCode()+ ",");
+        holder.code.setText(mTakeOrderBeansList1.get(position).getProductCode() + ",");
         holder.uom.setText(mTakeOrderBeansList1.get(position).getProductUOM());
-        mPreferences.putString("UOM",mTakeOrderBeansList1.get(position).getProductUOM());
+        mPreferences.putString("UOM", mTakeOrderBeansList1.get(position).getProductUOM());
         holder.fromDate.setText(currentDate);
         holder.toDate.setText(currentDate);
         holder.productQuantity.setText("0.000");
@@ -440,13 +442,13 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     }
 
                     // Temporary call api from here....
-//                    synchronized (this) {
-//                        if (temptoList.size() > 0) {
-//                            if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
-//                                activity.startService(new Intent(activity, SyncTakeOrdersService.class));
-//                            }
-//                        }
-//                    }
+                    synchronized (this) {
+                        if (temptoList.size() > 0) {
+                            if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
+                                activity.startService(new Intent(activity, SyncTakeOrdersService.class));
+                            }
+                        }
+                    }
                     synchronized (this) {
                         showAlertDialogTakeorder(activity, "Success", activity.getString(R.string.order));
                     }
@@ -503,7 +505,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     }
 
     private class MyViewHolder {
-        public TextView productName,code,uom;
+        public TextView productName, code, uom;
         public EditText fromDate;
         public EditText toDate;
         public Spinner orderTypeSpinner;
