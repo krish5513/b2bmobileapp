@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,12 +45,12 @@ public class AgentPaymentsView extends AppCompatActivity {
     private MMSharedPreferences mmSharedPreferences;
     private DBHelper mDBHelper;
 
-    TextView tv_companyName, tv_routecode, tv_route_name, tv_delivered_user_Name, tv_sale_order_no, tv_sale_order_date, tv_delivery_no, tv_delivery_date, price_total, tax_total_amount, sub_total,
+    TextView tv_companyName, agentName, aCode, tv_delivered_user_Name, tv_sale_order_no, tv_sale_order_date, tv_delivery_no, tv_delivery_date, price_total, tax_total_amount, sub_total,
             mode_of_payment, cheque_number, cheque_date, bank_name, opening_balance, sale_order_amount, received_amount, closing_balance;
     ListView delivered_products_list_view, returned_products_list_view;
 
-    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
-    private String loggedInUserId, loggedInUserName, companyName, routeCode, routeName, currentDate;
+    private String mTripSheetId = "", mAgentId = "",mAgentSoDates="", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
+    private String currentDate, receivedAmt, companyName, paymentno, paymentdate, tripid;
     private TripsheetSOList saleOrdersDetails = null;
     private ArrayList<SaleOrderDeliveredProducts> deliveredProductsList;
     private ArrayList<SaleOrderReturnedProducts> returnedProductsList;
@@ -59,6 +60,7 @@ public class AgentPaymentsView extends AppCompatActivity {
     private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
     TextView print;
     String agentId="";
+            LinearLayout checklayout;
     ArrayList<String[]> selectedList, cratesList;
     SaleOrderDeliveredProducts deliveredProduct;
     String ObAmount="",Ordervalue="",receivedAmount="",Due="";
@@ -87,76 +89,104 @@ public class AgentPaymentsView extends AppCompatActivity {
 
             print = (TextView) findViewById(R.id.tv_print_print);
 
+            if (mAgentName != null) {
+                mAgentName = mmSharedPreferences.getString("agentName");
+            } else {
+                mAgentName = "-";
+            }
+
+            mAgentCode = mmSharedPreferences.getString("agentCode");
+
+
+            Bundle bundle = getIntent().getExtras();
+            if (bundle != null) {
+
+                paymentno = bundle.getString("PaymentNo");
+                paymentdate = bundle.getString("Paymentdate");
+                tripid = bundle.getString("tripID");
+                receivedAmt = bundle.getString("ReceivedAmount");
+            }
+
             tv_companyName = (TextView) findViewById(R.id.tv_companyName);
-            tv_routecode = (TextView) findViewById(R.id.tv_routecode);
-            tv_route_name = (TextView) findViewById(R.id.tv_route_name);
-            tv_delivered_user_Name = (TextView) findViewById(R.id.tv_delivered_user_Name);
+
             tv_sale_order_no = (TextView) findViewById(R.id.tv_sale_order_no);
             tv_sale_order_date = (TextView) findViewById(R.id.tv_sale_order_date);
-            tv_delivery_no = (TextView) findViewById(R.id.tv_delivery_no);
-            tv_delivery_date = (TextView) findViewById(R.id.tv_delivery_date);
-            price_total = (TextView) findViewById(R.id.price_total);
-            tax_total_amount = (TextView) findViewById(R.id.tax_total_amount);
-            sub_total = (TextView) findViewById(R.id.sub_total);
+            tv_delivery_no = (TextView) findViewById(R.id.payment_no);
+            tv_delivery_no.setText(paymentno);
+            tv_delivery_date = (TextView) findViewById(R.id.payment_date);
+            tv_delivery_date.setText(paymentdate);
+
+            agentName = (TextView) findViewById(R.id.tv_customer_name);
+            agentName.setText(mAgentName);
+            aCode = (TextView) findViewById(R.id.tv_customer_code);
+            aCode.setText(mAgentCode);
+
+
             mode_of_payment = (TextView) findViewById(R.id.mode_of_payment);
             cheque_number = (TextView) findViewById(R.id.cheque_number);
             cheque_date = (TextView) findViewById(R.id.cheque_date);
             bank_name = (TextView) findViewById(R.id.bank_name);
-            opening_balance = (TextView) findViewById(R.id.opening_balance);
-            sale_order_amount = (TextView) findViewById(R.id.sale_order_amount);
-            received_amount = (TextView) findViewById(R.id.received_amount);
-            closing_balance = (TextView) findViewById(R.id.closing_balance);
-            delivered_products_list_view = (ListView) findViewById(R.id.delivered_products_list_view);
-            returned_products_list_view = (ListView) findViewById(R.id.returned_products_list_view);
 
+            received_amount = (TextView) findViewById(R.id.tv_amount);
 
-            loggedInUserId = mmSharedPreferences.getString("userId");
-            loggedInUserName = mmSharedPreferences.getString("loginusername");
+            checklayout = (LinearLayout) findViewById(R.id.checklayout);
+            received_amount.setText(receivedAmt);
+            // loggedInUserId = mmSharedPreferences.getString("userId");
+            // loggedInUserName = mmSharedPreferences.getString("loginusername");
             companyName = mmSharedPreferences.getString("companyname");
-            routeCode = mmSharedPreferences.getString("routecode") + ",";
-            routeName = mmSharedPreferences.getString("routename");
+
             currentDate = Utility.formatTime(System.currentTimeMillis(), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT);
 
 
             // Updating UI with fetched values.
             tv_companyName.setText(companyName);
-            tv_routecode.setText(routeCode);
-            tv_route_name.setText(routeName);
-            tv_delivered_user_Name.setText("by " + loggedInUserName);
+
+            ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(tripid);
+            for (int i = 0; i < tripSheetSOList.size(); i++) {
 
 
-            ObAmount=mmSharedPreferences.getString("ObAmount");
-            Ordervalue=mmSharedPreferences.getString("OrderValue");
-            receivedAmount=mmSharedPreferences.getString("ReceivedAmount");
-            Due=mmSharedPreferences.getString("due");
+                if (tripSheetSOList != null) {
+                    if (tripSheetSOList.get(i).getmTripshetSOCode().isEmpty())
+                        mAgentSoCode = "-";
 
-                opening_balance.setText(ObAmount);
-                sale_order_amount.setText(Ordervalue);
-                received_amount.setText(receivedAmount);
-                closing_balance.setText(Due);
 
+                    else
+                        mAgentSoCode = String.format("Sale # %s", tripSheetSOList.get(i).getmTripshetSOCode());
+
+
+                    if (tripSheetSOList.get(i).getmTripshetSODate().isEmpty())
+                        mAgentSoDates = ("-");
+
+                    else
+                        mAgentSoDates = tripSheetSOList.get(i).getmTripshetSODate();
+
+
+                }
+
+
+            }
+            tv_sale_order_no.setText(mAgentSoCode);
+            tv_sale_order_date.setText(mAgentSoDates);
 
 
             agentId = mmSharedPreferences.getString("agentId");
 
 
-           unUploadedPayments = mDBHelper.getpaymentDetails(agentId);
+            unUploadedPayments = mDBHelper.getpaymentDetails(agentId);
 
-                for (int i = 0; i < unUploadedPayments.size(); i++) {
-                    mode_of_payment.setText(unUploadedPayments.get(i).getPayment_mop().equals("0") ? "Cash" : "Cheque");
+            for (int i = 0; i < unUploadedPayments.size(); i++) {
+                mode_of_payment.setText(unUploadedPayments.get(i).getPayment_mop().equals("0") ? "Cash" : "Cheque");
 
-                    if (unUploadedPayments.get(i).getPayment_mop().equals("1")) {
-                        cheque_number.setText("Cheque #" + unUploadedPayments.get(i).getPayment_checkno());
-                        cheque_date.setText("Date : " + unUploadedPayments.get(i).getPayment_checkDate());
-                        bank_name.setText(unUploadedPayments.get(i).getPayment_bankName() + " Bank");
-                    } else {
-                        cheque_number.setVisibility(View.GONE);
-                        cheque_date.setVisibility(View.GONE);
-                        bank_name.setVisibility(View.GONE);
-                    }
+                if (unUploadedPayments.get(i).getPayment_mop().equals("1")) {
+                    cheque_number.setText(unUploadedPayments.get(i).getPayment_checkno());
+                    cheque_date.setText(unUploadedPayments.get(i).getPayment_checkDate());
+                    bank_name.setText(unUploadedPayments.get(i).getPayment_bankName());
+                } else {
+                    checklayout.setVisibility(View.GONE);
                 }
+            }
 
-            cratesList = new ArrayList<>(returnedProductsList.size());
+         /*   cratesList = new ArrayList<>(returnedProductsList.size());
             if (returnedProductsList.size() > 0) {
 
                 for (SaleOrderReturnedProducts crates : returnedProductsList) {
@@ -172,7 +202,7 @@ public class AgentPaymentsView extends AppCompatActivity {
                 }
                 tripSheetsPaymentPreviewReturnedProductsAdapter = new TripSheetsPaymentPreviewReturnedProductsAdapter(activityContext, this, returnedProductsList);
                 returned_products_list_view.setAdapter(tripSheetsPaymentPreviewReturnedProductsAdapter);
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -182,7 +212,7 @@ public class AgentPaymentsView extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getApplicationContext(), "print", Toast.LENGTH_LONG).show();
-                int pageheight = 600 + selectedList.size() * 60;
+                int pageheight = 400;
                 Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                 Canvas canvas = new Canvas(bmOverlay);
                 canvas.drawColor(Color.WHITE);
@@ -194,130 +224,89 @@ public class AgentPaymentsView extends AppCompatActivity {
                 paint.setTextSize(26);
 
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                canvas.drawText(companyName, 5, 50, paint);
+                canvas.drawText(companyName, 5, 20, paint);
                 paint.setTextSize(20);
-                canvas.drawText(routeCode, 5, 80, paint);
-                canvas.drawText(routeName, 200, 80, paint);
-                canvas.drawText("PAYMENT INFO,", 5, 120, paint);
-                canvas.drawText("by " + loggedInUserName, 200, 120, paint);
-                canvas.drawText(String.format("Sale # %s", saleOrdersDetails.getmTripshetSOCode()), 5, 150, paint);
-                canvas.drawText(saleOrdersDetails.getmTripshetSODate(), 200, 150, paint);
-                canvas.drawText(String.format("Delivery # RD%03d", deliveredProduct.getDeliveryNo()), 5, 180, paint);
-                canvas.drawText(Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT), 200, 180, paint);
-                paint.setTextSize(30);
-                canvas.drawText("------------------------------------", 5, 200, paint);
+                // canvas.drawText(routeCode, 5, 80, paint);
+                // canvas.drawText(routeName, 200, 80, paint);
+                canvas.drawText("PAYMENT INFO,", 100, 50, paint);
+                //  canvas.drawText("by " + loggedInUserName, 200, 120, paint);
+                //canvas.drawText(String.format("Sale # %s", saleOrdersDetails.getmTripshetSOCode()), 5, 80, paint);
+                //  canvas.drawText(saleOrdersDetails.getmTripshetSODate(), 200, 80, paint);
+
                 paint.setTextSize(20);
-                canvas.drawText("Product", 5, 220, paint);
+                canvas.drawText("PMT NO,DT.", 5, 80, paint);
                 paint.setTextSize(20);
-                canvas.drawText("Qty", 100, 220, paint);
+                canvas.drawText(": " + paymentno + ", " + paymentdate, 130, 80, paint);
+
                 paint.setTextSize(20);
-                canvas.drawText("Price", 160, 220, paint);
+                canvas.drawText("SO NO,DT.", 5, 110, paint);
                 paint.setTextSize(20);
-                canvas.drawText("Amount", 230, 220, paint);
+                canvas.drawText(": " + mAgentSoCode + ", " + mAgentSoDates, 130, 110, paint);
+
                 paint.setTextSize(20);
-                canvas.drawText("Tax", 320, 220, paint);
+                canvas.drawText("CUSTOMER", 5, 140, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + mAgentName, 130, 140, paint);
 
-                canvas.drawText("-------------------------------------", 5, 235, paint);
-
-
-                int st = 250;
-                paint.setTextSize(17);
-//                    for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-                for (int i = 0; i < selectedList.size(); i++) {
-                    String[] temps = selectedList.get(i);
-                    //String[] temps = selectedList.get(i-1);
-                    canvas.drawText(temps[0], 5, st, paint);
-                    canvas.drawText(temps[1], 115, st, paint);
-                    canvas.drawText(temps[2], 175, st, paint);
-                    canvas.drawText(temps[3], 245, st, paint);
-                    canvas.drawText(temps[4], 315, st, paint);
-
-                    st = st + 30;
-                    canvas.drawText(temps[5], 5, st, paint);
+                paint.setTextSize(20);
+                canvas.drawText("CODE", 5, 170, paint);
+                paint.setTextSize(20);
+                canvas.drawText(": " + mAgentCode, 130, 170, paint);
 
 
-                    st = st + 30;
-                    //  canvas.drawText("----------------------------------------------------", 5, st, paint);
+                int st = 200;
 
-
-                }
-
-                canvas.drawText("----------------------------------------------------", 5, st, paint);
-
-                st = st + 20;
-                canvas.drawText("Total:", 5, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())), 70, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(totalAmount), 170, st, paint);
-                canvas.drawText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())), 280, st, paint);
-                st = st + 30;
-                canvas.drawText("PAYMENT INFO", 5, st, paint);
-                st = st + 30;
-                for (int j=0;j<unUploadedPayments.size();j++) {
+                for (int j = 0; j < unUploadedPayments.size(); j++) {
                     if (unUploadedPayments.get(j).getPayment_mop().equals("0")) {
+
+                        paint.setTextSize(20);
                         canvas.drawText("MOP", 5, st, paint);
-                        canvas.drawText("Cash Paid", 60, st, paint);
-                        st = st + 20;
+                        paint.setTextSize(20);
+                        canvas.drawText(": " + "CASH", 130, st, paint);
+
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("AMOUNT", 5, st, paint);
+                        paint.setTextSize(20);
+                        canvas.drawText(": " + receivedAmt, 130, st, paint);
+
+                        st = st + 30;
                     } else {
+
+                        paint.setTextSize(20);
                         canvas.drawText("MOP", 5, st, paint);
-                        canvas.drawText("Cheque", 60, st, paint);
-                        st = st + 20;
-                        canvas.drawText(unUploadedPayments.get(j).getPayment_checkno(), 5, st, paint);
-                        canvas.drawText(unUploadedPayments.get(j).getPayment_checkDate(), 120, st, paint);
-                        canvas.drawText(unUploadedPayments.get(j).getPayment_bankName(), 250, st, paint);
+                        paint.setTextSize(20);
+                        canvas.drawText(": " + "CHEQUE", 130, st, paint);
+
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("AMOUNT", 5, st, paint);
+                        paint.setTextSize(20);
+                        canvas.drawText(": " + receivedAmt, 130, st, paint);
+
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("BANK", 5, st, paint);
+                        paint.setTextSize(20);
+                        canvas.drawText(": " + unUploadedPayments.get(j).getPayment_bankName(), 130, st, paint);
+
+                        st = st + 30;
+                        paint.setTextSize(20);
+                        canvas.drawText("CHQ NUM,DT", 5, st, paint);
+                        paint.setTextSize(20);
+                        canvas.drawText(": " + unUploadedPayments.get(j).getPayment_checkno() + ", " + unUploadedPayments.get(j).getPayment_checkDate(), 130, st, paint);
+
                     }
                 }
-                st = st + 30;
-                canvas.drawText("OB", 5, st, paint);
-                paint.setTextSize(20);
-                canvas.drawText("S.Order", 120, st, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Received", 210, st, paint);
-                paint.setTextSize(20);
-                canvas.drawText("CB", 330, st, paint);
-                st = st + 30;
-
-                ObAmount=mmSharedPreferences.getString("ObAmount");
-                Ordervalue=mmSharedPreferences.getString("OrderValue");
-                receivedAmount=mmSharedPreferences.getString("ReceivedAmount");
-                Due=mmSharedPreferences.getString("due");
-
-                canvas.drawText((ObAmount), 5, st, paint);
-                canvas.drawText((Ordervalue), 120, st, paint);
-                canvas.drawText((receivedAmount), 210, st, paint);
-                canvas.drawText((Due), 300, st, paint);
-                st = st + 30;
-                canvas.drawText("CRATES", 5, st, paint);
-                st = st + 30;
-                canvas.drawText("Product", 5, st, paint);
-                paint.setTextSize(20);
-                canvas.drawText("OB", 100, st, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Delivery", 160, st, paint);
-                paint.setTextSize(20);
-                canvas.drawText("Return", 230, st, paint);
-                paint.setTextSize(20);
-                canvas.drawText("CB", 320, st, paint);
-                st = st + 30;
-                paint.setTextSize(17);
-//                    for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-                for (int i = 0; i < cratesList.size(); i++) {
-                    String[] temps = cratesList.get(i);
-                    //String[] temps = selectedList.get(i-1);
-                    canvas.drawText(temps[0], 5, st, paint);
-                    canvas.drawText(temps[1], 115, st, paint);
-                    canvas.drawText(temps[2], 175, st, paint);
-                    canvas.drawText(temps[3], 245, st, paint);
-                    canvas.drawText(temps[4], 315, st, paint);
-
-                    st = st + 30;
-                    canvas.drawText(temps[5], 5, st, paint);
 
 
-                    st = st + 30;
-                }
+                st = st + 30;
+                paint.setTextSize(20);
+                canvas.drawText("* Please take photocopy of the Bill *", 17, st, paint);
+                st = st + 30;
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
-                saveBitmap(bmOverlay);
+                //  saveBitmap(bmOverlay);
             }
         });
     }

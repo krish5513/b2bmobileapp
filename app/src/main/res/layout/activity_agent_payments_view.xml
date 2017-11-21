@@ -27,6 +27,7 @@
                 android:textColor="@color/greydark"
                 android:textSize="16sp" />
 
+<!--
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,6 +70,7 @@
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
             </LinearLayout>
+-->
 
             <View
                 android:layout_width="match_parent"
@@ -87,13 +89,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.8"
-                    android:gravity="left"
+                    android:gravity="center"
                     android:paddingLeft="10dp"
                     android:text="Payment Info"
                     android:textAllCaps="true"
                     android:textColor="@color/greydark"
                     android:textSize="16sp" />
 
+<!--
                 <TextView
                     android:id="@+id/tv_delivered_user_Name"
                     android:layout_width="wrap_content"
@@ -107,6 +110,7 @@
                     android:textAllCaps="true"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
+-->
             </LinearLayout>
 
             <LinearLayout
@@ -114,10 +118,10 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="5dp"
-                android:visibility="gone">
+               >
 
                 <TextView
-                    android:id="@+id/order_no"
+                    android:id="@+id/txpayment_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
@@ -126,45 +130,116 @@
                     android:textAllCaps="true"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="10dp"
+                    android:layout_marginLeft="50dp"
+                    android:text=":"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
 
                 <TextView
-                    android:id="@+id/tv_date"
+                    android:id="@+id/payment_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="num"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                >
+
+                <TextView
+                    android:id="@+id/txpayment_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:paddingLeft="10dp"
-                    android:text="PaymentDate"
+                    android:text="Payment Date"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="10dp"
+                    android:layout_marginLeft="36dp"
+                    android:text=":"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/payment_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="Date"
                     android:textAllCaps="true"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
 
             </LinearLayout>
 
+
+
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="5dp">
+                android:paddingBottom="5dp"
+                >
+
+                <TextView
+                    android:id="@+id/sale_order_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="SO Number"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="10dp"
+                    android:layout_marginLeft="61dp"
+                    android:text=":"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
 
                 <TextView
                     android:id="@+id/tv_sale_order_no"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left"
+                    android:gravity="center"
                     android:paddingLeft="10dp"
-                    android:text="-"
-                    android:textAllCaps="true"
-                    android:textColor="@color/greydark"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_sale_order_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="70dp"
-                    android:gravity="left"
-                    android:paddingLeft="10dp"
-                    android:text="Date"
+                    android:text="num"
                     android:textAllCaps="true"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
@@ -172,34 +247,361 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                >
+
+                <TextView
+                    android:id="@+id/sale_order_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="SO DATE"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="10dp"
+                    android:layout_marginLeft="82dp"
+                    android:text=":"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_sale_order_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="DATE"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                >
+
+                <TextView
+                    android:id="@+id/customer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="Customer name"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="10dp"
+                    android:layout_marginLeft="22dp"
+                    android:text=":"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_customer_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="NAME"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                >
+
+                <TextView
+                    android:id="@+id/customer_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="Customer code"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="10dp"
+                    android:layout_marginLeft="24dp"
+                    android:text=":"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_customer_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="code"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                >
+
+                <TextView
+                    android:id="@+id/mop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="MOP"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="10dp"
+                    android:layout_marginLeft="108dp"
+                    android:text=":"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/mode_of_payment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text=""
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                >
+
+                <TextView
+                    android:id="@+id/amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="AMOUNT"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="10dp"
+                    android:layout_marginLeft="80dp"
+                    android:text=":"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_amount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text=""
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/checklayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="5dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="5dp">
 
                 <TextView
-                    android:id="@+id/tv_delivery_no"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/bank"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="left"
                     android:paddingLeft="10dp"
-                    android:text="Delivery # RD01"
+                    android:text="Bank"
                     android:textAllCaps="true"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/tv_delivery_date"
-                    android:layout_width="wrap_content"
+
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:gravity="left"
+                    android:layout_marginLeft="101dp"
+                    android:gravity="end"
                     android:paddingLeft="10dp"
-                    android:text="Date"
+                    android:text=":"
                     android:textAllCaps="true"
                     android:textColor="@color/greydark"
                     android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/bank_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text=""
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                >
+
+                <TextView
+                    android:id="@+id/cheque_num"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="Cheque number"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="10dp"
+                    android:layout_marginLeft="26dp"
+                    android:text=":"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/cheque_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="number"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp"
+                >
+
+                <TextView
+                    android:id="@+id/cheque"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="Cheque date"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="10dp"
+                    android:layout_marginLeft="54dp"
+                    android:text=":"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+
+                <TextView
+                    android:id="@+id/cheque_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="date"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+</LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -364,6 +766,7 @@
                 android:layout_height="1dp"
                 android:background="@color/view_line" />
 
+<!--
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -576,6 +979,7 @@
                     android:background="@color/view_line" />
 
             </LinearLayout>
+-->
 
 <!--
             <TextView
