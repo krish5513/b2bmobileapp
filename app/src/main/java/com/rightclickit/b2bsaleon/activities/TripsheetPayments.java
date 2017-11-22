@@ -108,7 +108,7 @@ public class TripsheetPayments extends AppCompatActivity {
             mChequeNumber = (EditText) findViewById(R.id.chequeNo);
             mBankName = (EditText) findViewById(R.id.bankName);
             mChequeDate = (EditText) findViewById(R.id.date);
-            currentDate = Utility.formatDate(new Date(), "dd-MM-yyyy");
+            currentDate = Utility.formatDate(new Date(), "yyyy-MM-dd");
             mChequeDate.setText(currentDate);
 
             tps_opening_balance = (TextView) findViewById(R.id.tps_opening_balance);
