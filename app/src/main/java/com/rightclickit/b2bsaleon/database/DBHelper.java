@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-
 import com.rightclickit.b2bsaleon.beanclass.AgentDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentPaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentReturnsBean;
@@ -34,14 +33,11 @@ import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.R.attr.key;
 
 
 /**
@@ -3641,38 +3637,38 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_RETURNS_CREATED_ON, tripSheetReturnsBean.getmTripshhetReturnsCreated_on());
                 values.put(KEY_TRIPSHEET_RETURNS_UPDATED_ON, tripSheetReturnsBean.getmTripshhetReturnsUpdated_on());
                 values.put(KEY_TRIPSHEET_RETURNS_UPDATED_BY, tripSheetReturnsBean.getmTripshhetReturnsUpdated_by());
-                values.put(KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS, 0);
 
-                int noOfRecordsExisted = checkProductExistsInTripSheetDeliveryTable(tripSheetReturnsBean.getmTripshhetReturns_so_id(), tripSheetReturnsBean.getmTripshhetReturnsUser_id(), tripSheetReturnsBean.getmTripshhetReturnsProduct_ids());
+                int noOfRecordsExisted = checkProductExistsInTripSheetReturnsTable(tripSheetReturnsBean.getmTripshhetReturns_so_id(), tripSheetReturnsBean.getmTripshhetReturnsUser_id(), tripSheetReturnsBean.getmTripshhetReturnsProduct_ids());
                 System.out.println("AGENT RET RECORD EXISTS++++++++" + noOfRecordsExisted);
                 SQLiteDatabase db = this.getWritableDatabase();
                 long status;
 
                 if (noOfRecordsExisted == 0) {
+                    values.put(KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS, 0);
                     status = db.insert(TABLE_TRIPSHEETS_RETURNS_LIST, null, values);
-                    System.out.println("AGENT RET INSERTED++++++++" + status);
+                    System.out.println("AGENT RETURN INSERTED++++++++" + status);
                 } else {
-                    values1.put(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER, tripSheetReturnsBean.getmTripshhetReturnsReturn_number());
-                    values1.put(KEY_TRIPSHEET_RETURNS_QUANTITY, tripSheetReturnsBean.getmTripshhetReturnsQuantity());
-                    status = db.update(TABLE_TRIPSHEETS_RETURNS_LIST, values1, KEY_TRIPSHEET_RETURNS_TRIP_ID + " = ? AND "
+                    values.put(KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS, 1);
+                    // values1.put(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER, tripSheetReturnsBean.getmTripshhetReturnsReturn_number());
+                    //values1.put(KEY_TRIPSHEET_RETURNS_QUANTITY, tripSheetReturnsBean.getmTripshhetReturnsQuantity());
+                    status = db.update(TABLE_TRIPSHEETS_RETURNS_LIST, values, KEY_TRIPSHEET_RETURNS_TRIP_ID + " = ? AND "
                                     + KEY_TRIPSHEET_RETURNS_SO_ID + " = ? AND " + KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS + " = ? AND "
                                     + KEY_TRIPSHEET_RETURNS_USER_ID + " = ?",
                             new String[]{tripSheetReturnsBean.getmTripshhetReturnsTrip_id(),
                                     tripSheetReturnsBean.getmTripshhetReturns_so_id(),
                                     tripSheetReturnsBean.getmTripshhetReturnsProduct_ids(),
                                     tripSheetReturnsBean.getmTripshhetReturnsUser_id()});
-                    System.out.println("AGENT RET UPDATED++++++++" + status);
+                    System.out.println("AGENT RETURN UPDATED++++++++" + status);
                 }
 
                 values.clear();
-                values1.clear();
+                // values1.clear();
                 db.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
     public void updateTripsheetsPaymentsListData(ArrayList<PaymentsBean> mTripsheetsPaymentsList) {
         try {
             for (PaymentsBean paymentsBean : mTripsheetsPaymentsList) {
@@ -5632,13 +5628,13 @@ public class DBHelper extends SQLiteOpenHelper {
             // boolean rerun=true;
             if (c.moveToFirst()) {
                 do {
-                    String[] temp = new String[7];
+                    String[] temp = new String[4];
                     temp[0] = getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)), KEY_PRODUCT_TITLE);
                     temp[1] = getProductName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)), KEY_PRODUCT_UOM);
                     temp[2] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY));
-                    temp[3] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TYPE));
+                    //temp[3] = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TYPE));
                     //  temp[4] = fetchCansorCratesDueByIds(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)), KEY_PRODUCT_UOM);
-
+/*
                     String cc = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES));
                     if (cc.equals("2600005")) {
                         obamount = fetchCansorCratesDueByIds1(userId, cc, "cans");
@@ -5653,7 +5649,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     }
 
                     Map<String, String> deliveredProductsHashMap = fetchDeliveriesListByTripSheetId(userId, c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_CODES)), c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
-                    temp[6] = (deliveredProductsHashMap.get(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS))));
+                    temp[6] = (deliveredProductsHashMap.get(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS))));*/
                     arList.add(temp);
 
 

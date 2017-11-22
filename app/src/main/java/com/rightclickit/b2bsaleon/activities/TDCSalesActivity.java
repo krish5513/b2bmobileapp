@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TDCSalesAdapter;
@@ -31,7 +30,6 @@ import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TDCSalesListener;
 import com.rightclickit.b2bsaleon.models.RetailersModel;
-import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.services.SyncTDCSalesOrderService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
@@ -285,7 +283,7 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
         }
 
 
-        startService(new Intent(TDCSalesActivity.this, SyncNotificationsListService.class));
+      //  startService(new Intent(TDCSalesActivity.this, SyncNotificationsListService.class));
     }
 
     private void showAlertDialogWithCancelButton(Context context, String title, String message) {
@@ -383,13 +381,13 @@ public class TDCSalesActivity extends AppCompatActivity implements TDCSalesListe
 
         if (id == R.id.notifications) {
             loadNotifications();
-            Toast.makeText(this, "Clicked on Notifications...", Toast.LENGTH_SHORT).show();
+
             return true;
         }
         if (id == R.id.settings) {
 
             loadSettings();
-            Toast.makeText(this, "Clicked on Settings...", Toast.LENGTH_SHORT).show();
+
             return true;
         }
         if (id == R.id.sort) {

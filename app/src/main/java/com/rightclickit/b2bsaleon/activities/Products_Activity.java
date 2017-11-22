@@ -25,7 +25,6 @@ import com.rightclickit.b2bsaleon.adapters.ProductsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.ProductsModel;
-import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
@@ -264,7 +263,7 @@ public class Products_Activity extends AppCompatActivity {
         }
         //getDataInList();
 
-        startService(new Intent(Products_Activity.this, SyncNotificationsListService.class));
+        //startService(new Intent(Products_Activity.this, SyncNotificationsListService.class));
     }
 
     public void loadProductsList(ArrayList<ProductsBean> mProductsBeansList){

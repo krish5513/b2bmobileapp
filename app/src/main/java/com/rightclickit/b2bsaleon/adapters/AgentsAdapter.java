@@ -25,6 +25,7 @@ import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -179,32 +180,50 @@ public class AgentsAdapter extends BaseAdapter {
         mPreferences.putString("agentNameAdapter", mAgentsBeansList1.get(position).getmFirstname());
         mPreferences.putString("agentCodeAdapter", mAgentsBeansList1.get(position).getmAgentCode());
         mPreferences.putString("incId", String.valueOf(position + 1));
-        mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPreferences.putString("agentName", mAgentsBeansList1.get(position).getmFirstname());
 
-                mPreferences.putString("agentId", mAgentsBeansList1.get(position).getmAgentId());
-                Log.i("agentId",mAgentsBeansList1.get(position).getmAgentId()+"");
-                mPreferences.putString("agentrouteId", mAgentsBeansList1.get(position).getmAgentRouteId());
-                mPreferences.putString("enqId", String.valueOf(position + 1));
-                mPreferences.putString("agentCode", mAgentsBeansList1.get(position).getmAgentCode());
 
-                mPreferences.putString("ObAmount", String.valueOf(Utility.getFormattedCurrency(obAmount)));
-                mPreferences.putString("OrderValue", String.valueOf(Utility.getFormattedCurrency(ordervalue)));
-                mPreferences.putString("ReceivedAmount", String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
-                mPreferences.putString("due", String.valueOf(Utility.getFormattedCurrency(due)));
-                Intent i = new Intent(activity, AgentTDC_Order.class);
-                activity.startActivity(i);
 
-                activity.finish();
-            }
-        });
+            mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(mHolder.mStatus.equals("InActive") ){
+
+                        CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.agent));
+
+                }    else{
+
+                        mPreferences.putString("agentName", mAgentsBeansList1.get(position).getmFirstname());
+
+                        mPreferences.putString("agentId", mAgentsBeansList1.get(position).getmAgentId());
+                        Log.i("agentId", mAgentsBeansList1.get(position).getmAgentId() + "");
+                        mPreferences.putString("agentrouteId", mAgentsBeansList1.get(position).getmAgentRouteId());
+                        mPreferences.putString("enqId", String.valueOf(position + 1));
+                        mPreferences.putString("agentCode", mAgentsBeansList1.get(position).getmAgentCode());
+
+                        mPreferences.putString("ObAmount", String.valueOf(Utility.getFormattedCurrency(obAmount)));
+                        mPreferences.putString("OrderValue", String.valueOf(Utility.getFormattedCurrency(ordervalue)));
+                        mPreferences.putString("ReceivedAmount", String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
+                        mPreferences.putString("due", String.valueOf(Utility.getFormattedCurrency(due)));
+                        Intent i = new Intent(activity, AgentTDC_Order.class);
+                        activity.startActivity(i);
+
+                        activity.finish();
+                    }}
+
+
+            });
 
         mHolder.infobtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, AgentsInfoActivity.class);
+
+                if(mHolder.mStatus.equals("InActive") ){
+
+                    CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.agent));
+
+                }    else{
+
+                    Intent intent = new Intent(activity, AgentsInfoActivity.class);
                 Bundle bundle = new Bundle();
                 //Add your data from getFactualResults method to bundle
 
@@ -237,18 +256,25 @@ public class AgentsAdapter extends BaseAdapter {
 
                 activity.startActivity(intent);
                 activity.finish();
-            }
+            }}
         });
 
         mHolder.stockbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, AgentStockActivity.class);
-                intent.putExtra("agentId", mAgentsBeansList1.get(position).getmAgentId());
-                intent.putExtra("agentCode", mAgentsBeansList1.get(position).getmAgentCode());
-                intent.putExtra("agentName", mAgentsBeansList1.get(position).getmFirstname());
-                activity.startActivity(intent);
-                activity.finish();
+                if (mHolder.mStatus.equals("InActive")) {
+
+                    CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.agent));
+
+                } else {
+
+                    Intent intent = new Intent(activity, AgentStockActivity.class);
+                    intent.putExtra("agentId", mAgentsBeansList1.get(position).getmAgentId());
+                    intent.putExtra("agentCode", mAgentsBeansList1.get(position).getmAgentCode());
+                    intent.putExtra("agentName", mAgentsBeansList1.get(position).getmFirstname());
+                    activity.startActivity(intent);
+                    activity.finish();
+                }
             }
         });
         mHolder.mPicImage.setOnClickListener(new View.OnClickListener() {

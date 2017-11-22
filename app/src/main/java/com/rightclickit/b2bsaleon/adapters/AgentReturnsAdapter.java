@@ -110,6 +110,7 @@ public class AgentReturnsAdapter extends BaseAdapter{
                 //mPreferences.putString("DeliveryNo",currentDeliveryBean.getTripNo());
                 Intent i=new Intent(activity,AgentReturnsView.class);
                 i.putExtra("ReturnNo",currentReturnsBean.getmTripshhetReturnsReturn_number());
+                i.putExtra("tripId",currentReturnsBean.getmTripshhetReturnsTrip_id());
                 i.putExtra("Returndate",getDate(currentReturnsBean.getmTripshhetReturnsCreated_on(),"dd-MM-yyyy"));
                 activity.startActivity(i);
                 activity.finish();

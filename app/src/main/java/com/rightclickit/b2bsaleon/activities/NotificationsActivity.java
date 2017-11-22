@@ -3,9 +3,9 @@ package com.rightclickit.b2bsaleon.activities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
@@ -17,23 +17,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.NotificationAdapter;
-import com.rightclickit.b2bsaleon.adapters.TripsheetsListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
-import com.rightclickit.b2bsaleon.beanclass.TripSheetPaymentsBean;
-import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
-import com.rightclickit.b2bsaleon.services.SyncSpecialPriceService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class NotificationsActivity extends AppCompatActivity {
 
@@ -161,7 +155,7 @@ public class NotificationsActivity extends AppCompatActivity {
             }
         });
 
-        startService(new Intent(NotificationsActivity.this, SyncNotificationsListService.class));
+        //startService(new Intent(NotificationsActivity.this, SyncNotificationsListService.class));
 
         HashMap<String, String> userMapData = mDBHelper.getUsersData();
         ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));

@@ -23,14 +23,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.RetailersListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.RetailersModel1;
-import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.services.SyncTDCCustomersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
@@ -291,7 +289,7 @@ public class RetailersActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        startService(new Intent(RetailersActivity.this, SyncNotificationsListService.class));
+        //startService(new Intent(RetailersActivity.this, SyncNotificationsListService.class));
     }
 
     public void loadRetailers(List<TDCCustomer> retailersList, String s) {
@@ -372,13 +370,13 @@ public class RetailersActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.notifications) {
             loadNotifications();
-            Toast.makeText(this, "Clicked on Notifications...", Toast.LENGTH_SHORT).show();
+
             return true;
         }
         if (id == R.id.settings) {
 
             loadSettings();
-            Toast.makeText(this, "Clicked on Settings...", Toast.LENGTH_SHORT).show();
+
             return true;
         }
 //        if (id == R.id.autorenew) {

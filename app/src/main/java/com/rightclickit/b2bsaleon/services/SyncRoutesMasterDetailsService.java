@@ -94,13 +94,14 @@ public class SyncRoutesMasterDetailsService extends Service {
                 if (mStoredRouteIds == null) {
                     mStoredRouteIds = "";
                 }
-               /* JSONObject parm=new JSONObject();
+              /*  JSONObject parm=new JSONObject();
                 try{
                     JSONObject jsonObject = new JSONObject(mStoredRouteIds);
                     System.out.println("JSON obj : " + jsonObject.toString());
                     JSONArray regionidArray=jsonObject.getJSONArray("routeArray");
-                            regionidArray.put(mStoredRouteIds);
+
                     parm.put("route_ids",regionidArray);
+                    System.out.println("The regionid IS:: " + regionidArray);
                 }
                 catch (Exception e){
 
@@ -114,6 +115,7 @@ public class SyncRoutesMasterDetailsService extends Service {
                 mJsonObj = new NetworkManager().makeHttpGetConnection(URL);
 
                 JSONArray resultArray = new JSONArray(mJsonObj);
+               // resultArray.put(mJsonObj);
                 //  System.out.println("The LENGTH IS:: " + resultArray.length());
                 if (resultArray != null) {
                     if (resultArray.length() > 0) {

@@ -25,7 +25,6 @@ import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentsModel;
-import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
@@ -268,7 +267,7 @@ public class AgentsActivity extends AppCompatActivity {
 
         }
 
-        startService(new Intent(AgentsActivity.this, SyncNotificationsListService.class));
+
 
     }
 
@@ -331,9 +330,15 @@ public class AgentsActivity extends AppCompatActivity {
 //            return true;
 //        }
         if (id == R.id.notifications) {
-            loadNotifications();
-            Toast.makeText(this, "Clicked on Notifications...", Toast.LENGTH_SHORT).show();
+
+           // if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
+              //  startService(new Intent(AgentsActivity.this, SyncNotificationsListService.class));
+                loadNotifications();
+           // }else {
+           //     new NetworkConnectionDetector(AgentsActivity.this).displayNoNetworkError(AgentsActivity.this);
+           // }
             return true;
+
         }
         if (id == R.id.settings) {
 

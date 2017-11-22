@@ -456,7 +456,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                     }
                 }
                 synchronized (this) {
-                    int pageheight = 450 + selectedList.size() * 200;
+                    int pageheight = 450 + selectedList.size() * 220;
                     Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                     Canvas canvas = new Canvas(bmOverlay);
                     canvas.drawColor(Color.WHITE);

@@ -1,5 +1,7 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -257,7 +259,8 @@ public class AgentPayments extends AppCompatActivity {
         }
         if (id == R.id.autorenew) {
             if (new NetworkConnectionDetector(AgentPayments.this).isNetworkConnected())
-                paymentsModel.getPaymentsList(agentId);
+                showAlertDialog(AgentPayments.this, "Sync process", "Are you sure, you want start the sync process?");
+
             else {
                 new NetworkConnectionDetector(AgentPayments.this).displayNoNetworkError(AgentPayments.this);
             }
@@ -304,6 +307,36 @@ public class AgentPayments extends AppCompatActivity {
             loadPayments(unUploadedPayments);
         }else {
             mNoDataText.setText("No Payments found.");
+        }
+    }
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    paymentsModel.getPaymentsList(agentId);
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

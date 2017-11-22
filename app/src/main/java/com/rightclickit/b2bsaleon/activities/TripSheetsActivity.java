@@ -1,9 +1,9 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +19,6 @@ import com.rightclickit.b2bsaleon.adapters.TripsheetsListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
-import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
@@ -209,7 +208,7 @@ public class TripSheetsActivity extends AppCompatActivity {
                 mDashboardHomeScreen = privilegeActionsData1.get(z).toString();
             }
         }
-        startService(new Intent(TripSheetsActivity.this, SyncNotificationsListService.class));
+       // startService(new Intent(TripSheetsActivity.this, SyncNotificationsListService.class));
 
         if (new NetworkConnectionDetector(TripSheetsActivity.this).isNetworkConnected()) {
             mTripsheetsModel.getTripsheetsList(mNoTripsFoundText);

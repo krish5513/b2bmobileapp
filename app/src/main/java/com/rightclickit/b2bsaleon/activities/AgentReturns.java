@@ -1,5 +1,7 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -39,19 +41,33 @@ public class AgentReturns extends AppCompatActivity {
     Button view;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
-    String tripsheetId,agentId="";
+    String tripsheetId, agentId = "";
     AgentReturnsAdapter returnsAdapter;
     AgentReturnsModel mAgentReturnsModel;
     ListView deliveriesList;
     private SearchView search;
-    TextView rDelivered,r_returned,r_pending;
-    ArrayList<String> deliveriess,rdelivery;
-    double str_pending,str_delivery,str_returns;
+    TextView rDelivered, r_returned, r_pending;
+    ArrayList<String> deliveriess, rdelivery;
+    double str_pending, str_delivery, str_returns;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agent_returns);
 
+        this.getSupportActionBar().setTitle("RETURNS");
+        this.getSupportActionBar().setSubtitle(null);
+        this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
+        // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        this.getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+        final ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
         sales = (LinearLayout) findViewById(R.id.linear_sales);
         sales.setVisibility(View.GONE);
@@ -64,21 +80,18 @@ public class AgentReturns extends AppCompatActivity {
         orders = (LinearLayout) findViewById(R.id.linear_orders);
         orders.setVisibility(View.GONE);
 
-
-
         // rDelivered=(TextView)findViewById((R.id.tv_rDeliverd));
         // r_returned=(TextView)findViewById(R.id.tv_returned);
         // r_pending=(TextView)findViewById(R.id.tv_rpending);
 
-        deliveriesList=(ListView)findViewById(R.id.ordered_products_list_view) ;
+        deliveriesList = (ListView) findViewById(R.id.ordered_products_list_view);
         mNoDataText = (TextView) findViewById(R.id.NoDataText);
         deliveriesList.setEmptyView(mNoDataText);
-
 
         mDBHelper = new DBHelper(AgentReturns.this);
         mPreferences = new MMSharedPreferences(AgentReturns.this);
 
-        mAgentReturnsModel=new AgentReturnsModel(this,AgentReturns.this);
+        mAgentReturnsModel = new AgentReturnsModel(this, AgentReturns.this);
         //Bundle bundle = getIntent().getExtras();
         //if (bundle != null) {
         agentId = mPreferences.getString("agentId");
@@ -122,28 +135,8 @@ public class AgentReturns extends AppCompatActivity {
         }
 
 
-
-
-
-
-
-
-        this.getSupportActionBar().setTitle("RETURNS");
-        this.getSupportActionBar().setSubtitle(null);
-        this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
-        // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-        this.getSupportActionBar().setDisplayUseLogoEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-        final ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
-
-        mDBHelper = new DBHelper(AgentReturns.this);
-        mPreferences = new MMSharedPreferences(AgentReturns.this);
+//        mDBHelper = new DBHelper(AgentReturns.this);
+//        mPreferences = new MMSharedPreferences(AgentReturns.this);
 
         sales.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,7 +146,7 @@ public class AgentReturns extends AppCompatActivity {
                         R.anim.blink);
                 sales.startAnimation(animation1);
 
-                Intent i =new Intent(AgentReturns.this,AgentTDC_Order.class);
+                Intent i = new Intent(AgentReturns.this, AgentTDC_Order.class);
                 startActivity(i);
                 finish();
             }
@@ -166,7 +159,7 @@ public class AgentReturns extends AppCompatActivity {
                         R.anim.blink);
                 deliveries.startAnimation(animation1);
 
-                Intent i =new Intent(AgentReturns.this,AgentDeliveries.class);
+                Intent i = new Intent(AgentReturns.this, AgentDeliveries.class);
                 startActivity(i);
                 finish();
 
@@ -180,7 +173,7 @@ public class AgentReturns extends AppCompatActivity {
                         R.anim.blink);
                 payments.startAnimation(animation1);
 
-                Intent i =new Intent(AgentReturns.this,AgentPayments.class);
+                Intent i = new Intent(AgentReturns.this, AgentPayments.class);
                 startActivity(i);
                 finish();
             }
@@ -204,9 +197,9 @@ public class AgentReturns extends AppCompatActivity {
                         R.anim.blink);
                 orders.startAnimation(animation1);
 
-                Intent i =new Intent(AgentReturns.this,TDCSalesListActivity.class);
-              //  i.putExtra("custId",mPreferences.getString("agentId"));
-              //  i.putExtra("screenType","customerDetails");
+                Intent i = new Intent(AgentReturns.this, TDCSalesListActivity.class);
+                //  i.putExtra("custId",mPreferences.getString("agentId"));
+                //  i.putExtra("screenType","customerDetails");
                 startActivity(i);
                 finish();
             }
@@ -214,10 +207,10 @@ public class AgentReturns extends AppCompatActivity {
 
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
-        System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
+        //System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
         for (int z = 0; z < privilegeActionsData.size(); z++) {
 
-            System.out.println("Name::: " + privilegeActionsData.get(z).toString());
+            //System.out.println("Name::: " + privilegeActionsData.get(z).toString());
             if (privilegeActionsData.get(z).toString().equals("Orders_List")) {
                 sales.setVisibility(View.VISIBLE);
             } else if (privilegeActionsData.get(z).toString().equals("Delivery_List")) {
@@ -256,7 +249,7 @@ public class AgentReturns extends AppCompatActivity {
     }
 
     public void loadReturns1() {
-        ArrayList<TripSheetReturnsBean> unUploadedReturns = mDBHelper.fetchAllTripsheetsReturnsList(agentId);
+        ArrayList<TripSheetReturnsBean> unUploadedReturns = mDBHelper.fetchAllTripsheetsReturnsListForAgents(agentId);
         for (int i = 0; i < unUploadedReturns.size(); i++) {
             return_no = unUploadedReturns.get(i).getmTripshhetReturnsReturn_no();
         }
@@ -278,14 +271,12 @@ public class AgentReturns extends AppCompatActivity {
     }
 
 
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -296,7 +287,7 @@ public class AgentReturns extends AppCompatActivity {
 
         if (id == R.id.autorenew) {
             if (new NetworkConnectionDetector(AgentReturns.this).isNetworkConnected()) {
-                mAgentReturnsModel.getReturnsList(agentId);
+                showAlertDialog(AgentReturns.this, "Sync process", "Are you sure, you want start the sync process?");
             } else {
                 new NetworkConnectionDetector(AgentReturns.this).displayNoNetworkError(AgentReturns.this);
             }
@@ -321,17 +312,49 @@ public class AgentReturns extends AppCompatActivity {
         menu.findItem(R.id.settings).setVisible(false);
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(true);
-        menu.findItem( R.id.Add).setVisible(false);
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.Add).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(true);
         menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, AgentsActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    mAgentReturnsModel.getReturnsList(agentId);
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -28,30 +28,30 @@ import java.util.HashMap;
 public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
     public static final String TAG = Products_Activity.class.getSimpleName();
 
-    private  Context context;
+    private Context context;
     private AgentReturns activity;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private String type = "";
     private ArrayList<String> regionIdsList = new ArrayList<String>();
     private JSONArray routesArray;
-    private  ArrayList<TripSheetReturnsBean> mReturnsBeansList = new ArrayList<TripSheetReturnsBean>();
+    private ArrayList<TripSheetReturnsBean> mReturnsBeansList = new ArrayList<TripSheetReturnsBean>();
     private String mStock = "", mAgentPrice = "", mRetailerPrice = "", mConsumerPrice = "";
-    private  String currentDate = "";
-    private  String fromDate = "";
-    private  ArrayList<String> returnsNoList = new ArrayList<String>();
-    private  ArrayList<String> tripIdsList = new ArrayList<String>();
-    private  ArrayList<String> saleorderIdList = new ArrayList<String>();
-    private  ArrayList<String> saleorderCodesList = new ArrayList<String>();
-    private  ArrayList<String> userIdsList = new ArrayList<String>();
-    private  ArrayList<String> userCodesList = new ArrayList<String>();
-    private  ArrayList<String> routeIdsList = new ArrayList<String>();
-    private  ArrayList<String> routeCodesList = new ArrayList<String>();
+    private String currentDate = "";
+    private String fromDate = "";
+    private ArrayList<String> returnsNoList = new ArrayList<String>();
+    private ArrayList<String> tripIdsList = new ArrayList<String>();
+    private ArrayList<String> saleorderIdList = new ArrayList<String>();
+    private ArrayList<String> saleorderCodesList = new ArrayList<String>();
+    private ArrayList<String> userIdsList = new ArrayList<String>();
+    private ArrayList<String> userCodesList = new ArrayList<String>();
+    private ArrayList<String> routeIdsList = new ArrayList<String>();
+    private ArrayList<String> routeCodesList = new ArrayList<String>();
 
-    private  ArrayList<String> productIdsList = new ArrayList<String>();
-    private  ArrayList<String> productCodesList = new ArrayList<String>();
-    private  ArrayList<String> returntype = new ArrayList<String>();
-    private  ArrayList<String> quantitysList = new ArrayList<String>();
+    private ArrayList<String> productIdsList = new ArrayList<String>();
+    private ArrayList<String> productCodesList = new ArrayList<String>();
+    private ArrayList<String> returntype = new ArrayList<String>();
+    private ArrayList<String> quantitysList = new ArrayList<String>();
 
 
     //private  HashMap<String, JSONArray> productIdsList = new HashMap<String, JSONArray>();
@@ -61,15 +61,15 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
 
 
     ;
-    private  ArrayList<String> statusList = new ArrayList<String>();
-    private  ArrayList<String> deleteList = new ArrayList<String>();
-    private  ArrayList<String> returnDateList = new ArrayList<String>();
+    private ArrayList<String> statusList = new ArrayList<String>();
+    private ArrayList<String> deleteList = new ArrayList<String>();
+    private ArrayList<String> returnDateList = new ArrayList<String>();
 
 
-    private  ArrayList<String> createdBy = new ArrayList<String>();
-    private  ArrayList<String> createdOn = new ArrayList<String>();
-    private  ArrayList<String> updatedOn = new ArrayList<String>();
-    private  ArrayList<String> updatedBy = new ArrayList<String>();
+    private ArrayList<String> createdBy = new ArrayList<String>();
+    private ArrayList<String> createdOn = new ArrayList<String>();
+    private ArrayList<String> updatedOn = new ArrayList<String>();
+    private ArrayList<String> updatedBy = new ArrayList<String>();
 
     private ArrayList<String> Size = new ArrayList<String>();
 
@@ -92,7 +92,7 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
 
     }
 
-    public  void getReturnsList(String s) {
+    public void getReturnsList(String s) {
         try {
             if (mReturnsBeansList.size() > 0) {
                 mReturnsBeansList.clear();
@@ -170,8 +170,6 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
             if (Size.size() > 0) {
                 Size.clear();
             }
-
-
 
 
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
@@ -257,7 +255,6 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                     }
 
 
-
                     // Product Ids
                     if (resObj.has("product_ids")) {
                         JSONArray pIdsArray = resObj.getJSONArray("product_ids");
@@ -265,7 +262,6 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                             productIdsList.add(pIdsArray.get(z).toString());
                         }
                     }
-
 
 
                     // Product Codes
@@ -328,7 +324,6 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                         returnsBean.setmTripshhetReturnsRoute_id(routeIdsList.get(d).toString());
                         returnsBean.setmTripshhetReturnsRoute_codes(routeCodesList.get(d).toString());
 
-
                         returnsBean.setmTripshhetReturnsProduct_ids(productIdsList.get(d).toString());
                         returnsBean.setmTripshhetReturnsProduct_codes(productCodesList.get(d).toString());
                         // returnsBean.setmTripshhetReturns_productTitle(jj.getString("name"));
@@ -346,17 +341,12 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                         // }
 
                     }
-                    synchronized (this) {
-                        if (mReturnsBeansList.size() > 0) {
-                            mDBHelper.updateTripsheetsReturnsListData(mReturnsBeansList);
-                        }
-                    }
-
-
                 }
-
-
-
+                synchronized (this) {
+                    if (mReturnsBeansList.size() > 0) {
+                        mDBHelper.updateTripsheetsReturnsListData(mReturnsBeansList);
+                    }
+                }
                 synchronized (this) {
                     if (mReturnsBeansList.size() > 0) {
                         activity.loadReturns1();

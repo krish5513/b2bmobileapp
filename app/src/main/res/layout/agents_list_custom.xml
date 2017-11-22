@@ -97,97 +97,104 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-     <LinearLayout
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:orientation="horizontal"
-         android:layout_weight="0.5">
-    <TextView
-        android:id="@+id/tv_address2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="OB: "
-        android:textColor="@color/black"
-        android:textSize="12sp" />
-    <TextView
-        android:id="@+id/tv_address1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rs.0.00"
-        android:textColor="@color/greydark"
-        android:textSize="12sp" />
-</LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="0.5">
-    <TextView
-        android:id="@+id/tv_address3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Order: "
-        android:textColor="@color/black"
-        android:textSize="12sp" />
-    <TextView
-        android:id="@+id/tv_address4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rs.0.00"
-        android:textColor="@color/greydark"
-        android:textSize="12sp" />
-</LinearLayout>
-</LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
-     <LinearLayout
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:orientation="horizontal"
-         android:layout_weight="0.5">
-    <TextView
-        android:id="@+id/tv_address5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Revd: "
-        android:textColor="@color/black"
-        android:textSize="12sp" />
-    <TextView
-        android:id="@+id/tv_address6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rs.0.00"
-        android:textColor="@color/greydark"
-        android:textSize="12sp" />
-</LinearLayout>
-     <LinearLayout
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:orientation="horizontal"
-         android:layout_weight="0.5">
-    <TextView
-        android:id="@+id/tv_address7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Due: "
-        android:textColor="@color/black"
-        android:textSize="12sp" />
-    <TextView
-        android:id="@+id/tv_address8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rs.0.00"
-        android:textColor="@color/red"
-        android:textSize="12sp" />
-</LinearLayout>
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.5">
+                <TextView
+                    android:id="@+id/tv_address2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="OB "
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/tv_address1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rs.0.00"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.5">
+                <TextView
+                    android:id="@+id/tv_address3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="Order "
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/tv_address4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rs.0.00"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.5">
+                <TextView
+                    android:id="@+id/tv_address7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="Due "
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/tv_address8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rs.0.00"
+                    android:textColor="@color/red"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="0.5">
+                <TextView
+                    android:id="@+id/tv_address5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Revd: "
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/tv_address6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rs.0.00"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
 </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
