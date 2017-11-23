@@ -141,9 +141,10 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
             str_Uom=myList;
 
             if (d.getProductCode().equals("2600005")) {
-                temp[6] =(String.valueOf(d.getCansDueQuantity()));
-            } else if (d.getProductCode().equals("2600006")) {
                 temp[6] =(String.valueOf(d.getCratesDueQuantity()));
+
+            } else if (d.getProductCode().equals("2600006")) {
+                temp[6] =(String.valueOf(d.getCansDueQuantity()));
             } else {
                 temp[6] =("0.0");
             }

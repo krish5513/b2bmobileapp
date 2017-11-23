@@ -122,55 +122,63 @@ public class AgentPaymentsModel implements OnAsyncRequestCompleteListener {
             if (resLength > 0) {
                 for (int j = 0; j < resLength; j++) {
                     JSONObject resObj = respArray.getJSONObject(j);
-
+                    PaymentsBean paymentsBean = new PaymentsBean();
                     // Returns No
                     if (resObj.has("payment_no")) {
-                        paymentNosList.add(resObj.getString("payment_no"));
+                        paymentsBean.setPayments_paymentsNumber(resObj.getString("payment_no"));
                     }
                     // Returns Date
                     if (resObj.has("payment_date")) {
-                        paymentsDatesList.add(resObj.getString("payment_date"));
+                       // paymentsDatesList.add(resObj.getString("payment_date"));
+                        paymentsBean.setPayment_date(resObj.getString("payment_date"));
+
                     }
                     // Return Status
                     if (resObj.has("status")) {
-                        paymentsStatusList.add(resObj.getString("status"));
+                       // paymentsStatusList.add(resObj.getString("status"));
+                        paymentsBean.setPayments_status(resObj.getString("status"));
                     }
                     // Returned By
                     if (resObj.has("type")) {
-                        paymentType.add(resObj.getString("type"));
+                       // paymentType.add(resObj.getString("type"));
+                        paymentsBean.setPayments_type(resObj.getString("type"));
+
+                    }
+                    if (resObj.has("user_id")) {
+                       // paymentType.add(resObj.getString("type"));
+                        paymentsBean.setPayments_userId(resObj.getString("user_id"));
+
                     }
 
 
                     // Returned By
                     if (resObj.has("recieved_amt")) {
-                        receivedAmount.add(resObj.getString("recieved_amt"));
+                       // receivedAmount.add(resObj.getString("recieved_amt"));
+                        paymentsBean.setPayments_receivedAmount(Double.parseDouble(resObj.getString("recieved_amt")));
                     }
                     // Products Array
                     if (resObj.has("productdata")) {
                         JSONArray subPArray = resObj.getJSONArray("productdata");
                         productsArray.put(String.valueOf(j), subPArray);
                     }
+                    mPaymentsBeansList.add(paymentsBean);
 
-
-                    for (int d = 0; d < productsArray.size(); d++) {
+                   /* for (int d = 0; d < productsArray.size(); d++) {
 
 
                         JSONArray aaa = productsArray.get(String.valueOf(d));
                         for (int s = 0; s < aaa.length(); s++) {
-                            PaymentsBean paymentsBean = new PaymentsBean();
+
                             //    JSONObject jj = aaa.getJSONObject(s);
-                            paymentsBean.setPayments_paymentsNumber(paymentNosList.get(d).toString());
-
-                            paymentsBean.setPayments_status(paymentsStatusList.get(d).toString());
-
-                            paymentsBean.setPayment_date(paymentsDatesList.get(d).toString());
-                            paymentsBean.setPayments_type(paymentType.get(d).toString());
-                          //  paymentsBean.setPayments_receivedAmount(Double.parseDouble(receivedAmount.get(d).toString()));
 
 
-                            mPaymentsBeansList.add(paymentsBean);
+
+
+
+
+
                         }
-                    }
+                    }*/
 
 
                     synchronized (this) {

@@ -58,62 +58,65 @@ public class SyncTripsheetDeliveriesService extends Service {
     private void syncTripSheetDeliveriesListDataWithServer() {
         try {
             ArrayList<String> unUploadedDeliveriesTripSheetIds = mDBHelper.fetchUnUploadedUniqueDeliveryTripSheetIds();
+            //System.out.println("PENDING TRIP IDS::: " + unUploadedDeliveriesTripSheetIds.size());
             unUploadedDeliveryTripSheetIdsCount = unUploadedDeliveriesTripSheetIds.size();
-
+            ArrayList<String> soIds = mDBHelper.fetchUnUploadedUniqueDeliverySoIds();
+            //System.out.println("PENDING SO IDS::: " + soIds.size());
             for (String tripSheetId : unUploadedDeliveriesTripSheetIds) {
-                List<TripSheetDeliveriesBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesList(tripSheetId);
-                System.out.println("TRIP DELE::: "+ unUploadedDeliveries.size());
-                TripSheetDeliveriesBeanWithProducts tripSheetDeliveriesBeanWithProducts = null;
-                JSONArray productIdsArray = new JSONArray();
-                JSONArray productCodesArray = new JSONArray();
-                JSONArray taxPercentArray = new JSONArray();
-                JSONArray unitPriceArray = new JSONArray();
-                JSONArray quantityArray = new JSONArray();
-                JSONArray amountArray = new JSONArray();
-                JSONArray taxAmountArray = new JSONArray();
+                for (String soId : soIds) {
+                    List<TripSheetDeliveriesBean> unUploadedDeliveries = mDBHelper.fetchAllTripsheetsDeliveriesList(tripSheetId, soId);
+                    //  System.out.println("TRIP DELE COUNT::: " + unUploadedDeliveries.size());
+                    TripSheetDeliveriesBeanWithProducts tripSheetDeliveriesBeanWithProducts = null;
+                    JSONArray productIdsArray = new JSONArray();
+                    JSONArray productCodesArray = new JSONArray();
+                    JSONArray taxPercentArray = new JSONArray();
+                    JSONArray unitPriceArray = new JSONArray();
+                    JSONArray quantityArray = new JSONArray();
+                    JSONArray amountArray = new JSONArray();
+                    JSONArray taxAmountArray = new JSONArray();
 
-                for (int i = 0; i < unUploadedDeliveries.size(); i++) {
-                    TripSheetDeliveriesBean currentDelivery = unUploadedDeliveries.get(i);
+                    for (int i = 0; i < unUploadedDeliveries.size(); i++) {
+                        TripSheetDeliveriesBean currentDelivery = unUploadedDeliveries.get(i);
 
-                    if (i == 0) {
-                        tripSheetDeliveriesBeanWithProducts = new TripSheetDeliveriesBeanWithProducts();
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDeliveryNo(currentDelivery.getmTripsheetDeliveryNo());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_tripId(currentDelivery.getmTripsheetDelivery_tripId());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_userId(currentDelivery.getmTripsheetDelivery_userId());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_userCodes(currentDelivery.getmTripsheetDelivery_userCodes());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_so_id(currentDelivery.getmTripsheetDelivery_so_id());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_so_code(currentDelivery.getmTripsheetDelivery_so_code());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_routeId(currentDelivery.getmTripsheetDelivery_routeId());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_routeCodes(currentDelivery.getmTripsheetDelivery_routeCodes());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_TaxTotal(currentDelivery.getmTripsheetDelivery_TaxTotal());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_SaleValue(currentDelivery.getmTripsheetDelivery_SaleValue());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_Status(currentDelivery.getmTripsheetDelivery_Status());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_Delete(currentDelivery.getmTripsheetDelivery_Delete());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_CreatedBy(currentDelivery.getmTripsheetDelivery_CreatedBy());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_CreatedOn(currentDelivery.getmTripsheetDelivery_CreatedOn());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_UpdatedBy(currentDelivery.getmTripsheetDelivery_UpdatedBy());
-                        tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_UpdatedOn(currentDelivery.getmTripsheetDelivery_UpdatedOn());
+                        if (i == 0) {
+                            tripSheetDeliveriesBeanWithProducts = new TripSheetDeliveriesBeanWithProducts();
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDeliveryNo(currentDelivery.getmTripsheetDeliveryNo());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_tripId(currentDelivery.getmTripsheetDelivery_tripId());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_userId(currentDelivery.getmTripsheetDelivery_userId());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_userCodes(currentDelivery.getmTripsheetDelivery_userCodes());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_so_id(currentDelivery.getmTripsheetDelivery_so_id());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_so_code(currentDelivery.getmTripsheetDelivery_so_code());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_routeId(currentDelivery.getmTripsheetDelivery_routeId());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_routeCodes(currentDelivery.getmTripsheetDelivery_routeCodes());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_TaxTotal(currentDelivery.getmTripsheetDelivery_TaxTotal());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_SaleValue(currentDelivery.getmTripsheetDelivery_SaleValue());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_Status(currentDelivery.getmTripsheetDelivery_Status());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_Delete(currentDelivery.getmTripsheetDelivery_Delete());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_CreatedBy(currentDelivery.getmTripsheetDelivery_CreatedBy());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_CreatedOn(currentDelivery.getmTripsheetDelivery_CreatedOn());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_UpdatedBy(currentDelivery.getmTripsheetDelivery_UpdatedBy());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_UpdatedOn(currentDelivery.getmTripsheetDelivery_UpdatedOn());
+                        }
+                        // System.out.println("TRIP DELE PID ARRAY::: " + currentDelivery.getmTripsheetDelivery_productId());
+                        productIdsArray.put(currentDelivery.getmTripsheetDelivery_productId());
+                        productCodesArray.put(currentDelivery.getmTripsheetDelivery_productCodes());
+                        taxPercentArray.put(currentDelivery.getmTripsheetDelivery_TaxPercent());
+                        unitPriceArray.put(currentDelivery.getmTripsheetDelivery_UnitPrice());
+                        quantityArray.put(currentDelivery.getmTripsheetDelivery_Quantity());
+                        amountArray.put(currentDelivery.getmTripsheetDelivery_Amount());
+                        taxAmountArray.put(currentDelivery.getmTripsheetDelivery_TaxAmount());
+
+                        tripSheetDeliveriesBeanWithProducts.setProductIdsArray(productIdsArray);
+                        tripSheetDeliveriesBeanWithProducts.setProductCodesArray(productCodesArray);
+                        tripSheetDeliveriesBeanWithProducts.setTaxPercentArray(taxPercentArray);
+                        tripSheetDeliveriesBeanWithProducts.setUnitPriceArray(unitPriceArray);
+                        tripSheetDeliveriesBeanWithProducts.setQuantityArray(quantityArray);
+                        tripSheetDeliveriesBeanWithProducts.setAmountArray(amountArray);
+                        tripSheetDeliveriesBeanWithProducts.setTaxAmountArray(taxAmountArray);
                     }
-                    System.out.println("TRIP DELE PID ARRAY::: "+ currentDelivery.getmTripsheetDelivery_productId());
-                    productIdsArray.put(currentDelivery.getmTripsheetDelivery_productId());
-                    productCodesArray.put(currentDelivery.getmTripsheetDelivery_productCodes());
-                    taxPercentArray.put(currentDelivery.getmTripsheetDelivery_TaxPercent());
-                    unitPriceArray.put(currentDelivery.getmTripsheetDelivery_UnitPrice());
-                    quantityArray.put(currentDelivery.getmTripsheetDelivery_Quantity());
-                    amountArray.put(currentDelivery.getmTripsheetDelivery_Amount());
-                    taxAmountArray.put(currentDelivery.getmTripsheetDelivery_TaxAmount());
+                    if (connectionDetector.isNetworkConnected())
+                        new SyncTripSheetDeliveriesAsyncTask().execute(tripSheetDeliveriesBeanWithProducts);
                 }
-
-                tripSheetDeliveriesBeanWithProducts.setProductIdsArray(productIdsArray);
-                tripSheetDeliveriesBeanWithProducts.setProductCodesArray(productCodesArray);
-                tripSheetDeliveriesBeanWithProducts.setTaxPercentArray(taxPercentArray);
-                tripSheetDeliveriesBeanWithProducts.setUnitPriceArray(unitPriceArray);
-                tripSheetDeliveriesBeanWithProducts.setQuantityArray(quantityArray);
-                tripSheetDeliveriesBeanWithProducts.setAmountArray(amountArray);
-                tripSheetDeliveriesBeanWithProducts.setTaxAmountArray(taxAmountArray);
-
-                if (connectionDetector.isNetworkConnected())
-                    new SyncTripSheetDeliveriesAsyncTask().execute(tripSheetDeliveriesBeanWithProducts);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -154,12 +157,12 @@ public class SyncTripsheetDeliveriesService extends Service {
                 requestObj.put("updated_by", currentDeliveryBean.getmTripsheetDelivery_UpdatedBy());
 
                 String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TAKE_ORDERS_PORT, Constants.TRIPSHEETS_DELIVERIES_URL);
-                System.out.println("requestObj = " + requestObj);
-                System.out.println("requestURL = " + requestURL);
+                //System.out.println("requestObj = " + requestObj);
+                //System.out.println("requestURL = " + requestURL);
 
                 String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
 
-                System.out.println("responseString = " + responseString);
+                //System.out.println("responseString = " + responseString);
 
                 if (responseString != null && !(responseString == "error" || responseString == "failure")) {
                     JSONObject resultObj = new JSONObject(responseString);

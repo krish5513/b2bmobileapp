@@ -3161,15 +3161,67 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
+
+    public ArrayList<String> fetchUnUploadedUniqueDeliverySoIds() {
+        ArrayList<String> tripSheetIds = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_DELIVERY_SO_ID + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS + " = 0";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    tripSheetIds.add(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SO_ID)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return tripSheetIds;
+    }
+
+    public ArrayList<String> fetchUnUploadedUniqueReturnsSoIds() {
+        ArrayList<String> tripSheetIds = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_RETURNS_SO_ID + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS + " = 0";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    tripSheetIds.add(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_SO_ID)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return tripSheetIds;
+    }
+
+
     /**
      * Method to fetch all tripsheets deliveries list
      */
-    public ArrayList<TripSheetDeliveriesBean> fetchAllTripsheetsDeliveriesList(String tripsheetId) {
+    public ArrayList<TripSheetDeliveriesBean> fetchAllTripsheetsDeliveriesList(String tripsheetId, String soId) {
         ArrayList<TripSheetDeliveriesBean> alltripsheetsDeliveries = new ArrayList<TripSheetDeliveriesBean>();
 
         try {
             String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "'"
-                    + " AND " + KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS + " = 0";
+                    + " AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + "= '" + soId + "'" + " AND " + KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS + " = 0";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -3215,6 +3267,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return alltripsheetsDeliveries;
     }
+
 
     /**
      * Method to fetch all tripsheets deliveries list
@@ -3517,12 +3570,12 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch all tripsheets returns list baed on tripsheet id from Tripsheets returns list table
      */
-    public ArrayList<TripSheetReturnsBean> fetchAllTripsheetsReturnsList(String tripsheetId) {
+    public ArrayList<TripSheetReturnsBean> fetchAllTripsheetsReturnsList(String tripsheetId, String soId) {
         ArrayList<TripSheetReturnsBean> alltripsheetsReturns = new ArrayList<>();
 
         try {
             String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = " + "'" + tripsheetId + "'"
-                    + " AND " + KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS + " = 0";
+                    + " AND " + KEY_TRIPSHEET_RETURNS_SO_ID + " = '" + soId + "'" + " AND " + KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS + " = 0";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -3700,6 +3753,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT, paymentsBean.getPayments_receivedAmount());
                 values.put(KEY_TRIPSHEET_PAYMENTS_CHEQUE_PATH, paymentsBean.getPayments_cheque_image_path());
                 values.put(KEY_TRIPSHEET_PAYMENTS_CHEQUE_UPLOAD_STATUS, paymentsBean.getPayments_cheque_upload_status());
+                values.put(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER, paymentsBean.getPayments_paymentsNumber());
 
                 int noOfRecordsExisted = checkProductExistsInTripSheetDeliveryTable(paymentsBean.getPayments_saleOrderId(), paymentsBean.getPayments_userId(), paymentsBean.getPayments_routeId());
                 System.out.println("AGENT RET RECORD EXISTS++++++++" + noOfRecordsExisted);

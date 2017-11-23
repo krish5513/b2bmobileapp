@@ -59,50 +59,52 @@ public class SyncTripsheetReturnsService extends Service {
         try {
             ArrayList<String> unUploadedReturnsTripSheetIds = mDBHelper.fetchUnUploadedUniqueReturnsTripSheetIds();
             unUploadedReturnsTripSheetIdsCount = unUploadedReturnsTripSheetIds.size();
-
+            ArrayList<String> soIds = mDBHelper.fetchUnUploadedUniqueReturnsSoIds();
             for (String tripSheetId : unUploadedReturnsTripSheetIds) {
-                List<TripSheetReturnsBean> unUploadedReturns = mDBHelper.fetchAllTripsheetsReturnsList(tripSheetId);
+                for (String soId : soIds) {
+                    List<TripSheetReturnsBean> unUploadedReturns = mDBHelper.fetchAllTripsheetsReturnsList(tripSheetId, soId);
 
-                TripSheetReturnsBeanWithProducts tripSheetReturnsBeanWithProducts = null;
-                JSONArray productIdsArray = new JSONArray();
-                JSONArray productCodesArray = new JSONArray();
-                JSONArray quantityArray = new JSONArray();
-                JSONArray returnTypeArray = new JSONArray();
+                    TripSheetReturnsBeanWithProducts tripSheetReturnsBeanWithProducts = null;
+                    JSONArray productIdsArray = new JSONArray();
+                    JSONArray productCodesArray = new JSONArray();
+                    JSONArray quantityArray = new JSONArray();
+                    JSONArray returnTypeArray = new JSONArray();
 
-                for (int i = 0; i < unUploadedReturns.size(); i++) {
-                    TripSheetReturnsBean currentReturn = unUploadedReturns.get(i);
+                    for (int i = 0; i < unUploadedReturns.size(); i++) {
+                        TripSheetReturnsBean currentReturn = unUploadedReturns.get(i);
 
-                    if (i == 0) {
-                        tripSheetReturnsBeanWithProducts = new TripSheetReturnsBeanWithProducts();
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturnsReturn_no(currentReturn.getmTripshhetReturnsReturn_no());
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturnsTrip_id(currentReturn.getmTripshhetReturnsTrip_id());
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturnsUser_id(currentReturn.getmTripshhetReturnsUser_id());
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturnsUser_codes(currentReturn.getmTripshhetReturnsUser_codes());
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturns_so_id(currentReturn.getmTripshhetReturns_so_id());
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturns_so_code(currentReturn.getmTripshhetReturns_so_code());
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturnsRoute_id(currentReturn.getmTripshhetReturnsRoute_id());
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturnsRoute_codes(currentReturn.getmTripshhetReturnsRoute_codes());
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturnsStatus(currentReturn.getmTripshhetReturnsStatus());
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturnsDelete(currentReturn.getmTripshhetReturnsDelete());
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturnsCreated_by(currentReturn.getmTripshhetReturnsCreated_by());
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturnsCreated_on(currentReturn.getmTripshhetReturnsCreated_on());
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturnsUpdated_by(currentReturn.getmTripshhetReturnsUpdated_by());
-                        tripSheetReturnsBeanWithProducts.setmTripshhetReturnsUpdated_on(currentReturn.getmTripshhetReturnsUpdated_on());
+                        if (i == 0) {
+                            tripSheetReturnsBeanWithProducts = new TripSheetReturnsBeanWithProducts();
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturnsReturn_no(currentReturn.getmTripshhetReturnsReturn_no());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturnsTrip_id(currentReturn.getmTripshhetReturnsTrip_id());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturnsUser_id(currentReturn.getmTripshhetReturnsUser_id());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturnsUser_codes(currentReturn.getmTripshhetReturnsUser_codes());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturns_so_id(currentReturn.getmTripshhetReturns_so_id());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturns_so_code(currentReturn.getmTripshhetReturns_so_code());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturnsRoute_id(currentReturn.getmTripshhetReturnsRoute_id());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturnsRoute_codes(currentReturn.getmTripshhetReturnsRoute_codes());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturnsStatus(currentReturn.getmTripshhetReturnsStatus());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturnsDelete(currentReturn.getmTripshhetReturnsDelete());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturnsCreated_by(currentReturn.getmTripshhetReturnsCreated_by());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturnsCreated_on(currentReturn.getmTripshhetReturnsCreated_on());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturnsUpdated_by(currentReturn.getmTripshhetReturnsUpdated_by());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturnsUpdated_on(currentReturn.getmTripshhetReturnsUpdated_on());
+                        }
+
+                        productIdsArray.put(currentReturn.getmTripshhetReturnsProduct_ids());
+                        productCodesArray.put(currentReturn.getmTripshhetReturnsProduct_codes());
+                        quantityArray.put(currentReturn.getmTripshhetReturnsQuantity());
+                        returnTypeArray.put(currentReturn.getmTripshhetReturnsType());
                     }
 
-                    productIdsArray.put(currentReturn.getmTripshhetReturnsProduct_ids());
-                    productCodesArray.put(currentReturn.getmTripshhetReturnsProduct_codes());
-                    quantityArray.put(currentReturn.getmTripshhetReturnsQuantity());
-                    returnTypeArray.put(currentReturn.getmTripshhetReturnsType());
+                    tripSheetReturnsBeanWithProducts.setProductIdsArray(productIdsArray);
+                    tripSheetReturnsBeanWithProducts.setProductCodesArray(productCodesArray);
+                    tripSheetReturnsBeanWithProducts.setQuantityArray(quantityArray);
+                    tripSheetReturnsBeanWithProducts.setReturnTypeArray(returnTypeArray);
+
+                    if (connectionDetector.isNetworkConnected())
+                        new SyncTripSheetReturnsAsyncTask().execute(tripSheetReturnsBeanWithProducts);
                 }
-
-                tripSheetReturnsBeanWithProducts.setProductIdsArray(productIdsArray);
-                tripSheetReturnsBeanWithProducts.setProductCodesArray(productCodesArray);
-                tripSheetReturnsBeanWithProducts.setQuantityArray(quantityArray);
-                tripSheetReturnsBeanWithProducts.setReturnTypeArray(returnTypeArray);
-
-                if (connectionDetector.isNetworkConnected())
-                    new SyncTripSheetReturnsAsyncTask().execute(tripSheetReturnsBeanWithProducts);
             }
         } catch (Exception e) {
             e.printStackTrace();
