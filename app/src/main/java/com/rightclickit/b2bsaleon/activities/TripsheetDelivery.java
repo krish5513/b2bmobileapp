@@ -24,6 +24,7 @@ import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
+import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.services.SyncTripsheetDeliveriesService;
@@ -46,7 +47,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
     private SearchView search;
     private ListView ordered_products_list_view;
-    private TextView companyName, totalTaxAmountTextView, totalAmountTextView, subTotalAmountTextView,soCode,agentcode;
+    private TextView companyName, totalTaxAmountTextView, totalAmountTextView, subTotalAmountTextView, soCode, agentcode;
     private LinearLayout trip_sheet_deliveries_save, trip_sheet_deliveries_preview, trip_sheet_returns, trip_sheet_payments;
 
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
@@ -104,7 +105,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             loggedInUserId = mPreferences.getString("userId");
 
             soCode.setText(mAgentSoCode);
-            agentcode.setText("("+mAgentCode+")");
+            agentcode.setText("(" + mAgentCode + ")");
 
             if (mAgentId != null && mAgentId != "") {
                 List<String> agentRouteIds = mDBHelper.getAgentRouteId(mAgentId);
@@ -271,7 +272,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             startActivity(i);
             finish();
         } else {
-          //  Toast.makeText(activityContext, "This Preview is unavailable untill the tripsheet delivery is saved.", Toast.LENGTH_LONG).show();
+            //  Toast.makeText(activityContext, "This Preview is unavailable untill the tripsheet delivery is saved.", Toast.LENGTH_LONG).show();
             CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliveryfail));
         }
     }
@@ -406,7 +407,20 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                             remainingInStock = 0;
                             remainingExtraStock = totalAvailableStock - deliverysBean.getSelectedQuantity();
                         } else {
-                            remainingInStock = deliverysBean.getProductStock() - deliverysBean.getSelectedQuantity();
+                            //System.out.println("PREVIOUS QUAN::: " + previouslyDeliveredProductsHashMap.get(deliverysBean.getProductId()));
+                            //System.out.println("SELECTED QUAN::: " + deliverysBean.getSelectedQuantity());
+                            //System.out.println("PROD STOCK::: " + deliverysBean.getProductStock());
+                            //System.out.println("ACTUAL IN STOCK QUA::: " + deliverysBean.getProductStock());
+                            if (previouslyDeliveredProductsHashMap.get(deliverysBean.getProductId()) != null) {
+                                Double pres = Double.parseDouble(previouslyDeliveredProductsHashMap.get(deliverysBean.getProductId()));
+                                Double selcnew = deliverysBean.getSelectedQuantity();
+                                Double finalA = selcnew - pres;
+                                remainingInStock = deliverysBean.getProductStock() - finalA;
+                            } else {
+                                remainingInStock = deliverysBean.getProductStock() - deliverysBean.getSelectedQuantity();
+                            }
+
+                            //remainingInStock = deliverysBean.getProductStock() - deliverysBean.getSelectedQuantity();
                             remainingExtraStock = deliverysBean.getProductExtraQuantity();
                         }
                         if (deliverysBean.getSelectedQuantity() != 0) {
@@ -444,21 +458,66 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
                     mDBHelper.insertTripsheetsDeliveriesListData(mTripsheetsDeliveriesList);
                     isDeliveryDataSaved = true;
-                   // Toast.makeText(activityContext, "Delivery Data Saved Successfully.", Toast.LENGTH_LONG).show();
-                    CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
+                    // Toast.makeText(activityContext, "Delivery Data Saved Successfully.", Toast.LENGTH_LONG).show();
+                    showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
                     Utility.isDeliveryFirstTime = true;
                     if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
                         Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncTripsheetDeliveriesService.class);
                         startService(syncTripSheetDeliveriesServiceIntent);
                     }
                 } else {
-                   // Toast.makeText(activityContext, "Delivery quantity for one of the product exceeds available stock, please check it. ", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(activityContext, "Delivery quantity for one of the product exceeds available stock, please check it. ", Toast.LENGTH_LONG).show();
                     CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliveryexceed));
                 }
             } else {
-               // Toast.makeText(activityContext, "Please select at least one product to deliver.", Toast.LENGTH_LONG).show();
+                // Toast.makeText(activityContext, "Please select at least one product to deliver.", Toast.LENGTH_LONG).show();
                 CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliverylimit));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to display alert after success delivery.
+     *
+     * @param context
+     * @param title
+     * @param message
+     */
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    CustomProgressDialog.hideProgressDialog();
+
+                    Intent i = new Intent(activityContext, TripsheetReturns.class);
+                    i.putExtra("tripsheetId", mTripSheetId);
+                    i.putExtra("agentId", mAgentId);
+                    i.putExtra("agentCode", mAgentCode);
+                    i.putExtra("agentName", mAgentName);
+                    i.putExtra("agentRouteId", mAgentRouteId);
+                    i.putExtra("agentRouteCode", mAgentRouteCode);
+                    i.putExtra("agentSoId", mAgentSoId);
+                    i.putExtra("agentSoCode", mAgentSoCode);
+                    startActivity(i);
+                    finish();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

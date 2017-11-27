@@ -90,8 +90,8 @@ public class AgentPayments extends AppCompatActivity {
 
         //tv_obAmount=(TextView)findViewById(R.id.tv_obAmount) ;
         //tv_orderValue=(TextView)findViewById(R.id.tv_orderValue) ;
-       // tv_receivedAmount=(TextView)findViewById(R.id.tv_receivedAmount) ;
-       // tv_due=(TextView)findViewById(R.id.tv_due) ;
+        // tv_receivedAmount=(TextView)findViewById(R.id.tv_receivedAmount) ;
+        // tv_due=(TextView)findViewById(R.id.tv_due) ;
 /*
 
         tv_obAmount.setText(ObAmount);
@@ -128,7 +128,7 @@ public class AgentPayments extends AppCompatActivity {
 
 
         ArrayList<PaymentsBean> unUploadedPayments = mDBHelper.getpaymentDetailsForAgents(agentId);
-
+        System.out.println("PAYMENTS SIZE::: "+ unUploadedPayments.size());
 
 
         if(unUploadedPayments.size()>0){
@@ -140,7 +140,7 @@ public class AgentPayments extends AppCompatActivity {
         sales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Toast.makeText(Agents_PaymentsActivity.this, "Clicked on TPC Orders", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Agents_PaymentsActivity.this, "Clicked on TPC Orders", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 sales.startAnimation(animation1);
@@ -167,7 +167,7 @@ public class AgentPayments extends AppCompatActivity {
         payments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Toast.makeText(Agents_PaymentsActivity.this, "Clicked on payments", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Agents_PaymentsActivity.this, "Clicked on payments", Toast.LENGTH_SHORT).show();
                 Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.blink);
                 payments.startAnimation(animation1);
@@ -200,8 +200,8 @@ public class AgentPayments extends AppCompatActivity {
                 orders.startAnimation(animation1);
 
                 Intent i =new Intent(AgentPayments.this,TDCSalesListActivity.class);
-               // i.putExtra("custId",mPreferences.getString("agentId"));
-               // i.putExtra("screenType","customerDetails");
+                // i.putExtra("custId",mPreferences.getString("agentId"));
+                // i.putExtra("screenType","customerDetails");
                 startActivity(i);
                 finish();
             }

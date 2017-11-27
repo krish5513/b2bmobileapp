@@ -26,6 +26,7 @@ import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
+import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetStockListener;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
@@ -167,15 +168,17 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
         // Checking weather this stock already verified or not.
         if (tripsStockList.size() > 0) {
+            System.out.println("STCOK VERIFY:: " + tripsStockList.get(0).getIsStockVerified());
             TripsheetsStockList stockList = tripsStockList.get(0);
-            if (stockList.getIsStockDispatched() == 1) {
+            if (tripsStockList.get(0).getIsStockDispatched() == 1) {
                 isStockDispatched = true;
-                tps_stock_save_layout.setVisibility(View.GONE);
+                //tps_stock_save_layout.setVisibility(View.GONE);
             }
 
-            if (stockList.getIsStockVerified() == 1) {
+            if (tripsStockList.get(0).getIsStockVerified() == 1) {
                 isStockVerified = true;
                 tps_stock_verify_layout.setVisibility(View.GONE);
+                tps_stock_save_layout.setVisibility(View.GONE);
             }
 //            if (stockList.getIsStockVerified() == 1 && privilegeActionsData.contains("Stock_Dispatch") && !isTripSheetClosed ||
 //                    privilegeActionsData.contains("Stock_Dispatch") && !isTripSheetClosed) {
@@ -234,12 +237,11 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
         int id = item.getItemId();
 
         if (id == R.id.autorenew) {
-            if (isStockDispatched || isStockVerified) {
+            if (isStockVerified) { // isStockDispatched
                 CustomAlertDialog.showAlertDialog(activityContext, "Failed", "Stock is already Dispached/Verified.");
             } else {
                 if (new NetworkConnectionDetector(TripSheetStock.this).isNetworkConnected()) {
-                    mItem.setEnabled(false);
-                    mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
+                    showAlertDialog(TripSheetStock.this, "Sync process", "Are you sure, you want start the sync process?");
                 } else {
                     new NetworkConnectionDetector(TripSheetStock.this).displayNoNetworkError(TripSheetStock.this);
                 }
@@ -380,7 +382,8 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
         isStockDispatched = true;
         //Toast.makeText(activityContext, "Stock Dispatched Successfully.", Toast.LENGTH_LONG).show();
-        CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.stocksuccess));
+        //CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.stocksuccess));
+        showAlertDialogDispatchOrVerify(activityContext, "Success", getResources().getString(R.string.stocksuccess));
 
         if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
             Intent syncTripSheetsStockServiceIntent = new Intent(activityContext, SyncTripSheetsStockService.class);
@@ -417,11 +420,74 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
         isStockVerified = true;
 
         //Toast.makeText(activityContext, "Stock Verified Successfully.", Toast.LENGTH_LONG).show();
-        CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.stockverify));
+        //CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.stockverify));
+        showAlertDialogDispatchOrVerify(activityContext, "Success", getResources().getString(R.string.stockverify));
+
         if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
             Intent syncTripSheetsStockServiceIntent = new Intent(activityContext, SyncTripSheetsStockService.class);
             syncTripSheetsStockServiceIntent.putExtra("actionType", "verify");
             startService(syncTripSheetsStockServiceIntent);
+        }
+    }
+
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    mItem.setEnabled(false);
+                    mTripsheetsModel.getTripsheetsStockList(mTripSheetId);
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showAlertDialogDispatchOrVerify(Context context, String title, String message) {
+        try {
+            // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    CustomProgressDialog.hideProgressDialog();
+                    Intent intent = new Intent(TripSheetStock.this, TripSheetsActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

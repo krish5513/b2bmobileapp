@@ -215,7 +215,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
 //                                }
 
                                 if (selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()) != null) {
-                                    // System.out.println("CB QUANTITY::: " + selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
+                                    //System.out.println("CB QUANTITY::: " + selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
                                     tripStockBean.setmCBQuantity(selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
                                     cb = Double.parseDouble(selectedCBListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductCode()));
                                 }
@@ -238,7 +238,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                                 }
 
                                 if (selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()) != null) {
-                                    //System.out.println("RETU QUANTITY::: " + selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
+                                    //System.out.println("ROUTE RETU QUANTITY::: " + selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     tripStockBean.setmRouteReturnQuantity(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
                                     rq = Double.parseDouble(selectedPReturnsListMap.get(tripsheetsStockLists.get(q).getmTripsheetStockProductId()));
 
@@ -759,19 +759,19 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
     @Override
     public void updateSelectedCBList(Map<String, String> selectedCBList) {
         this.selectedCBListMap = selectedCBList;
-        System.out.println("CB LSIT:::: " + selectedCBList.size());
+        //System.out.println("CB LSIT:::: " + selectedCBList.size());
     }
 
     @Override
     public void updateSelectedLeakageQuantityList(Map<String, String> selectedLeakList) {
         this.selectedLeakListMap = selectedLeakList;
-        System.out.println("LEAK LSIT:::: " + selectedLeakListMap.size());
+        //System.out.println("LEAK LSIT:::: " + selectedLeakListMap.size());
     }
 
     @Override
     public void updateSelectedOthersQuantityList(Map<String, String> selectedOthersList) {
         this.selectedOthersListMap = selectedOthersList;
-        System.out.println("OTHERS LSIT:::: " + selectedOthersListMap.size());
+        //System.out.println("OTHERS LSIT:::: " + selectedOthersListMap.size());
     }
 
     @Override
@@ -787,7 +787,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
     @Override
     public void updateSelectedPRetunsQuantityList(Map<String, String> selectedPReturnsList) {
         this.selectedPReturnsListMap = selectedPReturnsList;
-        System.out.println("RRTN LSIT:::: " + selectedPReturnsListMap.size());
+        //System.out.println("RRTN LSIT:::: " + selectedPReturnsListMap.size());
     }
 
 

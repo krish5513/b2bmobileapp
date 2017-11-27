@@ -4,11 +4,11 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,13 +18,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetReturnsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetReturnsBean;
 import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
+import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetReturnsListener;
 import com.rightclickit.b2bsaleon.services.SyncTripsheetReturnsService;
@@ -137,13 +137,13 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
                         productsBean.setProductReturnableUnit(allProductsListFromStock.get(i).getProductReturnableUnit());
 
                         if (allProductsListFromStock.get(i).getProductCode().equals("2600005")) {
-                            String due = mDBHelper.fetchCansorCratesDueByIds(mTripSheetId,mAgentSoId,mAgentId,allProductsListFromStock.get(i).getProductCode(),"cans");
-                            // CANS DUE
-                            productsBean.setCansDueQuantity(Double.parseDouble(due));
-                            productsBean.setCratesDueQuantity(Double.parseDouble("0.0"));
-                        } else if (allProductsListFromStock.get(i).getProductCode().equals("2600006")) {
-                            String due = mDBHelper.fetchCansorCratesDueByIds(mTripSheetId,mAgentSoId,mAgentId,allProductsListFromStock.get(i).getProductCode(),"crates");
+                            String due = mDBHelper.fetchCansorCratesDueByIds(mTripSheetId, mAgentSoId, mAgentId, allProductsListFromStock.get(i).getProductCode(), "crates");
                             // CRATES DUE
+                            productsBean.setCansDueQuantity(Double.parseDouble("0.0"));
+                            productsBean.setCratesDueQuantity(Double.parseDouble(due));
+                        } else if (allProductsListFromStock.get(i).getProductCode().equals("2600006")) {
+                            String due = mDBHelper.fetchCansorCratesDueByIds(mTripSheetId, mAgentSoId, mAgentId, allProductsListFromStock.get(i).getProductCode(), "cans");
+                            // CANS DUE
                             productsBean.setCansDueQuantity(Double.parseDouble(due));
                             productsBean.setCratesDueQuantity(Double.parseDouble("0.0"));
                         } else {
@@ -374,7 +374,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
                 mDBHelper.insertTripsheetsReturnsListData(mTripsheetsReturnsList);
                 isReturnsDataSaved = true;
                 //Toast.makeText(activityContext, "Return Products Data Saved Successfully.", Toast.LENGTH_LONG).show();
-                CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
+                showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
                 if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
                     Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncTripsheetReturnsService.class);
                     startService(syncTripSheetDeliveriesServiceIntent);
@@ -383,6 +383,51 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
                 //Toast.makeText(activityContext, "Please select at least one product to save.", Toast.LENGTH_LONG).show();
                 CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliverylimit));
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to display alert after success delivery.
+     *
+     * @param context
+     * @param title
+     * @param message
+     */
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    CustomProgressDialog.hideProgressDialog();
+
+                    Intent i = new Intent(activityContext, TripsheetPayments.class);
+                    i.putExtra("tripsheetId", mTripSheetId);
+                    i.putExtra("agentId", mAgentId);
+                    i.putExtra("agentCode", mAgentCode);
+                    i.putExtra("agentName", mAgentName);
+                    i.putExtra("agentRouteId", mAgentRouteId);
+                    i.putExtra("agentRouteCode", mAgentRouteCode);
+                    i.putExtra("agentSoId", mAgentSoId);
+                    i.putExtra("agentSoCode", mAgentSoCode);
+                    startActivity(i);
+                    finish();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

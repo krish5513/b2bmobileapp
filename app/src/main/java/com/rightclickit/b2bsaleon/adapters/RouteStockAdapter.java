@@ -36,7 +36,7 @@ public class RouteStockAdapter extends BaseAdapter {
     private HashMap<String, String> deliveriesQuanListMap1, returnsQuanListMap1;
 
     private final String zero_cost = "0.000";
-    double tq = 0.0, dq = 0.0, rq = 0.0, leq = 0.0, oq = 0.0,rq1 = 0.0; // rq1 is for returnable products
+    double tq = 0.0, dq = 0.0, rq = 0.0, leq = 0.0, oq = 0.0, rq1 = 0.0; // rq1 is for returnable products
 
     public RouteStockAdapter(Context ctxt, RouteStock agentsActivity, RouteStockListener tripSheetStockListener,
                              ArrayList<TripsheetsStockList> tripSheetStockList, HashMap<String, String> deliveriesQuanListMap,
@@ -188,6 +188,24 @@ public class RouteStockAdapter extends BaseAdapter {
             mHolder.mRouteReturnQty.setText(String.format("%.3f", delQua));
             rq = delQua;
             selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(delQua));
+        } else if (currentStockList.getmRouteReturnQuantity() != null) {
+            String rrq = currentStockList.getmRouteReturnQuantity();
+            if (rrq.length() > 0) {
+                Double quantity = Double.parseDouble(rrq);
+                if (quantity > 0) {
+                    mHolder.mRouteReturnQty.setText(String.format("%.3f", quantity));
+                    selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(quantity));
+                    rq = quantity;
+                } else {
+                    mHolder.mRouteReturnQty.setText(String.format("%.3f", 0.0));
+                    selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(0.0));
+                    rq = 0.0;
+                }
+            } else {
+                mHolder.mRouteReturnQty.setText(String.format("%.3f", 0.0));
+                selectedReturnsListMap.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(0.0));
+                rq = 0.0;
+            }
         } else {
             mHolder.mRouteReturnQty.setText(String.format("%.3f", 0.0));
             rq = 0.0;
@@ -239,6 +257,7 @@ public class RouteStockAdapter extends BaseAdapter {
                 } else {
                     mHolder.mOthersQty.setText(String.format("%.3f", 0.0));
                     selectedOthersProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), String.valueOf(0.0));
+                    oq = 0.0;
                 }
             } else {
                 mHolder.mOthersQty.setText(String.format("%.3f", 0.0));
@@ -262,9 +281,9 @@ public class RouteStockAdapter extends BaseAdapter {
             mHolder.mClosingBal.setText(String.format("%.3f", cb));
             selectedCBListMap.put(currentStockList.getmTripsheetStockProductCode(), String.valueOf(cb));
         } else {
-            double cb1 = tq ;
+            double cb1 = tq;
             //System.out.println("CB11:::: " + cb1);
-            double cb2 = dq +rq+ leq + oq;
+            double cb2 = dq + rq + leq + oq;
             //System.out.println("CB22:::: " + cb2);
             double cb = cb1 - cb2;
             //System.out.println("CB:::: " + cb);
@@ -539,9 +558,9 @@ public class RouteStockAdapter extends BaseAdapter {
             mHolder.mClosingBal.setText(String.format("%.3f", cb));
             selectedCBListMap.put(pCode, String.valueOf(cb));
         } else {
-            double cb1 = tq ;
+            double cb1 = tq;
             //System.out.println("CB11:::: " + cb1);
-            double cb2 = dq +rq+ leq + oq;
+            double cb2 = dq + rq + leq + oq;
             //System.out.println("CB22:::: " + cb2);
             double cb = cb1 - cb2;
             //System.out.println("CB:::: " + cb);

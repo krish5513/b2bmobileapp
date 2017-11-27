@@ -17,7 +17,6 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.TripsheetReturns;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetReturnsListener;
-import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,9 +130,9 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
         }
 
         if (currentDeliveryBean.getProductCode().equals("2600005")) {
-            tripSheetReturnsViewHolder.obQuantity.setText(String.valueOf(currentDeliveryBean.getCansDueQuantity()));
-        } else if (currentDeliveryBean.getProductCode().equals("2600006")) {
             tripSheetReturnsViewHolder.obQuantity.setText(String.valueOf(currentDeliveryBean.getCratesDueQuantity()));
+        } else if (currentDeliveryBean.getProductCode().equals("2600006")) {
+            tripSheetReturnsViewHolder.obQuantity.setText(String.valueOf(currentDeliveryBean.getCansDueQuantity()));
         } else {
             tripSheetReturnsViewHolder.obQuantity.setText("0.0");
         }

@@ -44,7 +44,7 @@ public class TripsheetPayments extends AppCompatActivity {
     private Context activityContext;
 
     private LinearLayout trip_sheet_payments_save, trip_sheet_payments_preview, ret, delivery, cheqLinearLayout, captureChequeLayout;
-    private TextView tps_opening_balance, tps_sale_order_value, tps_total_amount, tps_received_amount, tps_due_amount,agentcode;
+    private TextView tps_opening_balance, tps_sale_order_value, tps_total_amount, tps_received_amount, tps_due_amount, agentcode;
     private Spinner paymentTypeSpinner;
     private EditText mAmountText, mChequeNumber, mBankName, mChequeDate;
     private ImageView imageview;
@@ -56,7 +56,7 @@ public class TripsheetPayments extends AppCompatActivity {
     private double openingBalance = 0.0, saleOrderValue = 0.0, totalAmount = 0.0, receivedAmount = 0.0, dueAmount = 0.0;
     private String cheque_image_path = "";
     private boolean isTripSheetClosed = false;
-    public String paymentsadd= " ";
+    public String paymentsadd = " ";
     LinearLayout tpsBottomOptionsLayout;
 
     @Override
@@ -125,7 +125,7 @@ public class TripsheetPayments extends AppCompatActivity {
                 tpsBottomOptionsLayout.setVisibility(View.VISIBLE);
 
             }*/
-            agentcode.setText("("+mAgentCode+")");
+            agentcode.setText("(" + mAgentCode + ")");
 
             captureChequeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -481,23 +481,27 @@ public class TripsheetPayments extends AppCompatActivity {
     }
 
     public void validatePaymentDetails() {
-        Double enteredAmount = Double.parseDouble(mAmountText.getText().toString());
-        if (enteredAmount > 0) {
-            if (paymentTypeSpinner.getSelectedItem().toString().equals("Cheque")) {
-                if (mChequeNumber.getText().toString().trim().length() == 0) {
-                    Toast.makeText(TripsheetPayments.this, "Please enter cheque number.", Toast.LENGTH_SHORT).show();
-                } else if (mBankName.getText().toString().trim().length() == 0) {
-                    Toast.makeText(TripsheetPayments.this, "Please enter bank name.", Toast.LENGTH_SHORT).show();
-                } else if (mChequeDate.getText().toString().trim().length() == 0) {
-                    Toast.makeText(TripsheetPayments.this, "Please enter cheque date.", Toast.LENGTH_SHORT).show();
-                } /*else if (cheque_image_path.length() == 0) {
+        if (mAmountText.getText().toString().length() > 0) {
+            Double enteredAmount = Double.parseDouble(mAmountText.getText().toString());
+            if (enteredAmount >= 0) {
+                if (paymentTypeSpinner.getSelectedItem().toString().equals("Cheque")) {
+                    if (mChequeNumber.getText().toString().trim().length() == 0) {
+                        Toast.makeText(TripsheetPayments.this, "Please enter cheque number.", Toast.LENGTH_SHORT).show();
+                    } else if (mBankName.getText().toString().trim().length() == 0) {
+                        Toast.makeText(TripsheetPayments.this, "Please enter bank name.", Toast.LENGTH_SHORT).show();
+                    } else if (mChequeDate.getText().toString().trim().length() == 0) {
+                        Toast.makeText(TripsheetPayments.this, "Please enter cheque date.", Toast.LENGTH_SHORT).show();
+                    } /*else if (cheque_image_path.length() == 0) {
                     Toast.makeText(TripsheetPayments.this, "Please capture cheque.", Toast.LENGTH_SHORT).show();
                 } */ else {
+                        showAlertDialogWithCancelButton(TripsheetPayments.this, "User Action!", "Do you want to save data?");
+                    }
+
+                } else {
                     showAlertDialogWithCancelButton(TripsheetPayments.this, "User Action!", "Do you want to save data?");
                 }
-
             } else {
-                showAlertDialogWithCancelButton(TripsheetPayments.this, "User Action!", "Do you want to save data?");
+                Toast.makeText(TripsheetPayments.this, "Please enter received amount.", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(TripsheetPayments.this, "Please enter received amount.", Toast.LENGTH_SHORT).show();
@@ -526,7 +530,7 @@ public class TripsheetPayments extends AppCompatActivity {
                 }
             }
 
-            synchronized (this){
+            synchronized (this) {
                 Intent i = new Intent(TripsheetPayments.this, TripsheetPaymentsPreview.class);
                 i.putExtra("tripsheetId", mTripSheetId);
                 i.putExtra("agentId", mAgentId);

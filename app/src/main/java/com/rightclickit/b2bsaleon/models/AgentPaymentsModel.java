@@ -123,71 +123,90 @@ public class AgentPaymentsModel implements OnAsyncRequestCompleteListener {
                 for (int j = 0; j < resLength; j++) {
                     JSONObject resObj = respArray.getJSONObject(j);
                     PaymentsBean paymentsBean = new PaymentsBean();
-                    // Returns No
+                    // Trip Id
+                    if (resObj.has("trip_id")) {
+                        paymentsBean.setPayments_tripsheetId(resObj.getString("trip_id"));
+                    }
+                    // User Id
+                    if (resObj.has("user_id")) {
+                        paymentsBean.setPayments_userId(resObj.getString("user_id"));
+                    }
+                    // User Code
+                    if (resObj.has("agent_code")) {
+                        paymentsBean.setPayments_userCodes(resObj.getString("agent_code"));
+                    }
+                    // Route Id
+                    if (resObj.has("route_id")) {
+                        paymentsBean.setPayments_routeId(resObj.getString("route_id"));
+                    }
+                    // Route Code
+                    if (resObj.has("route_code")) {
+                        paymentsBean.setPayments_routeCodes(resObj.getString("route_code"));
+                    }
+                    // Checq Number
+                    paymentsBean.setPayments_chequeNumber("");
+                    // Account Number
+                    paymentsBean.setPayments_accountNumber("");
+                    // Account name
+                    paymentsBean.setPayments_accountName("");
+                    // Bank Name
+                    paymentsBean.setPayments_bankName("");
+                    // Cheq Date
+                    paymentsBean.setPayments_chequeDate("");
+                    // Checq clear date
+                    paymentsBean.setPayments_chequeClearDate("");
+                    // Receiver Name
+                    paymentsBean.setPayments_receiverName("");
+                    // Transaction status
+                    paymentsBean.setPayments_transActionStatus("");
+                    // Payment date
+                    if (resObj.has("payment_date")) {
+                        paymentsBean.setPayment_date(resObj.getString("payment_date"));
+                    }
+                    // Taxtotal
+                    paymentsBean.setPayments_taxTotal(0.0);
+                    // Sale value
+                    paymentsBean.setPayments_saleValue(0.0);
+                    // Payments type
+                    if (resObj.has("type")) {
+                        paymentsBean.setPayments_type(resObj.getString("type"));
+                    }
+                    // Status
+                    if (resObj.has("status")) {
+                        paymentsBean.setPayments_status(resObj.getString("status"));
+                    }
+                    // Delete
+                    if (resObj.has("delete")) {
+                        paymentsBean.setPayments_delete(resObj.getString("delete"));
+                    }
+                    // So ID
+                    if (resObj.has("sale_order_id")) {
+                        paymentsBean.setPayments_saleOrderId(resObj.getString("sale_order_id"));
+                    }
+                    // SO Code
+                    if (resObj.has("sale_order_code")) {
+                        paymentsBean.setPayments_saleOrderCode(resObj.getString("sale_order_code"));
+                    }
+                    // Payments No
                     if (resObj.has("payment_no")) {
                         paymentsBean.setPayments_paymentsNumber(resObj.getString("payment_no"));
                     }
-                    // Returns Date
-                    if (resObj.has("payment_date")) {
-                       // paymentsDatesList.add(resObj.getString("payment_date"));
-                        paymentsBean.setPayment_date(resObj.getString("payment_date"));
-
-                    }
-                    // Return Status
-                    if (resObj.has("status")) {
-                       // paymentsStatusList.add(resObj.getString("status"));
-                        paymentsBean.setPayments_status(resObj.getString("status"));
-                    }
-                    // Returned By
-                    if (resObj.has("type")) {
-                       // paymentType.add(resObj.getString("type"));
-                        paymentsBean.setPayments_type(resObj.getString("type"));
-
-                    }
-                    if (resObj.has("user_id")) {
-                       // paymentType.add(resObj.getString("type"));
-                        paymentsBean.setPayments_userId(resObj.getString("user_id"));
-
-                    }
-
-
-                    // Returned By
+                    // Received Amount
                     if (resObj.has("recieved_amt")) {
-                       // receivedAmount.add(resObj.getString("recieved_amt"));
                         paymentsBean.setPayments_receivedAmount(Double.parseDouble(resObj.getString("recieved_amt")));
                     }
-                    // Products Array
-                    if (resObj.has("productdata")) {
-                        JSONArray subPArray = resObj.getJSONArray("productdata");
-                        productsArray.put(String.valueOf(j), subPArray);
-                    }
+                    // Cheq Path
+                    paymentsBean.setPayments_cheque_image_path("");
+                    // Cheq upload status
+                    paymentsBean.setPayments_cheque_upload_status(0);
+
                     mPaymentsBeansList.add(paymentsBean);
-
-                   /* for (int d = 0; d < productsArray.size(); d++) {
-
-
-                        JSONArray aaa = productsArray.get(String.valueOf(d));
-                        for (int s = 0; s < aaa.length(); s++) {
-
-                            //    JSONObject jj = aaa.getJSONObject(s);
-
-
-
-
-
-
-
-                        }
-                    }*/
-
-
-                    synchronized (this) {
-                        if (mPaymentsBeansList.size() > 0) {
-                            mDBHelper.updateTripsheetsPaymentsListData(mPaymentsBeansList);
-                        }
+                }
+                synchronized (this) {
+                    if (mPaymentsBeansList.size() > 0) {
+                        mDBHelper.updateTripsheetsPaymentsListData(mPaymentsBeansList);
                     }
                 }
-
                 synchronized (this) {
                     if (mPaymentsBeansList.size() > 0) {
                         activity.loadPayments1();
