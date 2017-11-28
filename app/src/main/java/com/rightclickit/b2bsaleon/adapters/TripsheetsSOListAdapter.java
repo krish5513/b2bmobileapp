@@ -154,7 +154,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         if (isTripSheetClosed) {
             mHolder.so_status.setText("Closed");
             mHolder.mItemBgLayout.setBackgroundColor(Color.WHITE);
-        } else if (Double.parseDouble(currentSaleOrder.getmTripshetSOReceivedAmount()) > 0) {
+        } else if (Double.parseDouble(currentSaleOrder.getmTripshetSOReceivedAmount()) >= 0) {
             mHolder.so_status.setText("Delivered");
             mHolder.mItemBgLayout.setBackgroundColor(Color.parseColor("#d3d3d3"));
         } else {

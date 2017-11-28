@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,108 +12,120 @@
         android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="5dp">
 
-        <TextView
-            android:id="@+id/ts_stock_product_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
-            android:layout_weight="0.18"
-            android:text=""
-            android:textAllCaps="true"
-            android:textColor="@color/greydark"
-            android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/ts_stock_order_quantity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.22"
-            android:text=""
-            android:textColor="@color/greydark"
-            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginRight="5dp"
-            android:layout_weight="0.17"
+            android:layout_marginBottom="5dp"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
-            <ImageButton
-                android:id="@+id/ts_stock_dispatch_decrement"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_remove_circle_black_24dp"
-                android:visibility="gone" />
+            <TextView
+                android:id="@+id/ts_stock_product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.18"
+                android:text=""
+                android:textAllCaps="true"
+                android:textColor="@color/greydark"
+                android:textSize="12sp" />
 
-            <EditText
-                android:id="@+id/ts_stock_dispatch_quantity"
+            <TextView
+                android:id="@+id/ts_stock_order_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.22"
+                android:text=""
+                android:textColor="@color/greydark"
+                android:textSize="12sp" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="0.25"
-                android:clickable="false"
+                android:layout_marginRight="5dp"
+                android:layout_weight="0.17"
                 android:gravity="center"
-                android:inputType="number"
+                android:orientation="horizontal">
 
-                android:longClickable="false"
-                android:text="0.123"
-                android:textColor="@color/greydark"
-                android:textSize="12sp"
-                android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/ts_stock_dispatch_decrement"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_remove_circle_black_24dp"
+                    android:visibility="gone" />
 
-            <ImageButton
-                android:id="@+id/ts_stock_dispatch_increment"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_add_circle_black_24dp"
-                android:visibility="gone" />
+                <EditText
+                    android:id="@+id/ts_stock_dispatch_quantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.25"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:inputType="number"
 
-        </LinearLayout>
+                    android:longClickable="false"
+                    android:text="0.123"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginRight="5dp"
-            android:layout_weight="0.17"
-            android:gravity="center"
-            android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/ts_stock_dispatch_increment"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_add_circle_black_24dp"
+                    android:visibility="gone" />
 
-            <ImageButton
-                android:id="@+id/ts_stock_verify_decrement"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_remove_circle_black_24dp"
-                android:visibility="gone" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/ts_stock_verify_quantity"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="0.25"
+                android:layout_marginRight="5dp"
+                android:layout_weight="0.17"
                 android:gravity="center"
-                android:inputType="number"
-                android:text="0.456"
-                android:textColor="@color/greydark"
-                android:textSize="12sp"
-                android:visibility="gone" />
+                android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/ts_stock_verify_increment"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/ic_add_circle_black_24dp"
-                android:visibility="gone" />
+                <ImageButton
+                    android:id="@+id/ts_stock_verify_decrement"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_remove_circle_black_24dp"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/ts_stock_verify_quantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.25"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:text="0.456"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/ts_stock_verify_increment"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_add_circle_black_24dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
     </LinearLayout>
+
 
 </LinearLayout>

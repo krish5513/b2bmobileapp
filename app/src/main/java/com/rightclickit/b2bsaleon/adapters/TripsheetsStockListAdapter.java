@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.TripSheetStock;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsStockList;
+import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetStockListener;
 
 import java.util.ArrayList;
@@ -40,6 +41,10 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
 
     private final String zero_cost = "0.000";
 
+    String myList ;
+    DBHelper mDBHelper;
+
+
     public TripsheetsStockListAdapter(Context ctxt, TripSheetStock agentsActivity, TripSheetStockListener tripSheetStockListener, ArrayList<TripsheetsStockList> tripSheetStockList, ArrayList<String> privilegeActionsData) {
         this.ctxt = ctxt;
         this.activity = agentsActivity;
@@ -53,6 +58,8 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
         this.dispatchProductsListHashMapTemp = new HashMap<>();
         this.verifyProductsListHashMap = new HashMap<>();
         this.verifyProductsListHashMapTemp = new HashMap<>();
+
+        mDBHelper=new DBHelper(activity);
         if (dispatchProductsListHashMapTemp.size() > 0) {
             dispatchProductsListHashMapTemp.clear();
         }
@@ -85,6 +92,10 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
 
             tripSheetStockViewHolder = new TripSheetStockViewHolder();
             tripSheetStockViewHolder.mProductName = (TextView) view.findViewById(R.id.ts_stock_product_name);
+            // tripSheetStockViewHolder.mProductCode = (TextView) view.findViewById(R.id.ts_stock_product_code);
+            // tripSheetStockViewHolder.mProductUom = (TextView) view.findViewById(R.id.ts_stock_product_uom);
+
+
             tripSheetStockViewHolder.mOrder = (TextView) view.findViewById(R.id.ts_stock_order_quantity);
             tripSheetStockViewHolder.mDispatchDecrement = (ImageButton) view.findViewById(R.id.ts_stock_dispatch_decrement);
             tripSheetStockViewHolder.mDispatchQuantity = (EditText) view.findViewById(R.id.ts_stock_dispatch_quantity);
@@ -101,8 +112,14 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
         final TripsheetsStockList currentStockList = getItem(position);
 
         Double orderQuantity = Double.parseDouble(currentStockList.getmTripsheetStockProductOrderQuantity());
+        myList= mDBHelper.getProductUnitByProductCode(currentStockList.getmTripsheetStockProductCode());
+        tripSheetStockViewHolder.mProductName.setText(currentStockList.getmTripsheetStockProductName() + ","+ currentStockList.getmTripsheetStockProductCode()+","+myList);
+        // tripSheetStockViewHolder.mProductCode.setText(","+ currentStockList.getmTripsheetStockProductCode());
 
-        tripSheetStockViewHolder.mProductName.setText(currentStockList.getmTripsheetStockProductName());
+
+
+        //tripSheetStockViewHolder.mProductUom.setText(","+myList);
+
         tripSheetStockViewHolder.mOrder.setText(String.format("%.3f", orderQuantity));
 
         tripSheetStockViewHolder.mDispatchQuantity.setVisibility(View.VISIBLE);
@@ -321,7 +338,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                     try {
                         Double presentQuantity = Double.parseDouble(tripSheetStockViewHolder.mVerifyQuantity.getText().toString());
                         Double dispatchQuantity = Double.parseDouble(tripSheetStockViewHolder.mDispatchQuantity.getText().toString().trim());
-                        if (presentQuantity >= dispatchQuantity) {
+                        if (presentQuantity > dispatchQuantity) {
                             //tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", 0.0));
                             //currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(0.0));
                             new AlertDialog.Builder(activity)
@@ -393,6 +410,10 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
 
     public class TripSheetStockViewHolder {
         TextView mProductName;
+        TextView mProductCode;
+        TextView mProductUom;
+
+
         TextView mOrder;
         EditText mDispatchQuantity;
         EditText mVerifyQuantity;
@@ -412,6 +433,14 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
         } else {
             for (TripsheetsStockList stock : allTripSheetStockList) {
                 if (stock.getmTripsheetStockProductName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    filteredTripSheetStockList.add(stock);
+                }
+
+                if (stock.getmTripsheetStockProductCode().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    filteredTripSheetStockList.add(stock);
+                }
+
+                if (myList.toLowerCase(Locale.getDefault()).contains(charText)) {
                     filteredTripSheetStockList.add(stock);
                 }
             }

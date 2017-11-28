@@ -120,6 +120,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private NetworkConnectionDetector networkConnectionDetector;
     private boolean isTripSheetClosed = false;
     String startDateStrNewFormat;
+    private TextView mNoTripsFoundText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,7 +191,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             ts_total_due = (TextView) findViewById(R.id.ts_total_due);
 
             mTripsheetsSOListView = (ListView) findViewById(R.id.TripsheetsSOListView);
-
+            mNoTripsFoundText = (TextView) findViewById(R.id.NoTripsFoundTextView);
 //        taleorder = (Button) findViewById(R.id.btn_sale_ord1);
 //        taleorder.setVisibility(View.GONE);
 //        delivery = (LinearLayout) findViewById(R.id.gotoCustomer);
@@ -383,9 +384,13 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
             mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege, isTripSheetClosed,mhidePrevilige);
             mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
-
+            tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
             if (networkConnectionDetector.isNetworkConnected()) {
-                mTripsheetsModel.getTripsheetsSoList(mTripSheetId);
+                if(tripSheetSOList.size()>0){
+                    loadTripSheetSaleOrderData();
+                }else {
+                    mTripsheetsModel.getTripsheetsSoList(mTripSheetId);
+                }
             } else {
                 loadTripSheetSaleOrderData();
             }
@@ -396,11 +401,16 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     }
 
     public void loadTripSheetSaleOrderData() {
+        if(tripSheetSOList.size()>0){
+            tripSheetSOList.clear();
+        }
         tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
 
         if (tripSheetSOList.size() > 0) {
             mTripsheetSOAdapter.setAllSaleOrdersList(tripSheetSOList);
             mTripsheetSOAdapter.notifyDataSetChanged();
+        }else {
+            mNoTripsFoundText.setText("No Sale orders Found."+"\n"+"Please click on sync button to get the sale orders.");
         }
     }
 

@@ -4913,20 +4913,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return saleOrdersList;
     }
-
     public double fetchTripSheetSaleOrderReceivedAmount(String tripSheetId, String saleOrderId) {
         double receivedAmount = 0.0;
-
         try {
             String selectQuery = "SELECT " + KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT + " FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " = '" + tripSheetId + "' AND " + KEY_TRIPSHEET_PAYMENTS_SO_ID + " = '" + saleOrderId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
-
             if (c.moveToFirst()) {
                 do {
                     receivedAmount = receivedAmount + Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT)));
                 } while (c.moveToNext());
+            } else {
+                receivedAmount = -1;
             }
 
             c.close();
@@ -6846,7 +6845,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
-
+            Log.i("count",+c.getCount()+"");
             if (c.moveToFirst()) {
                 do {
                     SaleOrderReturnedProducts returnedProduct = new SaleOrderReturnedProducts();
@@ -6856,12 +6855,14 @@ public class DBHelper extends SQLiteOpenHelper {
                     returnedProduct.setName(c.getString(c.getColumnIndex(KEY_PRODUCT_TITLE)));
                     returnedProduct.setCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
                     String cc = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES));
+                    Log.i("cc detail",cc+"");
                     if (cc.equals("2600005")) {
-                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc, "cans");
+                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc, "crates");
+                        Log.i("obamount detail",obamount+"");
                         // CANS DUE
                         returnedProduct.setOpeningBalance(obamount);
                     } else if (cc.equals("2600006")) {
-                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc, "crates");
+                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc, "cans");
                         // CRATES DUE
                         returnedProduct.setOpeningBalance(obamount);
                     } else {
@@ -6932,6 +6933,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
                 Cursor c = db.rawQuery(selectQuery, null);
+                Log.i("canary count",c.getCount()+"");
                 if (c.moveToFirst()) {
                     do {
                         due = c.getString(c.getColumnIndex(KEY_TRIPSHEET_SO_CANS_DUE));
@@ -6940,15 +6942,18 @@ public class DBHelper extends SQLiteOpenHelper {
                 c.close();
 
             } else if (type.equals("crates")) {
-                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_SO_LIST
-                        + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = " + "'" + tripsheetId + "' AND " +
-                        KEY_TRIPSHEET_SO_PRODUCTCODE + " = '" + prodCode + "'";
+                selectQuery = "SELECT " + KEY_TRIPSHEET_SO_CRATES_DUE + " FROM " + TABLE_TRIPSHEETS_SO_LIST
+                        + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = " + "'" + tripsheetId +  /*"' AND " +
+                        KEY_TRIPSHEET_SO_PRODUCTCODE + " = '" + prodCode +*/ "'";
+
+
 
                 Cursor c = db.rawQuery(selectQuery, null);
+                Log.i("crates count2",c.getCount()+"");
                 if (c.moveToFirst()) {
-                    do {
+                   // do {
                         due = c.getString(c.getColumnIndex(KEY_TRIPSHEET_SO_CRATES_DUE));
-                    } while (c.moveToNext());
+                   // } while (c.moveToNext());
                 }
                 c.close();
             }

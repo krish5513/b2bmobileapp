@@ -208,10 +208,14 @@ public class TripSheetsActivity extends AppCompatActivity {
                 mDashboardHomeScreen = privilegeActionsData1.get(z).toString();
             }
         }
-       // startService(new Intent(TripSheetsActivity.this, SyncNotificationsListService.class));
-
+        // startService(new Intent(TripSheetsActivity.this, SyncNotificationsListService.class));
+        ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList();
         if (new NetworkConnectionDetector(TripSheetsActivity.this).isNetworkConnected()) {
-            mTripsheetsModel.getTripsheetsList(mNoTripsFoundText);
+            if(tripsList.size()>0){
+                loadTripSheetsData();
+            }else {
+                mTripsheetsModel.getTripsheetsList(mNoTripsFoundText);
+            }
         } else {
             loadTripSheetsData();
         }
@@ -228,7 +232,7 @@ public class TripSheetsActivity extends AppCompatActivity {
             mTripsListAdapter = new TripsheetsListAdapter(TripSheetsActivity.this, TripSheetsActivity.this, tripsList, mTripSheetViewPrivilege, mTripSheetStockPrivilege);
             mTripsListview.setAdapter(mTripsListAdapter);
         } else {
-            mNoTripsFoundText.setText("No Trip Sheets Found.");
+            mNoTripsFoundText.setText("No Trip Sheets Found."+"\n"+"Please click on sync button to get the tripsheets.");
         }
     }
 

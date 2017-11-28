@@ -28,6 +28,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
+import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.services.SyncTripSheetsPaymentsService;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
@@ -510,7 +511,7 @@ public class TripsheetPayments extends AppCompatActivity {
 
     public void savePaymentDetails() {
         Double enteredAmount = Double.parseDouble(mAmountText.getText().toString());
-        if (enteredAmount > 0) {
+        if (enteredAmount >= 0) {
             PaymentsBean paymentsBean = null;
 
             if (paymentTypeSpinner.getSelectedItem().toString().equals("Cash"))
@@ -522,27 +523,72 @@ public class TripsheetPayments extends AppCompatActivity {
                 mDBHelper.insertTripsheetsPaymentsListData(paymentsBean);
             }
 
-            Toast.makeText(TripsheetPayments.this, getResources().getString(R.string.database_details), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(TripsheetPayments.this, getResources().getString(R.string.database_details), Toast.LENGTH_SHORT).show();
 //            CustomAlertDialog.showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
+            showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
             synchronized (this) {
                 if (new NetworkConnectionDetector(TripsheetPayments.this).isNetworkConnected()) {
                     startService(new Intent(TripsheetPayments.this, SyncTripSheetsPaymentsService.class));
                 }
             }
 
-            synchronized (this) {
-                Intent i = new Intent(TripsheetPayments.this, TripsheetPaymentsPreview.class);
-                i.putExtra("tripsheetId", mTripSheetId);
-                i.putExtra("agentId", mAgentId);
-                i.putExtra("agentCode", mAgentCode);
-                i.putExtra("agentName", mAgentName);
-                i.putExtra("agentRouteId", mAgentRouteId);
-                i.putExtra("agentRouteCode", mAgentRouteCode);
-                i.putExtra("agentSoId", mAgentSoId);
-                i.putExtra("agentSoCode", mAgentSoCode);
-                startActivity(i);
-                finish();
-            }
+//            synchronized (this) {
+//                Intent i = new Intent(TripsheetPayments.this, TripsheetPaymentsPreview.class);
+//                i.putExtra("tripsheetId", mTripSheetId);
+//                i.putExtra("agentId", mAgentId);
+//                i.putExtra("agentCode", mAgentCode);
+//                i.putExtra("agentName", mAgentName);
+//                i.putExtra("agentRouteId", mAgentRouteId);
+//                i.putExtra("agentRouteCode", mAgentRouteCode);
+//                i.putExtra("agentSoId", mAgentSoId);
+//                i.putExtra("agentSoCode", mAgentSoCode);
+//                startActivity(i);
+//                finish();
+//            }
+        }
+    }
+    /**
+     * Method to display alert after success delivery.
+     *
+     * @param context
+     * @param title
+     * @param message
+     */
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            // AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    CustomProgressDialog.hideProgressDialog();
+
+                    Intent i = new Intent(TripsheetPayments.this, TripsheetPaymentsPreview.class);
+                    i.putExtra("tripsheetId", mTripSheetId);
+                    i.putExtra("agentId", mAgentId);
+                    i.putExtra("agentCode", mAgentCode);
+                    i.putExtra("agentName", mAgentName);
+                    i.putExtra("agentRouteId", mAgentRouteId);
+                    i.putExtra("agentRouteCode", mAgentRouteCode);
+                    i.putExtra("agentSoId", mAgentSoId);
+                    i.putExtra("agentSoCode", mAgentSoCode);
+                    startActivity(i);
+                    finish();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
