@@ -99,7 +99,7 @@ public class AgentReturnsAdapter extends BaseAdapter{
         final TripSheetReturnsBean currentReturnsBean = allDeliveryProductsList.get(position);
 
         tripSheetDeliveriesViewHolder.returns_no.setText(currentReturnsBean.getmTripshhetReturnsReturn_number());
-        tripSheetDeliveriesViewHolder.returns_date.setText(getDate(currentReturnsBean.getmTripshhetReturnsCreated_on(),"dd-MM-yyyy"));
+        tripSheetDeliveriesViewHolder.returns_date.setText(currentReturnsBean.getmTripshhetReturnsCreated_on());
         tripSheetDeliveriesViewHolder.return_status.setText(currentReturnsBean.getmTripshhetReturnsStatus());
         tripSheetDeliveriesViewHolder.items_count.setText(currentReturnsBean.getReturnsItemsCount());
         tripSheetDeliveriesViewHolder.returns_by.setText(mdbhelper.getDeliveryName(currentReturnsBean.getmTripshhetReturnsCreated_by()));
@@ -111,7 +111,7 @@ public class AgentReturnsAdapter extends BaseAdapter{
                 Intent i=new Intent(activity,AgentReturnsView.class);
                 i.putExtra("ReturnNo",currentReturnsBean.getmTripshhetReturnsReturn_number());
                 i.putExtra("tripId",currentReturnsBean.getmTripshhetReturnsTrip_id());
-                i.putExtra("Returndate",getDate(currentReturnsBean.getmTripshhetReturnsCreated_on(),"dd-MM-yyyy"));
+                i.putExtra("Returndate",(currentReturnsBean.getmTripshhetReturnsCreated_on()));
                 activity.startActivity(i);
                 activity.finish();
             }

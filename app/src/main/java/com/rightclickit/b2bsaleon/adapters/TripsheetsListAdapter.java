@@ -77,6 +77,7 @@ public class TripsheetsListAdapter extends BaseAdapter {
             view = mInflater.inflate(R.layout.tripsheets_list_custom, null);
 
             mHolder.mTripsheetCode = (TextView) view.findViewById(R.id.tv_prid);
+            mHolder.routecode = (TextView) view.findViewById(R.id.routecode);
             mHolder.mTripsheetDate = (TextView) view.findViewById(R.id.tv_date);
             mHolder.mTripsheetStatus = (TextView) view.findViewById(R.id.tv_status);
             mHolder.mTripsheetOBAmount = (TextView) view.findViewById(R.id.tv_ob_amount);
@@ -126,6 +127,7 @@ public class TripsheetsListAdapter extends BaseAdapter {
             mHolder.mTripsheetStatus.setText("In Transit");
         else
             mHolder.mTripsheetStatus.setText("Closed");
+        mHolder.routecode.setText(currentTripSheet.getmTripshhetRouteCode());
 
         mHolder.mTripsheetOBAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetOBAmount().replace(",", ""))));
         mHolder.mTripsheetOrderedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetOrderedAmount().replace(",", ""))));
@@ -174,7 +176,7 @@ public class TripsheetsListAdapter extends BaseAdapter {
         TextView mTripsheetOBAmount;
         TextView mTripsheetOrderedAmount;
         TextView mTripsheetReceivedAmount;
-        TextView mTripsheetDueAmount;
+        TextView mTripsheetDueAmount,routecode;
         public Button viewbtn;
         public Button stockbtn;
     }

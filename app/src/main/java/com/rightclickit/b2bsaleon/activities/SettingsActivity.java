@@ -20,6 +20,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -531,8 +532,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             if (userMapData.get("backup") != null) {
                 backup.setText(userMapData.get("backup").toString());
             }
-            if (userMapData.get("vehicle_number") != null) {
-                vehicleNo.setText(userMapData.get("vehicle_number").toString());
+            if (userMapData.get("vehicle_no") != null) {
+                Log.i("jsdfgfuds",userMapData.get("vehicle_no").toString());
+                vehicleNo.setText(userMapData.get("vehicle_no").toString());
             }
             if (userMapData.get("transporter_name") != null) {
                 transporterName.setText(userMapData.get("transporter_name").toString());

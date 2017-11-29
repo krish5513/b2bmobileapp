@@ -18,6 +18,16 @@ public class TripsheetsList {
     }
 
     private String my_Id;
+
+    public String getRoute_code() {
+        return route_code;
+    }
+
+    public void setRoute_code(String route_code) {
+        this.route_code = route_code;
+    }
+
+    private String route_code;
     private String mTripshhetDate;
     private String mTripshhetStatus;
     private String mTripshhetOBAmount;

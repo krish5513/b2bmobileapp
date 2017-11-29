@@ -216,6 +216,18 @@
                             android:text="View"
                             android:textColor="@color/colorPrimary"
                             android:textSize="10sp" />
+
+                        <TextView
+                            android:id="@+id/routecode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="vsgvs "
+                            android:gravity="center"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginTop="5dp"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
                         <Button
                             android:id="@+id/btn_stock1"
                             android:layout_width="70dp"
@@ -225,7 +237,7 @@
                             android:drawableLeft="@drawable/ic_remove_red_eye_black_24dp"
                             android:padding="5dp"
                             android:text="Stock"
-                            android:layout_marginLeft="70dp"
+                            android:layout_marginLeft="30dp"
                             android:textColor="@color/colorPrimary"
                             android:textSize="10sp" />
 

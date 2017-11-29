@@ -137,7 +137,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_BACKUP = "backup";
     private final String KEY_ROUTEIDS = "route_ids";
     private final String KEY_DEVICE_UDID = "device_udid";
-    private final String KEY_VEHICLE_NUMBER = "vehicle_number";
+    private final String KEY_VEHICLE_NUMBER = "vehicle_no";
     private final String KEY_TRANSPORTER_NAME = "transporter_name";
     private final String KEY_LATITUDE = "latitude";
     private final String KEY_LONGITUDE = "longitude";

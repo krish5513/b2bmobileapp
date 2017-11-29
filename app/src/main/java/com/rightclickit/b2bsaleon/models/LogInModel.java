@@ -1,6 +1,7 @@
 package com.rightclickit.b2bsaleon.models;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.constants.Constants;
@@ -55,6 +56,8 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
         try {
             System.out.println("========= response = " + response);
+
+            String dId = "", trasportName = "", vehicleNum = "";
             String id = "", userCode = "", userName = "", email = "", phone = "",
                     profilePic = "", stakeHolderId = "", address = "", deviceSync = "", accessDevice = "", backUp = "", routeArrayListString = "", latitude = "", longitude = "", password = "", companyname = "";
             JSONObject logInResponse = new JSONObject(response);
@@ -82,6 +85,31 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                 }
                 if (logInResponse.has("password")) {
                     password = logInResponse.getString("password");
+                }
+
+                if (logInResponse.has("devicedata")) {
+                    JSONArray priceJsonArray = logInResponse.getJSONArray("devicedata");
+                    int len = priceJsonArray.length();
+                    if (len > 0) {
+                        for (int k = 0; k < len; k++) {
+                            JSONObject priceObj = priceJsonArray.getJSONObject(k);
+
+                            if (priceObj.has("transporter_name")) {
+
+                                trasportName=priceObj.getString("transporter_name");
+
+
+                            }
+
+                             if (priceObj.has("vehicle_no")) {
+
+                                vehicleNum=priceObj.getString("vehicle_no");
+
+                                 Log.i("jsdfgfuds",vehicleNum);
+                            }
+
+                        }
+                    }
                 }
                 if (logInResponse.has("phone")) {
                     phone = logInResponse.getString("phone");
@@ -136,7 +164,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                         mDBHelper.deleteValuesFromUserDetailsTable();
                     }
                     synchronized (this) {
-                        String dId = "", trasportName = "", vehicleNum = "";
+
 //                        if (!mPreferences.getString("").equals("No Data found")
 //                                || !mPreferences.getString("").equals("No Data Found")) {
 //                            dId = mPreferences.getString("deviceId");

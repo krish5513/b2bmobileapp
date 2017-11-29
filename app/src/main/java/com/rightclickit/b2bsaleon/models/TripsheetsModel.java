@@ -238,6 +238,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
                         tripsheetsListBean.setmTripshhetId(jb.getString("_id"));
                         tripsheetsListBean.setmTripshhetCode(jb.getString("code"));
+                        //tripsheetsListBean.setRoute_code(jb.getString("route_code"));
                         tripsheetsListBean.setMy_Id(jb.getString("my_id"));
                         tripsheetsListBean.setmTripshhetDate(jb.getString("date"));
                         tripsheetsListBean.setmTripshhetStatus(jb.getString("status"));
@@ -255,7 +256,8 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
                         Double dueAmt = Double.parseDouble(tripsheetsListBean.getmTripshhetOrderedAmount().replace(",", "")) - Double.parseDouble(tripsheetsListBean.getmTripshhetReceivedAmount().replace(",", ""));
                         tripsheetsListBean.setmTripshhetDueAmount(String.valueOf(dueAmt));
-                        tripsheetsListBean.setmTripshhetRouteCode("route_code");
+                       // tripsheetsListBean.setmTripshhetRouteCode("route_code");
+                        tripsheetsListBean.setmTripshhetRouteCode(jb.getString("route_code"));
                         tripsheetsListBean.setmTripshhetSalesMenCode("salesman_code");
                         tripsheetsListBean.setmTripshhetVehicleNumber("vehicle_no");
                         tripsheetsListBean.setmTripshhetTrasnsporterName("transporter");
