@@ -338,7 +338,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                     try {
                         Double presentQuantity = Double.parseDouble(tripSheetStockViewHolder.mVerifyQuantity.getText().toString());
                         Double dispatchQuantity = Double.parseDouble(tripSheetStockViewHolder.mDispatchQuantity.getText().toString().trim());
-                        if (presentQuantity > dispatchQuantity) {
+                        if (presentQuantity >= dispatchQuantity) {
                             //tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", 0.0));
                             //currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(0.0));
                             new AlertDialog.Builder(activity)

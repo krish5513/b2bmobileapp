@@ -48,7 +48,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
     private MMSharedPreferences mmSharedPreferences;
 
     private TextView tripsheet_no_text_view, sale_date_time_text_view, total_tax_amount_text_view, total_amount_text_view, sub_total_amount_text_view;
-    private String loggedInUserId, loggedInUserName;
+    private String loggedInUserId, loggedInUserName,routecode;
     private DBHelper mDBHelper;
 
     String str_routecode, str_Tripcode, str_Tripdate, str_AgentName, str_AgentCode, str_OB, str_Order, str_Received, str_Due, mAgentSoId, mAgentId, uom;
@@ -90,7 +90,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
             str_routecode = (mmSharedPreferences.getString("routecode") + ",");
             str_Tripcode = mmSharedPreferences.getString("tripsheetCode");
             str_Tripdate = mmSharedPreferences.getString("tripsheetDate");
-
+            routecode= mmSharedPreferences.getString("tripsheetroutecode");
             mDBHelper = new DBHelper(TripSheetViewPreview.this);
             networkConnectionDetector = new NetworkConnectionDetector(activityContext);
             listView = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
@@ -250,7 +250,8 @@ public class TripSheetViewPreview extends AppCompatActivity {
             sales_print.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pageheight = 800 + selectedList.size() * 180;
+                    int pageheight = 800 + selectedList.size() * 180 + cratesList.size()*180;
+
                     Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
                     Canvas canvas = new Canvas(bmOverlay);
                     canvas.drawColor(Color.WHITE);
@@ -263,33 +264,33 @@ public class TripSheetViewPreview extends AppCompatActivity {
 
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 20, paint);
-                  /*  paint.setTextSize(20);
-                    canvas.drawText(mmSharedPreferences.getString("loginusername"), 5, 50, paint);
-                   */ paint.setTextSize(20);
-                    canvas.drawText("-------------------------------------------", 5, 50, paint);
+                   paint.setTextSize(20);
+                    canvas.drawText(routecode, 5, 50, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("-------------------------------------------", 5, 80, paint);
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     paint.setTextSize(20);
-                    canvas.drawText("TRIP SUMMARY", 100, 80, paint);
+                    canvas.drawText("TRIP SUMMARY", 100, 110, paint);
                     paint.setTextSize(20);
-                    canvas.drawText("TRIP #,DATE ", 5, 110, paint);
+                    canvas.drawText("TRIP #,DATE ", 5, 140, paint);
                     paint.setTextSize(20);
-                    canvas.drawText(": " + str_Tripcode +", " + str_Tripdate, 150, 110, paint);
+                    canvas.drawText(": " + str_Tripcode +", " + str_Tripdate, 150, 140, paint);
                    /* paint.setTextSize(20);
                     canvas.drawText("DATE ", 5, 170, paint);
                     paint.setTextSize(20);
                     canvas.drawText(": " + str_Tripdate, 150, 170, paint);
                    */ paint.setTextSize(20);
-                    canvas.drawText("-------------------------------------------", 5, 140, paint);
+                    canvas.drawText("-------------------------------------------", 5, 170, paint);
 
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     paint.setTextSize(20);
-                    canvas.drawText("TRIP PAYMENT SUMMARY", 5, 170, paint);
+                    canvas.drawText("TRIP PAYMENT SUMMARY", 5, 200, paint);
 
-                    paint.setTextSize(20);
+                   /* paint.setTextSize(20);
                     canvas.drawText("OB ", 5, 200, paint);
                     paint.setTextSize(20);
                     canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount())), 150, 200, paint);
-                    paint.setTextSize(20);
+                   */ paint.setTextSize(20);
                     canvas.drawText("ORDER ", 5, 230, paint);
                     paint.setTextSize(20);
                     canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount())), 150, 230, paint);
@@ -297,18 +298,18 @@ public class TripSheetViewPreview extends AppCompatActivity {
                     canvas.drawText("RECEIVED ", 5, 260, paint);
                     paint.setTextSize(20);
                     canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())), 150, 260, paint);
-                    paint.setTextSize(20);
+                   /* paint.setTextSize(20);
                     canvas.drawText("CB ", 5, 290, paint);
                     paint.setTextSize(20);
                     canvas.drawText(": " + Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())), 150, 290, paint);
-
+*/
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     paint.setTextSize(20);
-                    canvas.drawText("-------------------------------------------", 5, 320, paint);
+                    canvas.drawText("-------------------------------------------", 5, 290, paint);
 
                     paint.setTextSize(20);
-                    canvas.drawText("CUSTOMER WISE PAYMENT SUMMARY", 5, 350, paint);
-                    int st = 380;
+                    canvas.drawText("CUSTOMER WISE PAYMENT SUMMARY", 5, 320, paint);
+                    int st = 350;
                     paint.setTextSize(17);
                     // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
 
