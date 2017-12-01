@@ -94,25 +94,25 @@ public class SyncRoutesMasterDetailsService extends Service {
                 if (mStoredRouteIds == null) {
                     mStoredRouteIds = "";
                 }
-              /*  JSONObject parm=new JSONObject();
+                JSONObject parm=new JSONObject();
                 try{
                     JSONObject jsonObject = new JSONObject(mStoredRouteIds);
                     System.out.println("JSON obj : " + jsonObject.toString());
                     JSONArray regionidArray=jsonObject.getJSONArray("routeArray");
 
-                    parm.put("route_ids",regionidArray);
+                    parm.put("routes_ids",regionidArray);
                     System.out.println("The regionid IS:: " + regionidArray);
                 }
                 catch (Exception e){
 
-                }*/
+                }
                 if (mDBHelper.getRouteId().length() > 0) {
                     // Clear the db first and then insert..
                     mDBHelper.deleteValuesFromRoutesTable();
                 }
                 String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_ROUTES_MASTER_DATA, Constants.ROUTEID_SERVICE);
 
-                mJsonObj = new NetworkManager().makeHttpGetConnection(URL);
+                mJsonObj = new NetworkManager().makeHttpPostConnection(URL,parm);
 
                 JSONArray resultArray = new JSONArray(mJsonObj);
                // resultArray.put(mJsonObj);
@@ -134,12 +134,13 @@ public class SyncRoutesMasterDetailsService extends Service {
                                 if (obj.has("region_id")) {
                                     regionId = obj.getString("region_id");
                                     regionIdsList.put(routeId, regionId);
+                                    mSessionManagement.putString("RegionId", regionId);
                                     if (obj.has("regions")) {
                                         JSONArray regionsArray = obj.getJSONArray("regions");
                                         for (int j = 0; j < regionsArray.length(); j++) {
                                             JSONObject regionObj = regionsArray.getJSONObject(j);
-                                            if (regionId.equals(regionObj.getString("_id"))) {
-                                                mSessionManagement.putString("RegionId", regionId);
+                                           /* if (regionId.equals(regionObj.getString("_id"))) {
+                                                mSessionManagement.putString("RegionId", regionId);*/
                                                 if (regionName.equals("")) {
                                                     regionName = regionObj.getString("name");
                                                 } else {
@@ -147,7 +148,7 @@ public class SyncRoutesMasterDetailsService extends Service {
                                                         regionName = regionName + "," + regionObj.getString("name");
                                                     }
                                                 }
-                                            }
+
                                         }
                                     }
                                 }
@@ -157,7 +158,7 @@ public class SyncRoutesMasterDetailsService extends Service {
                                         JSONArray officesArray = obj.getJSONArray("offices");
                                         for (int k = 0; k < officesArray.length(); k++) {
                                             JSONObject officeObj = officesArray.getJSONObject(k);
-                                            if (officeId.equals(officeObj.getString("_id"))) {
+                                            //if (officeId.equals(officeObj.getString("_id"))) {
                                                 if (officeName.equals("")) {
                                                     officeName = officeObj.getString("name");
                                                 } else {
@@ -166,7 +167,7 @@ public class SyncRoutesMasterDetailsService extends Service {
                                                     }
                                                 }
                                                 officeNamesList.add(officeName);
-                                            }
+                                            //}
                                         }
                                     }
                                 }

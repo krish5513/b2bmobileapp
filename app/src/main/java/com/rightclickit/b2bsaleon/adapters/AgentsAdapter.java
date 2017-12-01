@@ -186,11 +186,7 @@ public class AgentsAdapter extends BaseAdapter {
             mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mHolder.mStatus.equals("InActive") ){
-
-                        CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.agent));
-
-                }    else{
+                    if(mAgentsBeansList1.get(position).getmStatus().equals("A") ){
 
                         mPreferences.putString("agentName", mAgentsBeansList1.get(position).getmFirstname());
 
@@ -208,6 +204,10 @@ public class AgentsAdapter extends BaseAdapter {
                         activity.startActivity(i);
 
                         activity.finish();
+
+
+                }    else{
+                        CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.agent));
                     }}
 
 
@@ -217,63 +217,63 @@ public class AgentsAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                if(mHolder.mStatus.equals("InActive") ){
+                if(mAgentsBeansList1.get(position).getmStatus().equals("A") ){
+                    Intent intent = new Intent(activity, AgentsInfoActivity.class);
+                    Bundle bundle = new Bundle();
+                    //Add your data from getFactualResults method to bundle
 
-                    CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.agent));
+                    bundle.putString("FIRSTNAME", mAgentsBeansList1.get(position).getmFirstname());
+                    bundle.putString("LASTNAME", mAgentsBeansList1.get(position).getmLastname());
+                    bundle.putString("MOBILE", mAgentsBeansList1.get(position).getMphoneNO());
+                    bundle.putString("ADDRESS", mAgentsBeansList1.get(position).getMaddress());
+                    bundle.putString("AGENTCODE", mAgentsBeansList1.get(position).getmAgentCode());
+
+                    intent.putExtra("AVATAR", mAgentsBeansList1.get(position).getmAgentPic());
+
+                    intent.putExtra("POI", mAgentsBeansList1.get(position).getmPoiImage());
+
+                    intent.putExtra("POA", mAgentsBeansList1.get(position).getmPoaImage());
+                    mHolder.mPicImage.buildDrawingCache();
+                    mHolder.mPoiImage.buildDrawingCache();
+                    mHolder.mPoaImage.buildDrawingCache();
+                    Bitmap avatar = mHolder.mPicImage.getDrawingCache();
+                    Log.i("avatar", avatar + "");
+                    Bitmap poi = mHolder.mPoiImage.getDrawingCache();
+                    Log.i("poi", poi + "");
+                    Bitmap poa = mHolder.mPoaImage.getDrawingCache();
+                    Bundle extras = new Bundle();
+                    extras.putParcelable("avatar", avatar);
+                    extras.putParcelable("poi", poi);
+                    extras.putParcelable("poa", poa);
+                    intent.putExtras(extras);
+                    //Add the bundle to the intent
+                    intent.putExtras(bundle);
+
+                    activity.startActivity(intent);
+                    activity.finish();
+
 
                 }    else{
+                    CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.agent));
 
-                    Intent intent = new Intent(activity, AgentsInfoActivity.class);
-                Bundle bundle = new Bundle();
-                //Add your data from getFactualResults method to bundle
-
-                bundle.putString("FIRSTNAME", mAgentsBeansList1.get(position).getmFirstname());
-                bundle.putString("LASTNAME", mAgentsBeansList1.get(position).getmLastname());
-                bundle.putString("MOBILE", mAgentsBeansList1.get(position).getMphoneNO());
-                bundle.putString("ADDRESS", mAgentsBeansList1.get(position).getMaddress());
-                bundle.putString("AGENTCODE", mAgentsBeansList1.get(position).getmAgentCode());
-
-                intent.putExtra("AVATAR", mAgentsBeansList1.get(position).getmAgentPic());
-
-                intent.putExtra("POI", mAgentsBeansList1.get(position).getmPoiImage());
-
-                intent.putExtra("POA", mAgentsBeansList1.get(position).getmPoaImage());
-                mHolder.mPicImage.buildDrawingCache();
-                mHolder.mPoiImage.buildDrawingCache();
-                mHolder.mPoaImage.buildDrawingCache();
-                Bitmap avatar = mHolder.mPicImage.getDrawingCache();
-                Log.i("avatar", avatar + "");
-                Bitmap poi = mHolder.mPoiImage.getDrawingCache();
-                Log.i("poi", poi + "");
-                Bitmap poa = mHolder.mPoaImage.getDrawingCache();
-                Bundle extras = new Bundle();
-                extras.putParcelable("avatar", avatar);
-                extras.putParcelable("poi", poi);
-                extras.putParcelable("poa", poa);
-                intent.putExtras(extras);
-                //Add the bundle to the intent
-                intent.putExtras(bundle);
-
-                activity.startActivity(intent);
-                activity.finish();
             }}
         });
 
         mHolder.stockbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mHolder.mStatus.equals("InActive")) {
-
-                    CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.agent));
-
-                } else {
-
+                if (mAgentsBeansList1.get(position).getmStatus().equals("A")) {
                     Intent intent = new Intent(activity, AgentStockActivity.class);
                     intent.putExtra("agentId", mAgentsBeansList1.get(position).getmAgentId());
                     intent.putExtra("agentCode", mAgentsBeansList1.get(position).getmAgentCode());
                     intent.putExtra("agentName", mAgentsBeansList1.get(position).getmFirstname());
                     activity.startActivity(intent);
                     activity.finish();
+
+
+                } else {
+
+                    CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.agent));
                 }
             }
         });

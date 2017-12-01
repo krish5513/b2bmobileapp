@@ -176,7 +176,7 @@ public class Constants {
     //Log In
     public static final String LOGIN_SERVICE = "/user/login";
     // Routes List master
-    public static final String ROUTEID_SERVICE = "/route/list";
+    public static final String ROUTEID_SERVICE = "/route/list/by_user_routes";
     // User previleges 4&\n
     public static final String GET_USER_PREVILEGES_SERVICE = "/b2b_quality/common/getactions_mobile?stake_id=";
    // public static final String GET_USER_PREVILEGES_SERVICE = "/tmppl_live/common/getactions_mobile?stake_id=";
