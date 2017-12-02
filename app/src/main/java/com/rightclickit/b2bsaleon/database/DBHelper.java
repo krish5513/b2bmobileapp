@@ -1445,6 +1445,36 @@ public class DBHelper extends SQLiteOpenHelper {
         return routeDetailsById;
     }
 
+    public String getRouteNameByRouteCode(String routeCode) {
+        String routeDetailsById = "";
+        try {
+            String selectQuery = "SELECT  * FROM " + TABLE_ROUTESDETAILS + " WHERE " + KEY_ROUTE_CODE + " = " + "'" + routeCode + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    routeDetailsById=((c.getString(c.getColumnIndex(KEY_ROUTE_NAME))));
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return routeDetailsById;
+    }
+
+
+
+
+
+
+
     /**
      * Method to insert the user activity data.
      *

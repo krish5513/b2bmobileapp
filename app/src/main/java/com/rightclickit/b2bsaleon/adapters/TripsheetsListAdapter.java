@@ -131,9 +131,9 @@ public class TripsheetsListAdapter extends BaseAdapter {
 
         mHolder.mTripsheetOBAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetOBAmount().replace(",", ""))));
         mHolder.mTripsheetOrderedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetOrderedAmount().replace(",", ""))));
-        mHolder.mTripsheetReceivedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetReceivedAmount().replace(",", ""))));
+     //   mHolder.mTripsheetReceivedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetReceivedAmount().replace(",", ""))));
         mHolder.mTripsheetDueAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetDueAmount().replace(",", ""))));
-
+        mHolder.mTripsheetReceivedAmount.setText(mDBHelper.getRouteNameByRouteCode(currentTripSheet.getmTripshhetRouteCode()));
         mHolder.stockbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
