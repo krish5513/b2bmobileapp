@@ -97,7 +97,7 @@ public class SyncTakeOrdersService extends Service {
                 mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes", mSessionManagement.getString("agentId"));
                 mAgentsBeansList = mDBHelper.fetchAllRecordsFromAgentsTable(mSessionManagement.getString("userId"));
                 mProductsBeansList = mDBHelper.fetchAllRecordsFromProductsTable();
-                System.out.println("BEFORE SERVICE:: " + mTakeOrderBeansList.size());
+                //System.out.println("BEFORE SERVICE:: " + mTakeOrderBeansList.size());
                 // System.out.println("BEFORE SERVICE PRICE:: "+ mTakeOrderBeansList.get(0).getmAgentPrice());
                 userId = mSessionManagement.getString("userId");
                 String URL = String.format("%s%s%s%s", Constants.MAIN_URL, Constants.SYNC_TAKE_ORDERS_PORT, Constants.SYNC_TAKE_ORDERS_SERVICE, mSessionManagement.getString("token"));
@@ -124,16 +124,16 @@ public class SyncTakeOrdersService extends Service {
 
                 for (int i = 0; i < mTakeOrderBeansList.size(); i++) {
                     productCode.put(mTakeOrderBeansList.get(i).getMtakeorderProductCode());
-                    Log.i("pCode", mTakeOrderBeansList.get(i).getMtakeorderProductCode());
+                    //Log.i("pCode", mTakeOrderBeansList.get(i).getMtakeorderProductCode());
                     productArra.put(mTakeOrderBeansList.get(i).getmProductId());
                     quantityArra.put(mTakeOrderBeansList.get(i).getmProductQuantity());
                     fromDateArra.put(mTakeOrderBeansList.get(i).getmProductFromDate());
                     toDateArra.put(mTakeOrderBeansList.get(i).getmProductToDate());
                 }
                 params1.put("product_ids", productArra);
-                Log.i("pID", productArra.toString());
+                //Log.i("pID", productArra.toString());
                 params1.put("product_codes", productCode);
-                Log.i("pCode", productCode.toString());
+                //Log.i("pCode", productCode.toString());
                 params1.put("from_date", fromDateArra);
                 params1.put("to_date", toDateArra);
                 params1.put("order_type", "1");

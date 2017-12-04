@@ -53,7 +53,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
     private ArrayList<DeliverysBean> allProductsListFromStock = new ArrayList<>();
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap;
-    private Map<String, String> previouslyDeliveredProductsHashMap; // this hash map contains previously delivered product quantity. key = product id & value = previously delivered quantity
+    private Map<String, String> previouslyDeliveredProductsHashMap,selectedDeliveryProductsHashMapTemp; // this hash map contains previously delivered product quantity. key = product id & value = previously delivered quantity
     private Map<String, String> productOrderQuantitiesHashMap; // this hash map contains product codes & it's order quantity fetched from sale oder table.
     private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "", mAgentSoDate;
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
@@ -135,6 +135,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             selectedDeliveryProductsHashMap = new HashMap<>();
             previouslyDeliveredProductsHashMap = new HashMap<>();
             productOrderQuantitiesHashMap = new HashMap<>();
+            selectedDeliveryProductsHashMapTemp = new HashMap<>();
 
             allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
 
@@ -363,6 +364,11 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
         isDeliveryDataSaved = false;
     }
 
+    @Override
+    public void updateDeliveryProductsListTemp(Map<String, String> deliveryProductsListTemp) {
+        selectedDeliveryProductsHashMapTemp = deliveryProductsListTemp;
+    }
+
     public boolean validateTripSheetDeliveryData() {
         boolean isValid = true;
 
@@ -423,7 +429,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                             //remainingInStock = deliverysBean.getProductStock() - deliverysBean.getSelectedQuantity();
                             remainingExtraStock = deliverysBean.getProductExtraQuantity();
                         }
-                        if (deliverysBean.getSelectedQuantity() != 0) {
+                        if (selectedDeliveryProductsHashMapTemp.get(deliverysBean.getProductCode()) != null) {
                             // Quantity is available....
                             TripSheetDeliveriesBean tripSheetDeliveriesBean = new TripSheetDeliveriesBean();
                             tripSheetDeliveriesBean.setmTripsheetDeliveryNo("");

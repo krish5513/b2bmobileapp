@@ -10,4 +10,6 @@ import java.util.Map;
 
 public interface TripSheetDeliveriesListener {
     void updateDeliveryProductsList(Map<String, DeliverysBean> deliveryProductsList);
+    void updateDeliveryProductsListTemp(Map<String, String> deliveryProductsListTemp);
+
 }

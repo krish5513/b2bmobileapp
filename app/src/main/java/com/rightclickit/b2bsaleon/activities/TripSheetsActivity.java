@@ -22,7 +22,10 @@ import com.rightclickit.b2bsaleon.models.TripsheetsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class TripSheetsActivity extends AppCompatActivity {
@@ -42,7 +45,8 @@ public class TripSheetsActivity extends AppCompatActivity {
     private TripsheetsModel mTripsheetsModel;
 
     private String mTripSheetViewPrivilege = "", mTripSheetStockPrivilege = "";
-    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
+    private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "",
+            mRetailersHomeScreen = "", mDashboardHomeScreen = "",currentDate="";
     private boolean isSaveDeviceDetails,isMyProfilePrivilege;
     TextView tvrouts_customerN;
     @Override
@@ -62,6 +66,18 @@ public class TripSheetsActivity extends AppCompatActivity {
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        try {
+            c.setTime(df.parse(df.format(c.getTime())));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        c.add(Calendar.DATE, -1);
+        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+        currentDate = sdf1.format(c.getTime());
+        System.out.println("CUR DATE::: "+ currentDate);
 
         mTripsheetsModel = new TripsheetsModel(this, TripSheetsActivity.this);
 
@@ -209,7 +225,7 @@ public class TripSheetsActivity extends AppCompatActivity {
             }
         }
         // startService(new Intent(TripSheetsActivity.this, SyncNotificationsListService.class));
-        ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList();
+        ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList(currentDate);
         if (new NetworkConnectionDetector(TripSheetsActivity.this).isNetworkConnected()) {
             if(tripsList.size()>0){
                 loadTripSheetsData();
@@ -222,7 +238,7 @@ public class TripSheetsActivity extends AppCompatActivity {
     }
 
     public void loadTripSheetsData() {
-        ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList();
+        ArrayList<TripsheetsList> tripsList = mDBHelper.fetchTripsheetsList(currentDate);
 
         if (tripsList.size() > 0) {
             if (mTripsListAdapter != null) {

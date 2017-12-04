@@ -39,7 +39,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
     private final String zero_cost = "0.000";
     private boolean isDeliveryInEditingMode = false;
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMapTemp;
-    private Map<String, String> selectedDeliveryProductsHashMapTemp1;
+    private Map<String, String> selectedDeliveryProductsHashMapTemp1,selectedDeliveryProductsHashMapTemp2;
 
     public TripSheetDeliveriesAdapter(Context ctxt, TripsheetDelivery deliveryActivity, TripSheetDeliveriesListener deliveriesListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyDeliveredProducts, Map<String, String> productOrderQuantities) {
         this.ctxt = ctxt;
@@ -55,11 +55,15 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         this.productOrderQuantitiesHashMap = productOrderQuantities;
         this.selectedDeliveryProductsHashMapTemp = new HashMap<>();
         this.selectedDeliveryProductsHashMapTemp1 = new HashMap<>();
+        this.selectedDeliveryProductsHashMapTemp2 = new HashMap<>();
         if (!previouslyDeliveredProductsHashMap.isEmpty()) {
             isDeliveryInEditingMode = true;
         }
         if (selectedDeliveryProductsHashMapTemp1.size() > 0) {
             selectedDeliveryProductsHashMapTemp1.clear();
+        }
+        if (selectedDeliveryProductsHashMapTemp2.size() > 0) {
+            selectedDeliveryProductsHashMapTemp2.clear();
         }
 
         // in order to update total amount's at the time of initial loading.
@@ -111,6 +115,12 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
             if (listener != null)
                 listener.updateDeliveryProductsList(selectedDeliveryProductsHashMap);
             // }
+
+            if (deliverysBean.getSelectedQuantity() > 0) {
+                selectedDeliveryProductsHashMapTemp2.put(deliverysBean.getProductCode(), deliverysBean.getProductCode());
+                if (listener != null)
+                    listener.updateDeliveryProductsListTemp(selectedDeliveryProductsHashMapTemp2);
+            }
         }
     }
 
@@ -233,6 +243,8 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                         currentTripSheetDeliveriesViewHolder.tax.setText(Utility.getFormattedCurrency(currentDeliveryBean.getTaxAmount()));
                         currentTripSheetDeliveriesViewHolder.amount.setText(Utility.getFormattedCurrency(currentDeliveryBean.getProductAmount()));
 
+                        selectedDeliveryProductsHashMapTemp2.put(currentDeliveryBean.getProductCode(), currentDeliveryBean.getProductCode());
+
                         if (presentQuantity == 0) {
                             currentTripSheetDeliveriesViewHolder.product_quantity.setText(zero_cost);
                             updateSelectedProductsList(currentDeliveryBean);
@@ -240,6 +252,9 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                             currentTripSheetDeliveriesViewHolder.product_quantity.setText(String.format("%.3f", presentQuantity));
                             updateSelectedProductsList(currentDeliveryBean);
                         }
+
+                        if (listener != null)
+                            listener.updateDeliveryProductsListTemp(selectedDeliveryProductsHashMapTemp2);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -267,7 +282,12 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                         currentTripSheetDeliveriesViewHolder.tax.setText(Utility.getFormattedCurrency(currentDeliveryBean.getTaxAmount()));
                         currentTripSheetDeliveriesViewHolder.amount.setText(Utility.getFormattedCurrency(currentDeliveryBean.getProductAmount()));
 
+                        selectedDeliveryProductsHashMapTemp2.put(currentDeliveryBean.getProductCode(), currentDeliveryBean.getProductCode());
+
                         updateSelectedProductsList(currentDeliveryBean);
+
+                        if (listener != null)
+                            listener.updateDeliveryProductsListTemp(selectedDeliveryProductsHashMapTemp2);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -293,7 +313,12 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                             currentTripSheetDeliveriesViewHolder.tax.setText(Utility.getFormattedCurrency(currentDeliveryBean.getTaxAmount()));
                             currentTripSheetDeliveriesViewHolder.amount.setText(Utility.getFormattedCurrency(currentDeliveryBean.getProductAmount()));
 
+                            selectedDeliveryProductsHashMapTemp2.put(currentDeliveryBean.getProductCode(), currentDeliveryBean.getProductCode());
+
                             updateSelectedProductsList(currentDeliveryBean);
+
+                            if (listener != null)
+                                listener.updateDeliveryProductsListTemp(selectedDeliveryProductsHashMapTemp2);
 
                             new AlertDialog.Builder(activity)
                                     .setTitle("Alert..!")
@@ -317,7 +342,12 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                                 currentTripSheetDeliveriesViewHolder.tax.setText(Utility.getFormattedCurrency(currentDeliveryBean.getTaxAmount()));
                                 currentTripSheetDeliveriesViewHolder.amount.setText(Utility.getFormattedCurrency(currentDeliveryBean.getProductAmount()));
 
+                                selectedDeliveryProductsHashMapTemp2.put(currentDeliveryBean.getProductCode(), currentDeliveryBean.getProductCode());
+
                                 updateSelectedProductsList(currentDeliveryBean);
+
+                                if (listener != null)
+                                    listener.updateDeliveryProductsListTemp(selectedDeliveryProductsHashMapTemp2);
                             } else if (enteredQuantity == 0) {
                                 currentDeliveryBean.setSelectedQuantity(0);
                                 currentDeliveryBean.setProductAmount(0);
@@ -326,7 +356,12 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                                 currentTripSheetDeliveriesViewHolder.tax.setText(Utility.getFormattedCurrency(0));
                                 currentTripSheetDeliveriesViewHolder.amount.setText(Utility.getFormattedCurrency(0));
 
+                                selectedDeliveryProductsHashMapTemp2.put(currentDeliveryBean.getProductCode(), currentDeliveryBean.getProductCode());
+
                                 updateSelectedProductsList(currentDeliveryBean);
+
+                                if (listener != null)
+                                    listener.updateDeliveryProductsListTemp(selectedDeliveryProductsHashMapTemp2);
                             }
                         }
                     }

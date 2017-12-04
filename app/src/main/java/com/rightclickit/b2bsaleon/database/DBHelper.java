@@ -2941,12 +2941,13 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to fetch all tripsheets whose status is A from Tripsheets table
      */
-    public ArrayList<TripsheetsList> fetchTripsheetsList() {
+    public ArrayList<TripsheetsList> fetchTripsheetsList(String date) {
         ArrayList<TripsheetsList> alltripsheets = new ArrayList<TripsheetsList>();
 
         try {
             //String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_STATUS + " = " + "'" + "A" + "'";
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " ORDER BY " + KEY_TRIPSHEET_DATE + " DESC ";
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_LIST + " WHERE " + KEY_TRIPSHEET_DATE + " >= " + "'" + date + "'"
+                    + " ORDER BY " + KEY_TRIPSHEET_DATE + " DESC ";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -6981,9 +6982,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 Cursor c = db.rawQuery(selectQuery, null);
                 Log.i("crates count2",c.getCount()+"");
                 if (c.moveToFirst()) {
-                   // do {
+                    do {
                         due = c.getString(c.getColumnIndex(KEY_TRIPSHEET_SO_CRATES_DUE));
-                   // } while (c.moveToNext());
+                    } while (c.moveToNext());
                 }
                 c.close();
             }

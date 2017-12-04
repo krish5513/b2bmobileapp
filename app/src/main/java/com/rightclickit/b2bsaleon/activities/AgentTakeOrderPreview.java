@@ -251,17 +251,17 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         print.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "print", Toast.LENGTH_LONG).show();
-                int pageheight = 430 + selectedList.size() * 150;
-                Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
-                Canvas canvas = new Canvas(bmOverlay);
-                canvas.drawColor(Color.WHITE);
-                Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                paint.setAntiAlias(true);
-                paint.setFilterBitmap(true);
-                paint.setDither(true);
-                paint.setColor(Color.parseColor("#000000"));
-                paint.setTextSize(26);
+                synchronized (this){
+                    int pageheight = 430 + selectedList.size() * 150;
+                    Bitmap bmOverlay = Bitmap.createBitmap(400, pageheight, Bitmap.Config.ARGB_4444);
+                    Canvas canvas = new Canvas(bmOverlay);
+                    canvas.drawColor(Color.WHITE);
+                    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                    paint.setAntiAlias(true);
+                    paint.setFilterBitmap(true);
+                    paint.setDither(true);
+                    paint.setColor(Color.parseColor("#000000"));
+                    paint.setTextSize(26);
 /*
 
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
@@ -336,79 +336,94 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 */
 
 
-                paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                canvas.drawText(sharedPreferences.getString("companyname"), 5, 20, paint);
-                paint.setTextSize(20);
-                canvas.drawText(sharedPreferences.getString("loginusername"), 5, 50, paint);
-                paint.setTextSize(20);
-                canvas.drawText("----------------------------------------------------", 5, 80, paint);
-                paint.setTextSize(20);
-                canvas.drawText("PURCHASE REQUEST", 100, 110, paint);
+                    paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+                    canvas.drawText(sharedPreferences.getString("companyname"), 5, 20, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(sharedPreferences.getString("loginusername"), 5, 50, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("----------------------------------------------------", 5, 80, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("PURCHASE REQUEST", 100, 110, paint);
 
-                paint.setTextSize(20);
-                canvas.drawText("CUSTOMER", 5, 140, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + str_agentname, 150, 140, paint);
-                paint.setTextSize(20);
-                canvas.drawText("CODE", 5, 170, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + sharedPreferences.getString("agentCode"), 150, 170, paint);
-                paint.setTextSize(20);
-                canvas.drawText("PR#", 5, 200, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + str_enguiryid, 150, 200, paint);
-                paint.setTextSize(20);
-                canvas.drawText("DATE", 5, 230, paint);
-                paint.setTextSize(20);
-                canvas.drawText(": " + currentDate, 150, 230, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("CUSTOMER", 5, 140, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + str_agentname, 150, 140, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("CODE", 5, 170, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + sharedPreferences.getString("agentCode"), 150, 170, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("PR#", 5, 200, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + str_enguiryid, 150, 200, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("DATE", 5, 230, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText(": " + currentDate, 150, 230, paint);
 
-                paint.setTextSize(20);
-                canvas.drawText("----------------------------------------------------", 5, 260, paint);
+                    paint.setTextSize(20);
+                    canvas.drawText("----------------------------------------------------", 5, 260, paint);
 
 
-                int st = 290;
-                paint.setTextSize(17);
-                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
-                for (int i = 0; i < selectedList.size(); i++) {
-                    String[] temps = selectedList.get(i);
-                    canvas.drawText(temps[0], 5, st, paint);
-                    canvas.drawText("," + temps[1], 150, st, paint);
-                    canvas.drawText("(" + temps[2] + ")", 220, st, paint);
+                    int st = 290;
+                    paint.setTextSize(17);
+                    // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                    for (int i = 0; i < selectedList.size(); i++) {
+                        String[] temps = selectedList.get(i);
+                        canvas.drawText(temps[0], 5, st, paint);
+                        canvas.drawText("," + temps[1], 150, st, paint);
+                        canvas.drawText("(" + temps[2] + ")", 220, st, paint);
 
+                        st = st + 30;
+                        canvas.drawText("Qty", 5, st, paint);
+                        canvas.drawText(": " + temps[3], 150, st, paint);
+
+                        st = st + 30;
+                        canvas.drawText("Rate", 5, st, paint);
+                        canvas.drawText(": " + temps[4], 150, st, paint);
+
+
+                        st = st + 30;
+                        canvas.drawText("Value", 5, st, paint);
+                        canvas.drawText(": " + temps[5], 150, st, paint);
+
+                        st = st + 45;
+
+
+                    }
+
+                    canvas.drawText("----------------------------------------------------", 5, st, paint);
+
+                    st = st + 20;
+                    canvas.drawText("PR VALUE:", 5, st, paint);
+                    canvas.drawText(": " + Utility.getFormattedCurrency(mProductsPriceAmountSum), 150, st, paint);
+
+                    //  canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
+                    //  canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
+                    // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
+
+                    paint.setTextSize(20);
+                    canvas.drawText("* Please take photocopy of the Bill *", 17, st, paint);
                     st = st + 30;
-                    canvas.drawText("Qty", 5, st, paint);
-                    canvas.drawText(": " + temps[3], 150, st, paint);
 
-                    st = st + 30;
-                    canvas.drawText("Rate", 5, st, paint);
-                    canvas.drawText(": " + temps[4], 150, st, paint);
-
-
-                    st = st + 30;
-                    canvas.drawText("Value", 5, st, paint);
-                    canvas.drawText(": " + temps[5], 150, st, paint);
-
-                    st = st + 45;
-
-
+                    canvas.drawText("--------X---------", 100, st, paint);
+                    com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
                 }
-
-                canvas.drawText("----------------------------------------------------", 5, st, paint);
-
-                st = st + 20;
-                canvas.drawText("PR VALUE:", 5, st, paint);
-                canvas.drawText(": " + Utility.getFormattedCurrency(mProductsPriceAmountSum), 150, st, paint);
-
-                //  canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
-                //  canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
-                // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
-
-                paint.setTextSize(20);
-                canvas.drawText("* Please take photocopy of the Bill *", 17, st, paint);
-                st = st + 30;
-
-                canvas.drawText("--------X---------", 100, st, paint);
-                com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
+                synchronized (this){
+                    if (ISFROM.equals("Tripsheet")) {
+                        Intent intent = new Intent(AgentTakeOrderPreview.this, TripSheetView.class);
+                        intent.putExtra("tripsheetId", TRIPID);
+                        startActivity(intent);
+                        finish();
+                    }else {
+                        Intent intent = new Intent(AgentTakeOrderPreview.this, AgentTakeOrderScreen.class);
+                        intent.putExtra("tripsheetId", TRIPID);
+                        intent.putExtra("From", ISFROM);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
             }
         });
 

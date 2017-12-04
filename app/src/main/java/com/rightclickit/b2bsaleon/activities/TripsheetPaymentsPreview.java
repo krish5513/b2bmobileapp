@@ -569,9 +569,17 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     saveBitmap(bmOverlay);
                 }
                 synchronized (this) {
-                    Intent intent = new Intent(TripsheetPaymentsPreview.this, TripSheetView.class);
-                    intent.putExtra("tripsheetId", mTripSheetId);
-                    startActivity(intent);
+//                    Intent intent = new Intent(TripsheetPaymentsPreview.this, TripSheetView.class);
+//                    intent.putExtra("tripsheetId", mTripSheetId);
+//                    startActivity(intent);
+//                    finish();
+
+                    mmSharedPreferences.putString("agentName", mAgentName);
+                    mmSharedPreferences.putString("agentId", mAgentId);
+                    Intent i = new Intent(TripsheetPaymentsPreview.this, AgentTakeOrderScreen.class);
+                    i.putExtra("tripsheetId", mTripSheetId);
+                    i.putExtra("From", "Tripsheet");
+                    startActivity(i);
                     finish();
                 }
             }
