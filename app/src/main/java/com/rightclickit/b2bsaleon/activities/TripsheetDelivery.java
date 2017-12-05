@@ -397,6 +397,23 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                 if (validateTripSheetDeliveryData()) {
                     long currentTimeStamp = System.currentTimeMillis();
 
+                    String deliveryNumberCount = mDBHelper.getTripsheetDeliveriesMaxOrderNumber();
+                    System.out.println("DEL MAX COUNT::: " + deliveryNumberCount + "\n");
+                    String deliveryNumber = "";
+                    if (deliveryNumberCount.length() == 0) {
+                        deliveryNumber = "RD1-" + mAgentCode;
+                    } else {
+                        System.out.println("ELSEEEEEEEEEE");
+                        String[] ss = deliveryNumberCount.split("-");
+                        String ss1 = ss[0];
+                        System.out.println("ELSEEEEEEEEEE 111" + ss1);
+                        String ss2 = ss1.substring(2, ss1.length());
+                        System.out.println("ELSEEEEEEEEEE 222" + ss2);
+                        int newCount = Integer.parseInt(ss2) + 1;
+                        deliveryNumber = "RD" + String.valueOf(newCount) + "-" + mAgentCode;
+                    }
+                    System.out.println("DELIVERY NUMBER::: " + deliveryNumber);
+
                     ArrayList<TripSheetDeliveriesBean> mTripsheetsDeliveriesList = new ArrayList<>();
 
                     for (Map.Entry<String, DeliverysBean> deliverysBeanEntry : selectedDeliveryProductsHashMap.entrySet()) {
@@ -433,6 +450,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                             // Quantity is available....
                             TripSheetDeliveriesBean tripSheetDeliveriesBean = new TripSheetDeliveriesBean();
                             tripSheetDeliveriesBean.setmTripsheetDeliveryNo("");
+                            tripSheetDeliveriesBean.setmTripsheetDeliveryNumber(deliveryNumber);
                             tripSheetDeliveriesBean.setmTripsheetDelivery_tripId(mTripSheetId);
                             tripSheetDeliveriesBean.setmTripsheetDelivery_so_id(mAgentSoId);
                             tripSheetDeliveriesBean.setmTripsheetDelivery_so_code(mAgentSoCode);

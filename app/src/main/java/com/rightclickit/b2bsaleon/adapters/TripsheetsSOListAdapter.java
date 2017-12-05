@@ -38,7 +38,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
     private boolean isTripSheetClosed;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
-
+      Double orderTotal=0.0;
     public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege, boolean isTripSheetClosed, String mhidePrevilige) {
         this.activity = tripSheetView;
         this.mInflater = LayoutInflater.from(activity);
@@ -146,8 +146,16 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         //mHolder.mSOItemsCount.setText(currentSaleOrder.getmTripshetSOProductsCount());
         mHolder.mSOAgentName.setText(currentSaleOrder.getmTripshetSOAgentFirstName());
         mHolder.mSOOBamtValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOOpAmount())));
+
+
         mHolder.mSOOrderedValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOValue())));
-        mHolder.mSOReceivedValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOReceivedAmount())));
+
+
+        if (Double.parseDouble(currentSaleOrder.getmTripshetSOReceivedAmount()) == -0.00000001) {
+            mHolder.mSOReceivedValue.setText(Utility.getFormattedCurrency(Double.parseDouble("0.0")));
+        }else {
+            mHolder.mSOReceivedValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOReceivedAmount())));
+        }
         mHolder.mSODueValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSODueAmount())));
         mHolder.mSOAgentDistance.setText(currentSaleOrder.getDistance() + " KM");
 

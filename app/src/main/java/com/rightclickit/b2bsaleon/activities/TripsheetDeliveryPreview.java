@@ -124,7 +124,8 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
 
             if (deliveredProductsList != null) {
 
-                str_deliveryNo=(String.format("Delivery # RD%03d", deliveredProductsList.get(j).getDeliveryNo()));
+                //str_deliveryNo=(String.format("Delivery # RD%03d", deliveredProductsList.get(j).getDeliveryNo()));
+                str_deliveryNo = deliveredProductsList.get(j).getDeliveryNumber();
                 deliveryNo.setText(str_deliveryNo);
 
                 if (deliveredProductsList.get(j).getCreatedTime().isEmpty())
@@ -175,20 +176,20 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
             temp[6]= mDBHelper.getProductUnitByProductCode(d.getProductCode());
             if (mDBHelper.getHSSNNUMBERByProductId(d.getProductId()) != null && mDBHelper.getHSSNNUMBERByProductId(d.getProductId()).length()> 0) {
 
-                    hssnnumber = mDBHelper.getHSSNNUMBERByProductId(d.getProductId());
-                }
-             else {
+                hssnnumber = mDBHelper.getHSSNNUMBERByProductId(d.getProductId());
+            }
+            else {
                 hssnnumber = "-";
             }
 
 
-             if (mDBHelper.getGSTByProductId(d.getProductId()) > 0) {
+            if (mDBHelper.getGSTByProductId(d.getProductId()) > 0) {
                 cgst = String.valueOf(mDBHelper.getGSTByProductId(d.getProductId())) + "%";
             } else {
                 cgst = "0.00%";
             }
 
-           if (mDBHelper.getVATByProductId(d.getProductId()) > 0) {
+            if (mDBHelper.getVATByProductId(d.getProductId()) > 0) {
                 sgst = String.valueOf(mDBHelper.getVATByProductId(d.getProductId())) + "%";
             } else {
                 sgst = "0.00%";
@@ -261,7 +262,7 @@ public class TripsheetDeliveryPreview extends AppCompatActivity {
 
                 else
                     mAgentSoDate=tripSheetSOList.get(i).getmTripshetSODate();
-                    sale_orderDate.setText(mAgentSoDate);
+                sale_orderDate.setText(mAgentSoDate);
 
             }
 

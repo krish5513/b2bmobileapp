@@ -21,6 +21,7 @@ public class SaleOrderDeliveredProducts implements Serializable {
     private String createdTime;
     private String str_hssn;
     private String productReturnable;
+    private String deliveryNumber;
 
     public String getStr_hssn() {
         return str_hssn;
@@ -161,6 +162,8 @@ public class SaleOrderDeliveredProducts implements Serializable {
                 ", totalAmount='" + totalAmount + '\'' +
                 ", subTotal='" + subTotal + '\'' +
                 ", createdTime='" + createdTime + '\'' +
+                ", productReturnable='" + productReturnable + '\'' +
+                ", deliveryNumber='" + deliveryNumber + '\'' +
                 '}';
     }
 
@@ -170,5 +173,13 @@ public class SaleOrderDeliveredProducts implements Serializable {
 
     public void setProductReturnable(String productReturnable) {
         this.productReturnable = productReturnable;
+    }
+
+    public String getDeliveryNumber() {
+        return deliveryNumber;
+    }
+
+    public void setDeliveryNumber(String deliveryNumber) {
+        this.deliveryNumber = deliveryNumber;
     }
 }

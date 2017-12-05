@@ -17,13 +17,13 @@ ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-344:12
 		INJECTED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml
 uses-permission#android.permission.INTERNET
 ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:6:5-67
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\DELL1\.android\build-cache\0adba08de5c38b8ae3c303a46b20ff9af0b51ca9\output\AndroidManifest.xml:20:5-66
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\DELL1\.android\build-cache\6ea7c78300d39d1f3001b43d064ded52cd0aa45e\output\AndroidManifest.xml:29:5-67
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:20:5-66
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:29:5-67
 	android:name
 		ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:6:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:7:5-79
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\DELL1\.android\build-cache\0adba08de5c38b8ae3c303a46b20ff9af0b51ca9\output\AndroidManifest.xml:19:5-78
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:19:5-78
 	android:name
 		ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:7:22-76
 uses-feature#android.hardware.camera
@@ -64,28 +64,28 @@ ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:21:5-22:47
 		ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:21:22-81
 application
 ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:24:5-342:19
-MERGED from [com.android.support:design:25.3.1] C:\Users\DELL1\.android\build-cache\7d6de9cfa1307e758cf8eda15c98ec52931545bf\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:transition:25.3.1] C:\Users\DELL1\.android\build-cache\0a46d3b0f2c46cd98a5326cd07e5c8d986f245b4\output\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\DELL1\.android\build-cache\175ae348ea5cc40fd1f8bcd84768cb070a7f1609\output\AndroidManifest.xml:9:5-20
-MERGED from [com.android.volley:volley:1.0.0] C:\Users\DELL1\.android\build-cache\0f998f8e8ca4558336f896f09eeeb09bad56e1b0\output\AndroidManifest.xml:9:5-20
-MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\DELL1\.android\build-cache\97c886e388de40c85c599fe21b1a3b62f3a98d8f\output\AndroidManifest.xml:11:5-12:19
-MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\DELL1\.android\build-cache\4cd3c082c588b36b2c1211ea1cb07a88079dc136\output\AndroidManifest.xml:18:5-19
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\DELL1\.android\build-cache\0adba08de5c38b8ae3c303a46b20ff9af0b51ca9\output\AndroidManifest.xml:24:5-19
-MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\DELL1\.android\build-cache\b4f3b5d18fea70d0e45653268e278db1414b99e3\output\AndroidManifest.xml:4:5-19
-MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\DELL1\.android\build-cache\bb42dec08090b745718d12d5b7dc535c636a6136\output\AndroidManifest.xml:18:5-20:19
-MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\DELL1\.android\build-cache\b218ed4392b0fb4331bd825f9b5d4f7810547973\output\AndroidManifest.xml:4:5-19
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\DELL1\.android\build-cache\13bcede779ea80fe5095614f171683e596bc947c\output\AndroidManifest.xml:19:5-21:19
-MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\DELL1\.android\build-cache\acbd4aaecadb5f81d456406f69894c386ef01a95\output\AndroidManifest.xml:11:5-20
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\DELL1\.android\build-cache\79fdf47c0377ada654e0fa01d47c1c1c0cdef832\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\DELL1\.android\build-cache\f5db5566c9f00412051117b332226c3e01f5f872\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\DELL1\.android\build-cache\fd4ddb0692f43f6204cc37392447b29c8028ba82\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\DELL1\.android\build-cache\bbd6054c53c08438583ea0bc6d7a059b935af4b4\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\DELL1\.android\build-cache\bd203ef8cf175d642d5198b4c6561a9ba406dbd4\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\DELL1\.android\build-cache\658f00606cfe17ace7e0adafd93729fe90909c2f\output\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\DELL1\.android\build-cache\2d6b93dd42722cbc251cdd6b2423e8b26ca4cb38\output\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\DELL1\.android\build-cache\fd32b87cb3f16306b1d6f582b151293b90de9db7\output\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\DELL1\.android\build-cache\9a3819a363c34be74b8ab0ba297a6ea226dca9e8\output\AndroidManifest.xml:29:5-20
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\DELL1\.android\build-cache\6ea7c78300d39d1f3001b43d064ded52cd0aa45e\output\AndroidManifest.xml:32:5-38:19
+MERGED from [com.android.support:design:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.1\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:transition:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\transition\25.3.1\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support.constraint\constraint-layout\1.0.2\AndroidManifest.xml:9:5-20
+MERGED from [com.android.volley:volley:1.0.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.volley\volley\1.0.0\AndroidManifest.xml:9:5-20
+MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.github.scottyab\showhidepasswordedittext\0.6\AndroidManifest.xml:11:5-12:19
+MERGED from [com.google.android.gms:play-services-places:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-places\10.2.0\AndroidManifest.xml:18:5-19
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:24:5-19
+MERGED from [com.google.android.gms:play-services-location:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\10.2.0\AndroidManifest.xml:4:5-19
+MERGED from [com.google.android.gms:play-services-base:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\AndroidManifest.xml:18:5-20:19
+MERGED from [com.google.android.gms:play-services-tasks:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\10.2.0\AndroidManifest.xml:4:5-19
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\10.2.0\AndroidManifest.xml:19:5-21:19
+MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\uk.co.chrisjenx\calligraphy\2.2.0\AndroidManifest.xml:11:5-20
+MERGED from [com.android.support:appcompat-v7:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.3.1\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-v4:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.3.1\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.3.1\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.3.1\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.3.1\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.3.1\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.3.1\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.3.1\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-compat:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.3.1\AndroidManifest.xml:29:5-20
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:32:5-38:19
 	android:label
 		ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:28:9-41
 	android:supportsRtl
@@ -110,7 +110,7 @@ ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:33:9-35:71
 		ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:34:13-58
 meta-data#com.google.android.gms.version
 ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:36:9-38:69
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\DELL1\.android\build-cache\13bcede779ea80fe5095614f171683e596bc947c\output\AndroidManifest.xml:20:9-121
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\10.2.0\AndroidManifest.xml:20:9-121
 	android:value
 		ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:38:13-66
 	android:name
@@ -673,33 +673,33 @@ ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:338:9-341:39
 		ADDED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml:339:13-69
 uses-sdk
 INJECTED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-MERGED from [com.android.support:design:25.3.1] C:\Users\DELL1\.android\build-cache\7d6de9cfa1307e758cf8eda15c98ec52931545bf\output\AndroidManifest.xml:21:5-23:62
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\DELL1\.android\build-cache\014c9b5b176d965252d3b8e83933e2fe73acb2bb\output\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:transition:25.3.1] C:\Users\DELL1\.android\build-cache\0a46d3b0f2c46cd98a5326cd07e5c8d986f245b4\output\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\DELL1\.android\build-cache\175ae348ea5cc40fd1f8bcd84768cb070a7f1609\output\AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.volley:volley:1.0.0] C:\Users\DELL1\.android\build-cache\0f998f8e8ca4558336f896f09eeeb09bad56e1b0\output\AndroidManifest.xml:7:5-43
-MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\DELL1\.android\build-cache\97c886e388de40c85c599fe21b1a3b62f3a98d8f\output\AndroidManifest.xml:7:5-9:41
-MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\DELL1\.android\build-cache\4cd3c082c588b36b2c1211ea1cb07a88079dc136\output\AndroidManifest.xml:17:5-43
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\DELL1\.android\build-cache\0adba08de5c38b8ae3c303a46b20ff9af0b51ca9\output\AndroidManifest.xml:23:5-43
-MERGED from [com.yayandroid:LocationManager:2.0.1] C:\Users\DELL1\.android\build-cache\7ff41fbec8521fcb04cccf74d10996a66bc61a31\output\AndroidManifest.xml:8:5-10:41
-MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\DELL1\.android\build-cache\b4f3b5d18fea70d0e45653268e278db1414b99e3\output\AndroidManifest.xml:3:5-43
-MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\DELL1\.android\build-cache\bb42dec08090b745718d12d5b7dc535c636a6136\output\AndroidManifest.xml:17:5-43
-MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\DELL1\.android\build-cache\b218ed4392b0fb4331bd825f9b5d4f7810547973\output\AndroidManifest.xml:3:5-43
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\DELL1\.android\build-cache\13bcede779ea80fe5095614f171683e596bc947c\output\AndroidManifest.xml:17:5-43
-MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\DELL1\.android\build-cache\acbd4aaecadb5f81d456406f69894c386ef01a95\output\AndroidManifest.xml:7:5-9:41
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\DELL1\.android\build-cache\79fdf47c0377ada654e0fa01d47c1c1c0cdef832\output\AndroidManifest.xml:21:5-23:78
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\DELL1\.android\build-cache\f5db5566c9f00412051117b332226c3e01f5f872\output\AndroidManifest.xml:21:5-23:54
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\DELL1\.android\build-cache\fd4ddb0692f43f6204cc37392447b29c8028ba82\output\AndroidManifest.xml:21:5-23:60
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\DELL1\.android\build-cache\bbd6054c53c08438583ea0bc6d7a059b935af4b4\output\AndroidManifest.xml:21:5-23:63
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\DELL1\.android\build-cache\bd203ef8cf175d642d5198b4c6561a9ba406dbd4\output\AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\DELL1\.android\build-cache\658f00606cfe17ace7e0adafd93729fe90909c2f\output\AndroidManifest.xml:21:5-23:61
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\DELL1\.android\build-cache\2d6b93dd42722cbc251cdd6b2423e8b26ca4cb38\output\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\DELL1\.android\build-cache\fd32b87cb3f16306b1d6f582b151293b90de9db7\output\AndroidManifest.xml:20:5-43
-MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\DELL1\.android\build-cache\033cec2d87cbea797bdb07b2667768bc036679ee\output\AndroidManifest.xml:5:5-43
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\DELL1\.android\build-cache\9a3819a363c34be74b8ab0ba297a6ea226dca9e8\output\AndroidManifest.xml:21:5-23:58
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\DELL1\.android\build-cache\6ea7c78300d39d1f3001b43d064ded52cd0aa45e\output\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:design:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.1\AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:recyclerview-v7:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.3.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:transition:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\transition\25.3.1\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support.constraint\constraint-layout\1.0.2\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.volley:volley:1.0.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.volley\volley\1.0.0\AndroidManifest.xml:7:5-43
+MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.github.scottyab\showhidepasswordedittext\0.6\AndroidManifest.xml:7:5-9:41
+MERGED from [com.google.android.gms:play-services-places:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-places\10.2.0\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:23:5-43
+MERGED from [com.yayandroid:LocationManager:2.0.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.yayandroid\LocationManager\2.0.1\AndroidManifest.xml:8:5-10:41
+MERGED from [com.google.android.gms:play-services-location:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\10.2.0\AndroidManifest.xml:3:5-43
+MERGED from [com.google.android.gms:play-services-base:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-tasks:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\10.2.0\AndroidManifest.xml:3:5-43
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\10.2.0\AndroidManifest.xml:17:5-43
+MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\uk.co.chrisjenx\calligraphy\2.2.0\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.3.1\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:support-v4:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.3.1\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.3.1\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.3.1\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-ui:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.3.1\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.3.1\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.3.1\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.3.1\AndroidManifest.xml:20:5-43
+MERGED from [com.jakewharton:butterknife:8.5.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.jakewharton\butterknife\8.5.1\AndroidManifest.xml:5:5-43
+MERGED from [com.android.support:support-compat:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.3.1\AndroidManifest.xml:21:5-23:58
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:25:5-27:41
 	tools:overrideLibrary
-		ADDED from [com.android.support:design:25.3.1] C:\Users\DELL1\.android\build-cache\7d6de9cfa1307e758cf8eda15c98ec52931545bf\output\AndroidManifest.xml:23:9-59
+		ADDED from [com.android.support:design:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.1\AndroidManifest.xml:23:9-59
 	android:targetSdkVersion
 		INJECTED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml
 		INJECTED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml
@@ -707,47 +707,47 @@ MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\DELL1\.android\bui
 		INJECTED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml
 		INJECTED from D:\B@BGit\b2bmobileapp\app\src\main\AndroidManifest.xml
 meta-data#android.support.VERSION
-ADDED from [com.android.support:design:25.3.1] C:\Users\DELL1\.android\build-cache\7d6de9cfa1307e758cf8eda15c98ec52931545bf\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\DELL1\.android\build-cache\014c9b5b176d965252d3b8e83933e2fe73acb2bb\output\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:transition:25.3.1] C:\Users\DELL1\.android\build-cache\0a46d3b0f2c46cd98a5326cd07e5c8d986f245b4\output\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\DELL1\.android\build-cache\79fdf47c0377ada654e0fa01d47c1c1c0cdef832\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\DELL1\.android\build-cache\f5db5566c9f00412051117b332226c3e01f5f872\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\DELL1\.android\build-cache\fd4ddb0692f43f6204cc37392447b29c8028ba82\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\DELL1\.android\build-cache\bbd6054c53c08438583ea0bc6d7a059b935af4b4\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\DELL1\.android\build-cache\bd203ef8cf175d642d5198b4c6561a9ba406dbd4\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\DELL1\.android\build-cache\658f00606cfe17ace7e0adafd93729fe90909c2f\output\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\DELL1\.android\build-cache\2d6b93dd42722cbc251cdd6b2423e8b26ca4cb38\output\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\DELL1\.android\build-cache\fd32b87cb3f16306b1d6f582b151293b90de9db7\output\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\DELL1\.android\build-cache\9a3819a363c34be74b8ab0ba297a6ea226dca9e8\output\AndroidManifest.xml:25:5-27:34
+ADDED from [com.android.support:design:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.1\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:recyclerview-v7:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.3.1\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:transition:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\transition\25.3.1\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:appcompat-v7:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.3.1\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-v4:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.3.1\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.3.1\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-media-compat:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.3.1\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-ui:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.3.1\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.3.1\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.3.1\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.3.1\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-compat:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.3.1\AndroidManifest.xml:25:5-27:34
 	android:value
-		ADDED from [com.android.support:design:25.3.1] C:\Users\DELL1\.android\build-cache\7d6de9cfa1307e758cf8eda15c98ec52931545bf\output\AndroidManifest.xml:27:9-31
+		ADDED from [com.android.support:design:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.1\AndroidManifest.xml:27:9-31
 	android:name
-		ADDED from [com.android.support:design:25.3.1] C:\Users\DELL1\.android\build-cache\7d6de9cfa1307e758cf8eda15c98ec52931545bf\output\AndroidManifest.xml:26:9-47
+		ADDED from [com.android.support:design:25.3.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.1\AndroidManifest.xml:26:9-47
 uses-feature#0x00020000
-ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\DELL1\.android\build-cache\0adba08de5c38b8ae3c303a46b20ff9af0b51ca9\output\AndroidManifest.xml:21:5-77
+ADDED from [com.google.android.gms:play-services-maps:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:21:5-77
 	android:glEsVersion
-		ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\DELL1\.android\build-cache\0adba08de5c38b8ae3c303a46b20ff9af0b51ca9\output\AndroidManifest.xml:21:19-51
+		ADDED from [com.google.android.gms:play-services-maps:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:21:19-51
 	android:required
-		ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\DELL1\.android\build-cache\0adba08de5c38b8ae3c303a46b20ff9af0b51ca9\output\AndroidManifest.xml:21:52-75
+		ADDED from [com.google.android.gms:play-services-maps:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:21:52-75
 activity#com.google.android.gms.common.api.GoogleApiActivity
-ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\DELL1\.android\build-cache\bb42dec08090b745718d12d5b7dc535c636a6136\output\AndroidManifest.xml:19:9-172
+ADDED from [com.google.android.gms:play-services-base:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\AndroidManifest.xml:19:9-172
 	android:exported
-		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\DELL1\.android\build-cache\bb42dec08090b745718d12d5b7dc535c636a6136\output\AndroidManifest.xml:19:146-170
+		ADDED from [com.google.android.gms:play-services-base:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\AndroidManifest.xml:19:146-170
 	android:theme
-		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\DELL1\.android\build-cache\bb42dec08090b745718d12d5b7dc535c636a6136\output\AndroidManifest.xml:19:86-145
+		ADDED from [com.google.android.gms:play-services-base:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\AndroidManifest.xml:19:86-145
 	android:name
-		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\DELL1\.android\build-cache\bb42dec08090b745718d12d5b7dc535c636a6136\output\AndroidManifest.xml:19:19-85
+		ADDED from [com.google.android.gms:play-services-base:10.2.0] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\AndroidManifest.xml:19:19-85
 uses-permission#android.permission.ACCESS_WIFI_STATE
-ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\DELL1\.android\build-cache\6ea7c78300d39d1f3001b43d064ded52cd0aa45e\output\AndroidManifest.xml:30:5-76
+ADDED from [com.amitshekhar.android:debug-db:1.0.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:30:5-76
 	android:name
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\DELL1\.android\build-cache\6ea7c78300d39d1f3001b43d064ded52cd0aa45e\output\AndroidManifest.xml:30:22-73
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:30:22-73
 provider#com.amitshekhar.DebugDBInitProvider
-ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\DELL1\.android\build-cache\6ea7c78300d39d1f3001b43d064ded52cd0aa45e\output\AndroidManifest.xml:33:9-37:40
+ADDED from [com.amitshekhar.android:debug-db:1.0.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:33:9-37:40
 	android:authorities
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\DELL1\.android\build-cache\6ea7c78300d39d1f3001b43d064ded52cd0aa45e\output\AndroidManifest.xml:35:13-71
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:35:13-71
 	android:enabled
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\DELL1\.android\build-cache\6ea7c78300d39d1f3001b43d064ded52cd0aa45e\output\AndroidManifest.xml:36:13-35
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:36:13-35
 	android:exported
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\DELL1\.android\build-cache\6ea7c78300d39d1f3001b43d064ded52cd0aa45e\output\AndroidManifest.xml:37:13-37
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:37:13-37
 	android:name
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\DELL1\.android\build-cache\6ea7c78300d39d1f3001b43d064ded52cd0aa45e\output\AndroidManifest.xml:34:13-63
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] D:\B@BGit\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:34:13-63

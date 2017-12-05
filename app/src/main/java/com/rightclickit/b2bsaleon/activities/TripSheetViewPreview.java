@@ -72,7 +72,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
     private ArrayList<SaleOrderReturnedProducts> returnedProductsList;
     private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
     ListView returned_products_list_view;
-    double dq = 0.0, fdq=0.0,ob=0.0,fobq=0.0,cb=0.0,fcb=0.0;
+    double dq = 0.0, fdq=0.0,ob=0.0,fobq=0.0,cb=0.0,fcb=0.0,orderTotal=0.0;
     double rq = 0.0, frq=0.0;
 
     @Override
@@ -148,8 +148,8 @@ public class TripSheetViewPreview extends AppCompatActivity {
             ts_total_received = (TextView) findViewById(R.id.received_amount);
             ts_total_due = (TextView) findViewById(R.id.due_amount);
 
-           // total_deliverQuantity = (TextView) findViewById(R.id.delivery_qty);
-           // total_returnQuantity = (TextView) findViewById(R.id.return_qty);
+            // total_deliverQuantity = (TextView) findViewById(R.id.delivery_qty);
+            // total_returnQuantity = (TextView) findViewById(R.id.return_qty);
 
             mCratesNameText = (TextView) findViewById(R.id.CratesNameText);
             mCratesOBText = (TextView) findViewById(R.id.CratesObAmount);
@@ -166,12 +166,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
 
             currentTripSheetDetails = mDBHelper.fetchTripSheetDetails(tripSheetId);
 
-            if (currentTripSheetDetails != null) {
-                ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount())));
-                ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount())));
-                ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())));
-                ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())));
-            }
+
 
             tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(tripSheetId);
             selectedList = new ArrayList<>(tripSheetSOList.size());
@@ -181,8 +176,13 @@ public class TripSheetViewPreview extends AppCompatActivity {
                 str_AgentCode = tripSheetSOList.get(i).getmTripshetSOAgentCode();
                 str_OB = tripSheetSOList.get(i).getmTripshetSOOpAmount();
                 str_Order = tripSheetSOList.get(i).getmTripshetSOValue();
-                str_Received = tripSheetSOList.get(i).getmTripshetSOReceivedAmount();
+                if(Double.parseDouble(tripSheetSOList.get(i).getmTripshetSOReceivedAmount()) == -0.00000001){
+                    str_Received = "0.0";
+                }else {
+                    str_Received = tripSheetSOList.get(i).getmTripshetSOReceivedAmount();
+                }
                 str_Due = tripSheetSOList.get(i).getmTripshetSODueAmount();
+                orderTotal +=Double.parseDouble(tripSheetSOList.get(i).getmTripshetSOValue());
 
                 String[] temp = new String[6];
                 temp[0] = str_AgentName;
@@ -193,6 +193,15 @@ public class TripSheetViewPreview extends AppCompatActivity {
                 temp[5] = str_AgentCode;
 
                 selectedList.add(temp);
+            }
+
+
+            if (currentTripSheetDetails != null) {
+                ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount())));
+                //ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount())));
+                ts_order_value.setText(Utility.getFormattedCurrency(orderTotal));
+                ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())));
+                ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())));
             }
 
             TripSheetViewPreview.CustomListView adapter = new TripSheetViewPreview.CustomListView(selectedList, this);
@@ -264,7 +273,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
 
                     paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                     canvas.drawText(mmSharedPreferences.getString("companyname"), 5, 20, paint);
-                   paint.setTextSize(20);
+                    paint.setTextSize(20);
                     canvas.drawText(routecode, 5, 50, paint);
                     paint.setTextSize(20);
                     canvas.drawText("-------------------------------------------", 5, 80, paint);

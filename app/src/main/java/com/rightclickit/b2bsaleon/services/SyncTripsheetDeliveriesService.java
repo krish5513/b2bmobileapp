@@ -81,6 +81,7 @@ public class SyncTripsheetDeliveriesService extends Service {
                         if (i == 0) {
                             tripSheetDeliveriesBeanWithProducts = new TripSheetDeliveriesBeanWithProducts();
                             tripSheetDeliveriesBeanWithProducts.setmTripsheetDeliveryNo(currentDelivery.getmTripsheetDeliveryNo());
+                            tripSheetDeliveriesBeanWithProducts.setmTripsheetDeliveryNumber(currentDelivery.getmTripsheetDeliveryNumber());
                             tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_tripId(currentDelivery.getmTripsheetDelivery_tripId());
                             tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_userId(currentDelivery.getmTripsheetDelivery_userId());
                             tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_userCodes(currentDelivery.getmTripsheetDelivery_userCodes());
@@ -132,7 +133,7 @@ public class SyncTripsheetDeliveriesService extends Service {
                 currentDeliveryBean = stockList[0];
 
                 JSONObject requestObj = new JSONObject();
-                //requestObj.put("delivery_no", "");
+                requestObj.put("delivery_no", currentDeliveryBean.getmTripsheetDeliveryNumber());
                 requestObj.put("trip_id", currentDeliveryBean.getmTripsheetDelivery_tripId());
                 requestObj.put("user_id", currentDeliveryBean.getmTripsheetDelivery_userId());
                 requestObj.put("user_codes", currentDeliveryBean.getmTripsheetDelivery_userCodes());
