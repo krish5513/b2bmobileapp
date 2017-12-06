@@ -157,7 +157,8 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             if (deliveredProductsList.size() > 0) {
 
                 deliveredProduct = deliveredProductsList.get(0);
-                tv_delivery_no.setText(String.format("Delivery # RD%03d", deliveredProduct.getDeliveryNo()));
+                // tv_delivery_no.setText(String.format("Delivery # RD%03d", deliveredProduct.getDeliveryNo()));
+                tv_delivery_no.setText(deliveredProduct.getDeliveryNumber());
                 tv_delivery_date.setText(Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT));
 
                 tax_total_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())));

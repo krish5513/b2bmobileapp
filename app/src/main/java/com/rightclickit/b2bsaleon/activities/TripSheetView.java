@@ -121,7 +121,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private boolean isTripSheetClosed = false;
     String startDateStrNewFormat;
     private TextView mNoTripsFoundText;
-
+    Double orderTotal=0.0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -375,10 +375,20 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             TripsheetsList currentTripSheetDetails = mDBHelper.fetchTripSheetDetails(mTripSheetId);
             if (currentTripSheetDetails != null) {
                 ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount().replace(",", ""))));
-                ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount().replace(",", ""))));
+
+
+              //  ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount().replace(",", ""))));
                 ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount().replace(",", ""))));
                 ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount().replace(",", ""))));
             }
+
+            tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
+            for (int i = 0; i < tripSheetSOList.size(); i++) {
+
+                orderTotal += Double.parseDouble(tripSheetSOList.get(i).getmTripshetSOValue());
+                ts_order_value.setText(Utility.getFormattedCurrency(orderTotal));
+            }
+
 
             isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
 
@@ -404,8 +414,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         if(tripSheetSOList.size()>0){
             tripSheetSOList.clear();
         }
-        tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
 
+        tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
         if (tripSheetSOList.size() > 0) {
             mTripsheetSOAdapter.setAllSaleOrdersList(tripSheetSOList);
             mTripsheetSOAdapter.notifyDataSetChanged();

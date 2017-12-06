@@ -117,7 +117,8 @@ public class AgentReturns extends AppCompatActivity {
 
         ArrayList<TripSheetReturnsBean> unUploadedReturns = mDBHelper.fetchAllTripsheetsReturnsListForAgents(agentId);
         for (int i = 0; i < unUploadedReturns.size(); i++) {
-            return_no = unUploadedReturns.get(i).getmTripshhetReturnsReturn_no();
+            // return_no = unUploadedReturns.get(i).getmTripshhetReturnsReturn_no();
+            return_no = unUploadedReturns.get(i).getmTripshhetReturnsReturn_number();
         }
         ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(return_no);
         for (int i = 0; i < arList.size(); i++) {

@@ -137,9 +137,11 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
             tripSheetReturnsViewHolder.obQuantity.setText("0.0");
         }
 
-        if (previouslyReturnedProductsHashMap.containsKey(currentDeliveryBean.getProductId()))
+        if (previouslyReturnedProductsHashMap.containsKey(currentDeliveryBean.getProductId())) {
+            Double presentQuantity = Double.parseDouble(previouslyReturnedProductsHashMap.get(currentDeliveryBean.getProductId()));
+            currentDeliveryBean.setSelectedQuantity(presentQuantity);
             tripSheetReturnsViewHolder.product_quantity.setText(previouslyReturnedProductsHashMap.get(currentDeliveryBean.getProductId()));
-        else
+        }else
             tripSheetReturnsViewHolder.product_quantity.setText(zero_cost);
 
         tripSheetReturnsViewHolder.product_quantity_decrement.setOnClickListener(new View.OnClickListener() {
@@ -239,6 +241,9 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
                 }
             }
         });
+
+        updateSelectedReturnProductsList(currentDeliveryBean);
+        System.out.println("BEFORE SEL QTY:: "+ currentDeliveryBean.getSelectedQuantity());
 
         return view;
     }

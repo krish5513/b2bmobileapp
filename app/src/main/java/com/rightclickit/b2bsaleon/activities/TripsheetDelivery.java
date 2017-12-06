@@ -393,26 +393,33 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
     public void saveTripSheetDeliveryProductsData() {
         try {
+            String deliveryNumber = "";
             if (selectedDeliveryProductsHashMap.size() > 0) {
                 if (validateTripSheetDeliveryData()) {
                     long currentTimeStamp = System.currentTimeMillis();
 
-                    String deliveryNumberCount = mDBHelper.getTripsheetDeliveriesMaxOrderNumber();
-                    System.out.println("DEL MAX COUNT::: " + deliveryNumberCount + "\n");
-                    String deliveryNumber = "";
-                    if (deliveryNumberCount.length() == 0) {
-                        deliveryNumber = "RD1-" + mAgentCode;
-                    } else {
-                        System.out.println("ELSEEEEEEEEEE");
-                        String[] ss = deliveryNumberCount.split("-");
-                        String ss1 = ss[0];
-                        System.out.println("ELSEEEEEEEEEE 111" + ss1);
-                        String ss2 = ss1.substring(2, ss1.length());
-                        System.out.println("ELSEEEEEEEEEE 222" + ss2);
-                        int newCount = Integer.parseInt(ss2) + 1;
-                        deliveryNumber = "RD" + String.valueOf(newCount) + "-" + mAgentCode;
-                    }
+                    deliveryNumber = mDBHelper.getTripsheetDeliveriesMaxOrderNumber(mTripSheetId, mAgentSoId, "first");
                     System.out.println("DELIVERY NUMBER::: " + deliveryNumber);
+                    if (deliveryNumber.length() == 0) {
+                        System.out.println("IFFFFFFFFFFFFF");
+                        deliveryNumber = mDBHelper.getTripsheetDeliveriesMaxOrderNumber(mTripSheetId, mAgentSoId, "second");
+                        System.out.println("ELSEEEEEEEEEEEEE11111" + deliveryNumber);
+                        if (deliveryNumber.length() == 0) {
+                            deliveryNumber = "RD1-" + mAgentCode;
+                            System.out.println("ELSEEEEEEEEEEEEE 000000" + deliveryNumber);
+                        } else {
+                            String[] ss = deliveryNumber.split("-");
+                            String ss1 = ss[0];
+                            System.out.println("ELSEEEEEEEEEE 2222" + ss1);
+                            String ss2 = ss1.substring(2, ss1.length());
+                            System.out.println("ELSEEEEEEEEEE 333" + ss2);
+                            int newCount = Integer.parseInt(ss2) + 1;
+                            deliveryNumber = "RD" + String.valueOf(newCount) + "-" + mAgentCode;
+                            System.out.println("ELSEEEEEEEEEE 4444" + deliveryNumber);
+                        }
+                    } else {
+                        System.out.println("ELSEEEEEEEEEEEEE");
+                    }
 
                     ArrayList<TripSheetDeliveriesBean> mTripsheetsDeliveriesList = new ArrayList<>();
 

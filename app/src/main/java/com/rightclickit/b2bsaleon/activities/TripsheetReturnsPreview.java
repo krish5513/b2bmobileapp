@@ -118,10 +118,11 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
 
 
         ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
-
+        System.out.println("STOCK SIZE::: "+tripsheetsStockLists.size());
 
 
         Map<String, DeliverysBean> mData=(Map<String, DeliverysBean>)this.getIntent().getSerializableExtra("data");
+        System.out.println("STOCK SIZE1111::: "+mData.size());
 
         final ArrayList<String[]> arList = new ArrayList<String[]>();
 
@@ -129,8 +130,8 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
         for (String key : keys) {
             //String value = mData.get(key);
             // do something
-
             DeliverysBean d = mData.get(key);
+            System.out.println("SELCTED QTY::: "+ d.getCansDueQuantity());
             String[] temp = new String[8];
 
             for( int i=0;i<tripsheetsStockLists.size();i++){
@@ -150,7 +151,7 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
             }
             temp[0] = d.getProductTitle();
             temp[1] = str_Uom;
-             temp[2]= String.valueOf(d.getSelectedQuantity());
+            temp[2]= String.valueOf(d.getSelectedQuantity());
 
             temp[4]=str_ProductCode;
             temp[5]= String.valueOf(d.getDeliveredQuantity());
@@ -194,8 +195,10 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
 
             if (returnedProductsList != null) {
 
-                str_deliveryNo=returnedProductsList.get(j).getReturnno();
-                deliveryNo.setText("Return #"+str_deliveryNo);
+                //str_deliveryNo=returnedProductsList.get(j).getReturnno();
+                str_deliveryNo=returnedProductsList.get(j).getReturnNumber();
+                //deliveryNo.setText("Return #"+str_deliveryNo);
+                deliveryNo.setText(str_deliveryNo);
 
                 if (returnedProductsList.get(j).getReturndate().isEmpty())
                     deliveryDate.setText("-");
@@ -252,7 +255,7 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
 
 
 
-       // print = (TextView) findViewById(R.id.tv_print);
+        // print = (TextView) findViewById(R.id.tv_print);
 
 
 /*
@@ -367,7 +370,7 @@ public class TripsheetReturnsPreview extends AppCompatActivity {
 
 
     }
-public String getDate(String time, String format) {
+    public String getDate(String time, String format) {
         try {
             Calendar cal = Calendar.getInstance(Locale.ENGLISH);
             cal.setTimeInMillis(Long.parseLong(time));

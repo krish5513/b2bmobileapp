@@ -340,8 +340,32 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
 
     public void saveTripSheetReturnsProductsData() {
         try {
+            String returnNumber = "";
             if (selectedProductsHashMap.size() > 0) {
                 long currentTimeStamp = System.currentTimeMillis();
+
+                returnNumber = mDBHelper.getTripsheetReturnsMaxOrderNumber(mTripSheetId, mAgentSoId, "first");
+                System.out.println("RETURN NUMBER::: " + returnNumber);
+                if (returnNumber.length() == 0) {
+                    System.out.println("IFFFFFFFFFFFFF");
+                    returnNumber = mDBHelper.getTripsheetReturnsMaxOrderNumber(mTripSheetId, mAgentSoId, "second");
+                    System.out.println("ELSEEEEEEEEEEEEE11111" + returnNumber);
+                    if (returnNumber.length() == 0) {
+                        returnNumber = "RR1-" + mAgentCode;
+                        System.out.println("ELSEEEEEEEEEEEEE 000000" + returnNumber);
+                    } else {
+                        String[] ss = returnNumber.split("-");
+                        String ss1 = ss[0];
+                        System.out.println("ELSEEEEEEEEEE 2222" + ss1);
+                        String ss2 = ss1.substring(2, ss1.length());
+                        System.out.println("ELSEEEEEEEEEE 333" + ss2);
+                        int newCount = Integer.parseInt(ss2) + 1;
+                        returnNumber = "RR" + String.valueOf(newCount) + "-" + mAgentCode;
+                        System.out.println("ELSEEEEEEEEEE 4444" + returnNumber);
+                    }
+                } else {
+                    System.out.println("ELSEEEEEEEEEEEEE");
+                }
 
                 ArrayList<TripSheetReturnsBean> mTripsheetsReturnsList = new ArrayList<>();
 
@@ -350,6 +374,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
 
                     TripSheetReturnsBean tripSheetReturnsBean = new TripSheetReturnsBean();
                     tripSheetReturnsBean.setmTripshhetReturnsReturn_no("");
+                    tripSheetReturnsBean.setmTripshhetReturnsReturn_number(returnNumber);
                     tripSheetReturnsBean.setmTripshhetReturnsTrip_id(mTripSheetId);
                     tripSheetReturnsBean.setmTripshhetReturns_so_id(mAgentSoId);
                     tripSheetReturnsBean.setmTripshhetReturns_so_code(mAgentSoCode);

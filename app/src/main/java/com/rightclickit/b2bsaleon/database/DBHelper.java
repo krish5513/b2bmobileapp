@@ -3201,7 +3201,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-
     public ArrayList<String> fetchUnUploadedUniqueDeliverySoIds() {
         ArrayList<String> tripSheetIds = new ArrayList<>();
 
@@ -3308,7 +3307,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return alltripsheetsDeliveries;
     }
 
-
     /**
      * Method to fetch all tripsheets deliveries list
      */
@@ -3317,10 +3315,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             String selectQuery = "SELECT DISTINCT(tripsheet_delivery_number) AS Tripsheet_Delivery_Number" +
-                    ", COUNT(tripsheet_delivery_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + tripsheetId + "'";
-
+                    ", COUNT(tripsheet_delivery_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + tripsheetId + "'" + " GROUP BY " + KEY_TRIPSHEET_DELIVERY_NUMBER;
+//            String selectQuery1 = "SELECT DISTINCT " + KEY_TRIPSHEET_DELIVERY_NUMBER
+//                    + " , count("+ KEY_TRIPSHEET_DELIVERY_NUMBER + ")"
+//                    +  " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + tripsheetId + "'"
+//                    + " GROUP BY "+ KEY_TRIPSHEET_DELIVERY_NUMBER;
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
+            System.out.println("Deliver Items Count:: " + c.getCount());
             HashMap<String, String> records = new HashMap<>();
             if (c.moveToFirst()) {
                 do {
@@ -3421,12 +3423,13 @@ public class DBHelper extends SQLiteOpenHelper {
         return alltripsheetsDeliveries;
     }
 
+
     public ArrayList<TripSheetReturnsBean> fetchAllTripsheetsReturnsListForAgents(String userId) {
         ArrayList<TripSheetReturnsBean> agentsreturnsBean = new ArrayList<>();
 
         try {
             String selectQuery = "SELECT DISTINCT(tripsheet_returns_return_number) AS Tripsheet_Return_Number" +
-                    ", COUNT(tripsheet_returns_return_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + userId + "'";
+                    ", COUNT(tripsheet_returns_return_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + userId + "'" + " GROUP BY " + KEY_TRIPSHEET_RETURNS_RETURN_NUMBER;
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -3489,6 +3492,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return agentsreturnsBean;
     }
+
 
     /**
      * Method to update the mTripsheetsDeliveriesList.
@@ -3565,6 +3569,7 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             for (TripSheetReturnsBean tripSheetReturnsBean : mTripsheetsReturnsList) {
                 ContentValues values = new ContentValues();
+                values.put(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER, tripSheetReturnsBean.getmTripshhetReturnsReturn_number());
                 values.put(KEY_TRIPSHEET_RETURNS_TRIP_ID, tripSheetReturnsBean.getmTripshhetReturnsTrip_id());
                 values.put(KEY_TRIPSHEET_RETURNS_SO_ID, tripSheetReturnsBean.getmTripshhetReturns_so_id());
                 values.put(KEY_TRIPSHEET_RETURNS_SO_CODE, tripSheetReturnsBean.getmTripshhetReturns_so_code());
@@ -3833,6 +3838,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void insertTripsheetsPaymentsListData(PaymentsBean paymentsBean) {
         try {
             ContentValues values = new ContentValues();
+            values.put(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER, paymentsBean.getPayments_paymentsNumber());
             values.put(KEY_TRIPSHEET_PAYMENTS_TRIP_ID, paymentsBean.getPayments_tripsheetId());
             values.put(KEY_TRIPSHEET_PAYMENTS_USER_ID, paymentsBean.getPayments_userId());
             values.put(KEY_TRIPSHEET_PAYMENTS_USER_CODES, paymentsBean.getPayments_userCodes());
@@ -3866,11 +3872,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
             long insertedId = db.insert(TABLE_TRIPSHEETS_PAYMENTS_LIST, null, values);
 
-            /*if (noOfRecordsExisted == 0) {
-                db.insert(TABLE_TRIPSHEETS_PAYMENTS_LIST, null, values);
-            } else {
-                db.update(TABLE_TRIPSHEETS_PAYMENTS_LIST, values, KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_PAYMENTS_SO_ID + " = ? ", new String[]{paymentsBean.getPayments_tripsheetId(), paymentsBean.getPayments_saleOrderId()});
-            }*/
+        /*if (noOfRecordsExisted == 0) {
+            db.insert(TABLE_TRIPSHEETS_PAYMENTS_LIST, null, values);
+        } else {
+            db.update(TABLE_TRIPSHEETS_PAYMENTS_LIST, values, KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_PAYMENTS_SO_ID + " = ? ", new String[]{paymentsBean.getPayments_tripsheetId(), paymentsBean.getPayments_saleOrderId()});
+        }*/
 
             values.clear();
             db.close();
@@ -3879,6 +3885,8 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
+
+
 
     /**
      * Method to fetch all tripsheets payments list baed on tripsheet id from Tripsheets payments list table
@@ -4571,7 +4579,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             ContentValues values = new ContentValues();
-            values.put(KEY_TRIPSHEET_DELIVERY_NUMBER, deliveryNumber);
+            //values.put(KEY_TRIPSHEET_DELIVERY_NUMBER, deliveryNumber);
             values.put(KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS, 1);
 
             int status = db.update(TABLE_TRIPSHEETS_DELIVERIES_LIST, values, KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + " = ? AND " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = ?", new String[]{tripSheetId, saleOrderId, agentId});
@@ -4584,6 +4592,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+
 
     public int checkProductExistsInTripSheetReturnsTable(String saleOrderId, String agentId, String productId) {
         int noOfRecords = 0;
@@ -4639,7 +4648,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             ContentValues values = new ContentValues();
-            values.put(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER, returnNumber);
+            //values.put(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER, returnNumber);
             values.put(KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS, 1);
 
             int status = db.update(TABLE_TRIPSHEETS_RETURNS_LIST, values, KEY_TRIPSHEET_RETURNS_TRIP_ID + " = ? AND " + KEY_TRIPSHEET_RETURNS_SO_ID + " = ? AND " + KEY_TRIPSHEET_RETURNS_USER_ID + " = ?", new String[]{tripSheetId, saleOrderId, agentId});
@@ -4652,6 +4661,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+
 
     /**
      * Method to check weather the tripsheet payments record exists or not using tripsheetid.
@@ -5168,7 +5178,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return deliveredProductsList;
     }
-
     public ArrayList<SaleOrderReturnedProducts> getReturnsProductsListForSaleOrder(String tripSheetId, String saleOrderId, String agentId) {
         ArrayList<SaleOrderReturnedProducts> returnedProductsList = new ArrayList<>();
 
@@ -7166,4 +7175,107 @@ public class DBHelper extends SQLiteOpenHelper {
         System.out.println("PAY RECORDS::: " + noOfRecords);
         return noOfRecords;
     }
+
+
+    /**
+     * Method to get the count of existing deliveries.
+     *
+     * @return deliveries count
+     */
+    public String getTripsheetDeliveriesMaxOrderNumber(String tripsheetId, String soId, String isFrom) {
+        String orderId = "";
+
+        try {
+            String countQuery = "";
+            if (isFrom.equals("first")) {
+                countQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_NUMBER + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID
+                        + "='" + tripsheetId + "'" + " AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + "='" + soId + "'" + " ORDER BY " + KEY_TRIPSHEET_DELIVERY_NUMBER + " DESC LIMIT 1";
+            } else if (isFrom.equals("second")) {
+                countQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_NUMBER + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " ORDER BY " + KEY_TRIPSHEET_DELIVERY_NUMBER + " DESC LIMIT 1";
+            }
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+
+            if (cursor.moveToFirst()) {
+                orderId = cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NUMBER));
+            }
+
+            cursor.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orderId;
+    }
+
+    /**
+     * Method to get the count of existing deliveries.
+     *
+     * @return deliveries count
+     */
+    public String getTripsheetReturnsMaxOrderNumber(String tripsheetId, String soId, String isFrom) {
+        String orderId = "";
+
+        try {
+            String countQuery = "";
+            if (isFrom.equals("first")) {
+                countQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_RETURN_NUMBER + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_TRIP_ID
+                        + "='" + tripsheetId + "'" + " AND " + KEY_TRIPSHEET_RETURNS_SO_ID + "='" + soId + "'" + " ORDER BY " + KEY_TRIPSHEET_RETURNS_RETURN_NUMBER + " DESC LIMIT 1";
+            } else if (isFrom.equals("second")) {
+                countQuery = "SELECT " + KEY_TRIPSHEET_RETURNS_RETURN_NUMBER + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " ORDER BY " + KEY_TRIPSHEET_RETURNS_RETURN_NUMBER + " DESC LIMIT 1";
+            }
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+
+            if (cursor.moveToFirst()) {
+                orderId = cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER));
+            }
+
+            cursor.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orderId;
+    }
+
+    /**
+     * Method to get the count of existing deliveries.
+     *
+     * @return deliveries count
+     */
+    public String getTripsheetPaymentsMaxOrderNumber(String tripsheetId, String soId, String isFrom) {
+        String orderId = "";
+
+        try {
+            //String countQuery = "SELECT " + KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER + " FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " ORDER BY " + KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER + " DESC LIMIT 1";
+
+            String countQuery = "";
+            if (isFrom.equals("first")) {
+                countQuery = "SELECT " + KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER + " FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_TRIP_ID
+                        + "='" + tripsheetId + "'" + " AND " + KEY_TRIPSHEET_PAYMENTS_SO_ID + "='" + soId + "'" + " ORDER BY " + KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER + " DESC LIMIT 1";
+            } else if (isFrom.equals("second")) {
+                countQuery = "SELECT " + KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER + " FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " ORDER BY " + KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER + " DESC LIMIT 1";
+            }
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery(countQuery, null);
+
+            if (cursor.moveToFirst()) {
+                orderId = cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER));
+            }
+
+            cursor.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orderId;
+    }
+
 }

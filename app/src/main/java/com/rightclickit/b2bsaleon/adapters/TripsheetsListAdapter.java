@@ -131,15 +131,25 @@ public class TripsheetsListAdapter extends BaseAdapter {
 
         mHolder.mTripsheetOBAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetOBAmount().replace(",", ""))));
         mHolder.mTripsheetOrderedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetOrderedAmount().replace(",", ""))));
-     //   mHolder.mTripsheetReceivedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetReceivedAmount().replace(",", ""))));
+        //   mHolder.mTripsheetReceivedAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetReceivedAmount().replace(",", ""))));
         mHolder.mTripsheetDueAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetDueAmount().replace(",", ""))));
         mHolder.mTripsheetReceivedAmount.setText(mDBHelper.getRouteNameByRouteCode(currentTripSheet.getmTripshhetRouteCode()));
         mHolder.stockbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String tripCode111 = "";
+                if (currentTripSheet.getmTripshhetCode() != null) {
+                    if (currentTripSheet.getmTripshhetCode().length() == 0) {
+                        tripCode111=("TR-"+currentTripSheet.getMy_Id());
+                    } else {
+                        tripCode111=currentTripSheet.getmTripshhetCode();
+                    }
+                } else {
+                    tripCode111=("TR-"+currentTripSheet.getMy_Id());
+                }
                 Intent stockIntent = new Intent(activity, TripSheetStock.class);
                 stockIntent.putExtra("tripsheetId", currentTripSheet.getmTripshhetId());
-                stockIntent.putExtra("tripsheetCode", tripCode);
+                stockIntent.putExtra("tripsheetCode", tripCode111);
                 stockIntent.putExtra("tripsheetDate", currentTripSheet.getmTripshhetDate());
                 activity.startActivity(stockIntent);
                 activity.finish();
@@ -150,18 +160,28 @@ public class TripsheetsListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 if (currentTripSheet.getmTripshhetVerifyStatus().equals("1")) {
+                    String tripCode111 = "";
+                    if (currentTripSheet.getmTripshhetCode() != null) {
+                        if (currentTripSheet.getmTripshhetCode().length() == 0) {
+                            tripCode111=("TR-"+currentTripSheet.getMy_Id());
+                        } else {
+                            tripCode111=currentTripSheet.getmTripshhetCode();
+                        }
+                    } else {
+                        tripCode111=("TR-"+currentTripSheet.getMy_Id());
+                    }
                     mPreferences.putString("TripId", currentTripSheet.getmTripshhetId());
-                    mPreferences.putString("tripsheetCode",tripCode);
+                    mPreferences.putString("tripsheetCode",tripCode111);
                     mPreferences.putString("tripsheetDate", currentTripSheet.getmTripshhetDate());
                     mPreferences.putString("tripsheetroutecode", currentTripSheet.getmTripshhetRouteCode());
                     Intent stockIntent = new Intent(activity, TripSheetView.class);
                     stockIntent.putExtra("tripsheetId", currentTripSheet.getmTripshhetId());
-                    stockIntent.putExtra("tripsheetCode",tripCode);
+                    stockIntent.putExtra("tripsheetCode",tripCode111);
                     stockIntent.putExtra("tripsheetDate", currentTripSheet.getmTripshhetDate());
                     activity.startActivity(stockIntent);
                     activity.finish();
                 } else {
-                  //  Toast.makeText(ctxt, "This Trip Sheet is not yet verified.", Toast.LENGTH_LONG).show();
+                    //  Toast.makeText(ctxt, "This Trip Sheet is not yet verified.", Toast.LENGTH_LONG).show();
                     CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.stockv));
                 }
             }

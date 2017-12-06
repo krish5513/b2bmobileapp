@@ -412,6 +412,29 @@ public class TripsheetPayments extends AppCompatActivity {
      * @param
      */
     private PaymentsBean formAPIData(int type) {
+        String paymentsNumber = mDBHelper.getTripsheetPaymentsMaxOrderNumber(mTripSheetId, mAgentSoId, "first");
+        System.out.println("PAYMENT NUMBER::: " + paymentsNumber);
+        if (paymentsNumber.length() == 0) {
+            System.out.println("IFFFFFFFFFFFFF");
+            paymentsNumber = mDBHelper.getTripsheetPaymentsMaxOrderNumber(mTripSheetId, mAgentSoId, "second");
+            System.out.println("ELSEEEEEEEEEEEEE11111" + paymentsNumber);
+            if (paymentsNumber.length() == 0) {
+                paymentsNumber = "RP1-" + mAgentCode;
+                System.out.println("ELSEEEEEEEEEEEEE 000000" + paymentsNumber);
+            } else {
+                String[] ss = paymentsNumber.split("-");
+                String ss1 = ss[0];
+                System.out.println("ELSEEEEEEEEEE 2222" + ss1);
+                String ss2 = ss1.substring(2, ss1.length());
+                System.out.println("ELSEEEEEEEEEE 333" + ss2);
+                int newCount = Integer.parseInt(ss2) + 1;
+                paymentsNumber = "RP" + String.valueOf(newCount) + "-" + mAgentCode;
+                System.out.println("ELSEEEEEEEEEE 4444" + paymentsNumber);
+            }
+        } else {
+            System.out.println("ELSEEEEEEEEEEEEE");
+        }
+
         PaymentsBean paymentsBean = new PaymentsBean();
         if (mTripSheetId != null) {
             paymentsBean.setPayments_tripsheetId(mTripSheetId);
@@ -478,6 +501,7 @@ public class TripsheetPayments extends AppCompatActivity {
         } else {
             paymentsBean.setPayments_saleOrderCode("");
         }
+        paymentsBean.setPayments_paymentsNumber(paymentsNumber);
         return paymentsBean;
     }
 
@@ -547,6 +571,7 @@ public class TripsheetPayments extends AppCompatActivity {
 //            }
         }
     }
+
     /**
      * Method to display alert after success delivery.
      *

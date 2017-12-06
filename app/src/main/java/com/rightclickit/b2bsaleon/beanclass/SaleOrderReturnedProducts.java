@@ -16,6 +16,7 @@ public class SaleOrderReturnedProducts implements Serializable {
     private String closingBalance;
     private String returnno;
     private String agentId;
+    private String returnNumber;
 
 
     public String getReturnno() {
@@ -113,5 +114,13 @@ public class SaleOrderReturnedProducts implements Serializable {
 
     public void setAgentId(String agentId) {
         this.agentId = agentId;
+    }
+
+    public String getReturnNumber() {
+        return returnNumber;
+    }
+
+    public void setReturnNumber(String returnNumber) {
+        this.returnNumber = returnNumber;
     }
 }
