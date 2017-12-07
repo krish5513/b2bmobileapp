@@ -201,7 +201,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             holder = (MyViewHolder) convertView.getTag();
         }
 
-        holder.productName.setText(mTakeOrderBeansList1.get(position).getProductTitle());
+        holder.productName.setText(mTakeOrderBeansList1.get(position).getProductTitle() + "," + mTakeOrderBeansList1.get(position).getProductCode() + "," + mTakeOrderBeansList1.get(position).getProductUOM());
         holder.code.setText(mTakeOrderBeansList1.get(position).getProductCode() + ",");
         holder.uom.setText(mTakeOrderBeansList1.get(position).getProductUOM());
         mPreferences.putString("UOM", mTakeOrderBeansList1.get(position).getProductUOM());

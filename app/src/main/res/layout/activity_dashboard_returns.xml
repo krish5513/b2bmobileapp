@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/routes_ret"
-    tools:context="com.rightclickit.b2bsaleon.fragments.Routes_Return">
+    tools:context="com.rightclickit.b2bsaleon.activities.DashboardReturns">
 
     <!-- TODO: Update blank fragment layout -->
 
