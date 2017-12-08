@@ -162,13 +162,6 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                 if (accessDevice.equals("YES")) {
                     if (mDBHelper.getUserDetailsTableCount() > 0) {
                         mDBHelper.deleteValuesFromUserDetailsTable();
-                    }
-                    synchronized (this) {
-
-//                        if (!mPreferences.getString("").equals("No Data found")
-//                                || !mPreferences.getString("").equals("No Data Found")) {
-//                            dId = mPreferences.getString("deviceId");
-//                        }
 //                        if (!mPreferences.getString("").equals("No Data found")
 //                                || !mPreferences.getString("").equals("No Data Found")) {
 //                            trasportName = mPreferences.getString("transporterName");
