@@ -87,7 +87,7 @@ public class SyncTripSheetsPaymentsService extends Service {
                 paymentBean = params[0];
 
                 JSONObject requestObj = new JSONObject();
-                //requestObj.put("payment_no", "");
+                requestObj.put("payment_no", paymentBean.getPayments_paymentsNumber());
                 requestObj.put("trip_id", paymentBean.getPayments_tripsheetId());
                 requestObj.put("user_id", paymentBean.getPayments_userId());
                 requestObj.put("agent_code", paymentBean.getPayments_userCodes());

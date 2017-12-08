@@ -11,7 +11,7 @@
     <string name="email_field_required">Please enter email address.</string>
     <string name="password_field_required">Please enter password.</string>
     <string name="error_invalid_email">Please enter valid email address.</string>
-    <string name="login_response_invalid_login">Invalid login credentials.</string>
+    <string name="login_response_invalid_login">Invalid login credentials,Please contact administrator</string>
     <string name="login_response_contact_admin_login">Please contact administrator.</string>
     <string name="database_details">Details saved Successfully.</string>
     <string name="success_password">Password changed Successfully.</string>

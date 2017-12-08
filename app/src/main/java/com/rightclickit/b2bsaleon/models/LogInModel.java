@@ -105,7 +105,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
 
                                 vehicleNum=priceObj.getString("vehicle_no");
 
-                                 Log.i("jsdfgfuds",vehicleNum);
+
                             }
 
                         }
@@ -187,8 +187,8 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                     displayNoNetworkError(context);
                 }
             } else {
-                displayNoNetworkError(context);
-                //  activity.logInError();
+                //displayNoNetworkError(context);
+                  activity.logInError();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -199,6 +199,6 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
 
     public static void displayNoNetworkError(Context context) {
         CustomProgressDialog.hideProgressDialog();
-        CustomAlertDialog.showAlertDialog(context, "Access Denied", "Please Contact Administrater.");
+        CustomAlertDialog.showAlertDialog(context, "Internet is not available", "Please check internet connection");
     }
 }

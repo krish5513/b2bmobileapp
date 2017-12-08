@@ -147,7 +147,7 @@ public class AsyncRequest extends AsyncTask<Void, Void, String> {
         // Sending response back to listener
         if (jsonResponseObject.equals("failure") || jsonResponseObject.equals("error")) {
             CustomProgressDialog.hideProgressDialog();
-            CustomAlertDialog.showAlertDialog(context, context.getResources().getString(R.string.error_title), context.getResources().getString(R.string.error_failure));
+            CustomAlertDialog.showAlertDialog(context, context.getResources().getString(R.string.error_title), context.getResources().getString(R.string.login_response_invalid_login));
         } else if (jsonResponseObject.equals("timeout")) {
             CustomProgressDialog.hideProgressDialog();
             CustomAlertDialog.showAlertDialog(context, context.getResources().getString(R.string.error_title), context.getResources().getString(R.string.error_request_timeout));
@@ -162,7 +162,7 @@ public class AsyncRequest extends AsyncTask<Void, Void, String> {
 
         // Sending response back to listener
         if (jsonResponseObject.equals("failure") || jsonResponseObject.equals("error")) {
-            CustomAlertDialog.showAlertDialog(context, context.getResources().getString(R.string.error_title), context.getResources().getString(R.string.error_failure));
+            CustomAlertDialog.showAlertDialog(context, context.getResources().getString(R.string.error_title), context.getResources().getString(R.string.login_response_invalid_login));
         } else if (jsonResponseObject.equals("timeout")) {
             CustomAlertDialog.showAlertDialog(context, context.getResources().getString(R.string.error_title), context.getResources().getString(R.string.error_request_timeout));
         } else {

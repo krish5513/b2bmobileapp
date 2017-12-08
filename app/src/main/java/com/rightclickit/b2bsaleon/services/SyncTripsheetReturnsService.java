@@ -76,6 +76,7 @@ public class SyncTripsheetReturnsService extends Service {
                         if (i == 0) {
                             tripSheetReturnsBeanWithProducts = new TripSheetReturnsBeanWithProducts();
                             tripSheetReturnsBeanWithProducts.setmTripshhetReturnsReturn_no(currentReturn.getmTripshhetReturnsReturn_no());
+                            tripSheetReturnsBeanWithProducts.setmTripshhetReturnsReturn_number(currentReturn.getmTripshhetReturnsReturn_number());
                             tripSheetReturnsBeanWithProducts.setmTripshhetReturnsTrip_id(currentReturn.getmTripshhetReturnsTrip_id());
                             tripSheetReturnsBeanWithProducts.setmTripshhetReturnsUser_id(currentReturn.getmTripshhetReturnsUser_id());
                             tripSheetReturnsBeanWithProducts.setmTripshhetReturnsUser_codes(currentReturn.getmTripshhetReturnsUser_codes());
@@ -120,7 +121,7 @@ public class SyncTripsheetReturnsService extends Service {
                 currentProduct = stockList[0];
 
                 JSONObject requestObj = new JSONObject();
-                //requestObj.put("return_no", "");
+                requestObj.put("return_no", currentProduct.getmTripshhetReturnsReturn_number());
                 requestObj.put("trip_id", currentProduct.getmTripshhetReturnsTrip_id());
                 requestObj.put("user_id", currentProduct.getmTripshhetReturnsUser_id());
                 requestObj.put("user_codes", currentProduct.getmTripshhetReturnsUser_codes());
