@@ -3886,8 +3886,6 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-
-
     /**
      * Method to fetch all tripsheets payments list baed on tripsheet id from Tripsheets payments list table
      */
@@ -3900,7 +3898,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS + " = 0";
             }else {
                 selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS + " = 0"
-                        + " AND WHERE "+KEY_TRIPSHEET_PAYMENTS_TRIP_ID+" ='"+tripId+"'";
+                        + " AND "+KEY_TRIPSHEET_PAYMENTS_TRIP_ID+" = '"+tripId+"'";
             }
 
             SQLiteDatabase db = this.getReadableDatabase();
@@ -3951,7 +3949,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return alltripsheetsPayments;
     }
-
     /**
      * Method to fetch agent latitude and longitude based on agentid
      */
@@ -4564,7 +4561,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS + " = 0";
             }else {
                 selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS + " = 0"
-                        + " AND WHERE "+ KEY_TRIPSHEET_DELIVERY_TRIP_ID + " ='"+ tripId + "'";
+                        + " AND "+ KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = '"+ tripId + "'";
             }
 
             SQLiteDatabase db = this.getReadableDatabase();
@@ -4639,7 +4636,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS + " = 0";
             }else {
                 selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS + " = 0"
-                        + " AND WHERE "+ KEY_TRIPSHEET_RETURNS_TRIP_ID + " ='"+tripId+"'";
+                        + " AND "+ KEY_TRIPSHEET_RETURNS_TRIP_ID + " = '"+tripId+"'";
             }
 
             SQLiteDatabase db = this.getReadableDatabase();

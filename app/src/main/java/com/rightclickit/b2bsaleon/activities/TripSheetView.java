@@ -424,6 +424,10 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     }
 
     public void loadTripSheetSaleOrderData() {
+        if (alertDialogBuilder1 != null) {
+            alertDialog1.dismiss();
+            alertDialogBuilder1 = null;
+        }
         if (tripSheetSOList.size() > 0) {
             tripSheetSOList.clear();
         }
@@ -976,6 +980,9 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                     if (new NetworkConnectionDetector(TripSheetView.this).isNetworkConnected()) {
                         startService(new Intent(TripSheetView.this, SyncTripSheetsPaymentsService.class));
                     }
+                }else {
+                    alertDialogBuilder1.setMessage("Downloading sale orders... Please wait.. ");
+                    mTripsheetsModel.getTripsheetsSoList(mTripSheetId);
                 }
             }
 
