@@ -57,7 +57,7 @@ public class SyncTripsheetReturnsService extends Service {
 
     private void syncTripSheetReturnsDataWithServer() {
         try {
-            ArrayList<String> unUploadedReturnsTripSheetIds = mDBHelper.fetchUnUploadedUniqueReturnsTripSheetIds();
+            ArrayList<String> unUploadedReturnsTripSheetIds = mDBHelper.fetchUnUploadedUniqueReturnsTripSheetIds("");
             unUploadedReturnsTripSheetIdsCount = unUploadedReturnsTripSheetIds.size();
             ArrayList<String> soIds = mDBHelper.fetchUnUploadedUniqueReturnsSoIds();
             for (String tripSheetId : unUploadedReturnsTripSheetIds) {

@@ -60,7 +60,7 @@ public class SyncTripSheetsPaymentsService extends Service {
 
     private void fetchAndSyncTripsheetsPaymentsData() {
         try {
-            ArrayList<PaymentsBean> paymentsBeanArrayList = mDBHelper.fetchAllTripsheetsPaymentsList();
+            ArrayList<PaymentsBean> paymentsBeanArrayList = mDBHelper.fetchAllTripsheetsPaymentsList("");
             unUploadedPaymentsTripSheetIdsCount = paymentsBeanArrayList.size();
 
             if (paymentsBeanArrayList.size() > 0) {

@@ -73,7 +73,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                     userCode = logInResponse.getString("code");
                 }
                 if (logInResponse.has("first_name") || logInResponse.has("last_name")) {
-                  //  userName = logInResponse.getString("first_name") + " " + logInResponse.getString("last_name");
+                    //  userName = logInResponse.getString("first_name") + " " + logInResponse.getString("last_name");
                     userName = logInResponse.getString("last_name");
 
                     companyname=logInResponse.getString("first_name");
@@ -101,7 +101,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
 
                             }
 
-                             if (priceObj.has("vehicle_no")) {
+                            if (priceObj.has("vehicle_no")) {
 
                                 vehicleNum=priceObj.getString("vehicle_no");
 
@@ -160,8 +160,9 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                 }
 
                 if (accessDevice.equals("YES")) {
-                    if (mDBHelper.getUserDetailsTableCount() > 0) {
-                        mDBHelper.deleteValuesFromUserDetailsTable();
+                    synchronized (this) {
+                        if (mDBHelper.getUserDetailsTableCount() > 0) {
+                            mDBHelper.deleteValuesFromUserDetailsTable();
 //                        if (!mPreferences.getString("").equals("No Data found")
 //                                || !mPreferences.getString("").equals("No Data Found")) {
 //                            trasportName = mPreferences.getString("transporterName");
@@ -170,6 +171,9 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
 //                                || !mPreferences.getString("").equals("No Data Found")) {
 //                            vehicleNum = mPreferences.getString("vehicleNumber");
 //                        }
+                        }
+                    }
+                    synchronized (this){
                         mDBHelper.insertUserDetails(id, userCode, companyname, userName, email, phone, profilePic, stakeHolderId, address, deviceSync, accessDevice, backUp, routeArrayListString,
                                 dId, trasportName, vehicleNum, latitude, longitude, password);
                     }
@@ -181,7 +185,7 @@ public class LogInModel implements OnAsyncRequestCompleteListener {
                 }
             } else {
                 //displayNoNetworkError(context);
-                  activity.logInError();
+                activity.logInError();
             }
         } catch (Exception e) {
             e.printStackTrace();

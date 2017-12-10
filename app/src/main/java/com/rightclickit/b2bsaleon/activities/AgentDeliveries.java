@@ -247,7 +247,8 @@ public class AgentDeliveries extends AppCompatActivity {
         //ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries1 = mDBHelper.fetchAllTripsheetsDeliveriesList(agentId);
         ArrayList<TripSheetDeliveriesBean> unUploadedDeliveries1 = mDBHelper.fetchAllTripsheetsDeliveriesListForAgents(agentId);
         for (int i = 0; i < unUploadedDeliveries1.size(); i++) {
-            d_no = unUploadedDeliveries1.get(i).getmTripsheetDeliveryNo();
+            //d_no = unUploadedDeliveries1.get(i).getmTripsheetDeliveryNo();
+            d_no = unUploadedDeliveries1.get(i).getmTripsheetDeliveryNumber();
         }
         ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(d_no);
         for (int i = 0; i < arList.size(); i++) {

@@ -117,7 +117,7 @@ public class AgentPaymentsAdapter extends BaseAdapter {
         if (currentDeliveryBean != null) {
 
             tripSheetDeliveriesViewHolder.Payment_no.setText(currentDeliveryBean.getPayments_paymentsNumber());
-            tripSheetDeliveriesViewHolder.Paymeent_date.setText(currentDeliveryBean.getPayments_chequeDate());
+            tripSheetDeliveriesViewHolder.Paymeent_date.setText(currentDeliveryBean.getPayment_date());
             tripSheetDeliveriesViewHolder.Payment_status.setText(currentDeliveryBean.getPayments_status());
             rAmt=(String.valueOf(currentDeliveryBean.getPayments_receivedAmount()));
             tripSheetDeliveriesViewHolder.payment_Amount.setText(rAmt);
@@ -137,12 +137,12 @@ public class AgentPaymentsAdapter extends BaseAdapter {
         tripSheetDeliveriesViewHolder.View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                rAmt=(String.valueOf(currentDeliveryBean.getPayments_receivedAmount()));
                 Intent i=new Intent(activity,AgentPaymentsView.class);
                 i.putExtra("PaymentNo",currentDeliveryBean.getPayments_paymentsNumber());
                 i.putExtra("tripID",currentDeliveryBean.getPayments_tripsheetId());
                 i.putExtra("ReceivedAmount",rAmt);
-                i.putExtra("Paymentdate",(currentDeliveryBean.getPayments_chequeDate()));
+                i.putExtra("Paymentdate",(currentDeliveryBean.getPayment_date()));
                 activity.startActivity(i);
                 activity.finish();
             }

@@ -1,8 +1,10 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -10,6 +12,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -48,11 +51,16 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsSOListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentLatLong;
+import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
+import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
+import com.rightclickit.b2bsaleon.services.SyncTripSheetsPaymentsService;
+import com.rightclickit.b2bsaleon.services.SyncTripsheetDeliveriesService;
+import com.rightclickit.b2bsaleon.services.SyncTripsheetReturnsService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.NetworkManager;
@@ -81,7 +89,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     LinearLayout tsProductsLayout;
     LinearLayout tsTDCLayout;
     LinearLayout tsRetailersLayout;
-    private TextView ts_ob_amount, ts_order_value, ts_total_received, ts_total_due,ts_code,ts_date;
+    private TextView ts_ob_amount, ts_order_value, ts_total_received, ts_total_due, ts_code, ts_date;
     private Location mLastLocation, startingLocation, endingLocation;
 
     // Google client to interact with Google API
@@ -113,7 +121,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private ListView mTripsheetsSOListView;
     private TripsheetsModel mTripsheetsModel;
     private TripsheetsSOListAdapter mTripsheetSOAdapter;
-    private String mTripSheetId = "", mTakeOrderPrivilege = "", mTripSheetCode = "", mTripSheetDate = "",mhidePrevilige="";
+    private String mTripSheetId = "", mTakeOrderPrivilege = "", mTripSheetCode = "", mTripSheetDate = "", mhidePrevilige = "";
     private double mCurrentLocationLat = 0.0, mCurrentLocationLongitude = 0.0;
     private ArrayList<TripsheetSOList> tripSheetSOList = new ArrayList<>();
     private ArrayList<AgentLatLong> agentsLatLongList = new ArrayList<>(); // this list contains all valid agents lat long details
@@ -121,7 +129,13 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private boolean isTripSheetClosed = false;
     String startDateStrNewFormat;
     private TextView mNoTripsFoundText;
-    Double orderTotal=0.0;
+    Double orderTotal = 0.0;
+    private int uploadedCount = 0, uploadedCountReturns = 0, uploadedCountpayments = 0;
+    private Runnable mRunnable;
+    private Handler mHandler = new Handler();
+    private android.support.v7.app.AlertDialog alertDialog1 = null;
+    private android.support.v7.app.AlertDialog.Builder alertDialogBuilder1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -178,9 +192,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             }
 
 
-
-            ts_code=(TextView)findViewById(R.id.tripsheetCode);
-            ts_date=(TextView)findViewById(R.id.tripsheetDate);
+            ts_code = (TextView) findViewById(R.id.tripsheetCode);
+            ts_date = (TextView) findViewById(R.id.tripsheetDate);
 
             ts_code.setText(mTripSheetCode);
             ts_date.setText(startDateStrNewFormat);
@@ -377,7 +390,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount().replace(",", ""))));
 
 
-              //  ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount().replace(",", ""))));
+                //  ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount().replace(",", ""))));
                 ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount().replace(",", ""))));
                 ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount().replace(",", ""))));
             }
@@ -392,13 +405,13 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
             isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
 
-            mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege, isTripSheetClosed,mhidePrevilige);
+            mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege, isTripSheetClosed, mhidePrevilige);
             mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
             tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
             if (networkConnectionDetector.isNetworkConnected()) {
-                if(tripSheetSOList.size()>0){
+                if (tripSheetSOList.size() > 0) {
                     loadTripSheetSaleOrderData();
-                }else {
+                } else {
                     mTripsheetsModel.getTripsheetsSoList(mTripSheetId);
                 }
             } else {
@@ -411,7 +424,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     }
 
     public void loadTripSheetSaleOrderData() {
-        if(tripSheetSOList.size()>0){
+        if (tripSheetSOList.size() > 0) {
             tripSheetSOList.clear();
         }
 
@@ -419,8 +432,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         if (tripSheetSOList.size() > 0) {
             mTripsheetSOAdapter.setAllSaleOrdersList(tripSheetSOList);
             mTripsheetSOAdapter.notifyDataSetChanged();
-        }else {
-            mNoTripsFoundText.setText("No Sale orders Found."+"\n"+"Please click on sync button to get the sale orders.");
+        } else {
+            mNoTripsFoundText.setText("No Sale orders Found." + "\n" + "Please click on sync button to get the sale orders.");
         }
     }
 
@@ -491,6 +504,15 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        if (id == R.id.autorenew) {
+            if (new NetworkConnectionDetector(TripSheetView.this).isNetworkConnected()) {
+                showAlertDialog(TripSheetView.this, "Sync process", "Are you sure, you want start the sync process?");
+            } else {
+                new NetworkConnectionDetector(TripSheetView.this).displayNoNetworkError(TripSheetView.this);
+            }
+            return true;
+        }
 
         switch (id) {
             case android.R.id.home:
@@ -865,5 +887,190 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
         double distance = R * c;
         //System.out.println("DISTANCE IN METERS::: " + Math.round(distance));
         return distance;
+    }
+
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    showCustomValidationAlertForSync(TripSheetView.this, "deliverys");
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to display alert without field.
+     *
+     * @param context
+     * @param message
+     */
+    private void showCustomValidationAlertForSync(Activity context, String message) {
+        // custom dialog
+        try {
+
+            alertDialogBuilder1 = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder1.setTitle("Sync Process");
+            alertDialogBuilder1.setCancelable(false);
+            if (message.equals("down")) {
+                System.out.println("DOWNLOAD CALLEDDDDDDDD FINALLLLL");
+                alertDialogBuilder1.setMessage("Downloading sale orders... Please wait.. ");
+                mTripsheetsModel.getTripsheetsSoList(mTripSheetId);
+            } else {
+                // Delivires Count
+                ArrayList<String> unUploadedDeliveriesTripSheetIds = mDBHelper.fetchUnUploadedUniqueDeliveryTripSheetIds(mTripSheetId);
+                uploadedCount = unUploadedDeliveriesTripSheetIds.size();
+                System.out.println("D COUNT::: "+ uploadedCount);
+
+                // Returns Count
+                ArrayList<String> unUploadedReturnsTripSheetIds = mDBHelper.fetchUnUploadedUniqueReturnsTripSheetIds(mTripSheetId);
+                uploadedCountReturns = unUploadedReturnsTripSheetIds.size();
+                System.out.println("R COUNT::: "+ uploadedCountReturns);
+
+                // Payments Count
+                ArrayList<PaymentsBean> paymentsBeanArrayList = mDBHelper.fetchAllTripsheetsPaymentsList(mTripSheetId);
+                uploadedCountpayments = paymentsBeanArrayList.size();
+                System.out.println("P COUNT::: "+ uploadedCountpayments);
+
+                if (uploadedCount > 0) {
+                    System.out.println("D CALLEDDDDDDDD ");
+                    alertDialogBuilder1.setMessage("Uploading pending deliveries... Please wait.. ");
+                    fetchCountFromDB(uploadedCount, "deliveries");
+                    if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                        Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncTripsheetDeliveriesService.class);
+                        startService(syncTripSheetDeliveriesServiceIntent);
+                    }
+                } else if (uploadedCountReturns > 0) {
+                    System.out.println("R CALLEDDDDDDDD ");
+                    alertDialogBuilder1.setMessage("Uploading pending returns... Please wait.. ");
+                    fetchCountFromDB(uploadedCountReturns, "returns");
+                    if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                        Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncTripsheetReturnsService.class);
+                        startService(syncTripSheetDeliveriesServiceIntent);
+                    }
+                } else if (uploadedCountpayments > 0) {
+                    System.out.println("P CALLEDDDDDDDD ");
+                    alertDialogBuilder1.setMessage("Uploading pending payments... Please wait.. ");
+                    fetchCountFromDB(uploadedCountpayments, "payments");
+                    if (new NetworkConnectionDetector(TripSheetView.this).isNetworkConnected()) {
+                        startService(new Intent(TripSheetView.this, SyncTripSheetsPaymentsService.class));
+                    }
+                }
+            }
+
+            alertDialog1 = alertDialogBuilder1.create();
+            alertDialog1.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fetchCountFromDB(final int uploadedCount11, String deliveries) {
+        if (uploadedCount11 > 0 && deliveries.equals("deliveries")) {
+            System.out.println("D CALLEDDDDDDDD IFFFFFFFFFFFFFFF");
+            mHandler.removeCallbacks(mRunnable);
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<String> unUploadedDeliveriesTripSheetIdsC = mDBHelper.fetchUnUploadedUniqueDeliveryTripSheetIds(mTripSheetId);
+                    fetchCountFromDB(unUploadedDeliveriesTripSheetIdsC.size(), "deliveries");
+                }
+            };
+            mHandler.postDelayed(mRunnable, 1000);
+        } else if(deliveries.equals("deliveries")){
+            System.out.println("D CALLEDDDDDDDD ELSEEEEEEEEEEEEEEEE");
+            uploadedCount = 0;
+            uploadedCountReturns = 0;
+            uploadedCountpayments = 0;
+            mHandler.removeCallbacks(mRunnable);
+            synchronized (this) {
+                if (alertDialogBuilder1 != null) {
+                    alertDialog1.dismiss();
+                    alertDialogBuilder1 = null;
+                }
+            }
+            synchronized (this) {
+                showCustomValidationAlertForSync(TripSheetView.this, "returns");
+            }
+        }
+
+        // RETURNS
+        if (uploadedCount11 > 0 && deliveries.equals("returns")) {
+            System.out.println("R CALLEDDDDDDDD IFFFFFFFFFFFFFFFF");
+            mHandler.removeCallbacks(mRunnable);
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<String> unUploadedDeliveriesTripSheetIdsC = mDBHelper.fetchUnUploadedUniqueReturnsTripSheetIds(mTripSheetId);
+                    fetchCountFromDB(unUploadedDeliveriesTripSheetIdsC.size(), "returns");
+                }
+            };
+            mHandler.postDelayed(mRunnable, 1000);
+        } else if(deliveries.equals("returns")) {
+            System.out.println("R CALLEDDDDDDDD ELSEEEEEEEEEEEEEEEEEEE");
+            uploadedCount = 0;
+            uploadedCountReturns = 0;
+            uploadedCountpayments = 0;
+            mHandler.removeCallbacks(mRunnable);
+            synchronized (this) {
+                if (alertDialogBuilder1 != null) {
+                    alertDialog1.dismiss();
+                    alertDialogBuilder1 = null;
+                }
+            }
+            synchronized (this) {
+                showCustomValidationAlertForSync(TripSheetView.this, "payments");
+            }
+        }
+
+        if (uploadedCount11 > 0 && deliveries.equals("payments")) {
+            System.out.println("P CALLEDDDDDDDD IFFFFFFFFFFFFFFFF");
+            mHandler.removeCallbacks(mRunnable);
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<PaymentsBean> paymentsBeanArrayList = mDBHelper.fetchAllTripsheetsPaymentsList(mTripSheetId);
+                    fetchCountFromDB(paymentsBeanArrayList.size(), "payments");
+                }
+            };
+            mHandler.postDelayed(mRunnable, 1000);
+        } else if(deliveries.equals("payments")){
+            System.out.println("P CALLEDDDDDDDD ELSEEEEEEEEEEEEEE");
+            uploadedCount = 0;
+            uploadedCountReturns = 0;
+            uploadedCountpayments = 0;
+            mHandler.removeCallbacks(mRunnable);
+            synchronized (this) {
+                if (alertDialogBuilder1 != null) {
+                    alertDialog1.dismiss();
+                    alertDialogBuilder1 = null;
+                }
+            }
+            synchronized (this) {
+                showCustomValidationAlertForSync(TripSheetView.this, "down");
+            }
+        }
     }
 }

@@ -57,7 +57,7 @@ public class SyncTripsheetDeliveriesService extends Service {
 
     private void syncTripSheetDeliveriesListDataWithServer() {
         try {
-            ArrayList<String> unUploadedDeliveriesTripSheetIds = mDBHelper.fetchUnUploadedUniqueDeliveryTripSheetIds();
+            ArrayList<String> unUploadedDeliveriesTripSheetIds = mDBHelper.fetchUnUploadedUniqueDeliveryTripSheetIds("");
             //System.out.println("PENDING TRIP IDS::: " + unUploadedDeliveriesTripSheetIds.size());
             unUploadedDeliveryTripSheetIdsCount = unUploadedDeliveriesTripSheetIds.size();
             ArrayList<String> soIds = mDBHelper.fetchUnUploadedUniqueDeliverySoIds();

@@ -204,6 +204,8 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                     // Delivery No
                     if (resObj.has("return_no")) {
                         returnsNoList.add(resObj.getString("return_no"));
+                    }else {
+                        returnsNoList.add("null");
                     }
                     // Trid Id
                     if (resObj.has("trip_id")) {

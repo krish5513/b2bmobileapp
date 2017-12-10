@@ -213,6 +213,9 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
             JSONArray respArray = new JSONArray(response);
             int resLength = respArray.length();
             if (resLength > 0) {
+                if (mDeliveriesBeansList.size() > 0) {
+                    mDeliveriesBeansList.clear();
+                }
                 for (int j = 0; j < resLength; j++) {
                     JSONObject resObj = respArray.getJSONObject(j);
 
@@ -335,9 +338,7 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                     if (resObj.has("delete")) {
                         deleteList.add(resObj.getString("delete"));
                     }
-                    if (mDeliveriesBeansList.size() > 0) {
-                        mDeliveriesBeansList.clear();
-                    }
+
                     for (int d = 0; d < productCodesList.size(); d++) {
                         TripSheetDeliveriesBean deliveriesBean = new TripSheetDeliveriesBean();
                         deliveriesBean.setmTripsheetDeliveryNumber(deliveryNoList.get(j).toString());
