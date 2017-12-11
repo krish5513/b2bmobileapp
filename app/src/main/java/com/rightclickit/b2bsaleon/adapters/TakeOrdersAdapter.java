@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,6 +84,8 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     private Map<String, String> updateFromDatesTakeOrderData = new HashMap<String, String>();
     private Map<String, String> updateToDatesTakeOrderData = new HashMap<String, String>();
     private String ISFROM = "", TRIPID = "";
+    Runnable rr;
+    Handler h = new Handler();
 
     public TakeOrdersAdapter(Activity productsActivity, AgentTakeOrderListener listener, ArrayList<ProductsBean> mTakeOrderBeansList, ListView mTakeOrderListView, String agentId,
                              ArrayList<TakeOrderBean> takeOrderBeansList, Map<String, String> quantityListMap,
@@ -196,6 +200,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             holder.productArrow = (ImageView) convertView.findViewById(R.id.img);
 
             holder.mEmptyLayout = (LinearLayout) convertView.findViewById(R.id.EmptyView);
+
             convertView.setTag(holder);
         } else {
             holder = (MyViewHolder) convertView.getTag();
@@ -363,8 +368,6 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
                     try {
-
-
                         EditText quantityEditText = (EditText) view;
                         Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
                         if (enteredQuantity >0) {
@@ -373,10 +376,10 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                             TextView prodName = (TextView) childView.findViewById(R.id.productName);
                             EditText fromDate = (EditText) childView.findViewById(R.id.from_date);
                             EditText toDate = (EditText) childView.findViewById(R.id.to_date);
-                            String presentValStr = quanity11.getText().toString();
-                            Double presentIntVal = Double.parseDouble(presentValStr);
+                            //String presentValStr = quanity11.getText().toString();
+                            //Double presentIntVal = Double.parseDouble(presentValStr);
                             //quanity11.setText(String.format("%.3f", presentIntVal));
-                            if (!AgentTakeOrderScreen.isCloseClicked && presentIntVal > 0) {
+                            if (!AgentTakeOrderScreen.isCloseClicked && enteredQuantity > 0) {
                                 AgentTakeOrderScreen.isCloseClicked = true;
                                 quantityList.put(mTakeOrderBeansList1.get(position).getProductId(), String.format("%.3f", enteredQuantity));
                                 producttitle.put(mTakeOrderBeansList1.get(position).getProductId(), prodName.getText().toString().trim());
@@ -388,6 +391,9 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                                 updateToDatesTakeOrderData.put(mTakeOrderBeansList1.get(position).getProductId(), toDate.getText().toString().trim());
                                 if (mListener != null)
                                     mListener.updateSelectedTakeOrderQuantity(updateTakeOrderData, updateFromDatesTakeOrderData, updateToDatesTakeOrderData);
+
+                                // Clear the thread
+                                clearTheThread();
                             }
                         }
                     } catch (Exception e) {
@@ -669,6 +675,41 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
+                    showAlertDialogWithCancelButtonNew(activity, "User Action!", "All PR/INDENTS given before 2.00 PM will be considered as final for next day order. Please confirm.");
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+            Button cancelButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            if (cancelButton != null)
+                cancelButton.setTextColor(ContextCompat.getColor(context, R.color.alert_dialog_color_accent));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showAlertDialogWithCancelButtonNew(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
                     synchronized (this) {
                         AgentTakeOrderScreen.search.setQuery("", false);
                         AgentTakeOrderScreen.search.clearFocus();
@@ -723,7 +764,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                 }
             });
 
-            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
@@ -740,5 +781,18 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    private void clearTheThread(){
+        rr = new Runnable() {
+            @Override
+            public void run() {
+                h.removeCallbacks(rr);
+                AgentTakeOrderScreen.isCloseClicked = false;
+            }
+        };
+        h.postDelayed(rr, 2000);
     }
 }

@@ -5052,6 +5052,28 @@ public class DBHelper extends SQLiteOpenHelper {
 
                 tripSheetDetails.setmTripshhetReceivedAmount(String.valueOf(receivedAmount));
                 tripSheetDetails.setmTripshhetDueAmount(String.valueOf(dueAmount));
+
+                // CASH
+                double cashVal = 0,cheqVal = 0;
+                ArrayList<String> paymentTypeArray = fetchTripSheetReceivedAmounttypeCash(tripSheetDetails.getmTripshhetId());
+                if(paymentTypeArray.size()>0){
+                    for (int b = 0;b<paymentTypeArray.size();b++){
+                        cashVal = cashVal + Double.parseDouble(paymentTypeArray.get(b).toString());
+                    }
+                    tripSheetDetails.setmCashPayment(String.valueOf(cashVal));
+                }else {
+                    tripSheetDetails.setmCashPayment("0");
+                }
+                // CHEQUE
+                ArrayList<String> paymentTypeArraych = fetchTripSheetReceivedAmounttypeCheque(tripSheetDetails.getmTripshhetId());
+                if(paymentTypeArraych.size()>0){
+                    for (int b = 0;b<paymentTypeArraych.size();b++){
+                        cheqVal = cheqVal + Double.parseDouble(paymentTypeArraych.get(b).toString());
+                    }
+                    tripSheetDetails.setmChequePayment(String.valueOf(cheqVal));
+                }else {
+                    tripSheetDetails.setmChequePayment("0");
+                }
             }
 
             c.close();
@@ -7232,6 +7254,71 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return orderId;
+    }
+
+
+    /**
+     * Method to get the received amount type cash
+     * @param tripSheetId
+     * @return
+     */
+    public ArrayList<String>  fetchTripSheetReceivedAmounttypeCash(String tripSheetId) {
+        ArrayList<String> cashTypeData = new ArrayList<String>();
+
+        try {
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT + " FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " = '" + tripSheetId + "'"
+                    + " AND "+ KEY_TRIPSHEET_PAYMENTS_TYPE+ "=0";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+            System.out.println("PAYMENTS TYPE ARRAY:: COUNT"+c.getCount());
+            if (c.moveToFirst()) {
+                do {
+                    System.out.println("PAYMENTS TYPE ARRAY:: 1111");
+                    cashTypeData.add(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("PAYMENTS TYPE ARRAY:: "+ cashTypeData.size());
+        return cashTypeData;
+    }
+
+    /**
+     * Method to get the received amount type cheque
+     * @param tripSheetId
+     * @return
+     */
+    public ArrayList<String>  fetchTripSheetReceivedAmounttypeCheque(String tripSheetId) {
+        ArrayList<String> cashTypeData = new ArrayList<String>();
+
+        try {
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT + " FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " = '" + tripSheetId + "'"
+                    + " AND "+ KEY_TRIPSHEET_PAYMENTS_TYPE+ "=1";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+            System.out.println("PAYMENTS TYPE ARRAY CHEQ:: COUNT"+c.getCount());
+            if (c.moveToFirst()) {
+                do {
+                    System.out.println("PAYMENTS TYPE ARRAY CHEQ:: 1111");
+                    cashTypeData.add(c.getString(c.getColumnIndex(KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("PAYMENTS TYPE ARRAY CHEQ:: "+ cashTypeData.size());
+        return cashTypeData;
     }
 
 }

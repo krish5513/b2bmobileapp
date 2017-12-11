@@ -39,6 +39,7 @@ import com.rightclickit.b2bsaleon.util.Utility;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 public class TripSheetViewPreview extends AppCompatActivity {
     private String tripSheetId, mTripSheetCode = "", mTripSheetDate = "", mTakeOrderPrivilege = "";
@@ -74,7 +75,10 @@ public class TripSheetViewPreview extends AppCompatActivity {
     private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
     ListView returned_products_list_view;
     double dq = 0.0, fdq=0.0,ob=0.0,fobq=0.0,cb=0.0,fcb=0.0,orderTotal=0.0;
-    double rq = 0.0, frq=0.0,cashA,chequeA;
+    double rq = 0.0;
+    double frq=0.0;
+    double cashA;
+    double chequeA;
     private PaymentsBean paymentsDetails = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,20 +178,11 @@ public class TripSheetViewPreview extends AppCompatActivity {
 
 
 
-            paymentsDetails = mDBHelper.getSaleOrderPaymentDetails(tripSheetId, mAgentSoId);
-            if (paymentsDetails != null) {
-                if (paymentsDetails.getPayments_type().equals("0")) {
-                    cashA = paymentsDetails.getPayments_receivedAmount();
-
-                } else {
-                    chequeA = paymentsDetails.getPayments_receivedAmount();
-                }
-            }
 
 
 
-            cashAmount.setText(String.valueOf(cashA));
-            chequeAmount.setText(String.valueOf(chequeA));
+            //cashAmount.setText(String.valueOf(cashA));
+            //chequeAmount.setText(String.valueOf(chequeA));
 
             tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(tripSheetId);
             selectedList = new ArrayList<>(tripSheetSOList.size());
@@ -223,6 +218,8 @@ public class TripSheetViewPreview extends AppCompatActivity {
                 ts_order_value.setText(Utility.getFormattedCurrency(orderTotal));
                 ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount())));
                 ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount())));
+                cashAmount.setText(currentTripSheetDetails.getmCashPayment());
+                chequeAmount.setText(currentTripSheetDetails.getmChequePayment());
             }
 
             TripSheetViewPreview.CustomListView adapter = new TripSheetViewPreview.CustomListView(selectedList, this);

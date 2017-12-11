@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
@@ -333,8 +335,26 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
                     if (actionType.equals("Save"))
                         saveProductsDispatchList();
-                    else if (actionType.equals("Verify"))
-                        saveProductsVerifyList();
+                    else if (actionType.equals("Verify")){
+
+                        if(getDispatchCount()){
+                            saveProductsVerifyList();
+                            Log.i("saveProductsVerifyList","called");
+                        }else{
+
+                            new android.app.AlertDialog.Builder(activityContext)
+                                    .setTitle("Alert..!")
+                                    .setMessage("The truck and dispatch quantity should be greater than zero.")
+                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                          //  Toast.makeText(activityContext, "The truck and dispatch quantity should be greater than zero", Toast.LENGTH_LONG).show();
+                        }
+                    }
                 }
             });
 
@@ -356,6 +376,39 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
             e.printStackTrace();
         }
     }
+
+    private boolean getDispatchCount() {
+        ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
+        Double dispQnty = Double.valueOf(0);
+        Double vrfyQnty = Double.valueOf(0);
+        for(int i=0; i < tripsheetsStockLists.size(); i++){
+           if(Integer.parseInt(tripsheetsStockLists.get(i).getmTripsheetStockProductCode()) == 2600005){
+               Log.i("product name..."+tripsheetsStockLists.get(i).getmTripsheetStockProductName(),
+                       "product code..."+tripsheetsStockLists.get(i).getmTripsheetStockProductCode());
+               String str = tripsheetsStockLists.get(i).getmTripsheetStockDispatchQuantity();
+               if(!str.equals("")){
+                   dispQnty =  Double.parseDouble(str);
+               }
+               Log.i("dispQnty...",dispQnty+"");
+               String str2 = tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity();
+               if(!str2.equals("")){
+                   vrfyQnty = Double.parseDouble(str2);
+               }
+               if(!mTripsheetsStockAdapter.vrfyQntyChanged.equals("")){
+                   vrfyQnty = Double.parseDouble(mTripsheetsStockAdapter.vrfyQntyChanged);
+               }
+               Log.i("vrfyQnty",""+vrfyQnty);
+
+                if(dispQnty > 0 && vrfyQnty > 0){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public void updateProductsDispatchList(Map<String, TripsheetsStockList> productsList) {

@@ -43,7 +43,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
 
     String myList ;
     DBHelper mDBHelper;
-
+    public String vrfyQntyChanged = "";
 
     public TripsheetsStockListAdapter(Context ctxt, TripSheetStock agentsActivity, TripSheetStockListener tripSheetStockListener, ArrayList<TripsheetsStockList> tripSheetStockList, ArrayList<String> privilegeActionsData) {
         this.ctxt = ctxt;
@@ -320,10 +320,11 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
 
                             if (presentQuantity == 0) {
                                 tripSheetStockViewHolder.mVerifyQuantity.setText(zero_cost);
+                                vrfyQntyChanged = tripSheetStockViewHolder.mVerifyQuantity.getText().toString().trim();
                                 //removeProductFromVerifyList(currentStockList);
                             } else {
                                 tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", presentQuantity));
-
+                                vrfyQntyChanged = tripSheetStockViewHolder.mVerifyQuantity.getText().toString().trim();
                             }
                         }
                     } catch (Exception e) {
@@ -360,7 +361,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                             currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(presentQuantity));
                             verifyProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockVerifiedQuantity());
                             tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", presentQuantity));
-
+                            vrfyQntyChanged = tripSheetStockViewHolder.mVerifyQuantity.getText().toString().trim();
                             updateProductsVerifyList(currentStockList);
                         }
 

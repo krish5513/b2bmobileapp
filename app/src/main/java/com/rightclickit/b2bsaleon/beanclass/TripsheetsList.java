@@ -40,6 +40,8 @@ public class TripsheetsList {
     private String mTripshhetVehicleNumber;
     private String mTripshhetVerifyStatus;
     private int isTripshhetClosed;
+    private String mCashPayment;
+    private String mChequePayment;
 
     public String getmTripshhetId() {
         return mTripshhetId;
@@ -163,5 +165,21 @@ public class TripsheetsList {
                 ", mTripshhetDueAmount='" + mTripshhetDueAmount + '\'' +
                 ", isTripshhetClosed='" + isTripshhetClosed + '\'' +
                 '}';
+    }
+
+    public String getmCashPayment() {
+        return mCashPayment;
+    }
+
+    public void setmCashPayment(String mCashPayment) {
+        this.mCashPayment = mCashPayment;
+    }
+
+    public String getmChequePayment() {
+        return mChequePayment;
+    }
+
+    public void setmChequePayment(String mChequePayment) {
+        this.mChequePayment = mChequePayment;
     }
 }
