@@ -59,6 +59,7 @@ public class TripsheetPayments extends AppCompatActivity {
     private boolean isTripSheetClosed = false;
     public String paymentsadd = " ";
     LinearLayout tpsBottomOptionsLayout;
+    String paymentsNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -412,7 +413,7 @@ public class TripsheetPayments extends AppCompatActivity {
      * @param
      */
     private PaymentsBean formAPIData(int type) {
-        String paymentsNumber = mDBHelper.getTripsheetPaymentsMaxOrderNumber(mTripSheetId, mAgentSoId, "first");
+         paymentsNumber = mDBHelper.getTripsheetPaymentsMaxOrderNumber(mTripSheetId, mAgentSoId, "first");
         System.out.println("PAYMENT NUMBER::: " + paymentsNumber);
         if (paymentsNumber.length() == 0) {
             System.out.println("IFFFFFFFFFFFFF");
@@ -604,6 +605,7 @@ public class TripsheetPayments extends AppCompatActivity {
                     i.putExtra("agentRouteCode", mAgentRouteCode);
                     i.putExtra("agentSoId", mAgentSoId);
                     i.putExtra("agentSoCode", mAgentSoCode);
+                   // i.putExtra("pId",paymentsNumber);
                     startActivity(i);
                     finish();
                 }

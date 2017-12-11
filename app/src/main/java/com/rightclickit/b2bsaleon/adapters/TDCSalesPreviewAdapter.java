@@ -40,7 +40,7 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
     }
 
     private class TDCSalesPreviewViewHolder {
-        TextView order_preview_product_name, order_preview_quantity, order_preview_tax, order_preview_mrp, order_preview_amount, hssn_number, cgst, sgst;
+        TextView order_preview_product_name, order_preview_quantity, order_preview_tax, order_preview_mrp, order_preview_amount, hssn_number, cgst, sgst,code,uom,cstotal;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
         TDCSalesPreviewViewHolder salesPreviewViewHolder = null;
 
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.tdc_sales_preview_adapter, null);
+            convertView = mInflater.inflate(R.layout.tdcpreviewcard, null);
 
             salesPreviewViewHolder = new TDCSalesPreviewViewHolder();
             salesPreviewViewHolder.order_preview_product_name = (TextView) convertView.findViewById(R.id.order_preview_product_name);
@@ -74,6 +74,9 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
             salesPreviewViewHolder.hssn_number = (TextView) convertView.findViewById(R.id.hssn_number);
             salesPreviewViewHolder.cgst = (TextView) convertView.findViewById(R.id.cgst);
             salesPreviewViewHolder.sgst = (TextView) convertView.findViewById(R.id.sgst);
+            salesPreviewViewHolder.code = (TextView) convertView.findViewById(R.id.order_preview_product_code);
+            salesPreviewViewHolder.uom = (TextView) convertView.findViewById(R.id.order_preview_product_uom);
+            salesPreviewViewHolder.cstotal = (TextView) convertView.findViewById(R.id.cgst_sgst);
 
             convertView.setTag(salesPreviewViewHolder);
         } else {
@@ -83,6 +86,8 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
         final ProductsBean productBean = getItem(position);
 
         salesPreviewViewHolder.order_preview_product_name.setText(productBean.getProductTitle());
+        salesPreviewViewHolder.code.setText(productBean.getProductCode());
+        salesPreviewViewHolder.uom.setText(productBean.getProductUOM());
         salesPreviewViewHolder.order_preview_quantity.setText(String.format("%.3f", productBean.getSelectedQuantity()));
 
         if (productBean.getControlCode() != null) {
@@ -128,7 +133,7 @@ public class TDCSalesPreviewAdapter extends BaseAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        salesPreviewViewHolder.cstotal.setText(String.valueOf(taxes));
         double unitPrice = productBean.getProductRatePerUnit();
 
         double prodQuantity = productBean.getSelectedQuantity();

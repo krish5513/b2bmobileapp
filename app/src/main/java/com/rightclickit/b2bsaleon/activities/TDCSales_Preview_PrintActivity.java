@@ -39,7 +39,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
     private Context applicationContext, activityContext;
     private MMSharedPreferences mmSharedPreferences;
 
-    private TextView sale_no_text_view, sale_date_time_text_view, total_tax_amount_text_view, total_amount_text_view, sub_total_amount_text_view;
+    private TextView sale_no_text_view, sale_date_time_text_view, total_tax_amount_text_view, total_amount_text_view, sub_total_amount_text_view,cName;
     private ListView tdc_products_list_preview;
     private LinearLayout tdc_sales_save_layout;
 
@@ -111,13 +111,14 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
             sub_total_amount_text_view = (TextView) findViewById(R.id.sub_total_amount);
             tdc_products_list_preview = (ListView) findViewById(R.id.tdc_sales_products_list_preview);
             tdc_sales_save_layout = (LinearLayout) findViewById(R.id.tdc_sales_save_layout);
-
+            cName=(TextView)findViewById(R.id.cName) ;
             productsListRetailer = new HashMap<String, ProductsBean>();
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
             mAgentId = userMapData.get("user_id");
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 str_agentname = bundle.getString("CustomerName");
+                cName.setText(str_agentname);
                 System.out.println("NAME::: " + str_agentname);
                 currentOrder = (TDCSaleOrder) bundle.getSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW);
                 requestCameFrom = bundle.getString(Constants.BUNDLE_REQUEST_FROM);
@@ -781,7 +782,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
             // user_name.setText("by " + loggedInUserName);
             // route_name.setText(mmSharedPreferences.getString("routename"));
             // route_code.setText(str_routecode);
-            sale_no_text_view.setText(currentOrderId + ",");
+            sale_no_text_view.setText(currentOrderId );
             sale_date_time_text_view.setText(currentDate);
 
             if (saleOrder.getProductsList() != null) {

@@ -25,6 +25,7 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetSoListPreviewAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripSheetsPaymentPreviewReturnedProductsAdapter;
 import com.rightclickit.b2bsaleon.adapters.TripsheetStockPreviewAdapter;
+import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.SaleOrderReturnedProducts;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
@@ -52,7 +53,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
     private DBHelper mDBHelper;
 
     String str_routecode, str_Tripcode, str_Tripdate, str_AgentName, str_AgentCode, str_OB, str_Order, str_Received, str_Due, mAgentSoId, mAgentId, uom;
-    TextView company_name, route_name, route_code, user_name, sales_print,mCratesNameText,mCratesOBText,mCratesDeliverText,mCratesReturnText,mCratesCBText;
+    TextView company_name, route_name, route_code, user_name, sales_print,mCratesNameText,mCratesOBText,mCratesDeliverText,mCratesReturnText,mCratesCBText,cashAmount,chequeAmount;
     private ListView tdc_products_list_preview;
     private LinearLayout close_trip_layout;
 
@@ -73,8 +74,8 @@ public class TripSheetViewPreview extends AppCompatActivity {
     private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
     ListView returned_products_list_view;
     double dq = 0.0, fdq=0.0,ob=0.0,fobq=0.0,cb=0.0,fcb=0.0,orderTotal=0.0;
-    double rq = 0.0, frq=0.0;
-
+    double rq = 0.0, frq=0.0,cashA,chequeA;
+    private PaymentsBean paymentsDetails = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +120,9 @@ public class TripSheetViewPreview extends AppCompatActivity {
                 //str_Tripdate=bundle.getString("tripsheetDate");
             }
 
+            cashAmount=(TextView)findViewById(R.id.cashAmt);
+            chequeAmount=(TextView)findViewById(R.id.chequeAmt);
+
 
             mAgentSoId = mDBHelper.fetchTripSheetSaleorderNo(tripSheetId);
             mAgentId = mDBHelper.fetchTripSheetagentid(tripSheetId);
@@ -133,6 +137,8 @@ public class TripSheetViewPreview extends AppCompatActivity {
 
             //  crates_deliveredQuantity = (TextView) findViewById(R.id.delivery_qty);
             //  crates_returnQuantity = (TextView) findViewById(R.id.return_qty);
+
+
 
             close_trip_layout = (LinearLayout) findViewById(R.id.close_trip_layout);
 
@@ -167,6 +173,21 @@ public class TripSheetViewPreview extends AppCompatActivity {
             currentTripSheetDetails = mDBHelper.fetchTripSheetDetails(tripSheetId);
 
 
+
+            paymentsDetails = mDBHelper.getSaleOrderPaymentDetails(tripSheetId, mAgentSoId);
+            if (paymentsDetails != null) {
+                if (paymentsDetails.getPayments_type().equals("0")) {
+                    cashA = paymentsDetails.getPayments_receivedAmount();
+
+                } else {
+                    chequeA = paymentsDetails.getPayments_receivedAmount();
+                }
+            }
+
+
+
+            cashAmount.setText(String.valueOf(cashA));
+            chequeAmount.setText(String.valueOf(chequeA));
 
             tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(tripSheetId);
             selectedList = new ArrayList<>(tripSheetSOList.size());

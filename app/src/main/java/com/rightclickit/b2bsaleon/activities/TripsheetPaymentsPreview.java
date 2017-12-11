@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,10 +44,10 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
     private DBHelper mDBHelper;
 
     TextView tv_companyName, tv_routecode, tv_route_name, tv_delivered_user_Name, tv_sale_order_no, tv_sale_order_date, tv_delivery_no, tv_delivery_date, price_total, tax_total_amount, sub_total,
-            mode_of_payment, cheque_number, cheque_date, bank_name, opening_balance, sale_order_amount, received_amount, closing_balance;
+            mode_of_payment,mode_of_paymentc, cheque_number, cheque_date, bank_name, opening_balance, sale_order_amount, received_amount, closing_balance;
     ListView delivered_products_list_view, returned_products_list_view;
 
-    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mTripSheetDate = "", mTripSheetCode = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
+    private String mTripSheetId = "", mAgentId = "", mAgentName = "", mTripSheetDate = "", mTripSheetCode = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "",paymentNumber="";
     private String loggedInUserId, loggedInUserName, companyName, routeCode, routeName, currentDate;
     private TripsheetSOList saleOrdersDetails = null;
     private ArrayList<SaleOrderDeliveredProducts> deliveredProductsList;
@@ -55,11 +56,12 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
     private double totalAmount = 0.0;
     private TripSheetsPaymentPreviewDeliveredProductsAdapter tripSheetsPaymentPreviewDeliveredProductsAdapter;
     private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
-    TextView print;
+    TextView print,cashpId,cashAmount,cashDate,chequepId,chequeAmount;
     String name, hssnnumber, cgst, sgst, uom;
     double taxes;
     ArrayList<String[]> selectedList, cratesList;
     SaleOrderDeliveredProducts deliveredProduct;
+    LinearLayout cashLayout,chequeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,11 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
             print = (TextView) findViewById(R.id.tv_print_print);
 
+
+           // cashLayout=(LinearLayout)findViewById(R.id.cashlayout) ;
+           // chequeLayout=(LinearLayout)findViewById(R.id.chequelayout);
+
+
             tv_companyName = (TextView) findViewById(R.id.tv_companyName);
             //  tv_routecode = (TextView) findViewById(R.id.tv_routecode);
             //  tv_route_name = (TextView) findViewById(R.id.tv_route_name);
@@ -96,10 +103,16 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             price_total = (TextView) findViewById(R.id.price_total);
             tax_total_amount = (TextView) findViewById(R.id.tax_total_amount);
             sub_total = (TextView) findViewById(R.id.sub_total);
-            //mode_of_payment = (TextView) findViewById(R.id.mode_of_payment);
-            //cheque_number = (TextView) findViewById(R.id.cheque_number);
-            //cheque_date = (TextView) findViewById(R.id.cheque_date);
-            // bank_name = (TextView) findViewById(R.id.bank_name);
+           // mode_of_payment = (TextView) findViewById(R.id.mode_of_payment);
+           // mode_of_paymentc = (TextView) findViewById(R.id.mode_of_paymentc);
+           // cheque_number = (TextView) findViewById(R.id.cheque_number);
+           // cheque_date = (TextView) findViewById(R.id.cheque_date);
+           // cashpId= (TextView) findViewById(R.id.cashpID);
+           // cashAmount=(TextView) findViewById(R.id.cashAmount);
+           // cashDate=(TextView) findViewById(R.id.cashDate);
+           // chequepId=(TextView) findViewById(R.id.chequepID);
+           // chequeAmount=(TextView) findViewById(R.id.chequeAmount);
+           //  bank_name = (TextView) findViewById(R.id.bank_name);
             opening_balance = (TextView) findViewById(R.id.opening_balance);
             sale_order_amount = (TextView) findViewById(R.id.sale_order_amount);
             received_amount = (TextView) findViewById(R.id.received_amount);
@@ -116,6 +129,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             mAgentRouteCode = this.getIntent().getStringExtra("agentRouteCode");
             mAgentSoId = this.getIntent().getStringExtra("agentSoId");
             mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
+            paymentNumber= this.getIntent().getStringExtra("pId");
 
             loggedInUserId = mmSharedPreferences.getString("userId");
             loggedInUserName = mmSharedPreferences.getString("loginusername");
@@ -253,17 +267,24 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 }
             }
 
-           /* if (paymentsDetails != null) {
-                mode_of_payment.setText(paymentsDetails.getPayments_type().equals("0") ? "Cash" : "Cheque");
+         /*   if (paymentsDetails != null) {
+               mode_of_payment.setText(paymentsDetails.getPayments_type().equals("0") ? "Cash" : "Cheque");
+                if (paymentsDetails.getPayments_type().equals("0")) {
+                    cashpId.setText(paymentNumber);
+                    cashDate.setText(paymentsDetails.getPayment_date());
+                   // mode_of_paymentc.setText(paymentsDetails.getPayments_type());
 
+                }else {
+                    cashLayout.setVisibility(View.GONE);
+                }
                 if (paymentsDetails.getPayments_type().equals("1")) {
-                    cheque_number.setText("Cheque #" + paymentsDetails.getPayments_chequeNumber());
-                    cheque_date.setText("Date : " + paymentsDetails.getPayments_chequeDate());
-                    bank_name.setText(paymentsDetails.getPayments_bankName() + " Bank");
+                    chequepId.setText(paymentNumber);
+                    cheque_number.setText("Cheque #" + paymentsDetails.getPayments_chequeNumber()+ ","+paymentsDetails.getPayments_bankName() + " Bank");
+                    cheque_date.setText( paymentsDetails.getPayments_chequeDate());
+                   // mode_of_payment.setText(paymentsDetails.getPayments_type());
+                   // bank_name.setText(paymentsDetails.getPayments_bankName() + " Bank");
                 } else {
-                    cheque_number.setVisibility(View.GONE);
-                    cheque_date.setVisibility(View.GONE);
-                    bank_name.setVisibility(View.GONE);
+                   chequeLayout.setVisibility(View.GONE);
                 }
             }
 */

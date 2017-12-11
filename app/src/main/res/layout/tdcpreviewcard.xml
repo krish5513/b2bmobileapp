@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="7dp"
+    android:paddingTop="7dp">
+    <!-- <LinearLayout
+         android:layout_width="match_parent"
+         android:orientation="horizontal"
+         android:layout_height="wrap_content">
+         <TextView
+             android:id="@+id/order_preview_product_name"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center|left"
+             android:layout_weight="0.17"
+             android:ellipsize="end"
+             android:gravity="center|left"
+             android:maxLines="2"
+             android:paddingLeft="2dp"
+             android:text="FCM 1000 ML"
+             android:textAllCaps="true"
+             android:textColor="@color/greydark"
+             android:textSize="12sp" />
+
+
+         <TextView
+             android:id="@+id/order_preview_quantity"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center"
+             android:layout_weight="0.2"
+             android:gravity="center"
+             android:text="2"
+             android:textColor="@color/greydark"
+             android:textSize="12sp" />
+
+         <TextView
+             android:id="@+id/order_preview_mrp"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center|end"
+             android:layout_weight="0.19"
+             android:gravity="center"
+             android:text="Rs. 10"
+             android:textColor="@color/greydark"
+             android:textSize="12sp" />
+
+
+         <TextView
+             android:id="@+id/order_preview_amount"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center|end"
+             android:layout_weight="0.18"
+             android:gravity="center|end"
+             android:text="Rs. 20.00"
+             android:textColor="@color/greydark"
+             android:textSize="12sp" />
+
+         <TextView
+             android:id="@+id/order_preview_tax"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center|end"
+             android:layout_weight="0.19"
+             android:gravity="center|end"
+             android:paddingRight="2dp"
+             android:text="Rs 0.00"
+             android:textColor="@color/greydark"
+             android:textSize="12sp" />
+     </LinearLayout>
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:orientation="horizontal"
+         android:layout_height="wrap_content">
+
+
+
+         <LinearLayout
+             android:layout_width="match_parent"
+             android:orientation="horizontal"
+             android:layout_height="wrap_content">
+             <TextView
+                 android:id="@+id/hssn_number"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center|left"
+                 android:layout_weight="0.50"
+                 android:ellipsize="end"
+                 android:gravity="center|left"
+                 android:maxLines="2"
+                 android:paddingLeft="2dp"
+                 android:text="-"
+                 android:textAllCaps="true"
+                 android:textColor="@color/greydark"
+                 android:textSize="12sp" />
+
+
+             <TextView
+                 android:id="@+id/cgst"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center"
+                 android:layout_weight="0.55"
+                 android:gravity="left"
+                 android:text="CGST"
+                 android:textColor="@color/greydark"
+                 android:textSize="12sp" />
+
+             <TextView
+                 android:id="@+id/sgst"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center|end"
+                 android:layout_weight="0.20"
+                 android:gravity="left"
+                 android:text="SGST"
+                 android:textColor="@color/greydark"
+                 android:textSize="12sp" />
+
+         </LinearLayout>
+     </LinearLayout>-->
+
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            >
+
+
+            <TextView
+                android:id="@+id/order_preview_product_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FCM 1000 ML"
+                android:textAllCaps="true"
+                android:textColor="@color/greydark"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" , "
+                android:textColor="@color/greydark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/order_preview_product_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10018"
+                android:textColor="@color/greydark"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" ( "
+                android:textColor="@color/greydark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/order_preview_product_uom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="UOM"
+                android:textColor="@color/greydark"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" )"
+                android:textColor="@color/greydark"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1.7"
+                android:orientation="vertical"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="HSSN CODE"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="CGST,SGST"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="QUANTITY"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="RATE"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="VALUE"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="10dp"
+                    android:text="TAX VALUE"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="12sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingBottom="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:text=":"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/hssn_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:text=": "
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/cgst"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text=" + "
+                        android:paddingLeft="10dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/sgst"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text=" = "
+                        android:paddingLeft="10dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/cgst_sgst"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:text=":"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/order_preview_quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:text=":"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/order_preview_mrp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:text=":"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/order_preview_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:text=":"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/order_preview_tax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:paddingLeft="10dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/greydark"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="7dp"
+        android:background="@color/view_line"
+        />
+
+</LinearLayout>
