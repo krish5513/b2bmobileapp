@@ -175,9 +175,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                 tv_delivery_no.setText(deliveredProduct.getDeliveryNumber());
                 tv_delivery_date.setText(Utility.formatTime(Long.parseLong(deliveredProduct.getCreatedTime()), Constants.TDC_SALE_INFO_DATE_DISPLAY_FORMAT));
 
-                tax_total_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())));
-                price_total.setText(Utility.getFormattedCurrency(totalAmount));
-                sub_total.setText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())));
+
                 ArrayList<SaleOrderDeliveredProducts> deliveredProductsList1 = new ArrayList<>();
                 synchronized (this) {
                     if (deliveredProductsList1.size() > 0) {
@@ -206,6 +204,11 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     if (deliveredProductsList1.size() > 0) {
                         for (SaleOrderDeliveredProducts products : deliveredProductsList1) {
                             totalAmount = totalAmount + Double.parseDouble(products.getProductAmount());
+
+
+                            tax_total_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getTotalTax())));
+                            price_total.setText(Utility.getFormattedCurrency(totalAmount));
+                            sub_total.setText(Utility.getFormattedCurrency(Double.parseDouble(deliveredProduct.getSubTotal())));
                             String[] temp = new String[11];
                             temp[0] = products.getName();
 

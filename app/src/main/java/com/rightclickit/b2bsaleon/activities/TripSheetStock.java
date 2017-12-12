@@ -344,7 +344,7 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
 
                             new android.app.AlertDialog.Builder(activityContext)
                                     .setTitle("Alert..!")
-                                    .setMessage("The truck and dispatch quantity should be greater than zero.")
+                                    .setMessage("The truck and dispatch quantity should be greater than zero for crates.")
                                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();

@@ -133,14 +133,24 @@ public class SyncTripSheetsStockService extends Service {
                     if (actionType.equals("dispatch")) {
                         if (i == 0) {
                             stockListWithProducts.setAction_by(currentStockDetails.getmTripsheetStockDispatchBy());
-                            stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockDispatchDate()), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
+                            //try {
+                                stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockDispatchDate()), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
+
+                           /* }catch (Exception e){
+                                e.printStackTrace();
+                            }*/
                         }
 
                         quantitiesArray.put(currentStockDetails.getmTripsheetStockDispatchQuantity());
                     } else {
                         if (i == 0) {
                             stockListWithProducts.setAction_by(currentStockDetails.getmTripsheetStockVerifyBy());
-                            stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockVerifiedDate()), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
+                           // try {
+                                stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockVerifiedDate()), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
+
+                         /*   }catch (Exception e){
+                                e.printStackTrace();
+                            }*/
                         }
                         quantitiesArray.put(currentStockDetails.getmTripsheetStockVerifiedQuantity());
                     }
