@@ -135,6 +135,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private Handler mHandler = new Handler();
     private android.support.v7.app.AlertDialog alertDialog1 = null;
     private android.support.v7.app.AlertDialog.Builder alertDialogBuilder1;
+    private boolean isSyncClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -424,7 +425,9 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     }
 
     public void loadTripSheetSaleOrderData() {
-        showAlertDialog1(TripSheetView.this,"Sync Process","Sales sync completed succssfully.");
+        if(isSyncClicked) {
+            showAlertDialog1(TripSheetView.this, "Sync Process", "Sales sync completed succssfully.");
+        }
 
         if (tripSheetSOList.size() > 0) {
             tripSheetSOList.clear();
@@ -910,6 +913,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    isSyncClicked = false;
                     dialogInterface.dismiss();
                 }
             });
@@ -931,7 +935,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private void showCustomValidationAlertForSync(Activity context, String message) {
         // custom dialog
         try {
-
+            isSyncClicked = true;
             alertDialogBuilder1 = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
             alertDialogBuilder1.setTitle("Sync Process");
             alertDialogBuilder1.setCancelable(false);
@@ -1136,6 +1140,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
+                    isSyncClicked = false;
                 }
             });
 

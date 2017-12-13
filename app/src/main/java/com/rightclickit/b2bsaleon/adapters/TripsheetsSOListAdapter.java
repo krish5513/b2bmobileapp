@@ -242,6 +242,9 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 mPreferences.putString("agentName", currentSaleOrder.getmTripshetSOAgentFirstName());
                 mPreferences.putString("agentId", currentSaleOrder.getmTripshetSOAgentId());
+
+                mPreferences.putString("agentCode", currentSaleOrder.getmTripshetSOAgentCode());
+               // mPreferences.putString("enquiryid", currentSaleOrder.getmtr());
                 Intent i = new Intent(activity, AgentTakeOrderScreen.class);
                 i.putExtra("tripsheetId", currentSaleOrder.getmTripshetSOTripId());
                 i.putExtra("From", "Tripsheet");

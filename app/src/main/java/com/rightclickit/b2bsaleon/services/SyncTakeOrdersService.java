@@ -23,7 +23,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Sekhar Kuppa
@@ -108,6 +107,7 @@ public class SyncTakeOrdersService extends Service {
                 params1.put("enquiry_id", enqId);
                 mSessionManagement.putString("enquiryid", enqId);
                 //params1.put("route_id",mSessionManagement.getString("agentrouteId"));
+                Log.i("lhdighr",mTakeOrderBeansList.get(0).getmRouteId());
                 JSONArray rAr = new JSONArray(mTakeOrderBeansList.get(0).getmRouteId());
                 String rCode = mDBHelper.getRouteCodeByRouteId(rAr.get(0).toString());
                 params1.put("route_id", rAr.get(0).toString());

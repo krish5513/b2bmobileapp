@@ -16,7 +16,9 @@ import com.rightclickit.b2bsaleon.util.Utility;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -133,24 +135,30 @@ public class SyncTripSheetsStockService extends Service {
                     if (actionType.equals("dispatch")) {
                         if (i == 0) {
                             stockListWithProducts.setAction_by(currentStockDetails.getmTripsheetStockDispatchBy());
-                            //try {
-                                stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockDispatchDate()), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
-
-                           /* }catch (Exception e){
+                            //stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockDispatchDate()), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
+                            String verifiedDate = currentStockDetails.getmTripsheetStockDispatchDate();
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            try {
+                                Date formatedDate = format.parse(verifiedDate);
+                                stockListWithProducts.setDate(Utility.formatTime(formatedDate.getTime(), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
+                            }catch (Exception e){
                                 e.printStackTrace();
-                            }*/
+                            }
                         }
 
                         quantitiesArray.put(currentStockDetails.getmTripsheetStockDispatchQuantity());
                     } else {
                         if (i == 0) {
                             stockListWithProducts.setAction_by(currentStockDetails.getmTripsheetStockVerifyBy());
-                           // try {
-                                stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockVerifiedDate()), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
-
-                         /*   }catch (Exception e){
+                            String verifiedDate = currentStockDetails.getmTripsheetStockVerifiedDate();
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            try {
+                                Date formatedDate = format.parse(verifiedDate);
+                                stockListWithProducts.setDate(Utility.formatTime(formatedDate.getTime(), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
+                            }catch (Exception e){
                                 e.printStackTrace();
-                            }*/
+                            }
+                            //stockListWithProducts.setDate(Utility.formatTime(Long.parseLong(currentStockDetails.getmTripsheetStockVerifiedDate()), Constants.SEND_DATA_TO_SERVICE_DATE_FORMAT));
                         }
                         quantitiesArray.put(currentStockDetails.getmTripsheetStockVerifiedQuantity());
                     }

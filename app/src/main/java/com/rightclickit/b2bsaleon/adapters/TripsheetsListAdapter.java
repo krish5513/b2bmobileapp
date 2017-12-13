@@ -210,7 +210,16 @@ public class TripsheetsListAdapter extends BaseAdapter {
             mTripSheetsList.addAll(arraylist);
         } else {
             for (TripsheetsList wp : arraylist) {
-                if (wp.getmTripshhetTrasnsporterName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                if (wp.getmTripshhetCode().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    mTripSheetsList.add(wp);
+                }
+                if (wp.getmTripshhetRouteCode().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    mTripSheetsList.add(wp);
+                }
+                if (wp.getmTripshhetDate().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    mTripSheetsList.add(wp);
+                }
+                if (wp.getmTripshhetStatus().toLowerCase(Locale.getDefault()).contains(charText)) {
                     mTripSheetsList.add(wp);
                 }
             }
