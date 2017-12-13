@@ -52,7 +52,6 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsSOListAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentLatLong;
 import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
-import com.rightclickit.b2bsaleon.beanclass.TDCSaleOrder;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.constants.Constants;
@@ -425,10 +424,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     }
 
     public void loadTripSheetSaleOrderData() {
-        if (alertDialogBuilder1 != null) {
-            alertDialog1.dismiss();
-            alertDialogBuilder1 = null;
-        }
+        showAlertDialog1(TripSheetView.this,"Sync Process","Sales sync completed succssfully.");
+
         if (tripSheetSOList.size() > 0) {
             tripSheetSOList.clear();
         }
@@ -1120,6 +1117,33 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             synchronized (this) {
                 showCustomValidationAlertForSync(TripSheetView.this, "down");
             }
+        }
+    }
+
+    public void showAlertDialog1(Context context, String title, String message) {
+        try {
+            if (alertDialogBuilder1 != null) {
+                alertDialog1.dismiss();
+                alertDialogBuilder1 = null;
+            }
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
