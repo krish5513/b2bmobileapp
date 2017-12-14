@@ -19,6 +19,7 @@ public class TakeOrderBean implements Serializable {
     private String mEnquiryId;
     private String mAgentId;
     private String mAgentGST;
+    private int muploadStatus;
 
     public String getUom() {
         return uom;
@@ -172,5 +173,13 @@ public class TakeOrderBean implements Serializable {
 
     public void setmAgentId(String mAgentId) {
         this.mAgentId = mAgentId;
+    }
+
+    public int getMuploadStatus() {
+        return muploadStatus;
+    }
+
+    public void setMuploadStatus(int muploadStatus) {
+        this.muploadStatus = muploadStatus;
     }
 }

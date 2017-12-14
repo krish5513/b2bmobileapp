@@ -24,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -38,7 +39,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
     private boolean isTripSheetClosed;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
-      Double orderTotal=0.0;
+    Double orderTotal=0.0;
     public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege, boolean isTripSheetClosed, String mhidePrevilige) {
         this.activity = tripSheetView;
         this.mInflater = LayoutInflater.from(activity);
@@ -240,11 +241,22 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         mHolder.mSOTakeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                mPreferences.putString("agentName", currentSaleOrder.getmTripshetSOAgentFirstName());
+//                mPreferences.putString("agentId", currentSaleOrder.getmTripshetSOAgentId());
+//
+//                mPreferences.putString("agentCode", currentSaleOrder.getmTripshetSOAgentCode());
+                // mPreferences.putString("enquiryid", currentSaleOrder.getmtr());
+                // Added by sekhar
+                List<String> agentRouteId = mDBHelper.getAgentRouteId(currentSaleOrder.getmTripshetSOAgentId());
+                System.out.println("AGENT ROUTE ID IS::: "+ agentRouteId);
                 mPreferences.putString("agentName", currentSaleOrder.getmTripshetSOAgentFirstName());
-                mPreferences.putString("agentId", currentSaleOrder.getmTripshetSOAgentId());
 
+                mPreferences.putString("agentId", currentSaleOrder.getmTripshetSOAgentId());
+                mPreferences.putString("agentrouteId", agentRouteId.toString());
+//                //mPreferences.putString("enqId", String.valueOf(position + 1));
+                String enqidd = "ENQ-"+currentSaleOrder.getmTripshetSOAgentCode();
+                mPreferences.putString("enqId", enqidd);
                 mPreferences.putString("agentCode", currentSaleOrder.getmTripshetSOAgentCode());
-               // mPreferences.putString("enquiryid", currentSaleOrder.getmtr());
                 Intent i = new Intent(activity, AgentTakeOrderScreen.class);
                 i.putExtra("tripsheetId", currentSaleOrder.getmTripshetSOTripId());
                 i.putExtra("From", "Tripsheet");

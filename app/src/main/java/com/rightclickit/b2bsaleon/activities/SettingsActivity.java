@@ -1,6 +1,7 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -51,6 +52,7 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.models.SettingsModel;
 import com.rightclickit.b2bsaleon.services.SyncSpecialPriceService;
+import com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -77,11 +79,11 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     EditText salesOffice;
     EditText transporterName, deviceSync, accessDevice, backup;
     EditText oldPassword, newPassword, confirmNewPassword;
-
+    private android.support.v7.app.AlertDialog.Builder alertDialogBuilder1;
     private GoogleMap mMap;
-
+    private boolean isSyncClicked;
     public static final String TAG = LoginActivity.class.getSimpleName();
-
+    private android.support.v7.app.AlertDialog alertDialog1 = null;
     //   private MMSharedPreferences sharedPreferences;
     private Context applicationContext, activityContext;
 
@@ -661,6 +663,16 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             return true;
         }
 
+
+        if (id == R.id.autorenew) {
+            if (new NetworkConnectionDetector(SettingsActivity.this).isNetworkConnected()) {
+                showAlertDialog(SettingsActivity.this, "Sync process", "Are you sure, you want start the sync process?");
+            } else {
+                new NetworkConnectionDetector(SettingsActivity.this).displayNoNetworkError(SettingsActivity.this);
+            }
+            return true;
+        }
+
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
@@ -901,6 +913,99 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         String android_id = Settings.Secure.getString(SettingsActivity.this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
         return android_id;
+    }
+
+
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    showCustomValidationAlertForSync(SettingsActivity.this, "deliverys");
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    isSyncClicked = false;
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Method to display alert without field.
+     *
+     * @param context
+     * @param message
+     */
+    private void showCustomValidationAlertForSync(Activity context, String message) {
+        // custom dialog
+        try {
+            isSyncClicked = true;
+            alertDialogBuilder1 = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder1.setTitle("Sync Process");
+            alertDialogBuilder1.setCancelable(false);
+            if (message.equals("previliges")) {
+
+                alertDialogBuilder1.setMessage("Uploading user previliges... Please wait.. ");
+                startService(new Intent(SettingsActivity.this, SyncUserPrivilegesService.class));
+            } else {
+
+                showAlertDialog1(SettingsActivity.this, "Sync Process", "Sales sync completed succssfully.");
+            }
+           // alertDialogBuilder1.setMessage("Uploading special prices... Please wait.. ");
+           // startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class));
+            alertDialog1 = alertDialogBuilder1.create();
+            alertDialog1.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showAlertDialog1(Context context, String title, String message) {
+        try {
+            if (alertDialogBuilder1 != null) {
+               // alertDialog1.dismiss();
+                alertDialogBuilder1 = null;
+            }
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    isSyncClicked = false;
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

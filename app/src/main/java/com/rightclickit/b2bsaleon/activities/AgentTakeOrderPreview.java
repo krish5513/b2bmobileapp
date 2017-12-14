@@ -6,9 +6,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TakeOrderPreviewAdapter;
@@ -59,7 +58,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 
     double amount, subtotal;
     double taxAmount;
-    String name, p_code, p_uom;
+    String name, p_code, p_uom,endId123 = "";
 
     //  Map<String, String[]> selectedList = new HashMap<String, String[]>();
 
@@ -97,6 +96,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         if (bundle != null) {
             ISFROM = bundle.getString("From");
             TRIPID = bundle.getString("tripsheetId");
+            endId123 = bundle.getString("endid1");
         }
 
         ArrayList<ProductsBean> productsList = mDBHelper.fetchAllRecordsFromProductsTable();
@@ -213,7 +213,8 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 
 
         orderNo = (TextView) findViewById(R.id.order_no);
-        str_enguiryid = (sharedPreferences.getString("enquiryid") + ",");
+        //str_enguiryid = (sharedPreferences.getString("enquiryid") + ",");
+        str_enguiryid = (endId123 + ",");
         orderNo.setText(str_enguiryid);
 
         orderDate = (TextView) findViewById(R.id.tv_date);

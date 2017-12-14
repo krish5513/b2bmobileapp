@@ -56,8 +56,8 @@ public class AgentsTDC_View extends AppCompatActivity {
 
     double quantity,price;
 
-  //  Map<String, String[]> selectedList = new HashMap<String, String[]>();
-       ArrayList<String[]> selectedList;
+    //  Map<String, String[]> selectedList = new HashMap<String, String[]>();
+    ArrayList<String[]> selectedList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,31 +92,32 @@ public class AgentsTDC_View extends AppCompatActivity {
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
         tv_companyName.setText(sharedPreferences.getString("companyname"));
 
-       // user_Name = (TextView) findViewById(R.id.tv_user_Name);
+        // user_Name = (TextView) findViewById(R.id.tv_user_Name);
         //user_Name.setText("by " + sharedPreferences.getString("loginusername"));
 
-       /// Route_Name = (TextView) findViewById(R.id.route_name);
-       // Route_Name.setText(sharedPreferences.getString("routename"));
+        /// Route_Name = (TextView) findViewById(R.id.route_name);
+        // Route_Name.setText(sharedPreferences.getString("routename"));
 
-       // RouteCode = (TextView) findViewById(R.id.tv_routecode);
-       // str_routecode = (sharedPreferences.getString("routecode") + ",");
-       // RouteCode.setText(str_routecode);
+        // RouteCode = (TextView) findViewById(R.id.tv_routecode);
+        // str_routecode = (sharedPreferences.getString("routecode") + ",");
+        // RouteCode.setText(str_routecode);
 
 
         orderNo = (TextView) findViewById(R.id.order_no);
-        str_enguiryid = (sharedPreferences.getString("enquiryid") + ",");
+        //str_enguiryid = (sharedPreferences.getString("enquiryid") + ",");
+        str_enguiryid = (sharedPreferences.getString("endiddd") + ",");
         orderNo.setText(str_enguiryid);
 
         orderDate = (TextView) findViewById(R.id.tv_date);
        /* Calendar cal = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         currentDate = df.format(cal.getTime());*/
-       if(mTakeOrderBeansList.size()>0) {
-           currentDate=mTakeOrderBeansList.get(0).getmAgentTakeOrderDate();
-           orderDate.setText(currentDate);
-           //orderDate.setText(currentDate);
-       }
-       // sharedPreferences.putString("orderdate", currentDate);
+        if(mTakeOrderBeansList.size()>0) {
+            currentDate=mTakeOrderBeansList.get(0).getmAgentTakeOrderDate();
+            orderDate.setText(currentDate);
+            //orderDate.setText(currentDate);
+        }
+        // sharedPreferences.putString("orderdate", currentDate);
 
         agentName = (TextView) findViewById(R.id.agentname);
         str_agentname = (sharedPreferences.getString("agentName") + ",");
@@ -200,10 +201,10 @@ public class AgentsTDC_View extends AppCompatActivity {
                 temp[3] = String.valueOf(quantity);
                 temp[4] = String.valueOf(price);
                 temp[5] = String.valueOf(subtotal);
-               // temp[4] = String.valueOf(taxAmount);
-               // temp[5] = String.valueOf(str_Taxname);
-               // temp[6] = String.valueOf("(" + tax + "%)");
-               // temp[7] = mTakeOrderBeansList.get(i).getmProductFromDate();
+                // temp[4] = String.valueOf(taxAmount);
+                // temp[5] = String.valueOf(str_Taxname);
+                // temp[6] = String.valueOf("(" + tax + "%)");
+                // temp[7] = mTakeOrderBeansList.get(i).getmProductFromDate();
                 //temp[8] = mTakeOrderBeansList.get(i).getmProductToDate();
                 selectedList.add(temp);
                 Log.i("takeordertemp", temp + "");
@@ -259,7 +260,7 @@ public class AgentsTDC_View extends AppCompatActivity {
 
                 int st = 290;
                 paint.setTextSize(17);
-               // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
+                // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
                 for (int i = 0; i <selectedList.size(); i++) {
                     String[] temps = selectedList.get(i);
                     canvas.drawText(temps[0], 5, st, paint);
@@ -290,9 +291,9 @@ public class AgentsTDC_View extends AppCompatActivity {
                 canvas.drawText("PR VALUE:", 5, st, paint);
                 canvas.drawText( ": " + Utility.getFormattedCurrency(mProductsPriceAmountSum), 150, st, paint);
 
-             //  canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
-              //  canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
-              // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
+                //  canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
+                //  canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
+                // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
                 st = st + 20;
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);

@@ -140,7 +140,7 @@ public class AgentsAdapter extends BaseAdapter {
 
 
         obAmount = mDBHelper.getSoDetails(mAgentsBeansList1.get(position).getmAgentId(), "tripsheet_so_opamount");
-       // obAmount =mAgentsBeansList1.get(position).getmObAmount();
+        // obAmount =mAgentsBeansList1.get(position).getmObAmount();
         //mHolder.mObAmount.setText(String.valueOf(Utility.getFormattedCurrency(obAmount)));
         if (mAgentsBeansList1.get(position).getmObAmount()!=null && mAgentsBeansList1.get(position).getmObAmount()!="") {
             mHolder.mObAmount.setText(mAgentsBeansList1.get(position).getmObAmount());
@@ -149,7 +149,7 @@ public class AgentsAdapter extends BaseAdapter {
             mHolder.mObAmount.setText("Rs.0.00");
         }
         ordervalue = mDBHelper.getSoDetails(mAgentsBeansList1.get(position).getmAgentId(), "tripsheet_so_value");
-      //  mHolder.mOrderValue.setText(String.valueOf(Utility.getFormattedCurrency(ordervalue)));
+        //  mHolder.mOrderValue.setText(String.valueOf(Utility.getFormattedCurrency(ordervalue)));
         if (mAgentsBeansList1.get(position).getmOrderValue()!=null && mAgentsBeansList1.get(position).getmOrderValue()!="") {
             mHolder.mOrderValue.setText(mAgentsBeansList1.get(position).getmOrderValue());
         }else {
@@ -157,7 +157,7 @@ public class AgentsAdapter extends BaseAdapter {
         }
         receivedAmount = mDBHelper.getReceivedAmountDetails(mAgentsBeansList1.get(position).getmAgentId(), "tripsheet_payments_received_amount");
 
-       // mHolder.mTotalAmount.setText(String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
+        // mHolder.mTotalAmount.setText(String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
         if (mAgentsBeansList1.get(position).getmTotalAmount()!=null && mAgentsBeansList1.get(position).getmTotalAmount()!="") {
             mHolder.mTotalAmount.setText(mAgentsBeansList1.get(position).getmTotalAmount());
         }else {
@@ -183,35 +183,38 @@ public class AgentsAdapter extends BaseAdapter {
 
 
 
-            mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(mAgentsBeansList1.get(position).getmStatus().equals("A") ){
+        mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mAgentsBeansList1.get(position).getmStatus().equals("A") ){
 
-                        mPreferences.putString("agentName", mAgentsBeansList1.get(position).getmFirstname());
+                    mPreferences.putString("agentName", mAgentsBeansList1.get(position).getmFirstname());
 
-                        mPreferences.putString("agentId", mAgentsBeansList1.get(position).getmAgentId());
-                        Log.i("agentId", mAgentsBeansList1.get(position).getmAgentId() + "");
-                        mPreferences.putString("agentrouteId", mAgentsBeansList1.get(position).getmAgentRouteId());
-                        mPreferences.putString("enqId", String.valueOf(position + 1));
-                        mPreferences.putString("agentCode", mAgentsBeansList1.get(position).getmAgentCode());
+                    mPreferences.putString("agentId", mAgentsBeansList1.get(position).getmAgentId());
+                    Log.i("agentId", mAgentsBeansList1.get(position).getmAgentId() + "");
+                    mPreferences.putString("agentrouteId", mAgentsBeansList1.get(position).getmAgentRouteId());
+                    //mPreferences.putString("enqId", String.valueOf(position + 1));
+                    // Added by sekhar
+                    String enqidd = "ENQ-"+mAgentsBeansList1.get(position).getmAgentCode();
+                    mPreferences.putString("enqId", enqidd);
+                    mPreferences.putString("agentCode", mAgentsBeansList1.get(position).getmAgentCode());
 
-                        mPreferences.putString("ObAmount", String.valueOf(Utility.getFormattedCurrency(obAmount)));
-                        mPreferences.putString("OrderValue", String.valueOf(Utility.getFormattedCurrency(ordervalue)));
-                        mPreferences.putString("ReceivedAmount", String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
-                        mPreferences.putString("due", String.valueOf(Utility.getFormattedCurrency(due)));
-                        Intent i = new Intent(activity, AgentTDC_Order.class);
-                        activity.startActivity(i);
+                    mPreferences.putString("ObAmount", String.valueOf(Utility.getFormattedCurrency(obAmount)));
+                    mPreferences.putString("OrderValue", String.valueOf(Utility.getFormattedCurrency(ordervalue)));
+                    mPreferences.putString("ReceivedAmount", String.valueOf(Utility.getFormattedCurrency(receivedAmount)));
+                    mPreferences.putString("due", String.valueOf(Utility.getFormattedCurrency(due)));
+                    Intent i = new Intent(activity, AgentTDC_Order.class);
+                    activity.startActivity(i);
 
-                        activity.finish();
+                    activity.finish();
 
 
                 }    else{
-                        CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.agent));
-                    }}
+                    CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.agent));
+                }}
 
 
-            });
+        });
 
         mHolder.infobtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,7 +259,7 @@ public class AgentsAdapter extends BaseAdapter {
                 }    else{
                     CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.agent));
 
-            }}
+                }}
         });
 
         mHolder.stockbtn.setOnClickListener(new View.OnClickListener() {

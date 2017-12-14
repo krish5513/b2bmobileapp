@@ -57,6 +57,7 @@ import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
+import com.rightclickit.b2bsaleon.services.SyncTakeOrdersService;
 import com.rightclickit.b2bsaleon.services.SyncTripSheetsPaymentsService;
 import com.rightclickit.b2bsaleon.services.SyncTripSheetsStockService;
 import com.rightclickit.b2bsaleon.services.SyncTripsheetDeliveriesService;
@@ -130,7 +131,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     String startDateStrNewFormat;
     private TextView mNoTripsFoundText;
     Double orderTotal = 0.0;
-    private int uploadedCount = 0, uploadedCountReturns = 0, uploadedCountpayments = 0, uploadedTruckQty = 0;
+    private int uploadedCount = 0, uploadedCountReturns = 0, uploadedCountpayments = 0, uploadedTruckQty = 0, uploadedTakeOrderQty = 0;
     private Runnable mRunnable;
     private Handler mHandler = new Handler();
     private android.support.v7.app.AlertDialog alertDialog1 = null;
@@ -425,7 +426,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     }
 
     public void loadTripSheetSaleOrderData() {
-        if(isSyncClicked) {
+        if (isSyncClicked) {
             showAlertDialog1(TripSheetView.this, "Sync Process", "Sales sync completed succssfully.");
         }
 
@@ -948,6 +949,10 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 ArrayList<String> unUploadedStockIds = mDBHelper.fetchUnUploadedTripSheetUniqueStockIds("verify");
                 uploadedTruckQty = unUploadedStockIds.size();
                 System.out.println("Stock Verify COUNT::: " + uploadedTruckQty);
+                // Pending Take Orders
+                ArrayList<String> pendingOrderAgents = mDBHelper.fetchAllPendingTakeOrderAgentIds();
+                uploadedTakeOrderQty = pendingOrderAgents.size();
+                System.out.println("Pending take orders::: " + uploadedTakeOrderQty);
                 // Delivires Count
                 ArrayList<String> unUploadedDeliveriesTripSheetIds = mDBHelper.fetchUnUploadedUniqueDeliveryTripSheetIds(mTripSheetId);
                 uploadedCount = unUploadedDeliveriesTripSheetIds.size();
@@ -971,6 +976,13 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                         Intent syncTripSheetsStockServiceIntent = new Intent(activityContext, SyncTripSheetsStockService.class);
                         syncTripSheetsStockServiceIntent.putExtra("actionType", "verify");
                         startService(syncTripSheetsStockServiceIntent);
+                    }
+                } else if (uploadedTakeOrderQty>0) {
+                    System.out.println("PENDING TO CALLEDDDDDDDD ");
+                    alertDialogBuilder1.setMessage("Uploading pending orders... Please wait.. ");
+                    fetchCountFromDB(uploadedTakeOrderQty, "pto");
+                    if (new NetworkConnectionDetector(TripSheetView.this).isNetworkConnected()) {
+                        startService(new Intent(TripSheetView.this, SyncTakeOrdersService.class));
                     }
                 } else if (uploadedCount > 0) {
                     System.out.println("D CALLEDDDDDDDD ");
@@ -1026,6 +1038,38 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             uploadedCount = 0;
             uploadedCountReturns = 0;
             uploadedCountpayments = 0;
+            uploadedTruckQty = 0;
+            uploadedTakeOrderQty = 0;
+            mHandler.removeCallbacks(mRunnable);
+            synchronized (this) {
+                if (alertDialogBuilder1 != null) {
+                    alertDialog1.dismiss();
+                    alertDialogBuilder1 = null;
+                }
+            }
+            synchronized (this) {
+                showCustomValidationAlertForSync(TripSheetView.this, "pto");
+            }
+        }
+
+        if (uploadedCount11 > 0 && deliveries.equals("pto")) {
+            System.out.println("PTO CALLEDDDDDDDD IFFFFFFFFFFFFFFF");
+            mHandler.removeCallbacks(mRunnable);
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<String> pendingOrderAgents = mDBHelper.fetchAllPendingTakeOrderAgentIds();
+                    fetchCountFromDB(pendingOrderAgents.size(), "pto");
+                }
+            };
+            mHandler.postDelayed(mRunnable, 1000);
+        } else if (deliveries.equals("pto")) {
+            System.out.println("PTO CALLEDDDDDDDD ELSEEEEEEEEEEEEEEEE");
+            uploadedCount = 0;
+            uploadedCountReturns = 0;
+            uploadedCountpayments = 0;
+            uploadedTruckQty = 0;
+            uploadedTakeOrderQty = 0;
             mHandler.removeCallbacks(mRunnable);
             synchronized (this) {
                 if (alertDialogBuilder1 != null) {
@@ -1054,6 +1098,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             uploadedCount = 0;
             uploadedCountReturns = 0;
             uploadedCountpayments = 0;
+            uploadedTruckQty = 0;
+            uploadedTakeOrderQty = 0;
             mHandler.removeCallbacks(mRunnable);
             synchronized (this) {
                 if (alertDialogBuilder1 != null) {
@@ -1083,6 +1129,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             uploadedCount = 0;
             uploadedCountReturns = 0;
             uploadedCountpayments = 0;
+            uploadedTruckQty = 0;
+            uploadedTakeOrderQty = 0;
             mHandler.removeCallbacks(mRunnable);
             synchronized (this) {
                 if (alertDialogBuilder1 != null) {
@@ -1111,6 +1159,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             uploadedCount = 0;
             uploadedCountReturns = 0;
             uploadedCountpayments = 0;
+            uploadedTruckQty = 0;
+            uploadedTakeOrderQty = 0;
             mHandler.removeCallbacks(mRunnable);
             synchronized (this) {
                 if (alertDialogBuilder1 != null) {

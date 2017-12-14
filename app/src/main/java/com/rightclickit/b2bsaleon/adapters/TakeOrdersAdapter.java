@@ -644,6 +644,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                         args.putSerializable("productIdsList", (Serializable) temptoList);
                         ii.putExtra("BUNDLE", args);
                         ii.putExtra("tripsheetId", TRIPID);
+                        ii.putExtra("endid1", mPreferences.getString("enqId"));
                         ii.putExtra("From", ISFROM);
                         activity.startActivity(ii);
                         activity.finish();
@@ -739,6 +740,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                                 tb.setmAgentGST(mTakeOrderBeansList1.get(k).getProductgst());
                                 tb.setUom(mTakeOrderBeansList1.get(k).getProductUOM());
                                 tb.setmTakeorderAgentCode(mPreferences.getString("agentCode"));
+                                tb.setMuploadStatus(0);
                                 temptoList.add(tb);
                             }
                         }

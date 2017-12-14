@@ -224,6 +224,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_VAT = "vat";
     private final String KEY_GST = "gst";
     private final String KEY_TO_AGENTCODE = "to_agent_code";
+    private final String KEY_TO_UPLOAD_STATUS = "to_upload_status";
+
 
 
     // Column names for User privilege actions  Table
@@ -554,7 +556,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TO_PRODUCT_NAME + " VARCHAR," + KEY_TO_PRODUCT_ROUTE_ID + " VARCHAR,"
             + KEY_TO_FROM_DATE + " VARCHAR," + KEY_TO_TO_DATE + " VARCHAR," + KEY_TO_ORDER_TYPE + " VARCHAR,"
             + KEY_TO_QUANTITY + " VARCHAR," + KEY_TO_STATUS + " VARCHAR,"
-            + KEY_TO_ENQID + " VARCHAR," + KEY_TO_AGENTID + " VARCHAR," + KEY_TAKEORDER_DATE + " VARCHAR," + KEY_PRICE + " VARCHAR," + KEY_VAT + " VARCHAR," + KEY_GST + " VARCHAR," + KEY_TO_AGENTCODE + " VARCHAR)";
+            + KEY_TO_ENQID + " VARCHAR," + KEY_TO_AGENTID + " VARCHAR," + KEY_TAKEORDER_DATE + " VARCHAR," + KEY_PRICE + " VARCHAR," + KEY_VAT + " VARCHAR," + KEY_GST + " VARCHAR,"
+            + KEY_TO_UPLOAD_STATUS + " INTEGER DEFAULT 0, " + KEY_TO_AGENTCODE + " VARCHAR)";
 
 
     // User privilege actions Table Create Statements
@@ -2008,6 +2011,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_PRICE, takeOrderBeanArrayList.get(b).getmAgentPrice());
                 values.put(KEY_VAT, takeOrderBeanArrayList.get(b).getmAgentVAT());
                 values.put(KEY_GST, takeOrderBeanArrayList.get(b).getmAgentGST());
+                values.put(KEY_TO_UPLOAD_STATUS, takeOrderBeanArrayList.get(b).getMuploadStatus());
 
 
                 int ccc = checkProductExistsOrNot(takeOrderBeanArrayList.get(b).getmProductId(), takeOrderBeanArrayList.get(b).getmAgentId());
@@ -2032,7 +2036,6 @@ public class DBHelper extends SQLiteOpenHelper {
         //System.out.println("ASDF::: " + effectedRows);
         return effectedRows;
     }
-
     /**
      * Method to insert the user activity privileges data.
      *
@@ -7321,4 +7324,88 @@ public class DBHelper extends SQLiteOpenHelper {
         return cashTypeData;
     }
 
+    public ArrayList<String> fetchAllPendingTakeOrderAgentIds() {
+        ArrayList<String> tripSheetIds = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT DISTINCT " + KEY_TO_AGENTID + " FROM " + TABLE_TO_PRODUCTS + " WHERE " + KEY_TO_UPLOAD_STATUS + " = 0";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    tripSheetIds.add(c.getString(c.getColumnIndex(KEY_TO_AGENTID)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return tripSheetIds;
+    }
+
+
+    /**
+     * Method to fetch all records from take products table
+     *
+     * @param isSync
+     * @param agentId
+     */
+    public ArrayList<TakeOrderBean> fetchAllPendingRecordsFromTakeOrderProductsTableByAgentId(String isSync, String agentId) {
+        ArrayList<TakeOrderBean> allProductTrackRecords = new ArrayList<TakeOrderBean>();
+        try {
+            if (allProductTrackRecords.size() > 0) {
+                allProductTrackRecords.clear();
+            }
+            String selectQuery = "";
+            if (isSync.equals("yes")) {
+                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS + " WHERE " + KEY_TO_STATUS + " = " + "1" + " AND " + KEY_TO_AGENTID + "='" + agentId + "'";
+            } else {
+                selectQuery = "SELECT  * FROM " + TABLE_TO_PRODUCTS + " WHERE " + KEY_TO_AGENTID + "='" + agentId + "'";
+            }
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            // looping through all rows and adding to list
+            if (c.moveToFirst()) {
+                do {
+                    TakeOrderBean toBean = new TakeOrderBean();
+
+                    toBean.setmProductId((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_ID))));
+                    toBean.setMtakeorderProductCode((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_CODE))));
+                    toBean.setmRouteId((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_ROUTE_ID))));
+                    toBean.setmProductTitle((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_NAME))));
+                    toBean.setmProductFromDate((c.getString(c.getColumnIndex(KEY_TO_FROM_DATE))));
+                    toBean.setmProductToDate((c.getString(c.getColumnIndex(KEY_TO_TO_DATE))));
+                    toBean.setmProductOrderType((c.getString(c.getColumnIndex(KEY_TO_ORDER_TYPE))));
+                    toBean.setmProductQuantity((c.getString(c.getColumnIndex(KEY_TO_QUANTITY))));
+                    toBean.setmProductStatus((c.getString(c.getColumnIndex(KEY_TO_STATUS))));
+                    toBean.setmEnquiryId((c.getString(c.getColumnIndex(KEY_TO_ENQID))));
+                    toBean.setmAgentId((c.getString(c.getColumnIndex(KEY_TO_AGENTID))));
+                    toBean.setmAgentTakeOrderDate((c.getString(c.getColumnIndex(KEY_TAKEORDER_DATE))));
+                    toBean.setmAgentPrice((c.getString(c.getColumnIndex(KEY_PRICE))));
+                    toBean.setmAgentVAT((c.getString(c.getColumnIndex(KEY_VAT))));
+                    toBean.setmAgentGST((c.getString(c.getColumnIndex(KEY_GST))));
+                    toBean.setmTakeorderAgentCode((c.getString(c.getColumnIndex(KEY_TO_AGENTCODE))));
+                    // toBean.setMtakeorderProductCode((c.getString(c.getColumnIndex(KEY_TO_PRODUCT_CODE))));
+
+
+                    allProductTrackRecords.add(toBean);
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allProductTrackRecords;
+    }
 }

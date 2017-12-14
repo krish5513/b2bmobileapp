@@ -228,6 +228,7 @@ public class AgentTDC_Order extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent i = new Intent(AgentTDC_Order.this, AgentsTDC_View.class);
+                mSessionManagement.putString("endiddd",tv_enquiryId.getText().toString().trim());
                 startActivity(i);
                 finish();
             }
@@ -332,11 +333,12 @@ public class AgentTDC_Order extends AppCompatActivity {
         if (mTakeOrderBeansList.size() > 0) {
             agentOrders.setVisibility(View.VISIBLE);
             noOrders.setVisibility(View.GONE);
-            if (mTakeOrderBeansList.get(0).getmEnquiryId().contains("ENQ")) {
-                tv_enquiryId.setText(mTakeOrderBeansList.get(0).getmEnquiryId());
-            } else {
-                tv_enquiryId.setText("ENQ" + mTakeOrderBeansList.get(0).getmEnquiryId());
-            }
+//            if (mTakeOrderBeansList.get(0).getmEnquiryId().contains("ENQ")) {
+//                tv_enquiryId.setText(mTakeOrderBeansList.get(0).getmEnquiryId());
+//            } else {
+//                tv_enquiryId.setText("ENQ" + mTakeOrderBeansList.get(0).getmEnquiryId());
+//            }
+            tv_enquiryId.setText(mTakeOrderBeansList.get(0).getmEnquiryId());
             date.setText(mTakeOrderBeansList.get(0).getmAgentTakeOrderDate());
             mPreferences.putString("ORDERDATE", String.valueOf(date));
             itemCount = String.valueOf(mTakeOrderBeansList.size());
