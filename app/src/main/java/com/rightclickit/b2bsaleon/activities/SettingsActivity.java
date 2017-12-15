@@ -445,12 +445,12 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
             JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
             JSONArray routesArray = routesJob.getJSONArray("routeArray");
-            System.out.println("ROUTE CODE ARRAY:: " + routesArray+"...length..."+routesArray.length());
+
             for (int l = 0; l < routesArray.length(); l++) {
-                 System.out.println("The Route Id IS::: " + routesArray.get(l).toString());
+                // System.out.println("The Route Id IS::: " + routesArray.get(l).toString());
 
                 List<String> routesDataList = mDBHelper.getRouteDataByRouteId(routesArray.get(l).toString());
-                System.out.println("routesDataList :: " + routesDataList.toString());
+
                 for (int k = 0; k < routesDataList.size(); k++) {
                     //System.out.println(" LOOPPPPPPPPPPPPPP " + k);
                     if (routesDataList.get(k) != null) {
@@ -886,7 +886,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 /*
-       double latitude = mMap.getLatitude();
+        double latitude = mMap.getLatitude();
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
         googleMap.addMarker(new MarkerOptions().position(latLng));
@@ -958,7 +958,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private void showCustomValidationAlertForSync(Activity context, String message) {
         // custom dialog
         try {
-            /*isSyncClicked = true;
+            isSyncClicked = true;
             if (message.equals("previliges")){
                 alertDialogBuilder1 = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
                 alertDialogBuilder1.setTitle("Sync Process");
@@ -978,35 +978,29 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 alertDialog1.show();
             }else{
                 showAlertDialog1(SettingsActivity.this, "Sync Process", "Sales sync completed succssfully.");
-            }*/
+            }
 
 
 
 
-            isSyncClicked = true;
+           /* isSyncClicked = true;
             alertDialogBuilder1 = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
             alertDialogBuilder1.setTitle("Sync Process");
             alertDialogBuilder1.setCancelable(false);
 
-            if (message.equals("Previliges")) {
-                System.out.println("Uploading user previliges ");
+            if (message.equals("previliges")) {
+
                 alertDialogBuilder1.setMessage("Uploading user previliges... Please wait.. ");
                 startService(new Intent(SettingsActivity.this, SyncUserPrivilegesService.class));
-                alertDialog1 = alertDialogBuilder1.create();
-                alertDialog1.show();
-            } else if (message.equals("Special Price")) {
-                System.out.println("Uploading user Special Price ");
-                alertDialogBuilder1.setMessage("Uploading user Special Price... Please wait.. ");
-                startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class));
-                alertDialog1 = alertDialogBuilder1.create();
-                alertDialog1.show();
-            }else {
+            } else {
+
                 showAlertDialog1(SettingsActivity.this, "Sync Process", "Sales sync completed succssfully.");
             }
 
            // alertDialogBuilder1.setMessage("Uploading special prices... Please wait.. ");
            // startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class));
-
+            alertDialog1 = alertDialogBuilder1.create();
+            alertDialog1.show();*/
 
         } catch (Exception e) {
             e.printStackTrace();
