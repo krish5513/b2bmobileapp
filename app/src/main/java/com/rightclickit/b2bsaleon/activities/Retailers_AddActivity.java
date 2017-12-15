@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rightclickit.b2bsaleon.R;
+
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -58,6 +59,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Retailers_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
     private Context applicationContext, activityContext;
@@ -83,7 +85,6 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     private JSONArray routeCodesArray;
     String selected_val;
     ArrayList<String> idsArray = new ArrayList<String>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,37 +126,37 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            //System.out.println("ROUTE CODE ARRAY:: " + routeCodesArray+"...length..."+routeCodesArray.length());
+            System.out.println("ROUTE CODE ARRAY:: " + routeCodesArray+"...length..."+routeCodesArray.length());
 
-            ArrayList<String> stringArray = new ArrayList<String>();
-
-            stringArray.add(0, "Select Routecode");
+           final ArrayList<String> stringArray = new ArrayList<String>();
+            final HashMap<Integer,String> map = new HashMap<>();
+            final HashMap<Integer,String> idMap = new HashMap<>();
+            stringArray.add("Select Routecode");
+            map.put(0,"Select Routecode");
             for (int i = 1; i <= routeCodesArray.length(); i++) {
                 List<String> routesDataList = null;
                 try {
                     //System.out.println("idsArray :: "+i+"..." + routeCodesArray.get(i - 1).toString());
                     idsArray.add(routeCodesArray.get(i - 1).toString());
+                    idMap.put(i-1,routeCodesArray.get(i - 1).toString());
                     routesDataList = mDBHelper.getRouteDataByRouteId(routeCodesArray.get(i - 1).toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                //System.out.println("idMap :: " + idMap.toString());
                 //System.out.println("routesDataList :: " + routesDataList.toString());
 
                 if(routesDataList.size()>0){
                     //System.out.println("routesDataList.get(1).toString() :: " + routesDataList.get(1).toString());
-                    stringArray.add(i, routesDataList.get(1).toString());
-                }else{
-                    stringArray.add(i, "null");
+                    stringArray.add( routesDataList.get(1).toString());
+                    map.put(i,routesDataList.get(1).toString());
                 }
             }
-            System.out.println("stringArray :: " + stringArray.toString());
+            System.out.println("stringArray :: " + map.toString());
+            System.out.println("stringArray :: " + idMap.toString());
 
-
-            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
-                    (this, android.R.layout.simple_spinner_item,
-                            stringArray); //selected item will look like a spinner set from XML
-            spinnerArrayAdapter.setDropDownViewResource(android.R.layout
-                    .simple_spinner_dropdown_item);
+            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, stringArray); //selected item will look like a spinner set from XML
+            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             //paymentTypeSpinner.setPrompt("Select routecode");
             paymentTypeSpinner.setAdapter(spinnerArrayAdapter);
 
@@ -166,7 +167,18 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                     if (i == 0) {
 
                     } else {
-                        selected_val = idsArray.get(i - 1).toString();
+                        String value = paymentTypeSpinner.getSelectedItem().toString();
+                        System.out.println("ROUTE value:: " + value);
+                        int key = 0;
+                        for(Map.Entry entry: map.entrySet()){
+                            if(value.equals(entry.getValue())){
+                                key = (int) entry.getKey();
+                                break; //breaking because its one to one map
+                            }
+                        }
+
+                        System.out.println("ROUTE JSON key:: " + key);
+                        selected_val = idMap.get(key-1).toString();
                         System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
                     }
                 }
