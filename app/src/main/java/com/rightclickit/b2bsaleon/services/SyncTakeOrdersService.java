@@ -103,7 +103,9 @@ public class SyncTakeOrdersService extends Service {
 
 
                 JSONObject params1 = new JSONObject();
-                String enqId = "ENQ" + mTakeOrderBeansList.get(0).getmEnquiryId();
+
+                String enqId =mTakeOrderBeansList.get(0).getmEnquiryId();
+              //  String enqId = "ENQ" + mTakeOrderBeansList.get(0).getmEnquiryId();
                 params1.put("enquiry_id", enqId);
                 mSessionManagement.putString("enquiryid", enqId);
                 //params1.put("route_id",mSessionManagement.getString("agentrouteId"));

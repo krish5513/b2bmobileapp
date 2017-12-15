@@ -154,7 +154,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         }
         ArrayList<String> stringArray = new ArrayList<String>();
 
-        stringArray.add(0,"Select Card");
+        stringArray.add(0,"Select Routecode");
         for (int i = 1, count = routeCodesArray.length(); i <= count; i++) {
             List<String> routesDataList = null;
             try {
@@ -163,10 +163,12 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
-
-            stringArray.add(i, routesDataList.get(1).toString());
+            if(routesDataList.size()>0){
+                //System.out.println("routesDataList.get(1).toString() :: " + routesDataList.get(1).toString());
+                stringArray.add(i, routesDataList.get(1).toString());
+            }else{
+                stringArray.add(i, "null");
+            }
         }
 
 
