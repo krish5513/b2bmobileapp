@@ -153,21 +153,23 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
             e.printStackTrace();
         }
         ArrayList<String> stringArray = new ArrayList<String>();
-
-        stringArray.add(0,"Select Routecode");
+        final HashMap<Integer,String> map = new HashMap<>();
+        final HashMap<Integer,String> idMap = new HashMap<>();
+        stringArray.add("Select Routecode");
+        map.put(0,"Select Routecode");
         for (int i = 1, count = routeCodesArray.length(); i <= count; i++) {
             List<String> routesDataList = null;
             try {
                 idsArray.add(routeCodesArray.get(i-1).toString());
+                idMap.put(i-1,routeCodesArray.get(i - 1).toString());
                 routesDataList = db.getRouteDataByRouteId(routeCodesArray.get(i-1).toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             if(routesDataList.size()>0){
                 //System.out.println("routesDataList.get(1).toString() :: " + routesDataList.get(1).toString());
-                stringArray.add(i, routesDataList.get(1).toString());
-            }else{
-                stringArray.add(i, "null");
+                stringArray.add( routesDataList.get(1).toString());
+                map.put(i,routesDataList.get(1).toString());
             }
         }
 

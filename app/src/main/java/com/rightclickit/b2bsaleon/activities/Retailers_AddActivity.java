@@ -39,7 +39,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rightclickit.b2bsaleon.R;
-
 import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -125,49 +124,34 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            //System.out.println("ROUTE CODE ARRAY:: " + routeCodesArray);
-
-            ArrayList<String> stringArray = new ArrayList<String>();
-
-
             System.out.println("ROUTE CODE ARRAY:: " + routeCodesArray+"...length..."+routeCodesArray.length());
 
-
+            final ArrayList<String> stringArray = new ArrayList<String>();
             final HashMap<Integer,String> map = new HashMap<>();
             final HashMap<Integer,String> idMap = new HashMap<>();
             stringArray.add("Select Routecode");
             map.put(0,"Select Routecode");
             for (int i = 1; i <= routeCodesArray.length(); i++) {
-
                 List<String> routesDataList = null;
                 try {
+                    //System.out.println("idsArray :: "+i+"..." + routeCodesArray.get(i - 1).toString());
                     idsArray.add(routeCodesArray.get(i - 1).toString());
                     idMap.put(i-1,routeCodesArray.get(i - 1).toString());
                     routesDataList = mDBHelper.getRouteDataByRouteId(routeCodesArray.get(i - 1).toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                //System.out.println("ROUTE JSON OBJ 22:: " + routesDataList.toString());
+                //System.out.println("idMap :: " + idMap.toString());
+                //System.out.println("routesDataList :: " + routesDataList.toString());
 
                 if(routesDataList.size()>0){
                     //System.out.println("routesDataList.get(1).toString() :: " + routesDataList.get(1).toString());
                     stringArray.add( routesDataList.get(1).toString());
                     map.put(i,routesDataList.get(1).toString());
                 }
-                stringArray.add(i, routesDataList.get(1).toString());
             }
-            //System.out.println("ROUTE JSON OBJ 22:: " + stringArray.toString());
-
-   //System.out.println("idMap :: " + idMap.toString());
-                //System.out.println("routesDataList :: " + routesDataList.toString());
-
-
-
             System.out.println("stringArray :: " + map.toString());
             System.out.println("stringArray :: " + idMap.toString());
-
 
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, stringArray); //selected item will look like a spinner set from XML
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -181,10 +165,6 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                     if (i == 0) {
 
                     } else {
-
-                        selected_val = idsArray.get(i - 1).toString();
-                        //System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
-
                         String value = paymentTypeSpinner.getSelectedItem().toString();
                         System.out.println("ROUTE value:: " + value);
                         int key = 0;
@@ -198,7 +178,6 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                         System.out.println("ROUTE JSON key:: " + key);
                         selected_val = idMap.get(key-1).toString();
                         System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
-
                     }
                 }
 
