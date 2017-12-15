@@ -959,35 +959,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         // custom dialog
         try {
             isSyncClicked = true;
-            if (message.equals("previliges")){
-                alertDialogBuilder1 = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
-                alertDialogBuilder1.setTitle("Sync Process");
-                alertDialogBuilder1.setCancelable(false);
-                alertDialogBuilder1.setMessage("Uploading user previliges... Please wait.. ");
-                alertDialogBuilder1.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                startService(new Intent(SettingsActivity.this, SyncUserPrivilegesService.class));
-
-                // alertDialogBuilder1.setMessage("Uploading special prices... Please wait.. ");
-                // startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class));
-                alertDialog1 = alertDialogBuilder1.create();
-                alertDialog1.show();
-            }else{
-                showAlertDialog1(SettingsActivity.this, "Sync Process", "Sales sync completed succssfully.");
-            }
-
-
-
-
-           /* isSyncClicked = true;
             alertDialogBuilder1 = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
             alertDialogBuilder1.setTitle("Sync Process");
             alertDialogBuilder1.setCancelable(false);
-
             if (message.equals("previliges")) {
 
                 alertDialogBuilder1.setMessage("Uploading user previliges... Please wait.. ");
@@ -996,11 +970,10 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
                 showAlertDialog1(SettingsActivity.this, "Sync Process", "Sales sync completed succssfully.");
             }
-
            // alertDialogBuilder1.setMessage("Uploading special prices... Please wait.. ");
            // startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class));
             alertDialog1 = alertDialogBuilder1.create();
-            alertDialog1.show();*/
+            alertDialog1.show();
 
         } catch (Exception e) {
             e.printStackTrace();

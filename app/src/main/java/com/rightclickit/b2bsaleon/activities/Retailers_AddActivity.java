@@ -125,30 +125,25 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            //System.out.println("ROUTE CODE ARRAY:: " + routeCodesArray+"...length..."+routeCodesArray.length());
+            //System.out.println("ROUTE CODE ARRAY:: " + routeCodesArray);
 
             ArrayList<String> stringArray = new ArrayList<String>();
 
             stringArray.add(0, "Select Routecode");
-            for (int i = 1; i <= routeCodesArray.length(); i++) {
+            for (int i = 1, count = routeCodesArray.length(); i <= count; i++) {
                 List<String> routesDataList = null;
                 try {
-                    //System.out.println("idsArray :: "+i+"..." + routeCodesArray.get(i - 1).toString());
                     idsArray.add(routeCodesArray.get(i - 1).toString());
                     routesDataList = mDBHelper.getRouteDataByRouteId(routeCodesArray.get(i - 1).toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                //System.out.println("routesDataList :: " + routesDataList.toString());
+                //System.out.println("ROUTE JSON OBJ 22:: " + routesDataList.toString());
 
-                if(routesDataList.size()>0){
-                    //System.out.println("routesDataList.get(1).toString() :: " + routesDataList.get(1).toString());
-                    stringArray.add(i, routesDataList.get(1).toString());
-                }else{
-                    stringArray.add(i, "null");
-                }
+
+                stringArray.add(i, routesDataList.get(1).toString());
             }
-            System.out.println("stringArray :: " + stringArray.toString());
+            //System.out.println("ROUTE JSON OBJ 22:: " + stringArray.toString());
 
 
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
@@ -167,7 +162,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
                     } else {
                         selected_val = idsArray.get(i - 1).toString();
-                        System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
+                        //System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
                     }
                 }
 
