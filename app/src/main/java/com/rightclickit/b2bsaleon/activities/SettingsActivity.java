@@ -928,7 +928,8 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    showCustomValidationAlertForSync(SettingsActivity.this, "deliverys");
+                    isSyncClicked = true;
+                    showCustomValidationAlertForSync(SettingsActivity.this);
                 }
             });
 
@@ -953,48 +954,51 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
      * Method to display alert without field.
      *
      * @param context
-     * @param message
+     *
      */
-    private void showCustomValidationAlertForSync(Activity context, String message) {
+    private void showCustomValidationAlertForSync(Activity context) {
         // custom dialog
         try {
+            Log.i("called ","called");
 
- isSyncClicked = true;
             alertDialogBuilder1 = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
             alertDialogBuilder1.setTitle("Sync Process");
             alertDialogBuilder1.setCancelable(false);
-
-            if (message.equals("Previliges")) {
-                System.out.println("Uploading user previliges ");
-                alertDialogBuilder1.setMessage("Uploading user previliges... Please wait.. ");
+            if(isSyncClicked){
+                isSyncClicked=false;
+                alertDialogBuilder1.setMessage("Uploading previliges,stakeholders and routes...Please wait");
                 startService(new Intent(SettingsActivity.this, SyncUserPrivilegesService.class));
-                alertDialog1 = alertDialogBuilder1.create();
-                alertDialog1.show();
-            } else if (message.equals("Special Price")) {
-                System.out.println("Uploading user Special Price ");
-                alertDialogBuilder1.setMessage("Uploading user Special Price... Please wait.. ");
-                startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class));
-                alertDialog1 = alertDialogBuilder1.create();
-                alertDialog1.show();
-            }else {
+
+            }else{
                 showAlertDialog1(SettingsActivity.this, "Sync Process", "Sales sync completed succssfully.");
             }
-
-           // alertDialogBuilder1.setMessage("Uploading special prices... Please wait.. ");
-           // startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class));
-
+            alertDialog1 = alertDialogBuilder1.create();
+            alertDialog1.show();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public void returnFromService(){
+        Log.i("returnFromService","returned");
+        if (alertDialogBuilder1 != null) {
+            if (alertDialog1.isShowing()) {
+                alertDialog1.dismiss();
+            }
+            alertDialogBuilder1 = null;
+           // isSyncClicked = false;
+        }
+
+        showCustomValidationAlertForSync(SettingsActivity.this);
+    }
+
     public void showAlertDialog1(Context context, String title, String message) {
         try {
-            if (alertDialogBuilder1 != null) {
-               // alertDialog1.dismiss();
-                alertDialogBuilder1 = null;
-            }
+//            if (alertDialogBuilder1 != null) {
+//               // alertDialog1.dismiss();
+//                alertDialogBuilder1 = null;
+//            }
             android.support.v7.app.AlertDialog alertDialog = null;
             android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
             alertDialogBuilder.setTitle(title);

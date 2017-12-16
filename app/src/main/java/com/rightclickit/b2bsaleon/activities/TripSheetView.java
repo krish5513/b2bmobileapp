@@ -426,20 +426,35 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     }
 
     public void loadTripSheetSaleOrderData() {
-        if (isSyncClicked) {
-            showAlertDialog1(TripSheetView.this, "Sync Process", "Sales sync completed succssfully.");
-        }
+        try {
+            synchronized (this) {
+                if (alertDialogBuilder1 != null) {
+                    if (alertDialog1.isShowing()) {
+                        alertDialog1.dismiss();
+                    }
+                    alertDialogBuilder1 = null;
+                }
+            }
+            synchronized (this) {
+                if (isSyncClicked) {
+                    isSyncClicked = false;
+                    showAlertDialog1(TripSheetView.this, "Sync Process", "Sync has been completed succssfully.");
+                }
+            }
 
-        if (tripSheetSOList.size() > 0) {
-            tripSheetSOList.clear();
-        }
+            if (tripSheetSOList.size() > 0) {
+                tripSheetSOList.clear();
+            }
 
-        tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
-        if (tripSheetSOList.size() > 0) {
-            mTripsheetSOAdapter.setAllSaleOrdersList(tripSheetSOList);
-            mTripsheetSOAdapter.notifyDataSetChanged();
-        } else {
-            mNoTripsFoundText.setText("No Sale orders Found." + "\n" + "Please click on sync button to get the sale orders.");
+            tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
+            if (tripSheetSOList.size() > 0) {
+                mTripsheetSOAdapter.setAllSaleOrdersList(tripSheetSOList);
+                mTripsheetSOAdapter.notifyDataSetChanged();
+            } else {
+                mNoTripsFoundText.setText("No Sale orders Found." + "\n" + "Please click on sync button to get the sale orders.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -977,13 +992,6 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                         syncTripSheetsStockServiceIntent.putExtra("actionType", "verify");
                         startService(syncTripSheetsStockServiceIntent);
                     }
-                } else if (uploadedTakeOrderQty>0) {
-                    System.out.println("PENDING TO CALLEDDDDDDDD ");
-                    alertDialogBuilder1.setMessage("Uploading pending orders... Please wait.. ");
-                    fetchCountFromDB(uploadedTakeOrderQty, "pto");
-                    if (new NetworkConnectionDetector(TripSheetView.this).isNetworkConnected()) {
-                        startService(new Intent(TripSheetView.this, SyncTakeOrdersService.class));
-                    }
                 } else if (uploadedCount > 0) {
                     System.out.println("D CALLEDDDDDDDD ");
                     alertDialogBuilder1.setMessage("Uploading pending deliveries... Please wait.. ");
@@ -1006,6 +1014,13 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                     fetchCountFromDB(uploadedCountpayments, "payments");
                     if (new NetworkConnectionDetector(TripSheetView.this).isNetworkConnected()) {
                         startService(new Intent(TripSheetView.this, SyncTripSheetsPaymentsService.class));
+                    }
+                } else if (uploadedTakeOrderQty > 0) {
+                    System.out.println("PENDING TO CALLEDDDDDDDD ");
+                    alertDialogBuilder1.setMessage("Uploading pending orders... Please wait.. ");
+                    fetchCountFromDB(uploadedTakeOrderQty, "pto");
+                    if (new NetworkConnectionDetector(TripSheetView.this).isNetworkConnected()) {
+                        startService(new Intent(TripSheetView.this, SyncTakeOrdersService.class));
                     }
                 } else {
                     alertDialogBuilder1.setMessage("Downloading sale orders... Please wait.. ");
@@ -1049,36 +1064,6 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             }
             synchronized (this) {
                 showCustomValidationAlertForSync(TripSheetView.this, "pto");
-            }
-        }
-
-        if (uploadedCount11 > 0 && deliveries.equals("pto")) {
-            System.out.println("PTO CALLEDDDDDDDD IFFFFFFFFFFFFFFF");
-            mHandler.removeCallbacks(mRunnable);
-            mRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    ArrayList<String> pendingOrderAgents = mDBHelper.fetchAllPendingTakeOrderAgentIds();
-                    fetchCountFromDB(pendingOrderAgents.size(), "pto");
-                }
-            };
-            mHandler.postDelayed(mRunnable, 1000);
-        } else if (deliveries.equals("pto")) {
-            System.out.println("PTO CALLEDDDDDDDD ELSEEEEEEEEEEEEEEEE");
-            uploadedCount = 0;
-            uploadedCountReturns = 0;
-            uploadedCountpayments = 0;
-            uploadedTruckQty = 0;
-            uploadedTakeOrderQty = 0;
-            mHandler.removeCallbacks(mRunnable);
-            synchronized (this) {
-                if (alertDialogBuilder1 != null) {
-                    alertDialog1.dismiss();
-                    alertDialogBuilder1 = null;
-                }
-            }
-            synchronized (this) {
-                showCustomValidationAlertForSync(TripSheetView.this, "deliveries");
             }
         }
 
@@ -1169,6 +1154,36 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 }
             }
             synchronized (this) {
+                showCustomValidationAlertForSync(TripSheetView.this, "pto");
+            }
+        }
+
+        if (uploadedCount11 > 0 && deliveries.equals("pto")) {
+            System.out.println("PTO CALLEDDDDDDDD IFFFFFFFFFFFFFFF");
+            mHandler.removeCallbacks(mRunnable);
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<String> pendingOrderAgents = mDBHelper.fetchAllPendingTakeOrderAgentIds();
+                    fetchCountFromDB(pendingOrderAgents.size(), "pto");
+                }
+            };
+            mHandler.postDelayed(mRunnable, 1000);
+        } else if (deliveries.equals("pto")) {
+            System.out.println("PTO CALLEDDDDDDDD ELSEEEEEEEEEEEEEEEE");
+            uploadedCount = 0;
+            uploadedCountReturns = 0;
+            uploadedCountpayments = 0;
+            uploadedTruckQty = 0;
+            uploadedTakeOrderQty = 0;
+            mHandler.removeCallbacks(mRunnable);
+            synchronized (this) {
+                if (alertDialogBuilder1 != null) {
+                    alertDialog1.dismiss();
+                    alertDialogBuilder1 = null;
+                }
+            }
+            synchronized (this) {
                 showCustomValidationAlertForSync(TripSheetView.this, "down");
             }
         }
@@ -1177,7 +1192,9 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     public void showAlertDialog1(Context context, String title, String message) {
         try {
             if (alertDialogBuilder1 != null) {
-                alertDialog1.dismiss();
+                if (alertDialog1.isShowing()) {
+                    alertDialog1.dismiss();
+                }
                 alertDialogBuilder1 = null;
             }
             android.support.v7.app.AlertDialog alertDialog = null;

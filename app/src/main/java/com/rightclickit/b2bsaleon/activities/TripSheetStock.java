@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripsheetsStockListAdapter;
@@ -332,28 +331,80 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-
-                    if (actionType.equals("Save"))
-                        saveProductsDispatchList();
-                    else if (actionType.equals("Verify")){
-
-                        if(getDispatchCount()){
-                            saveProductsVerifyList();
-                            Log.i("saveProductsVerifyList","called");
-                        }else{
-
-                            new android.app.AlertDialog.Builder(activityContext)
-                                    .setTitle("Alert..!")
-                                    .setMessage("The truck and dispatch quantity should be greater than zero for crates.")
-                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    })
-                                    .setIcon(android.R.drawable.ic_dialog_alert)
-                                    .show();
-                          //  Toast.makeText(activityContext, "The truck and dispatch quantity should be greater than zero", Toast.LENGTH_LONG).show();
+                    boolean isCratesAvailableVerify = false,isCratesAvailableDispatch = false;
+                    if (actionType.equals("Save")) {
+                        synchronized (this) {
+                            for (Map.Entry<String, TripsheetsStockList> stockList : productsDispatchListHashMap.entrySet()) {
+                                TripsheetsStockList currentStock = stockList.getValue();
+                                if (currentStock.getmTripsheetStockProductCode().equals("2600005")) {
+                                    if (Double.parseDouble(currentStock.getmTripsheetStockDispatchQuantity()) > 0) {
+                                        isCratesAvailableDispatch = true;
+                                    }
+                                }
+                            }
                         }
+                        synchronized (this) {
+                            if (isCratesAvailableDispatch) {
+                                saveProductsDispatchList();
+                            } else {
+                                new android.app.AlertDialog.Builder(activityContext)
+                                        .setTitle("Alert..!")
+                                        .setMessage("The dispatch quantity should be greater than zero for crates.")
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            }
+                        }
+                    } else if (actionType.equals("Verify")) {
+                        synchronized (this) {
+                            for (Map.Entry<String, TripsheetsStockList> stockList : productsVerifyListHashMap.entrySet()) {
+                                TripsheetsStockList currentStock = stockList.getValue();
+                                if (currentStock.getmTripsheetStockProductCode().equals("2600005")) {
+                                    if (Double.parseDouble(currentStock.getmTripsheetStockVerifiedQuantity()) > 0) {
+                                        isCratesAvailableVerify = true;
+                                    }
+                                }
+                            }
+                        }
+
+                        synchronized (this) {
+                            if (isCratesAvailableVerify) {
+                                saveProductsVerifyList();
+                            } else {
+                                new android.app.AlertDialog.Builder(activityContext)
+                                        .setTitle("Alert..!")
+                                        .setMessage("The truck quantity should be greater than zero for crates.")
+                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                        .show();
+                            }
+                        }
+
+//                        if(getDispatchCount("verify")){
+//                            saveProductsVerifyList();
+//                            Log.i("saveProductsVerifyList","called");
+//                        }else{
+//
+//                            new android.app.AlertDialog.Builder(activityContext)
+//                                    .setTitle("Alert..!")
+//                                    .setMessage("The truck and dispatch quantity should be greater than zero for crates.")
+//                                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                                        public void onClick(DialogInterface dialog, int which) {
+//                                            dialog.dismiss();
+//                                        }
+//                                    })
+//                                    .setIcon(android.R.drawable.ic_dialog_alert)
+//                                    .show();
+//                          //  Toast.makeText(activityContext, "The truck and dispatch quantity should be greater than zero", Toast.LENGTH_LONG).show();
+//                        }
                     }
                 }
             });
@@ -377,31 +428,29 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
         }
     }
 
-    private boolean getDispatchCount() {
+    private boolean getDispatchCount(String isVerify) {
         ArrayList<TripsheetsStockList> tripsheetsStockLists = mDBHelper.fetchAllTripsheetsStockList(mTripSheetId);
         Double dispQnty = Double.valueOf(0);
         Double vrfyQnty = Double.valueOf(0);
-        for(int i=0; i < tripsheetsStockLists.size(); i++){
-           if(Integer.parseInt(tripsheetsStockLists.get(i).getmTripsheetStockProductCode()) == 2600005){
-               Log.i("product name..."+tripsheetsStockLists.get(i).getmTripsheetStockProductName(),
-                       "product code..."+tripsheetsStockLists.get(i).getmTripsheetStockProductCode());
-               String str = tripsheetsStockLists.get(i).getmTripsheetStockDispatchQuantity();
-               if(!str.equals("")){
-                   dispQnty =  Double.parseDouble(str);
-               }
-               Log.i("dispQnty...",dispQnty+"");
-               String str2 = tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity();
-               if(!str2.equals("")){
-                   vrfyQnty = Double.parseDouble(str2);
-               }
-               if(!mTripsheetsStockAdapter.vrfyQntyChanged.equals("")){
-                   vrfyQnty = Double.parseDouble(mTripsheetsStockAdapter.vrfyQntyChanged);
-               }
-               Log.i("vrfyQnty",""+vrfyQnty);
+        for (int i = 0; i < tripsheetsStockLists.size(); i++) {
+            if (tripsheetsStockLists.get(i).getmTripsheetStockProductCode().equals(2600005)) {
+                String str = "";
+                if (isVerify.equals("")) {
+                    str = tripsheetsStockLists.get(i).getmTripsheetStockDispatchQuantity();
+                    Log.i("dispQnty...", str + "");
+                } else if (isVerify.equals("")) {
+                    str = tripsheetsStockLists.get(i).getmTripsheetStockVerifiedQuantity();
+                    Log.i("vrfyQnty", "" + str);
+                }
 
-                if(dispQnty > 0 && vrfyQnty > 0){
+                if (!mTripsheetsStockAdapter.vrfyQntyChanged.equals("")) {
+                    vrfyQnty = Double.parseDouble(mTripsheetsStockAdapter.vrfyQntyChanged);
+                }
+
+
+                if (dispQnty > 0 && vrfyQnty > 0) {
                     return true;
-                }else{
+                } else {
                     return false;
                 }
             }

@@ -32,7 +32,7 @@ public class SyncRoutesMasterDetailsService extends Service {
     private String mJsonObj;
     private MMSharedPreferences mSessionManagement;
     private String mRouteIdIs;
-
+    private boolean isSyncClicked;
     ArrayList<String> routeIdsList = new ArrayList<String>();
     ArrayList<String> regionNamesList = new ArrayList<String>();
     ArrayList<String> officeNamesList = new ArrayList<String>();
@@ -231,6 +231,9 @@ public class SyncRoutesMasterDetailsService extends Service {
                 mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(mainActivityIntent);
             }
+            SettingsActivity sa = new SettingsActivity();
+            sa.returnFromService();
+            isSyncClicked = false;
         }
     }
 

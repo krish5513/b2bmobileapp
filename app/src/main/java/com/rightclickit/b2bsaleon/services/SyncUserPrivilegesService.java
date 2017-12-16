@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -225,7 +224,9 @@ public class SyncUserPrivilegesService extends Service {
                     startService(new Intent(getApplicationContext(), SyncRoutesMasterDetailsService.class));
                 }
             }
+
             System.out.println("Service Stopped Automatically....");
+
         }
     }
 }

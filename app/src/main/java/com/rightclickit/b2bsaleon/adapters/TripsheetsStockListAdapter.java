@@ -379,6 +379,9 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                             EditText quantityEditText = (EditText) view;
                             Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
                             Double dispatchQuantity = Double.parseDouble(tripSheetStockViewHolder.mDispatchQuantity.getText().toString().trim());
+                            if(enteredQuantity>0){
+                                tripSheetStockViewHolder.mVerifyQuantity.setSelection(quantityEditText.getText().toString().length());
+                            }
                             if (enteredQuantity > dispatchQuantity) {
                                 quantityEditText.setText(zero_cost);
                                 currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(0.0));
