@@ -33,9 +33,7 @@ import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.AgentTakeOrderListener;
-import com.rightclickit.b2bsaleon.services.SyncTakeOrdersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
-import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.io.Serializable;
@@ -752,13 +750,13 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     }
 
                     // Temporary call api from here....
-                    synchronized (this) {
-                        if (temptoList.size() > 0) {
-                            if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
-                                activity.startService(new Intent(activity, SyncTakeOrdersService.class));
-                            }
-                        }
-                    }
+//                    synchronized (this) {
+//                        if (temptoList.size() > 0) {
+//                            if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
+//                                activity.startService(new Intent(activity, SyncTakeOrdersService.class));
+//                            }
+//                        }
+//                    }
                     synchronized (this) {
                         showAlertDialogTakeorder(activity, "Success", activity.getString(R.string.order));
                     }

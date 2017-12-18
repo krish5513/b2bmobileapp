@@ -35,6 +35,14 @@ public class SyncTakeOrdersService extends Service {
     private String mJsonObj, str_routecode;
     private MMSharedPreferences mSessionManagement;
     private String mRouteName = "", mRegionName = "", mOfficeName = "", mRouteCode = "";
+    private String userId = "", userPrivilegeName = "", userPrivilegeId = "", userPrivilegeStatus = "";
+    private ArrayList<String> IDSLIST = new ArrayList<String>();
+    private ArrayList<String> NAMESLIST = new ArrayList<String>();
+    private ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
+    private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
+    private ArrayList<ProductsBean> mProductsBeansList = new ArrayList<ProductsBean>();
+    private ArrayList<TakeOrderBean> temptoList = new ArrayList<TakeOrderBean>();
+    private int unUploadedDeliveryTripSheetIdsCount = 0;
 
     @Override
     public void onCreate() {
@@ -64,7 +72,15 @@ public class SyncTakeOrdersService extends Service {
 
     private void fetchAndSyncUserPrivilegesData() {
         try {
-            new FetchAndSyncTakeOrdersDataAsyncTask().execute();
+            ArrayList<String> pendingOrderAgents = mDBHelper.fetchAllPendingTakeOrderAgentIds();
+            System.out.println("Pending Ids::: " + pendingOrderAgents.size());
+            unUploadedDeliveryTripSheetIdsCount = pendingOrderAgents.size();
+            for (int g = 0; g < pendingOrderAgents.size(); g++) {
+                System.out.println("AGENT ID::: " + pendingOrderAgents.get(g).toString());
+                mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes", pendingOrderAgents.get(g).toString());
+                System.out.println("TO DATA::: " + mTakeOrderBeansList.size());
+                new FetchAndSyncTakeOrdersDataAsyncTask().execute();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,13 +90,6 @@ public class SyncTakeOrdersService extends Service {
      * Class to perform background operations.
      */
     private class FetchAndSyncTakeOrdersDataAsyncTask extends AsyncTask<Void, Void, Void> {
-        private String userId = "", userPrivilegeName = "", userPrivilegeId = "", userPrivilegeStatus = "";
-        private ArrayList<String> IDSLIST = new ArrayList<String>();
-        private ArrayList<String> NAMESLIST = new ArrayList<String>();
-        private ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
-        private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
-        private ArrayList<ProductsBean> mProductsBeansList = new ArrayList<ProductsBean>();
-        private ArrayList<TakeOrderBean> temptoList = new ArrayList<TakeOrderBean>();
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -93,9 +102,9 @@ public class SyncTakeOrdersService extends Service {
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 String currentDate = df.format(cal.getTime());
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-                mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes", mSessionManagement.getString("agentId"));
-                mAgentsBeansList = mDBHelper.fetchAllRecordsFromAgentsTable(mSessionManagement.getString("userId"));
-                mProductsBeansList = mDBHelper.fetchAllRecordsFromProductsTable();
+                //mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("yes", mSessionManagement.getString("agentId"));
+                //mAgentsBeansList = mDBHelper.fetchAllRecordsFromAgentsTable(mSessionManagement.getString("userId"));
+                //mProductsBeansList = mDBHelper.fetchAllRecordsFromProductsTable();
                 //System.out.println("BEFORE SERVICE:: " + mTakeOrderBeansList.size());
                 // System.out.println("BEFORE SERVICE PRICE:: "+ mTakeOrderBeansList.get(0).getmAgentPrice());
                 userId = mSessionManagement.getString("userId");
@@ -103,13 +112,12 @@ public class SyncTakeOrdersService extends Service {
 
 
                 JSONObject params1 = new JSONObject();
-
-                String enqId =mTakeOrderBeansList.get(0).getmEnquiryId();
-              //  String enqId = "ENQ" + mTakeOrderBeansList.get(0).getmEnquiryId();
+                String enqId = mTakeOrderBeansList.get(0).getmEnquiryId();
                 params1.put("enquiry_id", enqId);
                 mSessionManagement.putString("enquiryid", enqId);
                 //params1.put("route_id",mSessionManagement.getString("agentrouteId"));
-                Log.i("lhdighr",mTakeOrderBeansList.get(0).getmRouteId());
+                Log.i("lhdighr", mTakeOrderBeansList.get(0).getmRouteId());
+
                 JSONArray rAr = new JSONArray(mTakeOrderBeansList.get(0).getmRouteId());
                 String rCode = mDBHelper.getRouteCodeByRouteId(rAr.get(0).toString());
                 params1.put("route_id", rAr.get(0).toString());
@@ -148,8 +156,8 @@ public class SyncTakeOrdersService extends Service {
                 params1.put("updated_on", timeStamp);
                 params1.put("updated_by", mSessionManagement.getString("userId"));
 
-                //System.out.println("******::: " + params1.toString());
-                //System.out.println("The URL IS:: " + URL);
+                System.out.println("******::: " + params1.toString());
+                System.out.println("The URL IS:: " + URL);
 
                 mJsonObj = new NetworkManager().makeHttpPostConnection(URL, params1);
                 JSONObject resultObj = new JSONObject(mJsonObj);
@@ -177,13 +185,15 @@ public class SyncTakeOrdersService extends Service {
                                 t.setmAgentPrice(mTakeOrderBeansList.get(v).getmAgentPrice());
                                 t.setmAgentVAT(mTakeOrderBeansList.get(v).getmAgentVAT());
                                 t.setmAgentGST(mTakeOrderBeansList.get(v).getmAgentGST());
+                                t.setMuploadStatus(1);
 
                                 temptoList.add(t);
                             }
-                            System.out.println("DB called****" + temptoList.size());
+                            //System.out.println("DB called****" + temptoList.size());
                             long upd = mDBHelper.updateTakeOrderDetails(temptoList);
-                            System.out.println("UPDATED VALUES COUNT:: " + upd);
+                            //System.out.println("UPDATED VALUES COUNT:: " + upd);
                         }
+                        unUploadedDeliveryTripSheetIdsCount--;
                     }
                 }
             } catch (Exception e) {
@@ -195,7 +205,9 @@ public class SyncTakeOrdersService extends Service {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            stopSelf();
+            if (unUploadedDeliveryTripSheetIdsCount == 0) {
+                stopSelf();
+            }
             if (temptoList.size() > 0) {
                 temptoList.clear();
             }

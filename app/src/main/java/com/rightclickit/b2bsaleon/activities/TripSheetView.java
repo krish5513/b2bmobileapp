@@ -57,6 +57,7 @@ import com.rightclickit.b2bsaleon.beanclass.TripsheetsList;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.TripsheetsModel;
+import com.rightclickit.b2bsaleon.services.SyncCloseTripSheetsStockService;
 import com.rightclickit.b2bsaleon.services.SyncTakeOrdersService;
 import com.rightclickit.b2bsaleon.services.SyncTripSheetsPaymentsService;
 import com.rightclickit.b2bsaleon.services.SyncTripSheetsStockService;
@@ -131,7 +132,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     String startDateStrNewFormat;
     private TextView mNoTripsFoundText;
     Double orderTotal = 0.0;
-    private int uploadedCount = 0, uploadedCountReturns = 0, uploadedCountpayments = 0, uploadedTruckQty = 0, uploadedTakeOrderQty = 0;
+    private int uploadedCount = 0, uploadedCountReturns = 0, uploadedCountpayments = 0, uploadedTruckQty = 0,
+            uploadedTakeOrderQty = 0,uploadedCloseTripData = 0;
     private Runnable mRunnable;
     private Handler mHandler = new Handler();
     private android.support.v7.app.AlertDialog alertDialog1 = null;
@@ -983,6 +985,11 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 uploadedCountpayments = paymentsBeanArrayList.size();
                 System.out.println("P COUNT::: " + uploadedCountpayments);
 
+                // Close Trip data Count
+                ArrayList<String> unUploadedStockIdsCT = mDBHelper.fetchUnUploadedTripSheetUniqueStockIdsForCloseTrip();
+                uploadedCloseTripData = unUploadedStockIdsCT.size();
+                System.out.println("CLOSE TRIP COUNT::: " + uploadedCloseTripData);
+
                 if (uploadedTruckQty > 0) {
                     System.out.println("TQ CALLEDDDDDDDD ");
                     alertDialogBuilder1.setMessage("Uploading pending truck quantity... Please wait.. ");
@@ -1022,7 +1029,15 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                     if (new NetworkConnectionDetector(TripSheetView.this).isNetworkConnected()) {
                         startService(new Intent(TripSheetView.this, SyncTakeOrdersService.class));
                     }
-                } else {
+                } else if (uploadedCloseTripData > 0) {
+                    System.out.println("CLOSE TRIP CALLEDDDDDDDD ");
+                    alertDialogBuilder1.setMessage("Uploading pending close trip data... Please wait.. ");
+                    fetchCountFromDB(uploadedCloseTripData, "ctd");
+                    if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                        Intent syncTDCOrderServiceIntent = new Intent(activityContext, SyncCloseTripSheetsStockService.class);
+                        startService(syncTDCOrderServiceIntent);
+                    }
+                }else {
                     alertDialogBuilder1.setMessage("Downloading sale orders... Please wait.. ");
                     mTripsheetsModel.getTripsheetsSoList(mTripSheetId);
                 }
@@ -1165,6 +1180,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                 @Override
                 public void run() {
                     ArrayList<String> pendingOrderAgents = mDBHelper.fetchAllPendingTakeOrderAgentIds();
+                    System.out.println("PENDING AGENT ID::: "+ pendingOrderAgents.size());
                     fetchCountFromDB(pendingOrderAgents.size(), "pto");
                 }
             };
@@ -1176,6 +1192,37 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             uploadedCountpayments = 0;
             uploadedTruckQty = 0;
             uploadedTakeOrderQty = 0;
+            mHandler.removeCallbacks(mRunnable);
+            synchronized (this) {
+                if (alertDialogBuilder1 != null) {
+                    alertDialog1.dismiss();
+                    alertDialogBuilder1 = null;
+                }
+            }
+            synchronized (this) {
+                showCustomValidationAlertForSync(TripSheetView.this, "ctd");
+            }
+        }
+
+        if (uploadedCount11 > 0 && deliveries.equals("ctd")) {
+            System.out.println("CTD CALLEDDDDDDDD IFFFFFFFFFFFFFFF");
+            mHandler.removeCallbacks(mRunnable);
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<String> pendingOrderAgents = mDBHelper.fetchUnUploadedTripSheetUniqueStockIdsForCloseTrip();
+                    fetchCountFromDB(pendingOrderAgents.size(), "ctd");
+                }
+            };
+            mHandler.postDelayed(mRunnable, 1000);
+        } else if (deliveries.equals("ctd")) {
+            System.out.println("CTD CALLEDDDDDDDD ELSEEEEEEEEEEEEEEEE");
+            uploadedCount = 0;
+            uploadedCountReturns = 0;
+            uploadedCountpayments = 0;
+            uploadedTruckQty = 0;
+            uploadedTakeOrderQty = 0;
+            uploadedCloseTripData = 0;
             mHandler.removeCallbacks(mRunnable);
             synchronized (this) {
                 if (alertDialogBuilder1 != null) {

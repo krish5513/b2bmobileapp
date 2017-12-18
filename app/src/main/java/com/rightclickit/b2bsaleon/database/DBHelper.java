@@ -3071,6 +3071,12 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_STOCK_IS_VERIFIED, mTripsheetsStockList.get(i).getIsStockVerified());
                 values.put(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY, mTripsheetsStockList.get(i).getInStockQuantity());
                 values.put(KEY_TRIPSHEET_STOCK_EXTRA_QUANTITY, mTripsheetsStockList.get(i).getExtraQuantity());
+                // Added by Sekhar for close trip
+                values.put(KEY_TRIPSHEET_STOCK_CB_QUANTITY, mTripsheetsStockList.get(i).getmCBQuantity());
+                values.put(KEY_TRIPSHEET_STOCK_DELIVERY_QUANTITY, mTripsheetsStockList.get(i).getmDeliveryQuantity());
+                values.put(KEY_TRIPSHEET_STOCK_ROUTE_RETURN_QUANTITY, mTripsheetsStockList.get(i).getmRouteReturnQuantity());
+                values.put(KEY_TRIPSHEET_STOCK_LEAK_QUANTITY, mTripsheetsStockList.get(i).getmLeakQuantity());
+                values.put(KEY_TRIPSHEET_STOCK_OTHER_QUANTITY, mTripsheetsStockList.get(i).getmOtherQuantity());
 
                 long l;
                 int checkVal = checkTripsheetStockExistsOrNot(mTripsheetsStockList.get(i).getmTripsheetStockTripsheetId(),
