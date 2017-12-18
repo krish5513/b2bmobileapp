@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -79,11 +80,11 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     EditText salesOffice;
     EditText transporterName, deviceSync, accessDevice, backup;
     EditText oldPassword, newPassword, confirmNewPassword;
-    private android.support.v7.app.AlertDialog.Builder alertDialogBuilder1;
+    private AlertDialog.Builder alertDialogBuilder1;
     private GoogleMap mMap;
     private boolean isSyncClicked;
     public static final String TAG = LoginActivity.class.getSimpleName();
-    private android.support.v7.app.AlertDialog alertDialog1 = null;
+    private AlertDialog alertDialog1 = null;
     //   private MMSharedPreferences sharedPreferences;
     private Context applicationContext, activityContext;
 
@@ -129,6 +130,26 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         }
         CustomProgressDialog.hideProgressDialog();
         setContentView(R.layout.activity_settings);
+
+        if (getIntent().getExtras()!=null){
+            String updatedValue=getIntent().getExtras().getString("key",null);
+            if (updatedValue==null){
+
+            }else{
+                isSyncClicked=false;
+                if (alertDialogBuilder1 != null) {
+                    Log.i("if condition","not null");
+                    if (alertDialog1.isShowing()) {
+                        alertDialog1.dismiss();
+                    }
+                    alertDialogBuilder1 = null;
+                    // isSyncClicked = false;
+                }else{
+                    Log.i("if condition","null");
+                }
+                showAlertDialog1(SettingsActivity.this, "Sync Process", "Sales sync completed succssfully.");
+            }
+        }
         try {
             applicationContext = getApplicationContext();
             activityContext = SettingsActivity.this;
@@ -632,6 +653,29 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
     }
 
+    private void showNewCustomValidationAlertForSync(SettingsActivity settingsActivity) {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(settingsActivity, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(settingsActivity);
+        }
+        builder.setTitle("Delete entry")
+                .setMessage("Are you sure you want to delete this entry?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
     private boolean isGooglePlayServicesAvailable() {
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (ConnectionResult.SUCCESS == status) {
@@ -961,17 +1005,17 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         try {
             Log.i("called ","called");
 
-            alertDialogBuilder1 = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder1 = new AlertDialog.Builder(SettingsActivity.this);
             alertDialogBuilder1.setTitle("Sync Process");
             alertDialogBuilder1.setCancelable(false);
-            if(isSyncClicked){
+           // if(isSyncClicked){
                 isSyncClicked=false;
                 alertDialogBuilder1.setMessage("Uploading previliges,stakeholders and routes...Please wait");
                 startService(new Intent(SettingsActivity.this, SyncUserPrivilegesService.class));
 
-            }else{
+           /* }else{
                 showAlertDialog1(SettingsActivity.this, "Sync Process", "Sales sync completed succssfully.");
-            }
+            }*/
             alertDialog1 = alertDialogBuilder1.create();
             alertDialog1.show();
 
@@ -983,22 +1027,19 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     public void returnFromService(){
         Log.i("returnFromService","returned");
         if (alertDialogBuilder1 != null) {
+            Log.i("returnFromService","not null");
             if (alertDialog1.isShowing()) {
                 alertDialog1.dismiss();
             }
             alertDialogBuilder1 = null;
-           // isSyncClicked = false;
+            // isSyncClicked = false;
+        }else{
+            Log.i("returnFromService","null");
         }
-
-        showCustomValidationAlertForSync(SettingsActivity.this);
     }
 
     public void showAlertDialog1(Context context, String title, String message) {
         try {
-//            if (alertDialogBuilder1 != null) {
-//               // alertDialog1.dismiss();
-//                alertDialogBuilder1 = null;
-//            }
             android.support.v7.app.AlertDialog alertDialog = null;
             android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
             alertDialogBuilder.setTitle(title);
@@ -1009,10 +1050,8 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    isSyncClicked = false;
                 }
             });
-
             alertDialog = alertDialogBuilder.create();
             alertDialog.show();
 

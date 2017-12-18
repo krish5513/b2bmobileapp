@@ -3,6 +3,7 @@ package com.rightclickit.b2bsaleon.services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -222,18 +223,24 @@ public class SyncRoutesMasterDetailsService extends Service {
             stopSelf();
             if (mDBHelper.getUserDeviceId(mSessionManagement.getString("enterEmail")).equals("")) {
                 Intent mainActivityIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putString("key","key");
+                mainActivityIntent.putExtras(bundle);
                 mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(mainActivityIntent);
             } else {
                 Intent mainActivityIntent = new Intent(getApplicationContext(), DashboardActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putString("key","key");
+                mainActivityIntent.putExtras(bundle);
                 mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(mainActivityIntent);
             }
-            SettingsActivity sa = new SettingsActivity();
-            sa.returnFromService();
-            isSyncClicked = false;
+//            SettingsActivity settingsActivity = new SettingsActivity();
+//            settingsActivity.returnFromService();
+//            isSyncClicked = false;
         }
     }
 
