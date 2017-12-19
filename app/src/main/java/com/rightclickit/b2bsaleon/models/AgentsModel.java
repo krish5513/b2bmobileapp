@@ -3,6 +3,7 @@ package com.rightclickit.b2bsaleon.models;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
@@ -33,7 +34,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
     private Context context;
     private AgentsActivity activity;
-    SettingsActivity a;
+    SettingsActivity settingsActivity;
     private Agents_AddActivity activity1;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
@@ -55,7 +56,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
     public AgentsModel(Context context, SettingsActivity activity) {
         this.context = context;
-        this.a = activity;
+        this.settingsActivity = activity;
         this.mPreferences = new MMSharedPreferences(context);
         this.mDBHelper = new DBHelper(context);
     }
@@ -524,6 +525,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 //                            mDBHelper.deleteValuesFromAgentsTable();
 //                        }
 //                    }
+                    Log.i("isMyProfilePrivilege",isMyProfilePrivilege+"");
                     synchronized (this) {
                         if (mDBHelper.getAgentsTableCount() > 0) {
                             mDBHelper.deleteValuesFromAgentsTable();
@@ -538,7 +540,12 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                         if (isMyProfilePrivilege) {
                             activity.loadAgentsList(mAgentsBeansList_MyPrivilege);
                         } else {
-                            activity.loadAgentsList(mAgentsBeansList);
+                            if(activity!=null)
+                                activity.loadAgentsList(mAgentsBeansList);
+                           /* if(activity!=null)
+                                activity.loadAgentsList(mAgentsBeansList);
+                            else if(settingsActivity!=null)
+                                settingsActivity.loadAgentsList(mAgentsBeansList);*/
                         }
 
 

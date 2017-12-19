@@ -3,6 +3,7 @@ package com.rightclickit.b2bsaleon.services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
@@ -29,18 +30,22 @@ public class SyncSpecialPriceService extends Service {
     private DBHelper mDBHelper;
     private String mJsonObj;
     private MMSharedPreferences mSessionManagement;
-
+    private String keyString="";
     @Override
     public void onCreate() {
         super.onCreate();
         handler = new Handler();
         mDBHelper = new DBHelper(this);
         mSessionManagement = new MMSharedPreferences(this);
+
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         fetchAndSyncSpecialPriceData();
+        if(intent.getExtras()!=null)
+            keyString=(String) intent.getExtras().get("syncData");
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -118,8 +123,10 @@ public class SyncSpecialPriceService extends Service {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-//            Intent i = new Intent("android.intent.action.MAIN").putExtra("receiver_key", "agents");
-//            getBaseContext().sendBroadcast(i);
+            if(keyString.equals("syncData")){
+                Intent i = new Intent("android.intent.action.MAIN").putExtra("receiver_key", "agents");
+                getBaseContext().sendBroadcast(i);
+            }
             mDBHelper.insertSpecialPriceDetails(mSpecialPriceList);
             stopSelf();
         }

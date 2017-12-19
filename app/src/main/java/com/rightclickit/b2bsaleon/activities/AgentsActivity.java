@@ -88,7 +88,12 @@ public class AgentsActivity extends AppCompatActivity {
             }
         });
 
+        init();
 
+
+    }
+
+    public void init() {
         applicationContext = getApplicationContext();
         activityContext = AgentsActivity.this;
         mDBHelper = new DBHelper(AgentsActivity.this);
@@ -218,7 +223,7 @@ public class AgentsActivity extends AppCompatActivity {
             } else if (privilegeActionsData1.get(z).toString().equals("my_profile")){
                 this.getSupportActionBar().setTitle("PROFILE");
             }
-              else if (privilegeActionsData1.get(z).toString().equals("ViewStock")){
+            else if (privilegeActionsData1.get(z).toString().equals("ViewStock")){
                 mStock = privilegeActionsData1.get(z).toString();
             }
         }
@@ -248,11 +253,13 @@ public class AgentsActivity extends AppCompatActivity {
                     mNoDataText.setText("");
                     loadAgentsList(agentsBeanArrayList);
                 } else {
-                    agentsModel.getAgentsList("agents");
+                    getAgents();
+                    //agentsModel.getAgentsList("agents");
                 }
 
             } else {
-                agentsModel.getAgentsList("agents");
+                getAgents();
+                //agentsModel.getAgentsList("agents");
             }
         } else {
             // System.out.println("ELSE::: ");
@@ -267,8 +274,10 @@ public class AgentsActivity extends AppCompatActivity {
 
         }
 
+    }
 
-
+    public void getAgents() {
+        agentsModel.getAgentsList("agents");
     }
 
     public void loadAgentsList(ArrayList<AgentsBean> mAgentsBeansList) {
@@ -349,7 +358,8 @@ public class AgentsActivity extends AppCompatActivity {
         if (id == R.id.autorenew) {
 
             if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
-                agentsModel.getAgentsList("agents");
+                getAgents();
+                //agentsModel.getAgentsList("agents");
             }else {
                 new NetworkConnectionDetector(AgentsActivity.this).displayNoNetworkError(AgentsActivity.this);
             }

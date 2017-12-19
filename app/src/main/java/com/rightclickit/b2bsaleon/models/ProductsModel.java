@@ -230,7 +230,8 @@ public class ProductsModel implements OnAsyncRequestCompleteListener {
 //                mDBHelper.insertTakeOrderProductDetails(mTakeOrderProductsBeansList);
 //            }
             synchronized (this) {
-                activity.loadProductsList(mProductsBeansList);
+                if (activity!=null)
+                    activity.loadProductsList(mProductsBeansList);
             }
 
             Intent i = new Intent("android.intent.action.MAIN").putExtra("receiver_key", "completed");

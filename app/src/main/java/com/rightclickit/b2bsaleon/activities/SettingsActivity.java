@@ -87,7 +87,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private AlertDialog.Builder alertDialogBuilder1;
     private GoogleMap mMap;
     private boolean isSyncClicked;
-    public static final String TAG = LoginActivity.class.getSimpleName();
+    public static final String TAG = SettingsActivity.class.getSimpleName();
     private AlertDialog alertDialog1 = null;
     //   private MMSharedPreferences sharedPreferences;
     private Context applicationContext, activityContext;
@@ -1023,10 +1023,13 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             }else if(key.equals("specialPrice")){
                 Log.i("showAlertForSync","specialPrice");
                 alertDialogBuilder1.setMessage("Downloading Special price...Please wait");
-                startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class));
+                startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class).putExtra("syncData","syncData"));
             }else if(key.equals("agents")){
                 Log.i("showAlertForSync","agent");
                 alertDialogBuilder1.setMessage("Downloading agents...Please wait");
+                /*AgentsActivity aa = new AgentsActivity();
+                aa.init();
+                aa.getAgents();*/
                 AgentsModel agentsModel = new AgentsModel(SettingsActivity.this, this);
                 agentsModel.getAgentsList("agents");
             }else if(key.equals("products")){
@@ -1034,9 +1037,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 alertDialogBuilder1.setMessage("Downloading products...Please wait");
                 ProductsModel pModel = new ProductsModel(SettingsActivity.this, this);
                 pModel.getProductsList("productsList");
-            }else{
+            }/*else{
                 showAlertDialog1(SettingsActivity.this, "Sync Process", "Settings sync completed succssfully.");
-            }
+            }*/
             alertDialog1 = alertDialogBuilder1.create();
             alertDialog1.show();
 
@@ -1091,7 +1094,11 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 }else{
                     Log.i("returnFromService","null");
                 }
-                showCustomValidationAlertForSync(SettingsActivity.this, receiver_key);
+                if(receiver_key.equals("completed")){
+                    showAlertDialog1(SettingsActivity.this, "Sync Process", "Settings sync completed succssfully.");
+                }else{
+                    showCustomValidationAlertForSync(SettingsActivity.this, receiver_key);
+                }
             }
         };
         this.registerReceiver(mReceiver, intentFilter);

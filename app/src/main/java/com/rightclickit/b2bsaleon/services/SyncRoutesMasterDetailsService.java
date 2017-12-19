@@ -221,7 +221,7 @@ public class SyncRoutesMasterDetailsService extends Service {
         @Override
         protected void onPostExecute(Void aVoid) {
            boolean bool =  mDBHelper.getUserDeviceId(mSessionManagement.getString("enterEmail")).equals("");
-            Intent i = new Intent("android.intent.action.MAIN").putExtra("receiver_key", "agents").putExtra("whichActivity",bool);
+            Intent i = new Intent("android.intent.action.MAIN").putExtra("receiver_key", "specialPrice").putExtra("whichActivity",bool);
             getBaseContext().sendBroadcast(i);
 
             stopSelf();
