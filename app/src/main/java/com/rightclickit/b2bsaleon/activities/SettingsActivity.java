@@ -1027,9 +1027,6 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             }else if(key.equals("agents")){
                 Log.i("showAlertForSync","agent");
                 alertDialogBuilder1.setMessage("Downloading agents...Please wait");
-                /*AgentsActivity aa = new AgentsActivity();
-                aa.init();
-                aa.getAgents();*/
                 AgentsModel agentsModel = new AgentsModel(SettingsActivity.this, this);
                 agentsModel.getAgentsList("agents");
             }else if(key.equals("products")){
@@ -1097,6 +1094,15 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 if(receiver_key.equals("completed")){
                     showAlertDialog1(SettingsActivity.this, "Sync Process", "Settings sync completed succssfully.");
                 }else{
+                    if(receiver_key.equals("specialPrice")){
+                        boolean bool = intent.getBooleanExtra("whichActivity", false);
+                        if(!bool){
+                            Intent mainActivityIntent = new Intent(getApplicationContext(), DashboardActivity.class);
+                            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(mainActivityIntent);
+                        }
+                    }
                     showCustomValidationAlertForSync(SettingsActivity.this, receiver_key);
                 }
             }
