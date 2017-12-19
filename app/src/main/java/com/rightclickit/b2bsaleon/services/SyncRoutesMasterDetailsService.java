@@ -220,8 +220,13 @@ public class SyncRoutesMasterDetailsService extends Service {
 
         @Override
         protected void onPostExecute(Void aVoid) {
+           boolean bool =  mDBHelper.getUserDeviceId(mSessionManagement.getString("enterEmail")).equals("");
+            Intent i = new Intent("android.intent.action.MAIN").putExtra("receiver_key", "agents").putExtra("whichActivity",bool);
+            getBaseContext().sendBroadcast(i);
+
             stopSelf();
-            if (mDBHelper.getUserDeviceId(mSessionManagement.getString("enterEmail")).equals("")) {
+
+           /* if (mDBHelper.getUserDeviceId(mSessionManagement.getString("enterEmail")).equals("")) {
                 Intent mainActivityIntent = new Intent(getApplicationContext(), SettingsActivity.class);
                 Bundle bundle=new Bundle();
                 bundle.putString("key","key");
@@ -237,10 +242,7 @@ public class SyncRoutesMasterDetailsService extends Service {
                 mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(mainActivityIntent);
-            }
-//            SettingsActivity settingsActivity = new SettingsActivity();
-//            settingsActivity.returnFromService();
-//            isSyncClicked = false;
+            }*/
         }
     }
 

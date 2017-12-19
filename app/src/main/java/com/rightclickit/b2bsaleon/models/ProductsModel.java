@@ -1,10 +1,12 @@
 package com.rightclickit.b2bsaleon.models;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.rightclickit.b2bsaleon.activities.Products_Activity;
+import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
@@ -41,10 +43,19 @@ public class ProductsModel implements OnAsyncRequestCompleteListener {
     private String mStock = "", mAgentPrice = "", mRetailerPrice = "", mConsumerPrice = "";
     private Gson gson;
     private ArrayList<String> actIdsList = new ArrayList<String>();
+    SettingsActivity a;
 
     public ProductsModel(Context context, Products_Activity activity) {
         this.context = context;
         this.activity = activity;
+        this.mPreferences = new MMSharedPreferences(context);
+        this.mDBHelper = new DBHelper(context);
+        this.gson = new Gson();
+    }
+
+    public ProductsModel(Context context, SettingsActivity activity) {
+        this.context = context;
+        this.a = activity;
         this.mPreferences = new MMSharedPreferences(context);
         this.mDBHelper = new DBHelper(context);
         this.gson = new Gson();
@@ -221,6 +232,9 @@ public class ProductsModel implements OnAsyncRequestCompleteListener {
             synchronized (this) {
                 activity.loadProductsList(mProductsBeansList);
             }
+
+            Intent i = new Intent("android.intent.action.MAIN").putExtra("receiver_key", "completed");
+            context.sendBroadcast(i);
         } catch (Exception e) {
             e.printStackTrace();
         }

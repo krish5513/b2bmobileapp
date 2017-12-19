@@ -118,8 +118,10 @@ public class SyncSpecialPriceService extends Service {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            stopSelf();
+//            Intent i = new Intent("android.intent.action.MAIN").putExtra("receiver_key", "agents");
+//            getBaseContext().sendBroadcast(i);
             mDBHelper.insertSpecialPriceDetails(mSpecialPriceList);
+            stopSelf();
         }
     }
 }
