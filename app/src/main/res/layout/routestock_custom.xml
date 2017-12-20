@@ -156,7 +156,7 @@
                                 android:orientation="vertical"
                                 android:layout_weight="0.6">
                                 <TextView
-                                    android:id="@+id/tv_address2"
+                                    android:id="@+id/tv_address"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Delivery"
@@ -275,7 +275,7 @@
                                 android:orientation="vertical"
                                 android:layout_weight="0.5">
                                 <TextView
-                                    android:id="@+id/tv_address3"
+                                    android:id="@+id/tv_address4"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="Leak "

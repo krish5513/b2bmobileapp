@@ -40,7 +40,7 @@ uses-permission#android.permission.READ_EXTERNAL_STORAGE
 ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:14:5-80
 	android:name
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:14:22-77
-user-permission
+uses-permission#com.rightclickit.b2bsaleon.permisssion.MAPS_RECEIVE
 ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:16:5-91
 	android:name
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:16:22-88
