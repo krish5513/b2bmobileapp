@@ -130,12 +130,12 @@
                 android:textSize="14sp"
                 android:layout_marginRight="7dp"
                 android:textColor="@color/greydark"
-                android:id="@+id/productName" />
+                android:id="@+id/productName1" />
 
 
 
             <TextView
-                android:id="@+id/productQt"
+                android:id="@+id/productQt1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Quantity"
@@ -149,13 +149,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.21"
                 android:text="Tax"
-                android:id="@+id/vat"
+                android:id="@+id/vat1"
                 android:layout_gravity="end"
                 android:gravity="end"
                 android:textSize="14sp"
                 android:textColor="@color/greydark"/>
             <TextView
-                android:id="@+id/productSP"
+                android:id="@+id/productSP1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
@@ -167,7 +167,7 @@
                 android:gravity="center|end"
                 android:textColor="@color/greydark"/>
             <TextView
-                android:id="@+id/amount"
+                android:id="@+id/amount1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"

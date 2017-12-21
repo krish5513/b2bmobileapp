@@ -2,9 +2,11 @@ package com.rightclickit.b2bsaleon.activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -51,6 +53,8 @@ import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
+import com.rightclickit.b2bsaleon.models.AgentsModel;
+import com.rightclickit.b2bsaleon.models.ProductsModel;
 import com.rightclickit.b2bsaleon.models.SettingsModel;
 import com.rightclickit.b2bsaleon.services.SyncSpecialPriceService;
 import com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService;
@@ -83,7 +87,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private AlertDialog.Builder alertDialogBuilder1;
     private GoogleMap mMap;
     private boolean isSyncClicked;
-    public static final String TAG = LoginActivity.class.getSimpleName();
+    public static final String TAG = SettingsActivity.class.getSimpleName();
     private AlertDialog alertDialog1 = null;
     //   private MMSharedPreferences sharedPreferences;
     private Context applicationContext, activityContext;
@@ -121,6 +125,10 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
     private boolean isSaveDeviceDetails,isMyProfilePrivilege;
     TextView tvrouts_customerN;
+
+    private BroadcastReceiver mReceiver;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -973,7 +981,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     isSyncClicked = true;
-                    showCustomValidationAlertForSync(SettingsActivity.this);
+                    showCustomValidationAlertForSync(SettingsActivity.this, "privileges");
                 }
             });
 
@@ -1000,7 +1008,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
      * @param context
      *
      */
-    private void showCustomValidationAlertForSync(Activity context) {
+    private void showCustomValidationAlertForSync(Activity context, String key) {
         // custom dialog
         try {
             Log.i("called ","called");
@@ -1008,13 +1016,26 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             alertDialogBuilder1 = new AlertDialog.Builder(SettingsActivity.this);
             alertDialogBuilder1.setTitle("Sync Process");
             alertDialogBuilder1.setCancelable(false);
-           // if(isSyncClicked){
-                isSyncClicked=false;
-                alertDialogBuilder1.setMessage("Uploading previliges,stakeholders and routes...Please wait");
+            if(key.equals("privileges")){
+                Log.i("showAlertForSync","privileges");
+                alertDialogBuilder1.setMessage("Downloading previliges,stakeholders and routes...Please wait");
                 startService(new Intent(SettingsActivity.this, SyncUserPrivilegesService.class));
-
-           /* }else{
-                showAlertDialog1(SettingsActivity.this, "Sync Process", "Sales sync completed succssfully.");
+            }else if(key.equals("specialPrice")){
+                Log.i("showAlertForSync","specialPrice");
+                alertDialogBuilder1.setMessage("Downloading Special price...Please wait");
+                startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class).putExtra("syncData","syncData"));
+            }else if(key.equals("agents")){
+                Log.i("showAlertForSync","agent");
+                alertDialogBuilder1.setMessage("Downloading agents...Please wait");
+                AgentsModel agentsModel = new AgentsModel(SettingsActivity.this, this);
+                agentsModel.getAgentsList("agents");
+            }else if(key.equals("products")){
+                Log.i("showAlertForSync","products");
+                alertDialogBuilder1.setMessage("Downloading products...Please wait");
+                ProductsModel pModel = new ProductsModel(SettingsActivity.this, this);
+                pModel.getProductsList("productsList");
+            }/*else{
+                showAlertDialog1(SettingsActivity.this, "Sync Process", "Settings sync completed succssfully.");
             }*/
             alertDialog1 = alertDialogBuilder1.create();
             alertDialog1.show();
@@ -1024,19 +1045,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
 
-    public void returnFromService(){
-        Log.i("returnFromService","returned");
-        if (alertDialogBuilder1 != null) {
-            Log.i("returnFromService","not null");
-            if (alertDialog1.isShowing()) {
-                alertDialog1.dismiss();
-            }
-            alertDialogBuilder1 = null;
-            // isSyncClicked = false;
-        }else{
-            Log.i("returnFromService","null");
-        }
-    }
+
 
     public void showAlertDialog1(Context context, String title, String message) {
         try {
@@ -1058,6 +1067,55 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        IntentFilter intentFilter = new IntentFilter("android.intent.action.MAIN");
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //extract our message from intent
+                String receiver_key = intent.getStringExtra("receiver_key");
+                //log our message value
+                Log.i(TAG, receiver_key);
+
+                if (alertDialogBuilder1 != null) {
+                    Log.i("returnFromService","not null");
+                    if (alertDialog1.isShowing()) {
+                        alertDialog1.dismiss();
+                    }
+                    alertDialogBuilder1 = null;
+                }else{
+                    Log.i("returnFromService","null");
+                }
+                if(receiver_key.equals("completed")){
+                    showAlertDialog1(SettingsActivity.this, "Sync Process", "Settings sync completed succssfully.");
+                }else{
+                   /* if(receiver_key.equals("specialPrice")){
+                        boolean bool = intent.getBooleanExtra("whichActivity", false);
+                        if(!bool){
+                            Intent mainActivityIntent = new Intent(getApplicationContext(), DashboardActivity.class);
+                            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(mainActivityIntent);
+                        }
+                    }*/
+                    showCustomValidationAlertForSync(SettingsActivity.this, receiver_key);
+                }
+            }
+        };
+        this.registerReceiver(mReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        //unregister our receiver
+        this.unregisterReceiver(this.mReceiver);
     }
 }
 

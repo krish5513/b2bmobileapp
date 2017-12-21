@@ -127,7 +127,7 @@ public class AgentsAdapter extends BaseAdapter {
             String URL = Constants.MAIN_URL + "/b2b/" + mAgentsBeansList1.get(position).getmAgentPic();
             mImageLoader.DisplayImage(URL, mHolder.mPicImage, null, "");
         } else {
-            mHolder.mPicImage.setBackgroundResource(R.drawable.logo);
+            mHolder.mPicImage.setBackgroundResource(R.drawable.tlogo);
         }
         mHolder.mTitle.setText(mAgentsBeansList1.get(position).getmFirstname());
         mHolder.id.setText(mAgentsBeansList1.get(position).getmAgentCode());

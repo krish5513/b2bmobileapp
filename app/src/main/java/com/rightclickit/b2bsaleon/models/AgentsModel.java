@@ -1,10 +1,14 @@
 package com.rightclickit.b2bsaleon.models;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
 import com.rightclickit.b2bsaleon.activities.LoginActivity;
+import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
@@ -30,6 +34,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
     private Context context;
     private AgentsActivity activity;
+    SettingsActivity settingsActivity;
     private Agents_AddActivity activity1;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
@@ -45,6 +50,13 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
     public AgentsModel(Context context, AgentsActivity activity) {
         this.context = context;
         this.activity = activity;
+        this.mPreferences = new MMSharedPreferences(context);
+        this.mDBHelper = new DBHelper(context);
+    }
+
+    public AgentsModel(Context context, SettingsActivity activity) {
+        this.context = context;
+        this.settingsActivity = activity;
         this.mPreferences = new MMSharedPreferences(context);
         this.mDBHelper = new DBHelper(context);
     }
@@ -182,6 +194,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
         try {
             CustomProgressDialog.hideProgressDialog();
+
             if (type.equals("stakesList")) {
                 System.out.println("========= STAKES response = " + response);
                 JSONArray respArray = new JSONArray(response);
@@ -191,8 +204,6 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                     if (jsonObject.has("_id")) {
                         stakeIdsList.add(jsonObject.getString("_id"));
                     }
-
-
                 }
                 //JSONObject logInResponse = new JSONObject(response);
                 getAgentsList("agents");
@@ -514,6 +525,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 //                            mDBHelper.deleteValuesFromAgentsTable();
 //                        }
 //                    }
+                    Log.i("isMyProfilePrivilege",isMyProfilePrivilege+"");
                     synchronized (this) {
                         if (mDBHelper.getAgentsTableCount() > 0) {
                             mDBHelper.deleteValuesFromAgentsTable();
@@ -528,10 +540,20 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                         if (isMyProfilePrivilege) {
                             activity.loadAgentsList(mAgentsBeansList_MyPrivilege);
                         } else {
-                            activity.loadAgentsList(mAgentsBeansList);
+                            if(activity!=null)
+                                activity.loadAgentsList(mAgentsBeansList);
+                           /* if(activity!=null)
+                                activity.loadAgentsList(mAgentsBeansList);
+                            else if(settingsActivity!=null)
+                                settingsActivity.loadAgentsList(mAgentsBeansList);*/
                         }
+
+
                     }
                 }
+
+                Intent i = new Intent("android.intent.action.MAIN").putExtra("receiver_key", "products");
+                context.sendBroadcast(i);
             } else {
                 // Handle Async response of add customer...
                 System.out.println("RES:: " + response);

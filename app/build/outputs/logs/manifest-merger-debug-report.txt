@@ -40,7 +40,7 @@ uses-permission#android.permission.READ_EXTERNAL_STORAGE
 ADDED from C:\Users\sys-2\b2bmobileapp\app\src\main\AndroidManifest.xml:14:5-80
 	android:name
 		ADDED from C:\Users\sys-2\b2bmobileapp\app\src\main\AndroidManifest.xml:14:22-77
-user-permission
+uses-permission#com.rightclickit.b2bsaleon.permisssion.MAPS_RECEIVE
 ADDED from C:\Users\sys-2\b2bmobileapp\app\src\main\AndroidManifest.xml:16:5-91
 	android:name
 		ADDED from C:\Users\sys-2\b2bmobileapp\app\src\main\AndroidManifest.xml:16:22-88
@@ -97,7 +97,7 @@ MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\sys-2\b2bmobileapp
 	android:allowBackup
 		ADDED from C:\Users\sys-2\b2bmobileapp\app\src\main\AndroidManifest.xml:25:9-35
 	android:icon
-		ADDED from C:\Users\sys-2\b2bmobileapp\app\src\main\AndroidManifest.xml:27:9-39
+		ADDED from C:\Users\sys-2\b2bmobileapp\app\src\main\AndroidManifest.xml:27:9-37
 	android:largeHeap
 		ADDED from C:\Users\sys-2\b2bmobileapp\app\src\main\AndroidManifest.xml:29:9-33
 	android:theme
