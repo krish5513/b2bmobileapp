@@ -147,8 +147,10 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                 if (Double.parseDouble(mTakeOrderBeansList1.get(k).getmTakeOrderQuantity()) > 0) {
                     quantityList.put(mTakeOrderBeansList1.get(k).getProductId(), mTakeOrderBeansList1.get(k).getmTakeOrderQuantity());
                     producttitle.put(mTakeOrderBeansList1.get(k).getProductId(), mTakeOrderBeansList1.get(k).getProductTitle());
-                    toDatesList.put(mTakeOrderBeansList1.get(k).getProductId(), mTakeOrderBeansList1.get(k).getmTakeOrderToDate());
-                    fromDatesList.put(mTakeOrderBeansList1.get(k).getProductId(), mTakeOrderBeansList1.get(k).getmTakeOrderFromDate());
+//                    toDatesList.put(mTakeOrderBeansList1.get(k).getProductId(), mTakeOrderBeansList1.get(k).getmTakeOrderToDate());
+//                    fromDatesList.put(mTakeOrderBeansList1.get(k).getProductId(), mTakeOrderBeansList1.get(k).getmTakeOrderFromDate());
+                    toDatesList.put(mTakeOrderBeansList1.get(k).getProductId(), fromDStr);
+                    fromDatesList.put(mTakeOrderBeansList1.get(k).getProductId(), fromDStr);
                     mProductIdsList.put(mTakeOrderBeansList1.get(k).getProductId().toString(), mTakeOrderBeansList1.get(k).getProductId().toString());
 
                     updateTakeOrderData.put(mTakeOrderBeansList1.get(k).getProductId(), mTakeOrderBeansList1.get(k).getmTakeOrderQuantity());
@@ -369,7 +371,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     try {
                         EditText quantityEditText = (EditText) view;
                         Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
-                        if (enteredQuantity >0) {
+                        if (enteredQuantity > 0) {
                             View childView = mList.getChildAt(position - mList.getFirstVisiblePosition());
                             EditText quanity11 = (EditText) childView.findViewById(R.id.productQt);
                             TextView prodName = (TextView) childView.findViewById(R.id.productName);
@@ -752,13 +754,13 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     }
 
                     // Temporary call api from here....
-                  synchronized (this) {
+                    synchronized (this) {
                         if (temptoList.size() > 0) {
                             if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
                                 activity.startService(new Intent(activity, SyncTakeOrdersService.class));
                             }
-                       }
-                   }
+                        }
+                    }
                     synchronized (this) {
                         showAlertDialogTakeorder(activity, "Success", activity.getString(R.string.order));
                     }
@@ -785,8 +787,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
     }
 
 
-
-    private void clearTheThread(){
+    private void clearTheThread() {
         rr = new Runnable() {
             @Override
             public void run() {

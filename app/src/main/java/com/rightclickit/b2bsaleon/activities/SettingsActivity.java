@@ -1094,7 +1094,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 if(receiver_key.equals("completed")){
                     showAlertDialog1(SettingsActivity.this, "Sync Process", "Settings sync completed succssfully.");
                 }else{
-                    if(receiver_key.equals("specialPrice")){
+                   /* if(receiver_key.equals("specialPrice")){
                         boolean bool = intent.getBooleanExtra("whichActivity", false);
                         if(!bool){
                             Intent mainActivityIntent = new Intent(getApplicationContext(), DashboardActivity.class);
@@ -1102,7 +1102,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                             mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(mainActivityIntent);
                         }
-                    }
+                    }*/
                     showCustomValidationAlertForSync(SettingsActivity.this, receiver_key);
                 }
             }

@@ -134,7 +134,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private TextView mNoTripsFoundText;
     Double orderTotal = 0.0;
     private int uploadedCount = 0, uploadedCountReturns = 0, uploadedCountpayments = 0, uploadedTruckQty = 0,
-            uploadedTakeOrderQty = 0, uploadedCloseTripData = 0;
+            uploadedTakeOrderQty = 0,uploadedCloseTripData = 0;
     private Runnable mRunnable;
     private Handler mHandler = new Handler();
     private android.support.v7.app.AlertDialog alertDialog1 = null;
@@ -585,18 +585,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 //        }
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Hyderabad, Telangana"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            return;
-//        }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         mMap.setMyLocationEnabled(true);

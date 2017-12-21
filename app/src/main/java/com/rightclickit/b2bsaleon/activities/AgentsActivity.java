@@ -352,7 +352,7 @@ public class AgentsActivity extends AppCompatActivity {
         if (id == R.id.settings) {
 
             loadSettings();
-            Toast.makeText(this, "Clicked on Settings...", Toast.LENGTH_SHORT).show();
+
             return true;
         }
         if (id == R.id.autorenew) {
