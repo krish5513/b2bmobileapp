@@ -97,7 +97,7 @@ MERGED from [com.amitshekhar.android:debug-db:1.0.1] E:\b2bmobileapp\b2bmobileap
 	android:allowBackup
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:25:9-35
 	android:icon
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:27:9-39
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:27:9-37
 	android:largeHeap
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:29:9-33
 	android:theme

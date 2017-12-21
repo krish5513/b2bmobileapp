@@ -231,11 +231,11 @@ public class ProductsAdapter extends BaseAdapter {
                 if (new NetworkConnectionDetector(activity).isNetworkConnected()) {
                     mImageLoader.DisplayImage(URL, holder.productImage, null, "");
                 } else {
-                    holder.productImage.setBackgroundResource(R.drawable.logo);
+                    holder.productImage.setBackgroundResource(R.drawable.tlogo);
                 }
             }
         } else {
-            holder.productImage.setBackgroundResource(R.drawable.logo);
+            holder.productImage.setBackgroundResource(R.drawable.tlogo);
         }
 
        /* holder.stockbtn.setOnClickListener(new View.OnClickListener() {
