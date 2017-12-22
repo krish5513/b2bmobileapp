@@ -17,13 +17,13 @@ ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-344
 		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
 uses-permission#android.permission.INTERNET
 ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:6:5-67
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:20:5-66
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:29:5-67
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.android\build-cache\70c87647c3831c90ce9fdfa6a2039b2259adb83d\output\AndroidManifest.xml:20:5-66
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.android\build-cache\a00616c7872a39de481f2c430a3da3bc38d9588d\output\AndroidManifest.xml:29:5-67
 	android:name
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:6:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:7:5-79
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:19:5-78
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.android\build-cache\70c87647c3831c90ce9fdfa6a2039b2259adb83d\output\AndroidManifest.xml:19:5-78
 	android:name
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:7:22-76
 uses-feature#android.hardware.camera
@@ -64,28 +64,28 @@ ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:21:5-22
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:21:22-81
 application
 ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:24:5-342:19
-MERGED from [com.android.support:design:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.1\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:transition:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\transition\25.3.1\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support.constraint\constraint-layout\1.0.2\AndroidManifest.xml:9:5-20
-MERGED from [com.android.volley:volley:1.0.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.volley\volley\1.0.0\AndroidManifest.xml:9:5-20
-MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.github.scottyab\showhidepasswordedittext\0.6\AndroidManifest.xml:11:5-12:19
-MERGED from [com.google.android.gms:play-services-places:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-places\10.2.0\AndroidManifest.xml:18:5-19
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:24:5-19
-MERGED from [com.google.android.gms:play-services-location:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\10.2.0\AndroidManifest.xml:4:5-19
-MERGED from [com.google.android.gms:play-services-base:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\AndroidManifest.xml:18:5-20:19
-MERGED from [com.google.android.gms:play-services-tasks:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\10.2.0\AndroidManifest.xml:4:5-19
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\10.2.0\AndroidManifest.xml:19:5-21:19
-MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\uk.co.chrisjenx\calligraphy\2.2.0\AndroidManifest.xml:11:5-20
-MERGED from [com.android.support:appcompat-v7:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.3.1\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-v4:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.3.1\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-fragment:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.3.1\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-media-compat:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.3.1\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-ui:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.3.1\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-utils:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.3.1\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.3.1\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-vector-drawable:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.3.1\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-compat:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.3.1\AndroidManifest.xml:29:5-20
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:32:5-38:19
+MERGED from [com.android.support:design:25.3.1] C:\Users\RCITS\.android\build-cache\ca6eb00e8402d2e2d58c222245e49ea7c957125d\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:transition:25.3.1] C:\Users\RCITS\.android\build-cache\c9e455fcae4a645df9753105459b445753d18cc1\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\RCITS\.android\build-cache\13cc56692984857a71dc7a4a2d3771429abcf8ce\output\AndroidManifest.xml:9:5-20
+MERGED from [com.android.volley:volley:1.0.0] C:\Users\RCITS\.android\build-cache\0db9324ff08299f291a800bd0314fc9ba529d26c\output\AndroidManifest.xml:9:5-20
+MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\RCITS\.android\build-cache\ba706b2e1fcd5f7b28b2b7c4ea4034dca014b88d\output\AndroidManifest.xml:11:5-12:19
+MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\RCITS\.android\build-cache\bb1a3383fa6a3374b481c498c0454e4b062884a9\output\AndroidManifest.xml:18:5-19
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.android\build-cache\70c87647c3831c90ce9fdfa6a2039b2259adb83d\output\AndroidManifest.xml:24:5-19
+MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\RCITS\.android\build-cache\9824cc487764ff2bbb8407370d593b0b2e5f8cb2\output\AndroidManifest.xml:4:5-19
+MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.android\build-cache\e23d0b9eac12d87c4a0deb7a4e3e5a4c7b10b994\output\AndroidManifest.xml:18:5-20:19
+MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\RCITS\.android\build-cache\0cfd538b3c3c22dd219135cd5e53ccb9456930b8\output\AndroidManifest.xml:4:5-19
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.android\build-cache\0c8ceccb5a06b77f05911d3a1103bb10785e2a0e\output\AndroidManifest.xml:19:5-21:19
+MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.android\build-cache\fb145b22a30924378b1e08faa22250b2caae0524\output\AndroidManifest.xml:11:5-20
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.android\build-cache\91cf626613f9d45ed20bd31469184387ec8b540a\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.android\build-cache\041204fb11df2f936bbb8a51033b2e680901bb11\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.android\build-cache\3b4b167aa6866b91f48f04f6ce8e5785a432c6a5\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\RCITS\.android\build-cache\e1b56385734dfe310519061ccd320e6acb26ee6c\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\RCITS\.android\build-cache\1237bcad55e5c02238b54a9b1412e67059a5aca8\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\RCITS\.android\build-cache\82d68e4bbf2d4d40509470fed4b815f86667e71b\output\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\RCITS\.android\build-cache\3d334dd8d40e5063a6f2e1e7b89526d4330112e7\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\RCITS\.android\build-cache\302765e3cef34805489881c662247d29e34761b9\output\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\RCITS\.android\build-cache\db0d62c9ec18070f1cd06cc0e57a45773d8b2685\output\AndroidManifest.xml:29:5-20
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.android\build-cache\a00616c7872a39de481f2c430a3da3bc38d9588d\output\AndroidManifest.xml:32:5-38:19
 	android:label
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:28:9-41
 	android:supportsRtl
@@ -110,7 +110,7 @@ ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:33:9-35
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:34:13-58
 meta-data#com.google.android.gms.version
 ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:36:9-38:69
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\10.2.0\AndroidManifest.xml:20:9-121
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.android\build-cache\0c8ceccb5a06b77f05911d3a1103bb10785e2a0e\output\AndroidManifest.xml:20:9-121
 	android:value
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:38:13-66
 	android:name
@@ -673,33 +673,33 @@ ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:338:9-3
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:339:13-69
 uses-sdk
 INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-MERGED from [com.android.support:design:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.1\AndroidManifest.xml:21:5-23:62
-MERGED from [com.android.support:recyclerview-v7:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.3.1\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:transition:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\transition\25.3.1\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support.constraint\constraint-layout\1.0.2\AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.volley:volley:1.0.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.volley\volley\1.0.0\AndroidManifest.xml:7:5-43
-MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.github.scottyab\showhidepasswordedittext\0.6\AndroidManifest.xml:7:5-9:41
-MERGED from [com.google.android.gms:play-services-places:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-places\10.2.0\AndroidManifest.xml:17:5-43
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:23:5-43
-MERGED from [com.yayandroid:LocationManager:2.0.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.yayandroid\LocationManager\2.0.1\AndroidManifest.xml:8:5-10:41
-MERGED from [com.google.android.gms:play-services-location:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\10.2.0\AndroidManifest.xml:3:5-43
-MERGED from [com.google.android.gms:play-services-base:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\AndroidManifest.xml:17:5-43
-MERGED from [com.google.android.gms:play-services-tasks:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\10.2.0\AndroidManifest.xml:3:5-43
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\10.2.0\AndroidManifest.xml:17:5-43
-MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\uk.co.chrisjenx\calligraphy\2.2.0\AndroidManifest.xml:7:5-9:41
-MERGED from [com.android.support:appcompat-v7:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.3.1\AndroidManifest.xml:21:5-23:78
-MERGED from [com.android.support:support-v4:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.3.1\AndroidManifest.xml:21:5-23:54
-MERGED from [com.android.support:support-fragment:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.3.1\AndroidManifest.xml:21:5-23:60
-MERGED from [com.android.support:support-media-compat:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.3.1\AndroidManifest.xml:21:5-23:63
-MERGED from [com.android.support:support-core-ui:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.3.1\AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-core-utils:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.3.1\AndroidManifest.xml:21:5-23:61
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.3.1\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.3.1\AndroidManifest.xml:20:5-43
-MERGED from [com.jakewharton:butterknife:8.5.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.jakewharton\butterknife\8.5.1\AndroidManifest.xml:5:5-43
-MERGED from [com.android.support:support-compat:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.3.1\AndroidManifest.xml:21:5-23:58
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:design:25.3.1] C:\Users\RCITS\.android\build-cache\ca6eb00e8402d2e2d58c222245e49ea7c957125d\output\AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\RCITS\.android\build-cache\7dae31a2f76b15569a874ff8bd760907322fbae1\output\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:transition:25.3.1] C:\Users\RCITS\.android\build-cache\c9e455fcae4a645df9753105459b445753d18cc1\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\RCITS\.android\build-cache\13cc56692984857a71dc7a4a2d3771429abcf8ce\output\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.volley:volley:1.0.0] C:\Users\RCITS\.android\build-cache\0db9324ff08299f291a800bd0314fc9ba529d26c\output\AndroidManifest.xml:7:5-43
+MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\RCITS\.android\build-cache\ba706b2e1fcd5f7b28b2b7c4ea4034dca014b88d\output\AndroidManifest.xml:7:5-9:41
+MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\RCITS\.android\build-cache\bb1a3383fa6a3374b481c498c0454e4b062884a9\output\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.android\build-cache\70c87647c3831c90ce9fdfa6a2039b2259adb83d\output\AndroidManifest.xml:23:5-43
+MERGED from [com.yayandroid:LocationManager:2.0.1] C:\Users\RCITS\.android\build-cache\5703eadfae9efc39f9c21688633d9fa57246d795\output\AndroidManifest.xml:8:5-10:41
+MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\RCITS\.android\build-cache\9824cc487764ff2bbb8407370d593b0b2e5f8cb2\output\AndroidManifest.xml:3:5-43
+MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.android\build-cache\e23d0b9eac12d87c4a0deb7a4e3e5a4c7b10b994\output\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\RCITS\.android\build-cache\0cfd538b3c3c22dd219135cd5e53ccb9456930b8\output\AndroidManifest.xml:3:5-43
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.android\build-cache\0c8ceccb5a06b77f05911d3a1103bb10785e2a0e\output\AndroidManifest.xml:17:5-43
+MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.android\build-cache\fb145b22a30924378b1e08faa22250b2caae0524\output\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.android\build-cache\91cf626613f9d45ed20bd31469184387ec8b540a\output\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.android\build-cache\041204fb11df2f936bbb8a51033b2e680901bb11\output\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.android\build-cache\3b4b167aa6866b91f48f04f6ce8e5785a432c6a5\output\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\RCITS\.android\build-cache\e1b56385734dfe310519061ccd320e6acb26ee6c\output\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\RCITS\.android\build-cache\1237bcad55e5c02238b54a9b1412e67059a5aca8\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\RCITS\.android\build-cache\82d68e4bbf2d4d40509470fed4b815f86667e71b\output\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\RCITS\.android\build-cache\3d334dd8d40e5063a6f2e1e7b89526d4330112e7\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\RCITS\.android\build-cache\302765e3cef34805489881c662247d29e34761b9\output\AndroidManifest.xml:20:5-43
+MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\RCITS\.android\build-cache\438a16625b3f1161e9339155a3fde98e4eaa7802\output\AndroidManifest.xml:5:5-43
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\RCITS\.android\build-cache\db0d62c9ec18070f1cd06cc0e57a45773d8b2685\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.android\build-cache\a00616c7872a39de481f2c430a3da3bc38d9588d\output\AndroidManifest.xml:25:5-27:41
 	tools:overrideLibrary
-		ADDED from [com.android.support:design:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.1\AndroidManifest.xml:23:9-59
+		ADDED from [com.android.support:design:25.3.1] C:\Users\RCITS\.android\build-cache\ca6eb00e8402d2e2d58c222245e49ea7c957125d\output\AndroidManifest.xml:23:9-59
 	android:targetSdkVersion
 		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
 		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
@@ -707,47 +707,47 @@ MERGED from [com.amitshekhar.android:debug-db:1.0.1] E:\b2bmobileapp\b2bmobileap
 		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
 		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
 meta-data#android.support.VERSION
-ADDED from [com.android.support:design:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.1\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:recyclerview-v7:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.3.1\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:transition:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\transition\25.3.1\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:appcompat-v7:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.3.1\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-v4:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.3.1\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-fragment:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.3.1\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-media-compat:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.3.1\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-ui:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.3.1\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-utils:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.3.1\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.3.1\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-vector-drawable:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.3.1\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-compat:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.3.1\AndroidManifest.xml:25:5-27:34
+ADDED from [com.android.support:design:25.3.1] C:\Users\RCITS\.android\build-cache\ca6eb00e8402d2e2d58c222245e49ea7c957125d\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\RCITS\.android\build-cache\7dae31a2f76b15569a874ff8bd760907322fbae1\output\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:transition:25.3.1] C:\Users\RCITS\.android\build-cache\c9e455fcae4a645df9753105459b445753d18cc1\output\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.android\build-cache\91cf626613f9d45ed20bd31469184387ec8b540a\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.android\build-cache\041204fb11df2f936bbb8a51033b2e680901bb11\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.android\build-cache\3b4b167aa6866b91f48f04f6ce8e5785a432c6a5\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\RCITS\.android\build-cache\e1b56385734dfe310519061ccd320e6acb26ee6c\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\RCITS\.android\build-cache\1237bcad55e5c02238b54a9b1412e67059a5aca8\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\RCITS\.android\build-cache\82d68e4bbf2d4d40509470fed4b815f86667e71b\output\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\RCITS\.android\build-cache\3d334dd8d40e5063a6f2e1e7b89526d4330112e7\output\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\RCITS\.android\build-cache\302765e3cef34805489881c662247d29e34761b9\output\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\RCITS\.android\build-cache\db0d62c9ec18070f1cd06cc0e57a45773d8b2685\output\AndroidManifest.xml:25:5-27:34
 	android:value
-		ADDED from [com.android.support:design:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.1\AndroidManifest.xml:27:9-31
+		ADDED from [com.android.support:design:25.3.1] C:\Users\RCITS\.android\build-cache\ca6eb00e8402d2e2d58c222245e49ea7c957125d\output\AndroidManifest.xml:27:9-31
 	android:name
-		ADDED from [com.android.support:design:25.3.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.android.support\design\25.3.1\AndroidManifest.xml:26:9-47
+		ADDED from [com.android.support:design:25.3.1] C:\Users\RCITS\.android\build-cache\ca6eb00e8402d2e2d58c222245e49ea7c957125d\output\AndroidManifest.xml:26:9-47
 uses-feature#0x00020000
-ADDED from [com.google.android.gms:play-services-maps:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:21:5-77
+ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.android\build-cache\70c87647c3831c90ce9fdfa6a2039b2259adb83d\output\AndroidManifest.xml:21:5-77
 	android:glEsVersion
-		ADDED from [com.google.android.gms:play-services-maps:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:21:19-51
+		ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.android\build-cache\70c87647c3831c90ce9fdfa6a2039b2259adb83d\output\AndroidManifest.xml:21:19-51
 	android:required
-		ADDED from [com.google.android.gms:play-services-maps:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\10.2.0\AndroidManifest.xml:21:52-75
+		ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.android\build-cache\70c87647c3831c90ce9fdfa6a2039b2259adb83d\output\AndroidManifest.xml:21:52-75
 activity#com.google.android.gms.common.api.GoogleApiActivity
-ADDED from [com.google.android.gms:play-services-base:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\AndroidManifest.xml:19:9-172
+ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.android\build-cache\e23d0b9eac12d87c4a0deb7a4e3e5a4c7b10b994\output\AndroidManifest.xml:19:9-172
 	android:exported
-		ADDED from [com.google.android.gms:play-services-base:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\AndroidManifest.xml:19:146-170
+		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.android\build-cache\e23d0b9eac12d87c4a0deb7a4e3e5a4c7b10b994\output\AndroidManifest.xml:19:146-170
 	android:theme
-		ADDED from [com.google.android.gms:play-services-base:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\AndroidManifest.xml:19:86-145
+		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.android\build-cache\e23d0b9eac12d87c4a0deb7a4e3e5a4c7b10b994\output\AndroidManifest.xml:19:86-145
 	android:name
-		ADDED from [com.google.android.gms:play-services-base:10.2.0] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\AndroidManifest.xml:19:19-85
+		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.android\build-cache\e23d0b9eac12d87c4a0deb7a4e3e5a4c7b10b994\output\AndroidManifest.xml:19:19-85
 uses-permission#android.permission.ACCESS_WIFI_STATE
-ADDED from [com.amitshekhar.android:debug-db:1.0.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:30:5-76
+ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.android\build-cache\a00616c7872a39de481f2c430a3da3bc38d9588d\output\AndroidManifest.xml:30:5-76
 	android:name
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:30:22-73
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.android\build-cache\a00616c7872a39de481f2c430a3da3bc38d9588d\output\AndroidManifest.xml:30:22-73
 provider#com.amitshekhar.DebugDBInitProvider
-ADDED from [com.amitshekhar.android:debug-db:1.0.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:33:9-37:40
+ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.android\build-cache\a00616c7872a39de481f2c430a3da3bc38d9588d\output\AndroidManifest.xml:33:9-37:40
 	android:authorities
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:35:13-71
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.android\build-cache\a00616c7872a39de481f2c430a3da3bc38d9588d\output\AndroidManifest.xml:35:13-71
 	android:enabled
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:36:13-35
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.android\build-cache\a00616c7872a39de481f2c430a3da3bc38d9588d\output\AndroidManifest.xml:36:13-35
 	android:exported
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:37:13-37
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.android\build-cache\a00616c7872a39de481f2c430a3da3bc38d9588d\output\AndroidManifest.xml:37:13-37
 	android:name
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] E:\b2bmobileapp\b2bmobileapp\app\build\intermediates\exploded-aar\com.amitshekhar.android\debug-db\1.0.1\AndroidManifest.xml:34:13-63
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.android\build-cache\a00616c7872a39de481f2c430a3da3bc38d9588d\output\AndroidManifest.xml:34:13-63

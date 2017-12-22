@@ -182,7 +182,7 @@ public class LoginActivity extends Activity {
     }
 
     public void authenticateUser(String email, String pwd) {
-        CustomProgressDialog.showProgressDialog(activityContext, Constants.LOADING_MESSAGE);
+        // CustomProgressDialog.showProgressDialog(activityContext, Constants.LOADING_MESSAGE);
         logInModel.validateUserLogin(email, pwd);
     }
 
@@ -199,6 +199,7 @@ public class LoginActivity extends Activity {
                 sharedPreferences.putString("emailId", emailId);
                 sharedPreferences.putString("password", password);
             }
+            sharedPreferences.putString("isloginClick","true");
             sharedPreferences.putString("isLogin", "true");
 
             // Call Previleges API

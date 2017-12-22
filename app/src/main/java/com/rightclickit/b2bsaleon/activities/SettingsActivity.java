@@ -123,11 +123,10 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ", mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "";
     JSONArray routecode = new JSONArray();
 
-    private boolean isSaveDeviceDetails,isMyProfilePrivilege;
+    private boolean isSaveDeviceDetails, isMyProfilePrivilege;
     TextView tvrouts_customerN;
 
     private BroadcastReceiver mReceiver;
-
 
 
     @Override
@@ -139,25 +138,6 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         CustomProgressDialog.hideProgressDialog();
         setContentView(R.layout.activity_settings);
 
-        if (getIntent().getExtras()!=null){
-            String updatedValue=getIntent().getExtras().getString("key",null);
-            if (updatedValue==null){
-
-            }else{
-                isSyncClicked=false;
-                if (alertDialogBuilder1 != null) {
-                    Log.i("if condition","not null");
-                    if (alertDialog1.isShowing()) {
-                        alertDialog1.dismiss();
-                    }
-                    alertDialogBuilder1 = null;
-                    // isSyncClicked = false;
-                }else{
-                    Log.i("if condition","null");
-                }
-                showAlertDialog1(SettingsActivity.this, "Sync Process", "Sales sync completed succssfully.");
-            }
-        }
         try {
             applicationContext = getApplicationContext();
             activityContext = SettingsActivity.this;
@@ -194,6 +174,28 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             assert actionBar != null;
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+
+            if (getIntent().getExtras() != null) {
+                String updatedValue = getIntent().getExtras().getString("key", null);
+                if (updatedValue == null) {
+
+                } else {
+                    isSyncClicked = false;
+                    if (alertDialogBuilder1 != null) {
+                        Log.i("if condition", "not null");
+                        if (alertDialog1.isShowing()) {
+                            alertDialog1.dismiss();
+                        }
+                        alertDialogBuilder1 = null;
+                        // isSyncClicked = false;
+                    } else {
+                        Log.i("if condition", "null");
+                    }
+                    if (mPreferences.getString("isloginClick").equals("false1")) {
+                        showAlertDialog1(SettingsActivity.this, "Sync Process", "Sales sync completed succssfully.");
+                    }
+                }
+            }
 
             companyName = (EditText) findViewById(R.id.tv_companyName);
 
@@ -401,13 +403,13 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                         //bundle.putString("COMPANYNAME", companyName.getText().toString());
 
                         String dId = getDeviceId();
-                        
+
                         settingsmodel.saveDeviceDetails(dId, vehicleNo.getText().toString(), transporterName.getText().toString(), companyName.getText().toString(), mRouteCode, routecode);
 
                         long f = mDBHelper.updateUserDetails(mPreferences.getString("userId"), companyName.getText().toString(), "", userName.getText().toString(),
                                 "", mobile.getText().toString(), "", "", "", "", "", "", "", dId, transporterName.getText().toString(),
                                 vehicleNo.getText().toString(), "", "");
-                      // mPreferences.putString("companyname", companyName.getText().toString());
+                        // mPreferences.putString("companyname", companyName.getText().toString());
 
                         companyName.setCursorVisible(false);
                         routeNo.setCursorVisible(false);
@@ -474,9 +476,9 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
             JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
             JSONArray routesArray = routesJob.getJSONArray("routeArray");
-            System.out.println("ROUTE CODE ARRAY:: " + routesArray+"...length..."+routesArray.length());
+            System.out.println("ROUTE CODE ARRAY:: " + routesArray + "...length..." + routesArray.length());
             for (int l = 0; l < routesArray.length(); l++) {
-                 System.out.println("The Route Id IS::: " + routesArray.get(l).toString());
+                System.out.println("The Route Id IS::: " + routesArray.get(l).toString());
 
                 List<String> routesDataList = mDBHelper.getRouteDataByRouteId(routesArray.get(l).toString());
                 System.out.println("routesDataList :: " + routesDataList.toString());
@@ -534,7 +536,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
             // Append all the db data to lables.
 
-        //    startService(new Intent(SettingsActivity.this, SyncNotificationsListService.class));
+            //    startService(new Intent(SettingsActivity.this, SyncNotificationsListService.class));
 
 
             companyName.setText("");
@@ -564,7 +566,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 backup.setText(userMapData.get("backup").toString());
             }
             if (userMapData.get("vehicle_no") != null) {
-                Log.i("jsdfgfuds",userMapData.get("vehicle_no").toString());
+                Log.i("jsdfgfuds", userMapData.get("vehicle_no").toString());
                 vehicleNo.setText(userMapData.get("vehicle_no").toString());
             }
             if (userMapData.get("transporter_name") != null) {
@@ -626,7 +628,7 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
         for (int z = 0; z < privilegeActionsData1.size(); z++) {
             if (privilegeActionsData1.get(z).toString().equals("my_profile")) {
                 isMyProfilePrivilege = true;
-                tvrouts_customerN=(TextView)findViewById(R.id.tvrouts_customerN);
+                tvrouts_customerN = (TextView) findViewById(R.id.tvrouts_customerN);
                 tvrouts_customerN.setText("Profile");
 
             }
@@ -1006,31 +1008,30 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
      * Method to display alert without field.
      *
      * @param context
-     *
      */
     private void showCustomValidationAlertForSync(Activity context, String key) {
         // custom dialog
         try {
-            Log.i("called ","called");
+            Log.i("called ", "called");
 
             alertDialogBuilder1 = new AlertDialog.Builder(SettingsActivity.this);
             alertDialogBuilder1.setTitle("Sync Process");
             alertDialogBuilder1.setCancelable(false);
-            if(key.equals("privileges")){
-                Log.i("showAlertForSync","privileges");
+            if (key.equals("privileges")) {
+                Log.i("showAlertForSync", "privileges");
                 alertDialogBuilder1.setMessage("Downloading previliges,stakeholders and routes...Please wait");
                 startService(new Intent(SettingsActivity.this, SyncUserPrivilegesService.class));
-            }else if(key.equals("specialPrice")){
-                Log.i("showAlertForSync","specialPrice");
+            } else if (key.equals("specialPrice")) {
+                Log.i("showAlertForSync", "specialPrice");
                 alertDialogBuilder1.setMessage("Downloading Special price...Please wait");
-                startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class).putExtra("syncData","syncData"));
-            }else if(key.equals("agents")){
-                Log.i("showAlertForSync","agent");
+                startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class).putExtra("syncData", "syncData"));
+            } else if (key.equals("agents")) {
+                Log.i("showAlertForSync", "agent");
                 alertDialogBuilder1.setMessage("Downloading agents...Please wait");
                 AgentsModel agentsModel = new AgentsModel(SettingsActivity.this, this);
                 agentsModel.getAgentsList("agents");
-            }else if(key.equals("products")){
-                Log.i("showAlertForSync","products");
+            } else if (key.equals("products")) {
+                Log.i("showAlertForSync", "products");
                 alertDialogBuilder1.setMessage("Downloading products...Please wait");
                 ProductsModel pModel = new ProductsModel(SettingsActivity.this, this);
                 pModel.getProductsList("productsList");
@@ -1044,7 +1045,6 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
             e.printStackTrace();
         }
     }
-
 
 
     public void showAlertDialog1(Context context, String title, String message) {
@@ -1083,17 +1083,17 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
                 Log.i(TAG, receiver_key);
 
                 if (alertDialogBuilder1 != null) {
-                    Log.i("returnFromService","not null");
+                    Log.i("returnFromService", "not null");
                     if (alertDialog1.isShowing()) {
                         alertDialog1.dismiss();
                     }
                     alertDialogBuilder1 = null;
-                }else{
-                    Log.i("returnFromService","null");
+                } else {
+                    Log.i("returnFromService", "null");
                 }
-                if(receiver_key.equals("completed")){
+                if (receiver_key.equals("completed")) {
                     showAlertDialog1(SettingsActivity.this, "Sync Process", "Settings sync completed succssfully.");
-                }else{
+                } else {
                    /* if(receiver_key.equals("specialPrice")){
                         boolean bool = intent.getBooleanExtra("whichActivity", false);
                         if(!bool){

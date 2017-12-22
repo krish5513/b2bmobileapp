@@ -538,6 +538,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                     }
                     synchronized (this) {
                         if (isMyProfilePrivilege) {
+                            if(activity!=null)
                             activity.loadAgentsList(mAgentsBeansList_MyPrivilege);
                         } else {
                             if(activity!=null)

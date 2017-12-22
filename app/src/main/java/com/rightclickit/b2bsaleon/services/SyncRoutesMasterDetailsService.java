@@ -95,16 +95,15 @@ public class SyncRoutesMasterDetailsService extends Service {
                 if (mStoredRouteIds == null) {
                     mStoredRouteIds = "";
                 }
-                JSONObject parm=new JSONObject();
-                try{
+                JSONObject parm = new JSONObject();
+                try {
                     JSONObject jsonObject = new JSONObject(mStoredRouteIds);
                     System.out.println("JSON obj : " + jsonObject.toString());
-                    JSONArray regionidArray=jsonObject.getJSONArray("routeArray");
+                    JSONArray regionidArray = jsonObject.getJSONArray("routeArray");
 
-                    parm.put("routes_ids",regionidArray);
+                    parm.put("routes_ids", regionidArray);
                     System.out.println("The regionid IS:: " + regionidArray);
-                }
-                catch (Exception e){
+                } catch (Exception e) {
 
                 }
                 if (mDBHelper.getRouteId().length() > 0) {
@@ -113,10 +112,10 @@ public class SyncRoutesMasterDetailsService extends Service {
                 }
                 String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_ROUTES_MASTER_DATA, Constants.ROUTEID_SERVICE);
 
-                mJsonObj = new NetworkManager().makeHttpPostConnection(URL,parm);
+                mJsonObj = new NetworkManager().makeHttpPostConnection(URL, parm);
 
                 JSONArray resultArray = new JSONArray(mJsonObj);
-               // resultArray.put(mJsonObj);
+                // resultArray.put(mJsonObj);
                 //  System.out.println("The LENGTH IS:: " + resultArray.length());
                 if (resultArray != null) {
                     if (resultArray.length() > 0) {
@@ -142,13 +141,13 @@ public class SyncRoutesMasterDetailsService extends Service {
                                             JSONObject regionObj = regionsArray.getJSONObject(j);
                                            /* if (regionId.equals(regionObj.getString("_id"))) {
                                                 mSessionManagement.putString("RegionId", regionId);*/
-                                                if (regionName.equals("")) {
-                                                    regionName = regionObj.getString("name");
-                                                } else {
-                                                    if (!regionObj.getString("name").equals(regionName)) {
-                                                        regionName = regionName + "," + regionObj.getString("name");
-                                                    }
+                                            if (regionName.equals("")) {
+                                                regionName = regionObj.getString("name");
+                                            } else {
+                                                if (!regionObj.getString("name").equals(regionName)) {
+                                                    regionName = regionName + "," + regionObj.getString("name");
                                                 }
+                                            }
 
                                         }
                                     }
@@ -160,14 +159,14 @@ public class SyncRoutesMasterDetailsService extends Service {
                                         for (int k = 0; k < officesArray.length(); k++) {
                                             JSONObject officeObj = officesArray.getJSONObject(k);
                                             //if (officeId.equals(officeObj.getString("_id"))) {
-                                                if (officeName.equals("")) {
-                                                    officeName = officeObj.getString("name");
-                                                } else {
-                                                    if (!officeObj.getString("name").equals(officeName)) {
-                                                        officeName = officeName + "," + officeObj.getString("name");
-                                                    }
+                                            if (officeName.equals("")) {
+                                                officeName = officeObj.getString("name");
+                                            } else {
+                                                if (!officeObj.getString("name").equals(officeName)) {
+                                                    officeName = officeName + "," + officeObj.getString("name");
                                                 }
-                                                officeNamesList.add(officeName);
+                                            }
+                                            officeNamesList.add(officeName);
                                             //}
                                         }
                                     }
@@ -220,10 +219,21 @@ public class SyncRoutesMasterDetailsService extends Service {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-           boolean bool =  mDBHelper.getUserDeviceId(mSessionManagement.getString("enterEmail")).equals("");
-            Intent i = new Intent("android.intent.action.MAIN").putExtra("receiver_key", "specialPrice").putExtra("whichActivity",bool);
-            getBaseContext().sendBroadcast(i);
-
+            if (mSessionManagement.getString("isloginClick").equals("true")) {
+                mSessionManagement.putString("isloginClick", "false");
+                Intent mainActivityIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("key", "key");
+                mainActivityIntent.putExtras(bundle);
+                mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(mainActivityIntent);
+            } else {
+                mSessionManagement.putString("isloginClick", "false1");
+                boolean bool = mDBHelper.getUserDeviceId(mSessionManagement.getString("enterEmail")).equals("");
+                Intent i = new Intent("android.intent.action.MAIN").putExtra("receiver_key", "specialPrice").putExtra("whichActivity", bool);
+                getBaseContext().sendBroadcast(i);
+            }
             stopSelf();
 
            /* if (mDBHelper.getUserDeviceId(mSessionManagement.getString("enterEmail")).equals("")) {
