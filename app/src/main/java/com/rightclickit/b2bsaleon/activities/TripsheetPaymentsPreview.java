@@ -300,10 +300,10 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
                     String[] temp = new String[7];
                     temp[0] = crates.getName();
-                    temp[1] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getOpeningBalance())));
-                    temp[2] = Utility.getFormattedCurrency(Double.parseDouble(crates.getDelivered()));
-                    temp[4] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getClosingBalance())));
-                    temp[3] = Utility.getFormattedCurrency(Double.parseDouble(String.valueOf(crates.getReturned())));
+                    temp[1] =(String.valueOf(crates.getOpeningBalance()));
+                    temp[2] =(crates.getDelivered());
+                    temp[4] = (String.valueOf(crates.getClosingBalance()));
+                    temp[3] =(String.valueOf(crates.getReturned()));
                     temp[5] = crates.getCode();
                     uom = mDBHelper.getProductUnitByProductCode(crates.getCode());
                     temp[6] = uom;
