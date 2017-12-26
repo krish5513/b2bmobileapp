@@ -309,6 +309,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_VEHICLE_NUMBER = "tripsheet_vehicle_number";
     private final String KEY_TRIPSHEET_VERIFY_STATUS = "tripsheet_verify_status"; // 0 is not verify and 1 is verify
     private final String KEY_TRIPSHEET_IS_TRIP_SHEET_CLOSED = "is_tripsheet_closed"; // o means not closed and 1 means closed
+    private final String KEY_TRIPSHEET_APPROVED_BY = "tripsheet_approvedby";
 
     // Column names for Tripsheets stocks List  Table
     private final String KEY_TRIPSHEET_STOCK_UNIQUE_ID = "tripsheet_stock_unique_id";
@@ -603,6 +604,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_ID + " VARCHAR,"
             + KEY_TRIPSHEET_CODE + " VARCHAR,"
             + KEY_TRIPSHEET_MY_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_APPROVED_BY + " VARCHAR,"
             + KEY_TRIPSHEET_DATE + " VARCHAR,"
             + KEY_TRIPSHEET_STATUS + " VARCHAR,"
             + KEY_TRIPSHEET_OB_AMOUNT + " VARCHAR,"
@@ -2921,6 +2923,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_SALESMEN_CODE, mTripsheetsList.get(i).getmTripshhetSalesMenCode());
                 values.put(KEY_TRIPSHEET_TRANSPORTER_NAME, mTripsheetsList.get(i).getmTripshhetTrasnsporterName());
                 values.put(KEY_TRIPSHEET_VEHICLE_NUMBER, mTripsheetsList.get(i).getmTripshhetVehicleNumber());
+                values.put(KEY_TRIPSHEET_APPROVED_BY, mTripsheetsList.get(i).getApproved_by());
 
                 int checkVal = checkTripsheetExistsOrNot(mTripsheetsList.get(i).getmTripshhetId());
                 if (checkVal == 0) {
@@ -2965,6 +2968,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripsheetsListBean.setmTripshhetStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STATUS)));
                     tripsheetsListBean.setmTripshhetOBAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_OB_AMOUNT)));
                     tripsheetsListBean.setmTripshhetOrderedAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_ORDERED_AMOUNT)));
+                    tripsheetsListBean.setApproved_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_APPROVED_BY)));
                     //tripsheetsListBean.setmTripshhetReceivedAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RECEIVED_AMOUNT)));
                     //tripsheetsListBean.setmTripshhetDueAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DUE_AMOUNT)));
                     tripsheetsListBean.setmTripshhetRouteCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_ROUTE_CODE)));
@@ -5054,6 +5058,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 tripSheetDetails.setmTripshhetTrasnsporterName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_TRANSPORTER_NAME)));
                 tripSheetDetails.setmTripshhetVerifyStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_VERIFY_STATUS)));
                 tripSheetDetails.setIsTripshhetClosed(c.getInt(c.getColumnIndex(KEY_TRIPSHEET_IS_TRIP_SHEET_CLOSED)));
+                tripSheetDetails.setApproved_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_APPROVED_BY)));
 
                 double receivedAmount = fetchTripSheetReceivedAmount(tripSheetDetails.getmTripshhetId());
                 receivedAmount = Double.parseDouble(String.valueOf(receivedAmount).replace(",", ""));

@@ -3,6 +3,7 @@ package com.rightclickit.b2bsaleon.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,11 +123,32 @@ public class TripsheetsListAdapter extends BaseAdapter {
 
 
         mHolder.mTripsheetDate.setText(currentTripSheet.getmTripshhetDate());
-
+/*
         if (currentTripSheet.getIsTripshhetClosed() == 0)
             mHolder.mTripsheetStatus.setText("In Transit");
-        else
+        else{
             mHolder.mTripsheetStatus.setText("Closed");
+        }
+          */
+        if (currentTripSheet.getApproved_by() != null) {
+            Log.i("hytdfktfy",currentTripSheet.getApproved_by());
+            if (currentTripSheet.getApproved_by().equals("1")) {
+
+
+                mHolder.mTripsheetStatus.setText("Closed");
+            } else {
+
+
+                mHolder.mTripsheetStatus.setText("In Transit");
+            }
+        } else {
+
+            mHolder.mTripsheetStatus.setText("null");
+        }
+
+
+
+
         mHolder.routecode.setText(currentTripSheet.getmTripshhetRouteCode());
 
         mHolder.mTripsheetOBAmount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheet.getmTripshhetOBAmount().replace(",", ""))));

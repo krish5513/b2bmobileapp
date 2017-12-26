@@ -98,6 +98,7 @@ public class SyncTripSheetsListService extends Service {
                     tripsheetsListBean.setmTripshhetSalesMenCode("salesman_code");
                     tripsheetsListBean.setmTripshhetVehicleNumber("vehicle_no");
                     tripsheetsListBean.setmTripshhetTrasnsporterName("transporter");
+                    tripsheetsListBean.setApproved_by(jb.getString("approved_by"));
 
                     mTripsheetsList.add(tripsheetsListBean);
                 }

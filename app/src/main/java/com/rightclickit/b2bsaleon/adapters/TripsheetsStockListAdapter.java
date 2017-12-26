@@ -41,7 +41,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
 
     private final String zero_cost = "0.000";
 
-    String myList ;
+    String myList;
     DBHelper mDBHelper;
     public String vrfyQntyChanged = "";
 
@@ -59,7 +59,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
         this.verifyProductsListHashMap = new HashMap<>();
         this.verifyProductsListHashMapTemp = new HashMap<>();
 
-        mDBHelper=new DBHelper(activity);
+        mDBHelper = new DBHelper(activity);
         if (dispatchProductsListHashMapTemp.size() > 0) {
             dispatchProductsListHashMapTemp.clear();
         }
@@ -112,10 +112,9 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
         final TripsheetsStockList currentStockList = getItem(position);
 
         Double orderQuantity = Double.parseDouble(currentStockList.getmTripsheetStockProductOrderQuantity());
-        myList= mDBHelper.getProductUnitByProductCode(currentStockList.getmTripsheetStockProductCode());
-        tripSheetStockViewHolder.mProductName.setText(currentStockList.getmTripsheetStockProductName() + ","+ currentStockList.getmTripsheetStockProductCode()+","+myList);
+        myList = mDBHelper.getProductUnitByProductCode(currentStockList.getmTripsheetStockProductCode());
+        tripSheetStockViewHolder.mProductName.setText(currentStockList.getmTripsheetStockProductName() + "," + currentStockList.getmTripsheetStockProductCode() + "," + myList);
         // tripSheetStockViewHolder.mProductCode.setText(","+ currentStockList.getmTripsheetStockProductCode());
-
 
 
         //tripSheetStockViewHolder.mProductUom.setText(","+myList);
@@ -166,6 +165,10 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                 currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(vq));
             } else if (!currentStockList.getmTripsheetStockVerifiedQuantity().equals("")) {
                 Double verifyQuantity = Double.parseDouble(currentStockList.getmTripsheetStockVerifiedQuantity());
+                tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", verifyQuantity));
+                currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(verifyQuantity));
+            } else if (!currentStockList.getmTripsheetStockDispatchQuantity().equals("")) {
+                Double verifyQuantity = Double.parseDouble(currentStockList.getmTripsheetStockDispatchQuantity());
                 tripSheetStockViewHolder.mVerifyQuantity.setText(String.format("%.3f", verifyQuantity));
                 currentStockList.setmTripsheetStockVerifiedQuantity(String.valueOf(verifyQuantity));
             } else {
@@ -262,7 +265,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                 @Override
                 public void onFocusChange(View view, boolean hasFocus) {
                     try {
-                        if(!hasFocus){
+                        if (!hasFocus) {
                             EditText quantityEditText = (EditText) view;
                             Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
 
@@ -270,7 +273,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                             dispatchProductsListHashMapTemp.put(currentStockList.getmTripsheetStockProductId(), currentStockList.getmTripsheetStockDispatchQuantity());
                             updateProductsDispatchList(currentStockList);
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -379,7 +382,7 @@ public class TripsheetsStockListAdapter extends BaseAdapter {
                             EditText quantityEditText = (EditText) view;
                             Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
                             Double dispatchQuantity = Double.parseDouble(tripSheetStockViewHolder.mDispatchQuantity.getText().toString().trim());
-                            if(enteredQuantity>0){
+                            if (enteredQuantity > 0) {
                                 tripSheetStockViewHolder.mVerifyQuantity.setSelection(quantityEditText.getText().toString().length());
                             }
                             if (enteredQuantity > dispatchQuantity) {
