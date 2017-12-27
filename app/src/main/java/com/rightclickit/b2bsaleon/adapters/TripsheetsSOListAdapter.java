@@ -173,12 +173,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
 
 
        if(status.equals("1")){
-           mHolder.so_status.setText("Closed");
-           mHolder.hideParent.setVisibility(View.VISIBLE);
-           mHolder.mSOMapIconParent.setVisibility(View.GONE );
-       }else {
-           mHolder.so_status.setText("In Transit");
-           mHolder.mSOMapIconParent.setVisibility(View.VISIBLE);
+
        }
 
         mHolder.mSOMapIconParent.setOnClickListener(new View.OnClickListener() {
@@ -238,7 +233,6 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
                     i.putExtra("agentSoCode", currentSaleOrder.getmTripshetSOCode());
                     i.putExtra("agentSoDate", currentSaleOrder.getmTripshetSODate());
                     i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName());
-                    i.putExtra("status",status);
                     //i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName() + currentSaleOrder.getmTripshetSOAgentLastName());
                     activity.startActivity(i);
                     activity.finish();

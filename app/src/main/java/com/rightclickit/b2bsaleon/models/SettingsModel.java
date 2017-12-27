@@ -1,6 +1,7 @@
 package com.rightclickit.b2bsaleon.models;
 
 import android.content.Context;
+import android.telephony.TelephonyManager;
 
 import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
@@ -81,6 +82,11 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
 
     public void saveDeviceDetails(String deviceId, String vechicleNumber, String transporterName, String companyname, String routeCode, JSONArray mRouteCode) {
         try {
+            TelephonyManager telemamanger = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+            String getSimSerialNumber = telemamanger.getSimSerialNumber();
+            String getImeiNumber = telemamanger.getDeviceId();
+            System.out.println("SIM SERIAL NUMBER::: " + getSimSerialNumber);
+            System.out.println("SIM IMEI NUMBER::: " + getImeiNumber);
             isSaveDeviceDetails = true;
             this.did = deviceId;
             this.vehicleNumber = vechicleNumber;
@@ -100,7 +106,9 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
                 params.put("transporter_name", transporterName);
                 // params.put("companyname", companyname);
                 params.put("route_code", mRouteCode);
-                System.out.println("The PARAMS ARE==== " + params.toString());
+                params.put("sim_no", getSimSerialNumber);
+                params.put("imei_no", getImeiNumber);
+                System.out.println("The Settings PARAMS ARE==== " + params.toString());
 
                 AsyncRequest routeidRequest = new AsyncRequest(context, this, settingsURL, AsyncRequest.MethodType.POST, params);
                 routeidRequest.execute();

@@ -53,7 +53,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
     private String loggedInUserId, loggedInUserName,routecode;
     private DBHelper mDBHelper;
 
-    String str_routecode, str_Tripcode, str_Tripdate, str_AgentName, str_AgentCode, str_OB, str_Order, str_Received, str_Due, mAgentSoId, mAgentId, uom,status;
+    String str_routecode, str_Tripcode, str_Tripdate, str_AgentName, str_AgentCode, str_OB, str_Order, str_Received, str_Due, mAgentSoId, mAgentId, uom;
     TextView company_name, route_name, route_code, user_name, sales_print,mCratesNameText,mCratesOBText,mCratesDeliverText,mCratesReturnText,mCratesCBText,cashAmount,chequeAmount;
     private ListView tdc_products_list_preview;
     private LinearLayout close_trip_layout;
@@ -67,7 +67,6 @@ public class TripSheetViewPreview extends AppCompatActivity {
     ListView listView;
     private ArrayList<TripsheetSOList> tripSheetSOList = new ArrayList<>();
 
-    private TripSheetSoListPreviewAdapter mTripsheetSOAdapter;
     private NetworkConnectionDetector networkConnectionDetector;
     TripsheetsList currentTripSheetDetails;
     private boolean isTripSheetClosed = false;
@@ -120,7 +119,6 @@ public class TripSheetViewPreview extends AppCompatActivity {
             Bundle bundle = getIntent().getExtras();
             if (bundle != null) {
                 tripSheetId = bundle.getString("tripSheetId");
-                status=bundle.getString("status");
                 //str_Tripcode=bundle.getString("tripsheetCode");
                 //str_Tripdate=bundle.getString("tripsheetDate");
             }
@@ -491,7 +489,6 @@ public class TripSheetViewPreview extends AppCompatActivity {
         super.onBackPressed();
         Intent intent = new Intent(this, TripSheetView.class);
         intent.putExtra("tripsheetId", tripSheetId);
-        intent.putExtra("status",status);
         // intent.putExtra("tripsheetCode", mTripSheetCode);
         //intent.putExtra("tripsheetDate", mTripSheetDate);
         startActivity(intent);
@@ -554,7 +551,6 @@ public class TripSheetViewPreview extends AppCompatActivity {
 
         Intent i = new Intent(TripSheetViewPreview.this, RouteStock.class);
         i.putExtra("tripSheetId", tripSheetId);
-        i.putExtra("status",status);
         startActivity(i);
         finish();
        /* try {
