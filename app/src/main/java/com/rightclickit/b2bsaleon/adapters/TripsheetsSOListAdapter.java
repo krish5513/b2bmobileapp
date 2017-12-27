@@ -205,8 +205,8 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
                     i.putExtra("agentSoDate", currentSaleOrder.getmTripshetSODate());
                     i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName());
                     //i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName() + currentSaleOrder.getmTripshetSOAgentLastName());
-                    activity.startActivity(i);
-                    activity.finish();
+                    activity.startActivityForResult(i,101);
+                   // activity.finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
