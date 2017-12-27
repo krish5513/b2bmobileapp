@@ -237,10 +237,15 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, TripSheetView.class);
+        Intent intent=new Intent();
+        intent.putExtra("tripsheetId",mTripSheetId);
+        setResult(101,intent);
+        finish();//finishing activity
+
+       /* Intent intent = new Intent(this, TripSheetView.class);
         intent.putExtra("tripsheetId", mTripSheetId);
         startActivity(intent);
-        finish();
+        finish();*/
     }
 
     public void saveTripSheetReturns(View v) {

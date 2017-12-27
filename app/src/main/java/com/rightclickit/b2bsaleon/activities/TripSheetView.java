@@ -385,47 +385,65 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                     //  i.putExtra("tripsheetCode",mTripSheetCode);
                     //  i.putExtra("tripsheetDate",mTripSheetDate);
                     //   i.putExtra("data", (Serializable) mTripsheetSOAdapter.getData());
-                    startActivity(i);
-                    finish();
+                    startActivityForResult(i,101);
+                   // finish();
                 }
             });
 
-            // Updating Trip Sheet values in header
-            TripsheetsList currentTripSheetDetails = mDBHelper.fetchTripSheetDetails(mTripSheetId);
-            if (currentTripSheetDetails != null) {
-                ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount().replace(",", ""))));
-
-
-                //  ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount().replace(",", ""))));
-                ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount().replace(",", ""))));
-                ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount().replace(",", ""))));
-            }
-
-            tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
-            for (int i = 0; i < tripSheetSOList.size(); i++) {
-
-                orderTotal += Double.parseDouble(tripSheetSOList.get(i).getmTripshetSOValue());
-                ts_order_value.setText(Utility.getFormattedCurrency(orderTotal));
-            }
-
-
-            isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
-
-            mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege, isTripSheetClosed, mhidePrevilige,status);
-            mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
-            tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
-            if (networkConnectionDetector.isNetworkConnected()) {
-                if (tripSheetSOList.size() > 0) {
-                    loadTripSheetSaleOrderData();
-                } else {
-                    mTripsheetsModel.getTripsheetsSoList(mTripSheetId);
-                }
-            } else {
-                loadTripSheetSaleOrderData();
-            }
-
+            updateTripSheetView();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void updateTripSheetView(){
+        // Updating Trip Sheet values in header
+        TripsheetsList currentTripSheetDetails = mDBHelper.fetchTripSheetDetails(mTripSheetId);
+        if (currentTripSheetDetails != null) {
+            ts_ob_amount.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOBAmount().replace(",", ""))));
+
+
+            //  ts_order_value.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetOrderedAmount().replace(",", ""))));
+            ts_total_received.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetReceivedAmount().replace(",", ""))));
+            ts_total_due.setText(Utility.getFormattedCurrency(Double.parseDouble(currentTripSheetDetails.getmTripshhetDueAmount().replace(",", ""))));
+        }
+
+        tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
+        for (int i = 0; i < tripSheetSOList.size(); i++) {
+
+            orderTotal += Double.parseDouble(tripSheetSOList.get(i).getmTripshetSOValue());
+            ts_order_value.setText(Utility.getFormattedCurrency(orderTotal));
+        }
+
+
+        isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
+
+        mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege, isTripSheetClosed, mhidePrevilige,status);
+        mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
+        tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
+        if (networkConnectionDetector.isNetworkConnected()) {
+            if (tripSheetSOList.size() > 0) {
+                loadTripSheetSaleOrderData();
+            } else {
+                mTripsheetsModel.getTripsheetsSoList(mTripSheetId);
+            }
+        } else {
+            loadTripSheetSaleOrderData();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 101) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                // The user picked a contact.
+                // The Intent's data Uri identifies which contact was selected.
+                mTripSheetId = data.getStringExtra("tripsheetId");
+                updateTripSheetView();
+                // Do something with the contact here (bigger example below)
+            }
         }
     }
 

@@ -76,7 +76,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
         activityContext = RouteStock.this;
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            tripSheetId = bundle.getString("tripSheetId");
+            tripSheetId = bundle.getString("tripsheetId");
             status=bundle.getString("status");
             //str_Tripcode=bundle.getString("tripsheetCode");
             //str_Tripdate=bundle.getString("tripsheetDate");
@@ -781,10 +781,15 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, TripSheetViewPreview.class);
+        Intent intent=new Intent();
+        intent.putExtra("tripsheetId",tripSheetId);
+        setResult(101,intent);
+        finish();//finishing activity
+
+        /*Intent intent = new Intent(this, TripSheetViewPreview.class);
         intent.putExtra("tripSheetId", tripSheetId);
         startActivity(intent);
-
+        finish();*/
     }
 
 

@@ -85,6 +85,18 @@ public class TripSheetViewPreview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_sheet_view_preview);
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            tripSheetId = bundle.getString("tripSheetId");
+            status=bundle.getString("status");
+            //str_Tripcode=bundle.getString("tripsheetCode");
+            //str_Tripdate=bundle.getString("tripsheetDate");
+        }
+
+        pageLoad();
+    }
+
+    public void pageLoad(){
         try {
             applicationContext = getApplicationContext();
             activityContext = TripSheetViewPreview.this;
@@ -116,14 +128,6 @@ public class TripSheetViewPreview extends AppCompatActivity {
 
             productsDispatchListHashMap = new HashMap<>();
             productsVerifyListHashMap = new HashMap<>();
-
-            Bundle bundle = getIntent().getExtras();
-            if (bundle != null) {
-                tripSheetId = bundle.getString("tripSheetId");
-                status=bundle.getString("status");
-                //str_Tripcode=bundle.getString("tripsheetCode");
-                //str_Tripdate=bundle.getString("tripsheetDate");
-            }
 
             cashAmount=(TextView)findViewById(R.id.cashAmt);
             chequeAmount=(TextView)findViewById(R.id.chequeAmt);
@@ -489,13 +493,18 @@ public class TripSheetViewPreview extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, TripSheetView.class);
+        Intent intent=new Intent();
+        intent.putExtra("tripsheetId",tripSheetId);
+        setResult(101,intent);
+        finish();//finishing activity
+
+        /*Intent intent = new Intent(this, TripSheetView.class);
         intent.putExtra("tripsheetId", tripSheetId);
         intent.putExtra("status",status);
         // intent.putExtra("tripsheetCode", mTripSheetCode);
         //intent.putExtra("tripsheetDate", mTripSheetDate);
         startActivity(intent);
-        finish();
+        finish();*/
     }
 
     class CustomListView extends BaseAdapter implements ListAdapter {
@@ -550,13 +559,28 @@ public class TripSheetViewPreview extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 101) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                // The user picked a contact.
+                // The Intent's data Uri identifies which contact was selected.
+                tripSheetId = data.getStringExtra("tripSheetId");
+                pageLoad();
+                // Do something with the contact here (bigger example below)
+            }
+        }
+    }
+
     public void closeTripSheet(View v) {
 
         Intent i = new Intent(TripSheetViewPreview.this, RouteStock.class);
-        i.putExtra("tripSheetId", tripSheetId);
+        i.putExtra("tripsheetId", tripSheetId);
         i.putExtra("status",status);
-        startActivity(i);
-        finish();
+        startActivityForResult(i,101);
+       // finish();
        /* try {
             AlertDialog alertDialog = null;
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
