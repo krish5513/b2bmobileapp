@@ -35,18 +35,18 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Activity activity;
     private ArrayList<TripsheetSOList> allSaleOrdersList, filteredSaleOrdersList;
-    private String mTakeOrderPrivilege = "", mStockVerifyPrivilege = "",mhidePrevilige="";
+    private String mTakeOrderPrivilege = "", mStockVerifyPrivilege = "",mhidePrevilige="",status="";
     private boolean isTripSheetClosed;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     Double orderTotal=0.0;
-    public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege, boolean isTripSheetClosed, String mhidePrevilige) {
+    public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege, boolean isTripSheetClosed, String mhidePrevilige,String status) {
         this.activity = tripSheetView;
         this.mInflater = LayoutInflater.from(activity);
         this.mTakeOrderPrivilege = mTakeOrderPrivilege;
         this.isTripSheetClosed = isTripSheetClosed;
         this.mhidePrevilige = mhidePrevilige;
-
+        this.status=status;
         this.allSaleOrdersList = tripsSOList;
         this.filteredSaleOrdersList = new ArrayList<>();
         this.filteredSaleOrdersList.addAll(allSaleOrdersList);
@@ -160,7 +160,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         mHolder.mSODueValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSODueAmount())));
         mHolder.mSOAgentDistance.setText(currentSaleOrder.getDistance() + " KM");
 
-        if (isTripSheetClosed) {
+       /* if (isTripSheetClosed) {
             mHolder.so_status.setText("Closed");
             mHolder.mItemBgLayout.setBackgroundColor(Color.WHITE);
         } else if (Double.parseDouble(currentSaleOrder.getmTripshetSOReceivedAmount()) >= 0) {
@@ -169,7 +169,17 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         } else {
             mHolder.so_status.setText("In Process");
             mHolder.mItemBgLayout.setBackgroundColor(Color.WHITE);
-        }
+        }*/
+
+
+       if(status.equals("1")){
+           mHolder.so_status.setText("Closed");
+           mHolder.hideParent.setVisibility(View.VISIBLE);
+           mHolder.mSOMapIconParent.setVisibility(View.GONE );
+       }else {
+           mHolder.so_status.setText("In Transit");
+           mHolder.mSOMapIconParent.setVisibility(View.VISIBLE);
+       }
 
         mHolder.mSOMapIconParent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,6 +238,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
                     i.putExtra("agentSoCode", currentSaleOrder.getmTripshetSOCode());
                     i.putExtra("agentSoDate", currentSaleOrder.getmTripshetSODate());
                     i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName());
+                    i.putExtra("status",status);
                     //i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName() + currentSaleOrder.getmTripshetSOAgentLastName());
                     activity.startActivity(i);
                     activity.finish();

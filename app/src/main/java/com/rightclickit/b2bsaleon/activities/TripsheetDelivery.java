@@ -55,7 +55,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap;
     private Map<String, String> previouslyDeliveredProductsHashMap,selectedDeliveryProductsHashMapTemp; // this hash map contains previously delivered product quantity. key = product id & value = previously delivered quantity
     private Map<String, String> productOrderQuantitiesHashMap; // this hash map contains product codes & it's order quantity fetched from sale oder table.
-    private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "", mAgentSoDate;
+    private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "", mAgentSoDate,status="";
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
     private boolean isDeliveryDataSaved = false, isDeliveryInEditingMode = false, isTripSheetClosed = false;
 
@@ -95,6 +95,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             mDBHelper = new DBHelper(activityContext);
             mPreferences = new MMSharedPreferences(activityContext);
 
+            status = this.getIntent().getStringExtra("status");
             mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
             mAgentId = this.getIntent().getStringExtra("agentId");
             mAgentCode = this.getIntent().getStringExtra("agentCode");
@@ -246,6 +247,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
         super.onBackPressed();
         Intent intent = new Intent(this, TripSheetView.class);
         intent.putExtra("tripsheetId", mTripSheetId);
+        intent.putExtra("status",status);
         startActivity(intent);
         finish();
     }

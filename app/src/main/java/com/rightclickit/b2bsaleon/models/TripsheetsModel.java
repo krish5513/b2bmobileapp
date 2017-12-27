@@ -240,6 +240,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                         tripsheetsListBean.setmTripshhetCode(jb.getString("code"));
                         //tripsheetsListBean.setRoute_code(jb.getString("route_code"));
                         tripsheetsListBean.setMy_Id(jb.getString("my_id"));
+                        tripsheetsListBean.setApproved_by(jb.getString("approved_by"));
                         tripsheetsListBean.setmTripshhetDate(jb.getString("date"));
                         tripsheetsListBean.setmTripshhetStatus(jb.getString("status"));
                         tripsheetsListBean.setmTripshhetOBAmount(jb.getString("ob_amt"));

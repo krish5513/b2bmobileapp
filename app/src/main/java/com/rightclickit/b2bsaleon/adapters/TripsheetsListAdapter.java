@@ -130,8 +130,10 @@ public class TripsheetsListAdapter extends BaseAdapter {
             mHolder.mTripsheetStatus.setText("Closed");
         }
           */
+
+        Log.i("hytdfktfy",currentTripSheet.getApproved_by()+"");
         if (currentTripSheet.getApproved_by() != null) {
-            Log.i("hytdfktfy",currentTripSheet.getApproved_by());
+
             if (currentTripSheet.getApproved_by().equals("1")) {
 
 
@@ -197,6 +199,7 @@ public class TripsheetsListAdapter extends BaseAdapter {
                     mPreferences.putString("tripsheetDate", currentTripSheet.getmTripshhetDate());
                     mPreferences.putString("tripsheetroutecode", currentTripSheet.getmTripshhetRouteCode());
                     Intent stockIntent = new Intent(activity, TripSheetView.class);
+                    stockIntent.putExtra("status",currentTripSheet.getApproved_by());
                     stockIntent.putExtra("tripsheetId", currentTripSheet.getmTripshhetId());
                     stockIntent.putExtra("tripsheetCode",tripCode111);
                     stockIntent.putExtra("tripsheetDate", currentTripSheet.getmTripshhetDate());

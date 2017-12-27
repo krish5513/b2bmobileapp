@@ -130,7 +130,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
     private ArrayList<AgentLatLong> agentsLatLongList = new ArrayList<>(); // this list contains all valid agents lat long details
     private NetworkConnectionDetector networkConnectionDetector;
     private boolean isTripSheetClosed = false;
-    String startDateStrNewFormat;
+    String startDateStrNewFormat,status;
     private TextView mNoTripsFoundText;
     Double orderTotal = 0.0;
     private int uploadedCount = 0, uploadedCountReturns = 0, uploadedCountpayments = 0, uploadedTruckQty = 0,
@@ -179,7 +179,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             Bundle bundle = this.getIntent().getExtras();
             if (bundle != null) {
                 mTripSheetId = bundle.getString("tripsheetId");
-
+                status=bundle.getString("status");
 
             }
             mTripSheetCode = mPreferences.getString("tripsheetCode");
@@ -381,6 +381,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                     //Toast.makeText(getApplicationContext(), "Clicked Tripsheet Preview", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(TripSheetView.this, TripSheetViewPreview.class);
                     i.putExtra("tripSheetId", mTripSheetId);
+                    i.putExtra("status",status);
                     //  i.putExtra("tripsheetCode",mTripSheetCode);
                     //  i.putExtra("tripsheetDate",mTripSheetDate);
                     //   i.putExtra("data", (Serializable) mTripsheetSOAdapter.getData());
@@ -410,7 +411,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
             isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
 
-            mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege, isTripSheetClosed, mhidePrevilige);
+            mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege, isTripSheetClosed, mhidePrevilige,status);
             mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
             tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);
             if (networkConnectionDetector.isNetworkConnected()) {

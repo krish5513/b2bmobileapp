@@ -44,7 +44,7 @@ import java.util.Map;
 public class RouteStock extends AppCompatActivity implements RouteStockListener {
     private Context applicationContext, activityContext;
     private SearchView search;
-    private String tripSheetId, syncPrivilege = "";
+    private String tripSheetId, syncPrivilege = "",status="";
     RouteStockAdapter routestockadapter;
     private DBHelper mDBHelper;
     private TripsheetsModel mTripsheetsModel;
@@ -77,6 +77,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             tripSheetId = bundle.getString("tripSheetId");
+            status=bundle.getString("status");
             //str_Tripcode=bundle.getString("tripsheetCode");
             //str_Tripdate=bundle.getString("tripsheetDate");
         }
@@ -126,6 +127,8 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
 
 
         mCloseTripsLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
+
+      /*
         if (isTripSheetClosed) {
             mCloseTripsLayout.setVisibility(View.GONE);
         } else {
@@ -135,10 +138,39 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                 mCloseTripsLayout.setVisibility(View.GONE);
             }
         }
+*/
+
+
+
+
+        if (status.equals("1")) {
+            mCloseTripsLayout.setVisibility(View.GONE);
+        } else if(status.equals("")){
+            mCloseTripsLayout.setVisibility(View.VISIBLE);
+        }   else{
+            if (mCloseTripSave.equals("close_trip_save")) {
+                mCloseTripsLayout.setVisibility(View.VISIBLE);
+            } else {
+                mCloseTripsLayout.setVisibility(View.GONE);
+            }
+        }
 
         mCloseTripApproveLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
-        if (isTripSheetClosed) {
+      /*  if (isTripSheetClosed) {
             mCloseTripApproveLayout.setVisibility(View.GONE);
+        } else {
+            if (mCloseTripApprove.equals("close_trip_approve")) {
+                mCloseTripApproveLayout.setVisibility(View.VISIBLE);
+            } else {
+                mCloseTripApproveLayout.setVisibility(View.GONE);
+            }
+        }*/
+
+
+        if (status.equals("1")) {
+            mCloseTripApproveLayout.setVisibility(View.GONE);
+        } else if(status.equals("")){
+            mCloseTripApproveLayout.setVisibility(View.VISIBLE);
         } else {
             if (mCloseTripApprove.equals("close_trip_approve")) {
                 mCloseTripApproveLayout.setVisibility(View.VISIBLE);
