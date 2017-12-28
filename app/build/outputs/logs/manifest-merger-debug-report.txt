@@ -80,6 +80,7 @@ MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.a
 MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\RCITS\.android\build-cache\0cfd538b3c3c22dd219135cd5e53ccb9456930b8\output\AndroidManifest.xml:4:5-19
 MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.android\build-cache\0c8ceccb5a06b77f05911d3a1103bb10785e2a0e\output\AndroidManifest.xml:19:5-21:19
 MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.android\build-cache\fb145b22a30924378b1e08faa22250b2caae0524\output\AndroidManifest.xml:11:5-20
+MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:11:5-17:19
 MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.android\build-cache\91cf626613f9d45ed20bd31469184387ec8b540a\output\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.android\build-cache\041204fb11df2f936bbb8a51033b2e680901bb11\output\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.android\build-cache\3b4b167aa6866b91f48f04f6ce8e5785a432c6a5\output\AndroidManifest.xml:29:5-20
@@ -691,6 +692,8 @@ MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.a
 MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\RCITS\.android\build-cache\0cfd538b3c3c22dd219135cd5e53ccb9456930b8\output\AndroidManifest.xml:3:5-43
 MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.android\build-cache\0c8ceccb5a06b77f05911d3a1103bb10785e2a0e\output\AndroidManifest.xml:17:5-43
 MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.android\build-cache\fb145b22a30924378b1e08faa22250b2caae0524\output\AndroidManifest.xml:7:5-9:41
+MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\RCITS\.android\build-cache\438a16625b3f1161e9339155a3fde98e4eaa7802\output\AndroidManifest.xml:5:5-43
+MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:7:5-9:41
 MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.android\build-cache\91cf626613f9d45ed20bd31469184387ec8b540a\output\AndroidManifest.xml:21:5-23:78
 MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.android\build-cache\041204fb11df2f936bbb8a51033b2e680901bb11\output\AndroidManifest.xml:21:5-23:54
 MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.android\build-cache\3b4b167aa6866b91f48f04f6ce8e5785a432c6a5\output\AndroidManifest.xml:21:5-23:60
@@ -699,7 +702,6 @@ MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\RCITS\.android
 MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\RCITS\.android\build-cache\82d68e4bbf2d4d40509470fed4b815f86667e71b\output\AndroidManifest.xml:21:5-23:61
 MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\RCITS\.android\build-cache\3d334dd8d40e5063a6f2e1e7b89526d4330112e7\output\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\RCITS\.android\build-cache\302765e3cef34805489881c662247d29e34761b9\output\AndroidManifest.xml:20:5-43
-MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\RCITS\.android\build-cache\438a16625b3f1161e9339155a3fde98e4eaa7802\output\AndroidManifest.xml:5:5-43
 MERGED from [com.android.support:support-compat:25.3.1] C:\Users\RCITS\.android\build-cache\db0d62c9ec18070f1cd06cc0e57a45773d8b2685\output\AndroidManifest.xml:21:5-23:58
 MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.android\build-cache\a00616c7872a39de481f2c430a3da3bc38d9588d\output\AndroidManifest.xml:25:5-27:41
 	tools:overrideLibrary
@@ -741,6 +743,16 @@ ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.an
 		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.android\build-cache\e23d0b9eac12d87c4a0deb7a4e3e5a4c7b10b994\output\AndroidManifest.xml:19:86-145
 	android:name
 		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.android\build-cache\e23d0b9eac12d87c4a0deb7a4e3e5a4c7b10b994\output\AndroidManifest.xml:19:19-85
+activity#pub.devrel.easypermissions.AppSettingsDialogHolderActivity
+ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:12:9-16:66
+	android:label
+		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:15:13-29
+	android:exported
+		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:14:13-37
+	android:theme
+		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:16:13-63
+	android:name
+		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:13:13-86
 uses-permission#android.permission.ACCESS_WIFI_STATE
 ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.android\build-cache\a00616c7872a39de481f2c430a3da3bc38d9588d\output\AndroidManifest.xml:30:5-76
 	android:name

@@ -160,26 +160,47 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         mHolder.mSODueValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSODueAmount())));
         mHolder.mSOAgentDistance.setText(currentSaleOrder.getDistance() + " KM");
 
-       /* if (isTripSheetClosed) {
+
+
+      /*  if (status.equals("1")) {
+            mHolder.so_status.setText("Closed");
+            mHolder.mItemBgLayout.setBackgroundColor(Color.WHITE);
+            mHolder.hideParent.setVisibility(View.VISIBLE);
+            mHolder.mSOMapIconParent.setVisibility(View.GONE);
+        } else if (status.equals("1") && Double.parseDouble(currentSaleOrder.getmTripshetSOReceivedAmount()) >= 0) {
+            mHolder.so_status.setText("Delivered");
+            mHolder.mItemBgLayout.setBackgroundColor(Color.parseColor("#d3d3d3"));
+            mHolder.hideParent.setVisibility(View.VISIBLE);
+            mHolder.mSOMapIconParent.setVisibility(View.GONE);
+        } else if (status.equals("1")) {
+            mHolder.so_status.setText("In Transit");
+            mHolder.mItemBgLayout.setBackgroundColor(Color.WHITE);
+            mHolder.hideParent.setVisibility(View.VISIBLE);
+            mHolder.mSOMapIconParent.setVisibility(View.GONE);
+        }*/
+
+        if (isTripSheetClosed) {
             mHolder.so_status.setText("Closed");
             mHolder.mItemBgLayout.setBackgroundColor(Color.WHITE);
         } else if (Double.parseDouble(currentSaleOrder.getmTripshetSOReceivedAmount()) >= 0) {
             mHolder.so_status.setText("Delivered");
             mHolder.mItemBgLayout.setBackgroundColor(Color.parseColor("#d3d3d3"));
-        } else {
+        }
+        else {
             mHolder.so_status.setText("In Process");
             mHolder.mItemBgLayout.setBackgroundColor(Color.WHITE);
-        }*/
+        }
 
 
-       if(status.equals("1")){
+     /*  if(status.equals("1")){
            mHolder.so_status.setText("Closed");
            mHolder.hideParent.setVisibility(View.VISIBLE);
            mHolder.mSOMapIconParent.setVisibility(View.GONE);
        }else {
            mHolder.so_status.setText("In Transit");
            mHolder.mSOMapIconParent.setVisibility(View.VISIBLE);
-       }
+           mHolder.hideParent.setVisibility(View.GONE);
+       }*/
 
         mHolder.mSOMapIconParent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,9 +230,11 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
                     i.putExtra("agentSoCode", currentSaleOrder.getmTripshetSOCode());
                     i.putExtra("agentSoDate", currentSaleOrder.getmTripshetSODate());
                     i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName());
+                    i.putExtra("status",status);
                     //i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName() + currentSaleOrder.getmTripshetSOAgentLastName());
-                    activity.startActivityForResult(i,101);
-                   // activity.finish();
+                  //  activity.startActivityForResult(i,101);
+                    activity.startActivity(i);
+                   activity.finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

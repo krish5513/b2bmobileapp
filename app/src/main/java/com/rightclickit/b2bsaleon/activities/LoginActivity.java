@@ -1,10 +1,12 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -29,13 +31,16 @@ import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.HashMap;
+import java.util.List;
+
+import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * @author venkat
  *         <p/>
  *         A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity {
+public class LoginActivity extends Activity implements EasyPermissions.PermissionCallbacks {
     public static final String TAG = LoginActivity.class.getSimpleName();
 
     private MMSharedPreferences sharedPreferences;
@@ -107,6 +112,8 @@ public class LoginActivity extends Activity {
             if (sharedPreferences.getString("isLogin").equals("true")) {
                 loadDashboard();
             }
+
+            requestPermissions();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -199,7 +206,7 @@ public class LoginActivity extends Activity {
                 sharedPreferences.putString("emailId", emailId);
                 sharedPreferences.putString("password", password);
             }
-            sharedPreferences.putString("isloginClick","true");
+            sharedPreferences.putString("isloginClick", "true");
             sharedPreferences.putString("isLogin", "true");
 
             // Call Previleges API
@@ -278,6 +285,31 @@ public class LoginActivity extends Activity {
         mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mainActivityIntent);
         finish();
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    private void requestPermissions() {
+        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA
+                , Manifest.permission.CALL_PHONE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INSTALL_LOCATION_PROVIDER};
+        if (EasyPermissions.hasPermissions(LoginActivity.this, perms)) {
+        } else {
+            EasyPermissions.requestPermissions(this, "This app needs the following permission to access the app.", 0, perms);
+        }
     }
 }
 

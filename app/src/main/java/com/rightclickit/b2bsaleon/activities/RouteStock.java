@@ -128,7 +128,18 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
 
         mCloseTripsLayout = (LinearLayout) findViewById(R.id.RetailersLayout);
 
-      /*
+
+
+     /*   if (isTripSheetClosed || status.equals("1")) {
+            mCloseTripsLayout.setVisibility(View.GONE);
+        } else {
+            if (mCloseTripSave.equals("close_trip_save")) {
+                mCloseTripsLayout.setVisibility(View.VISIBLE);
+            } else {
+                mCloseTripsLayout.setVisibility(View.GONE);
+            }
+        }*/
+
         if (isTripSheetClosed) {
             mCloseTripsLayout.setVisibility(View.GONE);
         } else {
@@ -138,40 +149,13 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
                 mCloseTripsLayout.setVisibility(View.GONE);
             }
         }
-*/
 
-
-
-
-        if (status.equals("1")) {
-            mCloseTripsLayout.setVisibility(View.GONE);
-        } else if(status.equals("")){
-            mCloseTripsLayout.setVisibility(View.VISIBLE);
-        }   else{
-            if (mCloseTripSave.equals("close_trip_save")) {
-                mCloseTripsLayout.setVisibility(View.VISIBLE);
-            } else {
-                mCloseTripsLayout.setVisibility(View.GONE);
-            }
-        }
 
         mCloseTripApproveLayout = (LinearLayout) findViewById(R.id.ProductsLayout);
-      /*  if (isTripSheetClosed) {
+       if (isTripSheetClosed) {
             mCloseTripApproveLayout.setVisibility(View.GONE);
-        } else {
-            if (mCloseTripApprove.equals("close_trip_approve")) {
-                mCloseTripApproveLayout.setVisibility(View.VISIBLE);
-            } else {
-                mCloseTripApproveLayout.setVisibility(View.GONE);
-            }
-        }*/
-
-
-        if (status.equals("1")) {
-            mCloseTripApproveLayout.setVisibility(View.GONE);
-        } else if(status.equals("")){
-            mCloseTripApproveLayout.setVisibility(View.VISIBLE);
-        } else {
+        }
+        else {
             if (mCloseTripApprove.equals("close_trip_approve")) {
                 mCloseTripApproveLayout.setVisibility(View.VISIBLE);
             } else {
@@ -179,6 +163,19 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
             }
         }
 
+
+      /*  if (status.equals("1")) {
+            mCloseTripApproveLayout.setVisibility(View.GONE);
+        } else {
+            mCloseTripApproveLayout.setVisibility(View.VISIBLE);
+        }*/ /*else {
+            if (mCloseTripApprove.equals("close_trip_approve")) {
+                mCloseTripApproveLayout.setVisibility(View.VISIBLE);
+            } else {
+                mCloseTripApproveLayout.setVisibility(View.GONE);
+            }
+        }
+*/
         mCloseTripPrintLayout = (LinearLayout) findViewById(R.id.TDCLayout);
         if (mCloseTripPrint.equals("preview_print")) {
             mCloseTripPrintLayout.setVisibility(View.VISIBLE);

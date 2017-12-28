@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-344:12
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-345:12
 	package
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:4:5-41
 		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
@@ -39,30 +39,34 @@ uses-permission#android.permission.READ_EXTERNAL_STORAGE
 ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:14:5-80
 	android:name
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:14:22-77
+uses-permission#android.permission.READ_PHONE_STATE
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:15:5-74
+	android:name
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:15:22-72
 uses-permission#com.rightclickit.b2bsaleon.permisssion.MAPS_RECEIVE
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:16:5-91
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:17:5-91
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:16:22-88
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:17:22-88
 uses-permission#com.google.android.providers.gsf.permission.READ_GSERVICES
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:18:5-98
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:19:5-98
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:18:22-95
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:19:22-95
 uses-permission#android.permission.ACCESS_COARSE_LOCATION
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:19:5-81
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:20:5-81
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:19:22-78
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:20:22-78
 uses-permission#android.permission.ACCESS_FINE_LOCATION
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:20:5-79
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:21:5-79
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:20:22-76
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:21:22-76
 uses-permission#android.permission.INSTALL_LOCATION_PROVIDER
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:21:5-22:47
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:22:5-23:47
 	tools:ignore
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:22:9-44
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:23:9-44
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:21:22-81
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:22:22-81
 application
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:24:5-342:19
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:25:5-343:19
 MERGED from [com.android.support:design:25.3.1] C:\Users\RCITS\.android\build-cache\ca6eb00e8402d2e2d58c222245e49ea7c957125d\output\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:transition:25.3.1] C:\Users\RCITS\.android\build-cache\c9e455fcae4a645df9753105459b445753d18cc1\output\AndroidManifest.xml:26:5-20
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\RCITS\.android\build-cache\13cc56692984857a71dc7a4a2d3771429abcf8ce\output\AndroidManifest.xml:9:5-20
@@ -75,6 +79,7 @@ MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.a
 MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\RCITS\.android\build-cache\0cfd538b3c3c22dd219135cd5e53ccb9456930b8\output\AndroidManifest.xml:4:5-19
 MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.android\build-cache\0c8ceccb5a06b77f05911d3a1103bb10785e2a0e\output\AndroidManifest.xml:19:5-21:19
 MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.android\build-cache\fb145b22a30924378b1e08faa22250b2caae0524\output\AndroidManifest.xml:11:5-20
+MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:11:5-17:19
 MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.android\build-cache\91cf626613f9d45ed20bd31469184387ec8b540a\output\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.android\build-cache\041204fb11df2f936bbb8a51033b2e680901bb11\output\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.android\build-cache\3b4b167aa6866b91f48f04f6ce8e5785a432c6a5\output\AndroidManifest.xml:29:5-20
@@ -85,590 +90,590 @@ MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\RCITS
 MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\RCITS\.android\build-cache\302765e3cef34805489881c662247d29e34761b9\output\AndroidManifest.xml:26:5-20
 MERGED from [com.android.support:support-compat:25.3.1] C:\Users\RCITS\.android\build-cache\db0d62c9ec18070f1cd06cc0e57a45773d8b2685\output\AndroidManifest.xml:29:5-20
 	android:label
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:28:9-41
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:29:9-41
 	android:supportsRtl
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:31:9-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:32:9-35
 	android:hardwareAccelerated
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:26:9-43
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:27:9-43
 	android:roundIcon
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:30:9-44
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:31:9-44
 	android:allowBackup
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:25:9-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:26:9-35
 	android:icon
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:27:9-37
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:28:9-37
 	android:largeHeap
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:29:9-33
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:30:9-33
 	android:theme
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:32:9-40
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:33:9-40
 meta-data#com.google.android.geo.API_KEY
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:33:9-35:71
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:34:9-36:71
 	android:value
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:35:13-68
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:36:13-68
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:34:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:35:13-58
 meta-data#com.google.android.gms.version
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:36:9-38:69
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:37:9-39:69
 MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.android\build-cache\0c8ceccb5a06b77f05911d3a1103bb10785e2a0e\output\AndroidManifest.xml:20:9-121
 	android:value
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:38:13-66
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:39:13-66
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:37:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:38:13-58
 activity#com.rightclickit.b2bsaleon.activities.SplashScreenActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:40:9-50:20
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:41:9-51:20
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:43:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:44:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:44:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:45:13-52
 	android:configChanges
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:42:13-74
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:43:13-74
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:41:13-60
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:42:13-60
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:45:13-49:29
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:46:13-50:29
 action#android.intent.action.MAIN
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:46:17-69
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:47:17-69
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:46:25-66
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:47:25-66
 category#android.intent.category.LAUNCHER
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:48:17-77
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:49:17-77
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:48:27-74
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:49:27-74
 activity#com.rightclickit.b2bsaleon.activities.LoginActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:51:9-55:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:52:9-56:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:54:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:55:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:55:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:56:13-52
 	android:configChanges
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:53:13-74
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:54:13-74
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:52:13-53
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:53:13-53
 activity#com.rightclickit.b2bsaleon.activities.DashboardActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:56:9-60:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:57:9-61:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:59:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:60:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:60:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:61:13-52
 	android:configChanges
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:58:13-74
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:59:13-74
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:57:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:58:13-57
 activity#com.rightclickit.b2bsaleon.activities.SettingsActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:61:9-64:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:62:9-65:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:63:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:64:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:64:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:65:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:62:13-56
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:63:13-56
 activity#com.rightclickit.b2bsaleon.activities.NotificationsActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:65:9-68:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:66:9-69:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:67:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:68:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:68:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:69:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:66:13-61
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:67:13-61
 service#com.rightclickit.b2bsaleon.services.SyncRoutesMasterDetailsService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:71:9-74:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:72:9-75:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:73:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:74:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:74:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:75:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:72:13-68
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:73:13-68
 service#com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:77:9-80:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:78:9-81:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:79:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:80:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:80:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:81:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:78:13-63
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:79:13-63
 service#com.rightclickit.b2bsaleon.services.SyncTakeOrdersService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:83:9-86:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:84:9-87:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:85:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:86:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:86:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:87:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:84:13-59
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:85:13-59
 activity#com.rightclickit.b2bsaleon.activities.Products_Activity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:88:9-91:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:89:9-92:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:90:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:91:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:91:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:92:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:89:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:90:13-57
 activity#com.rightclickit.b2bsaleon.activities.AgentsActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:92:9-95:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:93:9-96:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:94:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:95:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:95:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:96:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:93:13-54
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:94:13-54
 activity#com.rightclickit.b2bsaleon.activities.AgentsInfoActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:96:9-99:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:97:9-100:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:98:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:99:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:99:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:100:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:97:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:98:13-58
 activity#com.rightclickit.b2bsaleon.activities.ProductInfoActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:100:9-103:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:101:9-104:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:102:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:103:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:103:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:104:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:101:13-59
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:102:13-59
 activity#com.rightclickit.b2bsaleon.activities.Agents_AddActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:104:9-107:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:105:9-108:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:106:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:107:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:107:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:108:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:105:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:106:13-58
 activity#com.rightclickit.b2bsaleon.activities.AgentTakeOrderScreen
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:108:9-111:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:109:9-112:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:110:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:111:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:111:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:112:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:109:13-60
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:110:13-60
 activity#com.rightclickit.b2bsaleon.activities.AgentViewActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:112:9-115:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:113:9-116:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:114:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:115:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:115:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:116:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:113:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:114:13-57
 activity#com.rightclickit.b2bsaleon.activities.TDCSalesActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:116:9-119:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:117:9-120:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:118:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:119:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:119:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:120:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:117:13-56
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:118:13-56
 activity#com.rightclickit.b2bsaleon.activities.TripSheetsActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:120:9-123:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:121:9-124:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:122:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:123:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:123:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:124:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:121:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:122:13-58
 activity#com.rightclickit.b2bsaleon.activities.TripSheetView
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:124:9-127:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:125:9-128:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:126:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:127:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:127:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:128:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:125:13-53
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:126:13-53
 activity#com.rightclickit.b2bsaleon.activities.TripSheetStock
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:128:9-131:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:129:9-132:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:130:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:131:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:131:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:132:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:129:13-54
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:130:13-54
 activity#com.rightclickit.b2bsaleon.activities.TripSheetViewPreview
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:132:9-135:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:133:9-136:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:134:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:135:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:135:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:136:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:133:13-60
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:134:13-60
 activity#com.rightclickit.b2bsaleon.activities.TripsheetStockPreview
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:136:9-139:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:137:9-140:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:138:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:139:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:139:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:140:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:137:13-61
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:138:13-61
 activity#com.rightclickit.b2bsaleon.activities.AgentDeliveries
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:140:9-143:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:141:9-144:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:142:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:143:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:143:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:144:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:141:13-55
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:142:13-55
 activity#com.rightclickit.b2bsaleon.activities.AgentTDC_Order
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:144:9-147:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:145:9-148:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:146:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:147:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:147:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:148:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:145:13-54
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:146:13-54
 activity#com.rightclickit.b2bsaleon.activities.AgentPayments
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:148:9-151:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:149:9-152:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:150:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:151:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:151:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:152:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:149:13-53
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:150:13-53
 activity#com.rightclickit.b2bsaleon.activities.AgentReturns
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:152:9-155:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:153:9-156:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:154:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:155:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:155:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:156:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:153:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:154:13-52
 activity#com.rightclickit.b2bsaleon.activities.AgentDeliveriesView
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:156:9-159:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:157:9-160:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:158:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:159:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:159:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:160:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:157:13-59
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:158:13-59
 activity#com.rightclickit.b2bsaleon.activities.ProductStock
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:160:9-163:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:161:9-164:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:162:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:163:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:163:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:164:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:161:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:162:13-52
 activity#com.rightclickit.b2bsaleon.activities.AgentPaymentsView
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:164:9-167:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:165:9-168:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:166:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:167:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:167:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:168:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:165:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:166:13-57
 activity#com.rightclickit.b2bsaleon.activities.AgentReturnsView
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:168:9-171:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:169:9-172:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:170:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:171:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:171:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:172:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:169:13-56
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:170:13-56
 activity#com.rightclickit.b2bsaleon.activities.AgentsTDC_View
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:172:9-175:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:173:9-176:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:174:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:175:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:175:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:176:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:173:13-54
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:174:13-54
 activity#com.rightclickit.b2bsaleon.activities.TDCSalesCustomerSelectionActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:176:9-179:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:177:9-180:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:178:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:179:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:179:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:180:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:177:13-73
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:178:13-73
 activity#com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:180:9-183:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:181:9-184:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:182:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:183:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:183:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:184:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:181:13-70
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:182:13-70
 activity#com.rightclickit.b2bsaleon.activities.TDCSalesListActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:184:9-187:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:185:9-188:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:186:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:187:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:187:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:188:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:185:13-60
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:186:13-60
 activity#com.rightclickit.b2bsaleon.activities.DashboardTakeorder
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:188:9-191:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:189:9-192:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:190:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:191:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:191:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:192:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:189:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:190:13-58
 activity#com.rightclickit.b2bsaleon.activities.DashboardTakeorderPreview
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:192:9-195:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:193:9-196:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:194:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:195:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:195:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:196:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:193:13-65
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:194:13-65
 activity#com.rightclickit.b2bsaleon.activities.DashboardDelivery
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:196:9-199:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:197:9-200:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:198:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:199:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:199:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:200:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:197:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:198:13-57
 activity#com.rightclickit.b2bsaleon.activities.DashboardReturns
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:200:9-203:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:201:9-204:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:202:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:203:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:203:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:204:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:201:13-56
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:202:13-56
 activity#com.rightclickit.b2bsaleon.activities.DashboardPayments
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:204:9-207:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:205:9-208:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:206:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:207:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:207:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:208:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:205:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:206:13-57
 activity#com.rightclickit.b2bsaleon.activities.DashboardDeliveryPreview
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:208:9-211:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:209:9-212:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:210:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:211:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:211:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:212:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:209:13-64
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:210:13-64
 activity#com.rightclickit.b2bsaleon.activities.RetailersActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:212:9-215:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:213:9-216:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:214:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:215:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:215:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:216:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:213:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:214:13-57
 activity#com.rightclickit.b2bsaleon.activities.Retailers_AddActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:216:9-219:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:217:9-220:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:218:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:219:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:219:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:220:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:217:13-61
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:218:13-61
 activity#com.rightclickit.b2bsaleon.activities.Retailers_PaymentsActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:220:9-223:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:221:9-224:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:222:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:223:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:223:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:224:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:221:13-66
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:222:13-66
 activity#com.rightclickit.b2bsaleon.activities.AgentTakeOrderPreview
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:224:9-226:52
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:225:9-227:52
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:226:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:227:13-49
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:225:13-61
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:226:13-61
 activity#com.rightclickit.b2bsaleon.activities.TripsheetTakeorder
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:227:9-230:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:228:9-231:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:229:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:230:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:230:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:231:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:228:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:229:13-58
 activity#com.rightclickit.b2bsaleon.activities.TripsheetDelivery
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:231:9-234:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:232:9-235:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:233:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:234:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:234:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:235:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:232:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:233:13-57
 activity#com.rightclickit.b2bsaleon.activities.TripsheetTakeorderPreview
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:235:9-237:52
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:236:9-238:52
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:237:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:238:13-49
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:236:13-65
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:237:13-65
 activity#com.rightclickit.b2bsaleon.activities.TripsheetReturns
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:238:9-241:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:239:9-242:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:240:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:241:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:241:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:242:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:239:13-56
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:240:13-56
 activity#com.rightclickit.b2bsaleon.activities.TripsheetDeliveryPreview
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:242:9-245:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:243:9-246:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:244:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:245:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:245:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:246:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:243:13-64
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:244:13-64
 activity#com.rightclickit.b2bsaleon.activities.TripsheetPayments
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:246:9-249:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:247:9-250:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:248:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:249:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:249:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:250:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:247:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:248:13-57
 activity#com.rightclickit.b2bsaleon.activities.RouteStock
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:250:9-253:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:251:9-254:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:252:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:253:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:253:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:254:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:251:13-50
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:252:13-50
 service#com.rightclickit.b2bsaleon.services.SyncSpecialPriceService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:255:9-258:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:256:9-259:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:257:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:258:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:258:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:259:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:256:13-61
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:257:13-61
 service#com.rightclickit.b2bsaleon.services.SyncTDCSalesOrderService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:261:9-264:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:262:9-265:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:263:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:264:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:264:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:265:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:262:13-62
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:263:13-62
 service#com.rightclickit.b2bsaleon.services.SyncStakeHolderTypesService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:267:9-270:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:268:9-271:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:269:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:270:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:270:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:271:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:268:13-65
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:269:13-65
 service#com.rightclickit.b2bsaleon.services.SyncTripSheetsListService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:273:9-276:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:274:9-277:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:275:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:276:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:276:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:277:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:274:13-63
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:275:13-63
 service#com.rightclickit.b2bsaleon.services.SyncTDCCustomersService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:279:9-282:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:280:9-283:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:281:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:282:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:282:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:283:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:280:13-61
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:281:13-61
 service#com.rightclickit.b2bsaleon.services.SyncNotificationsListService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:283:9-286:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:284:9-287:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:285:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:286:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:286:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:287:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:284:13-66
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:285:13-66
 service#com.rightclickit.b2bsaleon.services.SyncTripSheetsStockService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:289:9-292:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:290:9-293:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:291:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:292:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:292:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:293:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:290:13-64
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:291:13-64
 service#com.rightclickit.b2bsaleon.services.SyncTripSheetsPaymentsService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:295:9-298:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:296:9-299:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:297:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:298:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:298:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:299:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:296:13-67
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:297:13-67
 service#com.rightclickit.b2bsaleon.services.SyncTripsheetDeliveriesService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:299:9-302:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:300:9-303:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:301:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:302:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:302:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:303:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:300:13-68
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:301:13-68
 service#com.rightclickit.b2bsaleon.services.SyncTripsheetReturnsService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:303:9-306:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:304:9-307:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:305:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:306:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:306:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:307:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:304:13-65
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:305:13-65
 activity#com.rightclickit.b2bsaleon.activities.TripsheetReturnsPreview
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:308:9-311:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:309:9-312:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:310:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:311:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:311:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:312:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:309:13-63
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:310:13-63
 activity#com.rightclickit.b2bsaleon.activities.TripsheetPaymentsPreview
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:312:9-315:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:313:9-316:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:314:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:315:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:315:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:316:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:313:13-64
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:314:13-64
 activity#com.rightclickit.b2bsaleon.activities.AgentAddPayment
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:316:9-319:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:317:9-320:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:318:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:319:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:319:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:320:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:317:13-55
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:318:13-55
 activity#com.rightclickit.b2bsaleon.activities.AgentAddPaymentPreview
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:320:9-323:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:321:9-324:55
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:322:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:323:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:323:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:324:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:321:13-62
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:322:13-62
 activity#com.rightclickit.b2bsaleon.activities.AgentStockActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:324:9-327:64
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:325:9-328:64
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:326:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:327:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:327:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:328:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:325:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:326:13-58
 activity#com.rightclickit.b2bsaleon.activities.AgentStockDeliveryActivity
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:328:9-331:64
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:329:9-332:64
 	android:screenOrientation
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:330:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:331:13-49
 	android:windowSoftInputMode
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:331:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:332:13-52
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:329:13-66
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:330:13-66
 service#com.rightclickit.b2bsaleon.services.SyncAgentStockDeliveriesService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:333:9-336:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:334:9-337:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:335:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:336:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:336:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:337:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:334:13-69
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:335:13-69
 service#com.rightclickit.b2bsaleon.services.SyncCloseTripSheetsStockService
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:338:9-341:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:339:9-342:39
 	android:enabled
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:340:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:341:13-35
 	android:exported
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:341:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:342:13-36
 	android:name
-		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:339:13-69
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:340:13-69
 uses-sdk
 INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:design:25.3.1] C:\Users\RCITS\.android\build-cache\ca6eb00e8402d2e2d58c222245e49ea7c957125d\output\AndroidManifest.xml:21:5-23:62
@@ -685,6 +690,8 @@ MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.a
 MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\RCITS\.android\build-cache\0cfd538b3c3c22dd219135cd5e53ccb9456930b8\output\AndroidManifest.xml:3:5-43
 MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.android\build-cache\0c8ceccb5a06b77f05911d3a1103bb10785e2a0e\output\AndroidManifest.xml:17:5-43
 MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.android\build-cache\fb145b22a30924378b1e08faa22250b2caae0524\output\AndroidManifest.xml:7:5-9:41
+MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\RCITS\.android\build-cache\438a16625b3f1161e9339155a3fde98e4eaa7802\output\AndroidManifest.xml:5:5-43
+MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:7:5-9:41
 MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.android\build-cache\91cf626613f9d45ed20bd31469184387ec8b540a\output\AndroidManifest.xml:21:5-23:78
 MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.android\build-cache\041204fb11df2f936bbb8a51033b2e680901bb11\output\AndroidManifest.xml:21:5-23:54
 MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.android\build-cache\3b4b167aa6866b91f48f04f6ce8e5785a432c6a5\output\AndroidManifest.xml:21:5-23:60
@@ -693,7 +700,6 @@ MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\RCITS\.android
 MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\RCITS\.android\build-cache\82d68e4bbf2d4d40509470fed4b815f86667e71b\output\AndroidManifest.xml:21:5-23:61
 MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\RCITS\.android\build-cache\3d334dd8d40e5063a6f2e1e7b89526d4330112e7\output\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\RCITS\.android\build-cache\302765e3cef34805489881c662247d29e34761b9\output\AndroidManifest.xml:20:5-43
-MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\RCITS\.android\build-cache\438a16625b3f1161e9339155a3fde98e4eaa7802\output\AndroidManifest.xml:5:5-43
 MERGED from [com.android.support:support-compat:25.3.1] C:\Users\RCITS\.android\build-cache\db0d62c9ec18070f1cd06cc0e57a45773d8b2685\output\AndroidManifest.xml:21:5-23:58
 	tools:overrideLibrary
 		ADDED from [com.android.support:design:25.3.1] C:\Users\RCITS\.android\build-cache\ca6eb00e8402d2e2d58c222245e49ea7c957125d\output\AndroidManifest.xml:23:9-59
@@ -734,3 +740,13 @@ ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.an
 		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.android\build-cache\e23d0b9eac12d87c4a0deb7a4e3e5a4c7b10b994\output\AndroidManifest.xml:19:86-145
 	android:name
 		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.android\build-cache\e23d0b9eac12d87c4a0deb7a4e3e5a4c7b10b994\output\AndroidManifest.xml:19:19-85
+activity#pub.devrel.easypermissions.AppSettingsDialogHolderActivity
+ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:12:9-16:66
+	android:label
+		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:15:13-29
+	android:exported
+		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:14:13-37
+	android:theme
+		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:16:13-63
+	android:name
+		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.android\build-cache\810d061bb76f2346da579cdd6d18491a54952d16\output\AndroidManifest.xml:13:13-86

@@ -85,6 +85,7 @@ public class TripsheetsListAdapter extends BaseAdapter {
             mHolder.mTripsheetOrderedAmount = (TextView) view.findViewById(R.id.tv_ordered_amount);
             mHolder.mTripsheetReceivedAmount = (TextView) view.findViewById(R.id.tv_received_amount);
             mHolder.mTripsheetDueAmount = (TextView) view.findViewById(R.id.tv_due_amount);
+            mHolder.hidebtn = (Button) view.findViewById(R.id.btn_viewhide);
             mHolder.viewbtn = (Button) view.findViewById(R.id.btn_view1);
             mHolder.viewbtn.setVisibility(View.GONE);
             mHolder.stockbtn = (Button) view.findViewById(R.id.btn_stock1);
@@ -123,31 +124,20 @@ public class TripsheetsListAdapter extends BaseAdapter {
 
 
         mHolder.mTripsheetDate.setText(currentTripSheet.getmTripshhetDate());
-/*
-        if (currentTripSheet.getIsTripshhetClosed() == 0)
-            mHolder.mTripsheetStatus.setText("In Transit");
-        else{
-            mHolder.mTripsheetStatus.setText("Closed");
-        }
-          */
-
-        Log.i("hytdfktfy",currentTripSheet.getApproved_by()+"");
-        if (currentTripSheet.getApproved_by() != null) {
-
-            if (currentTripSheet.getApproved_by().equals("1")) {
 
 
-                mHolder.mTripsheetStatus.setText("Closed");
-            } else {
 
+    if (currentTripSheet.getIsTripshhetClosed() == 0 && currentTripSheet.getApproved_by().equals("")) {
+        mHolder.mTripsheetStatus.setText("In Transit");
+        mHolder.viewbtn.setVisibility(View.VISIBLE);
+        mHolder.hidebtn.setVisibility(View.GONE);
 
-                mHolder.mTripsheetStatus.setText("In Transit");
-            }
-        } else {
+    } else {
+        mHolder.mTripsheetStatus.setText("Closed");
+        mHolder.viewbtn.setVisibility(View.GONE);
+        mHolder.hidebtn.setVisibility(View.VISIBLE);
 
-            mHolder.mTripsheetStatus.setText("null");
-        }
-
+    }
 
 
 
@@ -179,6 +169,14 @@ public class TripsheetsListAdapter extends BaseAdapter {
                 activity.finish();
             }
         });
+
+        mHolder.hidebtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CustomAlertDialog.showAlertDialog(ctxt, "Failed", activity.getResources().getString(R.string.tripclose));
+            }
+        });
+
 
         mHolder.viewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,7 +221,7 @@ public class TripsheetsListAdapter extends BaseAdapter {
         TextView mTripsheetOrderedAmount;
         TextView mTripsheetReceivedAmount;
         TextView mTripsheetDueAmount,routecode;
-        public Button viewbtn;
+        public Button viewbtn,hidebtn;
         public Button stockbtn;
     }
 

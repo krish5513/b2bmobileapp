@@ -7,8 +7,8 @@ android {
         applicationId "com.rightclickit.b2bsaleon"
         minSdkVersion 18
         targetSdkVersion 25
-        versionCode 13
-        versionName "1.0.5"
+        versionCode 14
+        versionName "1.0.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -49,6 +49,7 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     compile 'com.google.dagger:dagger:2.9'
     compile 'com.jakewharton:butterknife:8.5.1'
+    compile 'pub.devrel:easypermissions:0.4.0'
     testCompile 'junit:junit:4.12'
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.9'

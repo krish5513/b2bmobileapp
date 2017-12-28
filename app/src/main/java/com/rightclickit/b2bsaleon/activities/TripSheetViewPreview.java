@@ -88,7 +88,7 @@ public class TripSheetViewPreview extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             tripSheetId = bundle.getString("tripSheetId");
-            status=bundle.getString("status");
+        //    status=bundle.getString("status");
             //str_Tripcode=bundle.getString("tripsheetCode");
             //str_Tripdate=bundle.getString("tripsheetDate");
         }
@@ -493,18 +493,18 @@ public class TripSheetViewPreview extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent=new Intent();
+       /* Intent intent=new Intent();
         intent.putExtra("tripsheetId",tripSheetId);
         setResult(101,intent);
         finish();//finishing activity
-
-        /*Intent intent = new Intent(this, TripSheetView.class);
+*/
+        Intent intent = new Intent(this, TripSheetView.class);
         intent.putExtra("tripsheetId", tripSheetId);
-        intent.putExtra("status",status);
+      //  intent.putExtra("status",status);
         // intent.putExtra("tripsheetCode", mTripSheetCode);
         //intent.putExtra("tripsheetDate", mTripSheetDate);
         startActivity(intent);
-        finish();*/
+        finish();
     }
 
     class CustomListView extends BaseAdapter implements ListAdapter {

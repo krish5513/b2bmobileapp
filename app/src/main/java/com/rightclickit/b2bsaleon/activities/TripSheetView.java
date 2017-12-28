@@ -179,7 +179,7 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
             Bundle bundle = this.getIntent().getExtras();
             if (bundle != null) {
                 mTripSheetId = bundle.getString("tripsheetId");
-                status=bundle.getString("status");
+               // status=bundle.getString("status");
 
             }
             mTripSheetCode = mPreferences.getString("tripsheetCode");
@@ -381,12 +381,13 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
                     //Toast.makeText(getApplicationContext(), "Clicked Tripsheet Preview", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(TripSheetView.this, TripSheetViewPreview.class);
                     i.putExtra("tripSheetId", mTripSheetId);
-                    i.putExtra("status",status);
+                    //i.putExtra("status",status);
                     //  i.putExtra("tripsheetCode",mTripSheetCode);
                     //  i.putExtra("tripsheetDate",mTripSheetDate);
                     //   i.putExtra("data", (Serializable) mTripsheetSOAdapter.getData());
-                    startActivityForResult(i,101);
-                   // finish();
+                   // startActivityForResult(i,101);
+                    startActivity(i);
+                    finish();
                 }
             });
 
