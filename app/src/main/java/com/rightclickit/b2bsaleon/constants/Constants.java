@@ -250,4 +250,7 @@ public class Constants {
     // Close trip API URL
     public static final String CLOSE_TRIP_API_URL = "/tripsheet/stock/update1";
 
+    // Device location details url
+    public static final String DEVICE_LOCATION_DETAILS_URL = "/device/log_add";
+
 }

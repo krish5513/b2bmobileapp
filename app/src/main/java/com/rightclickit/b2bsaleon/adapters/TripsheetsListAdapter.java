@@ -127,18 +127,27 @@ public class TripsheetsListAdapter extends BaseAdapter {
 
 
 
-    if (currentTripSheet.getIsTripshhetClosed() == 0 && currentTripSheet.getApproved_by().equals("")) {
+    if (currentTripSheet.getIsTripshhetClosed() == 0 ) {
         mHolder.mTripsheetStatus.setText("In Transit");
-        mHolder.viewbtn.setVisibility(View.VISIBLE);
-        mHolder.hidebtn.setVisibility(View.GONE);
+       // mHolder.viewbtn.setVisibility(View.VISIBLE);
+       // mHolder.hidebtn.setVisibility(View.GONE);
 
     } else {
         mHolder.mTripsheetStatus.setText("Closed");
-        mHolder.viewbtn.setVisibility(View.GONE);
-        mHolder.hidebtn.setVisibility(View.VISIBLE);
+        //mHolder.viewbtn.setVisibility(View.GONE);
+        //mHolder.hidebtn.setVisibility(View.VISIBLE);
 
     }
-
+    if(currentTripSheet.getApproved_by().equals("")){
+        mHolder.mTripsheetStatus.setText("In Transit");
+        mHolder.viewbtn.setVisibility(View.VISIBLE);
+        mHolder.hidebtn.setVisibility(View.GONE);
+    }
+    else {
+        mHolder.mTripsheetStatus.setText("Closed");
+        mHolder.viewbtn.setVisibility(View.GONE);
+        mHolder.hidebtn.setVisibility(View.VISIBLE);
+    }
 
 
         mHolder.routecode.setText(currentTripSheet.getmTripshhetRouteCode());

@@ -56,6 +56,7 @@ import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.models.AgentsModel;
 import com.rightclickit.b2bsaleon.models.ProductsModel;
 import com.rightclickit.b2bsaleon.models.SettingsModel;
+import com.rightclickit.b2bsaleon.services.DeviceLocationService;
 import com.rightclickit.b2bsaleon.services.SyncSpecialPriceService;
 import com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
@@ -659,6 +660,12 @@ public class SettingsActivity extends AppCompatActivity implements OnMapReadyCal
 
         if (new NetworkConnectionDetector(SettingsActivity.this).isNetworkConnected()) {
             startService(new Intent(SettingsActivity.this, SyncSpecialPriceService.class));
+        }
+
+        synchronized (this){
+            if(!Utility.isMyServiceRunning(DeviceLocationService.class,getApplicationContext())){
+                startService(new Intent(getApplicationContext(),DeviceLocationService.class));
+            }
         }
 
     }

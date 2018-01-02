@@ -87,9 +87,9 @@ public class AgentDeliveriesAdapter extends BaseAdapter {
             tripSheetDeliveriesViewHolder = new AgentDeliveriesAdapter.TripSheetDeliveriesViewHolder();
             tripSheetDeliveriesViewHolder.Delivery_no = (TextView) view.findViewById(R.id.tv_prid);
             tripSheetDeliveriesViewHolder.Delivery_date = (TextView) view.findViewById(R.id.tv_date);
-            tripSheetDeliveriesViewHolder.delivery_status = (TextView) view.findViewById(R.id.tv_status);
+            //tripSheetDeliveriesViewHolder.delivery_status = (TextView) view.findViewById(R.id.tv_status);
             tripSheetDeliveriesViewHolder.items_count = (TextView) view.findViewById(R.id.tv_items);
-            tripSheetDeliveriesViewHolder.deliverd_by = (TextView) view.findViewById(R.id.tv_deliveredby);
+           // tripSheetDeliveriesViewHolder.deliverd_by = (TextView) view.findViewById(R.id.tv_deliveredby);
             tripSheetDeliveriesViewHolder.View = (Button) view.findViewById(R.id.btn_view1);
 
 
@@ -104,9 +104,9 @@ public class AgentDeliveriesAdapter extends BaseAdapter {
 
         tripSheetDeliveriesViewHolder.Delivery_no.setText(currentDeliveryBean.getmTripsheetDeliveryNumber());
         tripSheetDeliveriesViewHolder.Delivery_date.setText(currentDeliveryBean.getmTripsheetDelivery_CreatedOn());
-        tripSheetDeliveriesViewHolder.delivery_status.setText(currentDeliveryBean.getmTripsheetDelivery_Status());
+        //tripSheetDeliveriesViewHolder.delivery_status.setText(currentDeliveryBean.getmTripsheetDelivery_Status());
         tripSheetDeliveriesViewHolder.items_count.setText(currentDeliveryBean.getDeliveredItemsCount());
-        tripSheetDeliveriesViewHolder.deliverd_by.setText(mdbhelper.getDeliveryName(currentDeliveryBean.getmTripsheetDelivery_CreatedBy()));
+        //tripSheetDeliveriesViewHolder.deliverd_by.setText(mdbhelper.getDeliveryName(currentDeliveryBean.getmTripsheetDelivery_CreatedBy()));
 
         tripSheetDeliveriesViewHolder.View.setOnClickListener(new View.OnClickListener() {
             @Override

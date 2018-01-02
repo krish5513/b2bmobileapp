@@ -340,6 +340,15 @@
             android:name=".services.SyncCloseTripSheetsStockService"
             android:enabled="true"
             android:exported="true" />
+
+        <service
+            android:name=".services.DeviceLocationService"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".services.SyncDeviceLocationDetailsService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

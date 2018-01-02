@@ -94,7 +94,8 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
             this.companyname = companyname;
             this.routeCode = routeCode;
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
-                String deviceName = mPreferences.getString("name") + deviceId.substring(deviceId.length() - 3);
+                //String deviceName = mPreferences.getString("name") + deviceId.substring(deviceId.length() - 3);
+                String deviceName = mPreferences.getString("userName");
                 String settingsURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_ADD, Constants.SAVE_DEVICE_DETAILS);
                 System.out.println("The URL IS==== " + settingsURL);
                 //HashMap<String, Object> params = new HashMap<String, Object>();

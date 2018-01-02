@@ -10,11 +10,13 @@ import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.rightclickit.b2bsaleon.activities.DashboardActivity;
+import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.constants.Constants;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkManager;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -219,6 +221,12 @@ public class SyncRoutesMasterDetailsService extends Service {
 
         @Override
         protected void onPostExecute(Void aVoid) {
+
+            synchronized (this){
+                if(!Utility.isMyServiceRunning(DeviceLocationService.class,getApplicationContext())){
+                    startService(new Intent(getApplicationContext(),DeviceLocationService.class));
+                }
+            }
             if (mSessionManagement.getString("isloginClick").equals("true")) {
                 mSessionManagement.putString("isloginClick", "false");
                 Intent mainActivityIntent = new Intent(getApplicationContext(), SettingsActivity.class);

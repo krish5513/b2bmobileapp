@@ -83,9 +83,9 @@ public class AgentReturnsAdapter extends BaseAdapter{
             tripSheetDeliveriesViewHolder = new AgentReturnsAdapter.TripSheetDeliveriesViewHolder();
             tripSheetDeliveriesViewHolder.returns_no = (TextView) view.findViewById(R.id.tv_returnno);
             tripSheetDeliveriesViewHolder.returns_date = (TextView) view.findViewById(R.id.tv_date);
-            tripSheetDeliveriesViewHolder.return_status = (TextView) view.findViewById(R.id.tv_returnstatus);
+            //tripSheetDeliveriesViewHolder.return_status = (TextView) view.findViewById(R.id.tv_returnstatus);
             tripSheetDeliveriesViewHolder.items_count = (TextView) view.findViewById(R.id.tv_itemscount);
-            tripSheetDeliveriesViewHolder.returns_by = (TextView) view.findViewById(R.id.tv_returnsby);
+         //   tripSheetDeliveriesViewHolder.returns_by = (TextView) view.findViewById(R.id.tv_returnsby);
             tripSheetDeliveriesViewHolder.View = (Button) view.findViewById(R.id.btn_view1);
 
 
@@ -100,9 +100,9 @@ public class AgentReturnsAdapter extends BaseAdapter{
 
         tripSheetDeliveriesViewHolder.returns_no.setText(currentReturnsBean.getmTripshhetReturnsReturn_number());
         tripSheetDeliveriesViewHolder.returns_date.setText(currentReturnsBean.getmTripshhetReturnsCreated_on());
-        tripSheetDeliveriesViewHolder.return_status.setText(currentReturnsBean.getmTripshhetReturnsStatus());
+     //   tripSheetDeliveriesViewHolder.return_status.setText(currentReturnsBean.getmTripshhetReturnsStatus());
         tripSheetDeliveriesViewHolder.items_count.setText(currentReturnsBean.getReturnsItemsCount());
-        tripSheetDeliveriesViewHolder.returns_by.setText(mdbhelper.getDeliveryName(currentReturnsBean.getmTripshhetReturnsCreated_by()));
+        //tripSheetDeliveriesViewHolder.returns_by.setText(mdbhelper.getDeliveryName(currentReturnsBean.getmTripshhetReturnsCreated_by()));
 
         tripSheetDeliveriesViewHolder.View.setOnClickListener(new View.OnClickListener() {
             @Override

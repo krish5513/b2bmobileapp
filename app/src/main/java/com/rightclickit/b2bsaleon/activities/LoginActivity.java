@@ -23,6 +23,7 @@ import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.LogInModel;
 import com.rightclickit.b2bsaleon.models.PrevilegesModel;
+import com.rightclickit.b2bsaleon.services.DeviceLocationService;
 import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.services.SyncRoutesMasterDetailsService;
 import com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService;
@@ -277,6 +278,12 @@ public class LoginActivity extends Activity implements EasyPermissions.Permissio
             startActivity(mainActivityIntent);
             finish();
         }
+
+        synchronized (this){
+            if(!Utility.isMyServiceRunning(DeviceLocationService.class,LoginActivity.this)){
+                startService(new Intent(LoginActivity.this,DeviceLocationService.class));
+            }
+        }
     }
 
     public void loadSettings() {
@@ -285,6 +292,12 @@ public class LoginActivity extends Activity implements EasyPermissions.Permissio
         mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(mainActivityIntent);
         finish();
+
+        synchronized (this){
+            if(!Utility.isMyServiceRunning(DeviceLocationService.class,getApplicationContext())){
+                startService(new Intent(LoginActivity.this,DeviceLocationService.class));
+            }
+        }
     }
 
     @Override

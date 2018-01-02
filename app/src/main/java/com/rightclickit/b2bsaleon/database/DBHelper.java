@@ -13,6 +13,8 @@ import com.rightclickit.b2bsaleon.beanclass.AgentReturnsBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
+
+import com.rightclickit.b2bsaleon.beanclass.DeviceDetails;
 import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
 import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
@@ -121,6 +123,9 @@ public class DBHelper extends SQLiteOpenHelper {
     // This table contains products and its details for sorting
     private final String TABLE_PRODUCTS_SORT_LIST = "products_sort";
 
+    // This table contains device/user lat and lang for storing
+    private final String TABLE_DEVICE_LATLANG_TABLE = "latlang_device";
+
 
     // Column names for User Table
     private final String KEY_USER_ID = "user_id";
@@ -225,7 +230,6 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_GST = "gst";
     private final String KEY_TO_AGENTCODE = "to_agent_code";
     private final String KEY_TO_UPLOAD_STATUS = "to_upload_status";
-
 
 
     // Column names for User privilege actions  Table
@@ -500,6 +504,16 @@ public class DBHelper extends SQLiteOpenHelper {
     public final String KEY_PRODUCT_SORT_GST_PRICE = "product_sort_gst_price";
     public final String KEY_PRODUCT_SORT_VAT_PRICE = "product_sort_vat_price";
     public final String KEY_PRODUCT_SORT_CONTROL_CODE = "control_sort_code";
+
+    // Column names for Device/User latlang  Table
+    private final String KEY_DEVICE_ID_LATLANG = "latlang_device_id";
+    private final String KEY_DEVICE_USERID_LATLANG = "latlang_device_userid";
+    private final String KEY_DEVICE_DATE_LATLANG = "latlang_device_date";
+    private final String KEY_DEVICE_TIME_LATLANG = "latlang_device_time";
+    private final String KEY_DEVICE_LAT_LATLANG = "latlang_device_latitude";
+    private final String KEY_DEVICE_LANG_LATLANG = "latlang_device_longitude";
+    private final String KEY_DEVICE_SPEED_LATLANG = "latlang_device_speed";
+    private final String KEY_DEVICE_UPLOAD_FLAG_LATLANG = "latlang_device_uploaded_flag";
 
     // Agents Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
@@ -816,6 +830,17 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_PRODUCT_SORT_VAT_PRICE + " VARCHAR,"
             + KEY_PRODUCT_SORT_CONTROL_CODE + " VARCHAR)";
 
+    // Device/User LatLang Table Create Statements
+    private final String CREATE_TABLE_DEVICE_LATLANG = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_DEVICE_LATLANG_TABLE + "(" + KEY_DEVICE_ID_LATLANG + " VARCHAR,"
+            + KEY_DEVICE_USERID_LATLANG + " VARCHAR,"
+            + KEY_DEVICE_DATE_LATLANG + " VARCHAR,"
+            + KEY_DEVICE_TIME_LATLANG + " VARCHAR,"
+            + KEY_DEVICE_LAT_LATLANG + " VARCHAR,"
+            + KEY_DEVICE_LANG_LATLANG + " VARCHAR,"
+            + KEY_DEVICE_SPEED_LATLANG + " VARCHAR,"
+            + KEY_DEVICE_UPLOAD_FLAG_LATLANG + " VARCHAR)";
+
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -846,6 +871,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_AGENT_STOCK_LIST_TABLE);
             db.execSQL(CREATE_AGENT_STOCK_DELIVERIES_LIST_TABLE);
             db.execSQL(CREATE_PRODUCTS_SORT_TABLE);
+            db.execSQL(CREATE_TABLE_DEVICE_LATLANG);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1460,7 +1486,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             if (c.moveToFirst()) {
                 do {
-                    routeDetailsById=((c.getString(c.getColumnIndex(KEY_ROUTE_NAME))));
+                    routeDetailsById = ((c.getString(c.getColumnIndex(KEY_ROUTE_NAME))));
 
                 } while (c.moveToNext());
             }
@@ -1473,11 +1499,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return routeDetailsById;
     }
-
-
-
-
-
 
 
     /**
@@ -2038,6 +2059,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //System.out.println("ASDF::: " + effectedRows);
         return effectedRows;
     }
+
     /**
      * Method to insert the user activity privileges data.
      *
@@ -3907,11 +3929,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             String selectQuery = "";
-            if(tripId.equals("")){
+            if (tripId.equals("")) {
                 selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS + " = 0";
-            }else {
+            } else {
                 selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS + " = 0"
-                        + " AND "+KEY_TRIPSHEET_PAYMENTS_TRIP_ID+" = '"+tripId+"'";
+                        + " AND " + KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " = '" + tripId + "'";
             }
 
             SQLiteDatabase db = this.getReadableDatabase();
@@ -3962,6 +3984,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return alltripsheetsPayments;
     }
+
     /**
      * Method to fetch agent latitude and longitude based on agentid
      */
@@ -4570,11 +4593,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             String selectQuery = "";
-            if(tripId.equals("")){
+            if (tripId.equals("")) {
                 selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS + " = 0";
-            }else {
+            } else {
                 selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS + " = 0"
-                        + " AND "+ KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = '"+ tripId + "'";
+                        + " AND " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = '" + tripId + "'";
             }
 
             SQLiteDatabase db = this.getReadableDatabase();
@@ -4645,11 +4668,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             String selectQuery = "";
-            if(tripId.equals("")){
+            if (tripId.equals("")) {
                 selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS + " = 0";
-            }else {
+            } else {
                 selectQuery = "SELECT DISTINCT " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_UPLOAD_STATUS + " = 0"
-                        + " AND "+ KEY_TRIPSHEET_RETURNS_TRIP_ID + " = '"+tripId+"'";
+                        + " AND " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = '" + tripId + "'";
             }
 
             SQLiteDatabase db = this.getReadableDatabase();
@@ -4985,6 +5008,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return saleOrdersList;
     }
+
     public double fetchTripSheetSaleOrderReceivedAmount(String tripSheetId, String saleOrderId) {
         double receivedAmount = 0.0;
         try {
@@ -5036,6 +5060,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return orderId;
     }
+
     public TripsheetsList fetchTripSheetDetails(String tripSheetId) {
         TripsheetsList tripSheetDetails = new TripsheetsList();
 
@@ -5068,24 +5093,24 @@ public class DBHelper extends SQLiteOpenHelper {
                 tripSheetDetails.setmTripshhetDueAmount(String.valueOf(dueAmount));
 
                 // CASH
-                double cashVal = 0,cheqVal = 0;
+                double cashVal = 0, cheqVal = 0;
                 ArrayList<String> paymentTypeArray = fetchTripSheetReceivedAmounttypeCash(tripSheetDetails.getmTripshhetId());
-                if(paymentTypeArray.size()>0){
-                    for (int b = 0;b<paymentTypeArray.size();b++){
+                if (paymentTypeArray.size() > 0) {
+                    for (int b = 0; b < paymentTypeArray.size(); b++) {
                         cashVal = cashVal + Double.parseDouble(paymentTypeArray.get(b).toString());
                     }
                     tripSheetDetails.setmCashPayment(String.valueOf(cashVal));
-                }else {
+                } else {
                     tripSheetDetails.setmCashPayment("0");
                 }
                 // CHEQUE
                 ArrayList<String> paymentTypeArraych = fetchTripSheetReceivedAmounttypeCheque(tripSheetDetails.getmTripshhetId());
-                if(paymentTypeArraych.size()>0){
-                    for (int b = 0;b<paymentTypeArraych.size();b++){
+                if (paymentTypeArraych.size() > 0) {
+                    for (int b = 0; b < paymentTypeArraych.size(); b++) {
                         cheqVal = cheqVal + Double.parseDouble(paymentTypeArraych.get(b).toString());
                     }
                     tripSheetDetails.setmChequePayment(String.valueOf(cheqVal));
-                }else {
+                } else {
                     tripSheetDetails.setmChequePayment("0");
                 }
             }
@@ -5230,6 +5255,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return deliveredProductsList;
     }
+
     public ArrayList<SaleOrderReturnedProducts> getReturnsProductsListForSaleOrder(String tripSheetId, String saleOrderId, String agentId) {
         ArrayList<SaleOrderReturnedProducts> returnedProductsList = new ArrayList<>();
 
@@ -6906,7 +6932,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
-            Log.i("count",+c.getCount()+"");
+            Log.i("count", +c.getCount() + "");
             if (c.moveToFirst()) {
                 do {
                     SaleOrderReturnedProducts returnedProduct = new SaleOrderReturnedProducts();
@@ -6917,14 +6943,14 @@ public class DBHelper extends SQLiteOpenHelper {
                     returnedProduct.setCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
                     String cc = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES));
                     String soId = c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_SO_ID));
-                    Log.i("cc detail",cc+"");
+                    Log.i("cc detail", cc + "");
                     if (cc.equals("2600005")) {
-                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc,soId, "crates");
-                        Log.i("obamount detail",obamount+"");
+                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc, soId, "crates");
+                        Log.i("obamount detail", obamount + "");
                         // CANS DUE
                         returnedProduct.setOpeningBalance(obamount);
                     } else if (cc.equals("2600006")) {
-                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc,soId, "cans");
+                        obamount = fetchCansorCratesDueByIds1(tripSheetId, cc, soId, "cans");
                         // CRATES DUE
                         returnedProduct.setOpeningBalance(obamount);
                     } else {
@@ -6952,6 +6978,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return returnedProductsList;
     }
+
     /*
     Method to get the deliveires
      */
@@ -6981,20 +7008,21 @@ public class DBHelper extends SQLiteOpenHelper {
         return tripsheetsDeliveries;
     }
 
-    public String fetchCansorCratesDueByIds1(String tripsheetId, String prodCode, String soId,String type) {
+    public String fetchCansorCratesDueByIds1(String tripsheetId, String prodCode, String soId, String type) {
         String due = "0.0";
 
         try {
             String selectQuery = null;
             SQLiteDatabase db = this.getReadableDatabase();
             if (type.equals("cans")) {
-                selectQuery = "SELECT "+ KEY_TRIPSHEET_SO_CANS_DUE + " FROM " + TABLE_TRIPSHEETS_SO_LIST
-                        + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = " + "'" + tripsheetId +  "' AND " +
-                        KEY_TRIPSHEET_SO_ID + " = '" + soId + "'";;
+                selectQuery = "SELECT " + KEY_TRIPSHEET_SO_CANS_DUE + " FROM " + TABLE_TRIPSHEETS_SO_LIST
+                        + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = " + "'" + tripsheetId + "' AND " +
+                        KEY_TRIPSHEET_SO_ID + " = '" + soId + "'";
+                ;
 
 
                 Cursor c = db.rawQuery(selectQuery, null);
-                Log.i("canary count",c.getCount()+"");
+                Log.i("canary count", c.getCount() + "");
                 if (c.moveToFirst()) {
                     do {
                         due = c.getString(c.getColumnIndex(KEY_TRIPSHEET_SO_CANS_DUE));
@@ -7004,11 +7032,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
             } else if (type.equals("crates")) {
                 selectQuery = "SELECT " + KEY_TRIPSHEET_SO_CRATES_DUE + " FROM " + TABLE_TRIPSHEETS_SO_LIST
-                        + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = " + "'" + tripsheetId +  "' AND " +
+                        + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = " + "'" + tripsheetId + "' AND " +
                         KEY_TRIPSHEET_SO_ID + " = '" + soId + "'";
 
                 Cursor c = db.rawQuery(selectQuery, null);
-                Log.i("crates count2",c.getCount()+"");
+                Log.i("crates count2", c.getCount() + "");
                 if (c.moveToFirst()) {
                     do {
                         due = c.getString(c.getColumnIndex(KEY_TRIPSHEET_SO_CRATES_DUE));
@@ -7273,19 +7301,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
     /**
      * Method to get the received amount type cash
+     *
      * @param tripSheetId
      * @return
      */
-    public ArrayList<String>  fetchTripSheetReceivedAmounttypeCash(String tripSheetId) {
+    public ArrayList<String> fetchTripSheetReceivedAmounttypeCash(String tripSheetId) {
         ArrayList<String> cashTypeData = new ArrayList<String>();
 
         try {
             String selectQuery = "SELECT " + KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT + " FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " = '" + tripSheetId + "'"
-                    + " AND "+ KEY_TRIPSHEET_PAYMENTS_TYPE+ "=0";
+                    + " AND " + KEY_TRIPSHEET_PAYMENTS_TYPE + "=0";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
-            System.out.println("PAYMENTS TYPE ARRAY:: COUNT"+c.getCount());
+            System.out.println("PAYMENTS TYPE ARRAY:: COUNT" + c.getCount());
             if (c.moveToFirst()) {
                 do {
                     System.out.println("PAYMENTS TYPE ARRAY:: 1111");
@@ -7299,25 +7328,26 @@ public class DBHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("PAYMENTS TYPE ARRAY:: "+ cashTypeData.size());
+        System.out.println("PAYMENTS TYPE ARRAY:: " + cashTypeData.size());
         return cashTypeData;
     }
 
     /**
      * Method to get the received amount type cheque
+     *
      * @param tripSheetId
      * @return
      */
-    public ArrayList<String>  fetchTripSheetReceivedAmounttypeCheque(String tripSheetId) {
+    public ArrayList<String> fetchTripSheetReceivedAmounttypeCheque(String tripSheetId) {
         ArrayList<String> cashTypeData = new ArrayList<String>();
 
         try {
             String selectQuery = "SELECT " + KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT + " FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_TRIP_ID + " = '" + tripSheetId + "'"
-                    + " AND "+ KEY_TRIPSHEET_PAYMENTS_TYPE+ "=1";
+                    + " AND " + KEY_TRIPSHEET_PAYMENTS_TYPE + "=1";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
-            System.out.println("PAYMENTS TYPE ARRAY CHEQ:: COUNT"+c.getCount());
+            System.out.println("PAYMENTS TYPE ARRAY CHEQ:: COUNT" + c.getCount());
             if (c.moveToFirst()) {
                 do {
                     System.out.println("PAYMENTS TYPE ARRAY CHEQ:: 1111");
@@ -7331,7 +7361,7 @@ public class DBHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("PAYMENTS TYPE ARRAY CHEQ:: "+ cashTypeData.size());
+        System.out.println("PAYMENTS TYPE ARRAY CHEQ:: " + cashTypeData.size());
         return cashTypeData;
     }
 
@@ -7418,5 +7448,129 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         return allProductTrackRecords;
+    }
+
+    /**
+     * Method to insert device location details
+     *
+     * @param
+     */
+    public void insertDeviceOrUserLocationDetails(String deviceId, String userId, String date, String time, String latitude,
+                                                  String longitude, String speed, String uploadFlag) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_DEVICE_ID_LATLANG, deviceId);
+            values.put(KEY_DEVICE_USERID_LATLANG, userId);
+            values.put(KEY_DEVICE_DATE_LATLANG, date);
+            values.put(KEY_DEVICE_TIME_LATLANG, time);
+            values.put(KEY_DEVICE_LAT_LATLANG, latitude);
+            values.put(KEY_DEVICE_LANG_LATLANG, longitude);
+            values.put(KEY_DEVICE_SPEED_LATLANG, speed);
+            values.put(KEY_DEVICE_UPLOAD_FLAG_LATLANG, uploadFlag);
+            // insert row
+            db.insert(TABLE_DEVICE_LATLANG_TABLE, null, values);
+            System.out.println("Device Location Details*********** INSERTED***************");
+            values.clear();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+    /**
+     * Method to get the unuploaded device location details.
+     *
+     * @param
+     * @return
+     */
+    public ArrayList<String> fetchUnUploadedDeviceDetails() {
+        ArrayList<String> deviceIdsList = new ArrayList<String>();
+        try {
+            String selectQuery = "SELECT " + KEY_DEVICE_ID_LATLANG + " FROM " +
+                    TABLE_DEVICE_LATLANG_TABLE + " WHERE " + KEY_DEVICE_UPLOAD_FLAG_LATLANG + " = 0";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    deviceIdsList.add(c.getString(c.getColumnIndex(KEY_DEVICE_ID_LATLANG)));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("DEVICE ID LIST::: " + deviceIdsList.size());
+        return deviceIdsList;
+    }
+
+    /**
+     * Method to get the unuploaded device location details.
+     *
+     * @param
+     * @return
+     */
+    public ArrayList<DeviceDetails> fetchUnUploadedDeviceDetails1() {
+        ArrayList<DeviceDetails> deviceIdsList = new ArrayList<DeviceDetails>();
+        try {
+            String selectQuery = "SELECT * FROM " +
+                    TABLE_DEVICE_LATLANG_TABLE + " WHERE " + KEY_DEVICE_UPLOAD_FLAG_LATLANG + " = 0";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    DeviceDetails dbean = new DeviceDetails();
+
+                    dbean.setmDeviceId(c.getString(c.getColumnIndex(KEY_DEVICE_ID_LATLANG)));
+                    dbean.setmDeviceUserId(c.getString(c.getColumnIndex(KEY_DEVICE_USERID_LATLANG)));
+                    dbean.setmDeviceDate(c.getString(c.getColumnIndex(KEY_DEVICE_DATE_LATLANG)));
+                    dbean.setmDeviceTime(c.getString(c.getColumnIndex(KEY_DEVICE_TIME_LATLANG)));
+                    dbean.setmDeviceLatitude(c.getString(c.getColumnIndex(KEY_DEVICE_LAT_LATLANG)));
+                    dbean.setmDeviceLongitude(c.getString(c.getColumnIndex(KEY_DEVICE_LANG_LATLANG)));
+                    dbean.setmDeviceSpeed(c.getString(c.getColumnIndex(KEY_DEVICE_SPEED_LATLANG)));
+                    dbean.setmDeviceuploadFlag(c.getString(c.getColumnIndex(KEY_DEVICE_UPLOAD_FLAG_LATLANG)));
+
+                    deviceIdsList.add(dbean);
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return deviceIdsList;
+    }
+
+    /**
+     * Method to update the device location  uploaded status after calling API.
+     */
+    public void updateDeviceLocationUploadFlag(String userId, String date, String time) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_DEVICE_UPLOAD_FLAG_LATLANG, 1);
+
+            int status = db.update(TABLE_DEVICE_LATLANG_TABLE, values,
+                    KEY_DEVICE_USERID_LATLANG + " = ? AND " + KEY_DEVICE_DATE_LATLANG + " = ? AND " + KEY_DEVICE_TIME_LATLANG + " = ?",
+                    new String[]{userId, date, time});
+
+            System.out.println("DEVICE LOCATION TABLE UPDATED===== " + status);
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
     }
 }

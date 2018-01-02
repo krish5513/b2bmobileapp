@@ -1,5 +1,7 @@
 package com.rightclickit.b2bsaleon.util;
 
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.util.Log;
@@ -193,5 +195,15 @@ public class Utility {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isMyServiceRunning(Class<?> serviceClass, Context activity) {
+        ActivityManager manager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
