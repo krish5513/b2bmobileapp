@@ -5933,8 +5933,10 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             // By Sekhar
             SQLiteDatabase db = this.getReadableDatabase();
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_USER_ID+ " = '" + userId + "'" + " ORDER BY " + KEY_TRIPSHEET_PAYMENTS_DATE + " DESC ";
+/*
             String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_USER_ID
-                    + " = '" + userId + "'";
+                    + " = '" + userId + "'";*/
             System.out.println("SQ::: " + selectQuery);
             Cursor c = db.rawQuery(selectQuery, null);
             if (c.moveToFirst()) {

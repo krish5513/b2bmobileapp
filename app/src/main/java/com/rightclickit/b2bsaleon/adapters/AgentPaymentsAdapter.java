@@ -93,7 +93,7 @@ public class AgentPaymentsAdapter extends BaseAdapter {
             tripSheetDeliveriesViewHolder = new AgentPaymentsAdapter.TripSheetDeliveriesViewHolder();
             tripSheetDeliveriesViewHolder.Payment_no = (TextView) view.findViewById(R.id.tv_prid);
             tripSheetDeliveriesViewHolder.Paymeent_date = (TextView) view.findViewById(R.id.payment_date);
-            tripSheetDeliveriesViewHolder.Payment_status = (TextView) view.findViewById(R.id.payment_status);
+           // tripSheetDeliveriesViewHolder.Payment_status = (TextView) view.findViewById(R.id.payment_status);
             tripSheetDeliveriesViewHolder.payment_Amount = (TextView) view.findViewById(R.id.amount);
             tripSheetDeliveriesViewHolder.payment_mop = (TextView) view.findViewById(R.id.mop);
             tripSheetDeliveriesViewHolder.payment_chechno = (TextView) view.findViewById(R.id.checkNo);
@@ -118,7 +118,7 @@ public class AgentPaymentsAdapter extends BaseAdapter {
 
             tripSheetDeliveriesViewHolder.Payment_no.setText(currentDeliveryBean.getPayments_paymentsNumber());
             tripSheetDeliveriesViewHolder.Paymeent_date.setText(currentDeliveryBean.getPayment_date());
-            tripSheetDeliveriesViewHolder.Payment_status.setText(currentDeliveryBean.getPayments_status());
+         //   tripSheetDeliveriesViewHolder.Payment_status.setText(currentDeliveryBean.getPayments_status());
             rAmt=(String.valueOf(currentDeliveryBean.getPayments_receivedAmount()));
             tripSheetDeliveriesViewHolder.payment_Amount.setText(rAmt);
             tripSheetDeliveriesViewHolder.payment_mop.setText(currentDeliveryBean.getPayments_type().equals("0") ? "Cash" : "Cheque");

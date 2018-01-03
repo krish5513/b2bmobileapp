@@ -58,6 +58,7 @@ public class AgentPaymentsModel implements OnAsyncRequestCompleteListener {
 
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        cal.add(Calendar.DAY_OF_YEAR,1);
         currentDate = df.format(cal.getTime());
 
         cal.add(Calendar.DATE, -30);
