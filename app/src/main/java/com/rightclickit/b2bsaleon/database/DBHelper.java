@@ -3350,7 +3350,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             String selectQuery = "SELECT DISTINCT(tripsheet_delivery_number) AS Tripsheet_Delivery_Number" +
-                    ", COUNT(tripsheet_delivery_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + tripsheetId + "'" + " GROUP BY " + KEY_TRIPSHEET_DELIVERY_NUMBER;
+                    ", COUNT(tripsheet_delivery_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + tripsheetId + "'" + " GROUP BY " + KEY_TRIPSHEET_DELIVERY_NUMBER + " ORDER BY " + KEY_TRIPSHEET_DELIVERY_CREATEDON + " DESC ";
 //            String selectQuery1 = "SELECT DISTINCT " + KEY_TRIPSHEET_DELIVERY_NUMBER
 //                    + " , count("+ KEY_TRIPSHEET_DELIVERY_NUMBER + ")"
 //                    +  " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + tripsheetId + "'"
@@ -3374,7 +3374,7 @@ public class DBHelper extends SQLiteOpenHelper {
             for (Map.Entry<String, String> entry : records.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
-                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE tripsheet_delivery_number  = '" + key + "'";
+                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE tripsheet_delivery_number  = '" + key + "'" + " ORDER BY " + KEY_TRIPSHEET_DELIVERY_CREATEDON + " DESC ";
                 c = db.rawQuery(selectQuery, null);
                 boolean rerun = true;
                 if (c.moveToFirst()) {
@@ -3464,7 +3464,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             String selectQuery = "SELECT DISTINCT(tripsheet_returns_return_number) AS Tripsheet_Return_Number" +
-                    ", COUNT(tripsheet_returns_return_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + userId + "'" + " GROUP BY " + KEY_TRIPSHEET_RETURNS_RETURN_NUMBER;
+                    ", COUNT(tripsheet_returns_return_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + userId + "'" + " GROUP BY " + KEY_TRIPSHEET_RETURNS_RETURN_NUMBER + " ORDER BY " + KEY_TRIPSHEET_RETURNS_CREATED_ON + " DESC ";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -3484,7 +3484,7 @@ public class DBHelper extends SQLiteOpenHelper {
             for (Map.Entry<String, String> entry : records.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
-                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + key + "'";
+                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + key + "'" + " ORDER BY " + KEY_TRIPSHEET_RETURNS_CREATED_ON + " DESC ";
                 c = db.rawQuery(selectQuery, null);
                 boolean rerun = true;
                 if (c.moveToFirst()) {

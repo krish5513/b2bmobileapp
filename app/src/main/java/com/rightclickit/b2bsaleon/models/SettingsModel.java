@@ -135,11 +135,11 @@ public class SettingsModel implements OnAsyncRequestCompleteListener {
                         "", "", "", "", "", "", "", "", "", did, transporterName,
                         vehicleNumber, "", "");
             } else {
-                if (logInResponse.getInt("result_status") == 1) {
+               /* if (logInResponse.getInt("result_status") == 1) {
                     activity.goBackToDashboard();
                 } else {
 
-                }
+                }*/
             }
 
         } catch (Exception e) {
