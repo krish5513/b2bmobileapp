@@ -219,7 +219,7 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                 }
                 for (int j = 0; j < resLength; j++) {
                     JSONObject resObj = respArray.getJSONObject(j);
-
+                    TripSheetDeliveriesBean deliveriesBean = new TripSheetDeliveriesBean();
                     // Delivery No
                     if (resObj.has("delivery_no")) {
                         deliveryNoList.add(resObj.getString("delivery_no"));
@@ -259,6 +259,7 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                     // Created On
                     if (resObj.has("created_on")) {
                         createdOn.add(resObj.getString("created_on"));
+                        //deliveriesBean.setmTripsheetDelivery_CreatedOn(resObj.getString("created_on"));
                     }
                     // Created By
                     if (resObj.has("created_by")) {
@@ -341,7 +342,7 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                     }
 
                     for (int d = 0; d < productCodesList.size(); d++) {
-                        TripSheetDeliveriesBean deliveriesBean = new TripSheetDeliveriesBean();
+                       // TripSheetDeliveriesBean deliveriesBean = new TripSheetDeliveriesBean();
                         deliveriesBean.setmTripsheetDeliveryNumber(deliveryNoList.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_tripId(tripIdsList.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_so_id(saleorderIdList.get(j).toString());
@@ -361,7 +362,7 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                         deliveriesBean.setmTripsheetDelivery_SaleValue(saleValue.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_Status(statusList.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_Delete(deleteList.get(j).toString());
-                        deliveriesBean.setmTripsheetDelivery_CreatedOn(createdOn.get(j).toString());
+                       deliveriesBean.setmTripsheetDelivery_CreatedOn(createdOn.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_CreatedBy(createdBy.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_UpdatedOn(updatedOn.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_UpdatedBy(updatedBy.get(j).toString());
