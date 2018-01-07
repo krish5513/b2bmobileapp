@@ -127,27 +127,27 @@ public class TripsheetsListAdapter extends BaseAdapter {
 
 
 
-    if (currentTripSheet.getIsTripshhetClosed() == 0 ) {
-        mHolder.mTripsheetStatus.setText("In Transit");
-       // mHolder.viewbtn.setVisibility(View.VISIBLE);
-       // mHolder.hidebtn.setVisibility(View.GONE);
+        if (currentTripSheet.getIsTripshhetClosed() == 0 ) {
+            mHolder.mTripsheetStatus.setText("In Transit");
+            // mHolder.viewbtn.setVisibility(View.VISIBLE);
+            // mHolder.hidebtn.setVisibility(View.GONE);
 
-    } else {
-        mHolder.mTripsheetStatus.setText("Closed");
-        //mHolder.viewbtn.setVisibility(View.GONE);
-        //mHolder.hidebtn.setVisibility(View.VISIBLE);
+        } else {
+            mHolder.mTripsheetStatus.setText("Closed");
+            //mHolder.viewbtn.setVisibility(View.GONE);
+            //mHolder.hidebtn.setVisibility(View.VISIBLE);
 
-    }
-    if(currentTripSheet.getApproved_by().equals("")){
-        mHolder.mTripsheetStatus.setText("In Transit");
-        mHolder.viewbtn.setVisibility(View.VISIBLE);
-        mHolder.hidebtn.setVisibility(View.GONE);
-    }
-    else {
-        mHolder.mTripsheetStatus.setText("Closed");
-        mHolder.viewbtn.setVisibility(View.GONE);
-        mHolder.hidebtn.setVisibility(View.VISIBLE);
-    }
+        }
+        if(currentTripSheet.getApproved_by().equals("")){
+            mHolder.mTripsheetStatus.setText("In Transit");
+            mHolder.viewbtn.setVisibility(View.VISIBLE);
+            mHolder.hidebtn.setVisibility(View.GONE);
+        }
+        else {
+            mHolder.mTripsheetStatus.setText("Closed");
+            mHolder.viewbtn.setVisibility(View.GONE);
+            mHolder.hidebtn.setVisibility(View.VISIBLE);
+        }
 
 
         mHolder.routecode.setText(currentTripSheet.getmTripshhetRouteCode());
@@ -205,6 +205,8 @@ public class TripsheetsListAdapter extends BaseAdapter {
                     mPreferences.putString("tripsheetCode",tripCode111);
                     mPreferences.putString("tripsheetDate", currentTripSheet.getmTripshhetDate());
                     mPreferences.putString("tripsheetroutecode", currentTripSheet.getmTripshhetRouteCode());
+                    mPreferences.putString("tripsheetTripRouteId", currentTripSheet.getmTripRouteId());
+                    mPreferences.putString("tripsheetTripRouteCode", currentTripSheet.getmTripRouteCode());
                     Intent stockIntent = new Intent(activity, TripSheetView.class);
                     stockIntent.putExtra("status",currentTripSheet.getApproved_by());
                     stockIntent.putExtra("tripsheetId", currentTripSheet.getmTripshhetId());

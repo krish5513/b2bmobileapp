@@ -257,12 +257,28 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
                         Double dueAmt = Double.parseDouble(tripsheetsListBean.getmTripshhetOrderedAmount().replace(",", "")) - Double.parseDouble(tripsheetsListBean.getmTripshhetReceivedAmount().replace(",", ""));
                         tripsheetsListBean.setmTripshhetDueAmount(String.valueOf(dueAmt));
-                       // tripsheetsListBean.setmTripshhetRouteCode("route_code");
+                        // tripsheetsListBean.setmTripshhetRouteCode("route_code");
                         tripsheetsListBean.setmTripshhetRouteCode(jb.getString("route_code"));
                         tripsheetsListBean.setmTripshhetSalesMenCode("salesman_code");
                         tripsheetsListBean.setmTripshhetVehicleNumber("vehicle_no");
                         tripsheetsListBean.setmTripshhetTrasnsporterName("transporter");
                         tripsheetsListBean.setmTripshhetVerifyStatus("0");
+
+                        if(jb.has("routedata")){
+                            JSONArray routeArray = jb.getJSONArray("routedata");
+                            int rlen = routeArray.length();
+                            System.out.println("RL:::"+ rlen);
+                            if(rlen>0){
+                                tripsheetsListBean.setmTripRouteId(routeArray.getJSONObject(0).getString("_id"));
+                                tripsheetsListBean.setmTripRouteCode(routeArray.getJSONObject(0).getString("code"));
+                            }else {
+                                tripsheetsListBean.setmTripRouteId("");
+                                tripsheetsListBean.setmTripRouteCode("");
+                            }
+                        }else {
+                            tripsheetsListBean.setmTripRouteId("");
+                            tripsheetsListBean.setmTripRouteCode("");
+                        }
 
                         mTripsheetsList.add(tripsheetsListBean);
                     }

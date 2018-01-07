@@ -331,7 +331,7 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    boolean isCratesAvailableVerify = false,isCratesAvailableDispatch = false;
+                    boolean isCratesAvailableVerify = false,isCratesAvailableVerify1 = true,isCratesAvailableDispatch = false,isCratesAvailableDispatch1 = true;
                     if (actionType.equals("Save")) {
                         synchronized (this) {
                             for (Map.Entry<String, TripsheetsStockList> stockList : productsDispatchListHashMap.entrySet()) {
@@ -339,12 +339,14 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
                                 if (currentStock.getmTripsheetStockProductCode().equals("2600005")) {
                                     if (Double.parseDouble(currentStock.getmTripsheetStockDispatchQuantity()) > 0) {
                                         isCratesAvailableDispatch = true;
+                                    }else {
+                                        isCratesAvailableDispatch1 = false;
                                     }
                                 }
                             }
                         }
                         synchronized (this) {
-                            if (isCratesAvailableDispatch) {
+                            if (isCratesAvailableDispatch1 || isCratesAvailableDispatch) {
                                 saveProductsDispatchList();
                             } else {
                                 new android.app.AlertDialog.Builder(activityContext)
@@ -366,13 +368,15 @@ public class TripSheetStock extends AppCompatActivity implements TripSheetStockL
                                 if (currentStock.getmTripsheetStockProductCode().equals("2600005")) {
                                     if (Double.parseDouble(currentStock.getmTripsheetStockVerifiedQuantity()) > 0) {
                                         isCratesAvailableVerify = true;
+                                    }else {
+                                        isCratesAvailableVerify1 = false;
                                     }
                                 }
                             }
                         }
 
                         synchronized (this) {
-                            if (isCratesAvailableVerify) {
+                            if (isCratesAvailableVerify1 || isCratesAvailableVerify) {
                                 saveProductsVerifyList();
                             } else {
                                 new android.app.AlertDialog.Builder(activityContext)

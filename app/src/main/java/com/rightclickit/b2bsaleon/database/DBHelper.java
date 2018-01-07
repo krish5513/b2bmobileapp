@@ -314,6 +314,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_VERIFY_STATUS = "tripsheet_verify_status"; // 0 is not verify and 1 is verify
     private final String KEY_TRIPSHEET_IS_TRIP_SHEET_CLOSED = "is_tripsheet_closed"; // o means not closed and 1 means closed
     private final String KEY_TRIPSHEET_APPROVED_BY = "tripsheet_approvedby";
+    private final String KEY_TRIPSHEET_TRIP_ROUTE_ID = "tripsheet_trip_route_id";
+    private final String KEY_TRIPSHEET_TRIP_ROUTE_CODE = "tripsheet_trip_route_code";
 
     // Column names for Tripsheets stocks List  Table
     private final String KEY_TRIPSHEET_STOCK_UNIQUE_ID = "tripsheet_stock_unique_id";
@@ -630,8 +632,9 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_TRANSPORTER_NAME + " VARCHAR,"
             + KEY_TRIPSHEET_VEHICLE_NUMBER + " VARCHAR,"
             + KEY_TRIPSHEET_VERIFY_STATUS + " VARCHAR,"
+            + KEY_TRIPSHEET_TRIP_ROUTE_ID + " VARCHAR,"
+            + KEY_TRIPSHEET_TRIP_ROUTE_CODE + " VARCHAR,"
             + KEY_TRIPSHEET_IS_TRIP_SHEET_CLOSED + " INTEGER DEFAULT 0)";
-
     // Tripsheets Stock list Table Create Statements
     private final String CREATE_TRIPSHEETS_STOCK_LIST_TABLE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_TRIPSHEETS_STOCK_LIST + "(" + KEY_TRIPSHEET_STOCK_UNIQUE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -2946,6 +2949,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_TRANSPORTER_NAME, mTripsheetsList.get(i).getmTripshhetTrasnsporterName());
                 values.put(KEY_TRIPSHEET_VEHICLE_NUMBER, mTripsheetsList.get(i).getmTripshhetVehicleNumber());
                 values.put(KEY_TRIPSHEET_APPROVED_BY, mTripsheetsList.get(i).getApproved_by());
+                values.put(KEY_TRIPSHEET_TRIP_ROUTE_ID, mTripsheetsList.get(i).getmTripRouteId());
+                values.put(KEY_TRIPSHEET_TRIP_ROUTE_CODE, mTripsheetsList.get(i).getmTripRouteCode());
 
                 int checkVal = checkTripsheetExistsOrNot(mTripsheetsList.get(i).getmTripshhetId());
                 if (checkVal == 0) {
@@ -2999,6 +3004,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripsheetsListBean.setmTripshhetTrasnsporterName(c.getString(c.getColumnIndex(KEY_TRIPSHEET_TRANSPORTER_NAME)));
                     tripsheetsListBean.setmTripshhetVerifyStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_VERIFY_STATUS)));
                     tripsheetsListBean.setIsTripshhetClosed(c.getInt(c.getColumnIndex(KEY_TRIPSHEET_IS_TRIP_SHEET_CLOSED)));
+                    tripsheetsListBean.setmTripRouteId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_TRIP_ROUTE_ID)));
+                    tripsheetsListBean.setmTripRouteCode(c.getString(c.getColumnIndex(KEY_TRIPSHEET_TRIP_ROUTE_CODE)));
 
                     double receivedAmount = fetchTripSheetReceivedAmount(c.getString(c.getColumnIndex(KEY_TRIPSHEET_ID)));
                     receivedAmount = Double.parseDouble(String.valueOf(receivedAmount).replace(",", ""));
@@ -3020,7 +3027,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return alltripsheets;
     }
-
     /**
      * Method to fetch special prices for particular user
      */

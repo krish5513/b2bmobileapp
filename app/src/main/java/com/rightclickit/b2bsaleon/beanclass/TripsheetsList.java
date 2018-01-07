@@ -52,6 +52,8 @@ public class TripsheetsList {
     private int isTripshhetClosed;
     private String mCashPayment;
     private String mChequePayment;
+    private String mTripRouteId;
+    private String mTripRouteCode;
 
     public String getmTripshhetId() {
         return mTripshhetId;
@@ -174,6 +176,8 @@ public class TripsheetsList {
                 ", mTripshhetReceivedAmount='" + mTripshhetReceivedAmount + '\'' +
                 ", mTripshhetDueAmount='" + mTripshhetDueAmount + '\'' +
                 ", isTripshhetClosed='" + isTripshhetClosed + '\'' +
+                ", mTripRouteId='" + mTripRouteId + '\'' +
+                ", mTripRouteCode='" + mTripRouteCode + '\'' +
                 '}';
     }
 
@@ -191,5 +195,21 @@ public class TripsheetsList {
 
     public void setmChequePayment(String mChequePayment) {
         this.mChequePayment = mChequePayment;
+    }
+
+    public String getmTripRouteId() {
+        return mTripRouteId;
+    }
+
+    public void setmTripRouteId(String mTripRouteId) {
+        this.mTripRouteId = mTripRouteId;
+    }
+
+    public String getmTripRouteCode() {
+        return mTripRouteCode;
+    }
+
+    public void setmTripRouteCode(String mTripRouteCode) {
+        this.mTripRouteCode = mTripRouteCode;
     }
 }
