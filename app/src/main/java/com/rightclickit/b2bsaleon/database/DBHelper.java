@@ -3468,15 +3468,15 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<TripSheetReturnsBean> agentsreturnsBean = new ArrayList<>();
 
         try {
-            String selectQuery = "SELECT DISTINCT(tripsheet_returns_return_number) AS Tripsheet_Return_Number" +
-                    ", COUNT(tripsheet_returns_return_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + userId + "'" + " GROUP BY " + KEY_TRIPSHEET_RETURNS_RETURN_NUMBER + " ORDER BY " + KEY_TRIPSHEET_RETURNS_CREATED_ON + " DESC ";
-
+           // String selectQuery = "SELECT DISTINCT(tripsheet_returns_return_number) AS Tripsheet_Return_Number" +
+           //         ", COUNT(tripsheet_returns_return_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + userId + "'" + " GROUP BY " + KEY_TRIPSHEET_RETURNS_RETURN_NUMBER + " ORDER BY " + KEY_TRIPSHEET_RETURNS_CREATED_ON + " DESC ";
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = " + "'" + userId + "'" + " ORDER BY " + KEY_TRIPSHEET_RETURNS_CREATED_ON + " DESC ";
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
-            HashMap<String, String> records = new HashMap<>();
-            if (c.moveToFirst()) {
-                do {
-                    records.put(c.getString(c.getColumnIndex("Tripsheet_Return_Number")), c.getString(c.getColumnIndex("Total_COUNT")));
+           // HashMap<String, String> records = new HashMap<>();
+           // if (c.moveToFirst()) {
+           //     do {
+           //         records.put(c.getString(c.getColumnIndex("Tripsheet_Return_Number")), c.getString(c.getColumnIndex("Total_COUNT")));
 //                    AgentDeliveriesBean returndeliveriesBean = new AgentDeliveriesBean();
 //                    returndeliveriesBean.setTripNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NUMBER)));
 //                    returndeliveriesBean.setTripDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
@@ -3484,17 +3484,17 @@ public class DBHelper extends SQLiteOpenHelper {
 //                    returndeliveriesBean.setDeliveredItems(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SALEVALUE)));
 //                    returndeliveriesBean.setDeliveredBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDBY)));
 //                    deliveriesBean.add(returndeliveriesBean);
-                } while (c.moveToNext());
-            }
-            for (Map.Entry<String, String> entry : records.entrySet()) {
-                String key = entry.getKey();
-                String value = entry.getValue();
-                selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + key + "'" + " ORDER BY " + KEY_TRIPSHEET_RETURNS_CREATED_ON + " DESC ";
-                c = db.rawQuery(selectQuery, null);
-                boolean rerun = true;
+               // } while (c.moveToNext());
+           // }
+            //for (Map.Entry<String, String> entry : records.entrySet()) {
+              //  String key = entry.getKey();
+              //  String value = entry.getValue();
+               // selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + key + "'" + " ORDER BY " + KEY_TRIPSHEET_RETURNS_CREATED_ON + " DESC ";
+              //  c = db.rawQuery(selectQuery, null);
+              //  boolean rerun = true;
                 if (c.moveToFirst()) {
                     do {
-                        if (rerun) {
+                      //  if (rerun) {
                             TripSheetReturnsBean tripReturnsBean = new TripSheetReturnsBean();
                             tripReturnsBean.setmTripshhetReturnsReturn_no(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NO)));
                             tripReturnsBean.setmTripshhetReturnsReturn_number(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER)));
@@ -3515,14 +3515,14 @@ public class DBHelper extends SQLiteOpenHelper {
                             tripReturnsBean.setmTripshhetReturnsCreated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_ON)));
                             tripReturnsBean.setmTripshhetReturnsUpdated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_UPDATED_ON)));
                             tripReturnsBean.setmTripshhetReturnsUpdated_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_UPDATED_BY)));
-                            tripReturnsBean.setReturnsItemsCount(value);
+                          //  tripReturnsBean.setReturnsItemsCount(value);
                             agentsreturnsBean.add(tripReturnsBean);
-                            rerun = false;
-                        }
+                          //  rerun = false;
+                     //   }
                     } while (c.moveToNext());
                 }
 
-            }
+            //}
             c.close();
             db.close();
 

@@ -207,7 +207,7 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
     @Override
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
         try {
-            CustomProgressDialog.hideProgressDialog();
+           CustomProgressDialog.hideProgressDialog();
 
             //System.out.println("ORDERS RESPONSE::::::::: " + response);
 
@@ -305,6 +305,30 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                         }
                     }
 
+
+                    if (resObj.has("userdata1")) {
+                        JSONArray productUnitJsonArray = resObj.getJSONArray("userdata1");
+                        int len = productUnitJsonArray.length();
+                        if (len > 0) {
+                            for (int k = 0; k < len; k++) {
+                                JSONObject priceUnitObj = productUnitJsonArray.getJSONObject(k);
+                                if (priceUnitObj.has("last_name")) {
+                                    // Agent price
+
+                                    deliveriesBean.setmTripsheetDelivery_CreatedBy(priceUnitObj.getString("last_name"));
+
+                                }
+
+                                if (priceUnitObj.has("first_name")) {
+                                    // Agent price
+
+                                    deliveriesBean.setmTripsheetDelivery_UpdatedBy(priceUnitObj.getString("first_name"));
+
+                                }
+                            }
+                        }
+                    }
+
                     // Unit price
                     if (resObj.has("unit_price")) {
                         JSONArray upArray = resObj.getJSONArray("unit_price");
@@ -363,9 +387,9 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                         deliveriesBean.setmTripsheetDelivery_Status(statusList.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_Delete(deleteList.get(j).toString());
                        deliveriesBean.setmTripsheetDelivery_CreatedOn(createdOn.get(j).toString());
-                        deliveriesBean.setmTripsheetDelivery_CreatedBy(createdBy.get(j).toString());
-                        deliveriesBean.setmTripsheetDelivery_UpdatedOn(updatedOn.get(j).toString());
-                        deliveriesBean.setmTripsheetDelivery_UpdatedBy(updatedBy.get(j).toString());
+                      //  deliveriesBean.setmTripsheetDelivery_CreatedBy(createdBy.get(j).toString());
+                       deliveriesBean.setmTripsheetDelivery_UpdatedOn(updatedOn.get(j).toString());
+                       // deliveriesBean.setmTripsheetDelivery_UpdatedBy(updatedBy.get(j).toString());
 
                         mDeliveriesBeansList.add(deliveriesBean);
                     }
@@ -374,6 +398,8 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
             synchronized (this) {
                 if (mDeliveriesBeansList.size() > 0) {
                     mDBHelper.updateTripsheetsDeliveriesListData(mDeliveriesBeansList);
+                   // CustomProgressDialog.hideProgressDialog();
+
                 }
             }
             synchronized (this) {

@@ -199,9 +199,14 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
             JSONArray respArray = new JSONArray(response);
             int resLength = respArray.length();
             if (resLength > 0) {
+
+
+                if (mReturnsBeansList.size() > 0) {
+                    mReturnsBeansList.clear();
+                }
                 for (int j = 0; j < resLength; j++) {
                     JSONObject resObj = respArray.getJSONObject(j);
-
+                    TripSheetReturnsBean returnsBean = new TripSheetReturnsBean();
                     // Delivery No
                     if (resObj.has("return_no")) {
                         returnsNoList.add(resObj.getString("return_no"));
@@ -258,6 +263,28 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                     }
 
 
+                    if (resObj.has("userdata1")) {
+                        JSONArray productUnitJsonArray = resObj.getJSONArray("userdata1");
+                        int len = productUnitJsonArray.length();
+                        if (len > 0) {
+                            for (int k = 0; k < len; k++) {
+                                JSONObject priceUnitObj = productUnitJsonArray.getJSONObject(k);
+                                if (priceUnitObj.has("last_name")) {
+                                    // Agent price
+
+                                    returnsBean.setmTripshhetReturnsCreated_by(priceUnitObj.getString("last_name"));
+
+                                }
+
+                                if (priceUnitObj.has("first_name")) {
+                                    // Agent price
+
+                                    returnsBean.setmTripshhetReturnsUpdated_by(priceUnitObj.getString("first_name"));
+
+                                }
+                            }
+                        }
+                    }
                     // Product Ids
                     if (resObj.has("product_ids")) {
                         JSONArray pIdsArray = resObj.getJSONArray("product_ids");
@@ -306,9 +333,7 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                     }
 
 
-                    if (mReturnsBeansList.size() > 0) {
-                        mReturnsBeansList.clear();
-                    }
+
 
 
                     for (int d = 0; d < productCodesList.size(); d++) {
@@ -316,7 +341,7 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
 
                         //  JSONArray aaa = productsArray.get(String.valueOf(d));
                         //  for (int s = 0; s < aaa.length(); s++) {
-                        TripSheetReturnsBean returnsBean = new TripSheetReturnsBean();
+                       // TripSheetReturnsBean returnsBean = new TripSheetReturnsBean();
                         //   JSONObject jj = aaa.getJSONObject(s);
                         returnsBean.setmTripshhetReturnsReturn_number(returnsNoList.get(d).toString());
                         returnsBean.setmTripshhetReturnsTrip_id(tripIdsList.get(d).toString());
@@ -336,9 +361,9 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                         returnsBean.setmTripshhetReturnsStatus(statusList.get(d).toString());
                         returnsBean.setmTripshhetReturnsDelete(deleteList.get(d).toString());
                         returnsBean.setmTripshhetReturnsCreated_on(returnDateList.get(d).toString());
-                        returnsBean.setmTripshhetReturnsCreated_by(createdBy.get(d).toString());
+                       // returnsBean.setmTripshhetReturnsCreated_by(createdBy.get(d).toString());
                         returnsBean.setmTripshhetReturnsUpdated_on(updatedOn.get(d).toString());
-                        returnsBean.setmTripshhetReturnsUpdated_by(updatedBy.get(d).toString());
+                        //returnsBean.setmTripshhetReturnsUpdated_by(updatedBy.get(d).toString());
 
                         mReturnsBeansList.add(returnsBean);
                         // }

@@ -144,7 +144,7 @@ public class AgentDeliveries extends AppCompatActivity {
         if (unUploadedDeliveries.size() > 0) {
             loadDeliveries(unUploadedDeliveries);
         } else {
-            mNoDataText.setText("No Deliveries found.");
+            mNoDataText.setText("No Deliveries Found."+"\n"+"Please click on sync button to get the deliveries.");
         }
 
         sales.setOnClickListener(new View.OnClickListener() {
@@ -262,7 +262,7 @@ public class AgentDeliveries extends AppCompatActivity {
         if (unUploadedDeliveries1.size() > 0) {
             loadDeliveries(unUploadedDeliveries1);
         } else {
-            mNoDataText.setText("No Deliveries found.");
+            mNoDataText.setText("No Deliveries Found."+"\n"+"Please click on sync button to get the deliveries.");
         }
     }
 

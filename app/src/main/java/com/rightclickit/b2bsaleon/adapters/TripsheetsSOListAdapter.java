@@ -232,9 +232,9 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
                     i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName());
                     i.putExtra("status",status);
                     //i.putExtra("agentName", currentSaleOrder.getmTripshetSOAgentFirstName() + currentSaleOrder.getmTripshetSOAgentLastName());
-                  //  activity.startActivityForResult(i,101);
+                    //  activity.startActivityForResult(i,101);
                     activity.startActivity(i);
-                   activity.finish();
+                    activity.finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -280,12 +280,14 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
 //                mPreferences.putString("agentCode", currentSaleOrder.getmTripshetSOAgentCode());
                 // mPreferences.putString("enquiryid", currentSaleOrder.getmtr());
                 // Added by sekhar
-                List<String> agentRouteId = mDBHelper.getAgentRouteId(currentSaleOrder.getmTripshetSOAgentId());
-                System.out.println("AGENT ROUTE ID IS::: "+ agentRouteId);
+                //List<String> agentRouteId = mDBHelper.getAgentRouteId(currentSaleOrder.getmTripshetSOAgentId());
+                //System.out.println("AGENT ROUTE ID IS::: "+ agentRouteId);
                 mPreferences.putString("agentName", currentSaleOrder.getmTripshetSOAgentFirstName());
 
                 mPreferences.putString("agentId", currentSaleOrder.getmTripshetSOAgentId());
-                mPreferences.putString("agentrouteId", agentRouteId.toString());
+                JSONArray rAr = new JSONArray();
+                rAr.put(mPreferences.getString("tripsheetTripRouteId"));
+                mPreferences.putString("agentrouteId", rAr.toString());
 //                //mPreferences.putString("enqId", String.valueOf(position + 1));
                 String enqidd = "ENQ-"+currentSaleOrder.getmTripshetSOAgentCode();
                 mPreferences.putString("enqId", enqidd);

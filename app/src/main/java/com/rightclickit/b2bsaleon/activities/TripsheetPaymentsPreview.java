@@ -33,6 +33,8 @@ import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
+import org.json.JSONArray;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -608,9 +610,11 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
                     mmSharedPreferences.putString("agentName", mAgentName);
                     mmSharedPreferences.putString("agentId", mAgentId);
-                    List<String> agentRouteId = mDBHelper.getAgentRouteId(mAgentId);
+                    //List<String> agentRouteId = mDBHelper.getAgentRouteId(mAgentId);
                     //System.out.println("AGENT ROUTE ID IS::: "+ agentRouteId);
-                    mmSharedPreferences.putString("agentrouteId", agentRouteId.toString());
+                    JSONArray rAr = new JSONArray();
+                    rAr.put(mmSharedPreferences.getString("tripsheetTripRouteId"));
+                    mmSharedPreferences.putString("agentrouteId", rAr.toString());
 //                //mPreferences.putString("enqId", String.valueOf(position + 1));
                     String enqidd = "ENQ-"+mAgentCode;
                     mmSharedPreferences.putString("enqId", enqidd);

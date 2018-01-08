@@ -101,7 +101,7 @@ public class AgentReturnsAdapter extends BaseAdapter{
         tripSheetDeliveriesViewHolder.returns_no.setText(currentReturnsBean.getmTripshhetReturnsReturn_number());
         tripSheetDeliveriesViewHolder.returns_date.setText(currentReturnsBean.getmTripshhetReturnsCreated_on());
      //   tripSheetDeliveriesViewHolder.return_status.setText(currentReturnsBean.getmTripshhetReturnsStatus());
-        tripSheetDeliveriesViewHolder.items_count.setText(currentReturnsBean.getReturnsItemsCount());
+        tripSheetDeliveriesViewHolder.items_count.setText(currentReturnsBean.getmTripshhetReturnsCreated_by());
         //tripSheetDeliveriesViewHolder.returns_by.setText(mdbhelper.getDeliveryName(currentReturnsBean.getmTripshhetReturnsCreated_by()));
 
         tripSheetDeliveriesViewHolder.View.setOnClickListener(new View.OnClickListener() {

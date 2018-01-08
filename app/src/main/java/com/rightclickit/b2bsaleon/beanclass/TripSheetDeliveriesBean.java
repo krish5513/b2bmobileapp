@@ -33,6 +33,16 @@ public class TripSheetDeliveriesBean {
     private String productRemainingExtraStock;
     private String deliveredItemsCount;
 
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    private String firstname;
+
     public String getmTripsheetDeliveryNo() {
         return mTripsheetDeliveryNo;
     }

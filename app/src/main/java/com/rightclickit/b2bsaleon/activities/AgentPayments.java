@@ -134,7 +134,7 @@ public class AgentPayments extends AppCompatActivity {
         if(unUploadedPayments.size()>0){
             loadPayments(unUploadedPayments);
         }else {
-            mNoDataText.setText("No Payments found.");
+            mNoDataText.setText("No Payments Found."+"\n"+"Please click on sync button to get the payments.");
         }
 
         sales.setOnClickListener(new View.OnClickListener() {
@@ -306,7 +306,7 @@ public class AgentPayments extends AppCompatActivity {
         if(unUploadedPayments.size()>0){
             loadPayments(unUploadedPayments);
         }else {
-            mNoDataText.setText("No Payments found.");
+            mNoDataText.setText("No Payments Found."+"\n"+"Please click on sync button to get the payments.");
         }
     }
     private void showAlertDialog(Context context, String title, String message) {

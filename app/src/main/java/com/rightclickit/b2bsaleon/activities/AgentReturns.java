@@ -132,7 +132,7 @@ public class AgentReturns extends AppCompatActivity {
         if (unUploadedReturns.size() > 0) {
             loadReturns(unUploadedReturns);
         } else {
-            mNoDataText.setText("No Returns found.");
+            mNoDataText.setText("No Returns Found."+"\n"+"Please click on sync button to get the returns.");
         }
 
 
@@ -267,7 +267,7 @@ public class AgentReturns extends AppCompatActivity {
         if (unUploadedReturns.size() > 0) {
             loadReturns(unUploadedReturns);
         } else {
-            mNoDataText.setText("No Returns found.");
+            mNoDataText.setText("No Returns Found."+"\n"+"Please click on sync button to get the returns.");
         }
     }
 

@@ -72,7 +72,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
     String currentDate, str_routecode, str_deliveryDate, str_deliveryNo;
     double taxes;
 
-    private String mDeliveryNo = "", mDeliverydate = "", productID = "", mTripSheetCode = "", mTripSheetDate = "", mAgentName = "", mAgentCode = "", mAgentTripId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDates;
+    private String mDeliveryNo = "", mDeliverydate = "", productID = "", mTripSheetCode = "", mTripSheetDate = "", mAgentName = "", mAgentCode = "", mAgentTripId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDates,deliveryBy,updatedBy;
     private ArrayList<String> deliveredProdIdsList = null;
 
     @Override
@@ -116,6 +116,8 @@ public class AgentDeliveriesView extends AppCompatActivity {
             productID = bundle.getString("productId");
           //  mAgentSoCode = bundle.getString("SaleOId");
             mAgentTripId=bundle.getString("tripsheetId");
+            deliveryBy=bundle.getString("deliveryBy");
+            updatedBy=bundle.getString("updatedBy");
         }
         ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mAgentTripId);
         for (int i = 0; i < tripSheetSOList.size(); i++) {
@@ -160,10 +162,12 @@ public class AgentDeliveriesView extends AppCompatActivity {
 
 
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
-        tv_companyName.setText(sharedPreferences.getString("companyname"));
+       // tv_companyName.setText(sharedPreferences.getString("companyname"));
+        tv_companyName.setText(updatedBy);
 
         user_Name = (TextView) findViewById(R.id.tv_user_Name);
-        user_Name.setText(sharedPreferences.getString("loginusername"));
+        //user_Name.setText(sharedPreferences.getString("loginusername"));
+        user_Name.setText(deliveryBy);
 
         /*Route_Name = (TextView) findViewById(R.id.route_name);
         Route_Name.setText(sharedPreferences.getString("routename"));
@@ -216,7 +220,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
 
 
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                canvas.drawText(sharedPreferences.getString("companyname"), 5, 20, paint);
+                canvas.drawText(updatedBy, 5, 20, paint);
               /*  paint.setTextSize(20);
                 canvas.drawText(sharedPreferences.getString("loginusername"), 5, 50, paint);
                 */paint.setTextSize(20);

@@ -19,6 +19,7 @@ import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -89,7 +90,7 @@ public class AgentDeliveriesAdapter extends BaseAdapter {
             tripSheetDeliveriesViewHolder.Delivery_date = (TextView) view.findViewById(R.id.tv_date);
             //tripSheetDeliveriesViewHolder.delivery_status = (TextView) view.findViewById(R.id.tv_status);
             tripSheetDeliveriesViewHolder.items_count = (TextView) view.findViewById(R.id.tv_items);
-           // tripSheetDeliveriesViewHolder.deliverd_by = (TextView) view.findViewById(R.id.tv_deliveredby);
+            tripSheetDeliveriesViewHolder.deliverd_by = (TextView) view.findViewById(R.id.tv_deliveredby);
             tripSheetDeliveriesViewHolder.View = (Button) view.findViewById(R.id.btn_view1);
 
 
@@ -105,9 +106,10 @@ public class AgentDeliveriesAdapter extends BaseAdapter {
         tripSheetDeliveriesViewHolder.Delivery_no.setText(currentDeliveryBean.getmTripsheetDeliveryNumber());
         tripSheetDeliveriesViewHolder.Delivery_date.setText(currentDeliveryBean.getmTripsheetDelivery_CreatedOn());
         //tripSheetDeliveriesViewHolder.delivery_status.setText(currentDeliveryBean.getmTripsheetDelivery_Status());
-        tripSheetDeliveriesViewHolder.items_count.setText(currentDeliveryBean.getDeliveredItemsCount());
-        //tripSheetDeliveriesViewHolder.deliverd_by.setText(mdbhelper.getDeliveryName(currentDeliveryBean.getmTripsheetDelivery_CreatedBy()));
 
+        tripSheetDeliveriesViewHolder.items_count.setText(Utility.getFormattedCurrency(Double.parseDouble(currentDeliveryBean.getmTripsheetDelivery_SaleValue())));
+        //tripSheetDeliveriesViewHolder.deliverd_by.setText(mdbhelper.getDeliveryName(currentDeliveryBean.getmTripsheetDelivery_CreatedBy()));
+        tripSheetDeliveriesViewHolder.deliverd_by.setText(currentDeliveryBean.getmTripsheetDelivery_CreatedBy());
         tripSheetDeliveriesViewHolder.View.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +120,8 @@ public class AgentDeliveriesAdapter extends BaseAdapter {
                 i.putExtra("productId",currentDeliveryBean.getmTripsheetDelivery_productId());
                 i.putExtra("SaleOId",currentDeliveryBean.getmTripsheetDelivery_so_code());
                 i.putExtra("tripsheetId",currentDeliveryBean.getmTripsheetDelivery_tripId());
+                i.putExtra("deliveryBy",currentDeliveryBean.getmTripsheetDelivery_CreatedBy());
+                i.putExtra("updatedBy",currentDeliveryBean.getmTripsheetDelivery_UpdatedBy());
                 activity.startActivity(i);
                 activity.finish();
             }
