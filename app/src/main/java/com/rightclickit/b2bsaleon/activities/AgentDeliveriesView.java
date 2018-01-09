@@ -143,7 +143,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
 
 
         }
-        final ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(mDeliveryNo);
+        final ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(mDeliveryNo,mAgentTripId);
 
         deliveredProdIdsList = mDBHelper.getdeliveryDetailsPreviewProdIdsList(mDeliveryNo);
 

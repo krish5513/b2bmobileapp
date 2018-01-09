@@ -143,6 +143,7 @@ public class AgentPaymentsAdapter extends BaseAdapter {
                 i.putExtra("tripID",currentDeliveryBean.getPayments_tripsheetId());
                 i.putExtra("ReceivedAmount",rAmt);
                 i.putExtra("Paymentdate",(currentDeliveryBean.getPayment_date()));
+                i.putExtra("firstname",currentDeliveryBean.getFirst_name());
                 activity.startActivity(i);
                 activity.finish();
             }

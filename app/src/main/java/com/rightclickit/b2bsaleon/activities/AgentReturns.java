@@ -36,7 +36,7 @@ public class AgentReturns extends AppCompatActivity {
 
     private TextView mNoDataText;
 
-    String return_no;
+    String return_no,returnId;
 
     Button view;
     private DBHelper mDBHelper;
@@ -119,8 +119,9 @@ public class AgentReturns extends AppCompatActivity {
         for (int i = 0; i < unUploadedReturns.size(); i++) {
             // return_no = unUploadedReturns.get(i).getmTripshhetReturnsReturn_no();
             return_no = unUploadedReturns.get(i).getmTripshhetReturnsReturn_number();
+            returnId=unUploadedReturns.get(i).getmTripshhetReturnsTrip_id();
         }
-        ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(return_no);
+        ArrayList<String[]> arList = mDBHelper.getreturnDetailsPreview(return_no,returnId);
         for (int i = 0; i < arList.size(); i++) {
             String[] temp = arList.get(i);
 
@@ -253,8 +254,9 @@ public class AgentReturns extends AppCompatActivity {
         ArrayList<TripSheetReturnsBean> unUploadedReturns = mDBHelper.fetchAllTripsheetsReturnsListForAgents(agentId);
         for (int i = 0; i < unUploadedReturns.size(); i++) {
             return_no = unUploadedReturns.get(i).getmTripshhetReturnsReturn_no();
+            returnId=unUploadedReturns.get(i).getmTripshhetReturnsTrip_id();
         }
-        ArrayList<String[]> arList = mDBHelper.getreturnDetailsPreview(return_no);
+        ArrayList<String[]> arList = mDBHelper.getreturnDetailsPreview(return_no,returnId);
         for (int i = 0; i < arList.size(); i++) {
             String[] temp = arList.get(i);
 
@@ -288,6 +290,7 @@ public class AgentReturns extends AppCompatActivity {
 
         if (id == R.id.autorenew) {
             if (new NetworkConnectionDetector(AgentReturns.this).isNetworkConnected()) {
+                mNoDataText.setVisibility(View.GONE);
                 showAlertDialog(AgentReturns.this, "Sync process", "Are you sure, you want start the sync process?");
             } else {
                 new NetworkConnectionDetector(AgentReturns.this).displayNoNetworkError(AgentReturns.this);

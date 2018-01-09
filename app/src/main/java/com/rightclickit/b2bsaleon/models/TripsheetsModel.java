@@ -145,8 +145,12 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                 HashMap<String, String> userMapData = mDBHelper.getUsersData();
                 JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
                 JSONArray routesArray = routesJob.getJSONArray("routeArray");
+                if (mRouteCodesList.size() > 0) {
+                    mRouteCodesList.clear();
+                }
                 for (int i = 0; i < routesArray.length(); i++) {
                     routeCode = "";
+
                     routeCode = mDBHelper.getRouteCodeByRouteId(routesArray.get(i).toString());
                     mRouteCodesList.add(routeCode);
                 }
@@ -240,7 +244,13 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                         tripsheetsListBean.setmTripshhetCode(jb.getString("code"));
                         //tripsheetsListBean.setRoute_code(jb.getString("route_code"));
                         tripsheetsListBean.setMy_Id(jb.getString("my_id"));
-                        tripsheetsListBean.setApproved_by(jb.getString("approved_by"));
+
+                        if (!jb.getString("approved_by").trim().equals("")) {
+                            tripsheetsListBean.setApproved_by(jb.getString("approved_by"));
+                        } else {
+                            tripsheetsListBean.setApproved_by("");
+                        }
+                        //tripsheetsListBean.setApproved_by(jb.getString("approved_by"));
                         tripsheetsListBean.setmTripshhetDate(jb.getString("date"));
                         tripsheetsListBean.setmTripshhetStatus(jb.getString("status"));
                         tripsheetsListBean.setmTripshhetOBAmount(jb.getString("ob_amt"));

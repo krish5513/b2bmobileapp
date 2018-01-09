@@ -31,6 +31,16 @@ public class PaymentsBean implements Serializable {
     private String Payments_saleOrderId;
     private String Payments_saleOrderCode;
     private String Payments_cheque_image_path;
+
+    public String getFirst_name() {
+        return first_name;
+    }
+
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
+    }
+
+    private String first_name;
     private int Payments_cheque_upload_status;
 
     public String getPayment_date() {

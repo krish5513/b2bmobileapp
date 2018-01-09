@@ -75,7 +75,7 @@ public class AgentReturnsView extends AppCompatActivity {
     String myList,str_ProductCode,str_Uom ;
 
 
-    private String mReturnNo = "", mReturndate = "", mTripSheetDate="",mAgentName = "",mTripSheetCode="", mAgentCode = "", mAgenttripId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode,mAgentSoDate;
+    private String mReturnNo = "", mReturndate = "", mTripSheetDate="",mAgentName = "",mTripSheetCode="", mAgentCode = "", mAgenttripId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode,mAgentSoDate,deliveryBy,updatedBy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,11 +103,13 @@ public class AgentReturnsView extends AppCompatActivity {
             mReturnNo= bundle.getString("ReturnNo");
             mReturndate=bundle.getString("Returndate");
             mAgenttripId=bundle.getString("tripId");
+            deliveryBy=bundle.getString("deliveryBy");
+            updatedBy=bundle.getString("updatedBy");
         }
         mTripSheetDate = sharedPreferences.getString("tripsheetDate");
         mTripSheetCode = sharedPreferences.getString("tripsheetCode");
 
-        final ArrayList<String[]> arList = mDBHelper.getreturnDetailsPreview(mReturnNo);
+        final ArrayList<String[]> arList = mDBHelper.getreturnDetailsPreview(mReturnNo,mAgenttripId);
 
 
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
@@ -120,10 +122,12 @@ public class AgentReturnsView extends AppCompatActivity {
 
 
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
-        tv_companyName.setText(sharedPreferences.getString("companyname"));
+       // tv_companyName.setText(sharedPreferences.getString("companyname"));
+        tv_companyName.setText(updatedBy);
 
         user_Name = (TextView) findViewById(R.id.tv_user_Name);
-        user_Name.setText(sharedPreferences.getString("loginusername"));
+       // user_Name.setText(sharedPreferences.getString("loginusername"));
+        user_Name.setText(deliveryBy);
 
        /* Route_Name = (TextView) findViewById(R.id.route_name);
         Route_Name.setText(sharedPreferences.getString("routename"));
@@ -274,7 +278,7 @@ public class AgentReturnsView extends AppCompatActivity {
         paint.setTextSize(26);
 
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        canvas.drawText(sharedPreferences.getString("companyname"), 5, 20, paint);
+        canvas.drawText(updatedBy, 5, 20, paint);
        /* paint.setTextSize(20);
         canvas.drawText(sharedPreferences.getString("loginusername"), 5, 50, paint);
 */

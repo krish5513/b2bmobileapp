@@ -144,6 +144,22 @@ public class AgentPaymentsModel implements OnAsyncRequestCompleteListener {
                     if (resObj.has("route_code")) {
                         paymentsBean.setPayments_routeCodes(resObj.getString("route_code"));
                     }
+
+                    if (resObj.has("userdata1")) {
+                        JSONArray productUnitJsonArray = resObj.getJSONArray("userdata1");
+                        int len = productUnitJsonArray.length();
+                        if (len > 0) {
+                            for (int k = 0; k < len; k++) {
+                                JSONObject priceUnitObj = productUnitJsonArray.getJSONObject(k);
+                                if (priceUnitObj.has("first_name")) {
+                                    // Agent price
+
+                                    paymentsBean.setFirst_name(priceUnitObj.getString("first_name"));
+
+                                }
+                            }
+                        }
+                    }
                     // Checq Number
                     paymentsBean.setPayments_chequeNumber("");
                     // Account Number

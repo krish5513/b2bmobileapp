@@ -59,7 +59,7 @@ public class AgentPaymentsView extends AppCompatActivity {
     private TripSheetsPaymentPreviewDeliveredProductsAdapter tripSheetsPaymentPreviewDeliveredProductsAdapter;
     private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
     TextView print;
-    String agentId="";
+    String agentId="",firstname;
             LinearLayout checklayout;
     ArrayList<String[]> selectedList, cratesList;
     SaleOrderDeliveredProducts deliveredProduct;
@@ -105,6 +105,7 @@ public class AgentPaymentsView extends AppCompatActivity {
                 paymentdate = bundle.getString("Paymentdate");
                 tripid = bundle.getString("tripID");
                 receivedAmt = bundle.getString("ReceivedAmount");
+                firstname=bundle.getString("firstname");
             }
 
             tv_companyName = (TextView) findViewById(R.id.tv_companyName);
@@ -139,7 +140,7 @@ public class AgentPaymentsView extends AppCompatActivity {
 
 
             // Updating UI with fetched values.
-            tv_companyName.setText(companyName);
+            tv_companyName.setText(firstname);
 
             ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(tripid);
             for (int i = 0; i < tripSheetSOList.size(); i++) {
@@ -224,11 +225,11 @@ public class AgentPaymentsView extends AppCompatActivity {
                 paint.setTextSize(26);
 
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-                canvas.drawText(companyName, 5, 20, paint);
+                canvas.drawText(firstname, 5, 20, paint);
                 paint.setTextSize(20);
                 // canvas.drawText(routeCode, 5, 80, paint);
                 // canvas.drawText(routeName, 200, 80, paint);
-                canvas.drawText("PAYMENT INFO,", 100, 50, paint);
+                canvas.drawText("PAYMENT INFO", 100, 50, paint);
                 //  canvas.drawText("by " + loggedInUserName, 200, 120, paint);
                 //canvas.drawText(String.format("Sale # %s", saleOrdersDetails.getmTripshetSOCode()), 5, 80, paint);
                 //  canvas.drawText(saleOrdersDetails.getmTripshetSODate(), 200, 80, paint);

@@ -112,6 +112,8 @@ public class AgentReturnsAdapter extends BaseAdapter{
                 i.putExtra("ReturnNo",currentReturnsBean.getmTripshhetReturnsReturn_number());
                 i.putExtra("tripId",currentReturnsBean.getmTripshhetReturnsTrip_id());
                 i.putExtra("Returndate",(currentReturnsBean.getmTripshhetReturnsCreated_on()));
+                i.putExtra("deliveryBy",currentReturnsBean.getmTripshhetReturnsCreated_by());
+                i.putExtra("updatedBy",currentReturnsBean.getmTripshhetReturnsUpdated_by());
                 activity.startActivity(i);
                 activity.finish();
             }

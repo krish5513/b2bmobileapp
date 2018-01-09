@@ -97,8 +97,9 @@ public class Constants {
 
 
 
+/*
 
-    /*public static final String PORT_LOGIN = ":3211";
+    public static final String PORT_LOGIN = ":3211";
     public static final String PORT_ADD = ":3210";
 
 
@@ -119,6 +120,7 @@ public class Constants {
 
     //Port for notifications list
     public static final String SYNC_NOTIFICATIONS_PORT = ":3210";
+
 */
 
 

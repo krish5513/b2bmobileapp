@@ -90,7 +90,7 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
         cal.add(Calendar.DAY_OF_YEAR,1);
         currentDate = df.format(cal.getTime());
 
-        cal.add(Calendar.DATE, -30);
+        cal.add(Calendar.DATE, -10);
         fromDate = df.format(cal.getTime());
 
     }

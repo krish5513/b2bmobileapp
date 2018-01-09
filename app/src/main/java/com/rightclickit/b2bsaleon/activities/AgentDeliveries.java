@@ -50,7 +50,7 @@ public class AgentDeliveries extends AppCompatActivity {
     TextView tv_deliveries, tv_deliveriesValue, tv_pendingvalue;
     ArrayList<String> deliveriess = new ArrayList<>();
     ArrayList<String> mtripsheetId = new ArrayList<>();
-    String d_no;
+    String d_no,d_id;
     private double totalAmount = 0;
     private double totalTaxAmount = 0;
     private double subTotal = 0;
@@ -131,8 +131,9 @@ public class AgentDeliveries extends AppCompatActivity {
         for (int i = 0; i < unUploadedDeliveries.size(); i++) {
             //d_no = unUploadedDeliveries.get(i).getmTripsheetDeliveryNo();
             d_no = unUploadedDeliveries.get(i).getmTripsheetDeliveryNumber();
+            d_id= unUploadedDeliveries.get(i).getmTripsheetDelivery_tripId();
         }
-        ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(d_no);
+        ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(d_no,d_id);
         for (int i = 0; i < arList.size(); i++) {
             String[] temp = arList.get(i);
 
@@ -249,8 +250,9 @@ public class AgentDeliveries extends AppCompatActivity {
         for (int i = 0; i < unUploadedDeliveries1.size(); i++) {
             //d_no = unUploadedDeliveries1.get(i).getmTripsheetDeliveryNo();
             d_no = unUploadedDeliveries1.get(i).getmTripsheetDeliveryNumber();
+            d_id=unUploadedDeliveries1.get(i).getmTripsheetDelivery_tripId();
         }
-        ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(d_no);
+        ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(d_no,d_id);
         for (int i = 0; i < arList.size(); i++) {
             String[] temp = arList.get(i);
 
@@ -316,6 +318,7 @@ public class AgentDeliveries extends AppCompatActivity {
 
         if (id == R.id.autorenew) {
             if (new NetworkConnectionDetector(AgentDeliveries.this).isNetworkConnected()) {
+                mNoDataText.setVisibility(View.GONE);
                 showAlertDialog(AgentDeliveries.this, "Sync process", "Are you sure, you want start the sync process?");
             } else {
                 new NetworkConnectionDetector(AgentDeliveries.this).displayNoNetworkError(AgentDeliveries.this);

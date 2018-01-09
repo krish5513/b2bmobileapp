@@ -258,8 +258,10 @@ public class AgentPayments extends AppCompatActivity {
             return true;
         }
         if (id == R.id.autorenew) {
-            if (new NetworkConnectionDetector(AgentPayments.this).isNetworkConnected())
+            if (new NetworkConnectionDetector(AgentPayments.this).isNetworkConnected()) {
+                mNoDataText.setVisibility(View.GONE);
                 showAlertDialog(AgentPayments.this, "Sync process", "Are you sure, you want start the sync process?");
+            }
 
             else {
                 new NetworkConnectionDetector(AgentPayments.this).displayNoNetworkError(AgentPayments.this);

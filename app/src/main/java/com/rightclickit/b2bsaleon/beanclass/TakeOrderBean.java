@@ -19,6 +19,16 @@ public class TakeOrderBean implements Serializable {
     private String mEnquiryId;
     private String mAgentId;
     private String mAgentGST;
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    private String firstname;
     private int muploadStatus;
 
     public String getUom() {
