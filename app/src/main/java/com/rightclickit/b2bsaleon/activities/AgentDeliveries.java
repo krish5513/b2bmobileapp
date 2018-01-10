@@ -50,7 +50,7 @@ public class AgentDeliveries extends AppCompatActivity {
     TextView tv_deliveries, tv_deliveriesValue, tv_pendingvalue;
     ArrayList<String> deliveriess = new ArrayList<>();
     ArrayList<String> mtripsheetId = new ArrayList<>();
-    String d_no,d_id;
+    String d_no, d_id;
     private double totalAmount = 0;
     private double totalTaxAmount = 0;
     private double subTotal = 0;
@@ -131,9 +131,9 @@ public class AgentDeliveries extends AppCompatActivity {
         for (int i = 0; i < unUploadedDeliveries.size(); i++) {
             //d_no = unUploadedDeliveries.get(i).getmTripsheetDeliveryNo();
             d_no = unUploadedDeliveries.get(i).getmTripsheetDeliveryNumber();
-            d_id= unUploadedDeliveries.get(i).getmTripsheetDelivery_tripId();
+            d_id = unUploadedDeliveries.get(i).getmTripsheetDelivery_tripId();
         }
-        ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(d_no,d_id);
+        ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(d_no, d_id);
         for (int i = 0; i < arList.size(); i++) {
             String[] temp = arList.get(i);
 
@@ -145,7 +145,7 @@ public class AgentDeliveries extends AppCompatActivity {
         if (unUploadedDeliveries.size() > 0) {
             loadDeliveries(unUploadedDeliveries);
         } else {
-            mNoDataText.setText("No Deliveries Found."+"\n"+"Please click on sync button to get the deliveries.");
+            mNoDataText.setText("No Deliveries Found." + "\n" + "Please click on sync button to get the deliveries.");
         }
 
         sales.setOnClickListener(new View.OnClickListener() {
@@ -250,9 +250,9 @@ public class AgentDeliveries extends AppCompatActivity {
         for (int i = 0; i < unUploadedDeliveries1.size(); i++) {
             //d_no = unUploadedDeliveries1.get(i).getmTripsheetDeliveryNo();
             d_no = unUploadedDeliveries1.get(i).getmTripsheetDeliveryNumber();
-            d_id=unUploadedDeliveries1.get(i).getmTripsheetDelivery_tripId();
+            d_id = unUploadedDeliveries1.get(i).getmTripsheetDelivery_tripId();
         }
-        ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(d_no,d_id);
+        ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(d_no, d_id);
         for (int i = 0; i < arList.size(); i++) {
             String[] temp = arList.get(i);
 
@@ -264,7 +264,7 @@ public class AgentDeliveries extends AppCompatActivity {
         if (unUploadedDeliveries1.size() > 0) {
             loadDeliveries(unUploadedDeliveries1);
         } else {
-            mNoDataText.setText("No Deliveries Found."+"\n"+"Please click on sync button to get the deliveries.");
+            mNoDataText.setText("No Deliveries Found." + "\n" + "Please click on sync button to get the deliveries.");
         }
     }
 

@@ -87,10 +87,10 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
 
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        cal.add(Calendar.DAY_OF_YEAR,1);
+        cal.add(Calendar.DAY_OF_YEAR, 1);
         currentDate = df.format(cal.getTime());
 
-        cal.add(Calendar.DATE, -10);
+        cal.add(Calendar.DATE, -30);
         fromDate = df.format(cal.getTime());
 
     }
@@ -207,7 +207,8 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
     @Override
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
         try {
-           CustomProgressDialog.hideProgressDialog();
+            String mCreatedByStr = "", mUpdatedByStr = "";
+            CustomProgressDialog.hideProgressDialog();
 
             //System.out.println("ORDERS RESPONSE::::::::: " + response);
 
@@ -218,8 +219,11 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                     mDeliveriesBeansList.clear();
                 }
                 for (int j = 0; j < resLength; j++) {
+                    clearAll();
+                    mCreatedByStr = "";
+                    mUpdatedByStr = "";
                     JSONObject resObj = respArray.getJSONObject(j);
-                    TripSheetDeliveriesBean deliveriesBean = new TripSheetDeliveriesBean();
+                    //TripSheetDeliveriesBean deliveriesBean = new TripSheetDeliveriesBean();
                     // Delivery No
                     if (resObj.has("delivery_no")) {
                         deliveryNoList.add(resObj.getString("delivery_no"));
@@ -314,15 +318,15 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                                 JSONObject priceUnitObj = productUnitJsonArray.getJSONObject(k);
                                 if (priceUnitObj.has("last_name")) {
                                     // Agent price
-
-                                    deliveriesBean.setmTripsheetDelivery_CreatedBy(priceUnitObj.getString("last_name"));
+                                    mCreatedByStr = priceUnitObj.getString("last_name");
+                                    //deliveriesBean.setmTripsheetDelivery_CreatedBy(priceUnitObj.getString("last_name"));
 
                                 }
 
                                 if (priceUnitObj.has("first_name")) {
                                     // Agent price
-
-                                    deliveriesBean.setmTripsheetDelivery_UpdatedBy(priceUnitObj.getString("first_name"));
+                                    mUpdatedByStr = priceUnitObj.getString("first_name");
+                                    //deliveriesBean.setmTripsheetDelivery_UpdatedBy(priceUnitObj.getString("first_name"));
 
                                 }
                             }
@@ -366,7 +370,7 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                     }
 
                     for (int d = 0; d < productCodesList.size(); d++) {
-                       // TripSheetDeliveriesBean deliveriesBean = new TripSheetDeliveriesBean();
+                        TripSheetDeliveriesBean deliveriesBean = new TripSheetDeliveriesBean();
                         deliveriesBean.setmTripsheetDeliveryNumber(deliveryNoList.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_tripId(tripIdsList.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_so_id(saleorderIdList.get(j).toString());
@@ -386,19 +390,20 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
                         deliveriesBean.setmTripsheetDelivery_SaleValue(saleValue.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_Status(statusList.get(j).toString());
                         deliveriesBean.setmTripsheetDelivery_Delete(deleteList.get(j).toString());
-                       deliveriesBean.setmTripsheetDelivery_CreatedOn(createdOn.get(j).toString());
-                      //  deliveriesBean.setmTripsheetDelivery_CreatedBy(createdBy.get(j).toString());
-                       deliveriesBean.setmTripsheetDelivery_UpdatedOn(updatedOn.get(j).toString());
-                       // deliveriesBean.setmTripsheetDelivery_UpdatedBy(updatedBy.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_CreatedOn(createdOn.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_CreatedBy(mCreatedByStr);
+                        deliveriesBean.setmTripsheetDelivery_UpdatedOn(updatedOn.get(j).toString());
+                        deliveriesBean.setmTripsheetDelivery_UpdatedBy(mUpdatedByStr);
 
                         mDeliveriesBeansList.add(deliveriesBean);
                     }
                 }
             }
+
             synchronized (this) {
                 if (mDeliveriesBeansList.size() > 0) {
                     mDBHelper.updateTripsheetsDeliveriesListData(mDeliveriesBeansList);
-                   // CustomProgressDialog.hideProgressDialog();
+                    // CustomProgressDialog.hideProgressDialog();
 
                 }
             }
@@ -409,6 +414,33 @@ public class AgentDeliveriesModel implements OnAsyncRequestCompleteListener {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private void clearAll() {
+
+        if (productIdsList.size() > 0) {
+            productIdsList.clear();
+        }
+        if (productCodesList.size() > 0) {
+            productCodesList.clear();
+        }
+        if (taxPercentArray.size() > 0) {
+            taxPercentArray.clear();
+        }
+
+        if (unitPriceArray.size() > 0) {
+            unitPriceArray.clear();
+        }
+        if (quantitysList.size() > 0) {
+            quantitysList.clear();
+        }
+        if (amount.size() > 0) {
+            amount.clear();
+        }
+        if (taxAmount.size() > 0) {
+            taxAmount.clear();
         }
     }
 }
