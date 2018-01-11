@@ -144,6 +144,7 @@ public class AgentPaymentsAdapter extends BaseAdapter {
                 i.putExtra("ReceivedAmount",rAmt);
                 i.putExtra("Paymentdate",(currentDeliveryBean.getPayment_date()));
                 i.putExtra("firstname",currentDeliveryBean.getFirst_name());
+                i.putExtra("saleorderId",currentDeliveryBean.getPayments_saleOrderId());
                 activity.startActivity(i);
                 activity.finish();
             }

@@ -192,6 +192,7 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
     @Override
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
         try {
+            String mCreatedByStr = "", mUpdatedByStr = "";
             CustomProgressDialog.hideProgressDialog();
 
             //System.out.println("ORDERS RESPONSE::::::::: " + response);
@@ -205,6 +206,9 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                     mReturnsBeansList.clear();
                 }
                 for (int j = 0; j < resLength; j++) {
+                   // clearAll();
+                    mCreatedByStr = "";
+                    mUpdatedByStr = "";
                     JSONObject resObj = respArray.getJSONObject(j);
                     TripSheetReturnsBean returnsBean = new TripSheetReturnsBean();
                     // Delivery No
@@ -271,14 +275,14 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                                 JSONObject priceUnitObj = productUnitJsonArray.getJSONObject(k);
                                 if (priceUnitObj.has("last_name")) {
                                     // Agent price
-
-                                    returnsBean.setmTripshhetReturnsCreated_by(priceUnitObj.getString("last_name"));
+                                   // mCreatedByStr = priceUnitObj.getString("last_name");
+                                   returnsBean.setmTripshhetReturnsCreated_by(priceUnitObj.getString("last_name"));
 
                                 }
 
                                 if (priceUnitObj.has("first_name")) {
                                     // Agent price
-
+                                  //  mUpdatedByStr = priceUnitObj.getString("first_name");
                                     returnsBean.setmTripshhetReturnsUpdated_by(priceUnitObj.getString("first_name"));
 
                                 }
@@ -361,9 +365,9 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
                         returnsBean.setmTripshhetReturnsStatus(statusList.get(d).toString());
                         returnsBean.setmTripshhetReturnsDelete(deleteList.get(d).toString());
                         returnsBean.setmTripshhetReturnsCreated_on(returnDateList.get(d).toString());
-                       // returnsBean.setmTripshhetReturnsCreated_by(createdBy.get(d).toString());
+                      // returnsBean.setmTripshhetReturnsCreated_by(createdBy.get(d).toString());
                         returnsBean.setmTripshhetReturnsUpdated_on(updatedOn.get(d).toString());
-                        //returnsBean.setmTripshhetReturnsUpdated_by(updatedBy.get(d).toString());
+                       // returnsBean.setmTripshhetReturnsUpdated_by(updatedBy.get(d).toString());
 
                         mReturnsBeansList.add(returnsBean);
                         // }
@@ -385,6 +389,24 @@ public class AgentReturnsModel implements OnAsyncRequestCompleteListener {
             e.printStackTrace();
         }
     }
+
+  /*  private void clearAll() {
+
+        if (productIdsList.size() > 0) {
+            productIdsList.clear();
+        }
+        if (productCodesList.size() > 0) {
+            productCodesList.clear();
+        }
+
+
+
+        if (quantitysList.size() > 0) {
+            quantitysList.clear();
+        }
+
+
+    }*/
 }
 
 

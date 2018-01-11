@@ -160,16 +160,38 @@ public class AgentPaymentsModel implements OnAsyncRequestCompleteListener {
                             }
                         }
                     }
-                    // Checq Number
-                    paymentsBean.setPayments_chequeNumber("");
+
+                    if (resObj.has("trans_details")) {
+                        JSONArray productUnitJsonArray = resObj.getJSONArray("trans_details");
+                        int len = productUnitJsonArray.length();
+                        if (len > 0) {
+                            for (int k = 0; k < len; k++) {
+                                JSONObject priceUnitObj = productUnitJsonArray.getJSONObject(k);
+                                if (priceUnitObj.has("che_trans_id")) {
+
+                                    // Checq Number
+                                    paymentsBean.setPayments_chequeNumber(priceUnitObj.getString("che_trans_id"));
+                                }
+                                if (priceUnitObj.has("bank_name")) {
+
+                                    // Bank Name
+                                    paymentsBean.setPayments_bankName(priceUnitObj.getString("bank_name"));
+                                }
+                                if (priceUnitObj.has("trans_date")) {
+                                    // Cheq Date
+                                    paymentsBean.setPayments_chequeDate(priceUnitObj.getString("trans_date"));
+
+                                }
+                            }
+                        }
+                    }
+
                     // Account Number
                     paymentsBean.setPayments_accountNumber("");
                     // Account name
                     paymentsBean.setPayments_accountName("");
-                    // Bank Name
-                    paymentsBean.setPayments_bankName("");
-                    // Cheq Date
-                    paymentsBean.setPayments_chequeDate("");
+
+
                     // Checq clear date
                     paymentsBean.setPayments_chequeClearDate("");
                     // Receiver Name

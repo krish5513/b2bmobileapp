@@ -141,7 +141,7 @@
                             android:layout_marginTop="5dp"
                             android:paddingLeft="3dp"
                             android:text=" Kiran"
-                            android:maxLength="15"
+                            android:maxLength="14"
                             android:textColor="@color/greydark"
                             android:textSize="14sp" />
                         <LinearLayout

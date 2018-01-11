@@ -55,11 +55,12 @@ public class AgentPaymentsView extends AppCompatActivity {
     private ArrayList<SaleOrderDeliveredProducts> deliveredProductsList;
     private ArrayList<SaleOrderReturnedProducts> returnedProductsList;
     private PaymentsBean paymentsDetails = null;
+    private AgentPaymentsBean pDetails = null;
     private double totalAmount = 0.0;
     private TripSheetsPaymentPreviewDeliveredProductsAdapter tripSheetsPaymentPreviewDeliveredProductsAdapter;
     private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
     TextView print;
-    String agentId="",firstname;
+    String agentId="",firstname,sId;
             LinearLayout checklayout;
     ArrayList<String[]> selectedList, cratesList;
     SaleOrderDeliveredProducts deliveredProduct;
@@ -106,6 +107,7 @@ public class AgentPaymentsView extends AppCompatActivity {
                 tripid = bundle.getString("tripID");
                 receivedAmt = bundle.getString("ReceivedAmount");
                 firstname=bundle.getString("firstname");
+                sId=bundle.getString("saleorderId");
             }
 
             tv_companyName = (TextView) findViewById(R.id.tv_companyName);
@@ -173,7 +175,32 @@ public class AgentPaymentsView extends AppCompatActivity {
             agentId = mmSharedPreferences.getString("agentId");
 
 
-            unUploadedPayments = mDBHelper.getpaymentDetails(agentId);
+
+            ArrayList<PaymentsBean> unUploadedPayments = mDBHelper.getpaymentDetailsForAgents(agentId);
+            for (int i = 0; i < unUploadedPayments.size(); i++) {
+                mode_of_payment.setText(unUploadedPayments.get(i).getPayments_type().equals("0") ? "Cash" : "Cheque");
+                if (unUploadedPayments.get(i).getPayments_type().equals("1")) {
+                    cheque_number.setText(unUploadedPayments.get(i).getPayments_chequeNumber());
+                    cheque_date.setText(unUploadedPayments.get(i).getPayments_chequeDate());
+                    bank_name.setText(unUploadedPayments.get(i).getPayments_bankName());
+                } else {
+                    checklayout.setVisibility(View.GONE);
+                }
+            }
+
+           /* paymentsDetails = mDBHelper.getSaleOrderPaymentDetails(mTripSheetId, sId);
+            if (paymentsDetails != null) {
+                mode_of_payment.setText(paymentsDetails.getPayments_type().equals("0") ? "Cash" : "Cheque");
+                if (paymentsDetails.getPayments_type().equals("1")) {
+                    cheque_number.setText(paymentsDetails.getPayments_chequeNumber());
+                    cheque_date.setText(paymentsDetails.getPayments_chequeDate());
+                    bank_name.setText(paymentsDetails.getPayments_bankName());
+                } else {
+                    checklayout.setVisibility(View.GONE);
+                }
+            }
+
+            pDetails = mDBHelper.getAgentPaymentDetails(mTripSheetId,sId);
 
             for (int i = 0; i < unUploadedPayments.size(); i++) {
                 mode_of_payment.setText(unUploadedPayments.get(i).getPayment_mop().equals("0") ? "Cash" : "Cheque");
@@ -185,8 +212,21 @@ public class AgentPaymentsView extends AppCompatActivity {
                 } else {
                     checklayout.setVisibility(View.GONE);
                 }
-            }
+            }*/
 
+        /*    pDetails = mDBHelper.getAgentPaymentDetails(mTripSheetId,sId,agentId);
+            if (pDetails != null) {
+                mode_of_payment.setText(pDetails.getPayment_mop().equals("0") ? "Cash" : "Cheque");
+
+                if (pDetails.getPayment_mop().equals("1")) {
+                    cheque_number.setText(pDetails.getPayment_checkno());
+                    cheque_date.setText(pDetails.getPayment_checkDate());
+                    bank_name.setText(pDetails.getPayment_bankName());
+                } else {
+                    checklayout.setVisibility(View.GONE);
+                }
+            }
+*/
          /*   cratesList = new ArrayList<>(returnedProductsList.size());
             if (returnedProductsList.size() > 0) {
 

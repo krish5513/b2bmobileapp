@@ -37,7 +37,7 @@ public class AgentPayments extends AppCompatActivity {
     Button view;
     private DBHelper mDBHelper;
     private MMSharedPreferences mPreferences;
-    String agentId="";
+    String agentId="",payment_no,paymentid;
     AgentPaymentsAdapter paymentsAdapter;
     ListView paymentsList;
     FloatingActionButton fab;
@@ -130,7 +130,21 @@ public class AgentPayments extends AppCompatActivity {
         ArrayList<PaymentsBean> unUploadedPayments = mDBHelper.getpaymentDetailsForAgents(agentId);
         System.out.println("PAYMENTS SIZE::: "+ unUploadedPayments.size());
 
+      /*  for (int i = 0; i < unUploadedPayments.size(); i++) {
+            // return_no = unUploadedReturns.get(i).getmTripshhetReturnsReturn_no();
+            payment_no = unUploadedPayments.get(i).getPayments_paymentsNumber();
+            paymentid=unUploadedPayments.get(i).getPayments_tripsheetId();
+        }
 
+        ArrayList<String[]> arList = mDBHelper.getpaymentDetailsPreview(payment_no,paymentid);
+        for (int i = 0; i < arList.size(); i++) {
+            String[] temp = arList.get(i);
+
+          *//*  totalAmount = totalAmount + Double.parseDouble(temp[3]);
+            totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
+            subTotal = totalAmount + totalTaxAmount;
+            //   tv_deliveriesValue.setText(Utility.getFormattedCurrency((subTotal)));*//*
+        }*/
         if(unUploadedPayments.size()>0){
             loadPayments(unUploadedPayments);
         }else {
@@ -302,9 +316,23 @@ public class AgentPayments extends AppCompatActivity {
 
     public void loadPayments1() {
         ArrayList<PaymentsBean> unUploadedPayments = mDBHelper.getpaymentDetailsForAgents(agentId);
+       /* for (int i = 0; i < unUploadedPayments.size(); i++) {
+            // return_no = unUploadedReturns.get(i).getmTripshhetReturnsReturn_no();
+            payment_no = unUploadedPayments.get(i).getPayments_paymentsNumber();
+            paymentid=unUploadedPayments.get(i).getPayments_tripsheetId();
+        }
 
+        ArrayList<String[]> arList = mDBHelper.getpaymentDetailsPreview(payment_no,paymentid);
+        for (int i = 0; i < arList.size(); i++) {
+            String[] temp = arList.get(i);
 
+          *//*  totalAmount = totalAmount + Double.parseDouble(temp[3]);
+            totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
+            subTotal = totalAmount + totalTaxAmount;
+            //   tv_deliveriesValue.setText(Utility.getFormattedCurrency((subTotal)));*//*
+        }
 
+*/
         if(unUploadedPayments.size()>0){
             loadPayments(unUploadedPayments);
         }else {
