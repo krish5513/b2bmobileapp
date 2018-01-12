@@ -96,9 +96,9 @@ public class AgentPaymentsAdapter extends BaseAdapter {
            // tripSheetDeliveriesViewHolder.Payment_status = (TextView) view.findViewById(R.id.payment_status);
             tripSheetDeliveriesViewHolder.payment_Amount = (TextView) view.findViewById(R.id.amount);
             tripSheetDeliveriesViewHolder.payment_mop = (TextView) view.findViewById(R.id.mop);
-            tripSheetDeliveriesViewHolder.payment_chechno = (TextView) view.findViewById(R.id.checkNo);
-            tripSheetDeliveriesViewHolder.payment_checkdate = (TextView) view.findViewById(R.id.checkDate);
-            tripSheetDeliveriesViewHolder.payment_bankName = (TextView) view.findViewById(R.id.bankName);
+           // tripSheetDeliveriesViewHolder.payment_chechno = (TextView) view.findViewById(R.id.checkNo);
+          //  tripSheetDeliveriesViewHolder.payment_checkdate = (TextView) view.findViewById(R.id.checkDate);
+          //  tripSheetDeliveriesViewHolder.payment_bankName = (TextView) view.findViewById(R.id.bankName);
             tripSheetDeliveriesViewHolder.paymentcash = (LinearLayout) view.findViewById(R.id.paymentcash);
             tripSheetDeliveriesViewHolder.View = (Button) view.findViewById(R.id.btn_view1);
 
@@ -123,13 +123,13 @@ public class AgentPaymentsAdapter extends BaseAdapter {
             tripSheetDeliveriesViewHolder.payment_Amount.setText(rAmt);
             tripSheetDeliveriesViewHolder.payment_mop.setText(currentDeliveryBean.getPayments_type().equals("0") ? "Cash" : "Cheque");
 
-            if (currentDeliveryBean.getPayments_type().equals("1")) {
+            /*if (currentDeliveryBean.getPayments_type().equals("1")) {
                 tripSheetDeliveriesViewHolder.payment_chechno.setText(currentDeliveryBean.getPayments_chequeNumber());
                 tripSheetDeliveriesViewHolder.payment_checkdate.setText( currentDeliveryBean.getPayments_chequeDate());
                 tripSheetDeliveriesViewHolder.payment_bankName.setText(currentDeliveryBean.getPayments_bankName() );
             } else {
                 tripSheetDeliveriesViewHolder.paymentcash.setVisibility(View.GONE);
-            }
+            }*/
         }
 
 
@@ -144,7 +144,11 @@ public class AgentPaymentsAdapter extends BaseAdapter {
                 i.putExtra("ReceivedAmount",rAmt);
                 i.putExtra("Paymentdate",(currentDeliveryBean.getPayment_date()));
                 i.putExtra("firstname",currentDeliveryBean.getFirst_name());
-                i.putExtra("saleorderId",currentDeliveryBean.getPayments_saleOrderId());
+                i.putExtra("saleorderId",currentDeliveryBean.getPayments_saleOrderCode());
+                i.putExtra("mop",currentDeliveryBean.getPayments_type());
+                i.putExtra("checkNo",currentDeliveryBean.getPayments_chequeNumber());
+                i.putExtra("checkDate",currentDeliveryBean.getPayments_chequeDate());
+                i.putExtra("bankName",currentDeliveryBean.getPayments_bankName());
                 activity.startActivity(i);
                 activity.finish();
             }

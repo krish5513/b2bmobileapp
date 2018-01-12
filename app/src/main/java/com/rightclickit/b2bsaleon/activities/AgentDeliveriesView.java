@@ -72,7 +72,7 @@ public class AgentDeliveriesView extends AppCompatActivity {
     String currentDate, str_routecode, str_deliveryDate, str_deliveryNo;
     double taxes;
 
-    private String mDeliveryNo = "", mDeliverydate = "", productID = "", mTripSheetCode = "", mTripSheetDate = "", mAgentName = "", mAgentCode = "", mAgentTripId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDates,deliveryBy,updatedBy;
+    private String mDeliveryNo = "", mDeliverydate = "", productID = "", mTripSheetCode = "", mTripSheetDate = "", mAgentName = "", mAgentCode = "", mAgentTripId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode, mAgentSoDates, deliveryBy, updatedBy;
     private ArrayList<String> deliveredProdIdsList = null;
 
     @Override
@@ -100,12 +100,11 @@ public class AgentDeliveriesView extends AppCompatActivity {
         mTripSheetDate = sharedPreferences.getString("tripsheetDate");
         mTripSheetCode = sharedPreferences.getString("tripsheetCode");
         //mAgentSoCode= sharedPreferences.getString("SaleOrderId");
-       // mAgentSoDates = sharedPreferences.getString("saleOrderDate");
-        if (mAgentName!=null){
+        // mAgentSoDates = sharedPreferences.getString("saleOrderDate");
+        if (mAgentName != null) {
             mAgentName = sharedPreferences.getString("agentName");
-        }
-        else {
-            mAgentName="-";
+        } else {
+            mAgentName = "-";
         }
 
         mAgentCode = sharedPreferences.getString("agentCode");
@@ -114,44 +113,13 @@ public class AgentDeliveriesView extends AppCompatActivity {
             mDeliveryNo = bundle.getString("DeliveryNo");
             mDeliverydate = bundle.getString("Deliverydate");
             productID = bundle.getString("productId");
-          //  mAgentSoCode = bundle.getString("SaleOId");
-            mAgentTripId=bundle.getString("tripsheetId");
-            deliveryBy=bundle.getString("deliveryBy");
-            updatedBy=bundle.getString("updatedBy");
+            //  mAgentSoCode = bundle.getString("SaleOId");
+            mAgentTripId = bundle.getString("tripsheetId");
+            deliveryBy = bundle.getString("deliveryBy");
+            updatedBy = bundle.getString("updatedBy");
         }
-        ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mAgentTripId);
-        for (int i = 0; i < tripSheetSOList.size(); i++) {
-
-
-            if (tripSheetSOList != null) {
-                if (tripSheetSOList.get(i).getmTripshetSOCode().isEmpty())
-                    mAgentSoCode="-";
-
-
-                else
-                    mAgentSoCode=String.format("Sale # %s", tripSheetSOList.get(i).getmTripshetSOCode());
-
-
-                if (tripSheetSOList.get(i).getmTripshetSODate().isEmpty())
-                    mAgentSoDates=("-");
-
-                else
-                    mAgentSoDates=tripSheetSOList.get(i).getmTripshetSODate();
-
-
-            }
-
-
-        }
-        final ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(mDeliveryNo,mAgentTripId);
-
-        deliveredProdIdsList = mDBHelper.getdeliveryDetailsPreviewProdIdsList(mDeliveryNo);
 
         mAgentsList = (ListView) findViewById(R.id.AgentsList);
-
-        AgentDeliveriesView.CustomListView adapter = new AgentDeliveriesView.CustomListView(arList, this);
-        mAgentsList.setAdapter(adapter);
-
         taxprice = (TextView) findViewById(R.id.taxAmount);
 
 
@@ -162,10 +130,47 @@ public class AgentDeliveriesView extends AppCompatActivity {
 
 
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
-       // tv_companyName.setText(sharedPreferences.getString("companyname"));
-        tv_companyName.setText(updatedBy);
 
         user_Name = (TextView) findViewById(R.id.tv_user_Name);
+
+        deliveryNo = (TextView) findViewById(R.id.agentname);
+
+        deliveryDate = (TextView) findViewById(R.id.tv_AgentCode);
+
+        print = (TextView) findViewById(R.id.tv_print);
+
+
+        ArrayList<TripsheetSOList> tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mAgentTripId);
+        for (int i = 0; i < tripSheetSOList.size(); i++) {
+
+
+            if (tripSheetSOList != null) {
+                if (tripSheetSOList.get(i).getmTripshetSOCode().isEmpty())
+                    mAgentSoCode = "-";
+
+
+                else
+                    mAgentSoCode = String.format("Sale # %s", tripSheetSOList.get(i).getmTripshetSOCode());
+
+
+                if (tripSheetSOList.get(i).getmTripshetSODate().isEmpty())
+                    mAgentSoDates = ("-");
+
+                else
+                    mAgentSoDates = tripSheetSOList.get(i).getmTripshetSODate();
+            }
+        }
+        final ArrayList<String[]> arList = mDBHelper.getdeliveryDetailsPreview(mDeliveryNo, mAgentTripId);
+
+        deliveredProdIdsList = mDBHelper.getdeliveryDetailsPreviewProdIdsList(mDeliveryNo);
+
+        AgentDeliveriesView.CustomListView adapter = new AgentDeliveriesView.CustomListView(arList, this);
+        mAgentsList.setAdapter(adapter);
+
+
+        // tv_companyName.setText(sharedPreferences.getString("companyname"));
+        tv_companyName.setText(updatedBy);
+
         //user_Name.setText(sharedPreferences.getString("loginusername"));
         user_Name.setText(deliveryBy);
 
@@ -193,15 +198,9 @@ public class AgentDeliveriesView extends AppCompatActivity {
         }
 */
 
-        deliveryNo = (TextView) findViewById(R.id.agentname);
-
         deliveryNo.setText(mDeliveryNo);
 
-        deliveryDate = (TextView) findViewById(R.id.tv_AgentCode);
         deliveryDate.setText(mDeliverydate);
-
-
-        print = (TextView) findViewById(R.id.tv_print);
 
 
         print.setOnClickListener(new View.OnClickListener() {
@@ -223,7 +222,8 @@ public class AgentDeliveriesView extends AppCompatActivity {
                 canvas.drawText(updatedBy, 5, 20, paint);
               /*  paint.setTextSize(20);
                 canvas.drawText(sharedPreferences.getString("loginusername"), 5, 50, paint);
-                */paint.setTextSize(20);
+                */
+                paint.setTextSize(20);
                 canvas.drawText("-------------------------------------------", 5, 50, paint);
                 paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
                 paint.setTextSize(20);
@@ -260,9 +260,6 @@ public class AgentDeliveriesView extends AppCompatActivity {
                 canvas.drawText("SO NO,DT.", 5, 140, paint);
                 paint.setTextSize(20);
                 canvas.drawText(": " + mAgentSoCode + ", " + mAgentSoDates, 130, 140, paint);
-
-
-
 
 
                 paint.setTextSize(20);
@@ -342,10 +339,6 @@ public class AgentDeliveriesView extends AppCompatActivity {
                     canvas.drawText("HSSN: " + hssnnumber + "," + "GST: " + taxes + "%", 5, st, paint);
 
 
-
-
-
-
                     st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("QUANTITY ", 5, st, paint);
@@ -382,7 +375,6 @@ public class AgentDeliveriesView extends AppCompatActivity {
                 st = st + 30;
 
 
-
                 paint.setTextSize(20);
                 canvas.drawText("* Please take photocopy of the Bill *", 17, st, paint);
                 st = st + 30;
@@ -392,17 +384,26 @@ public class AgentDeliveriesView extends AppCompatActivity {
             }
         });
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                totalprice.setText(Utility.getFormattedCurrency(subTotal));
-                sharedPreferences.putString("total", String.valueOf(subTotal));
-                tv_amount.setText(Utility.getFormattedCurrency(totalAmount));
-                taxprice.setText(Utility.getFormattedCurrency(totalTaxAmount));
+        synchronized (this) {
+            for (int g = 0; g < arList.size(); g++) {
+                String[] temp = arList.get(g);
+                totalAmount = totalAmount + Double.parseDouble(temp[3]);
+                totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
+                subTotal = totalAmount + totalTaxAmount;
             }
-        }, 100);
-
+        }
+        synchronized (this) {
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    totalprice.setText(Utility.getFormattedCurrency(subTotal));
+                    sharedPreferences.putString("total", String.valueOf(subTotal));
+                    tv_amount.setText(Utility.getFormattedCurrency(totalAmount));
+                    taxprice.setText(Utility.getFormattedCurrency(totalTaxAmount));
+                }
+            }, 100);
+        }
     }
 
 
@@ -530,9 +531,9 @@ public class AgentDeliveriesView extends AppCompatActivity {
 
             SGST.setText(sgst1);
 
-            totalAmount = totalAmount + Double.parseDouble(temp[3]);
-            totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
-            subTotal = totalAmount + totalTaxAmount;
+//            totalAmount = totalAmount + Double.parseDouble(temp[3]);
+//            totalTaxAmount = totalTaxAmount + Double.parseDouble(temp[4]);
+//            subTotal = totalAmount + totalTaxAmount;
 
             return view;
         }

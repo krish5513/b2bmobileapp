@@ -50,7 +50,7 @@ public class AgentPaymentsView extends AppCompatActivity {
     ListView delivered_products_list_view, returned_products_list_view;
 
     private String mTripSheetId = "", mAgentId = "",mAgentSoDates="", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "";
-    private String currentDate, receivedAmt, companyName, paymentno, paymentdate, tripid;
+    private String currentDate, receivedAmt, companyName, paymentno, paymentdate, tripid,pType,checkno,checkdate,bankname;
     private TripsheetSOList saleOrdersDetails = null;
     private ArrayList<SaleOrderDeliveredProducts> deliveredProductsList;
     private ArrayList<SaleOrderReturnedProducts> returnedProductsList;
@@ -61,7 +61,7 @@ public class AgentPaymentsView extends AppCompatActivity {
     private TripSheetsPaymentPreviewReturnedProductsAdapter tripSheetsPaymentPreviewReturnedProductsAdapter;
     TextView print;
     String agentId="",firstname,sId;
-            LinearLayout checklayout;
+            LinearLayout checklayout,cashlayout;
     ArrayList<String[]> selectedList, cratesList;
     SaleOrderDeliveredProducts deliveredProduct;
     String ObAmount="",Ordervalue="",receivedAmount="",Due="";
@@ -108,6 +108,10 @@ public class AgentPaymentsView extends AppCompatActivity {
                 receivedAmt = bundle.getString("ReceivedAmount");
                 firstname=bundle.getString("firstname");
                 sId=bundle.getString("saleorderId");
+                pType=bundle.getString("mop");
+                checkno=bundle.getString("checkNo");
+                checkdate=bundle.getString("checkDate");
+                bankname=bundle.getString("bankName");
             }
 
             tv_companyName = (TextView) findViewById(R.id.tv_companyName);
@@ -133,6 +137,7 @@ public class AgentPaymentsView extends AppCompatActivity {
             received_amount = (TextView) findViewById(R.id.tv_amount);
 
             checklayout = (LinearLayout) findViewById(R.id.checklayout);
+            cashlayout = (LinearLayout) findViewById(R.id.cashLayout);
             received_amount.setText(receivedAmt);
             // loggedInUserId = mmSharedPreferences.getString("userId");
             // loggedInUserName = mmSharedPreferences.getString("loginusername");
@@ -168,39 +173,22 @@ public class AgentPaymentsView extends AppCompatActivity {
 
 
             }
-            tv_sale_order_no.setText(mAgentSoCode);
+            tv_sale_order_no.setText(sId);
             tv_sale_order_date.setText(mAgentSoDates);
 
 
             agentId = mmSharedPreferences.getString("agentId");
 
-
-
-            ArrayList<PaymentsBean> unUploadedPayments = mDBHelper.getpaymentDetailsForAgents(agentId);
-            for (int i = 0; i < unUploadedPayments.size(); i++) {
-                mode_of_payment.setText(unUploadedPayments.get(i).getPayments_type().equals("0") ? "Cash" : "Cheque");
-                if (unUploadedPayments.get(i).getPayments_type().equals("1")) {
-                    cheque_number.setText(unUploadedPayments.get(i).getPayments_chequeNumber());
-                    cheque_date.setText(unUploadedPayments.get(i).getPayments_chequeDate());
-                    bank_name.setText(unUploadedPayments.get(i).getPayments_bankName());
-                } else {
-                    checklayout.setVisibility(View.GONE);
-                }
+            if(pType.equals("0")){
+                mode_of_payment.setText("Cash");
+                checklayout.setVisibility(View.GONE);
+            }else {
+                cheque_number.setText(checkno);
+                cheque_date.setText(checkdate);
+                bank_name.setText(bankname);
+              cashlayout.setVisibility(View.GONE);
             }
 
-           /* paymentsDetails = mDBHelper.getSaleOrderPaymentDetails(mTripSheetId, sId);
-            if (paymentsDetails != null) {
-                mode_of_payment.setText(paymentsDetails.getPayments_type().equals("0") ? "Cash" : "Cheque");
-                if (paymentsDetails.getPayments_type().equals("1")) {
-                    cheque_number.setText(paymentsDetails.getPayments_chequeNumber());
-                    cheque_date.setText(paymentsDetails.getPayments_chequeDate());
-                    bank_name.setText(paymentsDetails.getPayments_bankName());
-                } else {
-                    checklayout.setVisibility(View.GONE);
-                }
-            }
-
-            pDetails = mDBHelper.getAgentPaymentDetails(mTripSheetId,sId);
 
             for (int i = 0; i < unUploadedPayments.size(); i++) {
                 mode_of_payment.setText(unUploadedPayments.get(i).getPayment_mop().equals("0") ? "Cash" : "Cheque");
@@ -212,21 +200,9 @@ public class AgentPaymentsView extends AppCompatActivity {
                 } else {
                     checklayout.setVisibility(View.GONE);
                 }
-            }*/
-
-        /*    pDetails = mDBHelper.getAgentPaymentDetails(mTripSheetId,sId,agentId);
-            if (pDetails != null) {
-                mode_of_payment.setText(pDetails.getPayment_mop().equals("0") ? "Cash" : "Cheque");
-
-                if (pDetails.getPayment_mop().equals("1")) {
-                    cheque_number.setText(pDetails.getPayment_checkno());
-                    cheque_date.setText(pDetails.getPayment_checkDate());
-                    bank_name.setText(pDetails.getPayment_bankName());
-                } else {
-                    checklayout.setVisibility(View.GONE);
-                }
             }
-*/
+
+
          /*   cratesList = new ArrayList<>(returnedProductsList.size());
             if (returnedProductsList.size() > 0) {
 
@@ -297,8 +273,8 @@ public class AgentPaymentsView extends AppCompatActivity {
 
                 int st = 200;
 
-                for (int j = 0; j < unUploadedPayments.size(); j++) {
-                    if (unUploadedPayments.get(j).getPayment_mop().equals("0")) {
+               // for (int j = 0; j < unUploadedPayments.size(); j++) {
+                    if (pType.equals("0")) {
 
                         paint.setTextSize(20);
                         canvas.drawText("MOP", 5, st, paint);
@@ -329,16 +305,16 @@ public class AgentPaymentsView extends AppCompatActivity {
                         paint.setTextSize(20);
                         canvas.drawText("BANK", 5, st, paint);
                         paint.setTextSize(20);
-                        canvas.drawText(": " + unUploadedPayments.get(j).getPayment_bankName(), 130, st, paint);
+                        canvas.drawText(": " +bankname, 130, st, paint);
 
                         st = st + 30;
                         paint.setTextSize(20);
                         canvas.drawText("CHQ NUM,DT", 5, st, paint);
                         paint.setTextSize(20);
-                        canvas.drawText(": " + unUploadedPayments.get(j).getPayment_checkno() + ", " + unUploadedPayments.get(j).getPayment_checkDate(), 130, st, paint);
+                        canvas.drawText(": " +checkno + ", " + checkdate, 130, st, paint);
 
                     }
-                }
+               // }
 
 
                 st = st + 30;
