@@ -183,10 +183,11 @@ public class AgentPaymentsView extends AppCompatActivity {
                 mode_of_payment.setText("Cash");
                 checklayout.setVisibility(View.GONE);
             }else {
+                mode_of_payment.setText("Cheque");
                 cheque_number.setText(checkno);
                 cheque_date.setText(checkdate);
                 bank_name.setText(bankname);
-              cashlayout.setVisibility(View.GONE);
+              //cashlayout.setVisibility(View.GONE);
             }
 
 

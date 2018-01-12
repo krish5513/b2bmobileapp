@@ -35,7 +35,7 @@ public class RetailersModel1 implements OnAsyncRequestCompleteListener {
     private Agents_AddActivity activity1;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
-    private String type = "", UserCode = "";
+    private String type = "", UserCode = "", mRetailerPrivilege = "", mUserCode = "";
     private ArrayList<String> stakeIdsList = new ArrayList<String>();
     private JSONArray routesArray;
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
@@ -96,12 +96,20 @@ public class RetailersModel1 implements OnAsyncRequestCompleteListener {
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
             isMyProfilePrivilege = false;
             UserCode = userMapData.get("user_id");
+            mUserCode = userMapData.get("user_code");
 //            ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
 //            for (int z = 0; z < privilegeActionsData1.size(); z++) {
 //                if (privilegeActionsData1.get(z).toString().equals("my_profile")) {
 //                    isMyProfilePrivilege = true;
 //                }
 //            }
+
+            ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Retailers"));
+
+            if (privilegeActionsData1.contains("myret")) {
+                mRetailerPrivilege = "myret";
+            }
+
             type = s;
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 //HashMap<String, String> userMapData = mDBHelper.getUsersData();
@@ -219,83 +227,163 @@ public class RetailersModel1 implements OnAsyncRequestCompleteListener {
                 if (json instanceof JSONArray) {
                     JSONArray respArray = new JSONArray(response);
                     int len = respArray.length();
-                    for (int k = 0; k < len; k++) {
-                        JSONObject jo = respArray.getJSONObject(k);
-                        // Privilege not exists, display all users profile
-                        AgentsBean agentsBean = new AgentsBean();
-                        TDCCustomer customer = new TDCCustomer();
-                        if (jo.has("_id")) {
-                            customer.setUserId(jo.getString("_id"));
-                        }
-                        if (jo.has("latitude")) {
-                            if (!jo.getString("latitude").equals("null")) {
-                                customer.setLatitude(jo.getString("latitude"));
-                            } else {
-                                customer.setLatitude("");
+                    if (mRetailerPrivilege.equals("myret")) {
+                        for (int k = 0; k < len; k++) {
+                            JSONObject jo = respArray.getJSONObject(k);
+                            String extensionRemoved = jo.getString("code").split("\\-")[0];
+                            if (extensionRemoved.equals(mUserCode)) {
+                                // Privilege not exists, display all users profile
+                                AgentsBean agentsBean = new AgentsBean();
+                                TDCCustomer customer = new TDCCustomer();
+                                if (jo.has("_id")) {
+                                    customer.setUserId(jo.getString("_id"));
+                                }
+                                if (jo.has("latitude")) {
+                                    if (!jo.getString("latitude").equals("null")) {
+                                        customer.setLatitude(jo.getString("latitude"));
+                                    } else {
+                                        customer.setLatitude("");
+                                    }
+                                }
+                                if (jo.has("longitude")) {
+                                    if (!jo.getString("longitude").equals("null")) {
+                                        customer.setLongitude(jo.getString("longitude"));
+                                    } else {
+                                        customer.setLongitude("");
+                                    }
+                                }
+                                if (jo.has("code")) {
+                                    if (jo.getString("code") != null) {
+                                        if (jo.getString("code").length() > 0) {
+                                            customer.setCode(jo.getString("code"));
+                                        } else {
+                                            customer.setCode("");
+                                        }
+                                    } else {
+                                        customer.setCode("");
+                                    }
+                                }
+
+                                if (jo.has("address")) {
+                                    customer.setAddress(jo.getString("address"));
+                                }
+                                if (jo.has("first_name")) {
+                                    customer.setBusinessName(jo.getString("first_name"));
+                                }
+                                if (jo.has("last_name")) {
+                                    customer.setName(jo.getString("last_name"));
+                                }
+                                if (jo.has("phone")) {
+                                    customer.setMobileNo(jo.getString("phone"));
+                                }
+
+                                if (jo.has("route_id")) {
+                                    if (jo.get("route_id") instanceof JSONArray) {
+                                        JSONArray agentRouteArray = jo.getJSONArray("route_id");
+                                        if (agentRouteArray != null) {
+                                            customer.setRoutecode(agentRouteArray.toString());
+                                        }
+                                    } else {
+                                        customer.setRoutecode(jo.getString("route_id"));
+                                    }
+                                }
+                                if (jo.has("stakeholder_id")) {
+                                    if (jo.getString("stakeholder_id").equals("6")) {
+                                        // Consumer
+                                        customer.setCustomerType(0);
+                                    } else {
+                                        // Retailer
+                                        customer.setCustomerType(1);
+                                    }
+                                }
+                                customer.setShopImage("");
+                                customer.setIsShopImageUploaded(0);
+                                customer.setIsUploasStatus("1");
+
+                                TDCCustomerList.add(customer);
+
+                                long customerId = mDBHelper.insertIntoTDCCustomers(customer, UserCode);
                             }
                         }
-                        if (jo.has("longitude")) {
-                            if (!jo.getString("longitude").equals("null")) {
-                                customer.setLongitude(jo.getString("longitude"));
-                            } else {
-                                customer.setLongitude("");
+                    } else {
+                        for (int k = 0; k < len; k++) {
+                            JSONObject jo = respArray.getJSONObject(k);
+                            // Privilege not exists, display all users profile
+                            AgentsBean agentsBean = new AgentsBean();
+                            TDCCustomer customer = new TDCCustomer();
+                            if (jo.has("_id")) {
+                                customer.setUserId(jo.getString("_id"));
                             }
-                        }
-                        if (jo.has("code")) {
-                            if (jo.getString("code") != null) {
-                                if (jo.getString("code").length() > 0) {
-                                    customer.setCode(jo.getString("code"));
+                            if (jo.has("latitude")) {
+                                if (!jo.getString("latitude").equals("null")) {
+                                    customer.setLatitude(jo.getString("latitude"));
+                                } else {
+                                    customer.setLatitude("");
+                                }
+                            }
+                            if (jo.has("longitude")) {
+                                if (!jo.getString("longitude").equals("null")) {
+                                    customer.setLongitude(jo.getString("longitude"));
+                                } else {
+                                    customer.setLongitude("");
+                                }
+                            }
+                            if (jo.has("code")) {
+                                if (jo.getString("code") != null) {
+                                    if (jo.getString("code").length() > 0) {
+                                        customer.setCode(jo.getString("code"));
+                                    } else {
+                                        customer.setCode("");
+                                    }
                                 } else {
                                     customer.setCode("");
                                 }
-                            } else {
-                                customer.setCode("");
                             }
-                        }
 
-                        if (jo.has("address")) {
-                            customer.setAddress(jo.getString("address"));
-                        }
-                        if (jo.has("first_name")) {
-                            customer.setBusinessName(jo.getString("first_name"));
-                        }
-                        if (jo.has("last_name")) {
-                            customer.setName(jo.getString("last_name"));
-                        }
-                        if (jo.has("phone")) {
-                            customer.setMobileNo(jo.getString("phone"));
-                        }
+                            if (jo.has("address")) {
+                                customer.setAddress(jo.getString("address"));
+                            }
+                            if (jo.has("first_name")) {
+                                customer.setBusinessName(jo.getString("first_name"));
+                            }
+                            if (jo.has("last_name")) {
+                                customer.setName(jo.getString("last_name"));
+                            }
+                            if (jo.has("phone")) {
+                                customer.setMobileNo(jo.getString("phone"));
+                            }
 
-                        if (jo.has("route_id")) {
-                            if (jo.get("route_id") instanceof JSONArray) {
-                                JSONArray agentRouteArray = jo.getJSONArray("route_id");
-                                if (agentRouteArray != null) {
-                                    customer.setRoutecode(agentRouteArray.toString());
+                            if (jo.has("route_id")) {
+                                if (jo.get("route_id") instanceof JSONArray) {
+                                    JSONArray agentRouteArray = jo.getJSONArray("route_id");
+                                    if (agentRouteArray != null) {
+                                        customer.setRoutecode(agentRouteArray.toString());
+                                    }
+                                } else {
+                                    customer.setRoutecode(jo.getString("route_id"));
                                 }
-                            } else {
-                                customer.setRoutecode(jo.getString("route_id"));
                             }
-                        }
-                        if (jo.has("stakeholder_id")) {
-                            if (jo.getString("stakeholder_id").equals("6")) {
-                                // Consumer
-                                customer.setCustomerType(0);
-                            } else {
-                                // Retailer
-                                customer.setCustomerType(1);
+                            if (jo.has("stakeholder_id")) {
+                                if (jo.getString("stakeholder_id").equals("6")) {
+                                    // Consumer
+                                    customer.setCustomerType(0);
+                                } else {
+                                    // Retailer
+                                    customer.setCustomerType(1);
+                                }
                             }
+                            customer.setShopImage("");
+                            customer.setIsShopImageUploaded(0);
+                            customer.setIsUploasStatus("1");
+
+                            TDCCustomerList.add(customer);
+
+                            long customerId = mDBHelper.insertIntoTDCCustomers(customer, UserCode);
+
                         }
-                        customer.setShopImage("");
-                        customer.setIsShopImageUploaded(0);
-                        customer.setIsUploasStatus("1");
-
-                        TDCCustomerList.add(customer);
-
-                        long customerId = mDBHelper.insertIntoTDCCustomers(customer, UserCode);
-
                     }
                     synchronized (this) {
-                        activity.loadRetailers(TDCCustomerList,"api");
+                        activity.loadRetailers(TDCCustomerList, "api");
                     }
                 }
             }

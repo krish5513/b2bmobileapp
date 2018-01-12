@@ -99,6 +99,7 @@ public class Constants {
 
 
 
+
    public static final String PORT_LOGIN = ":3211";
     public static final String PORT_ADD = ":3210";
 
@@ -120,6 +121,8 @@ public class Constants {
 
     //Port for notifications list
     public static final String SYNC_NOTIFICATIONS_PORT = ":3210";
+
+
 
 
 
@@ -148,6 +151,7 @@ public class Constants {
 
     //Port for notifications list
     public static final String SYNC_NOTIFICATIONS_PORT = ":4000";
+
 
 */
 
@@ -188,7 +192,7 @@ public class Constants {
     public static final String ROUTEID_SERVICE = "/route/list/by_user_routes";
     // User previleges 4&\n
     public static final String GET_USER_PREVILEGES_SERVICE = "/b2b_quality/common/getactions_mobile?stake_id=";
-   // public static final String GET_USER_PREVILEGES_SERVICE = "/tmppl_live/common/getactions_mobile?stake_id=";
+    //public static final String GET_USER_PREVILEGES_SERVICE = "/tmppl_live/common/getactions_mobile?stake_id=";
     // Chnage Password {pass user id parameter in url}
     public static final String CHANGE_PASSWORD_SERVICE = "/user/edit/";
     //Get routeid and transporter

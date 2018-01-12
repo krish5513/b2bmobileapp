@@ -57,7 +57,7 @@ public class RetailersActivity extends AppCompatActivity {
     private RetailersModel1 mRetailersModel;
     ArrayList<String> privilegeActionsData1;
     public static TextView mSyncText;
-    private String upload = "", userId = "", mUserCode = "", mIsRetailerPrivilege = "";
+    private String upload = "", userId = "";
     private int uploadedCount = 0, uploadedCount1 = 0;
     public static RetailersActivity context;
     private Runnable mRunnable;
@@ -194,7 +194,6 @@ public class RetailersActivity extends AppCompatActivity {
 
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
             userId = userMapData.get("user_id");
-            mUserCode = userMapData.get("user_code");
             ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
             //System.out.println("F 11111 ***COUNT === " + privilegesData.size());
             if (privilegesData.contains("Dashboard")) {
@@ -249,10 +248,7 @@ public class RetailersActivity extends AppCompatActivity {
 
 
             privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Retailers"));
-            System.out.println("F 11111 ***COUNT PRIVILEGES === " + privilegeActionsData1.size());
-            for (int gg = 0; gg < privilegeActionsData1.size(); gg++) {
-                System.out.println("F 11111 ***COUNT PRIVILEGES VALUE === " + privilegeActionsData1.get(gg).toString());
-            }
+            //System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
 
             boolean canWeShowRetailersListView = false;
 
@@ -263,10 +259,6 @@ public class RetailersActivity extends AppCompatActivity {
 
             if (privilegeActionsData1.contains("Add")) {
                 fab.setVisibility(View.VISIBLE);
-            }
-
-            if (privilegeActionsData1.contains("myret")) {
-                mIsRetailerPrivilege = "myret";
             }
 
             if (canWeShowRetailersListView) {
@@ -303,7 +295,6 @@ public class RetailersActivity extends AppCompatActivity {
     public void loadRetailers(List<TDCCustomer> retailersList, String s) {
         synchronized (this) {
             List<TDCCustomer> list = null;
-            List<TDCCustomer> list1 = new ArrayList<TDCCustomer>();
             list = mDBHelper.fetchRecordsFromTDCCustomers(1, userId);
             //System.out.println("RETAILERS::: " + list.size());
             if (list.size() <= 0) {
@@ -317,54 +308,8 @@ public class RetailersActivity extends AppCompatActivity {
 //                    retailersListAdapter = new RetailersListAdapter(activityContext, this, list, privilegeActionsData1);
 //                    mRetailerslistview.setAdapter(retailersListAdapter);
 //                }
-
-                synchronized (this) {
-                    // Here need to add privilege condition to display retailers correctly.
-                    if (mIsRetailerPrivilege.equals("myret")) {
-                        // Display only matched retailers
-                        for (int y = 0; y < list.size(); y++) {
-                            String extensionRemoved = list.get(y).getCode().split("\\-")[0];
-                            //System.out.println("SPLIT CODE IS:::: " + extensionRemoved);
-                            if (mUserCode.equals(extensionRemoved)) {
-                                TDCCustomer customer = new TDCCustomer();
-                                customer.setId(list.get(y).getId());
-                                customer.setUserId(list.get(y).getUserId());
-                                customer.setCustomerType(list.get(y).getCustomerType());
-                                customer.setName(list.get(y).getName());
-                                customer.setMobileNo(list.get(y).getMobileNo());
-                                customer.setBusinessName(list.get(y).getBusinessName());
-                                customer.setAddress(list.get(y).getAddress());
-                                customer.setLatitude(list.get(y).getLatitude());
-                                customer.setLongitude(list.get(y).getLongitude());
-                                customer.setShopImage(list.get(y).getShopImage());
-                                customer.setIsActive(list.get(y).getIsActive());
-                                customer.setIsUploaded(list.get(y).getIsUploaded());
-                                customer.setRoutecode(list.get(y).getRoutecode());
-                                customer.setCode(list.get(y).getCode());
-                                customer.setIsShopImageUploaded(list.get(y).getIsShopImageUploaded());
-
-                                list1.add(customer);
-                            }
-                        }
-                        if (list1.size() > 0) {
-                            mRetailerslistview.setVisibility(View.VISIBLE);
-                            no_retailers_found_message.setVisibility(View.GONE);
-
-                            synchronized (this) {
-                                retailersListAdapter = new RetailersListAdapter(activityContext, this, list1, privilegeActionsData1);
-                                mRetailerslistview.setAdapter(retailersListAdapter);
-                            }
-                        } else {
-                            mRetailerslistview.setVisibility(View.GONE);
-                            no_retailers_found_message.setVisibility(View.VISIBLE);
-                        }
-                    } else {
-                        //System.out.println("SPLIT CODE ARRAY SIZE IS:::: ELSEEEEE");
-                        // Display all retailers
-                        retailersListAdapter = new RetailersListAdapter(activityContext, this, list, privilegeActionsData1);
-                        mRetailerslistview.setAdapter(retailersListAdapter);
-                    }
-                }
+                retailersListAdapter = new RetailersListAdapter(activityContext, this, list, privilegeActionsData1);
+                mRetailerslistview.setAdapter(retailersListAdapter);
             }
         }
         synchronized (this) {
