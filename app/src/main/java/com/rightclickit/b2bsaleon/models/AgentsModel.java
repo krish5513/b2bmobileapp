@@ -149,7 +149,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                 JSONObject paramsc = new JSONObject();
 
                 String rId = mAgentsBeansList1.get(0).getmAgentRouteId();
-                System.out.println("AGENT SEL R ID:: "+ rId);
+                System.out.println("AGENT SEL R ID:: " + rId);
                 JSONArray agentRouteArray = new JSONArray();
                 agentRouteArray.put(rId);
                 paramsc.put("route_id", agentRouteArray);
@@ -175,10 +175,12 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                 paramsc.put("device_sync", mAgentsBeansList1.get(0).getmAgentDeviceSync());
                 paramsc.put("access_device", mAgentsBeansList1.get(0).getmAgentAccessDevice());
                 paramsc.put("back_up", mAgentsBeansList1.get(0).getmAgentBackUp());
+                paramsc.put("latitude", mAgentsBeansList1.get(0).getmLatitude());
+                paramsc.put("longitude", mAgentsBeansList1.get(0).getmLongitude());
 
 
-               // System.out.println("THE ADD URL IS::: " + customerAdd);
-               // System.out.println("THE ADD DATA IS::: " + paramsc.toString());
+                // System.out.println("THE ADD URL IS::: " + customerAdd);
+                // System.out.println("THE ADD DATA IS::: " + paramsc.toString());
 
                 AsyncRequest loginRequest = new AsyncRequest(context, this, customerAdd, AsyncRequest.MethodType.POST, paramsc);
                 loginRequest.execute();
@@ -525,7 +527,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 //                            mDBHelper.deleteValuesFromAgentsTable();
 //                        }
 //                    }
-                    Log.i("isMyProfilePrivilege",isMyProfilePrivilege+"");
+                    Log.i("isMyProfilePrivilege", isMyProfilePrivilege + "");
                     synchronized (this) {
                         if (mDBHelper.getAgentsTableCount() > 0) {
                             mDBHelper.deleteValuesFromAgentsTable();
@@ -538,10 +540,10 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                     }
                     synchronized (this) {
                         if (isMyProfilePrivilege) {
-                            if(activity!=null)
-                            activity.loadAgentsList(mAgentsBeansList_MyPrivilege);
+                            if (activity != null)
+                                activity.loadAgentsList(mAgentsBeansList_MyPrivilege);
                         } else {
-                            if(activity!=null)
+                            if (activity != null)
                                 activity.loadAgentsList(mAgentsBeansList);
                            /* if(activity!=null)
                                 activity.loadAgentsList(mAgentsBeansList);

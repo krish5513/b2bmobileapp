@@ -46,6 +46,7 @@ import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentsModel;
+import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
@@ -94,6 +95,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
     private JSONArray routeCodesArray;
     String selected_val;
     ArrayList<String> idsArray = new ArrayList<String>();
+    private MMSharedPreferences mmSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +132,7 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         //  imageview.setImageBitmap(avatarbmp);
         db = new DBHelper(getApplicationContext());
         agentsmodel = new AgentsModel(activityContext, this);
+        mmSharedPreferences = new MMSharedPreferences(Agents_AddActivity.this);
 
 
         System.out.println("STAKE ID IS::: " + db.getStakeTypeIdByStakeType("2"));
@@ -144,6 +147,13 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         });
 
 
+        // LOCATION DETAILS
+        latitude = Double.parseDouble(mmSharedPreferences.getString("curLat"));
+        longitude = Double.parseDouble(mmSharedPreferences.getString("curLong"));
+
+        System.out.println("LAT::: " + latitude);
+        System.out.println("LONG::: " + longitude);
+
         HashMap<String, String> userRouteIds = db.getUserRouteIds();
 
 
@@ -153,26 +163,25 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
             e.printStackTrace();
         }
         ArrayList<String> stringArray = new ArrayList<String>();
-        final HashMap<Integer,String> map = new HashMap<>();
-        final HashMap<Integer,String> idMap = new HashMap<>();
+        final HashMap<Integer, String> map = new HashMap<>();
+        final HashMap<Integer, String> idMap = new HashMap<>();
         stringArray.add("Select Routecode");
-        map.put(0,"Select Routecode");
+        map.put(0, "Select Routecode");
         for (int i = 1, count = routeCodesArray.length(); i <= count; i++) {
             List<String> routesDataList = null;
             try {
-                idsArray.add(routeCodesArray.get(i-1).toString());
-                idMap.put(i-1,routeCodesArray.get(i - 1).toString());
-                routesDataList = db.getRouteDataByRouteId(routeCodesArray.get(i-1).toString());
+                idsArray.add(routeCodesArray.get(i - 1).toString());
+                idMap.put(i - 1, routeCodesArray.get(i - 1).toString());
+                routesDataList = db.getRouteDataByRouteId(routeCodesArray.get(i - 1).toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if(routesDataList.size()>0){
+            if (routesDataList.size() > 0) {
                 //System.out.println("routesDataList.get(1).toString() :: " + routesDataList.get(1).toString());
-                stringArray.add( routesDataList.get(1).toString());
-                map.put(i,routesDataList.get(1).toString());
+                stringArray.add(routesDataList.get(1).toString());
+                map.put(i, routesDataList.get(1).toString());
             }
         }
-
 
 
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
@@ -187,10 +196,10 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                if(i==0){
+                if (i == 0) {
 
-                }else{
-                    selected_val = idsArray.get(i-1).toString();
+                } else {
+                    selected_val = idsArray.get(i - 1).toString();
                     System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
                 }
             }
@@ -284,9 +293,9 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 agentsBean.setmAgentDeviceSync("0");
                 agentsBean.setmAgentAccessDevice("NO");
                 agentsBean.setmAgentBackUp("0");
-               // agentsBean.setmAgentRouteId(routesArray.toString());
+                // agentsBean.setmAgentRouteId(routesArray.toString());
                 agentsBean.setmAgentRouteId(selected_val);
-               // agentsBean.setmSelectedRouteName(selected_val);
+                // agentsBean.setmSelectedRouteName(selected_val);
                 mAgentsBeansList.add(agentsBean);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -447,9 +456,27 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         googlemap.setMyLocationEnabled(true);
 
         //set "listener" for changing my location
-        googlemap.setOnMyLocationChangeListener(myLocationChangeListener());
+        //googlemap.setOnMyLocationChangeListener(myLocationChangeListener());
 
+        LatLng loc = new LatLng(latitude, longitude);
 
+        Marker marker;
+        googlemap.clear();
+        marker = googlemap.addMarker(new MarkerOptions().position(loc));
+        googlemap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+
+        googlemap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                LatLng loc = new LatLng(latLng.latitude, latLng.longitude);
+                latitude = latLng.latitude;
+                longitude = latLng.longitude;
+                Marker marker;
+                googlemap.clear();
+                marker = googlemap.addMarker(new MarkerOptions().position(loc));
+                googlemap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+            }
+        });
     }
 
 

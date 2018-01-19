@@ -104,6 +104,8 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+            mmSharedPreferences = new MMSharedPreferences(this);
+
             mDBHelper = new DBHelper(activityContext);
 
             retailer_add_scrollview = (ScrollView) findViewById(R.id.retailer_add_scrollview);
@@ -115,6 +117,13 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             shop_image = (ImageView) findViewById(R.id.retailer_shop_image);
             retailer_add_footer = (LinearLayout) findViewById(R.id.retailer_add_footer);
 
+            // LOCATION DETAILS
+            latitude = Double.parseDouble(mmSharedPreferences.getString("curLat"));
+            longitude = Double.parseDouble(mmSharedPreferences.getString("curLong"));
+
+            System.out.println("LAT::: " + latitude);
+            System.out.println("LONG::: " + longitude);
+
 
             HashMap<String, String> userRouteIds = mDBHelper.getUserRouteIds();
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
@@ -124,19 +133,19 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            System.out.println("ROUTE CODE ARRAY:: " + routeCodesArray+"...length..."+routeCodesArray.length());
+            System.out.println("ROUTE CODE ARRAY:: " + routeCodesArray + "...length..." + routeCodesArray.length());
 
             final ArrayList<String> stringArray = new ArrayList<String>();
-            final HashMap<Integer,String> map = new HashMap<>();
-            final HashMap<Integer,String> idMap = new HashMap<>();
+            final HashMap<Integer, String> map = new HashMap<>();
+            final HashMap<Integer, String> idMap = new HashMap<>();
             stringArray.add("Select Routecode");
-            map.put(0,"Select Routecode");
+            map.put(0, "Select Routecode");
             for (int i = 1; i <= routeCodesArray.length(); i++) {
                 List<String> routesDataList = null;
                 try {
                     //System.out.println("idsArray :: "+i+"..." + routeCodesArray.get(i - 1).toString());
                     idsArray.add(routeCodesArray.get(i - 1).toString());
-                    idMap.put(i-1,routeCodesArray.get(i - 1).toString());
+                    idMap.put(i - 1, routeCodesArray.get(i - 1).toString());
                     routesDataList = mDBHelper.getRouteDataByRouteId(routeCodesArray.get(i - 1).toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -144,10 +153,10 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 //System.out.println("idMap :: " + idMap.toString());
                 //System.out.println("routesDataList :: " + routesDataList.toString());
 
-                if(routesDataList.size()>0){
+                if (routesDataList.size() > 0) {
                     //System.out.println("routesDataList.get(1).toString() :: " + routesDataList.get(1).toString());
-                    stringArray.add( routesDataList.get(1).toString());
-                    map.put(i,routesDataList.get(1).toString());
+                    stringArray.add(routesDataList.get(1).toString());
+                    map.put(i, routesDataList.get(1).toString());
                 }
             }
             System.out.println("stringArray :: " + map.toString());
@@ -168,15 +177,15 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                         String value = paymentTypeSpinner.getSelectedItem().toString();
                         System.out.println("ROUTE value:: " + value);
                         int key = 0;
-                        for(Map.Entry entry: map.entrySet()){
-                            if(value.equals(entry.getValue())){
+                        for (Map.Entry entry : map.entrySet()) {
+                            if (value.equals(entry.getValue())) {
                                 key = (int) entry.getKey();
                                 break; //breaking because its one to one map
                             }
                         }
 
                         System.out.println("ROUTE JSON key:: " + key);
-                        selected_val = idMap.get(key-1).toString();
+                        selected_val = idMap.get(key - 1).toString();
                         System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
                     }
                 }
@@ -200,10 +209,10 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 actionBar.setTitle("RETAILER INFO");
 
                 ViewGroup.MarginLayoutParams scrollViewLp = (ViewGroup.MarginLayoutParams) retailer_add_scrollview.getLayoutParams();
-                scrollViewLp.bottomMargin = 0;
+                //scrollViewLp.bottomMargin = 60;
                 retailer_add_scrollview.setLayoutParams(scrollViewLp);
 
-                retailer_add_footer.setVisibility(View.GONE);
+               // retailer_add_footer.setVisibility(View.GONE);
 
                 updateUIWithBundleValues(customer);
             }
@@ -538,7 +547,26 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             googleMap.setMyLocationEnabled(true);
 
             //set "listener" for changing my location
-            googleMap.setOnMyLocationChangeListener(myLocationChangeListener());
+            //googleMap.setOnMyLocationChangeListener(myLocationChangeListener());
+            LatLng loc = new LatLng(latitude, longitude);
+
+            Marker marker;
+            googleMap.clear();
+            marker = googleMap.addMarker(new MarkerOptions().position(loc));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+
+            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                @Override
+                public void onMapClick(LatLng latLng) {
+                    LatLng loc = new LatLng(latLng.latitude, latLng.longitude);
+                    latitude = latLng.latitude;
+                    longitude = latLng.longitude;
+                    Marker marker;
+                    googleMap.clear();
+                    marker = googleMap.addMarker(new MarkerOptions().position(loc));
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

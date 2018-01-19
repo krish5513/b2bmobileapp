@@ -129,6 +129,8 @@ public class SyncTDCCustomersService extends Service {
                 requestObj.put("created_on", createdTime);
                 requestObj.put("updated_on", createdTime);
                 requestObj.put("updated_by", createdBy);
+                requestObj.put("latitude", currentTDCCustomer.getLatitude());
+                requestObj.put("longitude", currentTDCCustomer.getLongitude());
 
                 String addCustomerURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_AGENTS_LIST, Constants.GET_CUSTOMERS_ADD);
 
