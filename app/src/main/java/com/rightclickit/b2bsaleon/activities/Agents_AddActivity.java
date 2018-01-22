@@ -148,8 +148,14 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
 
 
         // LOCATION DETAILS
-        latitude = Double.parseDouble(mmSharedPreferences.getString("curLat"));
-        longitude = Double.parseDouble(mmSharedPreferences.getString("curLong"));
+        try {
+            latitude = Double.parseDouble(mmSharedPreferences.getString("curLat"));
+            longitude = Double.parseDouble(mmSharedPreferences.getString("curLong"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
 
         System.out.println("LAT::: " + latitude);
         System.out.println("LONG::: " + longitude);

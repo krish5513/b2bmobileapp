@@ -24,11 +24,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -83,6 +85,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     private JSONArray routeCodesArray;
     String selected_val;
     ArrayList<String> idsArray = new ArrayList<String>();
+    TextView update;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,10 +119,17 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             paymentTypeSpinner = (Spinner) findViewById(R.id.paymentTypeSpinner);
             shop_image = (ImageView) findViewById(R.id.retailer_shop_image);
             retailer_add_footer = (LinearLayout) findViewById(R.id.retailer_add_footer);
+            update=(TextView) findViewById(R.id.ts_dispatch_save);
 
             // LOCATION DETAILS
-            latitude = Double.parseDouble(mmSharedPreferences.getString("curLat"));
-            longitude = Double.parseDouble(mmSharedPreferences.getString("curLong"));
+            try {
+
+
+                latitude = Double.parseDouble(mmSharedPreferences.getString("curLat"));
+                longitude = Double.parseDouble(mmSharedPreferences.getString("curLong"));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
             System.out.println("LAT::: " + latitude);
             System.out.println("LONG::: " + longitude);
@@ -207,12 +217,13 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 isCameFromRetailersList = true;
 
                 actionBar.setTitle("RETAILER INFO");
+                update.setText("Update");
 
                 ViewGroup.MarginLayoutParams scrollViewLp = (ViewGroup.MarginLayoutParams) retailer_add_scrollview.getLayoutParams();
-                //scrollViewLp.bottomMargin = 60;
+                //scrollViewLp.bottomMargin = 0;
                 retailer_add_scrollview.setLayoutParams(scrollViewLp);
 
-               // retailer_add_footer.setVisibility(View.GONE);
+              // retailer_add_footer.setVisibility(View.GONE);
 
                 updateUIWithBundleValues(customer);
             }
@@ -394,7 +405,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
     public void saveNewRetailer(View view) {
         try {
-            if (!isCameFromRetailersList) {
+           // if (!isCameFromRetailersList) {
                 name = retailer_name.getText().toString().trim();
                 mobileNo = mobile_no.getText().toString().trim();
                 businessName = business_name.getText().toString().trim();
@@ -431,7 +442,8 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                     addNewRetailer(name, mobileNo, businessName, retailerAddress);
                 }
             }
-        } catch (Exception e) {
+        //}
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -467,8 +479,8 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
             customer.setShopImage(shop_image_path);
             customer.setIsShopImageUploaded(0);
-
             long customerId = mDBHelper.insertIntoTDCCustomers(customer, mUserId);
+
 
             if (customerId == -1)
                 Toast.makeText(activityContext, "An error occurred while adding new retailer.", Toast.LENGTH_LONG).show();
