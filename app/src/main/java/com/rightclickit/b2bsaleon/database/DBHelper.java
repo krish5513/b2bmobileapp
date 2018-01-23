@@ -2181,15 +2181,15 @@ public class DBHelper extends SQLiteOpenHelper {
             } else {
                 int val = checkRetailerExistsOrNot(customer.getUserId(), loginId);
                 System.out.println("VAL IS::: " + val);
-//                if (val == 0) {
-//                        System.out.println("RETAILER INSERTED 111+++++");
-//                        customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
-//
-//                } else {
+                if (val == 0) {
+                        System.out.println("RETAILER INSERTED 111+++++");
+                        customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
+
+                } else {
                     System.out.println("RETAILER UPDATED+++++");
                     customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
                             new String[]{String.valueOf(customer.getUserId())});
-               // }
+                }
             }
 
 //            if (val == 0) {
@@ -6965,7 +6965,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public int checkRetailerExistsOrNot(String s, String loginId) {
         int maxID = 0;
-
+        Log.i("customer id@@@"+s,"loginId@@@"+loginId);
         String selectQuery = "SELECT  * FROM " + TABLE_TDC_CUSTOMERS
                 + " WHERE " + KEY_TDC_CUSTOMER_USER_ID + "='" + s + "'"
                 + " AND " + KEY_TDC_CUSTOMER_CHECK_UNIQUE_ID + "='" + loginId + "'";
