@@ -1008,6 +1008,58 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+    public void updateAgentDetails(ArrayList<AgentsBean> mAgentsBeansList, String userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0; i < mAgentsBeansList.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_AGENT_ID, mAgentsBeansList.get(i).getmAgentId());
+                values.put(KEY_AGENT_NAME, mAgentsBeansList.get(i).getmAgentName());
+                values.put(KEY_OB_AMOUNT, mAgentsBeansList.get(i).getmObAmount());
+                values.put(KEY_ORDER_VALUE, mAgentsBeansList.get(i).getmOrderValue());
+                values.put(KEY_TOTAL_AMOUNT, mAgentsBeansList.get(i).getmTotalAmount());
+                values.put(KEY_DUE_AMOUNT, mAgentsBeansList.get(i).getmDueAmount());
+                values.put(KEY_AGENT_PIC, mAgentsBeansList.get(i).getmAgentPic());
+                values.put(KEY_AGENT_STATUS, mAgentsBeansList.get(i).getmStatus());
+                values.put(KEY_AGENT_LATITUDE, mAgentsBeansList.get(i).getmLatitude());
+                values.put(KEY_AGENT_LONGITUDE, mAgentsBeansList.get(i).getmLongitude());
+                values.put(KEY_AGENT_CODE, mAgentsBeansList.get(i).getmAgentCode());
+                values.put(KEY_AGENT_FIRSTNAME, mAgentsBeansList.get(i).getmFirstname());
+                values.put(KEY_AGENT_LASTNAME, mAgentsBeansList.get(i).getmLastname());
+                values.put(KEY_AGENT_PHONENO, mAgentsBeansList.get(i).getMphoneNO());
+                values.put(KEY_AGENT_ADDRESS, mAgentsBeansList.get(i).getMaddress());
+                values.put(KEY_AGENT_ROUTE_ID, mAgentsBeansList.get(i).getmAgentRouteId());
+                values.put(KEY_POI_IMAGE, mAgentsBeansList.get(i).getmPoiImage());
+                values.put(KEY_POA_IMAGE, mAgentsBeansList.get(i).getmPoaImage());
+                values.put(KEY_AGENT_EMAIL, mAgentsBeansList.get(i).getmAgentEmail());
+                values.put(KEY_AGENT_PASSWORD, mAgentsBeansList.get(i).getmAgentPassword());
+                values.put(KEY_AGENT_STAKEHOLDERID, mAgentsBeansList.get(i).getmAgentStakeid());
+                values.put(KEY_AGENT_REPORTINGTO, mAgentsBeansList.get(i).getmAgentReprtingto());
+                values.put(KEY_AGENT_VERIFYCODE, mAgentsBeansList.get(i).getmAgentVerifycode());
+                values.put(KEY_AGENT_DELETE, mAgentsBeansList.get(i).getmAgentDelete());
+                values.put(KEY_AGENT_CREATEDBY, mAgentsBeansList.get(i).getmAgentCreatedBy());
+                values.put(KEY_AGENT_CREATEDON, mAgentsBeansList.get(i).getmAgentCreatedOn());
+                values.put(KEY_AGENT_UPDATEDBY, mAgentsBeansList.get(i).getmAgentUpdatedBy());
+                values.put(KEY_AGENT_UPDATEDON, mAgentsBeansList.get(i).getmAgentUpdatedOn());
+                values.put(KEY_AGENT_ROUTECODE, mAgentsBeansList.get(i).getmAgentRoutecode());
+                values.put(KEY_AGENT_DEVICESYNC, mAgentsBeansList.get(i).getmAgentDeviceSync());
+                values.put(KEY_AGENT_ACCESSDEVICE, mAgentsBeansList.get(i).getmAgentAccessDevice());
+                values.put(KEY_AGENT_BACKUP, mAgentsBeansList.get(i).getmAgentBackUp());
+                values.put(KEY_AGENT_LOGIN_USER_ID, userId);
+
+
+                System.out.println("RETAILER UPDATED+++++");
+                db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
+                        new String[]{String.valueOf(userId)});
+
+                values.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
 
     /**
      * Method to fetch all records from agents table
@@ -2121,21 +2173,25 @@ public class DBHelper extends SQLiteOpenHelper {
 
             values.put(KEY_TDC_CUSTOMER_UPLOAD_STATUS, customer.getIsUploasStatus());
 
-            if (customer.getUserId().equals("")) {
+           if (customer.getUserId().equals("")) {
+            //Log.i("saveKey...",saveKey+"");
+           // if (saveKey.equals("Save")) {
                 System.out.println("RETAILER INSERTED+++++");
                 customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
             } else {
                 int val = checkRetailerExistsOrNot(customer.getUserId(), loginId);
                 System.out.println("VAL IS::: " + val);
-                if (val == 0) {
-                    System.out.println("RETAILER INSERTED 111+++++");
-                    customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
-                } else {
+//                if (val == 0) {
+//                        System.out.println("RETAILER INSERTED 111+++++");
+//                        customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
+//
+//                } else {
                     System.out.println("RETAILER UPDATED+++++");
                     customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
                             new String[]{String.valueOf(customer.getUserId())});
-                }
+               // }
             }
+
 //            if (val == 0) {
 //                System.out.println("RETAILER INSERTED+++++");
 //                customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);

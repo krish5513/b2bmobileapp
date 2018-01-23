@@ -309,16 +309,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/productfab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/fab_margin"
-        android:layout_marginRight="16dp"
-        app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -464,4 +454,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textColor="#000000"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/productfab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_marginRight="16dp"
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@android:drawable/ic_dialog_email" />
 </FrameLayout>

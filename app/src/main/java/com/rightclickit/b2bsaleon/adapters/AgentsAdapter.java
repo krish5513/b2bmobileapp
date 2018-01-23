@@ -330,6 +330,9 @@ public class AgentsAdapter extends BaseAdapter {
                 if (wp.getmAgentCode().toLowerCase(Locale.getDefault()).contains(charText)) {
                     mAgentsBeansList1.add(wp);
                 }
+                if (wp.getmStatus().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    mAgentsBeansList1.add(wp);
+                }
             }
         }
         notifyDataSetChanged();

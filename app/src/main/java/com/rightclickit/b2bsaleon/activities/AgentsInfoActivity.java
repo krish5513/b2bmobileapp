@@ -8,10 +8,16 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -25,9 +31,18 @@ import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
+import com.rightclickit.b2bsaleon.models.AgentsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+import com.rightclickit.b2bsaleon.util.Utility;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
     EditText firstname, lastname, mobile, address;
@@ -38,6 +53,10 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
     private GoogleMap mMap;
     private String mLatitude = "", mLongitude = "";
     DBHelper dbHelper;
+    TextView agent_update;
+    private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
+    AgentsModel agentsmodel;
+    String str_BusinessName, str_PersonName, str_Mobileno, str_address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +97,14 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         Bitmap avatarbmp = (Bitmap) extras.getParcelable("avatar");
         Bitmap poibmp = (Bitmap) extras.getParcelable("poi");
         Bitmap poabmp = (Bitmap) extras.getParcelable("poa");
+
+        agentsmodel = new AgentsModel(AgentsInfoActivity.this, this);
+        dbHelper = new DBHelper(getApplicationContext());
+
+
+        agent_update=(TextView)findViewById(R.id.agent_update);
+
+
         if (avatarbmp != null) {
             avatar.setImageBitmap(avatarbmp);
         }
@@ -87,6 +114,18 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         if (poabmp != null) {
             poa.setImageBitmap(poabmp);
         }
+
+        agent_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),
+                        R.anim.blink);
+                agent_update.startAnimation(animation1);
+
+                validateCustomerDetails();
+            }
+        });
         /*for (int i = 0; i < mAgentsBeansList1.size(); i++) {
             if (!mAgentsBeansList1.get(i).getmPoiImage().equals("")) {
                 mImageLoader.DisplayImage(mAgentsBeansList1.get(i).getmPoiImage(),poi, null, "");
@@ -101,6 +140,99 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         SupportMapFragment supportMapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFrag);
         supportMapFragment.getMapAsync(this);
+    }
+
+    private void validateCustomerDetails() {
+        str_BusinessName = firstname.getText().toString();
+        Log.i("bname", str_BusinessName);
+        str_PersonName = lastname.getText().toString();
+        str_Mobileno = mobile.getText().toString();
+        str_address = address.getText().toString();
+        if (str_BusinessName.length() == 0 || str_BusinessName.length() == ' ') {
+            firstname.setError("Please enter BusinessName");
+            Toast.makeText(getApplicationContext(), "Please enter BusinessName", Toast.LENGTH_SHORT).show();
+            //
+        } else if (str_PersonName.length() == 0 || str_PersonName.length() == ' ') {
+            firstname.setError(null);
+            lastname.setError("Please enter PersonName");
+            Toast.makeText(getApplicationContext(), "Please enter PersonName", Toast.LENGTH_SHORT).show();
+
+        } else if (str_Mobileno.length() == 0 || str_Mobileno.length() == ' ' || str_Mobileno.length() != 10) {
+            lastname.setError(null);
+            mobile.setError("Please enter  10 digit mobileno");
+            Toast.makeText(getApplicationContext(), "Please enter  10 digit mobileno", Toast.LENGTH_SHORT).show();
+
+        } /*else if (str_address.length() == 0 || str_address.length() == ' ') {
+                                            mobile.setError(null);
+                                            address.setError("Please enter address");
+                                            Toast.makeText(getApplicationContext(), "Please enter address", Toast.LENGTH_SHORT).show();
+
+                                        }
+*/ else {
+            firstname.setError(null);
+            lastname.setError(null);
+            mobile.setError(null);
+            address.setError(null);
+
+            HashMap<String, String> userMapData = dbHelper.getUsersData();
+            String stakeholderid = userMapData.get("stakeholder_id");
+            //Log.i("STAKEID",stakeholderid);
+            String userid = userMapData.get("user_id");
+            try {
+                JSONObject routesJob = new JSONObject(userMapData.get("route_ids").toString());
+                JSONArray routesArray = routesJob.getJSONArray("routeArray");
+
+                AgentsBean agentsBean = new AgentsBean();
+             //   agentsBean.setmFirstname(str_BusinessName);
+             //   agentsBean.setmLastname(str_PersonName);
+             //   agentsBean.setMphoneNO(str_Mobileno);
+                agentsBean.setmAgentEmail("");
+                agentsBean.setmAgentPassword(Utility.getMd5String("123456789"));
+                agentsBean.setmAgentCode("");
+                agentsBean.setmAgentReprtingto("");
+                agentsBean.setmAgentVerifycode("");
+                agentsBean.setmStatus("I");
+                agentsBean.setmAgentDelete("N");
+                agentsBean.setmAgentStakeid(stakeholderid);
+                agentsBean.setmAgentCreatedBy(userid);
+                agentsBean.setmAgentUpdatedBy(userid);
+              //  agentsBean.setMaddress(str_address);
+               // agentsBean.setmLatitude(String.valueOf(latitude));
+               // agentsBean.setmLongitude(String.valueOf(longitude));
+                String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                agentsBean.setmAgentCreatedOn(timeStamp);
+                agentsBean.setmAgentUpdatedOn(timeStamp);
+                agentsBean.setmObAmount("");
+                agentsBean.setmOrderValue("");
+                agentsBean.setmTotalAmount("");
+                agentsBean.setmDueAmount("");
+                agentsBean.setmAgentPic("");
+                agentsBean.setmAgentApprovedOn("");
+                agentsBean.setmAgentDeviceSync("0");
+                agentsBean.setmAgentAccessDevice("NO");
+                agentsBean.setmAgentBackUp("0");
+                // agentsBean.setmAgentRouteId(routesArray.toString());
+               // agentsBean.setmAgentRouteId(selected_val);
+                // agentsBean.setmSelectedRouteName(selected_val);
+                mAgentsBeansList.add(agentsBean);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // db.insertAgentDetails(mAgentsBeansList);
+            synchronized (this) {
+                if (new NetworkConnectionDetector(AgentsInfoActivity.this).isNetworkConnected()) {
+                    //agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
+                    agentsmodel.customerAdd(mAgentsBeansList, dbHelper.getStakeTypeIdByStakeType("2"));
+                }
+                dbHelper.updateAgentDetails(mAgentsBeansList, userid);
+                Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
+                synchronized (this) {
+                    Intent i = new Intent(AgentsInfoActivity.this, AgentsActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+            }
+        }
     }
 
     @Override

@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,6 +71,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     private GoogleMap googleMap;
     private ImageView shop_image;
     private LinearLayout retailer_add_footer;
+    private TextView mapFullView;
 
     private static final int REQUEST_CODE_TAKE_PHOTO = 1;
     private static final int REQUEST_CODE_IMAGE_SELECTION_FROM_GALLERY = 2;
@@ -121,6 +123,9 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             retailer_add_footer = (LinearLayout) findViewById(R.id.retailer_add_footer);
             update=(TextView) findViewById(R.id.ts_dispatch_save);
 
+            mapFullView = (TextView) findViewById(R.id.MapFullView);
+
+
             // LOCATION DETAILS
             try {
 
@@ -138,6 +143,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             HashMap<String, String> userRouteIds = mDBHelper.getUserRouteIds();
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
             mUserId = userMapData.get("user_id");
+            Log.i("hash map@@@",mUserId+"empty");
             try {
                 routeCodesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
             } catch (JSONException e) {
@@ -228,6 +234,21 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 updateUIWithBundleValues(customer);
             }
 
+            mapFullView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        Intent ii = new Intent(Retailers_AddActivity.this, AgentMapFullScreen.class);
+                        ii.putExtra("fromLat", String.valueOf(latitude));
+                        ii.putExtra("fromLong", String.valueOf(longitude));
+                        startActivityForResult(ii, 100);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -235,10 +256,13 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
     public void updateUIWithBundleValues(TDCCustomer retailerObj) {
         try {
+
+            Log.i("add acti user id...",  retailerObj.getUserId()+"");
             retailer_name.setText(retailerObj.getBusinessName());
             mobile_no.setText(retailerObj.getMobileNo());
             business_name.setText(retailerObj.getName());
             address.setText(retailerObj.getAddress());
+            mUserId = retailerObj.getUserId();
 
             latitude = retailerObj.getLatitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLatitude());
             longitude = retailerObj.getLongitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLongitude());
@@ -397,6 +421,18 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                     shop_image.setBackground(d);
                     shop_image_path = picturePath;
                 }
+
+                else if (requestCode == 100) {
+                    latitude = Double.parseDouble(data.getStringExtra("lat"));
+                    longitude = Double.parseDouble(data.getStringExtra("long"));
+
+                    LatLng loc = new LatLng(latitude, longitude);
+
+                    Marker marker;
+                    googleMap.clear();
+                    marker = googleMap.addMarker(new MarkerOptions().position(loc));
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -439,7 +475,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 if (cancel) {
                     focusView.requestFocus();
                 } else {
-                    addNewRetailer(name, mobileNo, businessName, retailerAddress);
+                    addNewRetailer(name, mobileNo, businessName, retailerAddress, mUserId);
                 }
             }
         //}
@@ -448,7 +484,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
         }
     }
 
-    public void addNewRetailer(String name, String mobileNo, String businessName, String retailerAddress) {
+    public void addNewRetailer(String name, String mobileNo, String businessName, String retailerAddress, String mUserId) {
         try {
             int dbCount = mDBHelper.getTDCCustomersTableCount();
             int fdbc = dbCount + 1;
@@ -456,7 +492,11 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             String retailerCode = userMapData.get("user_code") + "-R" + fdbc;
 
             customer = new TDCCustomer();
-            customer.setUserId(""); // later we will update this value by fetching from service.
+            if(update.getText().toString().trim().equals("Save"))
+                customer.setUserId("");
+            else
+                customer.setUserId(mUserId); // later we will update this value by fetching from service.
+
             customer.setCustomerType(1);
             customer.setName(businessName); // Person Name
             customer.setMobileNo(mobileNo);
@@ -481,7 +521,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             customer.setIsShopImageUploaded(0);
             long customerId = mDBHelper.insertIntoTDCCustomers(customer, mUserId);
 
-
+//e
             if (customerId == -1)
                 Toast.makeText(activityContext, "An error occurred while adding new retailer.", Toast.LENGTH_LONG).show();
             else {
@@ -504,6 +544,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             e.printStackTrace();
         }
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

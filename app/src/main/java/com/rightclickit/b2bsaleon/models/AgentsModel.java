@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.rightclickit.b2bsaleon.activities.AgentsActivity;
+import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
 import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
 import com.rightclickit.b2bsaleon.activities.LoginActivity;
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
@@ -36,6 +37,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
     private AgentsActivity activity;
     SettingsActivity settingsActivity;
     private Agents_AddActivity activity1;
+    private AgentsInfoActivity activity2;
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private String type = "", UserCode = "";
@@ -66,6 +68,14 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
         this.activity1 = activity;
         // this.mPreferences = new MMSharedPreferences(context);
         //  this.mDBHelper = new DBHelper(context);
+    }
+
+
+    public AgentsModel(Context context, AgentsInfoActivity activity) {
+        this.context = context;
+        this.activity2 = activity;
+        this.mPreferences = new MMSharedPreferences(context);
+        this.mDBHelper = new DBHelper(context);
     }
 
   /*  public void getStakeHoldersList(String s) {

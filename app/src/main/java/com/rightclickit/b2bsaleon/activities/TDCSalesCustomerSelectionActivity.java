@@ -352,7 +352,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
             customer.setRoutecode(selected_val);
 
 
-            long customerId = mDBHelper.insertIntoTDCCustomers(customer, mUserId);
+            long customerId = mDBHelper.insertIntoTDCCustomers(customer, mUserId );
 
             if (customerId == -1)
                 Toast.makeText(activityContext, "An error occurred while adding new consumer.", Toast.LENGTH_LONG).show();

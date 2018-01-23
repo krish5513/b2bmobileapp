@@ -1,6 +1,7 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -65,14 +67,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class Agents_AddActivity extends AppCompatActivity {
 
     String str_BusinessName, str_PersonName, str_Mobileno, str_address;
 
     private GoogleMap googlemap;
     private AgentsAdapter mAgentsAdapter;
     double longitude, latitude;
-    TextView save;
+    TextView save, mapFullView;
     EditText bname;
     EditText pname;
 
@@ -96,6 +98,8 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
     String selected_val;
     ArrayList<String> idsArray = new ArrayList<String>();
     private MMSharedPreferences mmSharedPreferences;
+    private Dialog mapDialog;
+    private SupportMapFragment mapFragment1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +125,8 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         imageview = (ImageView) findViewById(R.id.shop_image);
         bname = (EditText) findViewById(R.id.business_name);
 
+        mapFullView = (TextView) findViewById(R.id.MapFullView);
+
         pname = (EditText) findViewById(R.id.person_name);
         mobile = (EditText) findViewById(R.id.mobile_no);
         address = (EditText) findViewById(R.id.uid_no);
@@ -136,9 +142,18 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
 
 
         System.out.println("STAKE ID IS::: " + db.getStakeTypeIdByStakeType("2"));
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFrag);
-        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                googlemap = googleMap;
+
+                replaceMapFragment();
+            }
+        });
+
         imageview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,11 +166,10 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         try {
             latitude = Double.parseDouble(mmSharedPreferences.getString("curLat"));
             longitude = Double.parseDouble(mmSharedPreferences.getString("curLong"));
+
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
 
         System.out.println("LAT::: " + latitude);
         System.out.println("LONG::: " + longitude);
@@ -225,6 +239,20 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 save.startAnimation(animation1);
 
                 validateCustomerDetails();
+            }
+        });
+
+        mapFullView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent ii = new Intent(Agents_AddActivity.this, AgentMapFullScreen.class);
+                    ii.putExtra("fromLat", String.valueOf(latitude));
+                    ii.putExtra("fromLong", String.valueOf(longitude));
+                    startActivityForResult(ii, 100);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -411,6 +439,16 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
                 imageview.setBackgroundDrawable(null);
                 imageview.setBackgroundDrawable(d);
                 //mPicImage.setImageBitmap(thumbnail);
+            } else if (requestCode == 100) {
+                latitude = Double.parseDouble(data.getStringExtra("lat"));
+                longitude = Double.parseDouble(data.getStringExtra("long"));
+
+                LatLng loc = new LatLng(latitude, longitude);
+
+                Marker marker;
+                googlemap.clear();
+                marker = googlemap.addMarker(new MarkerOptions().position(loc));
+                googlemap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
             }
         }
     }
@@ -559,10 +597,10 @@ public class Agents_AddActivity extends AppCompatActivity implements OnMapReadyC
         finish();
     }
 
-    @Override
-    public void onMapReady(GoogleMap map) {
-        googlemap = map;
-
-        replaceMapFragment();
-    }
+//    @Override
+//    public void onMapReady(GoogleMap map) {
+//        googlemap = map;
+//
+//        replaceMapFragment();
+//    }
 }
