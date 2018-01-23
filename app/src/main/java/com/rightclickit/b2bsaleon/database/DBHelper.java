@@ -1048,7 +1048,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_AGENT_LOGIN_USER_ID, userId);
 
 
-                System.out.println("RETAILER UPDATED+++++");
+                System.out.println("AGENT UPDATED+++++");
                 db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
                         new String[]{String.valueOf(userId)});
 
@@ -2181,15 +2181,14 @@ public class DBHelper extends SQLiteOpenHelper {
             } else {
                 int val = checkRetailerExistsOrNot(customer.getUserId(), loginId);
                 System.out.println("VAL IS::: " + val);
-//                if (val == 0) {
-//                        System.out.println("RETAILER INSERTED 111+++++");
-//                        customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
-//
-//                } else {
+              if (val == 0) {
+                  System.out.println("RETAILER INSERTED 111+++++");
+                      customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
+              } else {
                     System.out.println("RETAILER UPDATED+++++");
                     customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
                             new String[]{String.valueOf(customer.getUserId())});
-               // }
+               }
             }
 
 //            if (val == 0) {

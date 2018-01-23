@@ -95,12 +95,12 @@ public class Agents_AddActivity extends AppCompatActivity {
     private Context applicationContext, activityContext;
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
     private JSONArray routeCodesArray;
-    String selected_val;
+    String selected_val,selectedroute;
     ArrayList<String> idsArray = new ArrayList<String>();
     private MMSharedPreferences mmSharedPreferences;
     private Dialog mapDialog;
     private SupportMapFragment mapFragment1;
-
+    List<String> routesDataList = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,7 +188,7 @@ public class Agents_AddActivity extends AppCompatActivity {
         stringArray.add("Select Routecode");
         map.put(0, "Select Routecode");
         for (int i = 1, count = routeCodesArray.length(); i <= count; i++) {
-            List<String> routesDataList = null;
+
             try {
                 idsArray.add(routeCodesArray.get(i - 1).toString());
                 idMap.put(i - 1, routeCodesArray.get(i - 1).toString());
@@ -220,8 +220,13 @@ public class Agents_AddActivity extends AppCompatActivity {
 
                 } else {
                     selected_val = idsArray.get(i - 1).toString();
+                    //selectedroute=routesDataList.get(i - 1).toString();
+
+                    mmSharedPreferences.putString("routename",selected_val);
                     System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
                 }
+
+
             }
 
             @Override
@@ -264,6 +269,7 @@ public class Agents_AddActivity extends AppCompatActivity {
         str_PersonName = pname.getText().toString();
         str_Mobileno = mobile.getText().toString();
         str_address = address.getText().toString();
+        mmSharedPreferences.putString("routeaddress",str_address);
         if (str_BusinessName.length() == 0 || str_BusinessName.length() == ' ') {
             bname.setError("Please enter BusinessName");
             Toast.makeText(getApplicationContext(), "Please enter BusinessName", Toast.LENGTH_SHORT).show();

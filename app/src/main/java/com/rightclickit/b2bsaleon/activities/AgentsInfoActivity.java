@@ -3,8 +3,15 @@ package com.rightclickit.b2bsaleon.activities;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +33,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
@@ -39,13 +47,19 @@ import com.rightclickit.b2bsaleon.util.Utility;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyCallback {
-    EditText firstname, lastname, mobile, address;
+
+public class AgentsInfoActivity extends AppCompatActivity  {
+    EditText firstname, lastname, mobile, address,routecode;
     public static ImageView avatar, poi, poa;
     private MMSharedPreferences mPreference;
     ArrayList<AgentsBean> mAgentsBeansList1;
@@ -57,7 +71,9 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
     AgentsModel agentsmodel;
     String str_BusinessName, str_PersonName, str_Mobileno, str_address;
-
+    double longitude, latitude;
+    private static final int ACTION_TAKE_PHOTO_A = 1;
+    private static final int ACTION_TAKE_GALLERY_PIC_A = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,11 +104,13 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         avatar = (ImageView) findViewById(R.id.shopaddress_image);
         poi = (ImageView) findViewById(R.id.poi_image);
         poa = (ImageView) findViewById(R.id.poa_image);
+       // routecode=(EditText) findViewById(R.id.routecode);
 
         firstname.setText(bundle.getString("FIRSTNAME"));
         lastname.setText(bundle.getString("LASTNAME"));
         mobile.setText(bundle.getString("MOBILE"));
-        address.setText(bundle.getString("ADDRESS"));
+       // address.setText(bundle.getString("ADDRESS"));
+        address.setText(mPreference.getString("routeaddress"));
         Bundle extras = getIntent().getExtras();
         Bitmap avatarbmp = (Bitmap) extras.getParcelable("avatar");
         Bitmap poibmp = (Bitmap) extras.getParcelable("poi");
@@ -103,6 +121,8 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
 
 
         agent_update=(TextView)findViewById(R.id.agent_update);
+
+      //  routecode.setText(mPreference.getString("routename"));
 
 
         if (avatarbmp != null) {
@@ -137,9 +157,30 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
 
 */
 
-        SupportMapFragment supportMapFragment =
+        // LOCATION DETAILS
+        try {
+            latitude = Double.parseDouble(mPreference.getString("curLat"));
+            longitude = Double.parseDouble(mPreference.getString("curLong"));
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        /*SupportMapFragment supportMapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFrag);
-        supportMapFragment.getMapAsync(this);
+        supportMapFragment.getMapAsync(this);*/
+
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.mapFrag);
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                mMap = googleMap;
+
+                replaceMapFragment();
+            }
+        });
     }
 
     private void validateCustomerDetails() {
@@ -183,9 +224,9 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
                 JSONArray routesArray = routesJob.getJSONArray("routeArray");
 
                 AgentsBean agentsBean = new AgentsBean();
-             //   agentsBean.setmFirstname(str_BusinessName);
-             //   agentsBean.setmLastname(str_PersonName);
-             //   agentsBean.setMphoneNO(str_Mobileno);
+               agentsBean.setmFirstname(str_BusinessName);
+               agentsBean.setmLastname(str_PersonName);
+               agentsBean.setMphoneNO(str_Mobileno);
                 agentsBean.setmAgentEmail("");
                 agentsBean.setmAgentPassword(Utility.getMd5String("123456789"));
                 agentsBean.setmAgentCode("");
@@ -196,9 +237,9 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
                 agentsBean.setmAgentStakeid(stakeholderid);
                 agentsBean.setmAgentCreatedBy(userid);
                 agentsBean.setmAgentUpdatedBy(userid);
-              //  agentsBean.setMaddress(str_address);
-               // agentsBean.setmLatitude(String.valueOf(latitude));
-               // agentsBean.setmLongitude(String.valueOf(longitude));
+               agentsBean.setMaddress(str_address);
+                agentsBean.setmLatitude(String.valueOf(latitude));
+                agentsBean.setmLongitude(String.valueOf(longitude));
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
                 agentsBean.setmAgentCreatedOn(timeStamp);
                 agentsBean.setmAgentUpdatedOn(timeStamp);
@@ -212,7 +253,7 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
                 agentsBean.setmAgentAccessDevice("NO");
                 agentsBean.setmAgentBackUp("0");
                 // agentsBean.setmAgentRouteId(routesArray.toString());
-               // agentsBean.setmAgentRouteId(selected_val);
+                agentsBean.setmAgentRouteId(mPreference.getString("routename"));
                 // agentsBean.setmSelectedRouteName(selected_val);
                 mAgentsBeansList.add(agentsBean);
             } catch (Exception e) {
@@ -258,6 +299,53 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         }
     }
 
+
+    private void replaceMapFragment() {
+
+
+        // Enable Zoom
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+
+        //set Map TYPE
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
+        //enable Current location Button
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+
+        //set "listener" for changing my location
+        //googlemap.setOnMyLocationChangeListener(myLocationChangeListener());
+
+        LatLng loc = new LatLng(latitude, longitude);
+
+        Marker marker;
+        mMap.clear();
+        marker = mMap.addMarker(new MarkerOptions().position(loc));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                LatLng loc = new LatLng(latLng.latitude, latLng.longitude);
+                latitude = latLng.latitude;
+                longitude = latLng.longitude;
+                Marker marker;
+                mMap.clear();
+                marker = mMap.addMarker(new MarkerOptions().position(loc));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+            }
+        });
+    }
+
     private boolean isGooglePlayServicesAvailable() {
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (ConnectionResult.SUCCESS == status) {
@@ -291,16 +379,16 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
     }
 
 
-    @Override
+   /* @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-/*
+*//*
         double latitude = mMap.getLatitude();
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
         googleMap.addMarker(new MarkerOptions().position(latLng));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(100));*/
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(100));*//*
         LatLng sydney;
         if (!mLatitude.equals("") && !mLongitude.equals("")) {
             sydney = new LatLng(Double.parseDouble(mLatitude), Double.parseDouble(mLongitude));
@@ -318,7 +406,71 @@ public class AgentsInfoActivity extends AppCompatActivity implements OnMapReadyC
         }
         mMap.setMyLocationEnabled(true);
 
+    }*/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+         if (requestCode == 100) {
+                latitude = Double.parseDouble(data.getStringExtra("lat"));
+                longitude = Double.parseDouble(data.getStringExtra("long"));
+
+                LatLng loc = new LatLng(latitude, longitude);
+
+                Marker marker;
+                mMap.clear();
+                marker = mMap.addMarker(new MarkerOptions().position(loc));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+            }
+
     }
+
+    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener() {
+
+        return new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+                StringBuilder strReturnedAddress = new StringBuilder("Address:\n");
+                Marker marker;
+                mMap.clear();
+                marker = mMap.addMarker(new MarkerOptions().position(loc));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+                // locationText.setText("You are at [" + longitude + " ; " + latitude + " ]");
+                // Geocoder geocoder = new Geocoder(Agents_AddActivity.this, Locale.ENGLISH);
+
+                /*try {
+                    List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
+
+                    if (addresses != null && addresses.size() > 0) {
+                        Address returnedAddress = addresses.get(0);
+                        //strReturnedAddress =
+                        for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
+                            strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                        }
+
+                        address.setText(strReturnedAddress.toString());
+
+                    } else {
+                        address.setText("");
+                        //  address.setText(strReturnedAddress.toString());
+                    }
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    address.setText("");
+                }
+*/
+
+                //get current address by invoke an AsyncTask object
+                // new GetAddressTask(Agents_AddActivity.this).execute(String.valueOf(latitude), String.valueOf(longitude));
+            }
+        };
+    }
+
 }
 
 
