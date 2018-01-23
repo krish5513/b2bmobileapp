@@ -83,7 +83,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     private TDCCustomer customer;
     private boolean isCameFromRetailersList = false;
     Spinner paymentTypeSpinner;
-    private String mUserId = "", mRegionName = "", mOfficeName = "", mRouteCode = "";
+    private String mUserId = "", mRegionName = "", mOfficeName = "", mRouteCode = "", mLoginId="";
     private JSONArray routeCodesArray;
     String selected_val;
     ArrayList<String> idsArray = new ArrayList<String>();
@@ -142,8 +142,8 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
             HashMap<String, String> userRouteIds = mDBHelper.getUserRouteIds();
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
-            mUserId = userMapData.get("user_id");
-            Log.i("hash map@@@",mUserId+"empty");
+            mLoginId = userMapData.get("user_id");
+            Log.i("hash map@@@",mLoginId+"empty");
             try {
                 routeCodesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
             } catch (JSONException e) {
@@ -475,7 +475,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 if (cancel) {
                     focusView.requestFocus();
                 } else {
-                    addNewRetailer(name, mobileNo, businessName, retailerAddress, mUserId);
+                    addNewRetailer(name, mobileNo, businessName, retailerAddress);
                 }
             }
         //}
@@ -484,7 +484,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
         }
     }
 
-    public void addNewRetailer(String name, String mobileNo, String businessName, String retailerAddress, String mUserId) {
+    public void addNewRetailer(String name, String mobileNo, String businessName, String retailerAddress) {
         try {
             int dbCount = mDBHelper.getTDCCustomersTableCount();
             int fdbc = dbCount + 1;
@@ -519,9 +519,9 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
             customer.setShopImage(shop_image_path);
             customer.setIsShopImageUploaded(0);
-            long customerId = mDBHelper.insertIntoTDCCustomers(customer, mUserId);
+            long customerId = mDBHelper.insertIntoTDCCustomers(customer, mLoginId);
 
-//e
+
             if (customerId == -1)
                 Toast.makeText(activityContext, "An error occurred while adding new retailer.", Toast.LENGTH_LONG).show();
             else {

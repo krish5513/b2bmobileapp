@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -194,6 +195,7 @@ public class RetailersActivity extends AppCompatActivity {
 
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
             userId = userMapData.get("user_id");
+            Log.i("Reatailer activity@@@",userId+"");
             ArrayList<String> privilegesData = mDBHelper.getUserActivityDetailsByUserId(userMapData.get("user_id"));
             //System.out.println("F 11111 ***COUNT === " + privilegesData.size());
             if (privilegesData.contains("Dashboard")) {
@@ -248,7 +250,7 @@ public class RetailersActivity extends AppCompatActivity {
 
 
             privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Retailers"));
-            //System.out.println("F 11111 ***COUNT === " + privilegeActionsData1.size());
+            System.out.println(" retailer activity***COUNT === " + privilegeActionsData1.size());
 
             boolean canWeShowRetailersListView = false;
 
