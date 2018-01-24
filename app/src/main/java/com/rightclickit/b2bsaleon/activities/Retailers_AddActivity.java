@@ -441,7 +441,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
     public void saveNewRetailer(View view) {
         try {
-           // if (!isCameFromRetailersList) {
+            if (!isCameFromRetailersList) {
                 name = retailer_name.getText().toString().trim();
                 mobileNo = mobile_no.getText().toString().trim();
                 businessName = business_name.getText().toString().trim();
@@ -478,7 +478,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                     addNewRetailer(name, mobileNo, businessName, retailerAddress);
                 }
             }
-        //}
+        }
         catch (Exception e) {
             e.printStackTrace();
         }
@@ -491,12 +491,16 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
             String retailerCode = userMapData.get("user_code") + "-R" + fdbc;
 
-            customer = new TDCCustomer();
-            if(update.getText().toString().trim().equals("Save"))
+
+       /*  if(update.getText().toString().trim().equals("Save"))
                 customer.setUserId("");
             else
                 customer.setUserId(mUserId); // later we will update this value by fetching from service.
+*/
 
+
+            customer = new TDCCustomer();
+            customer.setUserId(""); // later we will update this value by fetching from service.
             customer.setCustomerType(1);
             customer.setName(businessName); // Person Name
             customer.setMobileNo(mobileNo);

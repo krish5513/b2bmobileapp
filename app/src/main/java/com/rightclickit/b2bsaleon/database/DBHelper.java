@@ -2190,15 +2190,6 @@ public class DBHelper extends SQLiteOpenHelper {
                     customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
                             new String[]{String.valueOf(customer.getUserId())});
                }
-                if (val == 0) {
-                        System.out.println("RETAILER INSERTED 111+++++");
-                        customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
-
-                } else {
-                    System.out.println("RETAILER UPDATED+++++");
-                    customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
-                            new String[]{String.valueOf(customer.getUserId())});
-                }
 
             }
 

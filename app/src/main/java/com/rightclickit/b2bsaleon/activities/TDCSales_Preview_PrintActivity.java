@@ -282,6 +282,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     }
                 } else if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_RETAILER_PAYMENTS_LIST)) {
                     tdc_sales_save_layout.setVisibility(View.GONE);
+                    cName.setText(str_agentname);
                     isOrderAlreadySaved = true;
                     long oId = currentOrder.getOrderId();
                     //currentOrderId = String.format("TDC%05d", oId);
@@ -367,6 +368,7 @@ public class TDCSales_Preview_PrintActivity extends AppCompatActivity {
                     currentOrder.setOrderSubTotal(subTotal);
                 } else if (requestCameFrom.equals(Constants.BUNDLE_REQUEST_FROM_TDC_SALES_LIST)) {
                     tdc_sales_save_layout.setVisibility(View.GONE);
+                    cName.setText(str_agentname);
                     isOrderAlreadySaved = true;
                     long oId = currentOrder.getOrderId();
                     //currentOrderId = String.format("TDC%05d", oId);
