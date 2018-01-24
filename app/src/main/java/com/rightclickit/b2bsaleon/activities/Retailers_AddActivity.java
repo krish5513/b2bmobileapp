@@ -83,11 +83,15 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     private TDCCustomer customer;
     private boolean isCameFromRetailersList = false;
     Spinner paymentTypeSpinner;
-    private String mUserId = "", mRegionName = "", mOfficeName = "", mRouteCode = "", mLoginId="";
+    private String mUserId = "", mRegionName = "", mOfficeName = "", mRouteCode = "", mLoginId = "";
     private JSONArray routeCodesArray;
     String selected_val;
     ArrayList<String> idsArray = new ArrayList<String>();
     TextView update;
+    private ArrayList<String> stringArray = new ArrayList<String>();
+    private HashMap<Integer, String> map = new HashMap<>();
+    private HashMap<Integer, String> idMap = new HashMap<>();
+    private HashMap<String, String> routeValuesMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,66 +125,50 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             paymentTypeSpinner = (Spinner) findViewById(R.id.paymentTypeSpinner);
             shop_image = (ImageView) findViewById(R.id.retailer_shop_image);
             retailer_add_footer = (LinearLayout) findViewById(R.id.retailer_add_footer);
-            update=(TextView) findViewById(R.id.ts_dispatch_save);
+            update = (TextView) findViewById(R.id.ts_dispatch_save);
 
             mapFullView = (TextView) findViewById(R.id.MapFullView);
 
 
             // LOCATION DETAILS
             try {
-
-
                 latitude = Double.parseDouble(mmSharedPreferences.getString("curLat"));
                 longitude = Double.parseDouble(mmSharedPreferences.getString("curLong"));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            System.out.println("LAT::: " + latitude);
-            System.out.println("LONG::: " + longitude);
-
 
             HashMap<String, String> userRouteIds = mDBHelper.getUserRouteIds();
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
             mLoginId = userMapData.get("user_id");
-            Log.i("hash map@@@",mLoginId+"empty");
             try {
                 routeCodesArray = new JSONObject(userRouteIds.get("route_ids")).getJSONArray("routeArray");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            System.out.println("ROUTE CODE ARRAY:: " + routeCodesArray + "...length..." + routeCodesArray.length());
 
-            final ArrayList<String> stringArray = new ArrayList<String>();
-            final HashMap<Integer, String> map = new HashMap<>();
-            final HashMap<Integer, String> idMap = new HashMap<>();
+
             stringArray.add("Select Routecode");
             map.put(0, "Select Routecode");
             for (int i = 1; i <= routeCodesArray.length(); i++) {
                 List<String> routesDataList = null;
                 try {
-                    //System.out.println("idsArray :: "+i+"..." + routeCodesArray.get(i - 1).toString());
                     idsArray.add(routeCodesArray.get(i - 1).toString());
                     idMap.put(i - 1, routeCodesArray.get(i - 1).toString());
                     routesDataList = mDBHelper.getRouteDataByRouteId(routeCodesArray.get(i - 1).toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                //System.out.println("idMap :: " + idMap.toString());
-                //System.out.println("routesDataList :: " + routesDataList.toString());
 
                 if (routesDataList.size() > 0) {
-                    //System.out.println("routesDataList.get(1).toString() :: " + routesDataList.get(1).toString());
                     stringArray.add(routesDataList.get(1).toString());
                     map.put(i, routesDataList.get(1).toString());
+                    routeValuesMap.put(routesDataList.get(0).toString(), routesDataList.get(1).toString());
                 }
             }
-            System.out.println("stringArray :: " + map.toString());
-            System.out.println("stringArray :: " + idMap.toString());
 
             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, stringArray); //selected item will look like a spinner set from XML
             spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            //paymentTypeSpinner.setPrompt("Select routecode");
             paymentTypeSpinner.setAdapter(spinnerArrayAdapter);
 
             paymentTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -191,7 +179,6 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
                     } else {
                         String value = paymentTypeSpinner.getSelectedItem().toString();
-                        System.out.println("ROUTE value:: " + value);
                         int key = 0;
                         for (Map.Entry entry : map.entrySet()) {
                             if (value.equals(entry.getValue())) {
@@ -200,9 +187,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                             }
                         }
 
-                        System.out.println("ROUTE JSON key:: " + key);
                         selected_val = idMap.get(key - 1).toString();
-                        System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
                     }
                 }
 
@@ -220,7 +205,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             if (bundle != null) {
                 customer = (TDCCustomer) bundle.getSerializable(Constants.BUNDLE_TDC_CUSTOMER);
 
-                isCameFromRetailersList = true;
+                //isCameFromRetailersList = true;
 
                 actionBar.setTitle("RETAILER INFO");
                 update.setText("Update");
@@ -229,7 +214,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 //scrollViewLp.bottomMargin = 0;
                 retailer_add_scrollview.setLayoutParams(scrollViewLp);
 
-              // retailer_add_footer.setVisibility(View.GONE);
+                // retailer_add_footer.setVisibility(View.GONE);
 
                 updateUIWithBundleValues(customer);
             }
@@ -241,7 +226,9 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                         Intent ii = new Intent(Retailers_AddActivity.this, AgentMapFullScreen.class);
                         ii.putExtra("fromLat", String.valueOf(latitude));
                         ii.putExtra("fromLong", String.valueOf(longitude));
+                        ii.putExtra("FromPage", "Retailersadd");
                         startActivityForResult(ii, 100);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -256,16 +243,25 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
     public void updateUIWithBundleValues(TDCCustomer retailerObj) {
         try {
-
-            Log.i("add acti user id...",  retailerObj.getUserId()+"");
             retailer_name.setText(retailerObj.getBusinessName());
             mobile_no.setText(retailerObj.getMobileNo());
             business_name.setText(retailerObj.getName());
             address.setText(retailerObj.getAddress());
             mUserId = retailerObj.getUserId();
+            String selectedRoute = routeValuesMap.get(customer.getRoutecode());
+            if (selectedRoute != null) {
+                for (int g = 0; g < stringArray.size(); g++) {
+                    if (selectedRoute.equals(stringArray.get(g).toString())) {
+                        paymentTypeSpinner.setSelection(g);
+                        break;
+                    }
+                }
+            } else {
 
-            latitude = retailerObj.getLatitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLatitude());
-            longitude = retailerObj.getLongitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLongitude());
+            }
+
+//            latitude = retailerObj.getLatitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLatitude());
+//            longitude = retailerObj.getLongitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLongitude());
 
             shop_image_path = retailerObj.getShopImage();
 
@@ -291,6 +287,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             business_name.setEnabled(false);
             address.setEnabled(false);
             shop_image.setEnabled(false);
+            paymentTypeSpinner.setEnabled(false);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -420,9 +417,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                     shop_image.setBackground(null);
                     shop_image.setBackground(d);
                     shop_image_path = picturePath;
-                }
-
-                else if (requestCode == 100) {
+                } else if (requestCode == 100) {
                     latitude = Double.parseDouble(data.getStringExtra("lat"));
                     longitude = Double.parseDouble(data.getStringExtra("long"));
 
@@ -478,38 +473,39 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                     addNewRetailer(name, mobileNo, businessName, retailerAddress);
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void addNewRetailer(String name, String mobileNo, String businessName, String retailerAddress) {
         try {
-            int dbCount = mDBHelper.getTDCCustomersTableCount();
-            int fdbc = dbCount + 1;
-            HashMap<String, String> userMapData = mDBHelper.getUsersData();
-            String retailerCode = userMapData.get("user_code") + "-R" + fdbc;
+            boolean isUpdate;
+            if (update.getText().toString().trim().equals("Save")) {
+                isUpdate = false;
+                // Insert
+                int dbCount = mDBHelper.getTDCCustomersTableCount();
+                int fdbc = dbCount + 1;
+                HashMap<String, String> userMapData = mDBHelper.getUsersData();
+                String retailerCode = userMapData.get("user_code") + "-R" + fdbc;
 
+                customer = new TDCCustomer();
+                customer.setUserId(""); // later we will update this value by fetching from service.
+                customer.setCustomerType(1);
+                customer.setName(businessName); // Person Name
+                customer.setMobileNo(mobileNo);
+                customer.setBusinessName(name); // Business Name
+                customer.setAddress(retailerAddress);
+                customer.setRoutecode(selected_val);
+                customer.setCode(retailerCode);
+                customer.setIsCustUpdate("false");
 
-       /*  if(update.getText().toString().trim().equals("Save"))
-                customer.setUserId("");
-            else
-                customer.setUserId(mUserId); // later we will update this value by fetching from service.
-*/
-
-
-            customer = new TDCCustomer();
-            customer.setUserId(""); // later we will update this value by fetching from service.
-            customer.setCustomerType(1);
-            customer.setName(businessName); // Person Name
-            customer.setMobileNo(mobileNo);
-            customer.setBusinessName(name); // Business Name
-            customer.setAddress(retailerAddress);
-            customer.setRoutecode(selected_val);
-            customer.setCode(retailerCode);
-            customer.setIsUploasStatus("0");
-
+            } else {
+                isUpdate = true;
+                // Update
+                customer.setIsCustUpdate("true");
+                customer.setIsUploasStatus("0");
+            }
 
             if (latitude > 0)
                 customer.setLatitude(String.valueOf(latitude));
@@ -533,8 +529,11 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 mobile_no.setText("");
                 business_name.setText("");
                 address.setText("");
-
-                Toast.makeText(activityContext, "New retailer added successfully.", Toast.LENGTH_LONG).show();
+                if (isUpdate) {
+                    Toast.makeText(activityContext, "Retailer updated successfully.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(activityContext, "New retailer added successfully.", Toast.LENGTH_LONG).show();
+                }
 
                 if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
                     Intent syncTDCCustomersServiceIntent = new Intent(activityContext, SyncTDCCustomersService.class);

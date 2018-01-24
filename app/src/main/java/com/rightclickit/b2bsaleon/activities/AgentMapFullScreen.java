@@ -7,7 +7,10 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,6 +29,9 @@ public class AgentMapFullScreen extends AppCompatActivity {
 
     double latitude, longitude;
     private GoogleMap googlemap = null;
+    private String ONBACK = "";
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,9 +41,25 @@ public class AgentMapFullScreen extends AppCompatActivity {
         if (b != null) {
             latitude = Double.parseDouble(b.getString("fromLat"));
             longitude = Double.parseDouble(b.getString("fromLong"));
+            ONBACK = b.getString("FromPage");
+
         }
 
         setContentView(R.layout.map_dialog);
+
+
+        this.getSupportActionBar().setTitle("MAP FULLVIEW");
+        this.getSupportActionBar().setSubtitle(null);
+        this.getSupportActionBar().setLogo(R.drawable.route_white);
+        // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
+        this.getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        final ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapFragFullView);
@@ -96,14 +118,53 @@ public class AgentMapFullScreen extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return true;
+        }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.notifications).setVisible(false);
+        menu.findItem(R.id.settings).setVisible(false);
+        menu.findItem(R.id.logout).setVisible(false);
+        menu.findItem(R.id.action_search).setVisible(false);
+        menu.findItem(R.id.Add).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(false);
+        menu.findItem(R.id.sort).setVisible(false);
+
+        return super.onPrepareOptionsMenu(menu);
+    }
 
 
     @Override
     public void onBackPressed() {
-        Intent i = new Intent();
-        i.putExtra("lat", String.valueOf(latitude));
-        i.putExtra("long", String.valueOf(longitude));
-        setResult(RESULT_OK, i);
-        finish();
+        if (ONBACK.equals("Retailersadd")) {
+            Intent i = new Intent(AgentMapFullScreen.this, Retailers_AddActivity.class);
+            i.putExtra("lat", String.valueOf(latitude));
+            i.putExtra("long", String.valueOf(longitude));
+            setResult(RESULT_OK, i);
+            finish();
+        } else if (ONBACK.equals("Agentsadd")) {
+            Intent i = new Intent(AgentMapFullScreen.this, Agents_AddActivity.class);
+            i.putExtra("lat", String.valueOf(latitude));
+            i.putExtra("long", String.valueOf(longitude));
+            setResult(RESULT_OK, i);
+            finish();
+        }
     }
 }

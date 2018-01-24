@@ -254,6 +254,7 @@ public class Agents_AddActivity extends AppCompatActivity {
                     Intent ii = new Intent(Agents_AddActivity.this, AgentMapFullScreen.class);
                     ii.putExtra("fromLat", String.valueOf(latitude));
                     ii.putExtra("fromLong", String.valueOf(longitude));
+                    ii.putExtra("From", "Agentsadd");
                     startActivityForResult(ii, 100);
                 } catch (Exception e) {
                     e.printStackTrace();

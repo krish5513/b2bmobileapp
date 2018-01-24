@@ -2173,34 +2173,21 @@ public class DBHelper extends SQLiteOpenHelper {
 
             values.put(KEY_TDC_CUSTOMER_UPLOAD_STATUS, customer.getIsUploasStatus());
 
-           if (customer.getUserId().equals("")) {
-            //Log.i("saveKey...",saveKey+"");
-           // if (saveKey.equals("Save")) {
-                System.out.println("RETAILER INSERTED+++++");
+            if (customer.getUserId().equals("") && customer.getIsCustUpdate().equals("false")) {
                 customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
+            } else if (customer.getUserId().equals("") && customer.getIsCustUpdate().equals("true")) {
+                customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_ID + " = ?",
+                        new String[]{String.valueOf(customer.getId())});
             } else {
                 int val = checkRetailerExistsOrNot(customer.getUserId(), loginId);
-                System.out.println("VAL IS::: " + val);
 
-              if (val == 0) {
-                  System.out.println("RETAILER INSERTED 111+++++");
-                      customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
-              } else {
-                    System.out.println("RETAILER UPDATED+++++");
+                if (val == 0) {
+                    customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
+                } else {
                     customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
                             new String[]{String.valueOf(customer.getUserId())});
-               }
-
+                }
             }
-
-//            if (val == 0) {
-//                System.out.println("RETAILER INSERTED+++++");
-//                customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
-//            } else {
-//                System.out.println("RETAILER UPDATED+++++");
-//                customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
-//                        new String[]{String.valueOf(customer.getUserId())});
-//            }
             values.clear();
             db.close();
         } catch (Exception e) {
