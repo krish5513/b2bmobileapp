@@ -165,6 +165,13 @@ public class AgentMapFullScreen extends AppCompatActivity {
             i.putExtra("long", String.valueOf(longitude));
             setResult(RESULT_OK, i);
             finish();
+        }   else if (ONBACK.equals("Agentsinfo")) {
+            Intent i = new Intent(AgentMapFullScreen.this, AgentsInfoActivity.class);
+            i.putExtra("lat", String.valueOf(latitude));
+            i.putExtra("long", String.valueOf(longitude));
+            setResult(RESULT_OK, i);
+            finish();
         }
+
     }
 }

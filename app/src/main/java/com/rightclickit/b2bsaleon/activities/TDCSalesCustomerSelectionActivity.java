@@ -113,7 +113,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
             HashMap<String, String> userMapData = mDBHelper.getUsersData();
             mUserId = userMapData.get("user_id");
 
-            customerList = mDBHelper.fetchAllRecordsFromTDCCustomers();
+            customerList = mDBHelper.fetchAllRecordsFromTDCCustomers(mUserId);
 
             if (customerList.size() <= 0) {
                 tdc_customers_list_view.setVisibility(View.GONE);
@@ -360,7 +360,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
                 tdc_customers_list_view.setVisibility(View.VISIBLE);
                 tdc_sales_no_consumers_message.setVisibility(View.GONE);
 
-                customerList = mDBHelper.fetchAllRecordsFromTDCCustomers();
+                customerList = mDBHelper.fetchAllRecordsFromTDCCustomers(mUserId);
                 customerSelectionAdapter.setAllCustomersList(customerList);
                 customerSelectionAdapter.notifyDataSetChanged();
 

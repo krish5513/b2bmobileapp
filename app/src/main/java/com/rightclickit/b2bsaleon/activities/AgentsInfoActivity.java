@@ -67,7 +67,7 @@ public class AgentsInfoActivity extends AppCompatActivity  {
     private GoogleMap mMap;
     private String mLatitude = "", mLongitude = "";
     DBHelper dbHelper;
-    TextView agent_update;
+    TextView agent_update,mapFullView;
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
     AgentsModel agentsmodel;
     String str_BusinessName, str_PersonName, str_Mobileno, str_address;
@@ -104,7 +104,10 @@ public class AgentsInfoActivity extends AppCompatActivity  {
         avatar = (ImageView) findViewById(R.id.shopaddress_image);
         poi = (ImageView) findViewById(R.id.poi_image);
         poa = (ImageView) findViewById(R.id.poa_image);
-       // routecode=(EditText) findViewById(R.id.routecode);
+        routecode=(EditText) findViewById(R.id.routecode);
+
+        mapFullView = (TextView) findViewById(R.id.MapFullView);
+
 
         firstname.setText(bundle.getString("FIRSTNAME"));
         lastname.setText(bundle.getString("LASTNAME"));
@@ -122,7 +125,7 @@ public class AgentsInfoActivity extends AppCompatActivity  {
 
         agent_update=(TextView)findViewById(R.id.agent_update);
 
-      //  routecode.setText(mPreference.getString("routename"));
+       routecode.setText(mPreference.getString("routename"));
 
 
         if (avatarbmp != null) {
@@ -134,6 +137,24 @@ public class AgentsInfoActivity extends AppCompatActivity  {
         if (poabmp != null) {
             poa.setImageBitmap(poabmp);
         }
+
+        mapFullView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent ii = new Intent(AgentsInfoActivity.this, AgentMapFullScreen.class);
+                    ii.putExtra("fromLat", String.valueOf(latitude));
+                    ii.putExtra("fromLong", String.valueOf(longitude));
+                    ii.putExtra("FromPage", "Agentsinfo");
+                    startActivityForResult(ii, 100);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+
 
         agent_update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,7 +258,7 @@ public class AgentsInfoActivity extends AppCompatActivity  {
                 agentsBean.setmAgentStakeid(stakeholderid);
                 agentsBean.setmAgentCreatedBy(userid);
                 agentsBean.setmAgentUpdatedBy(userid);
-               agentsBean.setMaddress(str_address);
+                agentsBean.setMaddress(str_address);
                 agentsBean.setmLatitude(String.valueOf(latitude));
                 agentsBean.setmLongitude(String.valueOf(longitude));
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());

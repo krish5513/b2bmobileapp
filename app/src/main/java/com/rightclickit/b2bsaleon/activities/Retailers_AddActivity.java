@@ -85,7 +85,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     Spinner paymentTypeSpinner;
     private String mUserId = "", mRegionName = "", mOfficeName = "", mRouteCode = "", mLoginId = "";
     private JSONArray routeCodesArray;
-    String selected_val;
+    String selected_val,selectedroute;
     ArrayList<String> idsArray = new ArrayList<String>();
     TextView update;
     private ArrayList<String> stringArray = new ArrayList<String>();
@@ -193,7 +193,8 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
-
+                    Toast.makeText(Retailers_AddActivity.this,"Please Select the Routecode !!", Toast.LENGTH_LONG).show();
+                    return;
                 }
             });
 
@@ -214,7 +215,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 //scrollViewLp.bottomMargin = 0;
                 retailer_add_scrollview.setLayoutParams(scrollViewLp);
 
-                // retailer_add_footer.setVisibility(View.GONE);
+                 retailer_add_footer.setVisibility(View.GONE);
 
                 updateUIWithBundleValues(customer);
             }
@@ -260,8 +261,8 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
             }
 
-//            latitude = retailerObj.getLatitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLatitude());
-//            longitude = retailerObj.getLongitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLongitude());
+            latitude = retailerObj.getLatitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLatitude());
+            longitude = retailerObj.getLongitude().isEmpty() ? 0 : Double.parseDouble(retailerObj.getLongitude());
 
             shop_image_path = retailerObj.getShopImage();
 
@@ -441,7 +442,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 mobileNo = mobile_no.getText().toString().trim();
                 businessName = business_name.getText().toString().trim();
                 retailerAddress = address.getText().toString().trim();
-
+                selectedroute=paymentTypeSpinner.getSelectedItem().toString();
                 boolean cancel = false;
                 View focusView = null;
 
@@ -465,6 +466,10 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                     address.setError("Please enter address.");
                     focusView = address;
                     cancel = true;
+                } else  if(selectedroute.equalsIgnoreCase("Select Routecode") || selectedroute.equals("")){
+                    address.setError(null);
+                    Toast.makeText(Retailers_AddActivity.this,"Please Select the Routecode !!", Toast.LENGTH_LONG) .show();
+                     cancel=true;
                 }
 
                 if (cancel) {
@@ -481,8 +486,8 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     public void addNewRetailer(String name, String mobileNo, String businessName, String retailerAddress) {
         try {
             boolean isUpdate;
-            if (update.getText().toString().trim().equals("Save")) {
-                isUpdate = false;
+           // if (update.getText().toString().trim().equals("Save")) {
+             //   isUpdate = false;
                 // Insert
                 int dbCount = mDBHelper.getTDCCustomersTableCount();
                 int fdbc = dbCount + 1;
@@ -498,14 +503,15 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 customer.setAddress(retailerAddress);
                 customer.setRoutecode(selected_val);
                 customer.setCode(retailerCode);
-                customer.setIsCustUpdate("false");
-
+                customer.setIsUploasStatus("0");
+               // customer.setIsCustUpdate("false");
+/*
             } else {
                 isUpdate = true;
                 // Update
                 customer.setIsCustUpdate("true");
                 customer.setIsUploasStatus("0");
-            }
+            }*/
 
             if (latitude > 0)
                 customer.setLatitude(String.valueOf(latitude));
@@ -529,11 +535,11 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 mobile_no.setText("");
                 business_name.setText("");
                 address.setText("");
-                if (isUpdate) {
-                    Toast.makeText(activityContext, "Retailer updated successfully.", Toast.LENGTH_LONG).show();
-                } else {
+               // if (isUpdate) {
+                //    Toast.makeText(activityContext, "Retailer updated successfully.", Toast.LENGTH_LONG).show();
+               // } else {
                     Toast.makeText(activityContext, "New retailer added successfully.", Toast.LENGTH_LONG).show();
-                }
+               // }
 
                 if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
                     Intent syncTDCCustomersServiceIntent = new Intent(activityContext, SyncTDCCustomersService.class);

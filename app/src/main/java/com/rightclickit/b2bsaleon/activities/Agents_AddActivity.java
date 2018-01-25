@@ -222,7 +222,7 @@ public class Agents_AddActivity extends AppCompatActivity {
                     selected_val = idsArray.get(i - 1).toString();
                     //selectedroute=routesDataList.get(i - 1).toString();
 
-                    mmSharedPreferences.putString("routename",selected_val);
+                  //  mmSharedPreferences.putString("routename",selected_val);
                     System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
                 }
 
@@ -231,7 +231,8 @@ public class Agents_AddActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                Toast.makeText(Agents_AddActivity.this,"Please Select the Routecode !!", Toast.LENGTH_LONG).show();
+                return;
             }
         });
 
@@ -271,6 +272,10 @@ public class Agents_AddActivity extends AppCompatActivity {
         str_Mobileno = mobile.getText().toString();
         str_address = address.getText().toString();
         mmSharedPreferences.putString("routeaddress",str_address);
+        //selected_val =paymentTypeSpinner.getSelectedItem().toString();
+        selectedroute=paymentTypeSpinner.getSelectedItem().toString();
+        Log.i("selectedroute....",selectedroute);
+
         if (str_BusinessName.length() == 0 || str_BusinessName.length() == ' ') {
             bname.setError("Please enter BusinessName");
             Toast.makeText(getApplicationContext(), "Please enter BusinessName", Toast.LENGTH_SHORT).show();
@@ -285,7 +290,13 @@ public class Agents_AddActivity extends AppCompatActivity {
             mobile.setError("Please enter  10 digit mobileno");
             Toast.makeText(getApplicationContext(), "Please enter  10 digit mobileno", Toast.LENGTH_SHORT).show();
 
-        } /*else if (str_address.length() == 0 || str_address.length() == ' ') {
+        } else  if(selectedroute.equalsIgnoreCase("Select Routecode") || selectedroute.equals("")){
+            mobile.setError(null);
+            Toast.makeText(Agents_AddActivity.this,"Please Select the Routecode !!", Toast.LENGTH_LONG) .show();
+            return;
+        }
+
+        /*else if (str_address.length() == 0 || str_address.length() == ' ') {
                                             mobile.setError(null);
                                             address.setError("Please enter address");
                                             Toast.makeText(getApplicationContext(), "Please enter address", Toast.LENGTH_SHORT).show();

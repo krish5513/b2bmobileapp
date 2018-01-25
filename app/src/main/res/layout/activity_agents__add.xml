@@ -164,6 +164,7 @@
                         android:padding="10dp"
                         android:text="Full view"
                         android:textAllCaps="true"
+                        android:drawableLeft="@drawable/route_grey"
                         android:textColor="@color/greydark"
                         android:textSize="16sp" />
                 </RelativeLayout>

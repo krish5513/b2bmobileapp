@@ -120,7 +120,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             c.add(Calendar.DATE, 1);
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
             currentDate = sdf1.format(c.getTime());
-            fromDStr = Utility.formatDate(c.getTime(), "dd/MM/yyyy");
+            fromDStr = Utility.formatDate(c.getTime(), "yyyy-MM-dd");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -517,7 +517,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
             et.setText(date);
             fromDatesList.put(mTakeOrderBeansList1.get(clickedPosition).getProductId(), date);
         } else if (fromStr.equals("to")) {
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date pickerdate = null;
             Date systemdate = null;
             try {

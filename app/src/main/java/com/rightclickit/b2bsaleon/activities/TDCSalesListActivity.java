@@ -162,7 +162,7 @@ public class TDCSalesListActivity extends AppCompatActivity {
 
             customerList = new ArrayList<>();
 
-            customerList = mDBHelper.fetchAllRecordsFromTDCCustomers();
+            customerList = mDBHelper.fetchAllRecordsFromTDCCustomers("");
            /* for (int i=0;i<customerList.size();i++){
 
                 if (customerList.get(i).getCustomerType() == 1) {
