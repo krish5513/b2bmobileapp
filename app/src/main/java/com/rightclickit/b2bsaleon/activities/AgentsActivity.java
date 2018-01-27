@@ -1,9 +1,12 @@
 package com.rightclickit.b2bsaleon.activities;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -22,13 +25,17 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
+import com.rightclickit.b2bsaleon.beanclass.TDCCustomer;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentsModel;
+import com.rightclickit.b2bsaleon.services.SyncAgentsService;
+import com.rightclickit.b2bsaleon.services.SyncTDCCustomersService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Sekhar Kuppa
@@ -48,14 +55,20 @@ public class AgentsActivity extends AppCompatActivity {
     private ListView mAgentsList;
     private AgentsAdapter mAgentsAdapter;
     private SearchView search;
+    private Runnable mRunnable;
+    private Handler mHandler = new Handler();
 
     private TextView mNoDataText;
     private String mStock = "";
 
     private String mNotifications = "", mTdcHomeScreen = "", mTripsHomeScreen = " ",
-            mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "",mUserId="";
-    private boolean isSaveDeviceDetails,isMyProfilePrivilege;
+            mAgentsHomeScreen = "", mRetailersHomeScreen = "", mDashboardHomeScreen = "", mUserId = "";
+    private boolean isSaveDeviceDetails, isMyProfilePrivilege;
     TextView tvrouts_customerN;
+    private int uploadedCount = 0;
+    private android.support.v7.app.AlertDialog alertDialog1 = null;
+    private android.support.v7.app.AlertDialog.Builder alertDialogBuilder1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,12 +198,11 @@ public class AgentsActivity extends AppCompatActivity {
         });
 
 
-
         ArrayList<String> privilegeActionsData2 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
         for (int z = 0; z < privilegeActionsData2.size(); z++) {
             if (privilegeActionsData2.get(z).toString().equals("my_profile")) {
                 isMyProfilePrivilege = true;
-                tvrouts_customerN=(TextView)findViewById(R.id.tvrouts_customerN);
+                tvrouts_customerN = (TextView) findViewById(R.id.tvrouts_customerN);
                 tvrouts_customerN.setText("Profile");
 
             }
@@ -219,10 +231,9 @@ public class AgentsActivity extends AppCompatActivity {
                 mAgentsList.setVisibility(View.VISIBLE);
             } else if (privilegeActionsData1.get(z).toString().equals("Add")) {
                 fab.setVisibility(View.VISIBLE);
-            } else if (privilegeActionsData1.get(z).toString().equals("my_profile")){
+            } else if (privilegeActionsData1.get(z).toString().equals("my_profile")) {
                 this.getSupportActionBar().setTitle("PROFILE");
-            }
-            else if (privilegeActionsData1.get(z).toString().equals("ViewStock")){
+            } else if (privilegeActionsData1.get(z).toString().equals("ViewStock")) {
                 mStock = privilegeActionsData1.get(z).toString();
             }
         }
@@ -247,7 +258,7 @@ public class AgentsActivity extends AppCompatActivity {
         if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
             if (mDBHelper.getAgentsTableCount() > 0) {
                 ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
-                System.out.println("F:::: "+ agentsBeanArrayList.size());
+                System.out.println("F:::: " + agentsBeanArrayList.size());
                 if (agentsBeanArrayList.size() > 0) {
                     mNoDataText.setText("");
                     loadAgentsList(agentsBeanArrayList);
@@ -263,7 +274,7 @@ public class AgentsActivity extends AppCompatActivity {
         } else {
             // System.out.println("ELSE::: ");
             ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
-            System.out.println("F12333222222222 :::: "+ agentsBeanArrayList.size());
+            System.out.println("F12333222222222 :::: " + agentsBeanArrayList.size());
             if (agentsBeanArrayList.size() > 0) {
                 mNoDataText.setText("");
                 loadAgentsList(agentsBeanArrayList);
@@ -280,11 +291,20 @@ public class AgentsActivity extends AppCompatActivity {
     }
 
     public void loadAgentsList(ArrayList<AgentsBean> mAgentsBeansList) {
-        if (mAgentsAdapter != null) {
-            mAgentsAdapter = null;
+        synchronized (this) {
+            if (mAgentsAdapter != null) {
+                mAgentsAdapter = null;
+            }
+            mAgentsAdapter = new AgentsAdapter(this, AgentsActivity.this, mAgentsBeansList, mStock);
+            mAgentsList.setAdapter(mAgentsAdapter);
         }
-        mAgentsAdapter = new AgentsAdapter(this, AgentsActivity.this, mAgentsBeansList,mStock);
-        mAgentsList.setAdapter(mAgentsAdapter);
+
+        synchronized (this) {
+            if (alertDialogBuilder1 != null) {
+                alertDialog1.dismiss();
+                alertDialogBuilder1 = null;
+            }
+        }
     }
 
     @Override
@@ -339,12 +359,12 @@ public class AgentsActivity extends AppCompatActivity {
 //        }
         if (id == R.id.notifications) {
 
-           // if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
-              //  startService(new Intent(AgentsActivity.this, SyncNotificationsListService.class));
-                loadNotifications();
-           // }else {
-           //     new NetworkConnectionDetector(AgentsActivity.this).displayNoNetworkError(AgentsActivity.this);
-           // }
+            // if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
+            //  startService(new Intent(AgentsActivity.this, SyncNotificationsListService.class));
+            loadNotifications();
+            // }else {
+            //     new NetworkConnectionDetector(AgentsActivity.this).displayNoNetworkError(AgentsActivity.this);
+            // }
             return true;
 
         }
@@ -356,11 +376,20 @@ public class AgentsActivity extends AppCompatActivity {
         }
         if (id == R.id.autorenew) {
 
-            if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
-                getAgents();
-                //agentsModel.getAgentsList("agents");
-            }else {
-                new NetworkConnectionDetector(AgentsActivity.this).displayNoNetworkError(AgentsActivity.this);
+//            if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
+//                getAgents();
+//                //agentsModel.getAgentsList("agents");
+//            }else {
+//                new NetworkConnectionDetector(AgentsActivity.this).displayNoNetworkError(AgentsActivity.this);
+//            }
+
+            if (id == R.id.autorenew) {
+                if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
+                    showAlertDialog(AgentsActivity.this, "Sync process", "Are you sure, you want start the sync process?");
+                } else {
+                    new NetworkConnectionDetector(AgentsActivity.this).displayNoNetworkError(AgentsActivity.this);
+                }
+                return true;
             }
             return true;
         }
@@ -377,6 +406,129 @@ public class AgentsActivity extends AppCompatActivity {
                 return true;
             default:
                 return true;
+        }
+    }
+
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    showCustomValidationAlertForSync(AgentsActivity.this, "upload");
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to display alert without field.
+     *
+     * @param context
+     * @param message
+     */
+    private void showCustomValidationAlertForSync(Activity context, String message) {
+        // custom dialog
+        try {
+
+            alertDialogBuilder1 = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder1.setTitle("Sync Process");
+            alertDialogBuilder1.setCancelable(false);
+            if (message.equals("down")) {
+                alertDialogBuilder1.setMessage("Downloading agents... Please wait.. ");
+                synchronized (this) {
+                    getAgents();
+                }
+            } else {
+                ArrayList<AgentsBean> unUploadedTDCCustomers = mDBHelper.fetchAllUnUploadedRecordsFromAgents();
+                uploadedCount = unUploadedTDCCustomers.size();
+                if (uploadedCount > 0) {
+                    alertDialogBuilder1.setMessage("Uploading agents... Please wait.. ");
+                    fetchCountFromDB(uploadedCount);
+                    if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                        Intent syncTDCCustomersServiceIntent = new Intent(activityContext, SyncAgentsService.class);
+                        startService(syncTDCCustomersServiceIntent);
+                    }
+                } else {
+                    alertDialogBuilder1.setMessage("Downloading agents... Please wait.. ");
+                    synchronized (this) {
+                        getAgents();
+                    }
+                }
+            }
+
+            alertDialog1 = alertDialogBuilder1.create();
+            alertDialog1.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void fetchCountFromDB(final int uploadedCount11) {
+        if (uploadedCount11 > 0) {
+            mRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<AgentsBean> unUploadedTDCCustomers = mDBHelper.fetchAllUnUploadedRecordsFromAgents();
+                    fetchCountFromDB(unUploadedTDCCustomers.size());
+                }
+            };
+            mHandler.postDelayed(mRunnable, 1000);
+        } else {
+            uploadedCount = 0;
+            mHandler.removeCallbacks(mRunnable);
+            synchronized (this) {
+                if (alertDialogBuilder1 != null) {
+                    alertDialog1.dismiss();
+                    alertDialogBuilder1 = null;
+                }
+            }
+            synchronized (this) {
+                showCustomValidationAlertForSync(AgentsActivity.this, "down");
+            }
+        }
+    }
+
+    private void showAlertDialog1(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

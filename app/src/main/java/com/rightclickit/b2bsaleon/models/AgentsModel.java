@@ -48,6 +48,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
     private ArrayList<AgentsBean> mAgentsBeansList_MyPrivilege = new ArrayList<AgentsBean>();
     private String firstname = "", lastname = "", mobileno = "", stakeid = "", userid = "", email = "", password = "123456789", code = "", reportingto = "", verigycode = "", status = "IA", delete = "N", address = "", latitude = "", longitude = "", timestamp = "", ob = "", ordervalue = "", totalamount = "", dueamount = "", pic = "";
     private boolean isSaveDeviceDetails, isMyProfilePrivilege;
+    private long uniqueId1;
 
     public AgentsModel(Context context, AgentsActivity activity) {
         this.context = context;
@@ -145,11 +146,13 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
         }
     }
 
-    public void customerAdd(ArrayList<AgentsBean> list, String stakeTypeIdByStakeType) {
+    public void customerAdd(ArrayList<AgentsBean> list, String stakeTypeIdByStakeType, String s, long uniqueId) {
         try {
 
             isSaveDeviceDetails = true;
             this.mAgentsBeansList1 = list;
+            type = s;
+            this.uniqueId1 = uniqueId;
 
             if (new NetworkConnectionDetector(context).isNetworkConnected()) {
                 System.out.println("STAKE HOLDER ID IS:: " + stakeTypeIdByStakeType);
@@ -380,6 +383,8 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                         agentsBean.setmAgentUpdatedBy(jo.getString("updated_by"));
                                     }
 
+                                    agentsBean.setmUploadStatus("1");
+
                                     mAgentsBeansList_MyPrivilege.add(agentsBean);
 
                                     break;
@@ -528,6 +533,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                 agentsBean.setmAgentUpdatedBy(jo.getString("updated_by"));
                             }
 
+                            agentsBean.setmUploadStatus("1");
                             mAgentsBeansList.add(agentsBean);
                         }
 
@@ -539,13 +545,17 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 //                    }
                     Log.i("isMyProfilePrivilege", isMyProfilePrivilege + "");
                     synchronized (this) {
-                        if (mDBHelper.getAgentsTableCount() > 0) {
-                            mDBHelper.deleteValuesFromAgentsTable();
+                        synchronized (this) {
+                            if (mDBHelper.getAgentsTableCount() > 0) {
+                                mDBHelper.deleteValuesFromAgentsTable();
+                            }
                         }
-                        if (isMyProfilePrivilege) {
-                            mDBHelper.insertAgentDetails(mAgentsBeansList_MyPrivilege, UserCode);
-                        } else {
-                            mDBHelper.insertAgentDetails(mAgentsBeansList, UserCode);
+                        synchronized (this) {
+                            if (isMyProfilePrivilege) {
+                                mDBHelper.insertAgentDetails(mAgentsBeansList_MyPrivilege, UserCode);
+                            } else {
+                                mDBHelper.insertAgentDetails(mAgentsBeansList, UserCode);
+                            }
                         }
                     }
                     synchronized (this) {
@@ -567,6 +577,15 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 
                 Intent i = new Intent("android.intent.action.MAIN").putExtra("receiver_key", "products");
                 context.sendBroadcast(i);
+            } else if (type.equals("addC")) {
+                if (response != null) {
+                    JSONObject resultObj = new JSONObject(response);
+
+                    if (resultObj.getInt("result_status") == 1) {
+                        // if success, we are updating customer status as uploaded and customer user id (i.e. mongo db id) in local db.
+                        mDBHelper.updateAgentUploadStatus(String.valueOf(uniqueId1), resultObj.getString("insert_id"));
+                    }
+                }
             } else {
                 // Handle Async response of add customer...
                 System.out.println("RES:: " + response);

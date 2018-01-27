@@ -116,6 +116,7 @@ public class TDCSalesListAdapter extends BaseAdapter {
                     } else {
                         intent.putExtra(Constants.BUNDLE_REQUEST_FROM, "Agents");
                     }
+                    intent.putExtra("CustomerName",currentOrder.getSelectedCustomerName());
                     intent.putExtras(bundle);
                     activity.startActivity(intent);
                     activity.finish();

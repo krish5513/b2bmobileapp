@@ -108,6 +108,7 @@ public class RetailersPaymentsAdapter extends BaseAdapter {
                     Intent intent = new Intent(activity, TDCSales_Preview_PrintActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(Constants.BUNDLE_TDC_SALE_CURRENT_ORDER_PREVIEW, currentOrder);
+                    intent.putExtra("CustomerName",currentOrder.getSelectedCustomerName());
                     intent.putExtra(Constants.BUNDLE_REQUEST_FROM, Constants.BUNDLE_REQUEST_FROM_RETAILER_PAYMENTS_LIST);
                     intent.putExtras(bundle);
                     activity.startActivity(intent);

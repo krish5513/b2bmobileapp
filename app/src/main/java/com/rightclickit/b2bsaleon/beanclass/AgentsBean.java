@@ -18,6 +18,8 @@ public class AgentsBean {
     private String mAgentDelete;
     private String mAgentDeviceSync;
     private String mSelectedRouteName;
+    private String mUploadStatus;
+    private String mAgentUniqueId;
 
     public String getmAgentDeviceSync() {
         return mAgentDeviceSync;
@@ -151,9 +153,6 @@ public class AgentsBean {
 
     private String mAgentApprovedOn;
     private String mFirstname;
-
-
-
 
 
     public String getmAgentRouteId() {
@@ -322,5 +321,21 @@ public class AgentsBean {
 
     public void setmSelectedRouteName(String mSelectedRouteName) {
         this.mSelectedRouteName = mSelectedRouteName;
+    }
+
+    public String getmUploadStatus() {
+        return mUploadStatus;
+    }
+
+    public void setmUploadStatus(String mUploadStatus) {
+        this.mUploadStatus = mUploadStatus;
+    }
+
+    public String getmAgentUniqueId() {
+        return mAgentUniqueId;
+    }
+
+    public void setmAgentUniqueId(String mAgentUniqueId) {
+        this.mAgentUniqueId = mAgentUniqueId;
     }
 }

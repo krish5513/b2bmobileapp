@@ -354,6 +354,11 @@
             android:name=".services.SyncDeviceLocationDetailsService"
             android:enabled="true"
             android:exported="true" />
+
+        <service
+            android:name=".services.SyncAgentsService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

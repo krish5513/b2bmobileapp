@@ -48,6 +48,7 @@ import com.rightclickit.b2bsaleon.adapters.AgentsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentsModel;
+import com.rightclickit.b2bsaleon.services.SyncAgentsService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
@@ -95,12 +96,13 @@ public class Agents_AddActivity extends AppCompatActivity {
     private Context applicationContext, activityContext;
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
     private JSONArray routeCodesArray;
-    String selected_val,selectedroute;
+    String selected_val, selectedroute;
     ArrayList<String> idsArray = new ArrayList<String>();
     private MMSharedPreferences mmSharedPreferences;
     private Dialog mapDialog;
     private SupportMapFragment mapFragment1;
     List<String> routesDataList = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,7 +169,7 @@ public class Agents_AddActivity extends AppCompatActivity {
             latitude = Double.parseDouble(mmSharedPreferences.getString("curLat"));
             longitude = Double.parseDouble(mmSharedPreferences.getString("curLong"));
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -222,7 +224,7 @@ public class Agents_AddActivity extends AppCompatActivity {
                     selected_val = idsArray.get(i - 1).toString();
                     //selectedroute=routesDataList.get(i - 1).toString();
 
-                  //  mmSharedPreferences.putString("routename",selected_val);
+                    mmSharedPreferences.putString(selected_val+"_routename", selected_val);
                     System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
                 }
 
@@ -233,6 +235,7 @@ public class Agents_AddActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
                 Toast.makeText(Agents_AddActivity.this,"Please Select the Routecode !!", Toast.LENGTH_LONG).show();
                 return;
+
             }
         });
 
@@ -255,7 +258,6 @@ public class Agents_AddActivity extends AppCompatActivity {
                     Intent ii = new Intent(Agents_AddActivity.this, AgentMapFullScreen.class);
                     ii.putExtra("fromLat", String.valueOf(latitude));
                     ii.putExtra("fromLong", String.valueOf(longitude));
-                    ii.putExtra("From", "Agentsadd");
                     startActivityForResult(ii, 100);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -271,11 +273,9 @@ public class Agents_AddActivity extends AppCompatActivity {
         str_PersonName = pname.getText().toString();
         str_Mobileno = mobile.getText().toString();
         str_address = address.getText().toString();
-        mmSharedPreferences.putString("routeaddress",str_address);
-        //selected_val =paymentTypeSpinner.getSelectedItem().toString();
         selectedroute=paymentTypeSpinner.getSelectedItem().toString();
-        Log.i("selectedroute....",selectedroute);
-
+        mmSharedPreferences.putString("routeaddress", str_address);
+        mmSharedPreferences.putString("selectedcode", selectedroute);
         if (str_BusinessName.length() == 0 || str_BusinessName.length() == ' ') {
             bname.setError("Please enter BusinessName");
             Toast.makeText(getApplicationContext(), "Please enter BusinessName", Toast.LENGTH_SHORT).show();
@@ -290,13 +290,13 @@ public class Agents_AddActivity extends AppCompatActivity {
             mobile.setError("Please enter  10 digit mobileno");
             Toast.makeText(getApplicationContext(), "Please enter  10 digit mobileno", Toast.LENGTH_SHORT).show();
 
-        } else  if(selectedroute.equalsIgnoreCase("Select Routecode") || selectedroute.equals("")){
+        }
+
+        else  if(selectedroute.equalsIgnoreCase("Select Routecode") || selectedroute.equals("")){
             mobile.setError(null);
             Toast.makeText(Agents_AddActivity.this,"Please Select the Routecode !!", Toast.LENGTH_LONG) .show();
             return;
-        }
-
-        /*else if (str_address.length() == 0 || str_address.length() == ' ') {
+        }/*else if (str_address.length() == 0 || str_address.length() == ' ') {
                                             mobile.setError(null);
                                             address.setError("Please enter address");
                                             Toast.makeText(getApplicationContext(), "Please enter address", Toast.LENGTH_SHORT).show();
@@ -325,7 +325,7 @@ public class Agents_AddActivity extends AppCompatActivity {
                 agentsBean.setmAgentCode("");
                 agentsBean.setmAgentReprtingto("");
                 agentsBean.setmAgentVerifycode("");
-                agentsBean.setmStatus("I");
+                agentsBean.setmStatus("A");
                 agentsBean.setmAgentDelete("N");
                 agentsBean.setmAgentStakeid(stakeholderid);
                 agentsBean.setmAgentCreatedBy(userid);
@@ -345,20 +345,27 @@ public class Agents_AddActivity extends AppCompatActivity {
                 agentsBean.setmAgentDeviceSync("0");
                 agentsBean.setmAgentAccessDevice("NO");
                 agentsBean.setmAgentBackUp("0");
+                agentsBean.setmAgentId("");
                 // agentsBean.setmAgentRouteId(routesArray.toString());
                 agentsBean.setmAgentRouteId(selected_val);
                 // agentsBean.setmSelectedRouteName(selected_val);
+                agentsBean.setmUploadStatus("0");
                 mAgentsBeansList.add(agentsBean);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             // db.insertAgentDetails(mAgentsBeansList);
             synchronized (this) {
+                long uniqueId;
+                synchronized (this) {
+                    uniqueId = db.insertAgentDetails(mAgentsBeansList, userid);
+                }
                 if (new NetworkConnectionDetector(Agents_AddActivity.this).isNetworkConnected()) {
                     //agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
-                    agentsmodel.customerAdd(mAgentsBeansList, db.getStakeTypeIdByStakeType("2"));
+                    //agentsmodel.customerAdd(mAgentsBeansList, db.getStakeTypeIdByStakeType("2"), "addC", uniqueId);
+                    Intent syncTDCCustomersServiceIntent = new Intent(activityContext, SyncAgentsService.class);
+                    startService(syncTDCCustomersServiceIntent);
                 }
-                db.insertAgentDetails(mAgentsBeansList, userid);
                 Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
                 synchronized (this) {
                     Intent i = new Intent(Agents_AddActivity.this, AgentsActivity.class);

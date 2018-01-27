@@ -178,6 +178,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public final String KEY_PRODUCT_CONTROL_CODE = "control_code";
 
     // Column names for Agents Table
+    private final String KEY_AGENT_UNIQUE_ID = "agent_unique_id";
     private final String KEY_AGENT_ID = "agent_id";
     private final String KEY_AGENT_NAME = "agent_name";
     private final String KEY_OB_AMOUNT = "ob_value";
@@ -210,7 +211,9 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_AGENT_DEVICESYNC = "agent_devicesync";
     private final String KEY_AGENT_ACCESSDEVICE = "agent_accessdevice";
     private final String KEY_AGENT_BACKUP = "agent_backup";
+    private final String KEY_AGENT_UPLOAD_STATUS = "agent_upload_status";
     private final String KEY_AGENT_LOGIN_USER_ID = "agent_login_user_id";
+
 
     // Column names for Products with take order values
     private final String KEY_TO_PRODUCT_ID = "to_product_id";
@@ -290,6 +293,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TDC_SOP_PRODUCT_TAX = "tdc_sop_product_tax";
     private final String KEY_TDC_SOP_PRODUCT_TAX_AMOUNT = "tdc_sop_product_tax_amount";
     private final String KEY_TDC_SOP_UPLOAD_STATUS = "tdc_sop_upload_status";
+    private final String KEY_TDC_SOP_PRODUCT_CODE = "tdc_sop_product_code";
+    private final String KEY_TDC_SOP_UOM = "tdc_sop_uom";
 
     // Column names for Stakeholder types
     private final String KEY_STAKEHOLDER_TYPE_ID = "stakeholder_type_id";
@@ -520,7 +525,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // Agents Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_AGENTS + "(" + KEY_AGENT_ID + " VARCHAR,"
+            + TABLE_AGENTS + "(" + KEY_AGENT_UNIQUE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_AGENT_ID + " VARCHAR,"
             + KEY_AGENT_NAME + " VARCHAR," + KEY_OB_AMOUNT + " VARCHAR," + KEY_ORDER_VALUE + " VARCHAR,"
             + KEY_TOTAL_AMOUNT + " VARCHAR," + KEY_DUE_AMOUNT + " VARCHAR," + KEY_AGENT_PIC + " VARCHAR,"
             + KEY_AGENT_STATUS + " VARCHAR,"
@@ -532,8 +537,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_AGENT_STAKEHOLDERID + " VARCHAR," + KEY_AGENT_REPORTINGTO + " VARCHAR," + KEY_AGENT_VERIFYCODE + " VARCHAR,"
             + KEY_AGENT_DELETE + " VARCHAR," + KEY_AGENT_CREATEDBY + " VARCHAR," + KEY_AGENT_CREATEDON + " VARCHAR,"
             + KEY_AGENT_UPDATEDBY + " VARCHAR," + KEY_AGENT_UPDATEDON + " VARCHAR," + KEY_AGENT_ROUTECODE + " VARCHAR," + KEY_AGENT_DEVICESYNC + " VARCHAR,"
-            + KEY_AGENT_ACCESSDEVICE + " VARCHAR," + KEY_AGENT_BACKUP + " VARCHAR," + KEY_AGENT_LOGIN_USER_ID + " VARCHAR)";
-
+            + KEY_AGENT_ACCESSDEVICE + " VARCHAR," + KEY_AGENT_BACKUP + " VARCHAR," + KEY_AGENT_UPLOAD_STATUS + " VARCHAR,"
+            + KEY_AGENT_LOGIN_USER_ID + " VARCHAR)";
 
     // Userdetails Table Create Statements
     private final String CREATE_TABLE_USERDETAILS = "CREATE TABLE IF NOT EXISTS "
@@ -608,7 +613,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + TABLE_TDC_SALES_ORDER_PRODUCTS + "(" + KEY_TDC_SOP_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TDC_SOP_ORDER_ID + " INTEGER, "
             + KEY_TDC_SOP_PRODUCT_ID + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_NAME + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_MRP + " VARCHAR, "
             + KEY_TDC_SOP_PRODUCT_QUANTITY + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_AMOUNT + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_TAX + " TEXT, "
-            + KEY_TDC_SOP_PRODUCT_TAX_AMOUNT + " TEXT, " + KEY_TDC_SOP_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
+            + KEY_TDC_SOP_PRODUCT_TAX_AMOUNT + " TEXT, " + KEY_TDC_SOP_PRODUCT_CODE + " TEXT, " +
+            KEY_TDC_SOP_UOM + " TEXT, " +KEY_TDC_SOP_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // Stakeholder types Table Create Statements
     private final String CREATE_TABLE_STAKEHOLDER_TYPES = "CREATE TABLE IF NOT EXISTS "
@@ -959,11 +965,13 @@ public class DBHelper extends SQLiteOpenHelper {
      *
      * @param mAgentsBeansList
      */
-    public void insertAgentDetails(ArrayList<AgentsBean> mAgentsBeansList, String userId) {
+    public long insertAgentDetails(ArrayList<AgentsBean> mAgentsBeansList, String userId) {
         SQLiteDatabase db = this.getWritableDatabase();
+        long id = 0;
         try {
             for (int i = 0; i < mAgentsBeansList.size(); i++) {
                 ContentValues values = new ContentValues();
+              //  values.put(KEY_AGENT_UNIQUE_ID,mAgentsBeansList.get(i).getmAgentUniqueId());
                 values.put(KEY_AGENT_ID, mAgentsBeansList.get(i).getmAgentId());
                 values.put(KEY_AGENT_NAME, mAgentsBeansList.get(i).getmAgentName());
                 values.put(KEY_OB_AMOUNT, mAgentsBeansList.get(i).getmObAmount());
@@ -997,8 +1005,9 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_AGENT_ACCESSDEVICE, mAgentsBeansList.get(i).getmAgentAccessDevice());
                 values.put(KEY_AGENT_BACKUP, mAgentsBeansList.get(i).getmAgentBackUp());
                 values.put(KEY_AGENT_LOGIN_USER_ID, userId);
+                values.put(KEY_AGENT_UPLOAD_STATUS, mAgentsBeansList.get(i).getmUploadStatus());
                 // insert row
-                db.insert(TABLE_AGENTS, null, values);
+                id = db.insert(TABLE_AGENTS, null, values);
                 System.out.println("Agent data*********** INSERTED***************88");
                 values.clear();
             }
@@ -1007,9 +1016,12 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         db.close();
+        return id;
     }
-    public void updateAgentDetails(ArrayList<AgentsBean> mAgentsBeansList, String userId) {
+
+    public long updateAgentDetails(ArrayList<AgentsBean> mAgentsBeansList, String userId) {
         SQLiteDatabase db = this.getWritableDatabase();
+        long id = 0;
         try {
             for (int i = 0; i < mAgentsBeansList.size(); i++) {
                 ContentValues values = new ContentValues();
@@ -1046,10 +1058,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_AGENT_ACCESSDEVICE, mAgentsBeansList.get(i).getmAgentAccessDevice());
                 values.put(KEY_AGENT_BACKUP, mAgentsBeansList.get(i).getmAgentBackUp());
                 values.put(KEY_AGENT_LOGIN_USER_ID, userId);
-
+                values.put(KEY_AGENT_UPLOAD_STATUS, mAgentsBeansList.get(i).getmUploadStatus());
 
                 System.out.println("AGENT UPDATED+++++");
-                db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_USER_ID + " = ?",
+                db.update(TABLE_AGENTS, values, KEY_AGENT_ID + " = ?",
                         new String[]{String.valueOf(userId)});
 
                 values.clear();
@@ -1059,6 +1071,7 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         db.close();
+        return id;
     }
 
     /**
@@ -1532,7 +1545,28 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return routeDetailsById;
     }
+    public String getRouteNameByRouteId(String routeId) {
+        String rName="";
+        try {
+            String selectQuery = "SELECT  "+KEY_ROUTE_NAME+" FROM " + TABLE_ROUTESDETAILS + " WHERE " + KEY_ROUTE_ID + " = " + "'" + routeId + "'";
 
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                   rName=c.getString(c.getColumnIndex(KEY_ROUTE_NAME));
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return rName;
+    }
     public String getRouteNameByRouteCode(String routeCode) {
         String routeDetailsById = "";
         try {
@@ -2173,7 +2207,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             values.put(KEY_TDC_CUSTOMER_UPLOAD_STATUS, customer.getIsUploasStatus());
 
-           /* if (customer.getUserId().equals("") && customer.getIsCustUpdate().equals("false")) {
+            if (customer.getUserId().equals("") && customer.getIsCustUpdate().equals("false")) {
                 customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
             } else if (customer.getUserId().equals("") && customer.getIsCustUpdate().equals("true")) {
                 customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_ID + " = ?",
@@ -2194,11 +2228,11 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
 
-        return customerId;*/
+        return customerId;
 
 
 
-            if (customer.getUserId().equals("")) {
+       /*     if (customer.getUserId().equals("")) {
          //Log.i("saveKey...",saveKey+"");
                // if (saveKey.equals("Save")) {
                 System.out.println("RETAILER INSERTED+++++");
@@ -2224,7 +2258,7 @@ public class DBHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
 
-        return customerId;
+        return customerId;*/
 
     }
 
@@ -2591,6 +2625,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     productsBean.setProductAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_AMOUNT))));
                     productsBean.setProductTaxPerUnit(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_TAX))));
                     productsBean.setTaxAmount(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_TAX_AMOUNT))));
+                    productsBean.setProductCode(c.getString(c.getColumnIndex(KEY_TDC_SOP_PRODUCT_CODE)));
+                    productsBean.setProductUOM(c.getString(c.getColumnIndex(KEY_TDC_SOP_UOM)));
 
                     OrderAllProductsList.put(productsBean.getProductId(), productsBean);
 
@@ -2738,6 +2774,8 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TDC_SOP_PRODUCT_AMOUNT, orderProduct.getProductAmount());
             values.put(KEY_TDC_SOP_PRODUCT_TAX, orderProduct.getProductTaxPerUnit());
             values.put(KEY_TDC_SOP_PRODUCT_TAX_AMOUNT, orderProduct.getTaxAmount());
+            values.put(KEY_TDC_SOP_PRODUCT_CODE, orderProduct.getProductCode());
+            values.put(KEY_TDC_SOP_UOM, orderProduct.getProductUOM());
 
             orderProductId = db.insert(TABLE_TDC_SALES_ORDER_PRODUCTS, null, values);
 
@@ -7783,4 +7821,95 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+
+
+    /**
+     * Method to fetch all un uploaded records from Agents Table
+     */
+    public ArrayList<AgentsBean> fetchAllUnUploadedRecordsFromAgents() {
+        ArrayList<AgentsBean> allTDCCustomersList = new ArrayList<>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_AGENTS + " WHERE " + KEY_AGENT_UPLOAD_STATUS
+                    + "='" + 0 + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    AgentsBean aBean = new AgentsBean();
+
+                    aBean.setmAgentUniqueId(c.getString(c.getColumnIndex(KEY_AGENT_UNIQUE_ID)));
+                    aBean.setmAgentId(c.getString(c.getColumnIndex(KEY_AGENT_ID)));
+                    aBean.setmAgentName(c.getString(c.getColumnIndex(KEY_AGENT_NAME)));
+                    aBean.setmObAmount(c.getString(c.getColumnIndex(KEY_OB_AMOUNT)));
+                    aBean.setmOrderValue(c.getString(c.getColumnIndex(KEY_ORDER_VALUE)));
+                    aBean.setmTotalAmount(c.getString(c.getColumnIndex(KEY_TOTAL_AMOUNT)));
+                    aBean.setmDueAmount(c.getString(c.getColumnIndex(KEY_DUE_AMOUNT)));
+                    aBean.setmStatus(c.getString(c.getColumnIndex(KEY_AGENT_STATUS)));
+                    aBean.setmAgentPic(c.getString(c.getColumnIndex(KEY_AGENT_PIC)));
+                    aBean.setmLatitude(c.getString(c.getColumnIndex(KEY_AGENT_LATITUDE)));
+                    aBean.setmLongitude(c.getString(c.getColumnIndex(KEY_AGENT_LONGITUDE)));
+                    aBean.setmAgentCode(c.getString(c.getColumnIndex(KEY_AGENT_CODE)));
+                    aBean.setmFirstname(c.getString(c.getColumnIndex(KEY_AGENT_FIRSTNAME)));
+                    aBean.setmLastname(c.getString(c.getColumnIndex(KEY_AGENT_LASTNAME)));
+                    aBean.setMphoneNO(c.getString(c.getColumnIndex(KEY_AGENT_PHONENO)));
+                    aBean.setmAgentRouteId(c.getString(c.getColumnIndex(KEY_AGENT_ROUTE_ID)));
+                    aBean.setmPoiImage(c.getString(c.getColumnIndex(KEY_POI_IMAGE)));
+                    aBean.setmPoaImage(c.getString(c.getColumnIndex(KEY_POA_IMAGE)));
+                    aBean.setmAgentEmail(c.getString(c.getColumnIndex(KEY_AGENT_EMAIL)));
+                    aBean.setmAgentPassword(c.getString(c.getColumnIndex(KEY_AGENT_PASSWORD)));
+                    aBean.setmAgentStakeid(c.getString(c.getColumnIndex(KEY_AGENT_STAKEHOLDERID)));
+                    aBean.setmAgentReprtingto(c.getString(c.getColumnIndex(KEY_AGENT_REPORTINGTO)));
+                    aBean.setmAgentVerifycode(c.getString(c.getColumnIndex(KEY_AGENT_VERIFYCODE)));
+                    aBean.setmAgentDelete(c.getString(c.getColumnIndex(KEY_AGENT_DELETE)));
+                    aBean.setmAgentCreatedBy(c.getString(c.getColumnIndex(KEY_AGENT_CREATEDBY)));
+                    aBean.setmAgentCreatedOn(c.getString(c.getColumnIndex(KEY_AGENT_CREATEDON)));
+                    aBean.setmAgentUpdatedBy(c.getString(c.getColumnIndex(KEY_AGENT_UPDATEDBY)));
+                    aBean.setmAgentUpdatedOn(c.getString(c.getColumnIndex(KEY_AGENT_UPDATEDON)));
+                    aBean.setmAgentRoutecode(c.getString(c.getColumnIndex(KEY_AGENT_ROUTECODE)));
+                    aBean.setmAgentDeviceSync(c.getString(c.getColumnIndex(KEY_AGENT_DEVICESYNC)));
+                    aBean.setmAgentAccessDevice(c.getString(c.getColumnIndex(KEY_AGENT_ACCESSDEVICE)));
+                    aBean.setmAgentBackUp(c.getString(c.getColumnIndex(KEY_AGENT_BACKUP)));
+
+                    allTDCCustomersList.add(aBean);
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allTDCCustomersList;
+    }
+
+    /**
+     * Method to update the uploaded agent status
+     *
+     * @param customerId
+     * @param userId
+     */
+    public void updateAgentUploadStatus(String customerId, String userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_AGENT_UPLOAD_STATUS, "1");
+            values.put(KEY_AGENT_ID, userId);
+
+            int status = db.update(TABLE_AGENTS, values, KEY_AGENT_UNIQUE_ID + " = ?", new String[]{String.valueOf(customerId)});
+
+            values.clear();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+
 }

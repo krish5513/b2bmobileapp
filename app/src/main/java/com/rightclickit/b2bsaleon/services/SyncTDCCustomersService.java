@@ -112,6 +112,7 @@ public class SyncTDCCustomersService extends Service {
                 }
                 requestObj.put("last_name", currentTDCCustomer.getName()); // Last Name
                 requestObj.put("phone", currentTDCCustomer.getMobileNo());
+                requestObj.put("_id", currentTDCCustomer.getUserId());
                 requestObj.put("email", "");
                 requestObj.put("password", Utility.getMd5String("123456789"));
                 requestObj.put("code", currentTDCCustomer.getCode());

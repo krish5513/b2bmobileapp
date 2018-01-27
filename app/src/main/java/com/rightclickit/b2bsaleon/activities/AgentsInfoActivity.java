@@ -40,11 +40,13 @@ import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.imageloading.ImageLoader;
 import com.rightclickit.b2bsaleon.models.AgentsModel;
+import com.rightclickit.b2bsaleon.services.SyncAgentsService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -56,6 +58,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class AgentsInfoActivity extends AppCompatActivity  {
@@ -74,6 +77,9 @@ public class AgentsInfoActivity extends AppCompatActivity  {
     double longitude, latitude;
     private static final int ACTION_TAKE_PHOTO_A = 1;
     private static final int ACTION_TAKE_GALLERY_PIC_A = 2;
+    private JSONArray routeCodesArray;
+    ArrayList<String> idsArray = new ArrayList<String>();
+    List<String> routesDataList = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,23 +115,28 @@ public class AgentsInfoActivity extends AppCompatActivity  {
         mapFullView = (TextView) findViewById(R.id.MapFullView);
 
 
+        agentsmodel = new AgentsModel(AgentsInfoActivity.this, this);
+        dbHelper = new DBHelper(getApplicationContext());
+
+
+
         firstname.setText(bundle.getString("FIRSTNAME"));
         lastname.setText(bundle.getString("LASTNAME"));
         mobile.setText(bundle.getString("MOBILE"));
-       // address.setText(bundle.getString("ADDRESS"));
-        address.setText(mPreference.getString("routeaddress"));
+        address.setText(bundle.getString("ADDRESS"));
+        routecode.setText(dbHelper.getRouteNameByRouteId(bundle.getString("ROUTEID")));
+
+
         Bundle extras = getIntent().getExtras();
         Bitmap avatarbmp = (Bitmap) extras.getParcelable("avatar");
         Bitmap poibmp = (Bitmap) extras.getParcelable("poi");
         Bitmap poabmp = (Bitmap) extras.getParcelable("poa");
 
-        agentsmodel = new AgentsModel(AgentsInfoActivity.this, this);
-        dbHelper = new DBHelper(getApplicationContext());
 
 
         agent_update=(TextView)findViewById(R.id.agent_update);
 
-       routecode.setText(mPreference.getString("routename"));
+
 
 
         if (avatarbmp != null) {
@@ -273,21 +284,28 @@ public class AgentsInfoActivity extends AppCompatActivity  {
                 agentsBean.setmAgentDeviceSync("0");
                 agentsBean.setmAgentAccessDevice("NO");
                 agentsBean.setmAgentBackUp("0");
+               // agentsBean.setmAgentId();
                 // agentsBean.setmAgentRouteId(routesArray.toString());
-                agentsBean.setmAgentRouteId(mPreference.getString("routename"));
+               // agentsBean.setmAgentRouteId(mPreference.getString("_routename"));
                 // agentsBean.setmSelectedRouteName(selected_val);
+                agentsBean.setmUploadStatus("0");
                 mAgentsBeansList.add(agentsBean);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             // db.insertAgentDetails(mAgentsBeansList);
             synchronized (this) {
+                long uniqueId;
+                synchronized (this) {
+                    uniqueId =  dbHelper.updateAgentDetails(mAgentsBeansList, userid);
+                }
                 if (new NetworkConnectionDetector(AgentsInfoActivity.this).isNetworkConnected()) {
                     //agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
-                    agentsmodel.customerAdd(mAgentsBeansList, dbHelper.getStakeTypeIdByStakeType("2"));
+                    //agentsmodel.customerAdd(mAgentsBeansList, db.getStakeTypeIdByStakeType("2"), "addC", uniqueId);
+                    Intent syncTDCCustomersServiceIntent = new Intent(AgentsInfoActivity.this, SyncAgentsService.class);
+                    startService(syncTDCCustomersServiceIntent);
                 }
-                dbHelper.updateAgentDetails(mAgentsBeansList, userid);
-                Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Details Updated successfully", Toast.LENGTH_SHORT).show();
                 synchronized (this) {
                     Intent i = new Intent(AgentsInfoActivity.this, AgentsActivity.class);
                     startActivity(i);

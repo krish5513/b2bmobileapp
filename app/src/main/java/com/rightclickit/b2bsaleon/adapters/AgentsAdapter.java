@@ -230,6 +230,10 @@ public class AgentsAdapter extends BaseAdapter {
                     bundle.putString("MOBILE", mAgentsBeansList1.get(position).getMphoneNO());
                     bundle.putString("ADDRESS", mAgentsBeansList1.get(position).getMaddress());
                     bundle.putString("AGENTCODE", mAgentsBeansList1.get(position).getmAgentCode());
+                    String rid=mAgentsBeansList1.get(position).getmAgentRouteId();
+                    if(rid.contains("["))
+                        rid=rid.substring(2,(rid.length()-2));
+                    bundle.putString("ROUTEID", rid);
 
                     intent.putExtra("AVATAR", mAgentsBeansList1.get(position).getmAgentPic());
 

@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-359:12
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
 	package
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:4:5-41
 		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
@@ -67,7 +67,7 @@ ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:22:5-23
 	android:name
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:22:22-81
 application
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:25:5-357:19
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:25:5-362:19
 MERGED from [com.android.support:design:25.3.1] C:\Users\RCITS\.android\build-cache\ca6eb00e8402d2e2d58c222245e49ea7c957125d\output\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:transition:25.3.1] C:\Users\RCITS\.android\build-cache\c9e455fcae4a645df9753105459b445753d18cc1\output\AndroidManifest.xml:26:5-20
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\RCITS\.android\build-cache\13cc56692984857a71dc7a4a2d3771429abcf8ce\output\AndroidManifest.xml:9:5-20
@@ -698,6 +698,14 @@ ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:353:9-3
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:356:13-36
 	android:name
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:354:13-70
+service#com.rightclickit.b2bsaleon.services.SyncAgentsService
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:358:9-361:39
+	android:enabled
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:360:13-35
+	android:exported
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:361:13-36
+	android:name
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:359:13-55
 uses-sdk
 INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:design:25.3.1] C:\Users\RCITS\.android\build-cache\ca6eb00e8402d2e2d58c222245e49ea7c957125d\output\AndroidManifest.xml:21:5-23:62
