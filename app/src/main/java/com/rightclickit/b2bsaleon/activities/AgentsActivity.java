@@ -258,7 +258,6 @@ public class AgentsActivity extends AppCompatActivity {
         if (new NetworkConnectionDetector(AgentsActivity.this).isNetworkConnected()) {
             if (mDBHelper.getAgentsTableCount() > 0) {
                 ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
-                System.out.println("F:::: " + agentsBeanArrayList.size());
                 if (agentsBeanArrayList.size() > 0) {
                     mNoDataText.setText("");
                     loadAgentsList(agentsBeanArrayList);
@@ -274,7 +273,6 @@ public class AgentsActivity extends AppCompatActivity {
         } else {
             // System.out.println("ELSE::: ");
             ArrayList<AgentsBean> agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
-            System.out.println("F12333222222222 :::: " + agentsBeanArrayList.size());
             if (agentsBeanArrayList.size() > 0) {
                 mNoDataText.setText("");
                 loadAgentsList(agentsBeanArrayList);
@@ -290,19 +288,29 @@ public class AgentsActivity extends AppCompatActivity {
         agentsModel.getAgentsList("agents");
     }
 
-    public void loadAgentsList(ArrayList<AgentsBean> mAgentsBeansList) {
+    public void loadAgentsList(ArrayList<AgentsBean> mAgentsBeansList1) {
+        ArrayList<AgentsBean> agentsBeanArrayList;
+        synchronized (this){
+            agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
+        }
+
         synchronized (this) {
             if (mAgentsAdapter != null) {
                 mAgentsAdapter = null;
             }
-            mAgentsAdapter = new AgentsAdapter(this, AgentsActivity.this, mAgentsBeansList, mStock);
+            mAgentsAdapter = new AgentsAdapter(this, AgentsActivity.this, agentsBeanArrayList, mStock);
             mAgentsList.setAdapter(mAgentsAdapter);
         }
 
         synchronized (this) {
             if (alertDialogBuilder1 != null) {
-                alertDialog1.dismiss();
-                alertDialogBuilder1 = null;
+                synchronized (this) {
+                    alertDialog1.dismiss();
+                    alertDialogBuilder1 = null;
+                }
+                synchronized (this) {
+                    showAlertDialog1(AgentsActivity.this, "Sync process", "Agents sync has been completed successfully.");
+                }
             }
         }
     }
@@ -455,9 +463,7 @@ public class AgentsActivity extends AppCompatActivity {
             alertDialogBuilder1.setCancelable(false);
             if (message.equals("down")) {
                 alertDialogBuilder1.setMessage("Downloading agents... Please wait.. ");
-                synchronized (this) {
-                    getAgents();
-                }
+                getAgents();
             } else {
                 ArrayList<AgentsBean> unUploadedTDCCustomers = mDBHelper.fetchAllUnUploadedRecordsFromAgents();
                 uploadedCount = unUploadedTDCCustomers.size();
@@ -470,9 +476,7 @@ public class AgentsActivity extends AppCompatActivity {
                     }
                 } else {
                     alertDialogBuilder1.setMessage("Downloading agents... Please wait.. ");
-                    synchronized (this) {
-                        getAgents();
-                    }
+                    getAgents();
                 }
             }
 

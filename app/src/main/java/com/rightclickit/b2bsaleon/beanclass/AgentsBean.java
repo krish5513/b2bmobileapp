@@ -20,6 +20,7 @@ public class AgentsBean {
     private String mSelectedRouteName;
     private String mUploadStatus;
     private String mAgentUniqueId;
+    private String mIsAgentUpdate;
 
     public String getmAgentDeviceSync() {
         return mAgentDeviceSync;
@@ -337,5 +338,13 @@ public class AgentsBean {
 
     public void setmAgentUniqueId(String mAgentUniqueId) {
         this.mAgentUniqueId = mAgentUniqueId;
+    }
+
+    public String getmIsAgentUpdate() {
+        return mIsAgentUpdate;
+    }
+
+    public void setmIsAgentUpdate(String mIsAgentUpdate) {
+        this.mIsAgentUpdate = mIsAgentUpdate;
     }
 }

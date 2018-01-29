@@ -46,7 +46,6 @@ import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -58,17 +57,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 
-public class AgentsInfoActivity extends AppCompatActivity  {
-    EditText firstname, lastname, mobile, address,routecode;
+public class AgentsInfoActivity extends AppCompatActivity {
+    EditText firstname, lastname, mobile, address, routecode;
     public static ImageView avatar, poi, poa;
     private MMSharedPreferences mPreference;
     ArrayList<AgentsBean> mAgentsBeansList1;
     private ImageLoader mImageLoader;
     private GoogleMap mMap;
-    private String mLatitude = "", mLongitude = "";
+    private String mLatitude = "", mLongitude = "", mPosition = "", mUserId = "", mCode = "", mPassword = "", mReportingTo = "", mAddresss = "", mVerifyTo = "", mStatuss = "", mDeletee = "", mStakeIddd = "", mObAmountt = "", mTotalAmountt = "",
+            mOrderedValueee = "", mDueAmounttt = "", mDeviceSynccc = "", mAccessDeviceee = "", mBackuppp = "",
+            mAprovedOnnn = "", mPiccc = "", mRouteIddd = "", mEmailll = "", mAgentIdd = "", mRouteCOdeeee = "", mUniqueIddd = "";
     DBHelper dbHelper;
     TextView agent_update,mapFullView;
     private ArrayList<AgentsBean> mAgentsBeansList = new ArrayList<AgentsBean>();
@@ -77,16 +77,17 @@ public class AgentsInfoActivity extends AppCompatActivity  {
     double longitude, latitude;
     private static final int ACTION_TAKE_PHOTO_A = 1;
     private static final int ACTION_TAKE_GALLERY_PIC_A = 2;
-    private JSONArray routeCodesArray;
-    ArrayList<String> idsArray = new ArrayList<String>();
-    List<String> routesDataList = null;
+    ArrayList<AgentsBean> agentsBeanArrayList;
+    private DBHelper mDBHelper;
+    Bundle bundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agents_info);
 
         mPreference = new MMSharedPreferences(this);
-        Bundle bundle = getIntent().getExtras();
+        mDBHelper = new DBHelper(this);
+         bundle = getIntent().getExtras();
         this.getSupportActionBar().setTitle("CUSTOMER NAME");
         this.getSupportActionBar().setSubtitle(null);
         this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
@@ -110,34 +111,73 @@ public class AgentsInfoActivity extends AppCompatActivity  {
         avatar = (ImageView) findViewById(R.id.shopaddress_image);
         poi = (ImageView) findViewById(R.id.poi_image);
         poa = (ImageView) findViewById(R.id.poa_image);
+        // routecode=(EditText) findViewById(R.id.routecode);
         routecode=(EditText) findViewById(R.id.routecode);
 
         mapFullView = (TextView) findViewById(R.id.MapFullView);
-
-
-        agentsmodel = new AgentsModel(AgentsInfoActivity.this, this);
-        dbHelper = new DBHelper(getApplicationContext());
-
-
-
         firstname.setText(bundle.getString("FIRSTNAME"));
         lastname.setText(bundle.getString("LASTNAME"));
         mobile.setText(bundle.getString("MOBILE"));
-        address.setText(bundle.getString("ADDRESS"));
-        routecode.setText(dbHelper.getRouteNameByRouteId(bundle.getString("ROUTEID")));
-
-
+        // address.setText(bundle.getString("ADDRESS"));
         Bundle extras = getIntent().getExtras();
         Bitmap avatarbmp = (Bitmap) extras.getParcelable("avatar");
         Bitmap poibmp = (Bitmap) extras.getParcelable("poi");
         Bitmap poabmp = (Bitmap) extras.getParcelable("poa");
 
+        mPosition = bundle.getString("POSITION");
+
+        agentsmodel = new AgentsModel(AgentsInfoActivity.this, this);
+        dbHelper = new DBHelper(getApplicationContext());
 
 
-        agent_update=(TextView)findViewById(R.id.agent_update);
+        agent_update = (TextView) findViewById(R.id.agent_update);
 
+        //  routecode.setText(mPreference.getString("routename"));
+        routecode.setText(dbHelper.getRouteNameByRouteId(bundle.getString("ROUTEID")));
+        HashMap<String, String> userMapData = mDBHelper.getUsersData();
+        mUserId = userMapData.get("user_id");
 
+        agentsBeanArrayList = mDBHelper.fetchAllRecordsFromAgentsTable(mUserId);
+        System.out.println("FI:::" + agentsBeanArrayList.size());
+        System.out.println("FI POS:::" + mPosition);
+        for (int b = 0; b < agentsBeanArrayList.size(); b++) {
+            if (b == Integer.parseInt(mPosition)) {
+                mCode = agentsBeanArrayList.get(b).getmAgentCode();
+                mPassword = agentsBeanArrayList.get(b).getmAgentPassword();
+                mReportingTo = agentsBeanArrayList.get(b).getmAgentReprtingto();
+                mAddresss = agentsBeanArrayList.get(b).getMaddress();
+                mLatitude = agentsBeanArrayList.get(b).getmLatitude();
+                mLongitude = agentsBeanArrayList.get(b).getmLongitude();
+                System.out.println("LAT::: " + mLatitude);
+                System.out.println("LANG::: " + mLongitude);
+                mEmailll = agentsBeanArrayList.get(b).getmAgentEmail();
+                mVerifyTo = agentsBeanArrayList.get(b).getmAgentVerifycode();
+                mStatuss = agentsBeanArrayList.get(b).getmStatus();
+                mDeletee = agentsBeanArrayList.get(b).getmAgentDelete();
+                mStakeIddd = agentsBeanArrayList.get(b).getmAgentStakeid();
+                mObAmountt = agentsBeanArrayList.get(b).getmObAmount();
+                mTotalAmountt = agentsBeanArrayList.get(b).getmTotalAmount();
+                mOrderedValueee = agentsBeanArrayList.get(b).getmOrderValue();
+                mDueAmounttt = agentsBeanArrayList.get(b).getmDueAmount();
+                //mDeviceSynccc = agentsBeanArrayList.get(b).getmAgentDeviceSync();
+                mDeviceSynccc ="5";
+             //   mAccessDeviceee = agentsBeanArrayList.get(b).getmAgentAccessDevice();
+                mAccessDeviceee ="YES";
+                //mBackuppp = agentsBeanArrayList.get(b).getmAgentBackUp();
+                mBackuppp ="10";
+                mAprovedOnnn = agentsBeanArrayList.get(b).getmAgentApprovedOn();
+                mPiccc = agentsBeanArrayList.get(b).getmAgentPic();
+                mRouteIddd = agentsBeanArrayList.get(b).getmAgentRouteId();
+                mRouteCOdeeee = agentsBeanArrayList.get(b).getmAgentRoutecode();
+                mAgentIdd = agentsBeanArrayList.get(b).getmAgentId();
+                mUniqueIddd = agentsBeanArrayList.get(b).getmAgentUniqueId();
 
+                break;
+            }
+        }
+
+        //address.setText(mPreference.getString("routeaddress"));
+        address.setText(mAddresss);
 
         if (avatarbmp != null) {
             avatar.setImageBitmap(avatarbmp);
@@ -165,8 +205,6 @@ public class AgentsInfoActivity extends AppCompatActivity  {
         });
 
 
-
-
         agent_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,10 +229,22 @@ public class AgentsInfoActivity extends AppCompatActivity  {
 
         // LOCATION DETAILS
         try {
-            latitude = Double.parseDouble(mPreference.getString("curLat"));
-            longitude = Double.parseDouble(mPreference.getString("curLong"));
+//            latitude = Double.parseDouble(mPreference.getString("curLat"));
+//            longitude = Double.parseDouble(mPreference.getString("curLong"));
 
-        }catch (Exception e){
+            if (mLatitude.equals("")) {
+                latitude = Double.parseDouble(mPreference.getString("curLat"));
+            } else {
+                latitude = Double.parseDouble(mLatitude);
+            }
+
+            if (mLongitude.equals("")) {
+                longitude = Double.parseDouble(mPreference.getString("curLong"));
+            } else {
+                longitude = Double.parseDouble(mLongitude);
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -256,38 +306,40 @@ public class AgentsInfoActivity extends AppCompatActivity  {
                 JSONArray routesArray = routesJob.getJSONArray("routeArray");
 
                 AgentsBean agentsBean = new AgentsBean();
-               agentsBean.setmFirstname(str_BusinessName);
-               agentsBean.setmLastname(str_PersonName);
-               agentsBean.setMphoneNO(str_Mobileno);
-                agentsBean.setmAgentEmail("");
-                agentsBean.setmAgentPassword(Utility.getMd5String("123456789"));
-                agentsBean.setmAgentCode("");
-                agentsBean.setmAgentReprtingto("");
-                agentsBean.setmAgentVerifycode("");
-                agentsBean.setmStatus("I");
-                agentsBean.setmAgentDelete("N");
-                agentsBean.setmAgentStakeid(stakeholderid);
+                agentsBean.setmAgentUniqueId(mUniqueIddd);
+                agentsBean.setmAgentId(mAgentIdd);
+                agentsBean.setmFirstname(str_BusinessName);
+                agentsBean.setmLastname(str_PersonName);
+                agentsBean.setMphoneNO(str_Mobileno);
+                agentsBean.setmAgentEmail(mEmailll);
+                agentsBean.setmAgentPassword(mPassword);
+                agentsBean.setmAgentCode(mCode);
+                agentsBean.setmAgentReprtingto(mReportingTo);
+                agentsBean.setmAgentVerifycode(mVerifyTo);
+                agentsBean.setmStatus(mStatuss);
+                agentsBean.setmAgentDelete(mDeletee);
+                agentsBean.setmAgentStakeid(mStakeIddd);
                 agentsBean.setmAgentCreatedBy(userid);
                 agentsBean.setmAgentUpdatedBy(userid);
-                agentsBean.setMaddress(str_address);
+                agentsBean.setMaddress(mAddresss);
                 agentsBean.setmLatitude(String.valueOf(latitude));
                 agentsBean.setmLongitude(String.valueOf(longitude));
                 String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
                 agentsBean.setmAgentCreatedOn(timeStamp);
                 agentsBean.setmAgentUpdatedOn(timeStamp);
-                agentsBean.setmObAmount("");
-                agentsBean.setmOrderValue("");
-                agentsBean.setmTotalAmount("");
-                agentsBean.setmDueAmount("");
-                agentsBean.setmAgentPic("");
-                agentsBean.setmAgentApprovedOn("");
-                agentsBean.setmAgentDeviceSync("0");
-                agentsBean.setmAgentAccessDevice("NO");
-                agentsBean.setmAgentBackUp("0");
-               // agentsBean.setmAgentId();
+                agentsBean.setmObAmount(mObAmountt);
+                agentsBean.setmOrderValue(mOrderedValueee);
+                agentsBean.setmTotalAmount(mTotalAmountt);
+                agentsBean.setmDueAmount(mDueAmounttt);
+                agentsBean.setmAgentPic(mPiccc);
+                agentsBean.setmAgentApprovedOn(mAprovedOnnn);
+                agentsBean.setmAgentDeviceSync(mDeviceSynccc);
+                agentsBean.setmAgentAccessDevice(mAccessDeviceee);
+                agentsBean.setmAgentBackUp(mBackuppp);
                 // agentsBean.setmAgentRouteId(routesArray.toString());
-               // agentsBean.setmAgentRouteId(mPreference.getString("_routename"));
+                agentsBean.setmAgentRouteId(bundle.getString("ROUTEID"));
                 // agentsBean.setmSelectedRouteName(selected_val);
+                agentsBean.setmIsAgentUpdate("true");
                 agentsBean.setmUploadStatus("0");
                 mAgentsBeansList.add(agentsBean);
             } catch (Exception e) {
@@ -295,17 +347,19 @@ public class AgentsInfoActivity extends AppCompatActivity  {
             }
             // db.insertAgentDetails(mAgentsBeansList);
             synchronized (this) {
-                long uniqueId;
                 synchronized (this) {
-                    uniqueId =  dbHelper.updateAgentDetails(mAgentsBeansList, userid);
+                    dbHelper.insertAgentDetails(mAgentsBeansList, userid);
                 }
-                if (new NetworkConnectionDetector(AgentsInfoActivity.this).isNetworkConnected()) {
-                    //agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
-                    //agentsmodel.customerAdd(mAgentsBeansList, db.getStakeTypeIdByStakeType("2"), "addC", uniqueId);
-                    Intent syncTDCCustomersServiceIntent = new Intent(AgentsInfoActivity.this, SyncAgentsService.class);
-                    startService(syncTDCCustomersServiceIntent);
+                synchronized (this) {
+                    if (new NetworkConnectionDetector(AgentsInfoActivity.this).isNetworkConnected()) {
+                        //agentsmodel.customerAdd(str_BusinessName, str_PersonName, str_Mobileno, stakeholderid, userid, "", "123456789", "", "", "", "IA", "N", str_address, String.valueOf(latitude), String.valueOf(longitude), timeStamp, "", "", "", "", "");
+                        //agentsmodel.customerAdd(mAgentsBeansList, db.getStakeTypeIdByStakeType("2"), "addC", uniqueId);
+                        Intent syncTDCCustomersServiceIntent = new Intent(AgentsInfoActivity.this, SyncAgentsService.class);
+                        startService(syncTDCCustomersServiceIntent);
+                        System.out.println("SERVICE CALLEDDD:::;11111111111");
+                    }
                 }
-                Toast.makeText(getApplicationContext(), "Details Updated successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Details saved successfully", Toast.LENGTH_SHORT).show();
                 synchronized (this) {
                     Intent i = new Intent(AgentsInfoActivity.this, AgentsActivity.class);
                     startActivity(i);
@@ -451,17 +505,17 @@ public class AgentsInfoActivity extends AppCompatActivity  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-         if (requestCode == 100) {
-                latitude = Double.parseDouble(data.getStringExtra("lat"));
-                longitude = Double.parseDouble(data.getStringExtra("long"));
+        if (requestCode == 100) {
+            latitude = Double.parseDouble(data.getStringExtra("lat"));
+            longitude = Double.parseDouble(data.getStringExtra("long"));
 
-                LatLng loc = new LatLng(latitude, longitude);
+            LatLng loc = new LatLng(latitude, longitude);
 
-                Marker marker;
-                mMap.clear();
-                marker = mMap.addMarker(new MarkerOptions().position(loc));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
-            }
+            Marker marker;
+            mMap.clear();
+            marker = mMap.addMarker(new MarkerOptions().position(loc));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+        }
 
     }
 

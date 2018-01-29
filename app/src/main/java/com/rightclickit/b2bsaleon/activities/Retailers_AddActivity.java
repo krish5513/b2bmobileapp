@@ -67,7 +67,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     private MMSharedPreferences mmSharedPreferences;
 
     private ScrollView retailer_add_scrollview;
-    private EditText retailer_name, mobile_no, business_name, address;
+    private EditText retailer_name, mobile_no, business_name, address,routecode;
     private GoogleMap googleMap;
     private ImageView shop_image;
     private LinearLayout retailer_add_footer;
@@ -85,7 +85,7 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
     Spinner paymentTypeSpinner;
     private String mUserId = "", mRegionName = "", mOfficeName = "", mRouteCode = "", mLoginId = "";
     private JSONArray routeCodesArray;
-    String selected_val,selectedroute;
+    String selected_val,selectedroute,RouteId;
     ArrayList<String> idsArray = new ArrayList<String>();
     TextView update;
     private ArrayList<String> stringArray = new ArrayList<String>();
@@ -117,6 +117,15 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
 
             mDBHelper = new DBHelper(activityContext);
 
+
+            Bundle bundle1 = getIntent().getExtras();
+            if (bundle1 != null) {
+
+
+                RouteId=bundle1.getString("RouteId");
+                Log.i("hgugh",RouteId+"");
+            }
+
             retailer_add_scrollview = (ScrollView) findViewById(R.id.retailer_add_scrollview);
             retailer_name = (EditText) findViewById(R.id.retailer_business_name); // Business Name
             mobile_no = (EditText) findViewById(R.id.retailer_mobile_no);
@@ -126,7 +135,8 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             shop_image = (ImageView) findViewById(R.id.retailer_shop_image);
             retailer_add_footer = (LinearLayout) findViewById(R.id.retailer_add_footer);
             update = (TextView) findViewById(R.id.ts_dispatch_save);
-
+            //routecode = (EditText) findViewById(R.id.routecode);
+                //routecode.setVisibility(View.GONE);
             mapFullView = (TextView) findViewById(R.id.MapFullView);
 
 
@@ -214,12 +224,13 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
                 ViewGroup.MarginLayoutParams scrollViewLp = (ViewGroup.MarginLayoutParams) retailer_add_scrollview.getLayoutParams();
                 //scrollViewLp.bottomMargin = 0;
                 retailer_add_scrollview.setLayoutParams(scrollViewLp);
-
+               // paymentTypeSpinner.setVisibility(View.GONE);
+               // routecode.setVisibility(View.VISIBLE);
                 // retailer_add_footer.setVisibility(View.GONE);
 
                 updateUIWithBundleValues(customer);
             }
-
+           // routecode.setText(mDBHelper.getRouteNameByRouteId(RouteId));
             mapFullView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -249,6 +260,8 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             business_name.setText(retailerObj.getName());
             address.setText(retailerObj.getAddress());
             mUserId = retailerObj.getUserId();
+          //  routecode.setText(mDBHelper.getRouteNameByRouteId(RouteId));
+
             String selectedRoute = routeValuesMap.get(customer.getRoutecode());
             if (selectedRoute != null) {
                 for (int g = 0; g < stringArray.size(); g++) {
@@ -288,7 +301,8 @@ public class Retailers_AddActivity extends AppCompatActivity implements OnMapRea
             business_name.setEnabled(false);
             address.setEnabled(false);
             shop_image.setEnabled(false);
-            paymentTypeSpinner.setEnabled(false);
+            routecode.setEnabled(false);
+            //paymentTypeSpinner.setEnabled(false);
 
         } catch (Exception e) {
             e.printStackTrace();

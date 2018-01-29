@@ -971,7 +971,6 @@ public class DBHelper extends SQLiteOpenHelper {
         try {
             for (int i = 0; i < mAgentsBeansList.size(); i++) {
                 ContentValues values = new ContentValues();
-              //  values.put(KEY_AGENT_UNIQUE_ID,mAgentsBeansList.get(i).getmAgentUniqueId());
                 values.put(KEY_AGENT_ID, mAgentsBeansList.get(i).getmAgentId());
                 values.put(KEY_AGENT_NAME, mAgentsBeansList.get(i).getmAgentName());
                 values.put(KEY_OB_AMOUNT, mAgentsBeansList.get(i).getmObAmount());
@@ -1006,9 +1005,30 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_AGENT_BACKUP, mAgentsBeansList.get(i).getmAgentBackUp());
                 values.put(KEY_AGENT_LOGIN_USER_ID, userId);
                 values.put(KEY_AGENT_UPLOAD_STATUS, mAgentsBeansList.get(i).getmUploadStatus());
-                // insert row
-                id = db.insert(TABLE_AGENTS, null, values);
-                System.out.println("Agent data*********** INSERTED***************88");
+
+                if (mAgentsBeansList.get(i).getmAgentId().equals("") && mAgentsBeansList.get(i).getmIsAgentUpdate().equals("false")) {
+                    // Always insert
+                    id = db.insert(TABLE_AGENTS, null, values);
+                } else if (mAgentsBeansList.get(i).getmAgentId().equals("") && mAgentsBeansList.get(i).getmIsAgentUpdate().equals("true")) {
+                    // Update condition 1
+                    id = db.update(TABLE_AGENTS, values, KEY_AGENT_STOCK_UNIQUE_ID + " = ?",
+                            new String[]{String.valueOf(mAgentsBeansList.get(i).getmAgentUniqueId())});
+
+                } else if (!mAgentsBeansList.get(i).getmAgentId().equals("") && mAgentsBeansList.get(i).getmIsAgentUpdate().equals("true")) {
+                    // Insert condition 1
+                    int checkConditionVal = checkAgentIsExistsOrNot(mAgentsBeansList.get(i).getmAgentId(), userId);
+                    if (checkConditionVal == 0) {
+                        id = db.insert(TABLE_AGENTS, null, values);
+                    } else {
+                        id = db.update(TABLE_AGENTS, values, KEY_AGENT_ID + " = ?",
+                                new String[]{String.valueOf(mAgentsBeansList.get(i).getmAgentId())});
+                    }
+                } else {
+                    // Update condition 2
+                    int checkConditionVal = checkAgentIsExistsOrNot(mAgentsBeansList.get(i).getmAgentId(), userId);
+                    id = db.update(TABLE_AGENTS, values, KEY_AGENT_ID + " = ?",
+                            new String[]{String.valueOf(mAgentsBeansList.get(i).getmAgentId())});
+                }
                 values.clear();
             }
         } catch (Exception e) {
@@ -1018,6 +1038,30 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return id;
     }
+
+    /**
+     * This method is used to check the agent exists or not.
+     *
+     * @param agentId,loggedInUserId
+     * @return
+     */
+    public int checkAgentIsExistsOrNot(String agentId, String loggedInUserId) {
+        int maxID = 0;
+
+        String selectQuery = "SELECT  * FROM " + TABLE_AGENTS + " WHERE " + KEY_AGENT_ID + "='" + agentId + "'"
+                + " AND " + KEY_AGENT_LOGIN_USER_ID + "='" + loggedInUserId + "'";
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                maxID = cursor.getInt(0);
+
+            } while (cursor.moveToNext());
+        }
+        return maxID;
+    }
+
+
 
     public long updateAgentDetails(ArrayList<AgentsBean> mAgentsBeansList, String userId) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -1090,6 +1134,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 do {
                     AgentsBean agentsBean = new AgentsBean();
 
+                    agentsBean.setmAgentUniqueId((c.getString(c.getColumnIndex(KEY_AGENT_UNIQUE_ID))));
                     agentsBean.setmAgentId((c.getString(c.getColumnIndex(KEY_AGENT_ID))));
                     agentsBean.setmLatitude((c.getString(c.getColumnIndex(KEY_AGENT_LATITUDE))));
                     agentsBean.setmLongitude((c.getString(c.getColumnIndex(KEY_AGENT_LONGITUDE))));
@@ -1134,7 +1179,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return allDeviceTrackRecords;
     }
-
     /**
      * Method to insert user details
      *

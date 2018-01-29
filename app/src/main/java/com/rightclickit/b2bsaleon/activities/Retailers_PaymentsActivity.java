@@ -31,7 +31,7 @@ public class Retailers_PaymentsActivity extends AppCompatActivity {
     private TextView no_payments_found_message;
 
     private long selectedCustomerId;
-    private String selectedCustomerId1;
+    private String selectedCustomerId1,RouteId;
     private DBHelper mDBHelper;
     private RetailersPaymentsAdapter paymentsListAdapter;
     private List<TDCSaleOrder> selectedRetailerAllOrders;
@@ -66,6 +66,7 @@ public class Retailers_PaymentsActivity extends AppCompatActivity {
             if (bundle != null) {
                 // selectedCustomerId = bundle.getLong(Constants.BUNDLE_SELECTED_CUSTOMER_ID);
                 selectedCustomerId1 = bundle.getString("AgentId");
+                RouteId=bundle.getString("RouteId");
             }
             //System.out.println("RETAILER ID::: "+ selectedCustomerId1);
             selectedRetailerAllOrders = mDBHelper.fetchTDCSalesOrdersForSelectedCustomer(selectedCustomerId1);

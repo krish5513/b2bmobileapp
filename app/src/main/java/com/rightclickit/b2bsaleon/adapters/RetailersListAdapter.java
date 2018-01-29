@@ -117,6 +117,13 @@ public class RetailersListAdapter extends BaseAdapter {
                 Intent intent = new Intent(activity, Retailers_AddActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(Constants.BUNDLE_TDC_CUSTOMER, currentRetailer);
+
+                String rid=currentRetailer.getRoutecode();
+                if(rid.contains("["))
+                    rid=rid.substring(2,(rid.length()-2));
+                bundle.putString("RouteId", rid);
+
+                //bundle.putString("RouteId",currentRetailer.getRoutecode());
                 intent.putExtras(bundle);
                 activity.startActivity(intent);
                 activity.finish();
@@ -131,6 +138,7 @@ public class RetailersListAdapter extends BaseAdapter {
                 Bundle bundle = new Bundle();
                 bundle.putLong(Constants.BUNDLE_SELECTED_CUSTOMER_ID, currentRetailer.getId());
                 bundle.putString("AgentId", currentRetailer.getUserId());
+
                 intent.putExtras(bundle);
                 activity.startActivity(intent);
                 activity.finish();

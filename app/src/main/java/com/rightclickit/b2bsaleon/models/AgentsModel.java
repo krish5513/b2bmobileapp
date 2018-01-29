@@ -135,8 +135,8 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                 job.put("route_ids", routesArray);
                 job.put("_ids", stakesArray);
 
-                //System.out.println("THE AGENTS URL IS::: " + logInURL);
-                //System.out.println("THE AGENTS DATA IS::: " + job.toString());
+                System.out.println("THE AGENTS URL IS::: " + logInURL);
+                System.out.println("THE AGENTS DATA IS::: " + job.toString());
                 AsyncRequest loginRequest = new AsyncRequest(context, this, logInURL, AsyncRequest.MethodType.POST, job);
                 loginRequest.execute();
             }
@@ -241,7 +241,6 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                             // Privilege exists, display only login user profile
                             if (jo.has("_id")) {
                                 if (UserCode.equals(jo.getString("_id"))) {
-                                    System.out.println("CODE MATCHED::: " + jo.getString("_id"));
                                     AgentsBean agentsBean = new AgentsBean();
                                     if (jo.has("_id")) {
                                         agentsBean.setmAgentId(jo.getString("_id"));
@@ -534,6 +533,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                             }
 
                             agentsBean.setmUploadStatus("1");
+                            agentsBean.setmIsAgentUpdate("true");
                             mAgentsBeansList.add(agentsBean);
                         }
 
@@ -545,11 +545,11 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
 //                    }
                     Log.i("isMyProfilePrivilege", isMyProfilePrivilege + "");
                     synchronized (this) {
-                        synchronized (this) {
-                            if (mDBHelper.getAgentsTableCount() > 0) {
-                                mDBHelper.deleteValuesFromAgentsTable();
-                            }
-                        }
+//                        synchronized (this) {
+//                            if (mDBHelper.getAgentsTableCount() > 0) {
+//                                mDBHelper.deleteValuesFromAgentsTable();
+//                            }
+//                        }
                         synchronized (this) {
                             if (isMyProfilePrivilege) {
                                 mDBHelper.insertAgentDetails(mAgentsBeansList_MyPrivilege, UserCode);

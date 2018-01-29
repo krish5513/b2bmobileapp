@@ -240,6 +240,7 @@ public class AgentsAdapter extends BaseAdapter {
                     intent.putExtra("POI", mAgentsBeansList1.get(position).getmPoiImage());
 
                     intent.putExtra("POA", mAgentsBeansList1.get(position).getmPoaImage());
+                    intent.putExtra("POSITION", String.valueOf(position));
                     mHolder.mPicImage.buildDrawingCache();
                     mHolder.mPoiImage.buildDrawingCache();
                     mHolder.mPoaImage.buildDrawingCache();
