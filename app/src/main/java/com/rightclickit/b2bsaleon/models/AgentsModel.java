@@ -383,6 +383,7 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
                                     }
 
                                     agentsBean.setmUploadStatus("1");
+                                    agentsBean.setmIsAgentUpdate("true");
 
                                     mAgentsBeansList_MyPrivilege.add(agentsBean);
 

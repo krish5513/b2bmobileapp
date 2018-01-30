@@ -611,7 +611,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         } else {
             newMonth = String.valueOf(month);
         }
-        fullDate = newDay + "/" + newMonth + "/" + year;
+        fullDate = year + "-" + newMonth + "-" + newDay;
 
         return fullDate;
     }

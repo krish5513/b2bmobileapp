@@ -266,8 +266,13 @@ public class NotificationsActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String query) {
+            try{
 
-                mNotificationAdapter.filter(query);
+               mNotificationAdapter.filter(query);
+              } catch (Exception e){
+
+             }
+
 
                 return true;
 

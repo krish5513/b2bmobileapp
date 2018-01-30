@@ -116,10 +116,10 @@ public class TDCSalesListActivity extends AppCompatActivity {
             Bundle bundle = this.getIntent().getExtras();
             if (bundle != null) {
                 TroipsTakeorder = bundle.getString("From");
-                custId = bundle.getString("custId");
+                //custId = bundle.getString("custId");
                 // screenType = bundle.getString("screenType"); //AgentOrder
             }
-
+            custId = mmSharedPreferences.getString("agentId");
 /*
             Bundle bundle1 = this.getIntent().getExtras();
             if (bundle1 != null) {

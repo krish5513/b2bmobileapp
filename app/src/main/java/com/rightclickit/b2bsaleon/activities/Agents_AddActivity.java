@@ -233,7 +233,8 @@ public class Agents_AddActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                Toast.makeText(Agents_AddActivity.this, "Please Select the Routecode !!", Toast.LENGTH_LONG).show();
+                return;
             }
         });
 
@@ -272,6 +273,7 @@ public class Agents_AddActivity extends AppCompatActivity {
         str_Mobileno = mobile.getText().toString();
         str_address = address.getText().toString();
         mmSharedPreferences.putString("routeaddress", str_address);
+        selectedroute = paymentTypeSpinner.getSelectedItem().toString();
         if (str_BusinessName.length() == 0 || str_BusinessName.length() == ' ') {
             bname.setError("Please enter BusinessName");
             Toast.makeText(getApplicationContext(), "Please enter BusinessName", Toast.LENGTH_SHORT).show();
@@ -286,13 +288,19 @@ public class Agents_AddActivity extends AppCompatActivity {
             mobile.setError("Please enter  10 digit mobileno");
             Toast.makeText(getApplicationContext(), "Please enter  10 digit mobileno", Toast.LENGTH_SHORT).show();
 
-        } /*else if (str_address.length() == 0 || str_address.length() == ' ') {
-                                            mobile.setError(null);
-                                            address.setError("Please enter address");
-                                            Toast.makeText(getApplicationContext(), "Please enter address", Toast.LENGTH_SHORT).show();
+        }
+        else if (str_address.length() == 0 || str_address.length() == ' ') {
+            mobile.setError(null);
+            address.setError("Please enter address");
+            Toast.makeText(getApplicationContext(), "Please enter address", Toast.LENGTH_SHORT).show();
 
-                                        }
-*/ else {
+        }
+        else if (selectedroute.equalsIgnoreCase("Select Routecode") || selectedroute.equals("")) {
+            address.setError(null);
+            Toast.makeText(getApplicationContext(), "Please Select the Routecode !!", Toast.LENGTH_LONG).show();
+
+        }
+     else {
             bname.setError(null);
             pname.setError(null);
             mobile.setError(null);
@@ -602,7 +610,7 @@ public class Agents_AddActivity extends AppCompatActivity {
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
         menu.findItem(R.id.Add).setVisible(false);
-        menu.findItem(R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(false);
         menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }

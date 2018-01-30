@@ -144,6 +144,8 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
             mHolder.mAgentCode.setText("-");
         }
         mHolder.mSOCode.setText("(" + currentSaleOrder.getmTripshetSOAgentCode() + ")");
+        mPreferences.putString("sCode",currentSaleOrder.getmTripshetSOCode());
+        mPreferences.putString("sDate",currentSaleOrder.getmTripshetSODate());
         //mHolder.mSOItemsCount.setText(currentSaleOrder.getmTripshetSOProductsCount());
         mHolder.mSOAgentName.setText(currentSaleOrder.getmTripshetSOAgentFirstName());
         mHolder.mSOOBamtValue.setText(Utility.getFormattedCurrency(Double.parseDouble(currentSaleOrder.getmTripshetSOOpAmount())));

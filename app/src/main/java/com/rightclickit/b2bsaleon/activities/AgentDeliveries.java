@@ -285,7 +285,11 @@ public class AgentDeliveries extends AppCompatActivity {
 
                 @Override
                 public boolean onQueryTextChange(String query) {
-                    deliveriesAdapter.filter(query);
+                    try {
+                        deliveriesAdapter.filter(query);
+                    }catch (Exception e) {
+
+                    }
                     return true;
                 }
             });

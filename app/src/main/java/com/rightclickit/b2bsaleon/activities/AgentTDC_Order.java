@@ -216,7 +216,7 @@ public class AgentTDC_Order extends AppCompatActivity {
                 orders.startAnimation(animation1);
 
                 Intent i = new Intent(AgentTDC_Order.this, TDCSalesListActivity.class);
-                i.putExtra("custId",agentId);
+              //  i.putExtra("custId",agentId);
                 i.putExtra("From", "Agents");
                 // i.putExtra("screenType","customerDetails");
                 startActivity(i);

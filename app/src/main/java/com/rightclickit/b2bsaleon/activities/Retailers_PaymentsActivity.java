@@ -78,9 +78,14 @@ public class Retailers_PaymentsActivity extends AppCompatActivity {
                 no_payments_found_message.setVisibility(View.GONE);
                 retailers_sales_list_view.setVisibility(View.VISIBLE);
 
-                paymentsListAdapter = new RetailersPaymentsAdapter(activityContext, this, selectedRetailerAllOrders);
-                retailers_sales_list_view.setAdapter(paymentsListAdapter);
-            }
+
+
+
+                        paymentsListAdapter = new RetailersPaymentsAdapter(activityContext, this, selectedRetailerAllOrders);
+                        retailers_sales_list_view.setAdapter(paymentsListAdapter);
+
+                }
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -104,7 +109,12 @@ public class Retailers_PaymentsActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onQueryTextChange(String query) {
-                    paymentsListAdapter.filter(query);
+                    try {
+                        paymentsListAdapter.filter(query);
+                    }catch (Exception e){
+
+                    }
+
                     return true;
                 }
             });
