@@ -189,7 +189,7 @@ public class SyncRoutesMasterDetailsService extends Service {
                                 System.out.println("OFFICE NAME IS:: " + officeName);
                                 System.out.println("ROUTE CODE IS:: " + routeCode);
                                 synchronized (this) {
-                                    k = mDBHelper.insertRoutesDetails(routeId, routeName, regionName, officeName, routeCode);
+                                    k = mDBHelper.  insertRoutesDetails(routeId, routeName, regionName, officeName, routeCode);
                                     routeId = "";
                                     routeName = "";
                                     regionName = "";

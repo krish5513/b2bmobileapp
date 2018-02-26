@@ -50,8 +50,8 @@ public class DeviceLocationService extends Service implements GoogleApiClient.Co
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     private LocationRequest mLocationRequest;
-    private long UPDATE_INTERVAL = 1 * 60 * 1000;  /* 5 Mins */
-    private long FASTEST_INTERVAL = 1 * 60 * 1000; /* 5 Mins */
+    private long UPDATE_INTERVAL = 5 * 60 * 1000;  /* 5 Mins */
+    private long FASTEST_INTERVAL = 5 * 60 * 1000; /* 5 Mins */
 
     private static final long MIN_DISTANCE_FOR_UPDATE = 10;
     private static final long MIN_TIME_FOR_UPDATE = 1000 * 10;
