@@ -350,6 +350,7 @@ public class TDCSalesCustomerSelectionActivity extends AppCompatActivity {
             customer.setCode(consumerCode);
             customer.setIsUploasStatus("0");
             customer.setRoutecode(selected_val);
+            customer.setIsCustUpdate("false");
 
 
             long customerId = mDBHelper.insertIntoTDCCustomers(customer, mUserId );
