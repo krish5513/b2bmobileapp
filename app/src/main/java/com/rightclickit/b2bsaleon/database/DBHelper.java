@@ -2251,7 +2251,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             values.put(KEY_TDC_CUSTOMER_UPLOAD_STATUS, customer.getIsUploasStatus());
 
-            if (customer.getUserId().equals("") && customer.getIsCustUpdate().equals(null)) {
+            if (customer.getUserId().equals("") && customer.getIsCustUpdate().equals("false")) {
                 customerId = db.insert(TABLE_TDC_CUSTOMERS, null, values);
             } else if (customer.getUserId().equals("") && customer.getIsCustUpdate().equals("true")) {
                 customerId = db.update(TABLE_TDC_CUSTOMERS, values, KEY_TDC_CUSTOMER_ID + " = ?",
