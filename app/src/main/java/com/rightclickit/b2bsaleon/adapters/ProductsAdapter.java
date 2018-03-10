@@ -253,7 +253,6 @@ public class ProductsAdapter extends BaseAdapter {
                 Intent intent = new Intent(activity, ProductInfoActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("CODE", mProductsBeansList1.get(position).getProductCode());
-
                 bundle.putString("TITLE", mProductsBeansList1.get(position).getProductTitle());
                 bundle.putString("RETURNABLE", mProductsBeansList1.get(position).getProductReturnable());
                 bundle.putString("MOQ", mProductsBeansList1.get(position).getProductMOQ());
