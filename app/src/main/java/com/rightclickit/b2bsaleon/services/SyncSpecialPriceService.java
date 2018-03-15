@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 public class SyncSpecialPriceService extends Service {
     private Runnable runnable;
@@ -93,10 +94,15 @@ public class SyncSpecialPriceService extends Service {
                     mSpecialPriceList.clear();
                 }
                 String URL = String.format("%s%s%s", Constants.MAIN_URL, Constants.PORT_USER_PREVILEGES, Constants.SPECIAL_PRICE_SERVICE);
+                HashMap<String, String> userMapData = mDBHelper.getUsersData();
+               // JSONObject params1 = new JSONObject();
+                JSONObject params1 = new JSONObject(userMapData.get("route_ids").toString());
+                JSONArray routesArray = params1.getJSONArray("routeArray");
+              //  System.out.println("The Route Id IS::: " + routesArray.get(l).toString());
+                JSONObject  params2=new JSONObject();
+                params2 .put("route_id", routesArray);
 
-                JSONObject params1 = new JSONObject();
-
-                mJsonObj = new NetworkManager().makeHttpPostConnection(URL, params1);
+                mJsonObj = new NetworkManager().makeHttpPostConnection(URL, params2);
                 System.out.println("Special Price Response Is::: " + mJsonObj);
                 JSONArray resArray = new JSONArray(mJsonObj);
                 int len = resArray.length();
