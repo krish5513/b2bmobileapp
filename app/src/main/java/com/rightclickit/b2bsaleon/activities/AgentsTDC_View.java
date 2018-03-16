@@ -18,7 +18,9 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.AgentTakeOrder_ViewAdapter;
+import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.OrdersListBean;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderPreviewBean;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -26,6 +28,7 @@ import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class AgentsTDC_View extends AppCompatActivity {
     private ListView mAgentsList;
@@ -53,9 +56,9 @@ public class AgentsTDC_View extends AppCompatActivity {
     String name,code,uom;
     private double mProductsPriceAmountSum = 0.0, mTotalProductsPriceAmountSum = 0.0, mTotalProductsTax = 0.0;
     float tax;
-
+    private ArrayList<ProductsBean> productsList, productsListSort;
     double quantity,price;
-
+    TakeOrderBean tob;
     //  Map<String, String[]> selectedList = new HashMap<String, String[]>();
     ArrayList<String[]> selectedList;
     @Override
@@ -86,8 +89,8 @@ public class AgentsTDC_View extends AppCompatActivity {
         ArrayList<OrdersListBean> ordersList=new ArrayList<>();
         mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("",sharedPreferences.getString("agentId"));
 
-
-
+        Map<String, String> agentSpecialPricesHashMap = mDBHelper.fetchSpecialPricesForUserId(sharedPreferences.getString("agentId"));
+        productsList = mDBHelper.fetchAllRecordsFromProductsTableForTakeOrders(sharedPreferences.getString("agentId"));
 
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);
         tv_companyName.setText(sharedPreferences.getString("companyname"));
@@ -101,6 +104,12 @@ public class AgentsTDC_View extends AppCompatActivity {
         // RouteCode = (TextView) findViewById(R.id.tv_routecode);
         // str_routecode = (sharedPreferences.getString("routecode") + ",");
         // RouteCode.setText(str_routecode);
+
+      /*  Bundle bundle = this.getIntent().getExtras();
+        if (bundle != null) {
+            uom = bundle.getString("uomfromorder");
+
+        }*/
 
 
         orderNo = (TextView) findViewById(R.id.order_no);
@@ -139,11 +148,28 @@ public class AgentsTDC_View extends AppCompatActivity {
 
             for(int i=0;i<mTakeOrderBeansList.size();i++){
                 TakeOrderPreviewBean tb=new TakeOrderPreviewBean();
-                TakeOrderBean tob=mTakeOrderBeansList.get(i);
+                 tob=mTakeOrderBeansList.get(i);
+
+
+                    if(agentSpecialPricesHashMap.containsKey(tob.getmProductId()))
+                  {
+                    tb.setpPrice(agentSpecialPricesHashMap.get(tob.getmProductId()));
+                    }   else {
+                        tb.setpPrice(tob.getmAgentPrice());
+
+                    }
+
+
+
+
+
+
+
+
                 tb.setpName(tob.getmProductTitle());
                 tb.setpQuantity(tob.getmProductQuantity());
-                tb.setpPrice(tob.getmAgentPrice());
-                //tb.setpAmount(tob.ge);
+
+
                 tb.setmProductTaxVAT(tob.getmAgentVAT());
                 tb.setmProductTaxGST(tob.getmAgentGST());
                 tb.setmProductFromDate(tob.getmProductFromDate());
@@ -153,10 +179,18 @@ public class AgentsTDC_View extends AppCompatActivity {
                 name=mTakeOrderBeansList.get(i).getmProductTitle();
                 code=mTakeOrderBeansList.get(i).getMtakeorderProductCode();
                 uom=mTakeOrderBeansList.get(i).getUom();
+               /* for (int j=0;j<productsList.size();j++){
+                    uom=productsList.get(j).getProductUOM();
+                }*/
 
-                if(mTakeOrderBeansList.get(i).getmAgentPrice()!=null) {
+
+                if(agentSpecialPricesHashMap.containsKey(tob.getmProductId())) {
+                    price=Double.parseDouble(agentSpecialPricesHashMap.get(tob.getmProductId()));
+
+                }else if(mTakeOrderBeansList.get(i).getmAgentPrice()!=null){
                     price = Double.parseDouble(mTakeOrderBeansList.get(i).getmAgentPrice());
-                }else {
+
+                }else{
                     price = 0.0f;
                 }
                 quantity= Double.parseDouble(mTakeOrderBeansList.get(i).getmProductQuantity());
@@ -263,9 +297,9 @@ public class AgentsTDC_View extends AppCompatActivity {
                 // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
                 for (int i = 0; i <selectedList.size(); i++) {
                     String[] temps = selectedList.get(i);
-                    canvas.drawText(temps[0], 5, st, paint);
-                    canvas.drawText("," + temps[1], 150, st, paint);
-                    canvas.drawText("(" +temps[2] + ")", 220, st, paint);
+                    canvas.drawText(temps[0] + "," + temps[1] + "(" +temps[2] + ")" , 5, st, paint);
+                  //  canvas.drawText("," + temps[1], 150, st, paint);
+                  //  canvas.drawText("(" +temps[2] + ")", 220, st, paint);
 
                     st = st + 30;
                     canvas.drawText("Qty", 5, st, paint);
@@ -294,7 +328,11 @@ public class AgentsTDC_View extends AppCompatActivity {
                 //  canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
                 //  canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
                 // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
-                st = st + 20;
+                st = st + 30;
+                paint.setTextSize(20);
+                canvas.drawText("* Please take photocopy of the Bill *", 17, st, paint);
+                st = st + 30;
+
                 canvas.drawText("--------X---------", 100, st, paint);
                 com.szxb.api.jni_interface.api_interface.printBitmap(bmOverlay, 5, 5);
             }

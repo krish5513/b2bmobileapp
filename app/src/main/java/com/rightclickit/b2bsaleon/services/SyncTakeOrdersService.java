@@ -185,6 +185,7 @@ public class SyncTakeOrdersService extends Service {
                                 t.setmAgentPrice(mTakeOrderBeansList.get(v).getmAgentPrice());
                                 t.setmAgentVAT(mTakeOrderBeansList.get(v).getmAgentVAT());
                                 t.setmAgentGST(mTakeOrderBeansList.get(v).getmAgentGST());
+                                t.setUom(mTakeOrderBeansList.get(v).getUom());
                                 t.setMuploadStatus(1);
 
                                 temptoList.add(t);

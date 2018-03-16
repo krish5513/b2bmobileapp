@@ -119,6 +119,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
                 allReturnablesListFromStock.clear();
             }
             for (int i = 0; i < allProductsListFromStock.size(); i++) {
+
                 if (allProductsListFromStock.get(i).getProductReturnableUnit().trim() != null) {
                     if (allProductsListFromStock.get(i).getProductReturnableUnit().trim().equals("Y")) {
                         DeliverysBean productsBean = new DeliverysBean();

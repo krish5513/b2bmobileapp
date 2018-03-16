@@ -372,9 +372,9 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                     // for (Map.Entry<String, String[]> entry : selectedList.entrySet()) {
                     for (int i = 0; i < selectedList.size(); i++) {
                         String[] temps = selectedList.get(i);
-                        canvas.drawText(temps[0], 5, st, paint);
-                        canvas.drawText("," + temps[1], 150, st, paint);
-                        canvas.drawText("(" + temps[2] + ")", 220, st, paint);
+                        canvas.drawText(temps[0] + "," + temps[1] +"(" + temps[2] + ")", 5, st, paint);
+                        //canvas.drawText("," + temps[1], 150, st, paint);
+                        //canvas.drawText("(" + temps[2] + ")", 220, st, paint);
 
                         st = st + 30;
                         canvas.drawText("Qty", 5, st, paint);
@@ -403,7 +403,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                     //  canvas.drawText(Utility.getFormattedCurrency(mTotalProductsTax), 70, st, paint);
                     //  canvas.drawText(Utility.getFormattedCurrency(mProductsPriceAmountSum), 170, st, paint);
                     // canvas.drawText(Utility.getFormattedCurrency(mTotalProductsPriceAmountSum), 280, st, paint);
-
+                    st = st + 30;
                     paint.setTextSize(20);
                     canvas.drawText("* Please take photocopy of the Bill *", 17, st, paint);
                     st = st + 30;

@@ -53,7 +53,7 @@ public class AgentTDC_Order extends AppCompatActivity {
     private ArrayList<TakeOrderPreviewBean> takeOrderPreviewBeanArrayList = new ArrayList<TakeOrderPreviewBean>();
     double amount, subtotal;
     double taxAmount;
-    String name, agentId = "", ObAmount = "", Ordervalue = "", receivedAmount = "", Due = "";
+    String name, agentId = "", ObAmount = "", Ordervalue = "", receivedAmount = "", Due = "",uom;
     private double mProductsPriceAmountSum = 0.0, mTotalProductsPriceAmountSum = 0.0, mTotalProductsTax = 0.0;
 
     String enquiryId;
@@ -229,6 +229,7 @@ public class AgentTDC_Order extends AppCompatActivity {
 
                 Intent i = new Intent(AgentTDC_Order.this, AgentsTDC_View.class);
                 mSessionManagement.putString("endiddd",tv_enquiryId.getText().toString().trim());
+
                 startActivity(i);
                 finish();
             }
@@ -341,8 +342,11 @@ public class AgentTDC_Order extends AppCompatActivity {
             tv_enquiryId.setText(mTakeOrderBeansList.get(0).getmEnquiryId());
             date.setText(mTakeOrderBeansList.get(0).getmAgentTakeOrderDate());
             mPreferences.putString("ORDERDATE", String.valueOf(date));
+
+
             itemCount = String.valueOf(mTakeOrderBeansList.size());
             tv_itemsCount.setText(itemCount);
+
 
 
             try {
