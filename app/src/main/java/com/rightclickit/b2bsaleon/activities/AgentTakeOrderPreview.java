@@ -117,7 +117,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 
                             topBean.setpName(mProductIdsList.get(k).getmProductTitle());
                             topBean.setpQuantity(mProductIdsList.get(k).getmProductQuantity());
-                            if (specialPriceBeanArrayList.size() > 0) {
+                            if (specialPriceBeanArrayList.size() >0) {
                                 for (int l = 0; l < specialPriceBeanArrayList.size(); l++) {
                                     if (specialPriceBeanArrayList.get(l).getSpecialProductId().equals(productsList.get(i).getProductId())
                                             && specialPriceBeanArrayList.get(i).getSpecialUserId().equals(sharedPreferences.getString("agentId"))) {
@@ -130,6 +130,8 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                                         topBean.setpPrice(productsList.get(i).getProductAgentPrice());
                                     }
                                 }
+                            }else {
+                                topBean.setpPrice(productsList.get(i).getProductAgentPrice());
                             }
                             topBean.setmProductTaxGST(productsList.get(i).getProductgst());
                             topBean.setmProductTaxVAT(productsList.get(i).getProductvat());
