@@ -438,6 +438,15 @@ public class TripsheetPayments extends AppCompatActivity {
             }
         } else {
             System.out.println("ELSEEEEEEEEEEEEE");
+
+            String[] ss = paymentsNumber.split("-");
+            String ss1 = ss[0];
+            System.out.println("ELSEEEEEEEEEE 2222" + ss1);
+            String ss2 = ss1.substring(2, ss1.length());
+            System.out.println("ELSEEEEEEEEEE 333" + ss2);
+            int newCount = Integer.parseInt(ss2) + 1;
+            paymentsNumber = "RP" + String.valueOf(newCount) + "-" + mAgentCode;
+            System.out.println("ELSEEEEEEEEEE 4444" + paymentsNumber);
         }
 
         PaymentsBean paymentsBean = new PaymentsBean();
