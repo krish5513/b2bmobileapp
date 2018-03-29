@@ -218,6 +218,7 @@ public class Constants {
     //public static final String MAIN_URL = "http://52.10.51.54";
 
 
+
     public static final String APP_TYPE = "A";
 
     //Service Response Codes

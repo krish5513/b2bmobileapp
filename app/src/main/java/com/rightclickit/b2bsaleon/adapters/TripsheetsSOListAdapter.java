@@ -40,6 +40,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     Double orderTotal=0.0;
+     TripsheetSOList currentSaleOrder;
     public TripsheetsSOListAdapter(TripSheetView tripSheetView, TripSheetView tripSheetView1, ArrayList<TripsheetSOList> tripsSOList, String mTakeOrderPrivilege, boolean isTripSheetClosed, String mhidePrevilige,String status) {
         this.activity = tripSheetView;
         this.mInflater = LayoutInflater.from(activity);
@@ -129,7 +130,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
             mHolder.hideParent.setVisibility(View.VISIBLE);
         }
 
-        final TripsheetSOList currentSaleOrder = getItem(position);
+         currentSaleOrder = getItem(position);
 
         mHolder.mAgentCode.setText(currentSaleOrder.getmTripshetSOCode());
 
