@@ -30,6 +30,25 @@ public class TripsheetSOList {
     private String mTripshetSOCansDue;
     private String mTripshetSOCratesDue;
 
+    public String getmTripsheetSOitemType() {
+        return mTripsheetSOitemType;
+    }
+
+    public void setmTripsheetSOitemType(String mTripsheetSOitemType) {
+        this.mTripsheetSOitemType = mTripsheetSOitemType;
+    }
+
+    public String getmTripshetSOuom() {
+        return mTripshetSOuom;
+    }
+
+    public void setmTripshetSOuom(String mTripshetSOuom) {
+        this.mTripshetSOuom = mTripshetSOuom;
+    }
+
+    private String mTripsheetSOitemType;
+    private String mTripshetSOuom;
+
     public String getmTripshetSOId() {
         return mTripshetSOId;
     }

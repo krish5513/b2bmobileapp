@@ -3,6 +3,7 @@ package com.rightclickit.b2bsaleon.adapters;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.rightclickit.b2bsaleon.util.Utility;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -225,7 +227,13 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
                         }
                     }
 
-                    Intent i = new Intent(activity, TripsheetDelivery.class);
+
+
+                        Intent i = new Intent(activity, TripsheetDelivery.class);
+
+                   // Bundle args = new Bundle();
+                  //  args.putSerializable("productTypeList", (Serializable) productCodes);
+                   // i.putExtra("BUNDLE", args);
                     i.putExtra("tripsheetId", currentSaleOrder.getmTripshetSOTripId());
                     i.putExtra("agentId", currentSaleOrder.getmTripshetSOAgentId());
                     i.putExtra("agentCode", currentSaleOrder.getmTripshetSOAgentCode());

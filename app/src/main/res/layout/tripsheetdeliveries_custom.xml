@@ -20,7 +20,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.4"
+                android:layout_weight="0.3"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -46,6 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="7dp"
                     android:text="123456"
+                    android:visibility="gone"
                     android:textAllCaps="true"
                     android:layout_weight="0.4"
                     android:textColor="@color/greydark"
@@ -66,6 +67,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="10dp"
                     android:gravity="left"
+                    android:visibility="gone"
                     android:paddingRight="10dp"
                     android:text="In Stock"
                     android:textColor="@color/colorPrimary"
@@ -226,3 +228,4 @@
     </LinearLayout>
 
 </LinearLayout>
+

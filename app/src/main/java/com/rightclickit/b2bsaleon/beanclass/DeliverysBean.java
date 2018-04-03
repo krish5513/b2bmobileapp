@@ -11,6 +11,25 @@ public class DeliverysBean implements Serializable {
     private String productCode;
     private String productTitle;
 
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+
+    public String getProductUom() {
+        return productUom;
+    }
+
+    public void setProductUom(String productUom) {
+        this.productUom = productUom;
+    }
+
+    private String productType;
+    private String productUom;
+
     public String getProductReturnableUnit() {
         return productReturnableUnit;
     }

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.activities.TripsheetDelivery;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.interfaces.TripSheetDeliveriesListener;
 import com.rightclickit.b2bsaleon.util.Utility;
 
@@ -35,13 +36,14 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
     private ArrayList<DeliverysBean> allDeliveryProductsList, filteredDeliveryProductsList;
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap,selectedDeliveryProductsHashMapForPreview; // Hash Map Key = Product Id
     private Map<String, String> previouslyDeliveredProductsHashMap;
-    private Map<String, String> productOrderQuantitiesHashMap;
+    private Map<String, String> productOrderQuantitiesHashMap,productTypehashMap,productUomHashMap;
     private final String zero_cost = "0.000";
     private boolean isDeliveryInEditingMode = false;
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMapTemp;
     private Map<String, String> selectedDeliveryProductsHashMapTemp1,selectedDeliveryProductsHashMapTemp2;
+    ArrayList<TripsheetSOList>  SoListArray;
 
-    public TripSheetDeliveriesAdapter(Context ctxt, TripsheetDelivery deliveryActivity, TripSheetDeliveriesListener deliveriesListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyDeliveredProducts, Map<String, String> productOrderQuantities) {
+    public TripSheetDeliveriesAdapter(Context ctxt, TripsheetDelivery deliveryActivity, TripSheetDeliveriesListener deliveriesListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyDeliveredProducts, Map<String, String> productOrderQuantities,Map<String, String> productTypehashMap1,Map<String, String> productUomHashMap) {
         this.ctxt = ctxt;
         this.activity = deliveryActivity;
         this.mInflater = LayoutInflater.from(activity);
@@ -53,9 +55,12 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         this.selectedDeliveryProductsHashMapForPreview = new HashMap<>();
         this.previouslyDeliveredProductsHashMap = previouslyDeliveredProducts;
         this.productOrderQuantitiesHashMap = productOrderQuantities;
+        this.productTypehashMap=productTypehashMap1;
+        this.productUomHashMap=productUomHashMap;
         this.selectedDeliveryProductsHashMapTemp = new HashMap<>();
         this.selectedDeliveryProductsHashMapTemp1 = new HashMap<>();
         this.selectedDeliveryProductsHashMapTemp2 = new HashMap<>();
+
         if (!previouslyDeliveredProductsHashMap.isEmpty()) {
             isDeliveryInEditingMode = true;
         }
@@ -84,6 +89,14 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                     deliverysBean.setProductOrderedQuantity(Double.parseDouble(productOrderQuantitiesHashMap.get(deliverysBean.getProductCode())));
                 else
                     deliverysBean.setProductOrderedQuantity(0);
+            }
+
+            if(productTypehashMap.containsKey(deliverysBean.getProductCode())){
+                deliverysBean.setProductType(productTypehashMap.get(deliverysBean.getProductCode()));
+            }
+
+            if(productUomHashMap.containsKey(deliverysBean.getProductCode())){
+                deliverysBean.setProductUom(productUomHashMap.get(deliverysBean.getProductCode()));
             }
 
             if (deliverysBean.getProductgst() != null)
@@ -186,6 +199,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
         final DeliverysBean currentDeliveryBean = getItem(position);
 
+;
         /*final double productRatePerUnit = Double.parseDouble(currentDeliveryBean.getProductAgentPrice().replace(",", ""));
         float productTax = 0.0f;
 
@@ -206,8 +220,12 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         currentDeliveryBean.setProductAvailableStockForSpecificAgent(currentDeliveryBean.getProductOrderedQuantity() + currentDeliveryBean.getProductExtraQuantity());
         currentDeliveryBean.setProductAmount(amount);
         currentDeliveryBean.setTaxAmount(taxAmount);*/
+        tripSheetDeliveriesViewHolder.product_name.setText(String.format("%s", currentDeliveryBean.getProductTitle())
+                + ", " +currentDeliveryBean.getProductCode()
+                + ", "  +currentDeliveryBean.getProductType() +
+                 ", " +currentDeliveryBean.getProductUom() );
 
-        tripSheetDeliveriesViewHolder.product_name.setText(String.format("%s", currentDeliveryBean.getProductTitle()));
+ //       tripSheetDeliveriesViewHolder.product_name.setText(String.format("%s", currentDeliveryBean.getProductTitle()) + "," + String.format("%s", currentDeliveryBean.getProductType()));
         tripSheetDeliveriesViewHolder.product_code.setText(","+currentDeliveryBean.getProductCode());
         tripSheetDeliveriesViewHolder.quantity_stock.setText(String.format("%.3f + %.3f", currentDeliveryBean.getProductStock(), currentDeliveryBean.getProductExtraQuantity()));
         if (currentDeliveryBean.getProductAgentPrice() != null) {
@@ -217,12 +235,15 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         }
         tripSheetDeliveriesViewHolder.tax.setText(Utility.getFormattedCurrency(currentDeliveryBean.getTaxAmount()));
         tripSheetDeliveriesViewHolder.amount.setText(Utility.getFormattedCurrency(currentDeliveryBean.getProductAmount()));
+
+
         if (selectedDeliveryProductsHashMapTemp1.get(currentDeliveryBean.getProductId()) != null) {
             Double dq = Double.parseDouble(selectedDeliveryProductsHashMapTemp1.get(currentDeliveryBean.getProductId()));
             tripSheetDeliveriesViewHolder.product_quantity.setText(String.format("%.3f", dq));
         } else {
             tripSheetDeliveriesViewHolder.product_quantity.setText(String.format("%.3f", currentDeliveryBean.getProductOrderedQuantity()));
         }
+
 
         tripSheetDeliveriesViewHolder.product_quantity_decrement.setOnClickListener(new View.OnClickListener() {
             @Override

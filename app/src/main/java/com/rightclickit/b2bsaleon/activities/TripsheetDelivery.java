@@ -22,7 +22,9 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
+import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
+import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
 import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.customviews.CustomProgressDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
@@ -58,7 +60,9 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
     private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "", mAgentSoDate,status="";
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
     private boolean isDeliveryDataSaved = false, isDeliveryInEditingMode = false, isTripSheetClosed = false;
+    private ArrayList<TripsheetSOList> mProductTypeList;
 
+    private Map<String, String> productTypeHashMap,productUomHashMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +109,11 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             mAgentSoDate = this.getIntent().getStringExtra("agentSoDate");
             loggedInUserId = mPreferences.getString("userId");
 
+
+           /* Intent intent = getIntent();
+            Bundle args = intent.getBundleExtra("BUNDLE");
+            mProductTypeList = (ArrayList<TripsheetSOList>) args.getSerializable("productTypeList");
+*/
             soCode.setText(mAgentSoCode);
             agentcode.setText("(" + mAgentCode + ")");
 
@@ -140,6 +149,8 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             previouslyDeliveredProductsHashMap = new HashMap<>();
             productOrderQuantitiesHashMap = new HashMap<>();
             selectedDeliveryProductsHashMapTemp = new HashMap<>();
+            productTypeHashMap=new HashMap<>();
+            productUomHashMap=new HashMap<>();
 
             allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
 
@@ -152,10 +163,15 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             if (productOrderQuantities.size() > 0) {
                 JSONArray productCodes = new JSONArray(productOrderQuantities.get(0));
                 JSONArray orderQuantities = new JSONArray(productOrderQuantities.get(1));
+                JSONArray productTypeArray = new JSONArray(productOrderQuantities.get(2));
+                JSONArray productUomArray = new JSONArray(productOrderQuantities.get(3));
 
                 for (int i = 0; i < productCodes.length(); i++) {
                     productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
+                    productTypeHashMap.put(productCodes.get(i).toString(), productTypeArray.get(i).toString());
+                    productUomHashMap.put(productCodes.get(i).toString(), productUomArray.get(i).toString());
                 }
+
             }
 
             // fetching & checking weather Agent have any special prices.
@@ -166,7 +182,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                     deliverysBean.setProductAgentPrice(agentSpecialPricesHashMap.get(deliverysBean.getProductId()));
             }
 
-            mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap);
+            mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap,productTypeHashMap,productUomHashMap);
             ordered_products_list_view.setAdapter(mTripSheetDeliveriesAdapter);
 
         } catch (Exception e) {
