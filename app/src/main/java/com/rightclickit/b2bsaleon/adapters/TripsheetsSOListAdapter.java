@@ -217,6 +217,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
 //                } else {
 //                    Utility.isDeliveryFirstTime = true;
 //                }
+                currentSaleOrder = getItem(position);
                 ArrayList<String> productCodes = new ArrayList<String>();
                 String s = currentSaleOrder.getmTripshetSOProductCode();
                 try {
@@ -254,6 +255,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         mHolder.mSOAgentName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currentSaleOrder = getItem(position);
                 ArrayList<String> productCodes = new ArrayList<String>();
                 String s = currentSaleOrder.getmTripshetSOProductCode();
                 try {
@@ -285,6 +287,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
         mHolder.mSOTakeOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currentSaleOrder = getItem(position);
 //                mPreferences.putString("agentName", currentSaleOrder.getmTripshetSOAgentFirstName());
 //                mPreferences.putString("agentId", currentSaleOrder.getmTripshetSOAgentId());
 //
