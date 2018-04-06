@@ -36,14 +36,14 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
     private ArrayList<DeliverysBean> allDeliveryProductsList, filteredDeliveryProductsList;
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap, selectedDeliveryProductsHashMapForPreview; // Hash Map Key = Product Id
     private Map<String, String> previouslyDeliveredProductsHashMap;
-    private Map<String, String> productOrderQuantitiesHashMap, productTypehashMap, productUomHashMap;
+    private Map<String, String> productOrderQuantitiesHashMap, productTypehashMap, productUomHashMap,productUnitRateHashmap;
     private final String zero_cost = "0.000";
     private boolean isDeliveryInEditingMode = false;
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMapTemp;
     private Map<String, String> selectedDeliveryProductsHashMapTemp1, selectedDeliveryProductsHashMapTemp2;
     ArrayList<TripsheetSOList> SoListArray;
 
-    public TripSheetDeliveriesAdapter(Context ctxt, TripsheetDelivery deliveryActivity, TripSheetDeliveriesListener deliveriesListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyDeliveredProducts, Map<String, String> productOrderQuantities, Map<String, String> productTypehashMap1, Map<String, String> productUomHashMap) {
+    public TripSheetDeliveriesAdapter(Context ctxt, TripsheetDelivery deliveryActivity, TripSheetDeliveriesListener deliveriesListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyDeliveredProducts, Map<String, String> productOrderQuantities, Map<String, String> productTypehashMap1, Map<String, String> productUomHashMap1) {
         this.ctxt = ctxt;
         this.activity = deliveryActivity;
         this.mInflater = LayoutInflater.from(activity);
@@ -56,7 +56,8 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         this.previouslyDeliveredProductsHashMap = previouslyDeliveredProducts;
         this.productOrderQuantitiesHashMap = productOrderQuantities;
         this.productTypehashMap = productTypehashMap1;
-        this.productUomHashMap = productUomHashMap;
+        this.productUomHashMap = productUomHashMap1;
+
         this.selectedDeliveryProductsHashMapTemp = new HashMap<>();
         this.selectedDeliveryProductsHashMapTemp1 = new HashMap<>();
         this.selectedDeliveryProductsHashMapTemp2 = new HashMap<>();
@@ -100,6 +101,8 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
             if (productUomHashMap.containsKey(deliverysBean.getProductCode())) {
                 deliverysBean.setProductUom(productUomHashMap.get(deliverysBean.getProductCode()));
             }
+
+
 
             if (deliverysBean.getProductgst() != null)
                 productTax = Float.parseFloat(deliverysBean.getProductgst());

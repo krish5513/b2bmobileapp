@@ -726,7 +726,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     JSONArray soArray = new JSONArray(response);
                     int soLen = soArray.length();
 
-                    JSONArray productCodesArray1 = null, orderQuantityArray1 = null, productValuearray = null, itemTypeArray1 = null, uomArray1 = null;
+                    JSONArray productCodesArray1 = null, orderQuantityArray1 = null, productValuearray = null, itemTypeArray1 = null, uomArray1 = null,unitpriceArray1=null;
                     JSONObject agentData = null;
 
                     for (int i = 0; i < soLen; i++) {
@@ -751,6 +751,9 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
                         if (jb.has("uom")) {
                             uomArray1 = jb.getJSONArray("uom");
+                        }
+                        if (jb.has("unit_price")) {
+                            unitpriceArray1 = jb.getJSONArray("unit_price");
                         }
 
                         if (soLen > 0) {
@@ -799,6 +802,12 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                                 tripStockBean.setmTripshetSOuom(uomArray1.toString());
                             } else {
                                 tripStockBean.setmTripshetSOuom("");
+                            }
+
+                            if (unitpriceArray1 != null) {
+                                tripStockBean.setmTripshetSOUnitprice(unitpriceArray1.toString());
+                            } else {
+                                tripStockBean.setmTripshetSOUnitprice("0.00");
                             }
 
                             mTripsheetsSOList.add(tripStockBean);

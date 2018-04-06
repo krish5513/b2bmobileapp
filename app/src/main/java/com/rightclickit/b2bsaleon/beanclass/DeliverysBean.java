@@ -57,6 +57,16 @@ public class DeliverysBean implements Serializable {
     private double cansDueQuantity;
     private double cratesDueQuantity;
 
+    public String getProductUnitprice() {
+        return productUnitprice;
+    }
+
+    public void setProductUnitprice(String productUnitprice) {
+        this.productUnitprice = productUnitprice;
+    }
+
+    private String productUnitprice;
+
     public String getProductgst() {
         return productgst;
     }

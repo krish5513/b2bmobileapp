@@ -30,6 +30,16 @@ public class TripsheetSOList {
     private String mTripshetSOCansDue;
     private String mTripshetSOCratesDue;
 
+    public String getmTripshetSOUnitprice() {
+        return mTripshetSOUnitprice;
+    }
+
+    public void setmTripshetSOUnitprice(String mTripshetSOUnitprice) {
+        this.mTripshetSOUnitprice = mTripshetSOUnitprice;
+    }
+
+    private String mTripshetSOUnitprice;
+
     public String getmTripsheetSOitemType() {
         return mTripsheetSOitemType;
     }

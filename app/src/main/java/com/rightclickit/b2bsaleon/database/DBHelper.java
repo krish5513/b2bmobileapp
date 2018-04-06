@@ -455,6 +455,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_SO_CRATES_DUE = "tripsheet_so_crates_due";
     private final String KEY_TRIPSHEET_SO_ITEM_TYPE = "tripsheet_so_item_type";
     private final String KEY_TRIPSHEET_SO_UOM = "tripsheet_so_uom";
+    private final String KEY_TRIPSHEET_SO_UNIT_PRICE = "tripsheet_so_unit_price";
 
     // Column names for Notifications List  Table
     private final String KEY_NOTIFICATIONS_ID = "notification_id";
@@ -780,6 +781,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_SO_CRATES_DUE + " VARCHAR,"
             + KEY_TRIPSHEET_SO_ITEM_TYPE + " VARCHAR,"
             + KEY_TRIPSHEET_SO_UOM+ " VARCHAR,"
+            + KEY_TRIPSHEET_SO_UNIT_PRICE + " VARCHAR,"
             + KEY_TRIPSHEET_SO_CANS_DUE + " INTEGER)";
 
 
@@ -4230,6 +4232,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_SO_CRATES_DUE, mTripsheetsList.get(i).getmTripshetSOCratesDue());
                 values.put(KEY_TRIPSHEET_SO_ITEM_TYPE, mTripsheetsList.get(i).getmTripsheetSOitemType());
                 values.put(KEY_TRIPSHEET_SO_UOM, mTripsheetsList.get(i).getmTripshetSOuom());
+                values.put(KEY_TRIPSHEET_SO_UNIT_PRICE, mTripsheetsList.get(i).getmTripshetSOUnitprice());
 
                 int noOfRecords = checkTripsheetSOExistsOrNot(mTripsheetsList.get(i).getmTripshetSOTripId(), mTripsheetsList.get(i).getmTripshetSOId());
 
@@ -4961,7 +4964,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<String> productOrderQuantities = new ArrayList<>();
 
         try {
-            String selectQuery = "SELECT " + KEY_TRIPSHEET_SO_PRODUCTCODE + ", " + KEY_TRIPSHEET_SO_PRODUCTORDER_QUANTITY + ", " + KEY_TRIPSHEET_SO_ITEM_TYPE + ", " + KEY_TRIPSHEET_SO_UOM + " FROM " + TABLE_TRIPSHEETS_SO_LIST + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = '" + tripsheetId + "' AND " + KEY_TRIPSHEET_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_SO_AGENTID + " = '" + agentId + "'";
+            String selectQuery = "SELECT " + KEY_TRIPSHEET_SO_PRODUCTCODE + ", " + KEY_TRIPSHEET_SO_PRODUCTORDER_QUANTITY + ", " + KEY_TRIPSHEET_SO_ITEM_TYPE + ", " + KEY_TRIPSHEET_SO_UOM + "," + KEY_TRIPSHEET_SO_UNIT_PRICE + " FROM " + TABLE_TRIPSHEETS_SO_LIST + " WHERE " + KEY_TRIPSHEET_SO_TRIPID + " = '" + tripsheetId + "' AND " + KEY_TRIPSHEET_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_SO_AGENTID + " = '" + agentId + "'";
             SQLiteDatabase db = this.getWritableDatabase();
             Cursor cursor = db.rawQuery(selectQuery, null);
 
@@ -4970,6 +4973,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 productOrderQuantities.add(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_PRODUCTORDER_QUANTITY)));
                 productOrderQuantities.add(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_ITEM_TYPE)));
                 productOrderQuantities.add(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_UOM)));
+                productOrderQuantities.add(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_UNIT_PRICE)));
             }
 
             cursor.close();
@@ -5175,6 +5179,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     saleOrderBean.setmTripshetSOProductsCount(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_PRODUCTS_COUNT)));
                     saleOrderBean.setmTripsheetSOitemType(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_ITEM_TYPE)));
                     saleOrderBean.setmTripshetSOuom(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_UOM)));
+                    saleOrderBean.setmTripshetSOUnitprice(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_UNIT_PRICE)));
                     double saleOrderValue = fetchTripSheetSaleOrderValueForAgentId(tripSheetId, cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_ID)), cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_AGENTID)));
 
                     if (saleOrderValue > 0)
