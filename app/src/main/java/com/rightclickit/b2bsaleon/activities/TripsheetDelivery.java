@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
+import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.beanclass.TripSheetDeliveriesBean;
 import com.rightclickit.b2bsaleon.beanclass.TripsheetSOList;
@@ -55,14 +56,15 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
     private ArrayList<DeliverysBean> allProductsListFromStock = new ArrayList<>();
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap;
-    private Map<String, String> previouslyDeliveredProductsHashMap,selectedDeliveryProductsHashMapTemp; // this hash map contains previously delivered product quantity. key = product id & value = previously delivered quantity
+    private Map<String, String> previouslyDeliveredProductsHashMap, selectedDeliveryProductsHashMapTemp; // this hash map contains previously delivered product quantity. key = product id & value = previously delivered quantity
     private Map<String, String> productOrderQuantitiesHashMap; // this hash map contains product codes & it's order quantity fetched from sale oder table.
-    private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "", mAgentSoDate,status="";
+    private String mTripSheetId = "", loggedInUserId, mAgentId = "", mAgentName = "", mAgentCode = "", mAgentRouteId = "", mAgentRouteCode = "", mAgentSoId = "", mAgentSoCode = "", mAgentSoDate, status = "";
     private double totalAmount = 0, totalTaxAmount = 0, subTotal = 0;
     private boolean isDeliveryDataSaved = false, isDeliveryInEditingMode = false, isTripSheetClosed = false;
     private ArrayList<TripsheetSOList> mProductTypeList;
 
-    private Map<String, String> productTypeHashMap,productUomHashMap;
+    private Map<String, String> productTypeHashMap, productUomHashMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +111,6 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             mAgentSoDate = this.getIntent().getStringExtra("agentSoDate");
             loggedInUserId = mPreferences.getString("userId");
 
-
            /* Intent intent = getIntent();
             Bundle args = intent.getBundleExtra("BUNDLE");
             mProductTypeList = (ArrayList<TripsheetSOList>) args.getSerializable("productTypeList");
@@ -149,11 +150,15 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             previouslyDeliveredProductsHashMap = new HashMap<>();
             productOrderQuantitiesHashMap = new HashMap<>();
             selectedDeliveryProductsHashMapTemp = new HashMap<>();
-            productTypeHashMap=new HashMap<>();
-            productUomHashMap=new HashMap<>();
+            productTypeHashMap = new HashMap<>();
+            productUomHashMap = new HashMap<>();
 
             allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
-
+            //System.out.println("ALL BEFORE ITEM TYPES SIZE:: " + allProductsListFromStock.size());
+//            for (int x = 0; x < allProductsListFromStock.size(); x++) {
+//                System.out.println("PROD TYPE,UOM::: " + allProductsListFromStock.get(x).getProductType() + ", " +
+//                        allProductsListFromStock.get(x).getProductUom());
+//            }
             // In order to pre populate when you came back to this screen.
             previouslyDeliveredProductsHashMap = mDBHelper.getAgentPreviouslyDeliveredProductsList(mTripSheetId, mAgentSoId, mAgentId);
             if (previouslyDeliveredProductsHashMap.size() > 0)
@@ -165,15 +170,46 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                 JSONArray orderQuantities = new JSONArray(productOrderQuantities.get(1));
                 JSONArray productTypeArray = new JSONArray(productOrderQuantities.get(2));
                 JSONArray productUomArray = new JSONArray(productOrderQuantities.get(3));
+                //System.out.println("ITEM TYPES SIZE:: " + productTypeArray.length());
 
                 for (int i = 0; i < productCodes.length(); i++) {
+                    synchronized (this) {
+                        if (productTypeArray.get(i).toString().equals("F")) {
+//                            System.out.println("FREE GOOD PCODE:: " + productCodes.get(i).toString()
+//                                    + "\n" + orderQuantities.get(i).toString());
+                            ProductsBean prodDetails = mDBHelper.fetchProductDetailsByProductCode(productCodes.get(i).toString());
+
+                            DeliverysBean productsBean = new DeliverysBean();
+
+                            productsBean.setProductId(prodDetails.getProductId() + "_F");
+                            productsBean.setProductCode(productCodes.get(i).toString() + "_F");
+                            productsBean.setProductTitle(prodDetails.getProductTitle());
+                            productsBean.setProductAgentPrice("0.0");
+                            productsBean.setProductConsumerPrice("0.0");
+                            productsBean.setProductRetailerPrice("0.0");
+                            productsBean.setProductgst("0.0");
+                            productsBean.setProductvat("0.0");
+                            productsBean.setProductOrderedQuantity(0.0);
+                            productsBean.setProductStock(0.0);
+                            productsBean.setProductExtraQuantity(0.0);
+                            productsBean.setProductReturnableUnit("");
+                            productsBean.setProductType(productTypeArray.get(i).toString());
+                            productsBean.setProductUom(productUomArray.get(i).toString());
+
+                            allProductsListFromStock.add(productsBean);
+
+                            productTypeHashMap.put(productCodes.get(i).toString() + "_F", productTypeArray.get(i).toString());
+                        } else {
+                            productTypeHashMap.put(productCodes.get(i).toString(), productTypeArray.get(i).toString());
+                        }
+                    }
                     productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
-                    productTypeHashMap.put(productCodes.get(i).toString(), productTypeArray.get(i).toString());
                     productUomHashMap.put(productCodes.get(i).toString(), productUomArray.get(i).toString());
                 }
 
             }
 
+            //System.out.println("ALL AFTER ITEM TYPES SIZE:: " + productTypeHashMap.size());
             // fetching & checking weather Agent have any special prices.
             Map<String, String> agentSpecialPricesHashMap = mDBHelper.fetchSpecialPricesForUserId(mAgentId);
 
@@ -182,7 +218,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                     deliverysBean.setProductAgentPrice(agentSpecialPricesHashMap.get(deliverysBean.getProductId()));
             }
 
-            mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap,productTypeHashMap,productUomHashMap);
+            mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap, productTypeHashMap, productUomHashMap);
             ordered_products_list_view.setAdapter(mTripSheetDeliveriesAdapter);
 
         } catch (Exception e) {
@@ -426,26 +462,19 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                     long currentTimeStamp = System.currentTimeMillis();
 
                     deliveryNumber = mDBHelper.getTripsheetDeliveriesMaxOrderNumber(mTripSheetId, mAgentSoId, "first");
-                    System.out.println("DELIVERY NUMBER::: " + deliveryNumber);
                     if (deliveryNumber.length() == 0) {
-                        System.out.println("IFFFFFFFFFFFFF");
                         deliveryNumber = mDBHelper.getTripsheetDeliveriesMaxOrderNumber(mTripSheetId, mAgentSoId, "second");
-                        System.out.println("ELSEEEEEEEEEEEEE11111" + deliveryNumber);
                         if (deliveryNumber.length() == 0) {
                             deliveryNumber = "RD1-" + mAgentCode;
-                            System.out.println("ELSEEEEEEEEEEEEE 000000" + deliveryNumber);
                         } else {
                             String[] ss = deliveryNumber.split("-");
                             String ss1 = ss[0];
-                            System.out.println("ELSEEEEEEEEEE 2222" + ss1);
                             String ss2 = ss1.substring(2, ss1.length());
-                            System.out.println("ELSEEEEEEEEEE 333" + ss2);
                             int newCount = Integer.parseInt(ss2) + 1;
                             deliveryNumber = "RD" + String.valueOf(newCount) + "-" + mAgentCode;
-                            System.out.println("ELSEEEEEEEEEE 4444" + deliveryNumber);
                         }
                     } else {
-                        System.out.println("ELSEEEEEEEEEEEEE");
+
                     }
 
                     ArrayList<TripSheetDeliveriesBean> mTripsheetsDeliveriesList = new ArrayList<>();
@@ -519,10 +548,10 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                     // Toast.makeText(activityContext, "Delivery Data Saved Successfully.", Toast.LENGTH_LONG).show();
                     showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
                     Utility.isDeliveryFirstTime = true;
-                    if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
-                        Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncTripsheetDeliveriesService.class);
-                        startService(syncTripSheetDeliveriesServiceIntent);
-                    }
+//                    if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+//                        Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncTripsheetDeliveriesService.class);
+//                        startService(syncTripSheetDeliveriesServiceIntent);
+//                    }
                 } else {
                     // Toast.makeText(activityContext, "Delivery quantity for one of the product exceeds available stock, please check it. ", Toast.LENGTH_LONG).show();
                     CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliveryexceed));

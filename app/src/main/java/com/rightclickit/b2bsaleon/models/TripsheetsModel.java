@@ -264,7 +264,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                         } else {
                             tripsheetsListBean.setmTripshhetReceivedAmount("0");
                         }
-                  Double dueAmt = Double.parseDouble(tripsheetsListBean.getmTripshhetOrderedAmount().replace(",", "")) - Double.parseDouble(tripsheetsListBean.getmTripshhetReceivedAmount().replace(",", ""));
+                        Double dueAmt = Double.parseDouble(tripsheetsListBean.getmTripshhetOrderedAmount().replace(",", "")) - Double.parseDouble(tripsheetsListBean.getmTripshhetReceivedAmount().replace(",", ""));
                         tripsheetsListBean.setmTripshhetDueAmount(String.valueOf(dueAmt));
                         // tripsheetsListBean.setmTripshhetRouteCode("route_code");
                         tripsheetsListBean.setmTripshhetRouteCode(jb.getString("route_code"));
@@ -273,18 +273,18 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                         tripsheetsListBean.setmTripshhetTrasnsporterName("transporter");
                         tripsheetsListBean.setmTripshhetVerifyStatus("0");
 
-                        if(jb.has("routedata")){
+                        if (jb.has("routedata")) {
                             JSONArray routeArray = jb.getJSONArray("routedata");
                             int rlen = routeArray.length();
-                            System.out.println("RL:::"+ rlen);
-                            if(rlen>0){
+                            System.out.println("RL:::" + rlen);
+                            if (rlen > 0) {
                                 tripsheetsListBean.setmTripRouteId(routeArray.getJSONObject(0).getString("_id"));
                                 tripsheetsListBean.setmTripRouteCode(routeArray.getJSONObject(0).getString("code"));
-                            }else {
+                            } else {
                                 tripsheetsListBean.setmTripRouteId("");
                                 tripsheetsListBean.setmTripRouteCode("");
                             }
-                        }else {
+                        } else {
                             tripsheetsListBean.setmTripRouteId("");
                             tripsheetsListBean.setmTripRouteCode("");
                         }
@@ -726,7 +726,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                     JSONArray soArray = new JSONArray(response);
                     int soLen = soArray.length();
 
-                    JSONArray productCodesArray1 = null, orderQuantityArray1 = null, productValuearray = null,itemTypeArray1 = null,uomArray1 = null;
+                    JSONArray productCodesArray1 = null, orderQuantityArray1 = null, productValuearray = null, itemTypeArray1 = null, uomArray1 = null;
                     JSONObject agentData = null;
 
                     for (int i = 0; i < soLen; i++) {
@@ -789,8 +789,17 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
                             tripStockBean.setmTripshetSOCansDue(jb.getString("cans_due"));
                             tripStockBean.setmTripshetSOCratesDue(jb.getString("crates_due"));
 
-                            tripStockBean.setmTripsheetSOitemType(itemTypeArray1.toString());
-                            tripStockBean.setmTripshetSOuom(uomArray1.toString());
+                            if (itemTypeArray1 != null) {
+                                tripStockBean.setmTripsheetSOitemType(itemTypeArray1.toString());
+                                System.out.println("ITEM AR SI:: "+itemTypeArray1.length());
+                            } else {
+                                tripStockBean.setmTripsheetSOitemType("");
+                            }
+                            if (uomArray1 != null) {
+                                tripStockBean.setmTripshetSOuom(uomArray1.toString());
+                            } else {
+                                tripStockBean.setmTripshetSOuom("");
+                            }
 
                             mTripsheetsSOList.add(tripStockBean);
                         }

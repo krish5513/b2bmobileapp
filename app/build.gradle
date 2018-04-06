@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.rightclickit.b2bsaleon"
         minSdkVersion 18
@@ -10,6 +10,7 @@ android {
         versionCode 21
         versionName "1.2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -28,8 +29,7 @@ dependencies {
     //Gson Library
     // For Edit text's
     // Glide
-    compile files('src/main/libs/sunmiprinter.jar')
-    compile files('src/main/libs/zxing_3.2.0.jar')
+
 
     //Depandencies injection
 

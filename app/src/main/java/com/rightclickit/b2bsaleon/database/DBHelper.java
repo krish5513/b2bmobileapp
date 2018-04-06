@@ -4542,6 +4542,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     productsBean.setProductgst((c.getString(c.getColumnIndex(KEY_PRODUCT_GST_PRICE))));
                     productsBean.setProductvat((c.getString(c.getColumnIndex(KEY_PRODUCT_VAT_PRICE))));
                     productsBean.setProductOrderedQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_ORDER_QUANTITY))));
+                    productsBean.setProductUom(c.getString(c.getColumnIndex(KEY_PRODUCT_UOM)));
                     String inStQ = c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY));
                     if (inStQ != null) {
                         productsBean.setProductStock(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY))));
