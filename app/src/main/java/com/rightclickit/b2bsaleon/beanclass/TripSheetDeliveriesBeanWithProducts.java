@@ -16,6 +16,8 @@ public class TripSheetDeliveriesBeanWithProducts extends TripSheetDeliveriesBean
     private JSONArray quantityArray;
     private JSONArray amountArray;
     private JSONArray taxAmountArray;
+    private JSONArray prodTypesArray;
+    private JSONArray prodUOMArray;
 
     public JSONArray getProductIdsArray() {
         return productIdsArray;
@@ -71,5 +73,21 @@ public class TripSheetDeliveriesBeanWithProducts extends TripSheetDeliveriesBean
 
     public void setTaxAmountArray(JSONArray taxAmountArray) {
         this.taxAmountArray = taxAmountArray;
+    }
+
+    public JSONArray getProdTypesArray() {
+        return prodTypesArray;
+    }
+
+    public void setProdTypesArray(JSONArray prodTypesArray) {
+        this.prodTypesArray = prodTypesArray;
+    }
+
+    public JSONArray getProdUOMArray() {
+        return prodUOMArray;
+    }
+
+    public void setProdUOMArray(JSONArray prodUOMArray) {
+        this.prodUOMArray = prodUOMArray;
     }
 }

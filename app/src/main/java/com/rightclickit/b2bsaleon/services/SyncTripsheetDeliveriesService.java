@@ -74,6 +74,8 @@ public class SyncTripsheetDeliveriesService extends Service {
                     JSONArray quantityArray = new JSONArray();
                     JSONArray amountArray = new JSONArray();
                     JSONArray taxAmountArray = new JSONArray();
+                    JSONArray itemTypesArray = new JSONArray();
+                    JSONArray uomArray = new JSONArray();
 
                     for (int i = 0; i < unUploadedDeliveries.size(); i++) {
                         TripSheetDeliveriesBean currentDelivery = unUploadedDeliveries.get(i);
@@ -100,12 +102,19 @@ public class SyncTripsheetDeliveriesService extends Service {
                         }
                         // System.out.println("TRIP DELE PID ARRAY::: " + currentDelivery.getmTripsheetDelivery_productId());
                         productIdsArray.put(currentDelivery.getmTripsheetDelivery_productId());
-                        productCodesArray.put(currentDelivery.getmTripsheetDelivery_productCodes());
+                        if (currentDelivery.getmTripsheetDelivery_productCodes().endsWith("_F")) {
+                            String[] codeParts = currentDelivery.getmTripsheetDelivery_productCodes().split("_");
+                            productCodesArray.put(codeParts[0]);
+                        } else {
+                            productCodesArray.put(currentDelivery.getmTripsheetDelivery_productCodes());
+                        }
                         taxPercentArray.put(currentDelivery.getmTripsheetDelivery_TaxPercent());
                         unitPriceArray.put(currentDelivery.getmTripsheetDelivery_UnitPrice());
                         quantityArray.put(currentDelivery.getmTripsheetDelivery_Quantity());
                         amountArray.put(currentDelivery.getmTripsheetDelivery_Amount());
                         taxAmountArray.put(currentDelivery.getmTripsheetDelivery_TaxAmount());
+                        itemTypesArray.put(currentDelivery.getmTripsheetDelivery_productType());
+                        uomArray.put(currentDelivery.getmTripsheetDelivery_productUOM());
 
                         tripSheetDeliveriesBeanWithProducts.setProductIdsArray(productIdsArray);
                         tripSheetDeliveriesBeanWithProducts.setProductCodesArray(productCodesArray);
@@ -114,6 +123,8 @@ public class SyncTripsheetDeliveriesService extends Service {
                         tripSheetDeliveriesBeanWithProducts.setQuantityArray(quantityArray);
                         tripSheetDeliveriesBeanWithProducts.setAmountArray(amountArray);
                         tripSheetDeliveriesBeanWithProducts.setTaxAmountArray(taxAmountArray);
+                        tripSheetDeliveriesBeanWithProducts.setProdTypesArray(itemTypesArray);
+                        tripSheetDeliveriesBeanWithProducts.setProdUOMArray(uomArray);
                     }
                     if (connectionDetector.isNetworkConnected())
                         new SyncTripSheetDeliveriesAsyncTask().execute(tripSheetDeliveriesBeanWithProducts);
@@ -144,6 +155,8 @@ public class SyncTripsheetDeliveriesService extends Service {
                 requestObj.put("product_ids", currentDeliveryBean.getProductIdsArray());
                 requestObj.put("product_codes", currentDeliveryBean.getProductCodesArray());
                 requestObj.put("tax_percent", currentDeliveryBean.getTaxPercentArray());
+                requestObj.put("item_type", currentDeliveryBean.getProdTypesArray());
+                requestObj.put("uom", currentDeliveryBean.getProdUOMArray());
                 requestObj.put("unit_price", currentDeliveryBean.getUnitPriceArray());
                 requestObj.put("quantity", currentDeliveryBean.getQuantityArray());
                 requestObj.put("amount", currentDeliveryBean.getAmountArray());
@@ -158,8 +171,8 @@ public class SyncTripsheetDeliveriesService extends Service {
                 requestObj.put("updated_by", currentDeliveryBean.getmTripsheetDelivery_UpdatedBy());
 
                 String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TAKE_ORDERS_PORT, Constants.TRIPSHEETS_DELIVERIES_URL);
-                //System.out.println("requestObj = " + requestObj);
-                //System.out.println("requestURL = " + requestURL);
+                System.out.println("requestObj = " + requestObj);
+                System.out.println("requestURL = " + requestURL);
 
                 String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
 

@@ -452,10 +452,8 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
     public boolean validateTripSheetDeliveryData() {
         boolean isValid = true;
-
         for (Map.Entry<String, DeliverysBean> deliverysBeanEntry : selectedDeliveryProductsHashMap.entrySet()) {
             DeliverysBean deliverysBean = deliverysBeanEntry.getValue();
-
             double productAvailableStock;
 
             if (isDeliveryInEditingMode)
@@ -463,9 +461,13 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             else
                 productAvailableStock = deliverysBean.getProductStock() + deliverysBean.getProductExtraQuantity();
 
-            if (deliverysBean.getSelectedQuantity() > productAvailableStock) {
-                isValid = false;
-                break;
+            if(deliverysBean.getProductType()!=null) {
+                if (!deliverysBean.getProductType().equals("F")) {
+                    if (deliverysBean.getSelectedQuantity() > productAvailableStock) {
+                        isValid = false;
+                        break;
+                    }
+                }
             }
         }
 
@@ -496,10 +498,8 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                     }
 
                     ArrayList<TripSheetDeliveriesBean> mTripsheetsDeliveriesList = new ArrayList<>();
-
                     for (Map.Entry<String, DeliverysBean> deliverysBeanEntry : selectedDeliveryProductsHashMap.entrySet()) {
                         DeliverysBean deliverysBean = deliverysBeanEntry.getValue();
-
                         double remainingInStock, remainingExtraStock, totalAvailableStock;
 
                         if (isDeliveryInEditingMode)
@@ -556,6 +556,8 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                             tripSheetDeliveriesBean.setmTripsheetDelivery_UpdatedOn(String.valueOf(currentTimeStamp));
                             tripSheetDeliveriesBean.setProductRemainingInStock(String.valueOf(remainingInStock));
                             tripSheetDeliveriesBean.setProductRemainingExtraStock(String.valueOf(remainingExtraStock));
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_productType(deliverysBean.getProductType());
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_productType(deliverysBean.getProductUom());
 
                             mTripsheetsDeliveriesList.add(tripSheetDeliveriesBean);
                         }
@@ -566,10 +568,10 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                     // Toast.makeText(activityContext, "Delivery Data Saved Successfully.", Toast.LENGTH_LONG).show();
                     showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
                     Utility.isDeliveryFirstTime = true;
-//                    if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
-//                        Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncTripsheetDeliveriesService.class);
-//                        startService(syncTripSheetDeliveriesServiceIntent);
-//                    }
+                    if (new NetworkConnectionDetector(activityContext).isNetworkConnected()) {
+                        Intent syncTripSheetDeliveriesServiceIntent = new Intent(activityContext, SyncTripsheetDeliveriesService.class);
+                        startService(syncTripSheetDeliveriesServiceIntent);
+                    }
                 } else {
                     // Toast.makeText(activityContext, "Delivery quantity for one of the product exceeds available stock, please check it. ", Toast.LENGTH_LONG).show();
                     CustomAlertDialog.showAlertDialog(activityContext, "Failed", getResources().getString(R.string.deliveryexceed));

@@ -32,6 +32,8 @@ public class TripSheetDeliveriesBean {
     private String productRemainingInStock;
     private String productRemainingExtraStock;
     private String deliveredItemsCount;
+    private String mTripsheetDelivery_productType;
+    private String mTripsheetDelivery_productUOM;
 
     public String getFirstname() {
         return firstname;
@@ -280,6 +282,8 @@ public class TripSheetDeliveriesBean {
                 ", mTripsheetDelivery_UpdatedBy='" + mTripsheetDelivery_UpdatedBy + '\'' +
                 ", productRemainingInStock='" + productRemainingInStock + '\'' +
                 ", productRemainingExtraStock='" + productRemainingExtraStock + '\'' +
+                ", mTripsheetDelivery_productType='" + mTripsheetDelivery_productType + '\'' +
+                ", mTripsheetDelivery_productUOM='" + mTripsheetDelivery_productUOM + '\'' +
                 '}';
     }
 
@@ -289,5 +293,21 @@ public class TripSheetDeliveriesBean {
 
     public void setDeliveredItemsCount(String deliveredItemsCount) {
         this.deliveredItemsCount = deliveredItemsCount;
+    }
+
+    public String getmTripsheetDelivery_productUOM() {
+        return mTripsheetDelivery_productUOM;
+    }
+
+    public void setmTripsheetDelivery_productUOM(String mTripsheetDelivery_productUOM) {
+        this.mTripsheetDelivery_productUOM = mTripsheetDelivery_productUOM;
+    }
+
+    public String getmTripsheetDelivery_productType() {
+        return mTripsheetDelivery_productType;
+    }
+
+    public void setmTripsheetDelivery_productType(String mTripsheetDelivery_productType) {
+        this.mTripsheetDelivery_productType = mTripsheetDelivery_productType;
     }
 }
