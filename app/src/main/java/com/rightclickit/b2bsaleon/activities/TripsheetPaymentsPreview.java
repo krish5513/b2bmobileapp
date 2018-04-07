@@ -133,8 +133,8 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
             mAgentSoId = this.getIntent().getStringExtra("agentSoId");
             mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
             paymentNumber= this.getIntent().getStringExtra("pId");
-            System.out.println("AGENT ID:: "+ mAgentId);
-            System.out.println("AGENT CODE:: "+ mAgentCode);
+            //System.out.println("AGENT ID:: "+ mAgentId);
+            //System.out.println("AGENT CODE:: "+ mAgentCode);
 
             loggedInUserId = mmSharedPreferences.getString("userId");
             loggedInUserName = mmSharedPreferences.getString("loginusername");
@@ -145,6 +145,7 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
 
             saleOrdersDetails = mDBHelper.fetchTripSheetSaleOrderDetails(mTripSheetId, mAgentSoId, mAgentId);
             deliveredProductsList = mDBHelper.getDeliveredProductsListForSaleOrder(mTripSheetId, mAgentSoId, mAgentId);
+            System.out.println("PAYMENTS::: "+ deliveredProductsList.size());
             returnedProductsList = mDBHelper.getReturnsProductsListForSaleOrder(mTripSheetId, mAgentSoId, mAgentId);
             paymentsDetails = mDBHelper.getSaleOrderPaymentDetails(mTripSheetId, mAgentSoId);
 
@@ -188,21 +189,23 @@ public class TripsheetPaymentsPreview extends AppCompatActivity {
                     }
                     for (int b = 0; b < deliveredProductsList.size(); b++) {
                         SaleOrderDeliveredProducts deliveredProduct = new SaleOrderDeliveredProducts();
-                        if (!deliveredProductsList.get(b).getProductReturnable().equals("Y")) {
-                            deliveredProduct.setDeliveryNo(deliveredProductsList.get(b).getDeliveryNo());
-                            deliveredProduct.setId(deliveredProductsList.get(b).getId());
-                            deliveredProduct.setName(deliveredProductsList.get(b).getName());
-                            deliveredProduct.setCode(deliveredProductsList.get(b).getCode());
-                            deliveredProduct.setQuantity(deliveredProductsList.get(b).getQuantity());
-                            deliveredProduct.setUnitRate(deliveredProductsList.get(b).getUnitRate());
-                            deliveredProduct.setProductTax(deliveredProductsList.get(b).getProductTax());
-                            deliveredProduct.setProductAmount(deliveredProductsList.get(b).getProductAmount());
-                            deliveredProduct.setTotalTax(deliveredProductsList.get(b).getTotalTax());
-                            deliveredProduct.setSubTotal(deliveredProductsList.get(b).getSubTotal());
-                            deliveredProduct.setCreatedTime(deliveredProductsList.get(b).getCreatedTime());
-                            deliveredProduct.setProductReturnable(deliveredProductsList.get(b).getProductReturnable());
+                        if (deliveredProductsList.get(b).getProductReturnable() != null) {
+                            if (!deliveredProductsList.get(b).getProductReturnable().equals("Y")) {
+                                deliveredProduct.setDeliveryNo(deliveredProductsList.get(b).getDeliveryNo());
+                                deliveredProduct.setId(deliveredProductsList.get(b).getId());
+                                deliveredProduct.setName(deliveredProductsList.get(b).getName());
+                                deliveredProduct.setCode(deliveredProductsList.get(b).getCode());
+                                deliveredProduct.setQuantity(deliveredProductsList.get(b).getQuantity());
+                                deliveredProduct.setUnitRate(deliveredProductsList.get(b).getUnitRate());
+                                deliveredProduct.setProductTax(deliveredProductsList.get(b).getProductTax());
+                                deliveredProduct.setProductAmount(deliveredProductsList.get(b).getProductAmount());
+                                deliveredProduct.setTotalTax(deliveredProductsList.get(b).getTotalTax());
+                                deliveredProduct.setSubTotal(deliveredProductsList.get(b).getSubTotal());
+                                deliveredProduct.setCreatedTime(deliveredProductsList.get(b).getCreatedTime());
+                                deliveredProduct.setProductReturnable(deliveredProductsList.get(b).getProductReturnable());
 
-                            deliveredProductsList1.add(deliveredProduct);
+                                deliveredProductsList1.add(deliveredProduct);
+                            }
                         }
                     }
 

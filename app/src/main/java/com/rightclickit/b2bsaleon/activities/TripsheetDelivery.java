@@ -153,7 +153,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             selectedDeliveryProductsHashMapTemp = new HashMap<>();
             productTypeHashMap = new HashMap<>();
             productUomHashMap = new HashMap<>();
-            productUnitprieHashMap=new HashMap<>();
+            productUnitprieHashMap = new HashMap<>();
 
             allProductsListFromStock = mDBHelper.fetchAllRecordsFromProductsAndStockTableForDeliverys(mTripSheetId);
             //System.out.println("ALL BEFORE ITEM TYPES SIZE:: " + allProductsListFromStock.size());
@@ -174,7 +174,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                 JSONArray orderQuantities = new JSONArray(productOrderQuantities.get(1));
                 JSONArray productTypeArray = new JSONArray(productOrderQuantities.get(2));
                 JSONArray productUomArray = new JSONArray(productOrderQuantities.get(3));
-                JSONArray unitpriceArray=new JSONArray(productOrderQuantities.get(4));
+                JSONArray unitpriceArray = new JSONArray(productOrderQuantities.get(4));
                 //System.out.println("ITEM TYPES SIZE:: " + productTypeArray.length());
 
                 for (int i = 0; i < productCodes.length(); i++) {
@@ -197,32 +197,31 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                             productsBean.setProductOrderedQuantity(0.0);
                             productsBean.setProductStock(0.0);
                             productsBean.setProductExtraQuantity(0.0);
-                            productsBean.setProductReturnableUnit("");
+                            productsBean.setProductReturnableUnit(prodDetails.getProductReturnable());
                             productsBean.setProductType(productTypeArray.get(i).toString());
                             productsBean.setProductUom(productUomArray.get(i).toString());
 
-                            if(!unitpriceArray.getString(i).toString().equals("")) {
+                            if (!unitpriceArray.getString(i).toString().equals("")) {
                                 productsBean.setProductAgentPrice(unitpriceArray.getString(i).toString());
-                            }else if(agentSpecialPricesHashMap.containsKey(productsBean.getProductId())) {
+                            } else if (agentSpecialPricesHashMap.containsKey(productsBean.getProductId())) {
                                 productsBean.setProductAgentPrice(agentSpecialPricesHashMap.get(productsBean.getProductId()));
                             }
-
 
 
                             allProductsListFromStock.add(productsBean);
 
                             productTypeHashMap.put(productCodes.get(i).toString() + "_F", productTypeArray.get(i).toString());
-                            productOrderQuantitiesHashMap.put(productCodes.get(i).toString()+ "_F", orderQuantities.get(i).toString());
-                            productUomHashMap.put(productCodes.get(i).toString()+ "_F", productUomArray.get(i).toString());
+                            productOrderQuantitiesHashMap.put(productCodes.get(i).toString() + "_F", orderQuantities.get(i).toString());
+                            productUomHashMap.put(productCodes.get(i).toString() + "_F", productUomArray.get(i).toString());
                         } else {
                             productTypeHashMap.put(productCodes.get(i).toString(), productTypeArray.get(i).toString());
                             productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
                             productUomHashMap.put(productCodes.get(i).toString(), productUomArray.get(i).toString());
                         }
                     }
-                  //  productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
-                   // productUomHashMap.put(productCodes.get(i).toString(), productUomArray.get(i).toString());
-                   // productUnitprieHashMap.put(productCodes.get(i).toString(),unitpriceArray.get(i).toString());
+                    //  productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
+                    // productUomHashMap.put(productCodes.get(i).toString(), productUomArray.get(i).toString());
+                    // productUnitprieHashMap.put(productCodes.get(i).toString(),unitpriceArray.get(i).toString());
                 }
 
             }
@@ -461,7 +460,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             else
                 productAvailableStock = deliverysBean.getProductStock() + deliverysBean.getProductExtraQuantity();
 
-            if(deliverysBean.getProductType()!=null) {
+            if (deliverysBean.getProductType() != null) {
                 if (!deliverysBean.getProductType().equals("F")) {
                     if (deliverysBean.getSelectedQuantity() > productAvailableStock) {
                         isValid = false;
@@ -557,7 +556,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                             tripSheetDeliveriesBean.setProductRemainingInStock(String.valueOf(remainingInStock));
                             tripSheetDeliveriesBean.setProductRemainingExtraStock(String.valueOf(remainingExtraStock));
                             tripSheetDeliveriesBean.setmTripsheetDelivery_productType(deliverysBean.getProductType());
-                            tripSheetDeliveriesBean.setmTripsheetDelivery_productType(deliverysBean.getProductUom());
+                            tripSheetDeliveriesBean.setmTripsheetDelivery_productUOM(deliverysBean.getProductUom());
 
                             mTripsheetsDeliveriesList.add(tripSheetDeliveriesBean);
                         }

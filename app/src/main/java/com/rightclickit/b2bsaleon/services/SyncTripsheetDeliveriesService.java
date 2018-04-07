@@ -101,7 +101,12 @@ public class SyncTripsheetDeliveriesService extends Service {
                             tripSheetDeliveriesBeanWithProducts.setmTripsheetDelivery_UpdatedOn(currentDelivery.getmTripsheetDelivery_UpdatedOn());
                         }
                         // System.out.println("TRIP DELE PID ARRAY::: " + currentDelivery.getmTripsheetDelivery_productId());
-                        productIdsArray.put(currentDelivery.getmTripsheetDelivery_productId());
+                        if (currentDelivery.getmTripsheetDelivery_productId().endsWith("_F")) {
+                            String[] codeParts1 = currentDelivery.getmTripsheetDelivery_productId().split("_");
+                            productIdsArray.put(codeParts1[0]);
+                        } else {
+                            productIdsArray.put(currentDelivery.getmTripsheetDelivery_productId());
+                        }
                         if (currentDelivery.getmTripsheetDelivery_productCodes().endsWith("_F")) {
                             String[] codeParts = currentDelivery.getmTripsheetDelivery_productCodes().split("_");
                             productCodesArray.put(codeParts[0]);
@@ -171,8 +176,8 @@ public class SyncTripsheetDeliveriesService extends Service {
                 requestObj.put("updated_by", currentDeliveryBean.getmTripsheetDelivery_UpdatedBy());
 
                 String requestURL = String.format("%s%s%s", Constants.MAIN_URL, Constants.SYNC_TAKE_ORDERS_PORT, Constants.TRIPSHEETS_DELIVERIES_URL);
-                System.out.println("requestObj = " + requestObj);
-                System.out.println("requestURL = " + requestURL);
+                //System.out.println("requestObj = " + requestObj);
+                //System.out.println("requestURL = " + requestURL);
 
                 String responseString = new NetworkManager().makeHttpPostConnection(requestURL, requestObj);
 
