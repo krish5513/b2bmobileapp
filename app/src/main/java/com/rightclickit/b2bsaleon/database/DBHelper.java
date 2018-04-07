@@ -378,6 +378,8 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_TRIPSHEET_DELIVERY_UPDATEDON = "tripsheet_delivery_updatedon";
     private final String KEY_TRIPSHEET_DELIVERY_UPDATEDBY = "tripsheet_delivery_updatedby";
     private final String KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS = "tripsheet_delivery_upload_status";
+    private final String KEY_TRIPSHEET_DELIVERY_PRODUCT_TYPE = "tripsheet_delivery_product_type";
+    private final String KEY_TRIPSHEET_DELIVERY_UOM = "tripsheet_delivery_uom";
 
     // Column names for Tripsheets returns List  Table
     private final String KEY_TRIPSHEET_RETURNS_RETURN_NO = "tripsheet_returns_return_no";
@@ -701,6 +703,8 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_DELIVERY_CREATEDON + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_UPDATEDON + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_UPDATEDBY + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_PRODUCT_TYPE + " VARCHAR,"
+            + KEY_TRIPSHEET_DELIVERY_UOM + " VARCHAR,"
             + KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // Tripsheets Returns list Table Create Statements
@@ -3386,6 +3390,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_DELIVERY_CREATEDON, tripSheetDeliveriesBean.getmTripsheetDelivery_CreatedOn());
                 values.put(KEY_TRIPSHEET_DELIVERY_UPDATEDON, tripSheetDeliveriesBean.getmTripsheetDelivery_UpdatedOn());
                 values.put(KEY_TRIPSHEET_DELIVERY_UPDATEDBY, tripSheetDeliveriesBean.getmTripsheetDelivery_UpdatedBy());
+                values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_TYPE, tripSheetDeliveriesBean.getmTripsheetDelivery_productType());
+                values.put(KEY_TRIPSHEET_DELIVERY_UOM, tripSheetDeliveriesBean.getmTripsheetDelivery_productUOM());
                 values.put(KEY_TRIPSHEET_DELIVERY_UPLOAD_STATUS, 0);
 
                 int noOfRecordsExisted = checkProductExistsInTripSheetDeliveryTable(tripSheetDeliveriesBean.getmTripsheetDelivery_so_id(), tripSheetDeliveriesBean.getmTripsheetDelivery_userId(), tripSheetDeliveriesBean.getmTripsheetDelivery_productId());
@@ -3504,6 +3510,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripDeliveriesBean.setmTripsheetDelivery_CreatedOn(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
                     tripDeliveriesBean.setmTripsheetDelivery_UpdatedOn(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UPDATEDON)));
                     tripDeliveriesBean.setmTripsheetDelivery_UpdatedBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UPDATEDBY)));
+                    tripDeliveriesBean.setmTripsheetDelivery_productType(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_TYPE)));
+                    tripDeliveriesBean.setmTripsheetDelivery_productUOM(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UOM)));
 
                     alltripsheetsDeliveries.add(tripDeliveriesBean);
 
