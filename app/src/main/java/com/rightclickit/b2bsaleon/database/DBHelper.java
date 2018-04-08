@@ -3375,8 +3375,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_DELIVERY_USER_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_userCodes());
                 values.put(KEY_TRIPSHEET_DELIVERY_ROUTE_ID, tripSheetDeliveriesBean.getmTripsheetDelivery_routeId());
                 values.put(KEY_TRIPSHEET_DELIVERY_ROUTE_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_routeCodes());
+                if(tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes().endsWith("_F")){
+                    String[] parts = tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes().split("_");
+                    values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES, parts[0]);
+                }else {
+                    values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes());
+                }
                 values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS, tripSheetDeliveriesBean.getmTripsheetDelivery_productId());
-                values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes());
                 values.put(KEY_TRIPSHEET_DELIVERY_TAXPERCENT, tripSheetDeliveriesBean.getmTripsheetDelivery_TaxPercent());
                 values.put(KEY_TRIPSHEET_DELIVERY_UNITPRICE, tripSheetDeliveriesBean.getmTripsheetDelivery_UnitPrice());
                 values.put(KEY_TRIPSHEET_DELIVERY_QUANTITY, tripSheetDeliveriesBean.getmTripsheetDelivery_Quantity());
@@ -5423,7 +5428,7 @@ public class DBHelper extends SQLiteOpenHelper {
             String selectQuery = "SELECT " + KEY_TRIPSHEET_DELIVERY_NO + ", " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + ", " + KEY_PRODUCT_TITLE + ", " + KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES + ", "
                     + KEY_TRIPSHEET_DELIVERY_QUANTITY + ", " + KEY_TRIPSHEET_DELIVERY_UNITPRICE + ", " + KEY_TRIPSHEET_DELIVERY_TAXAMOUNT + ", " + KEY_TRIPSHEET_DELIVERY_AMOUNT + ", "
                     + KEY_TRIPSHEET_DELIVERY_TAXTOTAL + ", " + KEY_TRIPSHEET_DELIVERY_SALEVALUE + ", " + KEY_TRIPSHEET_DELIVERY_CREATEDON + ", " + KEY_PRODUCT_RETURNABLE + ", " + KEY_TRIPSHEET_DELIVERY_NUMBER
-                    + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " D LEFT JOIN " + TABLE_PRODUCTS + " P ON D." + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + " = P." + KEY_PRODUCT_ID
+                    + " FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " D LEFT JOIN " + TABLE_PRODUCTS + " P ON D." + KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES + " = P." + KEY_PRODUCT_CODE
                     + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = '" + tripSheetId + "' AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + " = '" + saleOrderId + "' AND " + KEY_TRIPSHEET_DELIVERY_USER_ID + " = '" + agentId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
