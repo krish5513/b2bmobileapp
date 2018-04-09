@@ -162,13 +162,15 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 //                        allProductsListFromStock.get(x).getProductUom());
 //            }
             // In order to pre populate when you came back to this screen.
+
+            Map<String, String> agentSpecialPricesHashMap = mDBHelper.fetchSpecialPricesForUserId(mAgentId);
             previouslyDeliveredProductsHashMap = mDBHelper.getAgentPreviouslyDeliveredProductsList(mTripSheetId, mAgentSoId, mAgentId);
             if (previouslyDeliveredProductsHashMap.size() > 0)
                 isDeliveryInEditingMode = true;
 
             ArrayList<String> productOrderQuantities = mDBHelper.getAgentOrderedProductsQuantityFromSaleOrderTable(mTripSheetId, mAgentSoId, mAgentId);
             if (productOrderQuantities.size() > 0) {
-                Map<String, String> agentSpecialPricesHashMap = mDBHelper.fetchSpecialPricesForUserId(mAgentId);
+
 
                 JSONArray productCodes = new JSONArray(productOrderQuantities.get(0));
                 JSONArray orderQuantities = new JSONArray(productOrderQuantities.get(1));
@@ -184,12 +186,13 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 //                                    + "\n" + orderQuantities.get(i).toString());
                             ProductsBean prodDetails = mDBHelper.fetchProductDetailsByProductCode(productCodes.get(i).toString());
 
+
                             DeliverysBean productsBean = new DeliverysBean();
 
                             productsBean.setProductId(prodDetails.getProductId() + "_F");
                             productsBean.setProductCode(productCodes.get(i).toString() + "_F");
                             productsBean.setProductTitle(prodDetails.getProductTitle());
-                            productsBean.setProductAgentPrice("0.0");
+                          //  productsBean.setProductAgentPrice("0.0");
                             productsBean.setProductConsumerPrice("0.0");
                             productsBean.setProductRetailerPrice("0.0");
                             productsBean.setProductgst("0.0");
@@ -200,12 +203,8 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                             productsBean.setProductReturnableUnit(prodDetails.getProductReturnable());
                             productsBean.setProductType(productTypeArray.get(i).toString());
                             productsBean.setProductUom(productUomArray.get(i).toString());
+                            productsBean.setProductAgentPrice(unitpriceArray.getString(i).toString());
 
-                            if (!unitpriceArray.getString(i).toString().equals("")) {
-                                productsBean.setProductAgentPrice(unitpriceArray.getString(i).toString());
-                            } else if (agentSpecialPricesHashMap.containsKey(productsBean.getProductId())) {
-                                productsBean.setProductAgentPrice(agentSpecialPricesHashMap.get(productsBean.getProductId()));
-                            }
 
 
                             allProductsListFromStock.add(productsBean);
@@ -213,10 +212,15 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                             productTypeHashMap.put(productCodes.get(i).toString() + "_F", productTypeArray.get(i).toString());
                             productOrderQuantitiesHashMap.put(productCodes.get(i).toString() + "_F", orderQuantities.get(i).toString());
                             productUomHashMap.put(productCodes.get(i).toString() + "_F", productUomArray.get(i).toString());
+                            productUnitprieHashMap.put(productCodes.get(i).toString()+ "_ F","0.0");
+
+
                         } else {
                             productTypeHashMap.put(productCodes.get(i).toString(), productTypeArray.get(i).toString());
                             productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
                             productUomHashMap.put(productCodes.get(i).toString(), productUomArray.get(i).toString());
+                            productUnitprieHashMap.put(productCodes.get(i).toString(),unitpriceArray.get(i).toString());
+
                         }
                     }
                     //  productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
@@ -230,12 +234,12 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             // fetching & checking weather Agent have any special prices.
 
 
-           /* for (DeliverysBean deliverysBean : allProductsListFromStock) {
+          /*  for (DeliverysBean deliverysBean : allProductsListFromStock) {
                 if (agentSpecialPricesHashMap.containsKey(deliverysBean.getProductId()))
                     deliverysBean.setProductAgentPrice(agentSpecialPricesHashMap.get(deliverysBean.getProductId()));
             }*/
 
-            mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap, productTypeHashMap, productUomHashMap);
+            mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap, productTypeHashMap, productUomHashMap,productUnitprieHashMap);
             ordered_products_list_view.setAdapter(mTripSheetDeliveriesAdapter);
 
         } catch (Exception e) {
