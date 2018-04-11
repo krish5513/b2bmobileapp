@@ -286,9 +286,9 @@ public class Constants {
     public static final String AGENTS_STOCK_DELIVERY_URL = "/delivery_orders_no_tripid/add/";
 
     // Agents approved orders
-   // public static final String AGENTS_APPROVED_ORDERS = "/approved_orders/byid";
+    public static final String AGENTS_APPROVED_ORDERS = "/approved_orders/byid";
 
-    public static final String AGENTS_APPROVED_ORDERS = "/pending_orders/byid";
+    //public static final String AGENTS_APPROVED_ORDERS = "/pending_orders/byid";
 
     // Retailers tdc sales list
     public static final String RETAILERS_TDC_SALESLIST = "/tdc_sales/list";
