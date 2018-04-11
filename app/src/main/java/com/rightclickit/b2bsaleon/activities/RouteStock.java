@@ -575,6 +575,7 @@ public class RouteStock extends AppCompatActivity implements RouteStockListener 
     public void loadTripsData(ArrayList<TripsheetsStockList> tripsStockList) {
         // ALL DELIVIRES
         ArrayList<TripSheetDeliveriesBean> deliveriesBeenList = mDBHelper.fetchAllTripsheetsDeliveriesListByTripAndProductId(tripSheetId, "");
+        System.out.println("INSERTED DATA::: " + deliveriesBeenList.size());
         if (deliveryQuantityListMap.size() > 0) {
             deliveryQuantityListMap.clear();
         }

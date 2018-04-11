@@ -3378,9 +3378,13 @@ public class DBHelper extends SQLiteOpenHelper {
                 if(tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes().endsWith("_F")){
                     String[] parts = tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes().split("_");
                     values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES, parts[0]);
+                    System.out.println(" IF INSERTED CODES::: " + tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes().split("_"));
                 }else {
                     values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes());
+                    System.out.println(" ELSE INSERTED CODES::: " + tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes());
                 }
+
+
                 values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS, tripSheetDeliveriesBean.getmTripsheetDelivery_productId());
                 values.put(KEY_TRIPSHEET_DELIVERY_TAXPERCENT, tripSheetDeliveriesBean.getmTripsheetDelivery_TaxPercent());
                 values.put(KEY_TRIPSHEET_DELIVERY_UNITPRICE, tripSheetDeliveriesBean.getmTripsheetDelivery_UnitPrice());
@@ -7003,7 +7007,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         try {
             String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripsheetId + "'";
-                    /*+ " AND " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + " = " + "'" + productId + "'";*/
+            /*+ " AND " + KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS + " = " + "'" + productId + "'";*/
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
@@ -7021,7 +7025,13 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripDeliveriesBean.setmTripsheetDelivery_userCodes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_USER_CODES)));
                     tripDeliveriesBean.setmTripsheetDelivery_routeId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_ROUTE_ID)));
                     tripDeliveriesBean.setmTripsheetDelivery_routeCodes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_ROUTE_CODES)));
-                    tripDeliveriesBean.setmTripsheetDelivery_productId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS)));
+                    String pId = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS));
+                    if(pId.endsWith("_F")){
+                        String[] parts = pId.split("_");
+                        tripDeliveriesBean.setmTripsheetDelivery_productId(parts[0]);
+                    }else {
+                        tripDeliveriesBean.setmTripsheetDelivery_productId(pId);
+                    }
                     tripDeliveriesBean.setmTripsheetDelivery_productCodes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES)));
                     tripDeliveriesBean.setmTripsheetDelivery_TaxPercent(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_TAXPERCENT)));
                     tripDeliveriesBean.setmTripsheetDelivery_UnitPrice(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UNITPRICE)));
@@ -7036,6 +7046,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripDeliveriesBean.setmTripsheetDelivery_CreatedOn(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
                     tripDeliveriesBean.setmTripsheetDelivery_UpdatedOn(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UPDATEDON)));
                     tripDeliveriesBean.setmTripsheetDelivery_UpdatedBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UPDATEDBY)));
+                    tripDeliveriesBean.setmTripsheetDelivery_productType(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_TYPE)));
+                    tripDeliveriesBean.setmTripsheetDelivery_productUOM(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_UOM)));
 
                     alltripsheetsDeliveries.add(tripDeliveriesBean);
 
@@ -7049,7 +7061,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return alltripsheetsDeliveries;
     }
-
     /**
      * Method to fetch all tripsheets returns list baed on tripsheet id from Tripsheets returns list table
      */

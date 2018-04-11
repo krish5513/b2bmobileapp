@@ -567,6 +567,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                     }
 
                     mDBHelper.insertTripsheetsDeliveriesListData(mTripsheetsDeliveriesList);
+                    System.out.println("INSERTED DATA::: " + mTripsheetsDeliveriesList.size());
                     isDeliveryDataSaved = true;
                     // Toast.makeText(activityContext, "Delivery Data Saved Successfully.", Toast.LENGTH_LONG).show();
                     showAlertDialog(activityContext, "Success", getResources().getString(R.string.database_details));
