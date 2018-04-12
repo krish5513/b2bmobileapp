@@ -26,7 +26,9 @@ import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
 import com.rightclickit.b2bsaleon.customviews.CustomAlertDialog;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.interfaces.AgentTakeOrderListener;
+import com.rightclickit.b2bsaleon.models.AgentPendingOrdersModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,6 +47,8 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
     private LinearLayout mDeliveriesLayout;
     private LinearLayout mReturnsLayout;
     private LinearLayout mTDCorderLayout;
+
+    AgentPendingOrdersModel pendingOrdersModel;
 
 
     private LinearLayout tpsBottomOptionsLayout;
@@ -89,6 +93,8 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+        pendingOrdersModel=new AgentPendingOrdersModel(this,AgentTakeOrderScreen.this);
+
 
         Bundle bundle = this.getIntent().getExtras();
         if (bundle != null) {
@@ -116,11 +122,9 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
         mTakeOrdersLayout.setVisibility(View.GONE);
 
         mTakeOrderListView = (ListView) findViewById(R.id.TakeOrdersList);
-        if (productsList.size() > 0) {
-            mTakeOrderAdapter = new TakeOrdersAdapter(this, this, productsList, mTakeOrderListView, mPreference.getString("agentId"), mTakeOrderBeansList,
-                    selectedTakeOrderQuantityListMap, selectedTakeOrderFromDatesListMap, selectedTakeOrderToDatesListMap,TroipsTakeorder,tripSheetId);
-            mTakeOrderListView.setAdapter(mTakeOrderAdapter);
-        }
+
+        loadtakeorders();
+
 
         mPaymentsLayout = (LinearLayout) findViewById(R.id.PaymentsLayout);
 
@@ -240,6 +244,18 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
 
     }
 
+    public void loadtakeorders() {
+
+        mTakeOrderBeansList = mDBHelper.fetchAllRecordsFromTakeOrderProductsTable("no", mPreference.getString("agentId"));
+        productsList = mDBHelper.fetchAllRecordsFromProductsTableForTakeOrders(mPreference.getString("agentId"));
+
+        if (productsList.size() > 0) {
+            mTakeOrderAdapter = new TakeOrdersAdapter(this, this, productsList, mTakeOrderListView, mPreference.getString("agentId"), mTakeOrderBeansList,
+                    selectedTakeOrderQuantityListMap, selectedTakeOrderFromDatesListMap, selectedTakeOrderToDatesListMap,TroipsTakeorder,tripSheetId);
+            mTakeOrderListView.setAdapter(mTakeOrderAdapter);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -296,6 +312,16 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
 //
 //            return true;
 //        }
+
+
+        if (id == R.id.autorenew) {
+            if (new NetworkConnectionDetector(AgentTakeOrderScreen.this).isNetworkConnected()) {
+                pendingOrdersModel.getOrdersList(mPreference.getString("agentId"));
+            } else {
+                new NetworkConnectionDetector(AgentTakeOrderScreen.this).displayNoNetworkError(AgentTakeOrderScreen.this);
+            }
+            return true;
+        }
 
         if (id == R.id.sort) {
             System.out.println("Selected TO::: " + selectedTakeOrderQuantityListMap.size());
@@ -434,7 +460,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
         menu.findItem(R.id.action_search).setVisible(true);
         menu.findItem(R.id.Add).setVisible(false);
 
-        menu.findItem(R.id.autorenew).setVisible(false);
+        menu.findItem(R.id.autorenew).setVisible(true);
         menu.findItem(R.id.sort).setVisible(true);
         return super.onPrepareOptionsMenu(menu);
     }

@@ -288,7 +288,7 @@ public class Constants {
     // Agents approved orders
     public static final String AGENTS_APPROVED_ORDERS = "/approved_orders/byid";
 
-    //public static final String AGENTS_APPROVED_ORDERS = "/pending_orders/byid";
+    public static final String AGENTS_PENDING_ORDERS = "/pending_orders/byid";
 
     // Retailers tdc sales list
     public static final String RETAILERS_TDC_SALESLIST = "/tdc_sales/list";
