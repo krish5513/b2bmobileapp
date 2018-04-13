@@ -2187,14 +2187,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
                 int ccc = checkProductExistsOrNot(takeOrderBeanArrayList.get(b).getmProductId(), takeOrderBeanArrayList.get(b).getmAgentId());
-                //System.out.println("Product Exists:::: "+ ccc);
+                System.out.println("Product Exists:::: "+ ccc);
                 if (ccc == 0) {
                     effectedRows = db.insert(TABLE_TO_PRODUCTS, null, values);
-                    // System.out.println("IFFFFFF::: "+effectedRows);
+                     System.out.println("IFFFFFF::: "+effectedRows);
                 } else {
                     effectedRows = db.update(TABLE_TO_PRODUCTS, values, KEY_TO_PRODUCT_ID + " = ?" + " AND " + KEY_TO_AGENTID + " = ? ",
                             new String[]{String.valueOf(takeOrderBeanArrayList.get(b).getmProductId()), String.valueOf(takeOrderBeanArrayList.get(b).getmAgentId())});
-                    // System.out.println("ELSEEE::: "+effectedRows);
+                     System.out.println("ELSEEE::: "+effectedRows);
                 }
                 //System.out.println("UpDATE PRICE::: " + takeOrderBeanArrayList.get(b).getmAgentPrice());
                 // update row

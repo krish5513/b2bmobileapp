@@ -149,7 +149,7 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
                     producttitle.put(mTakeOrderBeansList1.get(k).getProductId(), mTakeOrderBeansList1.get(k).getProductTitle());
 //                    toDatesList.put(mTakeOrderBeansList1.get(k).getProductId(), mTakeOrderBeansList1.get(k).getmTakeOrderToDate());
 //                    fromDatesList.put(mTakeOrderBeansList1.get(k).getProductId(), mTakeOrderBeansList1.get(k).getmTakeOrderFromDate());
-                    toDatesList.put(mTakeOrderBeansList1.get(k).getProductId(), fromDStr);
+                    toDatesList.put(mTakeOrderBeansList1.get(k).getProductId(),fromDStr);
                     fromDatesList.put(mTakeOrderBeansList1.get(k).getProductId(), fromDStr);
                     mProductIdsList.put(mTakeOrderBeansList1.get(k).getProductId().toString(), mTakeOrderBeansList1.get(k).getProductId().toString());
 
@@ -211,8 +211,18 @@ public class TakeOrdersAdapter extends BaseAdapter implements DatePickerDialog.O
         holder.code.setText(mTakeOrderBeansList1.get(position).getProductCode() + ",");
         holder.uom.setText(mTakeOrderBeansList1.get(position).getProductUOM());
         mPreferences.putString("UOM", mTakeOrderBeansList1.get(position).getProductUOM());
-        holder.fromDate.setText(currentDate);
-        holder.toDate.setText(currentDate);
+
+        if(mTakeOrderBeansList1.get(position).getmTakeOrderFromDate()!=null) {
+            holder.fromDate.setText(mTakeOrderBeansList1.get(position).getmTakeOrderFromDate());
+        }else {
+            holder.fromDate.setText(currentDate);
+        }
+
+        if(mTakeOrderBeansList1.get(position).getmTakeOrderToDate()!=null) {
+            holder.toDate.setText(mTakeOrderBeansList1.get(position).getmTakeOrderToDate());
+        }else {
+            holder.toDate.setText(currentDate);
+        }
         holder.productQuantity.setText("0.000");
 
         if (position == mTakeOrderBeansList1.size() - 1) {
