@@ -26,7 +26,10 @@ import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AgentTDC_Order extends AppCompatActivity {
     LinearLayout sales;
@@ -340,7 +343,28 @@ public class AgentTDC_Order extends AppCompatActivity {
 //                tv_enquiryId.setText("ENQ" + mTakeOrderBeansList.get(0).getmEnquiryId());
 //            }
             tv_enquiryId.setText(mTakeOrderBeansList.get(0).getmEnquiryId());
-            date.setText(mTakeOrderBeansList.get(0).getmAgentTakeOrderDate());
+
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            //currentDate = df.format(cal.getTime());
+            //fromDStr = Utility.formatDate(cal.getTime(), "dd/MM/yyyy");
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar c = Calendar.getInstance();
+            try {
+                c.setTime(sdf.parse(df.format(cal.getTime())));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            c.add(Calendar.DATE, 1);
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+             String currentDate = sdf1.format(c.getTime());
+            String fromDStr = Utility.formatDate(c.getTime(), "yyyy-MM-dd");
+            if(mTakeOrderBeansList.get(0).getmAgentTakeOrderDate()!=null){
+            date.setText(mTakeOrderBeansList.get(0).getmAgentTakeOrderDate());}
+            else {
+                date.setText(fromDStr);
+            }
             mPreferences.putString("ORDERDATE", String.valueOf(date));
 
 
