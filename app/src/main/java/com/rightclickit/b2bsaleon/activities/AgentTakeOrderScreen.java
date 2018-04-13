@@ -209,7 +209,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
-        fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.save_icon_white));
+        fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.save2));
 
         ArrayList<String> privilegeActionsData = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreference.getString("Customers"));
         // System.out.println("F 11111 ***COUNT === " + privilegeActionsData.size());
