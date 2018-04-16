@@ -287,17 +287,17 @@ public class AgentPendingOrdersModel implements OnAsyncRequestCompleteListener {
                     }
                 }
 
-                synchronized (this) {
-                    if (mTakeOrderProductsBeansList.size() > 0) {
-                        activity.loadtakeorders();
-                    }
-                }
+
                 synchronized (this) {
                     if (mTakeOrderProductsBeansList.size() > 0) {
                         mDBHelper.updateTakeOrderDetails(mTakeOrderProductsBeansList);
                     }
                 }
-
+                synchronized (this) {
+                    if (mTakeOrderProductsBeansList.size() > 0) {
+                        activity.loadtakeorders();
+                    }
+                }
 
             }
         } catch (Exception e) {

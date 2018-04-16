@@ -164,7 +164,7 @@
         android:layout_marginRight="16dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorAccent"
         android:layout_above="@id/tpsBottomOptionsLayout"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 

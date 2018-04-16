@@ -93,7 +93,7 @@ public class AgentTDC_Order extends AppCompatActivity {//bhagya
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         //fab.setVisibility(View.GONE);
-        fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.order4));
+        fab.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.pr_ic_white));
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -360,6 +360,9 @@ public class AgentTDC_Order extends AppCompatActivity {//bhagya
             SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
              String currentDate = sdf1.format(c.getTime());
             String fromDStr = Utility.formatDate(c.getTime(), "yyyy-MM-dd");
+
+
+
             if(mTakeOrderBeansList.get(0).getmAgentTakeOrderDate()!=null){
             date.setText(mTakeOrderBeansList.get(0).getmAgentTakeOrderDate());}
             else {

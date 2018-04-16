@@ -303,7 +303,7 @@ ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:105:9-1
 	android:name
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:106:13-58
 activity#com.rightclickit.b2bsaleon.activities.AgentTakeOrderScreen
-ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:109:9-112:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:109:9-112:54
 	android:screenOrientation
 		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:111:13-49
 	android:windowSoftInputMode

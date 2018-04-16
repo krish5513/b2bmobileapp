@@ -155,11 +155,27 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/tpsBottomOptionsLayout"
-        android:layout_marginBottom="@dimen/fab_margin"
+        android:layout_above="@id/TakeOrder"
+        android:layout_marginBottom="85dp"
         android:layout_marginRight="16dp"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorAccent"
         app:srcCompat="@android:drawable/ic_dialog_email"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"/>
+
+    <TextView
+        android:id="@+id/TakeOrder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:text="Save"
+        android:textColor="@color/colorAccent"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="@dimen/fab_margin"
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_above="@id/tpsBottomOptionsLayout"
+        android:gravity="center"
+        android:textSize="12sp" />
 </RelativeLayout>
