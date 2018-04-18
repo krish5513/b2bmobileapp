@@ -35,4 +35,11 @@
     <color name="progress_dialog_background">#203f54</color>
     <color name="alert_dialog_background">#203f54</color>
     <color name="alert_dialog_color_accent">#FFC107</color>
+
+    <color name="gradient1">#5CB85C </color>
+    <color name="gradient11">#5BC0DE57</color>
+    <color name="gradient2">#5BC0DE  </color>
+    <color name="gradient22">#5BC0DE57</color>
+    <color name="gradient3">#FAA632</color>
+
 </resources>

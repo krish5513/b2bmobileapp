@@ -1,6 +1,10 @@
 package com.rightclickit.b2bsaleon.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -12,6 +16,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +39,7 @@ import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 public class DashboardActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -82,6 +88,31 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         this.getSupportActionBar().setTitle("DASHBOARD");
         this.getSupportActionBar().setDisplayUseLogoEnabled(true);
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+
+
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        if((month<=10)&&(day<10)) {
+            //tv.setText("0" + day + "/0" + (month+1) + "/" + year);
+
+            this.getSupportActionBar().setTitle("        0" + day + "-0" + (month+1) + "-" + year);
+        }else if (month<=10){
+            //tv.setText("" + day + "/0" + (month+1) + "/" + year);
+            this.getSupportActionBar().setTitle("        " + day + "-0" + (month+1) + "-" + year);
+
+        }else if (day<10){
+            //tv.setText("0" + day + "/" + (month+1) + "/" + year);
+            this.getSupportActionBar().setTitle("        0" + day + "-" + (month+1) + "-" + year);
+
+        }else {
+            //tv.setText("" + day + "/" + (month+1) + "/" + year);
+            this.getSupportActionBar().setTitle("        " + day + "-" + (month+1) + "-" + year);
+
+        }
+
 
 
         tv_listView=(TextView) findViewById(R.id.tv_listView);
@@ -297,6 +328,52 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
     }
 
 
+
+    //datepicker
+    @SuppressLint("ValidFragment")
+    public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
+            dialog.getDatePicker().setMaxDate(c.getTimeInMillis());
+            return  dialog;
+        }
+
+        @SuppressLint("SetTextI18n")
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+
+            if ((month <= 10) && (day < 10)) {
+                //tv.setText("0" + day + "/0" + (month + 1) + "/" + year);
+                DashboardActivity.this.getSupportActionBar().setTitle("        0" + day + "-0" + (month + 1) + "-" + year);
+
+            } else if (month <= 10) {
+                //tv.setText("" + day + "/0" + (month + 1) + "/" + year);
+                DashboardActivity.this.getSupportActionBar().setTitle("        " + day + "-0" + (month + 1) + "-" + year);
+
+            } else if (day < 10) {
+                //tv.setText("0" + day + "/" + (month + 1) + "/" + year);
+                DashboardActivity.this.getSupportActionBar().setTitle("        0" + day + "-" + (month + 1) + "-" + year);
+
+            } else {
+                //tv.setText("" + day + "/" + (month + 1) + "/" + year);
+                DashboardActivity.this.getSupportActionBar().setTitle("        " + day + "-" + (month + 1) + "-" + year);
+
+            }
+        }
+
+
+
+
+    }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
@@ -311,6 +388,12 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
+
+        if (id == R.id.date) {
+            DialogFragment newFragment = new DatePickerFragment();
+            newFragment.show(getFragmentManager(), "datePicker");
+            return true;
+        }
         if (id == R.id.notifications) {
             loadNotifications();
             Toast.makeText(this, "Clicked on Notifications...", Toast.LENGTH_SHORT).show();
@@ -346,7 +429,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
-
+        menu.findItem(R.id.date).setVisible(true);
         menu.findItem(R.id.notifications).setVisible(true);
         menu.findItem(R.id.settings).setVisible(true);
         menu.findItem(R.id.logout).setVisible(false);

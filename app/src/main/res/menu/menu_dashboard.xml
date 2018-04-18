@@ -4,6 +4,12 @@
     tools:context="com.rightclickit.b2bsaleon.activities.DashboardActivity">
 
     <item
+        android:id="@+id/date"
+        android:icon="@drawable/ic_date_range_black_24dp"
+        android:visible="false"
+        android:title="dd/mm/yy"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/Add"
         android:icon="@drawable/ic_addcircle"
         android:visible="false"
