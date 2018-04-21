@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,6 +69,8 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
     private boolean isSaveDeviceDetails,isMyProfilePrivilege;
     TextView tvrouts_customerN;
 
+    public String selectedDate="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +117,27 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         }
 
 
+        if((month<=10)&&(day<10)) {
+            //tv.setText("0" + day + "/0" + (month+1) + "/" + year);
+            selectedDate=("        0" + year + "-0" + (month+1) + "-" + day);
 
+
+        }else if (month<=10){
+            //tv.setText("" + day + "/0" + (month+1) + "/" + year);
+
+            selectedDate=("        " + year + "-0" + (month+1) + "-" + day);
+        }else if (day<10){
+            //tv.setText("0" + day + "/" + (month+1) + "/" + year);
+
+            selectedDate=("        0" + year + "-" + (month+1) + "-" + day);
+        }else {
+            //tv.setText("" + day + "/" + (month+1) + "/" + year);
+
+            selectedDate=("        " + year + "-" + (month+1) + "-" + day);
+        }
+
+
+         Log.i("Selecteddate",selectedDate);
         tv_listView=(TextView) findViewById(R.id.tv_listView);
         tv_listView.setVisibility(View.GONE);
 
@@ -333,7 +356,6 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
     @SuppressLint("ValidFragment")
     public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final Calendar c = Calendar.getInstance();
@@ -365,7 +387,33 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
                 DashboardActivity.this.getSupportActionBar().setTitle("        " + day + "-" + (month + 1) + "-" + year);
 
             }
+
+
+            if ((month <= 10) && (day < 10)) {
+                //tv.setText("0" + day + "/0" + (month + 1) + "/" + year);
+
+                selectedDate=("        0" + year + "-0" + (month + 1) + "-" + day);
+            } else if (month <= 10) {
+                //tv.setText("" + day + "/0" + (month + 1) + "/" + year);
+
+                selectedDate=("        " + year + "-0" + (month + 1) + "-" + day);
+            } else if (day < 10) {
+                //tv.setText("0" + day + "/" + (month + 1) + "/" + year);
+
+                selectedDate=("        0" + year + "-" + (month + 1) + "-" + day);
+            } else {
+                //tv.setText("" + day + "/" + (month + 1) + "/" + year);
+
+                selectedDate=("        " + year + "-" + (month + 1) + "-" + day);
+            }
+
+            Log.i("Selecteddate",selectedDate);
+            mPreferences.putString("selectedDate",selectedDate);
+
         }
+
+
+
 
 
 

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -217,6 +218,8 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
 //                } else {
 //                    Utility.isDeliveryFirstTime = true;
 //                }
+
+
                 currentSaleOrder = getItem(position);
                 ArrayList<String> productCodes = new ArrayList<String>();
                 String s = currentSaleOrder.getmTripshetSOProductCode();
@@ -227,7 +230,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
                             productCodes.add(prodJsonArray.get(j).toString());
                         }
                     }
-
+                    Log.i("productCodes...",productCodes+"");
 
 
                         Intent i = new Intent(activity, TripsheetDelivery.class);
@@ -235,6 +238,7 @@ public class TripsheetsSOListAdapter extends BaseAdapter {
                    // Bundle args = new Bundle();
                   //  args.putSerializable("productTypeList", (Serializable) productCodes);
                    // i.putExtra("BUNDLE", args);
+                    i.putExtra("currentSaleOrder", currentSaleOrder);
                     i.putExtra("tripsheetId", currentSaleOrder.getmTripshetSOTripId());
                     i.putExtra("agentId", currentSaleOrder.getmTripshetSOAgentId());
                     i.putExtra("agentCode", currentSaleOrder.getmTripshetSOAgentCode());

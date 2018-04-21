@@ -1,10 +1,12 @@
 package com.rightclickit.b2bsaleon.beanclass;
 
+import java.io.Serializable;
+
 /**
  * Created by Sekhar Kuppa
  */
 
-public class TripsheetSOList {
+public class TripsheetSOList implements Serializable{
 
     private String mTripshetSOId;
     private String mTripshetSOTripId;

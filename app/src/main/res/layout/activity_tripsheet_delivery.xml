@@ -91,23 +91,71 @@
             android:layout_height="1dp"
             android:background="@color/view_line" />
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/tpsBottomOptionsLayout"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="100dp">
 
-            <ListView
-                android:id="@+id/ordered_products_list_view"
+
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="100dp"
-                android:divider="@android:color/transparent"
-                android:smoothScrollbar="true"
-                android:background="@color/white"/>
+                android:orientation="vertical"
+                android:background="@color/layout_background"
+                >
 
-        </LinearLayout>
+
+
+
+
+                <ListView
+                    android:id="@+id/ordered_products_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@android:color/transparent"
+                    android:smoothScrollbar="true"
+                    android:nestedScrollingEnabled="true"
+                    android:background="@color/white"/>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/view_line" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Instock Items"
+                    android:textAllCaps="true"
+                    android:textColor="@color/greydark"
+                    android:textSize="16sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/view_line" />
+
+
+                <ListView
+                    android:id="@+id/Instock_products_list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@android:color/transparent"
+                    android:smoothScrollbar="true"
+                    android:nestedScrollingEnabled="true"
+                    android:background="@color/white"/>
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
 
     </LinearLayout>
 

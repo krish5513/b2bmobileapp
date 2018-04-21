@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.adapters.TripSheetDeliveriesAdapter;
+import com.rightclickit.b2bsaleon.adapters.TripsheetDeliveryInStockItemsAdapter;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
 import com.rightclickit.b2bsaleon.beanclass.TakeOrderBean;
@@ -36,9 +38,11 @@ import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 import com.rightclickit.b2bsaleon.util.Utility;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,12 +53,15 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
     private DBHelper mDBHelper;
 
     private SearchView search;
-    private ListView ordered_products_list_view;
+    private ListView ordered_products_list_view,Instock_products_list_view;
     private TextView companyName, totalTaxAmountTextView, totalAmountTextView, subTotalAmountTextView, soCode, agentcode;
     private LinearLayout trip_sheet_deliveries_save, trip_sheet_deliveries_preview, trip_sheet_returns, trip_sheet_payments;
 
     private TripSheetDeliveriesAdapter mTripSheetDeliveriesAdapter;
+    private TripsheetDeliveryInStockItemsAdapter mTripSheetDeliveriesInStockItemsAdapter;
     private ArrayList<DeliverysBean> allProductsListFromStock = new ArrayList<>();
+    private ArrayList<DeliverysBean> allProductsListFromFiltetStock = new ArrayList<>();
+    private ArrayList<DeliverysBean> allProductsListFromSOList = new ArrayList<>();
     private Map<String, DeliverysBean> selectedDeliveryProductsHashMap;
     private Map<String, String> previouslyDeliveredProductsHashMap, selectedDeliveryProductsHashMapTemp; // this hash map contains previously delivered product quantity. key = product id & value = previously delivered quantity
     private Map<String, String> productOrderQuantitiesHashMap; // this hash map contains product codes & it's order quantity fetched from sale oder table.
@@ -65,6 +72,8 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
     private Map<String, String> productTypeHashMap, productUomHashMap;
     private Map<String, String> productUnitprieHashMap;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +98,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             soCode = (TextView) findViewById(R.id.soCode);
             agentcode = (TextView) findViewById(R.id.companyId);
             ordered_products_list_view = (ListView) findViewById(R.id.ordered_products_list_view);
+            Instock_products_list_view=(ListView)findViewById(R.id.Instock_products_list_view);
             totalTaxAmountTextView = (TextView) findViewById(R.id.delivery_total_tax_amount);
             totalAmountTextView = (TextView) findViewById(R.id.delivery_total_amount);
             subTotalAmountTextView = (TextView) findViewById(R.id.delivery_sub_total_amount);
@@ -102,6 +112,87 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             mDBHelper = new DBHelper(activityContext);
             mPreferences = new MMSharedPreferences(activityContext);
 
+            TripsheetSOList currentSaleOrder = (TripsheetSOList) this.getIntent().getSerializableExtra("currentSaleOrder");
+
+            ArrayList<String> productCodesList = new ArrayList<String>();
+            String s = currentSaleOrder.getmTripshetSOProductCode();
+            try {
+                JSONArray prodJsonArray = new JSONArray(s);
+                for (int j = 0; j < prodJsonArray.length(); j++) {
+                    if (!prodJsonArray.get(j).toString().equals("null")) {
+                        productCodesList.add(prodJsonArray.get(j).toString());
+                    }
+                }
+                Log.i("productCodesList...",productCodesList+"");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            ArrayList<String> productItemList = new ArrayList<String>();
+            String s2 = currentSaleOrder.getmTripsheetSOitemType();
+            try {
+                JSONArray typeJsonArray = new JSONArray(s2);
+                for (int j = 0; j < typeJsonArray.length(); j++) {
+                    if (!typeJsonArray.get(j).toString().equals("null")) {
+                        productItemList.add(typeJsonArray.get(j).toString());
+                    }
+                }
+                Log.i("productItemList...",productItemList+"");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            /*for (int i = 0; i < productCodesList.size(); i++) {
+                synchronized (this) {
+                    if (productTypeArray.get(i).toString().equals("F")) {
+//                            System.out.println("FREE GOOD PCODE:: " + productCodes.get(i).toString()
+//                                    + "\n" + orderQuantities.get(i).toString());
+                        ProductsBean prodDetails = mDBHelper.fetchProductDetailsByProductCode(productCodes.get(i).toString());
+
+
+                        DeliverysBean productsBean = new DeliverysBean();
+
+                        productsBean.setProductId(prodDetails.getProductId() + "_F");
+                        productsBean.setProductCode(productCodes.get(i).toString() + "_F");
+                        productsBean.setProductTitle(prodDetails.getProductTitle());
+                        //  productsBean.setProductAgentPrice("0.0");
+                        productsBean.setProductConsumerPrice("0.0");
+                        productsBean.setProductRetailerPrice("0.0");
+                        productsBean.setProductgst("0.0");
+                        productsBean.setProductvat("0.0");
+                        productsBean.setProductOrderedQuantity(0.0);
+                        productsBean.setProductStock(0.0);
+                        productsBean.setProductExtraQuantity(0.0);
+                        productsBean.setProductReturnableUnit(prodDetails.getProductReturnable());
+                        productsBean.setProductType(productTypeArray.get(i).toString());
+                        productsBean.setProductUom(productUomArray.get(i).toString());
+                        productsBean.setProductAgentPrice(unitpriceArray.getString(i).toString());
+
+
+
+                        allProductsListFromStock.add(productsBean);
+
+                        productTypeHashMap.put(productCodes.get(i).toString() + "_F", productTypeArray.get(i).toString());
+                        productOrderQuantitiesHashMap.put(productCodes.get(i).toString() + "_F", orderQuantities.get(i).toString());
+                        productUomHashMap.put(productCodes.get(i).toString() + "_F", productUomArray.get(i).toString());
+                        productUnitprieHashMap.put(productCodes.get(i).toString()+ "_ F","0.0");
+
+
+                    } else {
+                        productTypeHashMap.put(productCodes.get(i).toString(), productTypeArray.get(i).toString());
+                        productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
+                        productUomHashMap.put(productCodes.get(i).toString(), productUomArray.get(i).toString());
+                        productUnitprieHashMap.put(productCodes.get(i).toString(),unitpriceArray.get(i).toString());
+
+                    }
+                }
+                //  productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
+                // productUomHashMap.put(productCodes.get(i).toString(), productUomArray.get(i).toString());
+                // productUnitprieHashMap.put(productCodes.get(i).toString(),unitpriceArray.get(i).toString());
+            }*/
+
+
+
             status = this.getIntent().getStringExtra("status");
             mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
             mAgentId = this.getIntent().getStringExtra("agentId");
@@ -111,6 +202,9 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             mAgentSoCode = this.getIntent().getStringExtra("agentSoCode");
             mAgentSoDate = this.getIntent().getStringExtra("agentSoDate");
             loggedInUserId = mPreferences.getString("userId");
+
+
+
 
            /* Intent intent = getIntent();
             Bundle args = intent.getBundleExtra("BUNDLE");
@@ -171,7 +265,6 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             ArrayList<String> productOrderQuantities = mDBHelper.getAgentOrderedProductsQuantityFromSaleOrderTable(mTripSheetId, mAgentSoId, mAgentId);
             if (productOrderQuantities.size() > 0) {
 
-
                 JSONArray productCodes = new JSONArray(productOrderQuantities.get(0));
                 JSONArray orderQuantities = new JSONArray(productOrderQuantities.get(1));
                 JSONArray productTypeArray = new JSONArray(productOrderQuantities.get(2));
@@ -206,8 +299,8 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                             productsBean.setProductAgentPrice(unitpriceArray.getString(i).toString());
 
 
-
-                            allProductsListFromStock.add(productsBean);
+                            allProductsListFromSOList.add(productsBean);
+                            //allProductsListFromStock.add(productsBean);
 
                             productTypeHashMap.put(productCodes.get(i).toString() + "_F", productTypeArray.get(i).toString());
                             productOrderQuantitiesHashMap.put(productCodes.get(i).toString() + "_F", orderQuantities.get(i).toString());
@@ -216,6 +309,30 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
 
                         } else {
+                            ProductsBean prodDetails = mDBHelper.fetchProductDetailsByProductCode(productCodes.get(i).toString());
+
+
+                            DeliverysBean productsBean = new DeliverysBean();
+
+                            productsBean.setProductId(prodDetails.getProductId());
+                            productsBean.setProductCode(productCodes.get(i).toString());
+                            productsBean.setProductTitle(prodDetails.getProductTitle());
+                            //  productsBean.setProductAgentPrice("0.0");
+                            productsBean.setProductConsumerPrice("0.0");
+                            productsBean.setProductRetailerPrice("0.0");
+                            productsBean.setProductgst("0.0");
+                            productsBean.setProductvat("0.0");
+                            productsBean.setProductOrderedQuantity(0.0);
+                            productsBean.setProductStock(0.0);
+                            productsBean.setProductExtraQuantity(0.0);
+                            productsBean.setProductReturnableUnit(prodDetails.getProductReturnable());
+                            productsBean.setProductType(productTypeArray.get(i).toString());
+                            productsBean.setProductUom(productUomArray.get(i).toString());
+                            productsBean.setProductAgentPrice(unitpriceArray.getString(i).toString());
+
+
+                            allProductsListFromSOList.add(productsBean);
+
                             productTypeHashMap.put(productCodes.get(i).toString(), productTypeArray.get(i).toString());
                             productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
                             productUomHashMap.put(productCodes.get(i).toString(), productUomArray.get(i).toString());
@@ -239,8 +356,41 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                     deliverysBean.setProductAgentPrice(agentSpecialPricesHashMap.get(deliverysBean.getProductId()));
             }*/
 
-            mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap, productTypeHashMap, productUomHashMap,productUnitprieHashMap);
+
+            allProductsListFromFiltetStock.addAll(allProductsListFromStock);
+
+            Collection<DeliverysBean> result = new ArrayList<DeliverysBean>();
+            for (DeliverysBean element: allProductsListFromStock) {
+                boolean bool = true;
+                /*for(int i=0; i<allProductsListFromSOList.size();i++){
+                    Log.i("beforeFilter"+element.getProductCode(),allProductsListFromSOList.get(i).getProductCode()+"@@@");
+                    if ((element.getProductCode().equals(allProductsListFromSOList.get(i).getProductCode()))) {
+                        bool = false;
+                      //  break;
+                    }
+                }*/
+                Log.i("FromSOList size",allProductsListFromSOList.size()+"");
+                Log.i("ListFromSOListItems",allProductsListFromSOList+"");
+                for(DeliverysBean innerElement: allProductsListFromSOList){
+                    Log.i("beforeFilter"+element.getProductCode(),innerElement.getProductCode()+"@@@");
+                    if ((element.getProductCode().equals(innerElement.getProductCode()))) {
+                        bool = false;
+                        //  break;
+                    }
+                }
+                if(bool){
+                    result.add(element);
+                }
+            }
+            Log.i("result.size...",result.size()+"");
+
+            mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, allProductsListFromSOList, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap, productTypeHashMap, productUomHashMap,productUnitprieHashMap);
             ordered_products_list_view.setAdapter(mTripSheetDeliveriesAdapter);
+            Utility.setListViewHeightBasedOnChildren(ordered_products_list_view);
+
+            mTripSheetDeliveriesInStockItemsAdapter = new TripsheetDeliveryInStockItemsAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap, productTypeHashMap, productUomHashMap,productUnitprieHashMap);
+            Instock_products_list_view.setAdapter(mTripSheetDeliveriesInStockItemsAdapter);
+            Utility.setListViewHeightBasedOnChildren(Instock_products_list_view);
 
         } catch (Exception e) {
             e.printStackTrace();

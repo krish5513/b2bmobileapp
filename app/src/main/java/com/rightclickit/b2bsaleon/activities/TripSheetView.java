@@ -419,6 +419,8 @@ public class TripSheetView extends AppCompatActivity implements OnMapReadyCallba
 
         isTripSheetClosed = mDBHelper.isTripSheetClosed(mTripSheetId);
 
+        Log.i("SoListArray",tripSheetSOList+"");
+
         mTripsheetSOAdapter = new TripsheetsSOListAdapter(this, TripSheetView.this, tripSheetSOList, mTakeOrderPrivilege, isTripSheetClosed, mhidePrevilige,status);
         mTripsheetsSOListView.setAdapter(mTripsheetSOAdapter);
         tripSheetSOList = mDBHelper.getTripSheetSaleOrderDetails(mTripSheetId);

@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,6 +119,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
 
 
             if(productTypehashMap.get(deliverysBean.getProductCode())!=null) {
+                Log.i("","");
                 deliverysBean.setProductType(productTypehashMap.get(deliverysBean.getProductCode()));
             }else {
                 deliverysBean.setProductType("S");
@@ -255,6 +257,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
         currentDeliveryBean.setProductAvailableStockForSpecificAgent(currentDeliveryBean.getProductOrderedQuantity() + currentDeliveryBean.getProductExtraQuantity());
         currentDeliveryBean.setProductAmount(amount);
         currentDeliveryBean.setTaxAmount(taxAmount);*/
+        Log.i("currentDeliveryBean...",currentDeliveryBean.getProductCode().endsWith("_F")+"");
         if (currentDeliveryBean.getProductCode().endsWith("_F")) {
             tripSheetDeliveriesViewHolder.total.setBackgroundColor(Color.parseColor("#d3d3d3"));
             String[] codeParts = currentDeliveryBean.getProductCode().split("_");

@@ -12,6 +12,7 @@ import com.rightclickit.b2bsaleon.beanclass.AgentPaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentReturnsBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.beanclass.AgentsStockBean;
+import com.rightclickit.b2bsaleon.beanclass.DashboardPendingIndentBean;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 
 import com.rightclickit.b2bsaleon.beanclass.DeviceDetails;
@@ -125,6 +126,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // This table contains device/user lat and lang for storing
     private final String TABLE_DEVICE_LATLANG_TABLE = "latlang_device";
+
+
+    // This table contains dashboard pending indents
+    private final String TABLE_DASHBOARD_PENDINGINDENTLIST = "dashboard_pendingindent";
+
+
+
+    // Column names for DashboardPendingIndent Table
+    private final String KEY_ID = "increment_id";
+    private final String KEY_DATE= "date";
+    private final String KEY_CATEGORY = "category";
+    private final String KEY_LITRES= "litres";
+    private final String KEY_PENDING_COUNT = "pending_count";
+    private final String KEY_APPROVED_COUNT = "approved_count";
 
 
     // Column names for User Table
@@ -529,6 +544,16 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_DEVICE_SPEED_LATLANG = "latlang_device_speed";
     private final String KEY_DEVICE_UPLOAD_FLAG_LATLANG = "latlang_device_uploaded_flag";
 
+    // Dashboard Pending Indent Table Create Statements
+    private final String CREATE_TABLE_DASHBOARD_PENDINGINDENT = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_DASHBOARD_PENDINGINDENTLIST + "(" + KEY_ID + "  INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_DATE + " VARCHAR,"
+            + KEY_CATEGORY + " VARCHAR,"
+            + KEY_LITRES + " VARCHAR,"
+            + KEY_APPROVED_COUNT + " VARCHAR,"
+            + KEY_PENDING_COUNT + " VARCHAR)";
+
+
+
     // Agents Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
             + TABLE_AGENTS + "(" + KEY_AGENT_UNIQUE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_AGENT_ID + " VARCHAR,"
@@ -894,6 +919,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_AGENT_STOCK_DELIVERIES_LIST_TABLE);
             db.execSQL(CREATE_PRODUCTS_SORT_TABLE);
             db.execSQL(CREATE_TABLE_DEVICE_LATLANG);
+            db.execSQL(CREATE_TABLE_DASHBOARD_PENDINGINDENT);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -4566,6 +4592,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     productsBean.setProductUom(c.getString(c.getColumnIndex(KEY_PRODUCT_UOM)));
                    // productsBean.setProductType("S");
                     String inStQ = c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY));
+                    Log.i("InStock",inStQ+"@@@");
                     if (inStQ != null) {
                         productsBean.setProductStock(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY))));
                     } else {
@@ -4988,6 +5015,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Cursor cursor = db.rawQuery(selectQuery, null);
 
             if (cursor.moveToFirst()) {
+
                 productOrderQuantities.add(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_PRODUCTCODE)));
                 productOrderQuantities.add(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_PRODUCTORDER_QUANTITY)));
                 productOrderQuantities.add(cursor.getString(cursor.getColumnIndex(KEY_TRIPSHEET_SO_ITEM_TYPE)));
@@ -8000,6 +8028,34 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+
+
+
+
+    public void insertDashboardPendingIndentDetails(ArrayList<DashboardPendingIndentBean> dashboardPendingIndent) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            for (int i = 0; i < dashboardPendingIndent.size(); i++) {
+                ContentValues values = new ContentValues();
+                values.put(KEY_ID, dashboardPendingIndent.get(i).getmID());
+                values.put(KEY_DATE, dashboardPendingIndent.get(i).getMselectedDate());
+                values.put(KEY_CATEGORY, dashboardPendingIndent.get(i).getmCategery());
+                values.put(KEY_LITRES, dashboardPendingIndent.get(i).getmLiters());
+                values.put(KEY_PENDING_COUNT, dashboardPendingIndent.get(i).getmPendingCount());
+                values.put(KEY_APPROVED_COUNT,dashboardPendingIndent.get(i).getmApprovedCount());
+                // insert row
+                db.insert(TABLE_DASHBOARD_PENDINGINDENTLIST, null, values);
+                values.clear();
+                System.out.println("DASHBOARD DATA INSERTED.....");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        db.close();
+    }
+
+
 
 
 }
