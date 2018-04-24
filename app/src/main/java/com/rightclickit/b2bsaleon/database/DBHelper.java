@@ -132,12 +132,13 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String TABLE_DASHBOARD_PENDINGINDENTLIST = "dashboard_pendingindent";
 
 
-
     // Column names for DashboardPendingIndent Table
     private final String KEY_ID = "increment_id";
-    private final String KEY_DATE= "date";
+    private final String KEY_DATE = "date";
+    private final String KEY_TIME = "time";
+    private final String KEY_CREATED_DATE = "created_date";
     private final String KEY_CATEGORY = "category";
-    private final String KEY_LITRES= "litres";
+    private final String KEY_LITRES = "litres";
     private final String KEY_PENDING_COUNT = "pending_count";
     private final String KEY_APPROVED_COUNT = "approved_count";
 
@@ -246,7 +247,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_PRICE = "price";
     private final String KEY_VAT = "vat";
     private final String KEY_GST = "gst";
-    private final String KEY_UOM= "uom";
+    private final String KEY_UOM = "uom";
     private final String KEY_TO_AGENTCODE = "to_agent_code";
     private final String KEY_TO_UPLOAD_STATUS = "to_upload_status";
 
@@ -547,11 +548,12 @@ public class DBHelper extends SQLiteOpenHelper {
     // Dashboard Pending Indent Table Create Statements
     private final String CREATE_TABLE_DASHBOARD_PENDINGINDENT = "CREATE TABLE IF NOT EXISTS "
             + TABLE_DASHBOARD_PENDINGINDENTLIST + "(" + KEY_ID + "  INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_DATE + " VARCHAR,"
+            + KEY_CREATED_DATE + " VARCHAR,"
+            + KEY_TIME + " VARCHAR,"
             + KEY_CATEGORY + " VARCHAR,"
             + KEY_LITRES + " VARCHAR,"
             + KEY_APPROVED_COUNT + " VARCHAR,"
             + KEY_PENDING_COUNT + " VARCHAR)";
-
 
 
     // Agents Table Create Statements
@@ -645,7 +647,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TDC_SOP_PRODUCT_ID + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_NAME + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_MRP + " VARCHAR, "
             + KEY_TDC_SOP_PRODUCT_QUANTITY + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_AMOUNT + " VARCHAR, " + KEY_TDC_SOP_PRODUCT_TAX + " TEXT, "
             + KEY_TDC_SOP_PRODUCT_TAX_AMOUNT + " TEXT, " + KEY_TDC_SOP_PRODUCT_CODE + " TEXT, " +
-            KEY_TDC_SOP_UOM + " TEXT, " +KEY_TDC_SOP_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
+            KEY_TDC_SOP_UOM + " TEXT, " + KEY_TDC_SOP_UPLOAD_STATUS + " INTEGER DEFAULT 0)";
 
     // Stakeholder types Table Create Statements
     private final String CREATE_TABLE_STAKEHOLDER_TYPES = "CREATE TABLE IF NOT EXISTS "
@@ -809,7 +811,7 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_TRIPSHEET_SO_PRODUCTS_COUNT + " VARCHAR,"
             + KEY_TRIPSHEET_SO_CRATES_DUE + " VARCHAR,"
             + KEY_TRIPSHEET_SO_ITEM_TYPE + " VARCHAR,"
-            + KEY_TRIPSHEET_SO_UOM+ " VARCHAR,"
+            + KEY_TRIPSHEET_SO_UOM + " VARCHAR,"
             + KEY_TRIPSHEET_SO_UNIT_PRICE + " VARCHAR,"
             + KEY_TRIPSHEET_SO_CANS_DUE + " INTEGER)";
 
@@ -1099,7 +1101,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-
     public long updateAgentDetails(ArrayList<AgentsBean> mAgentsBeansList, String userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         long id = 0;
@@ -1216,6 +1217,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return allDeviceTrackRecords;
     }
+
     /**
      * Method to insert user details
      *
@@ -1626,17 +1628,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return routeDetailsById;
     }
+
     public String getRouteNameByRouteId(String routeId) {
-        String rName="";
+        String rName = "";
         try {
-            String selectQuery = "SELECT  "+KEY_ROUTE_NAME+" FROM " + TABLE_ROUTESDETAILS + " WHERE " + KEY_ROUTE_ID + " = " + "'" + routeId + "'";
+            String selectQuery = "SELECT  " + KEY_ROUTE_NAME + " FROM " + TABLE_ROUTESDETAILS + " WHERE " + KEY_ROUTE_ID + " = " + "'" + routeId + "'";
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
 
             if (c.moveToFirst()) {
                 do {
-                   rName=c.getString(c.getColumnIndex(KEY_ROUTE_NAME));
+                    rName = c.getString(c.getColumnIndex(KEY_ROUTE_NAME));
                 } while (c.moveToNext());
             }
 
@@ -1648,6 +1651,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return rName;
     }
+
     public String getRouteNameByRouteCode(String routeCode) {
         String routeDetailsById = "";
         try {
@@ -2213,14 +2217,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
                 int ccc = checkProductExistsOrNot(takeOrderBeanArrayList.get(b).getmProductId(), takeOrderBeanArrayList.get(b).getmAgentId());
-                System.out.println("Product Exists:::: "+ ccc);
+                System.out.println("Product Exists:::: " + ccc);
                 if (ccc == 0) {
                     effectedRows = db.insert(TABLE_TO_PRODUCTS, null, values);
-                     System.out.println("IFFFFFF::: "+effectedRows);
+                    System.out.println("IFFFFFF::: " + effectedRows);
                 } else {
                     effectedRows = db.update(TABLE_TO_PRODUCTS, values, KEY_TO_PRODUCT_ID + " = ?" + " AND " + KEY_TO_AGENTID + " = ? ",
                             new String[]{String.valueOf(takeOrderBeanArrayList.get(b).getmProductId()), String.valueOf(takeOrderBeanArrayList.get(b).getmAgentId())});
-                     System.out.println("ELSEEE::: "+effectedRows);
+                    System.out.println("ELSEEE::: " + effectedRows);
                 }
                 //System.out.println("UpDATE PRICE::: " + takeOrderBeanArrayList.get(b).getmAgentPrice());
                 // update row
@@ -3227,6 +3231,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return alltripsheets;
     }
+
     /**
      * Method to fetch special prices for particular user
      */
@@ -3401,11 +3406,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_DELIVERY_USER_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_userCodes());
                 values.put(KEY_TRIPSHEET_DELIVERY_ROUTE_ID, tripSheetDeliveriesBean.getmTripsheetDelivery_routeId());
                 values.put(KEY_TRIPSHEET_DELIVERY_ROUTE_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_routeCodes());
-                if(tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes().endsWith("_F")){
+                if (tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes().endsWith("_F")) {
                     String[] parts = tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes().split("_");
                     values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES, parts[0]);
                     System.out.println(" IF INSERTED CODES::: " + tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes().split("_"));
-                }else {
+                } else {
                     values.put(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES, tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes());
                     System.out.println(" ELSE INSERTED CODES::: " + tripSheetDeliveriesBean.getmTripsheetDelivery_productCodes());
                 }
@@ -3691,15 +3696,15 @@ public class DBHelper extends SQLiteOpenHelper {
             */
 
 
-           // String selectQuery = "SELECT DISTINCT(tripsheet_returns_return_number) AS Tripsheet_Return_Number" +
-           //         ", COUNT(tripsheet_returns_return_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + userId + "'" + " GROUP BY " + KEY_TRIPSHEET_RETURNS_RETURN_NUMBER + " ORDER BY " + KEY_TRIPSHEET_RETURNS_CREATED_ON + " DESC ";
+            // String selectQuery = "SELECT DISTINCT(tripsheet_returns_return_number) AS Tripsheet_Return_Number" +
+            //         ", COUNT(tripsheet_returns_return_number) AS Total_COUNT  FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = '" + userId + "'" + " GROUP BY " + KEY_TRIPSHEET_RETURNS_RETURN_NUMBER + " ORDER BY " + KEY_TRIPSHEET_RETURNS_CREATED_ON + " DESC ";
             String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_USER_ID + " = " + "'" + userId + "'" + " ORDER BY " + KEY_TRIPSHEET_RETURNS_CREATED_ON + " DESC ";
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
-           // HashMap<String, String> records = new HashMap<>();
-           // if (c.moveToFirst()) {
-           //     do {
-           //         records.put(c.getString(c.getColumnIndex("Tripsheet_Return_Number")), c.getString(c.getColumnIndex("Total_COUNT")));
+            // HashMap<String, String> records = new HashMap<>();
+            // if (c.moveToFirst()) {
+            //     do {
+            //         records.put(c.getString(c.getColumnIndex("Tripsheet_Return_Number")), c.getString(c.getColumnIndex("Total_COUNT")));
 //                    AgentDeliveriesBean returndeliveriesBean = new AgentDeliveriesBean();
 //                    returndeliveriesBean.setTripNo(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_NUMBER)));
 //                    returndeliveriesBean.setTripDate(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDON)));
@@ -3707,43 +3712,43 @@ public class DBHelper extends SQLiteOpenHelper {
 //                    returndeliveriesBean.setDeliveredItems(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_SALEVALUE)));
 //                    returndeliveriesBean.setDeliveredBy(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_CREATEDBY)));
 //                    deliveriesBean.add(returndeliveriesBean);
-               // } while (c.moveToNext());
-           // }
+            // } while (c.moveToNext());
+            // }
             //for (Map.Entry<String, String> entry : records.entrySet()) {
-              //  String key = entry.getKey();
-              //  String value = entry.getValue();
-               // selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + key + "'" + " ORDER BY " + KEY_TRIPSHEET_RETURNS_CREATED_ON + " DESC ";
-              //  c = db.rawQuery(selectQuery, null);
-              //  boolean rerun = true;
-                if (c.moveToFirst()) {
-                    do {
-                      //  if (rerun) {
-                            TripSheetReturnsBean tripReturnsBean = new TripSheetReturnsBean();
-                            tripReturnsBean.setmTripshhetReturnsReturn_no(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NO)));
-                            tripReturnsBean.setmTripshhetReturnsReturn_number(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER)));
-                            tripReturnsBean.setmTripshhetReturnsTrip_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TRIP_ID)));
-                            tripReturnsBean.setmTripshhetReturns_so_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_SO_ID)));
-                            tripReturnsBean.setmTripshhetReturns_so_code(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_SO_CODE)));
-                            tripReturnsBean.setmTripshhetReturnsUser_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_ID)));
-                            tripReturnsBean.setmTripshhetReturnsUser_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_CODES)));
-                            tripReturnsBean.setmTripshhetReturnsRoute_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_ROUTE_ID)));
-                            tripReturnsBean.setmTripshhetReturnsRoute_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_ROUTE_CODES)));
-                            tripReturnsBean.setmTripshhetReturnsProduct_ids(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)));
-                            tripReturnsBean.setmTripshhetReturnsProduct_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
-                            tripReturnsBean.setmTripshhetReturnsQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY)));
-                            tripReturnsBean.setmTripshhetReturnsType(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TYPE)));
-                            tripReturnsBean.setmTripshhetReturnsStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_STATUS)));
-                            tripReturnsBean.setmTripshhetReturnsDelete(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_DELETE)));
-                            tripReturnsBean.setmTripshhetReturnsCreated_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_BY)));
-                            tripReturnsBean.setmTripshhetReturnsCreated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_ON)));
-                            tripReturnsBean.setmTripshhetReturnsUpdated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_UPDATED_ON)));
-                            tripReturnsBean.setmTripshhetReturnsUpdated_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_UPDATED_BY)));
-                          //  tripReturnsBean.setReturnsItemsCount(value);
-                            agentsreturnsBean.add(tripReturnsBean);
-                          //  rerun = false;
-                     //   }
-                    } while (c.moveToNext());
-                }
+            //  String key = entry.getKey();
+            //  String value = entry.getValue();
+            // selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + key + "'" + " ORDER BY " + KEY_TRIPSHEET_RETURNS_CREATED_ON + " DESC ";
+            //  c = db.rawQuery(selectQuery, null);
+            //  boolean rerun = true;
+            if (c.moveToFirst()) {
+                do {
+                    //  if (rerun) {
+                    TripSheetReturnsBean tripReturnsBean = new TripSheetReturnsBean();
+                    tripReturnsBean.setmTripshhetReturnsReturn_no(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NO)));
+                    tripReturnsBean.setmTripshhetReturnsReturn_number(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_RETURN_NUMBER)));
+                    tripReturnsBean.setmTripshhetReturnsTrip_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TRIP_ID)));
+                    tripReturnsBean.setmTripshhetReturns_so_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_SO_ID)));
+                    tripReturnsBean.setmTripshhetReturns_so_code(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_SO_CODE)));
+                    tripReturnsBean.setmTripshhetReturnsUser_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_ID)));
+                    tripReturnsBean.setmTripshhetReturnsUser_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_USER_CODES)));
+                    tripReturnsBean.setmTripshhetReturnsRoute_id(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_ROUTE_ID)));
+                    tripReturnsBean.setmTripshhetReturnsRoute_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_ROUTE_CODES)));
+                    tripReturnsBean.setmTripshhetReturnsProduct_ids(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCTS_IDS)));
+                    tripReturnsBean.setmTripshhetReturnsProduct_codes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_PRODUCT_CODES)));
+                    tripReturnsBean.setmTripshhetReturnsQuantity(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_QUANTITY)));
+                    tripReturnsBean.setmTripshhetReturnsType(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_TYPE)));
+                    tripReturnsBean.setmTripshhetReturnsStatus(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_STATUS)));
+                    tripReturnsBean.setmTripshhetReturnsDelete(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_DELETE)));
+                    tripReturnsBean.setmTripshhetReturnsCreated_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_BY)));
+                    tripReturnsBean.setmTripshhetReturnsCreated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_CREATED_ON)));
+                    tripReturnsBean.setmTripshhetReturnsUpdated_on(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_UPDATED_ON)));
+                    tripReturnsBean.setmTripshhetReturnsUpdated_by(c.getString(c.getColumnIndex(KEY_TRIPSHEET_RETURNS_UPDATED_BY)));
+                    //  tripReturnsBean.setReturnsItemsCount(value);
+                    agentsreturnsBean.add(tripReturnsBean);
+                    //  rerun = false;
+                    //   }
+                } while (c.moveToNext());
+            }
 
             //}
             c.close();
@@ -4064,7 +4069,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 values.put(KEY_TRIPSHEET_PAYMENTS_CHEQUE_UPLOAD_STATUS, 1);
                 values.put(KEY_TRIPSHEET_PAYMENTS_PAYMENT_NUMBER, paymentsBean.getPayments_paymentsNumber());
                 values.put(KEY_TRIPSHEET_PAYMENTS_UPLOAD_STATUS, "1");
-                values.put(KEY_PAYMENT_FIRST_NAME,paymentsBean.getFirst_name());
+                values.put(KEY_PAYMENT_FIRST_NAME, paymentsBean.getFirst_name());
 
                 int noOfRecordsExisted = checkProductExistsInTripSheetPaymentsTable(paymentsBean.getPayments_saleOrderId(),
                         paymentsBean.getPayments_userId(), paymentsBean.getPayments_paymentsNumber());
@@ -4129,7 +4134,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(KEY_TRIPSHEET_PAYMENTS_RECEIVED_AMOUNT, paymentsBean.getPayments_receivedAmount());
             values.put(KEY_TRIPSHEET_PAYMENTS_CHEQUE_PATH, paymentsBean.getPayments_cheque_image_path());
             values.put(KEY_TRIPSHEET_PAYMENTS_CHEQUE_UPLOAD_STATUS, paymentsBean.getPayments_cheque_upload_status());
-            values.put(KEY_PAYMENT_FIRST_NAME,paymentsBean.getFirst_name());
+            values.put(KEY_PAYMENT_FIRST_NAME, paymentsBean.getFirst_name());
 
             //int noOfRecordsExisted = checkTripsheetPaymentsRecordExistsOrNot(paymentsBean.getPayments_tripsheetId(), paymentsBean.getPayments_saleOrderId());
 
@@ -4590,9 +4595,9 @@ public class DBHelper extends SQLiteOpenHelper {
                     productsBean.setProductvat((c.getString(c.getColumnIndex(KEY_PRODUCT_VAT_PRICE))));
                     productsBean.setProductOrderedQuantity(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_ORDER_QUANTITY))));
                     productsBean.setProductUom(c.getString(c.getColumnIndex(KEY_PRODUCT_UOM)));
-                   // productsBean.setProductType("S");
+                    // productsBean.setProductType("S");
                     String inStQ = c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY));
-                    Log.i("InStock",inStQ+"@@@");
+                    Log.i("InStock", inStQ + "@@@");
                     if (inStQ != null) {
                         productsBean.setProductStock(Double.parseDouble(c.getString(c.getColumnIndex(KEY_TRIPSHEET_STOCK_IN_STOCK_QUANTITY))));
                     } else {
@@ -5947,15 +5952,15 @@ public class DBHelper extends SQLiteOpenHelper {
         return productuom;
     }
 
-    public ArrayList<String[]> getdeliveryDetailsPreview(String userId,String tripId) {
+    public ArrayList<String[]> getdeliveryDetailsPreview(String userId, String tripId) {
 
         ArrayList<String[]> arList = null;
         try {
             String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_NUMBER + " = " + "'" + userId + "'"
                     + " AND " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + "'" + tripId + "'";
-                   // + " AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + " = " + "'" + agentSoId + "'";
-          //  String selectQuery = "SELECT  * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_NUMBER + " = " + userId + " AND " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + tripId + "";
-          // String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE tripsheet_delivery_number  = '" + userId + "'" + " AND " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + "";
+            // + " AND " + KEY_TRIPSHEET_DELIVERY_SO_ID + " = " + "'" + agentSoId + "'";
+            //  String selectQuery = "SELECT  * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE " + KEY_TRIPSHEET_DELIVERY_NUMBER + " = " + userId + " AND " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + " = " + tripId + "";
+            // String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_DELIVERIES_LIST + " WHERE tripsheet_delivery_number  = '" + userId + "'" + " AND " + KEY_TRIPSHEET_DELIVERY_TRIP_ID + "";
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
             arList = new ArrayList<>(c.getCount());
@@ -6103,14 +6108,14 @@ public class DBHelper extends SQLiteOpenHelper {
         return agentsreturnsBean;
     }
 
-    public ArrayList<String[]> getreturnDetailsPreview(String userId,String tripId) {
+    public ArrayList<String[]> getreturnDetailsPreview(String userId, String tripId) {
         String obamount = "0.0";
         ArrayList<String[]> arList = null;
         try {
 
             String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE " + KEY_TRIPSHEET_RETURNS_RETURN_NUMBER + " = " + "'" + userId + "'"
                     + " AND " + KEY_TRIPSHEET_RETURNS_TRIP_ID + " = " + "'" + tripId + "'";
-           // String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + userId + "'";
+            // String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_RETURNS_LIST + " WHERE tripsheet_returns_return_number  = '" + userId + "'";
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
             arList = new ArrayList<>(c.getCount());
@@ -6209,7 +6214,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-
     public ArrayList<String[]> getpaymentDetailsPreview(String userId, String tripId) {
         //ArrayList<AgentPaymentsBean> paymentsBean = new ArrayList<>();
         ArrayList<String[]> arList = null;
@@ -6280,15 +6284,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-
-
     public ArrayList<PaymentsBean> getpaymentDetailsForAgents(String userId) {
         ArrayList<PaymentsBean> paymentsBean = new ArrayList<>();
 
         try {
             // By Sekhar
             SQLiteDatabase db = this.getReadableDatabase();
-            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_USER_ID+ " = '" + userId + "'" + " ORDER BY " + KEY_TRIPSHEET_PAYMENTS_DATE + " DESC ";
+            String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_USER_ID + " = '" + userId + "'" + " ORDER BY " + KEY_TRIPSHEET_PAYMENTS_DATE + " DESC ";
 /*
             String selectQuery = "SELECT * FROM " + TABLE_TRIPSHEETS_PAYMENTS_LIST + " WHERE " + KEY_TRIPSHEET_PAYMENTS_USER_ID
                     + " = '" + userId + "'";*/
@@ -7054,10 +7056,10 @@ public class DBHelper extends SQLiteOpenHelper {
                     tripDeliveriesBean.setmTripsheetDelivery_routeId(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_ROUTE_ID)));
                     tripDeliveriesBean.setmTripsheetDelivery_routeCodes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_ROUTE_CODES)));
                     String pId = c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_IDS));
-                    if(pId.endsWith("_F")){
+                    if (pId.endsWith("_F")) {
                         String[] parts = pId.split("_");
                         tripDeliveriesBean.setmTripsheetDelivery_productId(parts[0]);
-                    }else {
+                    } else {
                         tripDeliveriesBean.setmTripsheetDelivery_productId(pId);
                     }
                     tripDeliveriesBean.setmTripsheetDelivery_productCodes(c.getString(c.getColumnIndex(KEY_TRIPSHEET_DELIVERY_PRODUCT_CODES)));
@@ -7089,6 +7091,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return alltripsheetsDeliveries;
     }
+
     /**
      * Method to fetch all tripsheets returns list baed on tripsheet id from Tripsheets returns list table
      */
@@ -7140,7 +7143,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public int checkRetailerExistsOrNot(String s, String loginId) {
         int maxID = 0;
-        Log.i("customer id@@@"+s,"loginId@@@"+loginId);
+        Log.i("customer id@@@" + s, "loginId@@@" + loginId);
         String selectQuery = "SELECT  * FROM " + TABLE_TDC_CUSTOMERS
                 + " WHERE " + KEY_TDC_CUSTOMER_USER_ID + "='" + s + "'"
                 + " AND " + KEY_TDC_CUSTOMER_CHECK_UNIQUE_ID + "='" + loginId + "'";
@@ -8030,32 +8033,106 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    /**
+     * Pending indents insert method
+     *
+     * @param categories,liters,pendingcount,approvedcount,indentdate,indentTIme,createdDate
+     */
 
-
-    public void insertDashboardPendingIndentDetails(ArrayList<DashboardPendingIndentBean> dashboardPendingIndent) {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void insertDashboardPendingIndentDetails(String categories, String ltrs, String pendingCount, String approvedCount, String indentDate, String indentTime,String createdDate) {
         try {
-            for (int i = 0; i < dashboardPendingIndent.size(); i++) {
-                ContentValues values = new ContentValues();
-                values.put(KEY_ID, dashboardPendingIndent.get(i).getmID());
-                values.put(KEY_DATE, dashboardPendingIndent.get(i).getMselectedDate());
-                values.put(KEY_CATEGORY, dashboardPendingIndent.get(i).getmCategery());
-                values.put(KEY_LITRES, dashboardPendingIndent.get(i).getmLiters());
-                values.put(KEY_PENDING_COUNT, dashboardPendingIndent.get(i).getmPendingCount());
-                values.put(KEY_APPROVED_COUNT,dashboardPendingIndent.get(i).getmApprovedCount());
-                // insert row
-                db.insert(TABLE_DASHBOARD_PENDINGINDENTLIST, null, values);
-                values.clear();
-                System.out.println("DASHBOARD DATA INSERTED.....");
+            ContentValues values = new ContentValues();
+            values.put(KEY_DATE, indentDate);
+            values.put(KEY_CREATED_DATE, createdDate);
+            values.put(KEY_TIME, indentTime);
+            values.put(KEY_CATEGORY, categories);
+            values.put(KEY_LITRES, ltrs);
+            if (pendingCount == null) {
+                values.put(KEY_PENDING_COUNT, "0");
+            } else {
+                values.put(KEY_PENDING_COUNT, pendingCount);
             }
+            if (approvedCount == null) {
+                values.put(KEY_APPROVED_COUNT, "0");
+            } else {
+                values.put(KEY_APPROVED_COUNT, approvedCount);
+            }
+            long rec = checkIndentExistsOrNot(indentDate);
+            SQLiteDatabase db = this.getWritableDatabase();
+            if (rec == 0) {
+                // Insert row
+                long l = db.insert(TABLE_DASHBOARD_PENDINGINDENTLIST, null, values);
+                //System.out.println("DASHBOARD DATA INSERTED....." + l);
+            } else {
+                // Update row
+                long l = db.update(TABLE_DASHBOARD_PENDINGINDENTLIST, values, KEY_DATE + " = ?",
+                        new String[]{indentDate});
+                //System.out.println("DASHBOARD DATA UPDATED....." + l);
+            }
+            values.clear();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to fetch all un uploaded records from Agents Table
+     */
+    public ArrayList<String> fetchDashboardPendingIndentDetails(String curDate) {
+        ArrayList<String> allTDCCustomersList = new ArrayList<String>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_DASHBOARD_PENDINGINDENTLIST + " WHERE " + KEY_DATE
+                    + "='" + curDate + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_CATEGORY)));//0 categories
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_LITRES)));//1 liters
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_PENDING_COUNT)));//2 pendingcount
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_APPROVED_COUNT)));//3 approvedcount
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_CREATED_DATE)));//4 date
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_TIME)));//5 time
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        db.close();
+        return allTDCCustomersList;
     }
 
+    public int checkIndentExistsOrNot(String date) {
+        int noOfRecords = 0;
 
+        try {
+            String selectQuery = "SELECT " + KEY_DATE + " FROM " + TABLE_DASHBOARD_PENDINGINDENTLIST
+                    + " WHERE " + KEY_DATE + " = '" + date + "'";
+
+            SQLiteDatabase db1 = this.getReadableDatabase();
+            Cursor cursor = db1.rawQuery(selectQuery, null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfRecords = cursor.getCount();
+                cursor.close();
+            }
+
+            db1.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return noOfRecords;
+    }
 
 
 }

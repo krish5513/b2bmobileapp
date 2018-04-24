@@ -36,8 +36,13 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.loopj.android.http.AsyncHttpClient;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.models.DashboardModel;
 import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
+import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,11 +70,12 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
     private String mLatitude = "", mLongitude = "", mDeviceId = "", mProfilePic = "";
     SupportMapFragment mapFragment;
     Button taleorder;
-    LinearLayout delivery;
-    private boolean isSaveDeviceDetails,isMyProfilePrivilege;
-    TextView tvrouts_customerN;
+    LinearLayout delivery, pendingIndentsL;
+    private boolean isSaveDeviceDetails, isMyProfilePrivilege;
+    TextView tvrouts_customerN, Cat1, Cat2, Cat3, Ltr1, Ltr2, Ltr3, pendingInText, approvedInText, lastSyncedText;
 
-    public String selectedDate="";
+    public String selectedDate = "", mReportSelectedDateStr = "",mCurrentDate="";
+    private DashboardModel mReportsModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +86,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         setContentView(R.layout.activity_dashboard);
 
 
-
+        mReportsModel = new DashboardModel(DashboardActivity.this, this);
         mDBHelper = new DBHelper(DashboardActivity.this);
         mPreferences = new MMSharedPreferences(DashboardActivity.this);
 //       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -93,68 +99,85 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
-        if((month<=10)&&(day<10)) {
+        if ((month <= 10) && (day < 10)) {
             //tv.setText("0" + day + "/0" + (month+1) + "/" + year);
 
-            this.getSupportActionBar().setTitle("        0" + day + "-0" + (month+1) + "-" + year);
-        }else if (month<=10){
+            this.getSupportActionBar().setTitle("        0" + day + "-0" + (month + 1) + "-" + year);
+        } else if (month <= 10) {
             //tv.setText("" + day + "/0" + (month+1) + "/" + year);
-            this.getSupportActionBar().setTitle("        " + day + "-0" + (month+1) + "-" + year);
+            this.getSupportActionBar().setTitle("        " + day + "-0" + (month + 1) + "-" + year);
 
-        }else if (day<10){
+        } else if (day < 10) {
             //tv.setText("0" + day + "/" + (month+1) + "/" + year);
-            this.getSupportActionBar().setTitle("        0" + day + "-" + (month+1) + "-" + year);
+            this.getSupportActionBar().setTitle("        0" + day + "-" + (month + 1) + "-" + year);
 
-        }else {
+        } else {
             //tv.setText("" + day + "/" + (month+1) + "/" + year);
-            this.getSupportActionBar().setTitle("        " + day + "-" + (month+1) + "-" + year);
+            this.getSupportActionBar().setTitle("        " + day + "-" + (month + 1) + "-" + year);
 
         }
 
 
-        if((month<=10)&&(day<10)) {
+        if ((month <= 10) && (day < 10)) {
             //tv.setText("0" + day + "/0" + (month+1) + "/" + year);
-            selectedDate=("        0" + year + "-0" + (month+1) + "-" + day);
+            selectedDate = ("        0" + year + "-0" + (month + 1) + "-" + day);
+            mReportSelectedDateStr = "0" + year + "-0" + (month + 1) + "-" + day;
 
-
-        }else if (month<=10){
+        } else if (month <= 10) {
             //tv.setText("" + day + "/0" + (month+1) + "/" + year);
 
-            selectedDate=("        " + year + "-0" + (month+1) + "-" + day);
-        }else if (day<10){
+            selectedDate = ("        " + year + "-0" + (month + 1) + "-" + day);
+            mReportSelectedDateStr = year + "-0" + (month + 1) + "-" + day;
+        } else if (day < 10) {
             //tv.setText("0" + day + "/" + (month+1) + "/" + year);
 
-            selectedDate=("        0" + year + "-" + (month+1) + "-" + day);
-        }else {
+            selectedDate = ("        0" + year + "-" + (month + 1) + "-" + day);
+            mReportSelectedDateStr = "0" + year + "-0" + (month + 1) + "-" + day;
+        } else {
             //tv.setText("" + day + "/" + (month+1) + "/" + year);
 
-            selectedDate=("        " + year + "-" + (month+1) + "-" + day);
+            selectedDate = ("        " + year + "-" + (month + 1) + "-" + day);
+            mReportSelectedDateStr = year + (month + 1) + "-" + day;
         }
 
 
-         Log.i("Selecteddate",selectedDate);
-        tv_listView=(TextView) findViewById(R.id.tv_listView);
+        Log.i("Selecteddate", mReportSelectedDateStr);
+        tv_listView = (TextView) findViewById(R.id.tv_listView);
         tv_listView.setVisibility(View.GONE);
 
-        tv_mapView=(TextView) findViewById(R.id.tv_mapView);
+        tv_mapView = (TextView) findViewById(R.id.tv_mapView);
         tv_mapView.setVisibility(View.GONE);
 
-        listview=(LinearLayout) findViewById(R.id.ll_listview);
-      //  listview.setVisibility(View.GONE);
+        listview = (LinearLayout) findViewById(R.id.ll_listview);
+        //  listview.setVisibility(View.GONE);
 
-        mapview=(LinearLayout) findViewById(R.id.ll_mapview);
-      //  mapview.setVisibility(View.GONE);
+        mapview = (LinearLayout) findViewById(R.id.ll_mapview);
+        //  mapview.setVisibility(View.GONE);
 
-        taleorder=(Button)findViewById(R.id.btn_sale_ord1) ;
+        taleorder = (Button) findViewById(R.id.btn_sale_ord1);
         taleorder.setVisibility(View.GONE);
 
-        delivery=(LinearLayout) findViewById(R.id.gotoCustomer);
+        delivery = (LinearLayout) findViewById(R.id.gotoCustomer);
         delivery.setVisibility(View.GONE);
+
+        pendingIndentsL = (LinearLayout) findViewById(R.id.PendingIndentsLayout);
+
+        Cat1 = (TextView) findViewById(R.id.Cat1);
+        Cat2 = (TextView) findViewById(R.id.Cat2);
+        Cat3 = (TextView) findViewById(R.id.Cat3);
+
+        Ltr1 = (TextView) findViewById(R.id.Ltr1);
+        Ltr2 = (TextView) findViewById(R.id.Ltr2);
+        Ltr3 = (TextView) findViewById(R.id.Ltr3);
+
+        pendingInText = (TextView) findViewById(R.id.PendingIndentText);
+        approvedInText = (TextView) findViewById(R.id.ApprovedIndentText);
+
+        lastSyncedText = (TextView) findViewById(R.id.LastSyncedText);
 
         mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
         mDashBoardLayout.setVisibility(View.GONE);
@@ -235,8 +258,8 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         tv_listView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tv_listView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delivery_orange,0,0,0);
-                tv_mapView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mapview_grey,0,0,0);
+                tv_listView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delivery_orange, 0, 0, 0);
+                tv_mapView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mapview_grey, 0, 0, 0);
 //                line1.setBackgroundColor(Color.parseColor("#e99e3b"));
 //                line2.setBackgroundColor(Color.parseColor("#dbd7d7"));
                 //               linelist.setBackgroundColor(Color.parseColor("#e99e3b"));
@@ -248,8 +271,8 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         tv_mapView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tv_listView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delivery_grey,0,0,0);
-                tv_mapView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mapview_orange,0,0,0);
+                tv_listView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.delivery_grey, 0, 0, 0);
+                tv_mapView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_mapview_orange, 0, 0, 0);
 //                line2.setBackgroundColor(0xe99e3b);
 //                line1.setBackgroundColor(0xdbd7d7);
                 listview.setVisibility(View.GONE);
@@ -260,14 +283,14 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         taleorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(DashboardActivity.this,DashboardTakeorder.class);
+                Intent i = new Intent(DashboardActivity.this, DashboardTakeorder.class);
                 startActivity(i);
             }
         });
         delivery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(DashboardActivity.this,DashboardDelivery.class);
+                Intent i = new Intent(DashboardActivity.this, DashboardDelivery.class);
                 startActivity(i);
             }
         });
@@ -293,7 +316,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
                 mProductsLayout.setVisibility(View.VISIBLE);
             } else if (privilegesData.get(k).toString().equals("TDC")) {
                 mTDCLayout.setVisibility(View.VISIBLE);
-            }else if (privilegesData.get(k).toString().equals("Retailers")){
+            } else if (privilegesData.get(k).toString().equals("Retailers")) {
                 mRetailersLayout.setVisibility(View.VISIBLE);
             }
         }
@@ -314,28 +337,23 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
               mapview.setVisibility(View.VISIBLE);
                  }*/
 
-              else if (privilegeActionsData.get(z).toString().equals("list_view")) {
+            else if (privilegeActionsData.get(z).toString().equals("list_view")) {
                 tv_listView.setVisibility(View.VISIBLE);
-                }
-
-             else if (privilegeActionsData.get(z).toString().equals("list_view_delivery")) {
+            } else if (privilegeActionsData.get(z).toString().equals("list_view_delivery")) {
                 taleorder.setVisibility(View.VISIBLE);
 
-              }
-
-
-             else  if (privilegeActionsData.get(z).toString().equals("list_view_take_order")) {
+            } else if (privilegeActionsData.get(z).toString().equals("list_view_take_order")) {
                 delivery.setVisibility(View.VISIBLE);
-              }
+            }
 
 
-         }
+        }
 
         ArrayList<String> privilegeActionsData1 = mDBHelper.getUserActivityActionsDetailsByPrivilegeId(mPreferences.getString("Customers"));
         for (int z = 0; z < privilegeActionsData1.size(); z++) {
             if (privilegeActionsData1.get(z).toString().equals("my_profile")) {
                 isMyProfilePrivilege = true;
-                tvrouts_customerN=(TextView)findViewById(R.id.tvrouts_customerN);
+                tvrouts_customerN = (TextView) findViewById(R.id.tvrouts_customerN);
                 tvrouts_customerN.setText("Profile");
 
             }
@@ -348,8 +366,11 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
 
         startService(new Intent(DashboardActivity.this, SyncNotificationsListService.class));
 
-    }
 
+        // Code added by Sekhar Kuppa
+        nextDayIndents();
+
+    }
 
 
     //datepicker
@@ -364,7 +385,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
             int day = c.get(Calendar.DAY_OF_MONTH);
             DatePickerDialog dialog = new DatePickerDialog(getActivity(), this, year, month, day);
             dialog.getDatePicker().setMaxDate(c.getTimeInMillis());
-            return  dialog;
+            return dialog;
         }
 
         @SuppressLint("SetTextI18n")
@@ -392,34 +413,32 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
             if ((month <= 10) && (day < 10)) {
                 //tv.setText("0" + day + "/0" + (month + 1) + "/" + year);
 
-                selectedDate=("        0" + year + "-0" + (month + 1) + "-" + day);
+                selectedDate = ("        0" + year + "-0" + (month + 1) + "-" + day);
+                mReportSelectedDateStr = "0" + year + "-0" + (month + 1) + "-" + day;
             } else if (month <= 10) {
                 //tv.setText("" + day + "/0" + (month + 1) + "/" + year);
 
-                selectedDate=("        " + year + "-0" + (month + 1) + "-" + day);
+                selectedDate = ("        " + year + "-0" + (month + 1) + "-" + day);
+                mReportSelectedDateStr = year + "-0" + (month + 1) + "-" + day;
             } else if (day < 10) {
                 //tv.setText("0" + day + "/" + (month + 1) + "/" + year);
 
-                selectedDate=("        0" + year + "-" + (month + 1) + "-" + day);
+                selectedDate = ("        0" + year + "-" + (month + 1) + "-" + day);
+                mReportSelectedDateStr = "0" + year + "-0" + (month + 1) + "-" + day;
             } else {
                 //tv.setText("" + day + "/" + (month + 1) + "/" + year);
 
-                selectedDate=("        " + year + "-" + (month + 1) + "-" + day);
+                selectedDate = ("        " + year + "-" + (month + 1) + "-" + day);
+                mReportSelectedDateStr = year + (month + 1) + "-" + day;
             }
 
-            Log.i("Selecteddate",selectedDate);
-            mPreferences.putString("selectedDate",selectedDate);
+            Log.i("Selecteddate", mReportSelectedDateStr);
+            mPreferences.putString("selectedDate", selectedDate);
 
         }
 
 
-
-
-
-
-
     }
-
 
 
     @Override
@@ -453,6 +472,13 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
             Toast.makeText(this, "Clicked on Settings...", Toast.LENGTH_SHORT).show();
             return true;
         }
+        if (id == R.id.autorenew) {
+            if (new NetworkConnectionDetector(DashboardActivity.this).isNetworkConnected()) {
+                mReportsModel.getReportsData(mReportSelectedDateStr);
+            } else {
+                new NetworkConnectionDetector(DashboardActivity.this).displayNoNetworkError(DashboardActivity.this);
+            }
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -483,7 +509,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         menu.findItem(R.id.logout).setVisible(false);
         menu.findItem(R.id.action_search).setVisible(false);
 
-        menu.findItem( R.id.autorenew).setVisible(true);
+        menu.findItem(R.id.autorenew).setVisible(true);
         menu.findItem(R.id.sort).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -497,7 +523,6 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
             return false;
         }
     }
-
 
 
     @Override
@@ -530,5 +555,44 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         mMap.setMyLocationEnabled(true);
 
 
+    }
+
+    /**
+     * Method to display the next day indents data
+     */
+    public void nextDayIndents() {
+        ArrayList<String> indentDetails = mDBHelper.fetchDashboardPendingIndentDetails(mReportSelectedDateStr);
+        try {
+            if (indentDetails.size() > 0) {
+                JSONArray catArray = new JSONArray(indentDetails.get(0).toString());
+                JSONArray ltrArray = new JSONArray(indentDetails.get(1).toString());
+                Cat1.setText(catArray.get(0).toString());
+                Cat2.setText(catArray.get(1).toString());
+                Cat3.setText(catArray.get(2).toString());
+
+                Ltr1.setText(ltrArray.get(0).toString());
+                Ltr2.setText(ltrArray.get(1).toString());
+                Ltr3.setText(ltrArray.get(2).toString());
+
+                if (indentDetails.get(2).toString().equals("null")) {
+                    pendingInText.setText("Indent: 0");
+                } else {
+                    pendingInText.setText("Indent: " + indentDetails.get(2).toString());
+                }
+
+                if (indentDetails.get(3).toString().equals("null")) {
+                    approvedInText.setText("Approved: 0");
+                } else {
+                    approvedInText.setText("Approved: " + indentDetails.get(2).toString());
+                }
+                // Display time and date from the indentDetails object keys as 4 and 5
+                lastSyncedText.setText("Last synced at: " + "\n"
+                        + indentDetails.get(4).toString() + " " + indentDetails.get(5).toString());
+            } else {
+                // Display empty message that to refresh the sync button
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

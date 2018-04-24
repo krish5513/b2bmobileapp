@@ -618,6 +618,7 @@
 
 
                 <LinearLayout
+                    android:id="@+id/PendingIndentsLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -628,24 +629,47 @@
                     android:layout_marginBottom="10dp"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        >
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="Next Day Indent"
-                            android:textAllCaps="true"
-                            android:textColor="@color/greydark"
-                            android:textSize="16sp" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:orientation="horizontal" >
 
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="Next Day Indent"
+                                android:textAllCaps="true"
+                                android:textColor="@color/greydark"
+                                android:textSize="16sp"
+                                android:layout_marginLeft="10dp"/>
 
-                    </LinearLayout>
+                        </LinearLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true">
+
+                            <TextView
+                                android:id="@+id/LastSyncedText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="Last Synced At:"
+                                android:textAllCaps="true"
+                                android:textColor="@color/greydark"
+                                android:textSize="10sp"
+                                android:layout_marginRight="10dp"/>
+                        </RelativeLayout>
+                    </RelativeLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -713,6 +737,7 @@
                                 android:orientation="horizontal"
                                 >
                                 <TextView
+                                    android:id="@+id/Cat1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="F.milk,U.Milk,Curd"
@@ -723,6 +748,7 @@
                                     android:gravity="start"
                                     android:textSize="12sp" />
                                 <TextView
+                                    android:id="@+id/Ltr1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -747,6 +773,7 @@
                                 android:orientation="horizontal"
                                 >
                                 <TextView
+                                    android:id="@+id/Cat2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="SFM,Sweets,Paneer"
@@ -757,6 +784,7 @@
                                     android:gravity="start"
                                     android:textSize="12sp" />
                                 <TextView
+                                    android:id="@+id/Ltr2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -781,6 +809,7 @@
                                 android:orientation="horizontal"
                                 >
                                 <TextView
+                                    android:id="@+id/Cat3"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Frozen Products"
@@ -791,6 +820,7 @@
                                     android:gravity="start"
                                     android:textSize="12sp" />
                                 <TextView
+                                    android:id="@+id/Ltr3"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -821,6 +851,7 @@
                         android:orientation="horizontal"
                         >
                         <TextView
+                            android:id="@+id/PendingIndentText"
                             android:layout_weight="0.1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -831,6 +862,7 @@
                             android:textColor="@color/greydark"
                             android:textSize="12sp" />
                         <TextView
+                            android:id="@+id/ApprovedIndentText"
                             android:layout_weight="0.1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
