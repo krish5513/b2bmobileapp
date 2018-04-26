@@ -312,7 +312,13 @@ public class Constants {
     // Device location details url
     public static final String DEVICE_LOCATION_DETAILS_URL = "/device/log_add";
 
-    // Agents approved orders
+    // Dashboard nextdayindent url
     public static final String GET_DASHBOARD_REPORTS_URL = "/b2b_quality/common/mobile_report";
+
+    // Dashboard Deliveries url
+    public static final String GET_DASHBOARD_DELIVERIES_URL = "/b2b_quality/common/mobile_report1";
+
+    // Dashboard Payments url
+    public static final String GET_DASHBOARD_PAYMENTS_URL = "/b2b_quality/common/mobile_report2";
 
 }

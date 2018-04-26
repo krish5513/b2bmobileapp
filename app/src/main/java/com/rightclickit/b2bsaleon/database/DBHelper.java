@@ -130,6 +130,10 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // This table contains dashboard pending indents
     private final String TABLE_DASHBOARD_PENDINGINDENTLIST = "dashboard_pendingindent";
+    // This table contains dashboard deliveries
+    private final String TABLE_DASHBOARD_DELIVERYLIST  = "dashboard_deliveries";
+    // This table contains dashboard payments
+    private final String TABLE_DASHBOARD_PAYMENTLIST  = "dashboard_payments";
 
 
     // Column names for DashboardPendingIndent Table
@@ -141,6 +145,27 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_LITRES = "litres";
     private final String KEY_PENDING_COUNT = "pending_count";
     private final String KEY_APPROVED_COUNT = "approved_count";
+
+
+    // Column names for DashboardTodaydelivery Table
+    private final String KEY_DASHBOARD_DELIVERY_ID = "division_id";
+    private final String KEY_DASHBOARD_DELIVERY_DATE= "delivery_date";
+    private final String KEY_DASHBOARD_DELIVERY_TIME = "time";
+    private final String KEY_DASHBOARD_DELIVERY_CREATED_DATE = "created_date";
+    private final String KEY_DASHBOARD_DELIVERY_CATEGORY = "delivery_category";
+    private final String KEY_DASHBOARD_DELIVERY_ORDERVALUE= "ordervalue";
+    private final String KEY_DASHBOARD_DELIVERY_DELIVERYVALUE = "deliveryvalue";
+    private final String KEY_DASHBOARD_DELIVERY_PERCENTAGEVALUE = "percentagevalue";
+
+    // Column names for DashboardTodaypayments Table
+    private final String KEY_DASHBOARD_PAYMENTS_ID = "payments_id";
+    private final String KEY_DASHBOARD_PAYMENTS_DATE= "payment_date";
+    private final String KEY_DASHBOARD_PAYMENT_TIME = "time";
+    private final String KEY_DASHBOARD_PAYMENT_CREATED_DATE = "created_date";
+    private final String KEY_DASHBOARD_PAYMENTS_DELIVERYVALUE= "payment_deliveryvalue";
+    private final String KEY_DASHBOARD_PAYMENTS_RECEIVEDVALUE = "payment_receivedvalue";
+    private final String KEY_DASHBOARD_PAYMENTS_DUEVALUE= "payment_duevalue";
+
 
 
     // Column names for User Table
@@ -555,6 +580,28 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_APPROVED_COUNT + " VARCHAR,"
             + KEY_PENDING_COUNT + " VARCHAR)";
 
+    // Dashboard Deliveries Table Create Statements
+    private final String CREATE_TABLE_DASHBOARD_DELIVERIES = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_DASHBOARD_DELIVERYLIST + "(" + KEY_DASHBOARD_DELIVERY_ID + "  INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_DASHBOARD_DELIVERY_DATE + " VARCHAR,"
+            + KEY_DASHBOARD_DELIVERY_TIME + " VARCHAR,"
+            + KEY_DASHBOARD_DELIVERY_CREATED_DATE + " VARCHAR,"
+            + KEY_DASHBOARD_DELIVERY_CATEGORY + " VARCHAR,"
+            + KEY_DASHBOARD_DELIVERY_ORDERVALUE + " VARCHAR,"
+            + KEY_DASHBOARD_DELIVERY_DELIVERYVALUE + " VARCHAR,"
+            + KEY_DASHBOARD_DELIVERY_PERCENTAGEVALUE + " VARCHAR)";
+
+
+    // Dashboard Payments Table Create Statements
+    private final String CREATE_TABLE_DASHBOARD_PAYMENTS = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_DASHBOARD_PAYMENTLIST + "(" + KEY_DASHBOARD_PAYMENTS_ID + "  INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_DASHBOARD_PAYMENTS_DATE + " VARCHAR,"
+            + KEY_DASHBOARD_PAYMENT_TIME + " VARCHAR,"
+            + KEY_DASHBOARD_PAYMENT_CREATED_DATE + " VARCHAR,"
+            + KEY_DASHBOARD_PAYMENTS_DELIVERYVALUE + " VARCHAR,"
+            + KEY_DASHBOARD_PAYMENTS_RECEIVEDVALUE + " VARCHAR,"
+
+            + KEY_DASHBOARD_PAYMENTS_DUEVALUE + " VARCHAR)";
+
+
 
     // Agents Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
@@ -922,6 +969,8 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_PRODUCTS_SORT_TABLE);
             db.execSQL(CREATE_TABLE_DEVICE_LATLANG);
             db.execSQL(CREATE_TABLE_DASHBOARD_PENDINGINDENT);
+            db.execSQL(CREATE_TABLE_DASHBOARD_DELIVERIES);
+            db.execSQL(CREATE_TABLE_DASHBOARD_PAYMENTS);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -8133,6 +8182,211 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return noOfRecords;
     }
+
+
+
+    /**
+     * dashboard deliveries insert method
+     *
+     * @param categories,ordered,delivered,percentage,indentdate,indentTIme,createdDate
+     */
+
+    public void insertDashboardDeliveryDetails(String categories, String ordered, String delivered, String percentage, String indentDate, String indentTime,String createdDate) {
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_DASHBOARD_DELIVERY_DATE, indentDate);
+            values.put(KEY_DASHBOARD_DELIVERY_CREATED_DATE, createdDate);
+            values.put(KEY_DASHBOARD_DELIVERY_TIME, indentTime);
+            values.put(KEY_DASHBOARD_DELIVERY_CATEGORY, categories);
+            values.put(KEY_DASHBOARD_DELIVERY_ORDERVALUE, ordered);
+            values.put(KEY_DASHBOARD_DELIVERY_DELIVERYVALUE,delivered);
+            values.put(KEY_DASHBOARD_DELIVERY_PERCENTAGEVALUE,percentage);
+
+            long rec = checkDeliveriesExistsOrNot(indentDate);
+            SQLiteDatabase db = this.getWritableDatabase();
+            if (rec == 0) {
+                // Insert row
+                long l = db.insert(TABLE_DASHBOARD_DELIVERYLIST, null, values);
+                //System.out.println("DASHBOARD DATA INSERTED....." + l);
+            } else {
+                // Update row
+                long l = db.update(TABLE_DASHBOARD_DELIVERYLIST, values, KEY_DASHBOARD_DELIVERY_DATE + " = ?",
+                        new String[]{indentDate});
+                //System.out.println("DASHBOARD DATA UPDATED....." + l);
+            }
+            values.clear();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to fetch all un uploaded records from Agents Table
+     */
+    public ArrayList<String> fetchDashboardDeliveriesDetails(String curDate) {
+        ArrayList<String> allTDCCustomersList = new ArrayList<String>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_DASHBOARD_DELIVERYLIST + " WHERE " + KEY_DASHBOARD_DELIVERY_DATE
+                    + "='" + curDate + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_DASHBOARD_DELIVERY_CATEGORY)));//0 categories
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_DASHBOARD_DELIVERY_ORDERVALUE)));//1 liters
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_DASHBOARD_DELIVERY_DELIVERYVALUE)));//2 pendingcount
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_DASHBOARD_DELIVERY_PERCENTAGEVALUE)));//3 approvedcount
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_DASHBOARD_DELIVERY_CREATED_DATE)));//4 date
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_DASHBOARD_DELIVERY_TIME)));//5 time
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allTDCCustomersList;
+    }
+
+    public int checkDeliveriesExistsOrNot(String date) {
+        int noOfRecords = 0;
+
+        try {
+            String selectQuery = "SELECT " + KEY_DASHBOARD_DELIVERY_DATE + " FROM " + TABLE_DASHBOARD_DELIVERYLIST
+                    + " WHERE " + KEY_DASHBOARD_DELIVERY_DATE + " = '" + date + "'";
+
+            SQLiteDatabase db1 = this.getReadableDatabase();
+            Cursor cursor = db1.rawQuery(selectQuery, null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfRecords = cursor.getCount();
+                cursor.close();
+            }
+
+            db1.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return noOfRecords;
+    }
+
+
+    /**
+     * dashboard payments insert method
+     *
+     * @param delivered,received,due,indentdate,indentTIme,createdDate
+     */
+
+    public void insertDashboardPaymentsDetails(String delivered, String received, String due, String indentDate, String indentTime,String createdDate) {
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_DASHBOARD_PAYMENTS_DATE, indentDate);
+            values.put(KEY_DASHBOARD_PAYMENT_CREATED_DATE, createdDate);
+            values.put(KEY_DASHBOARD_PAYMENT_TIME, indentTime);
+
+            if (delivered == null) {
+                values.put(KEY_DASHBOARD_PAYMENTS_DELIVERYVALUE, "0");
+            } else {
+                values.put(KEY_DASHBOARD_PAYMENTS_DELIVERYVALUE, delivered);
+            }
+            if (received == null) {
+                values.put(KEY_DASHBOARD_PAYMENTS_RECEIVEDVALUE, "0");
+            } else {
+                values.put(KEY_DASHBOARD_PAYMENTS_RECEIVEDVALUE, received);
+            }
+
+            if (due == null) {
+                values.put(KEY_DASHBOARD_PAYMENTS_DUEVALUE, "0");
+            } else {
+                values.put(KEY_DASHBOARD_PAYMENTS_DUEVALUE, due);
+            }
+            long rec = checkPaymentsExistsOrNot(indentDate);
+            SQLiteDatabase db = this.getWritableDatabase();
+            if (rec == 0) {
+                // Insert row
+                long l = db.insert(TABLE_DASHBOARD_PAYMENTLIST, null, values);
+                //System.out.println("DASHBOARD DATA INSERTED....." + l);
+            } else {
+                // Update row
+                long l = db.update(TABLE_DASHBOARD_PAYMENTLIST, values, KEY_DASHBOARD_PAYMENTS_DATE + " = ?",
+                        new String[]{indentDate});
+                //System.out.println("DASHBOARD DATA UPDATED....." + l);
+            }
+            values.clear();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method to fetch all un uploaded records from Agents Table
+     */
+    public ArrayList<String> fetchDashboardPaymentsDetails(String curDate) {
+        ArrayList<String> allTDCCustomersList = new ArrayList<String>();
+
+        try {
+            String selectQuery = "SELECT * FROM " + TABLE_DASHBOARD_PAYMENTLIST + " WHERE " + KEY_DASHBOARD_PAYMENTS_DATE
+                    + "='" + curDate + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_DASHBOARD_PAYMENTS_DELIVERYVALUE)));//0 categories
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_DASHBOARD_PAYMENTS_RECEIVEDVALUE)));//1 liters
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_DASHBOARD_PAYMENTS_DUEVALUE)));//2 pendingcount
+
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_DASHBOARD_PAYMENT_CREATED_DATE)));//4 date
+                    allTDCCustomersList.add(c.getString(c.getColumnIndex(KEY_DASHBOARD_PAYMENT_TIME)));//5 time
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return allTDCCustomersList;
+    }
+
+    public int checkPaymentsExistsOrNot(String date) {
+        int noOfRecords = 0;
+
+        try {
+            String selectQuery = "SELECT " + KEY_DASHBOARD_PAYMENTS_DATE + " FROM " + TABLE_DASHBOARD_PAYMENTLIST
+                    + " WHERE " + KEY_DASHBOARD_PAYMENTS_DATE + " = '" + date + "'";
+
+            SQLiteDatabase db1 = this.getReadableDatabase();
+            Cursor cursor = db1.rawQuery(selectQuery, null);
+
+            if (cursor != null) {
+                cursor.moveToFirst();
+                noOfRecords = cursor.getCount();
+                cursor.close();
+            }
+
+            db1.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return noOfRecords;
+    }
+
+
 
 
 }

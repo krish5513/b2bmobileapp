@@ -1,906 +1,906 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
-INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
-INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
-INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
-MERGED from [com.android.support:design:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5e08f5e454e78af57f88306ced0ae65d\AndroidManifest.xml:17:1-31:12
-MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\showhidepasswordedittext-0.6.aar\487fa21e55031c1b28061a764b7cc51c\AndroidManifest.xml:2:1-14:12
-MERGED from [com.yayandroid:LocationManager:2.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\LocationManager-2.0.1.aar\cce43326dc9ff01bdab48e60e4477d5d\AndroidManifest.xml:2:1-12:12
-MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\calligraphy-2.2.0.aar\0049a31ee76b895ee41c1ac69a4b44fe\AndroidManifest.xml:2:1-13:12
-MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\88a778f0b775d159aff029dbab980558\AndroidManifest.xml:2:1-19:12
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\577bfd34549fcdcc3b31db51eadc1dd2\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\dfbd46a72aba73bf6f50863cf24c2754\AndroidManifest.xml:2:1-11:12
-MERGED from [com.android.volley:volley:1.0.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\volley-1.0.0.aar\b9fd62ebad49951477a06c44039f3857\AndroidManifest.xml:2:1-11:12
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:20:1-40:12
-MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-places-10.2.0.aar\57f7c2ccadedfad787d36f41c0277a54\AndroidManifest.xml:16:1-19:12
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\25b83f6e33aadba7ac39e7b632ddaea0\AndroidManifest.xml:16:1-25:12
-MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-location-10.2.0.aar\7358fb134d082b85e694c2e3967b9a03\AndroidManifest.xml:2:1-5:12
-MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\butterknife-8.5.1.aar\f1c4de7d2d6eae7ed1cbe4ad07e3313d\AndroidManifest.xml:2:1-7:12
-MERGED from [com.android.support:multidex:1.0.2] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\3962d31db98607092be06ec6e76ea16d\AndroidManifest.xml:17:1-22:12
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\2d35768da3f316630e82c8e246f616e8\AndroidManifest.xml:17:1-26:12
-MERGED from [com.android.support:transition:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\18695b7fc5d8bf60e2ecb161cb7c4b93\AndroidManifest.xml:17:1-28:12
-MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\80f6d1cc0645158b1a5f1da099275ec4\AndroidManifest.xml:16:1-21:12
-MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-tasks-10.2.0.aar\2374d99a12e9726fafb8937f402f873d\AndroidManifest.xml:2:1-5:12
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\fa63b97bcc7108ccaca65fb175308887\AndroidManifest.xml:16:1-23:12
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\d415600dc0efc05adc17cb77949d9876\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\61e6a810611bd8c667f9b2ca5d291463\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\e99d45200ea3293af582da3ea85e08a8\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\6f79f872462f53db3dab50524f261ae4\AndroidManifest.xml:17:1-28:12
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\a84017c2ec680cccd5e55ce3a22189f5\AndroidManifest.xml:17:1-28:12
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dbf3b507dad66fe9846dced6d0364b30\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\b9924dfbd4d614f23bc51bc62b52af5e\AndroidManifest.xml:17:1-31:12
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\fe7a6f292c0a1cc1d3f176044e6f01ba\AndroidManifest.xml:17:1-31:12
-INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
-INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
-INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
+INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
+INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
+INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
+MERGED from [com.android.support:design:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fb399b6d8818e5e06f485231c7c60ffd\AndroidManifest.xml:17:1-31:12
+MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\showhidepasswordedittext-0.6.aar\3382468786e37a4a482bfbb126c29c83\AndroidManifest.xml:2:1-14:12
+MERGED from [com.yayandroid:LocationManager:2.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\LocationManager-2.0.1.aar\c0f0ebba12be06517fffc1c8b4a47045\AndroidManifest.xml:2:1-12:12
+MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\calligraphy-2.2.0.aar\66fbfeee883893f77b8fbf83ddcf5ad9\AndroidManifest.xml:2:1-13:12
+MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:2:1-19:12
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\25da492c11ee723699aa42c0c3fe6842\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\6ba3110d000649643f549472dc4be7e3\AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.volley:volley:1.0.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\volley-1.0.0.aar\35e9abc6d4d1cb8b57e616cafb61fb05\AndroidManifest.xml:2:1-11:12
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:20:1-40:12
+MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-places-10.2.0.aar\ce7f6b2573a1b147213081df611ccb62\AndroidManifest.xml:16:1-19:12
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\2d3c0847ad1fed93666f35261f44cf62\AndroidManifest.xml:16:1-25:12
+MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-location-10.2.0.aar\57a07004c49ccbf96506ae28b4128b79\AndroidManifest.xml:2:1-5:12
+MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\butterknife-8.5.1.aar\a8d886f85da2a21b4dc0ea0bb378efc3\AndroidManifest.xml:2:1-7:12
+MERGED from [com.android.support:multidex:1.0.2] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\d6a1a69590397abafd56863f95fe12ae\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\e82a36f4d057b28a483fc1764cb6e337\AndroidManifest.xml:17:1-26:12
+MERGED from [com.android.support:transition:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\c3edc12ec3ac119b8b08c73287f0a71e\AndroidManifest.xml:17:1-28:12
+MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\a6d96cd46e75ed336fbe4eee2c8efbaa\AndroidManifest.xml:16:1-21:12
+MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-tasks-10.2.0.aar\f744ba5d43116fe08721cf264717cf27\AndroidManifest.xml:2:1-5:12
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\39fe2a296fa892ad53823376d92549a7\AndroidManifest.xml:16:1-23:12
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\b2313db5851eb85d11688160a224b9c0\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2bf2c4874976956fc201aaea4bbf6469\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\48b37d62a8e6ac27a998982e03b1658e\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\9816121430f404940aeb349865097ec0\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\cb958dc28f2ef855e074924ea67575bd\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dd457890e7775bd360d530f8d4ec17b4\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\12d424e00ff8876bc732873f0d917465\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f75afe47c7e0798e1c13ee9ac014a02a\AndroidManifest.xml:17:1-31:12
+INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
+INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
+INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
 	package
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:4:5-41
-		INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:4:5-41
+		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
-		INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
+		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
 	xmlns:tools
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:3:5-51
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:3:5-51
 	android:versionCode
-		INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
-		INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:1-364:12
+		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:2:11-69
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:6:5-67
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:29:5-67
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:29:5-67
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\25b83f6e33aadba7ac39e7b632ddaea0\AndroidManifest.xml:20:5-66
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\25b83f6e33aadba7ac39e7b632ddaea0\AndroidManifest.xml:20:5-66
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:6:5-67
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:29:5-67
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:29:5-67
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\2d3c0847ad1fed93666f35261f44cf62\AndroidManifest.xml:20:5-66
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\2d3c0847ad1fed93666f35261f44cf62\AndroidManifest.xml:20:5-66
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:6:22-64
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:6:22-64
 uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:7:5-79
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\25b83f6e33aadba7ac39e7b632ddaea0\AndroidManifest.xml:19:5-78
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\25b83f6e33aadba7ac39e7b632ddaea0\AndroidManifest.xml:19:5-78
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:7:5-79
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\2d3c0847ad1fed93666f35261f44cf62\AndroidManifest.xml:19:5-78
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\2d3c0847ad1fed93666f35261f44cf62\AndroidManifest.xml:19:5-78
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:7:22-76
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:7:22-76
 uses-feature#android.hardware.camera
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:9:5-11:35
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:9:5-11:35
 	android:required
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:11:9-32
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:11:9-32
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:10:9-47
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:10:9-47
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:13:5-81
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:13:5-81
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:13:22-78
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:13:22-78
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:14:5-80
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:14:5-80
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:14:22-77
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:14:22-77
 uses-permission#android.permission.READ_PHONE_STATE
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:15:5-74
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:15:5-74
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:15:22-72
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:15:22-72
 uses-permission#com.rightclickit.b2bsaleon.permisssion.MAPS_RECEIVE
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:17:5-91
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:17:5-91
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:17:22-88
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:17:22-88
 uses-permission#com.google.android.providers.gsf.permission.READ_GSERVICES
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:19:5-98
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:19:5-98
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:19:22-95
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:19:22-95
 uses-permission#android.permission.ACCESS_COARSE_LOCATION
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:20:5-81
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:20:5-81
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:20:22-78
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:20:22-78
 uses-permission#android.permission.ACCESS_FINE_LOCATION
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:21:5-79
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:21:5-79
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:21:22-76
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:21:22-76
 uses-permission#android.permission.INSTALL_LOCATION_PROVIDER
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:22:5-23:47
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:22:5-23:47
 	tools:ignore
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:23:9-44
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:23:9-44
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:22:22-81
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:22:22-81
 application
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:25:5-362:19
-MERGED from [com.android.support:design:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5e08f5e454e78af57f88306ced0ae65d\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:design:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5e08f5e454e78af57f88306ced0ae65d\AndroidManifest.xml:29:5-20
-MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\showhidepasswordedittext-0.6.aar\487fa21e55031c1b28061a764b7cc51c\AndroidManifest.xml:11:5-12:19
-MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\showhidepasswordedittext-0.6.aar\487fa21e55031c1b28061a764b7cc51c\AndroidManifest.xml:11:5-12:19
-MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\calligraphy-2.2.0.aar\0049a31ee76b895ee41c1ac69a4b44fe\AndroidManifest.xml:11:5-20
-MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\calligraphy-2.2.0.aar\0049a31ee76b895ee41c1ac69a4b44fe\AndroidManifest.xml:11:5-20
-MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\88a778f0b775d159aff029dbab980558\AndroidManifest.xml:11:5-17:19
-MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\88a778f0b775d159aff029dbab980558\AndroidManifest.xml:11:5-17:19
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\577bfd34549fcdcc3b31db51eadc1dd2\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\577bfd34549fcdcc3b31db51eadc1dd2\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\dfbd46a72aba73bf6f50863cf24c2754\AndroidManifest.xml:9:5-20
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\dfbd46a72aba73bf6f50863cf24c2754\AndroidManifest.xml:9:5-20
-MERGED from [com.android.volley:volley:1.0.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\volley-1.0.0.aar\b9fd62ebad49951477a06c44039f3857\AndroidManifest.xml:9:5-20
-MERGED from [com.android.volley:volley:1.0.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\volley-1.0.0.aar\b9fd62ebad49951477a06c44039f3857\AndroidManifest.xml:9:5-20
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:32:5-38:19
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:32:5-38:19
-MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-places-10.2.0.aar\57f7c2ccadedfad787d36f41c0277a54\AndroidManifest.xml:18:5-19
-MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-places-10.2.0.aar\57f7c2ccadedfad787d36f41c0277a54\AndroidManifest.xml:18:5-19
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\25b83f6e33aadba7ac39e7b632ddaea0\AndroidManifest.xml:24:5-19
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\25b83f6e33aadba7ac39e7b632ddaea0\AndroidManifest.xml:24:5-19
-MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-location-10.2.0.aar\7358fb134d082b85e694c2e3967b9a03\AndroidManifest.xml:4:5-19
-MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-location-10.2.0.aar\7358fb134d082b85e694c2e3967b9a03\AndroidManifest.xml:4:5-19
-MERGED from [com.android.support:transition:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\18695b7fc5d8bf60e2ecb161cb7c4b93\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:transition:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\18695b7fc5d8bf60e2ecb161cb7c4b93\AndroidManifest.xml:26:5-20
-MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\80f6d1cc0645158b1a5f1da099275ec4\AndroidManifest.xml:18:5-20:19
-MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\80f6d1cc0645158b1a5f1da099275ec4\AndroidManifest.xml:18:5-20:19
-MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-tasks-10.2.0.aar\2374d99a12e9726fafb8937f402f873d\AndroidManifest.xml:4:5-19
-MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-tasks-10.2.0.aar\2374d99a12e9726fafb8937f402f873d\AndroidManifest.xml:4:5-19
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\fa63b97bcc7108ccaca65fb175308887\AndroidManifest.xml:19:5-21:19
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\fa63b97bcc7108ccaca65fb175308887\AndroidManifest.xml:19:5-21:19
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\d415600dc0efc05adc17cb77949d9876\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\d415600dc0efc05adc17cb77949d9876\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\61e6a810611bd8c667f9b2ca5d291463\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\61e6a810611bd8c667f9b2ca5d291463\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\e99d45200ea3293af582da3ea85e08a8\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\e99d45200ea3293af582da3ea85e08a8\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\6f79f872462f53db3dab50524f261ae4\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\6f79f872462f53db3dab50524f261ae4\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\a84017c2ec680cccd5e55ce3a22189f5\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\a84017c2ec680cccd5e55ce3a22189f5\AndroidManifest.xml:26:5-20
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dbf3b507dad66fe9846dced6d0364b30\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dbf3b507dad66fe9846dced6d0364b30\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\b9924dfbd4d614f23bc51bc62b52af5e\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\b9924dfbd4d614f23bc51bc62b52af5e\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\fe7a6f292c0a1cc1d3f176044e6f01ba\AndroidManifest.xml:29:5-20
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\fe7a6f292c0a1cc1d3f176044e6f01ba\AndroidManifest.xml:29:5-20
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:25:5-362:19
+MERGED from [com.android.support:design:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fb399b6d8818e5e06f485231c7c60ffd\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:design:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fb399b6d8818e5e06f485231c7c60ffd\AndroidManifest.xml:29:5-20
+MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\showhidepasswordedittext-0.6.aar\3382468786e37a4a482bfbb126c29c83\AndroidManifest.xml:11:5-12:19
+MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\showhidepasswordedittext-0.6.aar\3382468786e37a4a482bfbb126c29c83\AndroidManifest.xml:11:5-12:19
+MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\calligraphy-2.2.0.aar\66fbfeee883893f77b8fbf83ddcf5ad9\AndroidManifest.xml:11:5-20
+MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\calligraphy-2.2.0.aar\66fbfeee883893f77b8fbf83ddcf5ad9\AndroidManifest.xml:11:5-20
+MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:11:5-17:19
+MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:11:5-17:19
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\25da492c11ee723699aa42c0c3fe6842\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\25da492c11ee723699aa42c0c3fe6842\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\6ba3110d000649643f549472dc4be7e3\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\6ba3110d000649643f549472dc4be7e3\AndroidManifest.xml:9:5-20
+MERGED from [com.android.volley:volley:1.0.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\volley-1.0.0.aar\35e9abc6d4d1cb8b57e616cafb61fb05\AndroidManifest.xml:9:5-20
+MERGED from [com.android.volley:volley:1.0.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\volley-1.0.0.aar\35e9abc6d4d1cb8b57e616cafb61fb05\AndroidManifest.xml:9:5-20
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:32:5-38:19
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:32:5-38:19
+MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-places-10.2.0.aar\ce7f6b2573a1b147213081df611ccb62\AndroidManifest.xml:18:5-19
+MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-places-10.2.0.aar\ce7f6b2573a1b147213081df611ccb62\AndroidManifest.xml:18:5-19
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\2d3c0847ad1fed93666f35261f44cf62\AndroidManifest.xml:24:5-19
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\2d3c0847ad1fed93666f35261f44cf62\AndroidManifest.xml:24:5-19
+MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-location-10.2.0.aar\57a07004c49ccbf96506ae28b4128b79\AndroidManifest.xml:4:5-19
+MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-location-10.2.0.aar\57a07004c49ccbf96506ae28b4128b79\AndroidManifest.xml:4:5-19
+MERGED from [com.android.support:transition:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\c3edc12ec3ac119b8b08c73287f0a71e\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:transition:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\c3edc12ec3ac119b8b08c73287f0a71e\AndroidManifest.xml:26:5-20
+MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\a6d96cd46e75ed336fbe4eee2c8efbaa\AndroidManifest.xml:18:5-20:19
+MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\a6d96cd46e75ed336fbe4eee2c8efbaa\AndroidManifest.xml:18:5-20:19
+MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-tasks-10.2.0.aar\f744ba5d43116fe08721cf264717cf27\AndroidManifest.xml:4:5-19
+MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-tasks-10.2.0.aar\f744ba5d43116fe08721cf264717cf27\AndroidManifest.xml:4:5-19
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\39fe2a296fa892ad53823376d92549a7\AndroidManifest.xml:19:5-21:19
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\39fe2a296fa892ad53823376d92549a7\AndroidManifest.xml:19:5-21:19
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\b2313db5851eb85d11688160a224b9c0\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\b2313db5851eb85d11688160a224b9c0\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2bf2c4874976956fc201aaea4bbf6469\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2bf2c4874976956fc201aaea4bbf6469\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\48b37d62a8e6ac27a998982e03b1658e\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\48b37d62a8e6ac27a998982e03b1658e\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\9816121430f404940aeb349865097ec0\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\9816121430f404940aeb349865097ec0\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\cb958dc28f2ef855e074924ea67575bd\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\cb958dc28f2ef855e074924ea67575bd\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dd457890e7775bd360d530f8d4ec17b4\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dd457890e7775bd360d530f8d4ec17b4\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\12d424e00ff8876bc732873f0d917465\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\12d424e00ff8876bc732873f0d917465\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f75afe47c7e0798e1c13ee9ac014a02a\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f75afe47c7e0798e1c13ee9ac014a02a\AndroidManifest.xml:29:5-20
 	android:supportsRtl
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:32:9-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:32:9-35
 	android:label
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:29:9-41
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:29:9-41
 	android:hardwareAccelerated
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:27:9-43
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:27:9-43
 	android:roundIcon
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:31:9-44
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:31:9-44
 	android:largeHeap
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:30:9-33
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:30:9-33
 	android:icon
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:28:9-37
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:28:9-37
 	android:allowBackup
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:26:9-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:26:9-35
 	android:theme
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:33:9-40
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:33:9-40
 meta-data#com.google.android.geo.API_KEY
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:34:9-36:71
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:34:9-36:71
 	android:value
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:36:13-68
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:36:13-68
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:35:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:35:13-58
 meta-data#com.google.android.gms.version
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:37:9-39:69
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\fa63b97bcc7108ccaca65fb175308887\AndroidManifest.xml:20:9-121
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\fa63b97bcc7108ccaca65fb175308887\AndroidManifest.xml:20:9-121
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:37:9-39:69
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\39fe2a296fa892ad53823376d92549a7\AndroidManifest.xml:20:9-121
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\39fe2a296fa892ad53823376d92549a7\AndroidManifest.xml:20:9-121
 	android:value
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:39:13-66
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:39:13-66
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:38:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:38:13-58
 activity#com.rightclickit.b2bsaleon.activities.SplashScreenActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:41:9-51:20
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:41:9-51:20
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:44:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:44:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:45:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:45:13-52
 	android:configChanges
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:43:13-74
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:43:13-74
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:42:13-60
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:42:13-60
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:46:13-50:29
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:46:13-50:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:47:17-69
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:47:17-69
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:47:25-66
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:47:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:49:17-77
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:49:17-77
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:49:27-74
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:49:27-74
 activity#com.rightclickit.b2bsaleon.activities.LoginActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:52:9-56:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:52:9-56:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:55:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:55:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:56:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:56:13-52
 	android:configChanges
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:54:13-74
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:54:13-74
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:53:13-53
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:53:13-53
 activity#com.rightclickit.b2bsaleon.activities.DashboardActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:57:9-61:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:57:9-61:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:60:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:60:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:61:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:61:13-52
 	android:configChanges
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:59:13-74
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:59:13-74
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:58:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:58:13-57
 activity#com.rightclickit.b2bsaleon.activities.SettingsActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:62:9-65:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:62:9-65:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:64:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:64:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:65:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:65:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:63:13-56
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:63:13-56
 activity#com.rightclickit.b2bsaleon.activities.NotificationsActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:66:9-69:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:66:9-69:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:68:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:68:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:69:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:69:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:67:13-61
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:67:13-61
 service#com.rightclickit.b2bsaleon.services.SyncRoutesMasterDetailsService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:72:9-75:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:72:9-75:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:74:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:74:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:75:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:75:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:73:13-68
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:73:13-68
 service#com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:78:9-81:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:78:9-81:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:80:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:80:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:81:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:81:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:79:13-63
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:79:13-63
 service#com.rightclickit.b2bsaleon.services.SyncTakeOrdersService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:84:9-87:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:84:9-87:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:86:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:86:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:87:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:87:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:85:13-59
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:85:13-59
 activity#com.rightclickit.b2bsaleon.activities.Products_Activity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:89:9-92:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:89:9-92:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:91:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:91:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:92:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:92:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:90:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:90:13-57
 activity#com.rightclickit.b2bsaleon.activities.AgentsActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:93:9-96:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:93:9-96:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:95:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:95:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:96:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:96:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:94:13-54
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:94:13-54
 activity#com.rightclickit.b2bsaleon.activities.AgentsInfoActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:97:9-100:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:97:9-100:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:99:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:99:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:100:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:100:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:98:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:98:13-58
 activity#com.rightclickit.b2bsaleon.activities.ProductInfoActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:101:9-104:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:101:9-104:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:103:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:103:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:104:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:104:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:102:13-59
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:102:13-59
 activity#com.rightclickit.b2bsaleon.activities.Agents_AddActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:105:9-108:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:105:9-108:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:107:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:107:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:108:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:108:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:106:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:106:13-58
 activity#com.rightclickit.b2bsaleon.activities.AgentTakeOrderScreen
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:109:9-112:54
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:109:9-112:54
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:111:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:111:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:112:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:112:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:110:13-60
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:110:13-60
 activity#com.rightclickit.b2bsaleon.activities.AgentViewActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:113:9-116:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:113:9-116:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:115:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:115:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:116:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:116:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:114:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:114:13-57
 activity#com.rightclickit.b2bsaleon.activities.TDCSalesActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:117:9-120:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:117:9-120:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:119:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:119:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:120:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:120:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:118:13-56
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:118:13-56
 activity#com.rightclickit.b2bsaleon.activities.TripSheetsActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:121:9-124:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:121:9-124:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:123:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:123:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:124:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:124:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:122:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:122:13-58
 activity#com.rightclickit.b2bsaleon.activities.TripSheetView
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:125:9-128:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:125:9-128:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:127:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:127:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:128:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:128:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:126:13-53
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:126:13-53
 activity#com.rightclickit.b2bsaleon.activities.TripSheetStock
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:129:9-132:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:129:9-132:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:131:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:131:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:132:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:132:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:130:13-54
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:130:13-54
 activity#com.rightclickit.b2bsaleon.activities.TripSheetViewPreview
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:133:9-136:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:133:9-136:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:135:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:135:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:136:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:136:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:134:13-60
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:134:13-60
 activity#com.rightclickit.b2bsaleon.activities.TripsheetStockPreview
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:137:9-140:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:137:9-140:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:139:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:139:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:140:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:140:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:138:13-61
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:138:13-61
 activity#com.rightclickit.b2bsaleon.activities.AgentDeliveries
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:141:9-144:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:141:9-144:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:143:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:143:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:144:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:144:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:142:13-55
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:142:13-55
 activity#com.rightclickit.b2bsaleon.activities.AgentTDC_Order
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:145:9-148:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:145:9-148:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:147:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:147:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:148:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:148:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:146:13-54
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:146:13-54
 activity#com.rightclickit.b2bsaleon.activities.AgentPayments
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:149:9-152:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:149:9-152:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:151:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:151:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:152:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:152:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:150:13-53
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:150:13-53
 activity#com.rightclickit.b2bsaleon.activities.AgentReturns
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:153:9-156:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:153:9-156:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:155:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:155:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:156:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:156:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:154:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:154:13-52
 activity#com.rightclickit.b2bsaleon.activities.AgentDeliveriesView
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:157:9-160:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:157:9-160:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:159:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:159:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:160:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:160:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:158:13-59
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:158:13-59
 activity#com.rightclickit.b2bsaleon.activities.ProductStock
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:161:9-164:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:161:9-164:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:163:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:163:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:164:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:164:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:162:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:162:13-52
 activity#com.rightclickit.b2bsaleon.activities.AgentPaymentsView
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:165:9-168:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:165:9-168:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:167:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:167:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:168:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:168:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:166:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:166:13-57
 activity#com.rightclickit.b2bsaleon.activities.AgentReturnsView
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:169:9-172:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:169:9-172:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:171:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:171:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:172:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:172:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:170:13-56
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:170:13-56
 activity#com.rightclickit.b2bsaleon.activities.AgentsTDC_View
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:173:9-176:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:173:9-176:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:175:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:175:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:176:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:176:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:174:13-54
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:174:13-54
 activity#com.rightclickit.b2bsaleon.activities.TDCSalesCustomerSelectionActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:177:9-180:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:177:9-180:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:179:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:179:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:180:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:180:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:178:13-73
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:178:13-73
 activity#com.rightclickit.b2bsaleon.activities.TDCSales_Preview_PrintActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:181:9-184:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:181:9-184:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:183:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:183:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:184:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:184:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:182:13-70
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:182:13-70
 activity#com.rightclickit.b2bsaleon.activities.TDCSalesListActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:185:9-188:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:185:9-188:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:187:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:187:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:188:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:188:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:186:13-60
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:186:13-60
 activity#com.rightclickit.b2bsaleon.activities.DashboardTakeorder
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:189:9-192:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:189:9-192:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:191:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:191:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:192:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:192:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:190:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:190:13-58
 activity#com.rightclickit.b2bsaleon.activities.DashboardTakeorderPreview
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:193:9-196:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:193:9-196:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:195:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:195:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:196:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:196:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:194:13-65
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:194:13-65
 activity#com.rightclickit.b2bsaleon.activities.DashboardDelivery
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:197:9-200:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:197:9-200:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:199:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:199:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:200:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:200:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:198:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:198:13-57
 activity#com.rightclickit.b2bsaleon.activities.DashboardReturns
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:201:9-204:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:201:9-204:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:203:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:203:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:204:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:204:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:202:13-56
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:202:13-56
 activity#com.rightclickit.b2bsaleon.activities.DashboardPayments
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:205:9-208:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:205:9-208:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:207:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:207:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:208:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:208:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:206:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:206:13-57
 activity#com.rightclickit.b2bsaleon.activities.DashboardDeliveryPreview
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:209:9-212:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:209:9-212:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:211:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:211:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:212:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:212:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:210:13-64
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:210:13-64
 activity#com.rightclickit.b2bsaleon.activities.RetailersActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:213:9-216:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:213:9-216:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:215:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:215:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:216:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:216:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:214:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:214:13-57
 activity#com.rightclickit.b2bsaleon.activities.Retailers_AddActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:217:9-220:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:217:9-220:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:219:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:219:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:220:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:220:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:218:13-61
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:218:13-61
 activity#com.rightclickit.b2bsaleon.activities.Retailers_PaymentsActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:221:9-224:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:221:9-224:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:223:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:223:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:224:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:224:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:222:13-66
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:222:13-66
 activity#com.rightclickit.b2bsaleon.activities.AgentTakeOrderPreview
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:225:9-227:52
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:225:9-227:52
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:227:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:227:13-49
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:226:13-61
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:226:13-61
 activity#com.rightclickit.b2bsaleon.activities.TripsheetTakeorder
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:228:9-231:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:228:9-231:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:230:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:230:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:231:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:231:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:229:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:229:13-58
 activity#com.rightclickit.b2bsaleon.activities.TripsheetDelivery
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:232:9-235:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:232:9-235:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:234:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:234:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:235:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:235:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:233:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:233:13-57
 activity#com.rightclickit.b2bsaleon.activities.TripsheetTakeorderPreview
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:236:9-238:52
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:236:9-238:52
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:238:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:238:13-49
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:237:13-65
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:237:13-65
 activity#com.rightclickit.b2bsaleon.activities.TripsheetReturns
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:239:9-242:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:239:9-242:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:241:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:241:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:242:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:242:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:240:13-56
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:240:13-56
 activity#com.rightclickit.b2bsaleon.activities.TripsheetDeliveryPreview
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:243:9-246:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:243:9-246:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:245:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:245:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:246:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:246:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:244:13-64
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:244:13-64
 activity#com.rightclickit.b2bsaleon.activities.TripsheetPayments
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:247:9-250:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:247:9-250:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:249:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:249:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:250:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:250:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:248:13-57
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:248:13-57
 activity#com.rightclickit.b2bsaleon.activities.RouteStock
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:251:9-254:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:251:9-254:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:253:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:253:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:254:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:254:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:252:13-50
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:252:13-50
 activity#com.rightclickit.b2bsaleon.activities.AgentMapFullScreen
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:256:9-258:61
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:256:9-258:61
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:258:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:258:13-49
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:257:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:257:13-58
 service#com.rightclickit.b2bsaleon.services.SyncSpecialPriceService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:261:9-264:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:261:9-264:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:263:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:263:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:264:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:264:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:262:13-61
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:262:13-61
 service#com.rightclickit.b2bsaleon.services.SyncTDCSalesOrderService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:267:9-270:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:267:9-270:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:269:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:269:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:270:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:270:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:268:13-62
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:268:13-62
 service#com.rightclickit.b2bsaleon.services.SyncStakeHolderTypesService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:273:9-276:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:273:9-276:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:275:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:275:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:276:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:276:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:274:13-65
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:274:13-65
 service#com.rightclickit.b2bsaleon.services.SyncTripSheetsListService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:279:9-282:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:279:9-282:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:281:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:281:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:282:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:282:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:280:13-63
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:280:13-63
 service#com.rightclickit.b2bsaleon.services.SyncTDCCustomersService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:285:9-288:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:285:9-288:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:287:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:287:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:288:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:288:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:286:13-61
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:286:13-61
 service#com.rightclickit.b2bsaleon.services.SyncNotificationsListService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:289:9-292:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:289:9-292:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:291:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:291:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:292:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:292:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:290:13-66
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:290:13-66
 service#com.rightclickit.b2bsaleon.services.SyncTripSheetsStockService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:295:9-298:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:295:9-298:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:297:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:297:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:298:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:298:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:296:13-64
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:296:13-64
 service#com.rightclickit.b2bsaleon.services.SyncTripSheetsPaymentsService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:301:9-304:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:301:9-304:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:303:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:303:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:304:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:304:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:302:13-67
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:302:13-67
 service#com.rightclickit.b2bsaleon.services.SyncTripsheetDeliveriesService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:305:9-308:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:305:9-308:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:307:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:307:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:308:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:308:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:306:13-68
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:306:13-68
 service#com.rightclickit.b2bsaleon.services.SyncTripsheetReturnsService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:309:9-312:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:309:9-312:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:311:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:311:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:312:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:312:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:310:13-65
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:310:13-65
 activity#com.rightclickit.b2bsaleon.activities.TripsheetReturnsPreview
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:314:9-317:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:314:9-317:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:316:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:316:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:317:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:317:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:315:13-63
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:315:13-63
 activity#com.rightclickit.b2bsaleon.activities.TripsheetPaymentsPreview
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:318:9-321:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:318:9-321:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:320:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:320:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:321:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:321:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:319:13-64
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:319:13-64
 activity#com.rightclickit.b2bsaleon.activities.AgentAddPayment
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:322:9-325:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:322:9-325:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:324:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:324:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:325:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:325:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:323:13-55
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:323:13-55
 activity#com.rightclickit.b2bsaleon.activities.AgentAddPaymentPreview
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:326:9-329:55
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:326:9-329:55
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:328:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:328:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:329:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:329:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:327:13-62
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:327:13-62
 activity#com.rightclickit.b2bsaleon.activities.AgentStockActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:330:9-333:64
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:330:9-333:64
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:332:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:332:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:333:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:333:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:331:13-58
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:331:13-58
 activity#com.rightclickit.b2bsaleon.activities.AgentStockDeliveryActivity
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:334:9-337:64
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:334:9-337:64
 	android:screenOrientation
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:336:13-49
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:336:13-49
 	android:windowSoftInputMode
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:337:13-52
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:337:13-52
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:335:13-66
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:335:13-66
 service#com.rightclickit.b2bsaleon.services.SyncAgentStockDeliveriesService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:339:9-342:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:339:9-342:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:341:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:341:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:342:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:342:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:340:13-69
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:340:13-69
 service#com.rightclickit.b2bsaleon.services.SyncCloseTripSheetsStockService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:344:9-347:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:344:9-347:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:346:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:346:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:347:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:347:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:345:13-69
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:345:13-69
 service#com.rightclickit.b2bsaleon.services.DeviceLocationService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:349:9-352:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:349:9-352:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:351:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:351:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:352:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:352:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:350:13-59
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:350:13-59
 service#com.rightclickit.b2bsaleon.services.SyncDeviceLocationDetailsService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:353:9-356:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:353:9-356:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:355:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:355:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:356:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:356:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:354:13-70
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:354:13-70
 service#com.rightclickit.b2bsaleon.services.SyncAgentsService
-ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:358:9-361:39
+ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:358:9-361:39
 	android:enabled
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:360:13-35
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:360:13-35
 	android:exported
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:361:13-36
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:361:13-36
 	android:name
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml:359:13-55
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml:359:13-55
 uses-sdk
-INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
-INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
-MERGED from [com.android.support:design:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5e08f5e454e78af57f88306ced0ae65d\AndroidManifest.xml:21:5-23:62
-MERGED from [com.android.support:design:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5e08f5e454e78af57f88306ced0ae65d\AndroidManifest.xml:21:5-23:62
-MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\showhidepasswordedittext-0.6.aar\487fa21e55031c1b28061a764b7cc51c\AndroidManifest.xml:7:5-9:41
-MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\showhidepasswordedittext-0.6.aar\487fa21e55031c1b28061a764b7cc51c\AndroidManifest.xml:7:5-9:41
-MERGED from [com.yayandroid:LocationManager:2.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\LocationManager-2.0.1.aar\cce43326dc9ff01bdab48e60e4477d5d\AndroidManifest.xml:8:5-10:41
-MERGED from [com.yayandroid:LocationManager:2.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\LocationManager-2.0.1.aar\cce43326dc9ff01bdab48e60e4477d5d\AndroidManifest.xml:8:5-10:41
-MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\calligraphy-2.2.0.aar\0049a31ee76b895ee41c1ac69a4b44fe\AndroidManifest.xml:7:5-9:41
-MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\calligraphy-2.2.0.aar\0049a31ee76b895ee41c1ac69a4b44fe\AndroidManifest.xml:7:5-9:41
-MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\88a778f0b775d159aff029dbab980558\AndroidManifest.xml:7:5-9:41
-MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\88a778f0b775d159aff029dbab980558\AndroidManifest.xml:7:5-9:41
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\577bfd34549fcdcc3b31db51eadc1dd2\AndroidManifest.xml:21:5-23:78
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\577bfd34549fcdcc3b31db51eadc1dd2\AndroidManifest.xml:21:5-23:78
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\dfbd46a72aba73bf6f50863cf24c2754\AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\dfbd46a72aba73bf6f50863cf24c2754\AndroidManifest.xml:5:5-7:41
-MERGED from [com.android.volley:volley:1.0.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\volley-1.0.0.aar\b9fd62ebad49951477a06c44039f3857\AndroidManifest.xml:7:5-43
-MERGED from [com.android.volley:volley:1.0.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\volley-1.0.0.aar\b9fd62ebad49951477a06c44039f3857\AndroidManifest.xml:7:5-43
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:25:5-27:41
-MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:25:5-27:41
-MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-places-10.2.0.aar\57f7c2ccadedfad787d36f41c0277a54\AndroidManifest.xml:17:5-43
-MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-places-10.2.0.aar\57f7c2ccadedfad787d36f41c0277a54\AndroidManifest.xml:17:5-43
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\25b83f6e33aadba7ac39e7b632ddaea0\AndroidManifest.xml:23:5-43
-MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\25b83f6e33aadba7ac39e7b632ddaea0\AndroidManifest.xml:23:5-43
-MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-location-10.2.0.aar\7358fb134d082b85e694c2e3967b9a03\AndroidManifest.xml:3:5-43
-MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-location-10.2.0.aar\7358fb134d082b85e694c2e3967b9a03\AndroidManifest.xml:3:5-43
-MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\butterknife-8.5.1.aar\f1c4de7d2d6eae7ed1cbe4ad07e3313d\AndroidManifest.xml:5:5-43
-MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\butterknife-8.5.1.aar\f1c4de7d2d6eae7ed1cbe4ad07e3313d\AndroidManifest.xml:5:5-43
-MERGED from [com.android.support:multidex:1.0.2] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\3962d31db98607092be06ec6e76ea16d\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:multidex:1.0.2] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\3962d31db98607092be06ec6e76ea16d\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\2d35768da3f316630e82c8e246f616e8\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\2d35768da3f316630e82c8e246f616e8\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:transition:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\18695b7fc5d8bf60e2ecb161cb7c4b93\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:transition:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\18695b7fc5d8bf60e2ecb161cb7c4b93\AndroidManifest.xml:20:5-44
-MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\80f6d1cc0645158b1a5f1da099275ec4\AndroidManifest.xml:17:5-43
-MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\80f6d1cc0645158b1a5f1da099275ec4\AndroidManifest.xml:17:5-43
-MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-tasks-10.2.0.aar\2374d99a12e9726fafb8937f402f873d\AndroidManifest.xml:3:5-43
-MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-tasks-10.2.0.aar\2374d99a12e9726fafb8937f402f873d\AndroidManifest.xml:3:5-43
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\fa63b97bcc7108ccaca65fb175308887\AndroidManifest.xml:17:5-43
-MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\fa63b97bcc7108ccaca65fb175308887\AndroidManifest.xml:17:5-43
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\d415600dc0efc05adc17cb77949d9876\AndroidManifest.xml:21:5-23:54
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\d415600dc0efc05adc17cb77949d9876\AndroidManifest.xml:21:5-23:54
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\61e6a810611bd8c667f9b2ca5d291463\AndroidManifest.xml:21:5-23:60
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\61e6a810611bd8c667f9b2ca5d291463\AndroidManifest.xml:21:5-23:60
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\e99d45200ea3293af582da3ea85e08a8\AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\e99d45200ea3293af582da3ea85e08a8\AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\6f79f872462f53db3dab50524f261ae4\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\6f79f872462f53db3dab50524f261ae4\AndroidManifest.xml:20:5-44
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\a84017c2ec680cccd5e55ce3a22189f5\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\a84017c2ec680cccd5e55ce3a22189f5\AndroidManifest.xml:20:5-43
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dbf3b507dad66fe9846dced6d0364b30\AndroidManifest.xml:21:5-23:63
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dbf3b507dad66fe9846dced6d0364b30\AndroidManifest.xml:21:5-23:63
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\b9924dfbd4d614f23bc51bc62b52af5e\AndroidManifest.xml:21:5-23:61
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\b9924dfbd4d614f23bc51bc62b52af5e\AndroidManifest.xml:21:5-23:61
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\fe7a6f292c0a1cc1d3f176044e6f01ba\AndroidManifest.xml:21:5-23:58
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\fe7a6f292c0a1cc1d3f176044e6f01ba\AndroidManifest.xml:21:5-23:58
-INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
-INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
+INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
+INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
+MERGED from [com.android.support:design:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fb399b6d8818e5e06f485231c7c60ffd\AndroidManifest.xml:21:5-23:62
+MERGED from [com.android.support:design:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fb399b6d8818e5e06f485231c7c60ffd\AndroidManifest.xml:21:5-23:62
+MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\showhidepasswordedittext-0.6.aar\3382468786e37a4a482bfbb126c29c83\AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\showhidepasswordedittext-0.6.aar\3382468786e37a4a482bfbb126c29c83\AndroidManifest.xml:7:5-9:41
+MERGED from [com.yayandroid:LocationManager:2.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\LocationManager-2.0.1.aar\c0f0ebba12be06517fffc1c8b4a47045\AndroidManifest.xml:8:5-10:41
+MERGED from [com.yayandroid:LocationManager:2.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\LocationManager-2.0.1.aar\c0f0ebba12be06517fffc1c8b4a47045\AndroidManifest.xml:8:5-10:41
+MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\calligraphy-2.2.0.aar\66fbfeee883893f77b8fbf83ddcf5ad9\AndroidManifest.xml:7:5-9:41
+MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\calligraphy-2.2.0.aar\66fbfeee883893f77b8fbf83ddcf5ad9\AndroidManifest.xml:7:5-9:41
+MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:7:5-9:41
+MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\25da492c11ee723699aa42c0c3fe6842\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\25da492c11ee723699aa42c0c3fe6842\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\6ba3110d000649643f549472dc4be7e3\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\6ba3110d000649643f549472dc4be7e3\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.volley:volley:1.0.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\volley-1.0.0.aar\35e9abc6d4d1cb8b57e616cafb61fb05\AndroidManifest.xml:7:5-43
+MERGED from [com.android.volley:volley:1.0.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\volley-1.0.0.aar\35e9abc6d4d1cb8b57e616cafb61fb05\AndroidManifest.xml:7:5-43
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:25:5-27:41
+MERGED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:25:5-27:41
+MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-places-10.2.0.aar\ce7f6b2573a1b147213081df611ccb62\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-places:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-places-10.2.0.aar\ce7f6b2573a1b147213081df611ccb62\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\2d3c0847ad1fed93666f35261f44cf62\AndroidManifest.xml:23:5-43
+MERGED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\2d3c0847ad1fed93666f35261f44cf62\AndroidManifest.xml:23:5-43
+MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-location-10.2.0.aar\57a07004c49ccbf96506ae28b4128b79\AndroidManifest.xml:3:5-43
+MERGED from [com.google.android.gms:play-services-location:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-location-10.2.0.aar\57a07004c49ccbf96506ae28b4128b79\AndroidManifest.xml:3:5-43
+MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\butterknife-8.5.1.aar\a8d886f85da2a21b4dc0ea0bb378efc3\AndroidManifest.xml:5:5-43
+MERGED from [com.jakewharton:butterknife:8.5.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\butterknife-8.5.1.aar\a8d886f85da2a21b4dc0ea0bb378efc3\AndroidManifest.xml:5:5-43
+MERGED from [com.android.support:multidex:1.0.2] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\d6a1a69590397abafd56863f95fe12ae\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:multidex:1.0.2] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\multidex-1.0.2.aar\d6a1a69590397abafd56863f95fe12ae\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\e82a36f4d057b28a483fc1764cb6e337\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\e82a36f4d057b28a483fc1764cb6e337\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:transition:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\c3edc12ec3ac119b8b08c73287f0a71e\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\c3edc12ec3ac119b8b08c73287f0a71e\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\a6d96cd46e75ed336fbe4eee2c8efbaa\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\a6d96cd46e75ed336fbe4eee2c8efbaa\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-tasks-10.2.0.aar\f744ba5d43116fe08721cf264717cf27\AndroidManifest.xml:3:5-43
+MERGED from [com.google.android.gms:play-services-tasks:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-tasks-10.2.0.aar\f744ba5d43116fe08721cf264717cf27\AndroidManifest.xml:3:5-43
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\39fe2a296fa892ad53823376d92549a7\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-basement:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-basement-10.2.0.aar\39fe2a296fa892ad53823376d92549a7\AndroidManifest.xml:17:5-43
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\b2313db5851eb85d11688160a224b9c0\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\b2313db5851eb85d11688160a224b9c0\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2bf2c4874976956fc201aaea4bbf6469\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2bf2c4874976956fc201aaea4bbf6469\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\48b37d62a8e6ac27a998982e03b1658e\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\48b37d62a8e6ac27a998982e03b1658e\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\9816121430f404940aeb349865097ec0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\9816121430f404940aeb349865097ec0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\cb958dc28f2ef855e074924ea67575bd\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\cb958dc28f2ef855e074924ea67575bd\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dd457890e7775bd360d530f8d4ec17b4\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dd457890e7775bd360d530f8d4ec17b4\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\12d424e00ff8876bc732873f0d917465\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\12d424e00ff8876bc732873f0d917465\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f75afe47c7e0798e1c13ee9ac014a02a\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f75afe47c7e0798e1c13ee9ac014a02a\AndroidManifest.xml:21:5-23:58
+INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
+INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
 	tools:overrideLibrary
-		ADDED from [com.android.support:design:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5e08f5e454e78af57f88306ced0ae65d\AndroidManifest.xml:23:9-59
+		ADDED from [com.android.support:design:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fb399b6d8818e5e06f485231c7c60ffd\AndroidManifest.xml:23:9-59
 	android:targetSdkVersion
-		INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\praveen.kakumanu\Desktop\Sekhar\PE\Boommmm\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
+		ADDED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
+		INJECTED from E:\b2bmobileapp\b2bmobileapp\app\src\main\AndroidManifest.xml
 meta-data#android.support.VERSION
-ADDED from [com.android.support:design:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5e08f5e454e78af57f88306ced0ae65d\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\577bfd34549fcdcc3b31db51eadc1dd2\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\577bfd34549fcdcc3b31db51eadc1dd2\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\2d35768da3f316630e82c8e246f616e8\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\2d35768da3f316630e82c8e246f616e8\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:transition:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\18695b7fc5d8bf60e2ecb161cb7c4b93\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:transition:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\18695b7fc5d8bf60e2ecb161cb7c4b93\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\d415600dc0efc05adc17cb77949d9876\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-v4:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\d415600dc0efc05adc17cb77949d9876\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\61e6a810611bd8c667f9b2ca5d291463\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\61e6a810611bd8c667f9b2ca5d291463\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\e99d45200ea3293af582da3ea85e08a8\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\e99d45200ea3293af582da3ea85e08a8\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\6f79f872462f53db3dab50524f261ae4\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\6f79f872462f53db3dab50524f261ae4\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\a84017c2ec680cccd5e55ce3a22189f5\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\a84017c2ec680cccd5e55ce3a22189f5\AndroidManifest.xml:22:5-24:34
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dbf3b507dad66fe9846dced6d0364b30\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dbf3b507dad66fe9846dced6d0364b30\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\b9924dfbd4d614f23bc51bc62b52af5e\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\b9924dfbd4d614f23bc51bc62b52af5e\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\fe7a6f292c0a1cc1d3f176044e6f01ba\AndroidManifest.xml:25:5-27:34
-MERGED from [com.android.support:support-compat:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\fe7a6f292c0a1cc1d3f176044e6f01ba\AndroidManifest.xml:25:5-27:34
+ADDED from [com.android.support:design:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fb399b6d8818e5e06f485231c7c60ffd\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\25da492c11ee723699aa42c0c3fe6842\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\25da492c11ee723699aa42c0c3fe6842\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\e82a36f4d057b28a483fc1764cb6e337\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:recyclerview-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-25.3.1.aar\e82a36f4d057b28a483fc1764cb6e337\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:transition:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\c3edc12ec3ac119b8b08c73287f0a71e\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:transition:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\transition-25.3.1.aar\c3edc12ec3ac119b8b08c73287f0a71e\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\b2313db5851eb85d11688160a224b9c0\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-v4:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-v4-25.3.1.aar\b2313db5851eb85d11688160a224b9c0\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2bf2c4874976956fc201aaea4bbf6469\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-fragment:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-fragment-25.3.1.aar\2bf2c4874976956fc201aaea4bbf6469\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\48b37d62a8e6ac27a998982e03b1658e\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-ui:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-ui-25.3.1.aar\48b37d62a8e6ac27a998982e03b1658e\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\9816121430f404940aeb349865097ec0\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:animated-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-25.3.1.aar\9816121430f404940aeb349865097ec0\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\cb958dc28f2ef855e074924ea67575bd\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-vector-drawable:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-25.3.1.aar\cb958dc28f2ef855e074924ea67575bd\AndroidManifest.xml:22:5-24:34
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dd457890e7775bd360d530f8d4ec17b4\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-media-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-media-compat-25.3.1.aar\dd457890e7775bd360d530f8d4ec17b4\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\12d424e00ff8876bc732873f0d917465\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-core-utils:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-core-utils-25.3.1.aar\12d424e00ff8876bc732873f0d917465\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f75afe47c7e0798e1c13ee9ac014a02a\AndroidManifest.xml:25:5-27:34
+MERGED from [com.android.support:support-compat:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\support-compat-25.3.1.aar\f75afe47c7e0798e1c13ee9ac014a02a\AndroidManifest.xml:25:5-27:34
 	android:value
-		ADDED from [com.android.support:design:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5e08f5e454e78af57f88306ced0ae65d\AndroidManifest.xml:27:9-31
+		ADDED from [com.android.support:design:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fb399b6d8818e5e06f485231c7c60ffd\AndroidManifest.xml:27:9-31
 	android:name
-		ADDED from [com.android.support:design:25.3.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\5e08f5e454e78af57f88306ced0ae65d\AndroidManifest.xml:26:9-47
+		ADDED from [com.android.support:design:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\design-25.3.1.aar\fb399b6d8818e5e06f485231c7c60ffd\AndroidManifest.xml:26:9-47
 activity#pub.devrel.easypermissions.AppSettingsDialogHolderActivity
-ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\88a778f0b775d159aff029dbab980558\AndroidManifest.xml:12:9-16:66
+ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:12:9-16:66
 	android:label
-		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\88a778f0b775d159aff029dbab980558\AndroidManifest.xml:15:13-29
+		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:15:13-29
 	android:exported
-		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\88a778f0b775d159aff029dbab980558\AndroidManifest.xml:14:13-37
+		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:14:13-37
 	android:theme
-		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\88a778f0b775d159aff029dbab980558\AndroidManifest.xml:16:13-63
+		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:16:13-63
 	android:name
-		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\88a778f0b775d159aff029dbab980558\AndroidManifest.xml:13:13-86
+		ADDED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:13:13-86
 uses-permission#android.permission.ACCESS_WIFI_STATE
-ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:30:5-76
+ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:30:5-76
 	android:name
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:30:22-73
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:30:22-73
 provider#com.amitshekhar.DebugDBInitProvider
-ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:33:9-37:40
+ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:33:9-37:40
 	android:enabled
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:36:13-35
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:36:13-35
 	android:authorities
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:35:13-71
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:35:13-71
 	android:exported
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:37:13-37
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:37:13-37
 	android:name
-		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\758c3e472e0afdf0b3ceec46d813fd80\AndroidManifest.xml:34:13-63
+		ADDED from [com.amitshekhar.android:debug-db:1.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\debug-db-1.0.1.aar\8f5eb1b23bedb333a975546f0d4de9cd\AndroidManifest.xml:34:13-63
 uses-feature#0x00020000
-ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\25b83f6e33aadba7ac39e7b632ddaea0\AndroidManifest.xml:21:5-77
+ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\2d3c0847ad1fed93666f35261f44cf62\AndroidManifest.xml:21:5-77
 	android:glEsVersion
-		ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\25b83f6e33aadba7ac39e7b632ddaea0\AndroidManifest.xml:21:19-51
+		ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\2d3c0847ad1fed93666f35261f44cf62\AndroidManifest.xml:21:19-51
 	android:required
-		ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\25b83f6e33aadba7ac39e7b632ddaea0\AndroidManifest.xml:21:52-75
+		ADDED from [com.google.android.gms:play-services-maps:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-maps-10.2.0.aar\2d3c0847ad1fed93666f35261f44cf62\AndroidManifest.xml:21:52-75
 activity#com.google.android.gms.common.api.GoogleApiActivity
-ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\80f6d1cc0645158b1a5f1da099275ec4\AndroidManifest.xml:19:9-172
+ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\a6d96cd46e75ed336fbe4eee2c8efbaa\AndroidManifest.xml:19:9-172
 	android:exported
-		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\80f6d1cc0645158b1a5f1da099275ec4\AndroidManifest.xml:19:146-170
+		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\a6d96cd46e75ed336fbe4eee2c8efbaa\AndroidManifest.xml:19:146-170
 	android:theme
-		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\80f6d1cc0645158b1a5f1da099275ec4\AndroidManifest.xml:19:86-145
+		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\a6d96cd46e75ed336fbe4eee2c8efbaa\AndroidManifest.xml:19:86-145
 	android:name
-		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\praveen.kakumanu\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\80f6d1cc0645158b1a5f1da099275ec4\AndroidManifest.xml:19:19-85
+		ADDED from [com.google.android.gms:play-services-base:10.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\play-services-base-10.2.0.aar\a6d96cd46e75ed336fbe4eee2c8efbaa\AndroidManifest.xml:19:19-85

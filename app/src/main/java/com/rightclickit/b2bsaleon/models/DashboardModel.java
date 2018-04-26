@@ -1,6 +1,7 @@
 package com.rightclickit.b2bsaleon.models;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.rightclickit.b2bsaleon.activities.AgentTDC_Order;
 import com.rightclickit.b2bsaleon.activities.DashboardActivity;
@@ -91,7 +92,8 @@ public class DashboardModel implements OnAsyncRequestCompleteListener {
                 JSONObject params = new JSONObject();
                 params.put("route_ids", routesArray);
                 params.put("date", selecteddate);
-                
+                System.out.println("INTENT URL::: " + reportsURL);
+                System.out.println("INTENT DATA::: " + params.toString());
                 AsyncRequest routeidRequest = new AsyncRequest(context, this, reportsURL, AsyncRequest.MethodType.POST, params);
                 routeidRequest.execute();
             }
@@ -139,6 +141,9 @@ public class DashboardModel implements OnAsyncRequestCompleteListener {
             synchronized (this) {
                 activity.nextDayIndents();
             }
+
+            Intent i = new Intent("android.intent.action.MAIN").putExtra("receiver_key", "deliveries");
+            context.sendBroadcast(i);
         } catch (Exception e) {
             e.printStackTrace();
         }

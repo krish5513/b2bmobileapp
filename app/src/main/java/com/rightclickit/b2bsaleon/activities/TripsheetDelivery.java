@@ -98,7 +98,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             soCode = (TextView) findViewById(R.id.soCode);
             agentcode = (TextView) findViewById(R.id.companyId);
             ordered_products_list_view = (ListView) findViewById(R.id.ordered_products_list_view);
-            Instock_products_list_view=(ListView)findViewById(R.id.Instock_products_list_view);
+           // Instock_products_list_view=(ListView)findViewById(R.id.Instock_products_list_view);
             totalTaxAmountTextView = (TextView) findViewById(R.id.delivery_total_tax_amount);
             totalAmountTextView = (TextView) findViewById(R.id.delivery_total_amount);
             subTotalAmountTextView = (TextView) findViewById(R.id.delivery_sub_total_amount);
@@ -112,9 +112,9 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             mDBHelper = new DBHelper(activityContext);
             mPreferences = new MMSharedPreferences(activityContext);
 
-            TripsheetSOList currentSaleOrder = (TripsheetSOList) this.getIntent().getSerializableExtra("currentSaleOrder");
+          //  TripsheetSOList currentSaleOrder = (TripsheetSOList) this.getIntent().getSerializableExtra("currentSaleOrder");
 
-            ArrayList<String> productCodesList = new ArrayList<String>();
+           /* ArrayList<String> productCodesList = new ArrayList<String>();
             String s = currentSaleOrder.getmTripshetSOProductCode();
             try {
                 JSONArray prodJsonArray = new JSONArray(s);
@@ -140,7 +140,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                 Log.i("productItemList...",productItemList+"");
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
+            }*/
 
             /*for (int i = 0; i < productCodesList.size(); i++) {
                 synchronized (this) {
@@ -299,8 +299,8 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                             productsBean.setProductAgentPrice(unitpriceArray.getString(i).toString());
 
 
-                            allProductsListFromSOList.add(productsBean);
-                            //allProductsListFromStock.add(productsBean);
+                           // allProductsListFromSOList.add(productsBean);
+                            allProductsListFromStock.add(productsBean);
 
                             productTypeHashMap.put(productCodes.get(i).toString() + "_F", productTypeArray.get(i).toString());
                             productOrderQuantitiesHashMap.put(productCodes.get(i).toString() + "_F", orderQuantities.get(i).toString());
@@ -309,7 +309,9 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
 
                         } else {
-                            ProductsBean prodDetails = mDBHelper.fetchProductDetailsByProductCode(productCodes.get(i).toString());
+
+                            //bhagya
+                           /* ProductsBean prodDetails = mDBHelper.fetchProductDetailsByProductCode(productCodes.get(i).toString());
 
 
                             DeliverysBean productsBean = new DeliverysBean();
@@ -332,7 +334,7 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
 
                             allProductsListFromSOList.add(productsBean);
-
+*/
                             productTypeHashMap.put(productCodes.get(i).toString(), productTypeArray.get(i).toString());
                             productOrderQuantitiesHashMap.put(productCodes.get(i).toString(), orderQuantities.get(i).toString());
                             productUomHashMap.put(productCodes.get(i).toString(), productUomArray.get(i).toString());
@@ -357,18 +359,18 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             }*/
 
 
-            allProductsListFromFiltetStock.addAll(allProductsListFromStock);
+            /*allProductsListFromFiltetStock.addAll(allProductsListFromStock);
 
             Collection<DeliverysBean> result = new ArrayList<DeliverysBean>();
             for (DeliverysBean element: allProductsListFromStock) {
                 boolean bool = true;
-                /*for(int i=0; i<allProductsListFromSOList.size();i++){
+                *//*for(int i=0; i<allProductsListFromSOList.size();i++){
                     Log.i("beforeFilter"+element.getProductCode(),allProductsListFromSOList.get(i).getProductCode()+"@@@");
                     if ((element.getProductCode().equals(allProductsListFromSOList.get(i).getProductCode()))) {
                         bool = false;
                       //  break;
                     }
-                }*/
+                }*//*
                 Log.i("FromSOList size",allProductsListFromSOList.size()+"");
                 Log.i("ListFromSOListItems",allProductsListFromSOList+"");
                 for(DeliverysBean innerElement: allProductsListFromSOList){
@@ -383,14 +385,14 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
                 }
             }
             Log.i("result.size...",result.size()+"");
-
-            mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, allProductsListFromSOList, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap, productTypeHashMap, productUomHashMap,productUnitprieHashMap);
+*/
+            mTripSheetDeliveriesAdapter = new TripSheetDeliveriesAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap, productTypeHashMap, productUomHashMap,productUnitprieHashMap);
             ordered_products_list_view.setAdapter(mTripSheetDeliveriesAdapter);
-            Utility.setListViewHeightBasedOnChildren(ordered_products_list_view);
+          //  Utility.setListViewHeightBasedOnChildren(ordered_products_list_view);
 
-            mTripSheetDeliveriesInStockItemsAdapter = new TripsheetDeliveryInStockItemsAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap, productTypeHashMap, productUomHashMap,productUnitprieHashMap);
-            Instock_products_list_view.setAdapter(mTripSheetDeliveriesInStockItemsAdapter);
-            Utility.setListViewHeightBasedOnChildren(Instock_products_list_view);
+           // mTripSheetDeliveriesInStockItemsAdapter = new TripsheetDeliveryInStockItemsAdapter(activityContext, this, this, allProductsListFromStock, previouslyDeliveredProductsHashMap, productOrderQuantitiesHashMap, productTypeHashMap, productUomHashMap,productUnitprieHashMap);
+           // Instock_products_list_view.setAdapter(mTripSheetDeliveriesInStockItemsAdapter);
+           // Utility.setListViewHeightBasedOnChildren(Instock_products_list_view);
 
         } catch (Exception e) {
             e.printStackTrace();

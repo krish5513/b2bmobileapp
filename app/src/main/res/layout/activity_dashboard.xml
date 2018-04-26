@@ -253,19 +253,19 @@
                             android:layout_height="1dp"
                             android:background="@color/view_line" />
 
-                       <!-- <ScrollView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="60dp"
-                            android:scrollbars="none">
+                        <!-- <ScrollView
+                             android:layout_width="match_parent"
+                             android:layout_height="match_parent"
+                             android:layout_marginBottom="60dp"
+                             android:scrollbars="none">
 
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/custList"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:elevation="100dp"
-                                android:scrollbars="vertical" />
-                        </ScrollView>-->
+                             <android.support.v7.widget.RecyclerView
+                                 android:id="@+id/custList"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="match_parent"
+                                 android:elevation="100dp"
+                                 android:scrollbars="vertical" />
+                         </ScrollView>-->
 
 
 
@@ -895,25 +895,48 @@
                     android:layout_marginBottom="10dp"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
 
-                        >
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="Today Delivery"
-                            android:textAllCaps="true"
-                            android:textColor="@color/greydark"
-                            android:textSize="16sp" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:orientation="horizontal" >
 
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="Today Delivery"
+                                android:textAllCaps="true"
+                                android:textColor="@color/greydark"
+                                android:textSize="16sp"
+                                android:layout_marginLeft="10dp"/>
 
-                    </LinearLayout>
+                        </LinearLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true">
+
+                            <TextView
+                                android:id="@+id/LastSyncedText2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="Last Synced At:"
+                                android:textAllCaps="true"
+                                android:textColor="@color/greydark"
+                                android:textSize="10sp"
+                                android:layout_marginRight="10dp"/>
+                        </RelativeLayout>
+                    </RelativeLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1000,6 +1023,7 @@
                                 android:orientation="horizontal"
                                 >
                                 <TextView
+                                    android:id="@+id/delivery_cat1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="F.milk,U.Milk,Curd"
@@ -1010,6 +1034,7 @@
                                     android:gravity="start"
                                     android:textSize="12sp" />
                                 <TextView
+                                    android:id="@+id/delivery_order1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -1019,6 +1044,7 @@
                                     android:gravity="center"
                                     android:textSize="12sp" />
                                 <TextView
+                                    android:id="@+id/delivery_delivery1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -1029,6 +1055,7 @@
                                     android:textSize="12sp" />
 
                                 <TextView
+                                    android:id="@+id/delivery_percentage1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -1054,6 +1081,7 @@
                                 android:orientation="horizontal"
                                 >
                                 <TextView
+                                    android:id="@+id/delivery_cat2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="SFM,Sweets,Paneer"
@@ -1064,6 +1092,7 @@
                                     android:gravity="start"
                                     android:textSize="12sp" />
                                 <TextView
+                                    android:id="@+id/delivery_order2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -1073,6 +1102,7 @@
                                     android:gravity="center"
                                     android:textSize="12sp" />
                                 <TextView
+                                    android:id="@+id/delivery_delivery2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -1083,6 +1113,7 @@
                                     android:textSize="12sp" />
 
                                 <TextView
+                                    android:id="@+id/delivery_percentage2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -1106,6 +1137,7 @@
                                 android:orientation="horizontal"
                                 >
                                 <TextView
+                                    android:id="@+id/delivery_cat3"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Frozen Products"
@@ -1116,6 +1148,7 @@
                                     android:gravity="start"
                                     android:textSize="12sp" />
                                 <TextView
+                                    android:id="@+id/delivery_order3"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -1125,6 +1158,7 @@
                                     android:gravity="center"
                                     android:textSize="12sp" />
                                 <TextView
+                                    android:id="@+id/delivery_delivery3"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -1135,6 +1169,7 @@
                                     android:textSize="12sp" />
 
                                 <TextView
+                                    android:id="@+id/delivery_percentage3"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -1175,25 +1210,49 @@
                     android:layout_marginBottom="10dp"
                     android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
 
-                        >
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="Today Payments"
-                            android:textAllCaps="true"
-                            android:textColor="@color/greydark"
-                            android:textSize="16sp" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:orientation="horizontal" >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="Today Payments"
+                                android:textAllCaps="true"
+                                android:textColor="@color/greydark"
+                                android:textSize="16sp"
+                                android:layout_marginLeft="10dp"/>
+
+                        </LinearLayout>
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true">
+
+                            <TextView
+                                android:id="@+id/LastSyncedText3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="Last Synced At:"
+                                android:textAllCaps="true"
+                                android:textColor="@color/greydark"
+                                android:textSize="10sp"
+                                android:layout_marginRight="10dp"/>
+                        </RelativeLayout>
+                    </RelativeLayout>
 
 
-                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -1262,6 +1321,7 @@
                                 android:orientation="horizontal"
                                 >
                                 <TextView
+                                    android:id="@+id/payments_delivery"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Delivery"
@@ -1272,6 +1332,7 @@
                                     android:gravity="start"
                                     android:textSize="12sp" />
                                 <TextView
+                                    android:id="@+id/payments_deliveryValue"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -1296,6 +1357,7 @@
                                 android:orientation="horizontal"
                                 >
                                 <TextView
+                                    android:id="@+id/payments_received"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Received"
@@ -1306,6 +1368,7 @@
                                     android:gravity="start"
                                     android:textSize="12sp" />
                                 <TextView
+                                    android:id="@+id/payments_receivedValue"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -1330,6 +1393,7 @@
                                 android:orientation="horizontal"
                                 >
                                 <TextView
+                                    android:id="@+id/payments_due"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="Due"
@@ -1340,6 +1404,7 @@
                                     android:gravity="start"
                                     android:textSize="12sp" />
                                 <TextView
+                                    android:id="@+id/payments_dueValue"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="0.000"
@@ -1413,7 +1478,7 @@
             android:layout_height="60dp"
             android:orientation="horizontal">
 
-        <LinearLayout
+            <LinearLayout
                 android:id="@+id/DashboardLayout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -1429,46 +1494,46 @@
                     android:text="@string/dashboard_btm"
                     android:textColor="@color/colorAccent"
                     android:textSize="12sp" />
-                </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/TripSheetsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/tv_routes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:id="@+id/TripSheetsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:drawableTop="@drawable/route_green"
-                android:gravity="center"
-                android:text="@string/myroutes_btm"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12sp" />
+                android:layout_weight="1"
+                android:gravity="center">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_routes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableTop="@drawable/route_green"
+                    android:gravity="center"
+                    android:text="@string/myroutes_btm"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
 
-        <LinearLayout
-            android:id="@+id/CustomersLayout"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center">
-            <TextView
-                android:id="@+id/tvrouts_customerN"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/CustomersLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:drawableTop="@drawable/customers_grey"
-                android:text="@string/customers_btm"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12sp" />
-        </LinearLayout>
+                android:layout_weight="1"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tvrouts_customerN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableTop="@drawable/customers_grey"
+                    android:text="@string/customers_btm"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/RetailersLayout"
                 android:layout_width="match_parent"
@@ -1487,45 +1552,45 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ProductsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center">
-            <TextView
-                android:id="@+id/tv_products"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:id="@+id/ProductsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:drawableTop="@drawable/ic_shopping_cart_black_24dp"
-                android:gravity="center"
-                android:text="@string/products_btm"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12sp" />
-        </LinearLayout>
+                android:layout_weight="1"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tv_products"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableTop="@drawable/ic_shopping_cart_black_24dp"
+                    android:gravity="center"
+                    android:text="@string/products_btm"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/TDCLayout"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center">
-            <TextView
-                android:id="@+id/tv_settings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:id="@+id/TDCLayout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:drawableTop="@drawable/sales_green"
-                android:gravity="center"
-                android:text="@string/sales_btm"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12sp"/>
+                android:layout_weight="1"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tv_settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableTop="@drawable/sales_green"
+                    android:gravity="center"
+                    android:text="@string/sales_btm"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"/>
+            </LinearLayout>
         </LinearLayout>
-        </LinearLayout>
-        </LinearLayout>
+    </LinearLayout>
 
 
 

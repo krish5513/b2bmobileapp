@@ -2,14 +2,21 @@ package com.rightclickit.b2bsaleon.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,8 +43,14 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.loopj.android.http.AsyncHttpClient;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.database.DBHelper;
+import com.rightclickit.b2bsaleon.models.AgentsModel;
+import com.rightclickit.b2bsaleon.models.DashboardDeliveryModel;
 import com.rightclickit.b2bsaleon.models.DashboardModel;
+import com.rightclickit.b2bsaleon.models.DashboardPaymentsModel;
+import com.rightclickit.b2bsaleon.models.ProductsModel;
 import com.rightclickit.b2bsaleon.services.SyncNotificationsListService;
+import com.rightclickit.b2bsaleon.services.SyncSpecialPriceService;
+import com.rightclickit.b2bsaleon.services.SyncUserPrivilegesService;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
@@ -47,6 +60,8 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import static com.rightclickit.b2bsaleon.customviews.CustomAlertDialog.showAlertDialog;
 
 public class DashboardActivity extends AppCompatActivity implements OnMapReadyCallback {
     private DBHelper mDBHelper;
@@ -63,8 +78,12 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
     LinearLayout listview;
     LinearLayout mapview;
     public static GoogleMap mMap;
+    private BroadcastReceiver mReceiver;
     private Marker marker;
+    private AlertDialog.Builder alertDialogBuilder1;
     private PolylineOptions mPolylineOptions;
+
+    private boolean isSyncClicked;
     AsyncHttpClient asyncHttpClient;
     Polyline polylineToAdd;
     private String mLatitude = "", mLongitude = "", mDeviceId = "", mProfilePic = "";
@@ -74,8 +93,18 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
     private boolean isSaveDeviceDetails, isMyProfilePrivilege;
     TextView tvrouts_customerN, Cat1, Cat2, Cat3, Ltr1, Ltr2, Ltr3, pendingInText, approvedInText, lastSyncedText;
 
-    public String selectedDate = "", mReportSelectedDateStr = "",mCurrentDate="";
+    TextView delivery_Cat1, delivery_Cat2, delivery_Cat3, lastSyncedText2;
+    TextView delivery_order1, delivery_order2, delivery_order3;
+    TextView delivery_deliv1, delivery_deliv2, delivery_deliv3;
+    TextView delivery_percent1, delivery_percent2, delivery_percent3;
+
+    TextView payment_deliveryValue, payment_receivedValiue, payment_dueValue, lastSyncedText3;
+
+    public String selectedDate = "", mReportSelectedDateStr = "", mCurrentDate = "";
     private DashboardModel mReportsModel;
+    private AlertDialog alertDialog1 = null;
+    public static final String TAG = DashboardActivity.class.getSimpleName();
+    TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,27 +128,36 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         this.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
+        this.getSupportActionBar().setDisplayShowCustomEnabled(true);
+        this.getSupportActionBar().setDisplayShowTitleEnabled(false);
+        View v=getLayoutInflater().inflate(R.layout.dashboard_actionbar,null);
+        tv = (TextView) v.findViewById(R.id.actitle);
+        tv.setText(Html.fromHtml(""));
+        this.getSupportActionBar().setCustomView(v);
+
+
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
-        if ((month <= 10) && (day < 10)) {
+        if((month<=10)&&(day<10)) {
             //tv.setText("0" + day + "/0" + (month+1) + "/" + year);
 
-            this.getSupportActionBar().setTitle("        0" + day + "-0" + (month + 1) + "-" + year);
-        } else if (month <= 10) {
+            tv.setText(Html.fromHtml("<u>  0" + day + "-0" + (month+1) + "-" + year + "</u>"));
+        }else if (month<=10){
             //tv.setText("" + day + "/0" + (month+1) + "/" + year);
-            this.getSupportActionBar().setTitle("        " + day + "-0" + (month + 1) + "-" + year);
+            tv.setText(Html.fromHtml("<u>  " + day + "-0" + (month+1) + "-" + year+ "</u>"));
 
-        } else if (day < 10) {
+        }else if (day<10){
             //tv.setText("0" + day + "/" + (month+1) + "/" + year);
-            this.getSupportActionBar().setTitle("        0" + day + "-" + (month + 1) + "-" + year);
+            tv.setText(Html.fromHtml("<u>  0" + day + "-" + (month+1) + "-" + year+ "</u>"));
 
-        } else {
+        }else {
             //tv.setText("" + day + "/" + (month+1) + "/" + year);
-            this.getSupportActionBar().setTitle("        " + day + "-" + (month + 1) + "-" + year);
+            tv.setText(Html.fromHtml("<u>  " + day + "-" + (month+1) + "-" + year+ "</u>"));
 
         }
+
 
 
         if ((month <= 10) && (day < 10)) {
@@ -178,6 +216,57 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         approvedInText = (TextView) findViewById(R.id.ApprovedIndentText);
 
         lastSyncedText = (TextView) findViewById(R.id.LastSyncedText);
+
+
+        delivery_Cat1 = (TextView) findViewById(R.id.delivery_cat1);
+        delivery_Cat2 = (TextView) findViewById(R.id.delivery_cat2);
+        delivery_Cat3 = (TextView) findViewById(R.id.delivery_cat3);
+
+        delivery_order1 = (TextView) findViewById(R.id.delivery_order1);
+        delivery_order2 = (TextView) findViewById(R.id.delivery_order2);
+        delivery_order3 = (TextView) findViewById(R.id.delivery_order3);
+
+        delivery_deliv1 = (TextView) findViewById(R.id.delivery_delivery1);
+        delivery_deliv2 = (TextView) findViewById(R.id.delivery_delivery2);
+        delivery_deliv3 = (TextView) findViewById(R.id.delivery_delivery3);
+
+        delivery_percent1 = (TextView) findViewById(R.id.delivery_percentage1);
+        delivery_percent2 = (TextView) findViewById(R.id.delivery_percentage2);
+        delivery_percent3 = (TextView) findViewById(R.id.delivery_percentage3);
+
+        lastSyncedText2 = (TextView) findViewById(R.id.LastSyncedText2);
+
+
+        payment_deliveryValue = (TextView) findViewById(R.id.payments_deliveryValue);
+        payment_receivedValiue = (TextView) findViewById(R.id.payments_receivedValue);
+        payment_dueValue = (TextView) findViewById(R.id.payments_dueValue);
+
+        lastSyncedText3 = (TextView) findViewById(R.id.LastSyncedText3);
+
+
+
+        if (getIntent().getExtras() != null) {
+            String updatedValue = getIntent().getExtras().getString("key", null);
+            if (updatedValue == null) {
+
+            } else {
+                isSyncClicked = false;
+                if (alertDialogBuilder1 != null) {
+                    Log.i("if condition", "not null");
+                    if (alertDialog1.isShowing()) {
+                        alertDialog1.dismiss();
+                    }
+                    alertDialogBuilder1 = null;
+                    // isSyncClicked = false;
+                } else {
+                    Log.i("if condition", "null");
+                }
+                if (mPreferences.getString("isloginClick").equals("false1")) {
+                    showAlertDialog1(DashboardActivity.this, "Sync Process", "Dashboard sync completed succssfully.");
+                }
+            }
+        }
+
 
         mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);
         mDashBoardLayout.setVisibility(View.GONE);
@@ -369,6 +458,8 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
 
         // Code added by Sekhar Kuppa
         nextDayIndents();
+        deliveriesDashboard();
+        paymentsDashboard();
 
     }
 
@@ -393,19 +484,19 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
 
             if ((month <= 10) && (day < 10)) {
                 //tv.setText("0" + day + "/0" + (month + 1) + "/" + year);
-                DashboardActivity.this.getSupportActionBar().setTitle("        0" + day + "-0" + (month + 1) + "-" + year);
+                tv.setText(Html.fromHtml("<u>  0"  + day + "-0" + (month + 1) + "-" + year+ "</u>"));
 
             } else if (month <= 10) {
                 //tv.setText("" + day + "/0" + (month + 1) + "/" + year);
-                DashboardActivity.this.getSupportActionBar().setTitle("        " + day + "-0" + (month + 1) + "-" + year);
+                tv.setText(Html.fromHtml("<u>  " + day + "-0" + (month + 1) + "-" + year+ "</u>"));
 
             } else if (day < 10) {
                 //tv.setText("0" + day + "/" + (month + 1) + "/" + year);
-                DashboardActivity.this.getSupportActionBar().setTitle("        0" + day + "-" + (month + 1) + "-" + year);
+                tv.setText(Html.fromHtml("<u>  0"  + day + "-" + (month + 1) + "-" + year+ "</u>"));
 
             } else {
                 //tv.setText("" + day + "/" + (month + 1) + "/" + year);
-                DashboardActivity.this.getSupportActionBar().setTitle("        " + day + "-" + (month + 1) + "-" + year);
+                tv.setText(Html.fromHtml("<u>  "  + day + "-" + (month + 1) + "-" + year+ "</u>"));
 
             }
 
@@ -473,11 +564,18 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
             return true;
         }
         if (id == R.id.autorenew) {
+
             if (new NetworkConnectionDetector(DashboardActivity.this).isNetworkConnected()) {
-                mReportsModel.getReportsData(mReportSelectedDateStr);
+                showAlertDialog(DashboardActivity.this, "Sync process", "Are you sure, you want start the sync process?");
             } else {
                 new NetworkConnectionDetector(DashboardActivity.this).displayNoNetworkError(DashboardActivity.this);
             }
+            return true;
+           /* if (new NetworkConnectionDetector(DashboardActivity.this).isNetworkConnected()) {
+                mReportsModel.getReportsData(mReportSelectedDateStr);
+            } else {
+                new NetworkConnectionDetector(DashboardActivity.this).displayNoNetworkError(DashboardActivity.this);
+            }*/
         }
 
         return super.onOptionsItemSelected(item);
@@ -557,6 +655,94 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
 
     }
 
+
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    isSyncClicked = true;
+                    showCustomValidationAlertForSync(DashboardActivity.this, "next");
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    isSyncClicked = false;
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showCustomValidationAlertForSync(Activity context, String key) {
+        // custom dialog
+        try {
+            Log.i("called ", "called");
+
+            alertDialogBuilder1 = new AlertDialog.Builder(DashboardActivity.this);
+            alertDialogBuilder1.setTitle("Sync Process");
+            alertDialogBuilder1.setCancelable(false);
+            if (key.equals("next")) {
+                Log.i("showAlertForSync", "next");
+                alertDialogBuilder1.setMessage("Downloading Next day Indents...Please wait");
+                DashboardModel dashboardModel = new DashboardModel(DashboardActivity.this, this);
+                dashboardModel.getReportsData(mReportSelectedDateStr);
+            } else if (key.equals("deliveries")) {
+                Log.i("showAlertForSync", "deliveries");
+                alertDialogBuilder1.setMessage("Downloading Today Deliveries...Please wait");
+                DashboardDeliveryModel dashboarddeliveryModel = new DashboardDeliveryModel(DashboardActivity.this, this);
+                dashboarddeliveryModel.getDeliveriesList(mReportSelectedDateStr);
+            } else if (key.equals("payments")) {
+                Log.i("showAlertForSync", "payments");
+                alertDialogBuilder1.setMessage("Downloading Today Payments...Please wait");
+                DashboardPaymentsModel dashboardPaymentsModel = new DashboardPaymentsModel(DashboardActivity.this, this);
+                dashboardPaymentsModel.getPaymentsList(mReportSelectedDateStr);
+            }
+            alertDialog1 = alertDialogBuilder1.create();
+            alertDialog1.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showAlertDialog1(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Method to display the next day indents data
      */
@@ -583,7 +769,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
                 if (indentDetails.get(3).toString().equals("null")) {
                     approvedInText.setText("Approved: 0");
                 } else {
-                    approvedInText.setText("Approved: " + indentDetails.get(2).toString());
+                    approvedInText.setText("Approved: " + indentDetails.get(3).toString());
                 }
                 // Display time and date from the indentDetails object keys as 4 and 5
                 lastSyncedText.setText("Last synced at: " + "\n"
@@ -594,5 +780,128 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void deliveriesDashboard() {
+
+        ArrayList<String> deliveriesDetails = mDBHelper.fetchDashboardDeliveriesDetails(mReportSelectedDateStr);
+        try {
+            if (deliveriesDetails.size() > 0) {
+                JSONArray catArray = new JSONArray(deliveriesDetails.get(0).toString());
+                JSONArray orderedArray = new JSONArray(deliveriesDetails.get(1).toString());
+                JSONArray deliveredArray = new JSONArray(deliveriesDetails.get(2).toString());
+                JSONArray percentageArray = new JSONArray(deliveriesDetails.get(3).toString());
+                delivery_Cat1.setText(catArray.get(0).toString());
+                delivery_Cat2.setText(catArray.get(1).toString());
+                delivery_Cat3.setText(catArray.get(2).toString());
+
+                delivery_order1.setText(orderedArray.get(0).toString());
+                delivery_order2.setText(orderedArray.get(1).toString());
+                delivery_order3.setText(orderedArray.get(2).toString());
+
+                delivery_deliv1.setText(deliveredArray.get(0).toString());
+                delivery_deliv2.setText(deliveredArray.get(1).toString());
+                delivery_deliv3.setText(deliveredArray.get(2).toString());
+
+                delivery_percent1.setText(percentageArray.get(0).toString());
+                delivery_percent2.setText(percentageArray.get(1).toString());
+                delivery_percent3.setText(percentageArray.get(2).toString());
+
+
+                // Display time and date from the indentDetails object keys as 4 and 5
+                lastSyncedText2.setText("Last synced at: " + "\n"
+                        + deliveriesDetails.get(4).toString() + " " + deliveriesDetails.get(5).toString());
+            } else {
+                // Display empty message that to refresh the sync button
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void paymentsDashboard() {
+
+        ArrayList<String> paymentDetails = mDBHelper.fetchDashboardPaymentsDetails(mReportSelectedDateStr);
+        try {
+            if (paymentDetails.size() > 0) {
+
+
+                if (paymentDetails.get(0).toString().equals("null")) {
+                    payment_deliveryValue.setText("0");
+                } else {
+                    payment_deliveryValue.setText(paymentDetails.get(0).toString());
+                }
+
+                if (paymentDetails.get(1).toString().equals("null")) {
+                    payment_receivedValiue.setText("0");
+                } else {
+                    payment_receivedValiue.setText(paymentDetails.get(1).toString());
+                }
+
+                if (paymentDetails.get(2).toString().equals("null")) {
+                    payment_dueValue.setText("0");
+                } else {
+                    payment_dueValue.setText(paymentDetails.get(2).toString());
+                }
+                // Display time and date from the indentDetails object keys as 4 and 5
+                lastSyncedText3.setText("Last synced at: " + "\n"
+                        + paymentDetails.get(3).toString() + " " + paymentDetails.get(4).toString());
+            } else {
+                // Display empty message that to refresh the sync button
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        IntentFilter intentFilter = new IntentFilter("android.intent.action.MAIN");
+        mReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //extract our message from intent
+                String receiver_key = intent.getStringExtra("receiver_key");
+                //log our message value
+                Log.i(TAG, receiver_key);
+
+                if (alertDialogBuilder1 != null) {
+                    Log.i("returnFromService", "not null");
+                    if (alertDialog1.isShowing()) {
+                        alertDialog1.dismiss();
+                    }
+                    alertDialogBuilder1 = null;
+                } else {
+                    Log.i("returnFromService", "null");
+                }
+                if (receiver_key.equals("completed")) {
+                    showAlertDialog1(DashboardActivity.this, "Sync Process", "Dashboard sync completed succssfully.");
+                } else {
+                   /* if(receiver_key.equals("specialPrice")){
+                        boolean bool = intent.getBooleanExtra("whichActivity", false);
+                        if(!bool){
+                            Intent mainActivityIntent = new Intent(getApplicationContext(), DashboardActivity.class);
+                            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(mainActivityIntent);
+                        }
+                    }*/
+                    showCustomValidationAlertForSync(DashboardActivity.this, receiver_key);
+                }
+            }
+        };
+        this.registerReceiver(mReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+        super.onPause();
+        //unregister our receiver
+        this.unregisterReceiver(this.mReceiver);
     }
 }

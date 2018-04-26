@@ -374,7 +374,6 @@
                         android:layout_weight="0.20"
                         android:layout_margin="10dp"
                         android:hint="Mobile No."
-                       android:editable="false"
                         android:longClickable="false"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
@@ -394,7 +393,6 @@
                         android:layout_weight="0.20"
                         android:layout_margin="10dp"
                         android:hint="Address"
-                        android:editable="false"
                         android:longClickable="false"
                         android:textColor="@color/greydark"
                         android:textSize="14sp" />
