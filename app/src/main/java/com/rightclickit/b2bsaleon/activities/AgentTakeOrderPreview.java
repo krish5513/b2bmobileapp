@@ -106,98 +106,102 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
         // for (int l = 0; l < specialPriceBeanArrayList.size(); l++) {
         selectedList = new ArrayList<>(mProductIdsList.size());
 
-        if (mProductIdsList.size() > 0) {
-            for (int k = 0; k < mProductIdsList.size(); k++) {
-                if (productsList.size() > 0) {
-                    for (int i = 0; i < productsList.size(); i++) {
-                        if (mProductIdsList.get(k).getmProductId().toString().equals(productsList.get(i).getProductId())) {
-                            System.out.println("P TITLE IS::: " + productsList.get(i).getProductTitle());
+        try{
+            if (mProductIdsList.size() > 0) {
+                for (int k = 0; k < mProductIdsList.size(); k++) {
+                    if (productsList.size() > 0) {
+                        for (int i = 0; i < productsList.size(); i++) {
+                            if (mProductIdsList.get(k).getmProductId().toString().equals(productsList.get(i).getProductId())) {
+                                System.out.println("P TITLE IS::: " + productsList.get(i).getProductTitle());
 
-                            TakeOrderPreviewBean topBean = new TakeOrderPreviewBean();
+                                TakeOrderPreviewBean topBean = new TakeOrderPreviewBean();
 
-                            topBean.setpName(mProductIdsList.get(k).getmProductTitle());
-                            topBean.setpQuantity(mProductIdsList.get(k).getmProductQuantity());
-                            if (specialPriceBeanArrayList.size() >0) {
-                                for (int l = 0; l < specialPriceBeanArrayList.size(); l++) {
-                                    if (specialPriceBeanArrayList.get(l).getSpecialProductId().equals(productsList.get(i).getProductId())
-                                            && specialPriceBeanArrayList.get(i).getSpecialUserId().equals(sharedPreferences.getString("agentId"))) {
-                                        if (!specialPriceBeanArrayList.get(l).getSpecialPrice().equals("")) {
-                                            topBean.setpPrice(specialPriceBeanArrayList.get(l).getSpecialPrice());
+                                topBean.setpName(mProductIdsList.get(k).getmProductTitle());
+                                topBean.setpQuantity(mProductIdsList.get(k).getmProductQuantity());
+                                if (specialPriceBeanArrayList.size() >0) {
+                                    for (int l = 0; l < specialPriceBeanArrayList.size(); l++) {
+                                        if (specialPriceBeanArrayList.get(l).getSpecialProductId().equals(productsList.get(i).getProductId())
+                                                && specialPriceBeanArrayList.get(i).getSpecialUserId().equals(sharedPreferences.getString("agentId"))) {
+                                            if (!specialPriceBeanArrayList.get(l).getSpecialPrice().equals("")) {
+                                                topBean.setpPrice(specialPriceBeanArrayList.get(l).getSpecialPrice());
+                                            } else {
+                                                topBean.setpPrice(productsList.get(i).getProductAgentPrice());
+                                            }
                                         } else {
                                             topBean.setpPrice(productsList.get(i).getProductAgentPrice());
                                         }
-                                    } else {
-                                        topBean.setpPrice(productsList.get(i).getProductAgentPrice());
                                     }
+                                }else {
+                                    topBean.setpPrice(productsList.get(i).getProductAgentPrice());
                                 }
-                            }else {
-                                topBean.setpPrice(productsList.get(i).getProductAgentPrice());
-                            }
-                            topBean.setmProductTaxGST(productsList.get(i).getProductgst());
-                            topBean.setmProductTaxVAT(productsList.get(i).getProductvat());
-                            topBean.setmProductFromDate(mProductIdsList.get(k).getmProductFromDate());
-                            topBean.setmProductToDate(mProductIdsList.get(k).getmProductToDate());
-                            //topBean.setTaxPercentage(productsList.get(i).getProductgst());
-                            // topBean.setTaxName(productsList.get(i).getProductvat());
-                            topBean.setmProductToDate(mProductIdsList.get(k).getmProductToDate());
+                                topBean.setmProductTaxGST(productsList.get(i).getProductgst());
+                                topBean.setmProductTaxVAT(productsList.get(i).getProductvat());
+                                topBean.setmProductFromDate(mProductIdsList.get(k).getmProductFromDate());
+                                topBean.setmProductToDate(mProductIdsList.get(k).getmProductToDate());
+                                //topBean.setTaxPercentage(productsList.get(i).getProductgst());
+                                // topBean.setTaxName(productsList.get(i).getProductvat());
+                                topBean.setmProductToDate(mProductIdsList.get(k).getmProductToDate());
 
-                            float tax = 0.0f;
-                            String str_Taxname = "";
-                            if (productsList.get(i).getProductvat() != null) {
-                                tax = Float.parseFloat(productsList.get(i).getProductvat());
-                                str_Taxname = "SGST:";
-                            } else if (productsList.get(i).getProductgst() != null) {
-                                tax = Float.parseFloat(productsList.get(i).getProductgst());
-                                str_Taxname = "CGST:";
-                            }
+                                float tax = 0.0f;
+                                String str_Taxname = "";
+                                if (productsList.get(i).getProductvat() != null) {
+                                    tax = Float.parseFloat(productsList.get(i).getProductvat());
+                                    str_Taxname = "SGST:";
+                                } else if (productsList.get(i).getProductgst() != null) {
+                                    tax = Float.parseFloat(productsList.get(i).getProductgst());
+                                    str_Taxname = "CGST:";
+                                }
 
-                            name = String.valueOf(mProductIdsList.get(k).getmProductTitle().replace(",", ""));
-                            p_code = String.valueOf(mProductIdsList.get(k).getMtakeorderProductCode().replace(",", ""));
-                            p_uom = String.valueOf(mProductIdsList.get(k).getUom().replace(",", ""));
+                                name = String.valueOf(mProductIdsList.get(k).getmProductTitle().replace(",", ""));
+                                p_code = String.valueOf(mProductIdsList.get(k).getMtakeorderProductCode().replace(",", ""));
+                                p_uom = String.valueOf(mProductIdsList.get(k).getUom().replace(",", ""));
 
-                            double price;
-                            if (productsList.get(i).getProductAgentPrice() != null) {
-                                price = Double.parseDouble(productsList.get(i).getProductAgentPrice().replace(",", ""));
-                            } else {
-                                price = 0.0f;
-                            }
-                            double quantity = Double.parseDouble(mProductIdsList.get(k).getmProductQuantity().replace(",", ""));
+                                double price;
+                                if (productsList.get(i).getProductAgentPrice() != null) {
+                                    price = Double.parseDouble(productsList.get(i).getProductAgentPrice().replace(",", ""));
+                                } else {
+                                    price = 0.0f;
+                                }
+                                double quantity = Double.parseDouble(mProductIdsList.get(k).getmProductQuantity().replace(",", ""));
 
-                            currentDate = mProductIdsList.get(k).getmAgentTakeOrderDate();
+                                currentDate = mProductIdsList.get(k).getmAgentTakeOrderDate();
 
-                            taxAmount = ((quantity * price) * tax) / 100;
-                            //  amount = price + taxAmount;
-                            amount = price;
+                                taxAmount = ((quantity * price) * tax) / 100;
+                                //  amount = price + taxAmount;
+                                amount = price;
 
-                            subtotal = (price * quantity);
+                                subtotal = (price * quantity);
 
-                            mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
-                                    * Double.parseDouble(mProductIdsList.get(k).getmProductQuantity())));
-                            System.out.println("P PRICE IS::: " + mProductsPriceAmountSum);
+                                mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
+                                        * Double.parseDouble(mProductIdsList.get(k).getmProductQuantity())));
+                                System.out.println("P PRICE IS::: " + mProductsPriceAmountSum);
 
-                            mTotalProductsTax = (mTotalProductsTax + taxAmount);
+                                mTotalProductsTax = (mTotalProductsTax + taxAmount);
 
-                            mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
-                            System.out.println("FINAL AMOUNT PRICE IS::: " + mTotalProductsPriceAmountSum);
-                            String[] temp = new String[6];
-                            temp[0] = name;
-                            temp[1] = p_code;
-                            temp[2] = p_uom;
-                            temp[3] = String.valueOf(quantity);
-                            temp[4] = String.valueOf(price);
-                            temp[5] = String.valueOf(subtotal);
+                                mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
+                                System.out.println("FINAL AMOUNT PRICE IS::: " + mTotalProductsPriceAmountSum);
+                                String[] temp = new String[6];
+                                temp[0] = name;
+                                temp[1] = p_code;
+                                temp[2] = p_uom;
+                                temp[3] = String.valueOf(quantity);
+                                temp[4] = String.valueOf(price);
+                                temp[5] = String.valueOf(subtotal);
                /*temp[4] = String.valueOf(taxAmount);
                temp[5] = String.valueOf(str_Taxname);
                temp[6] = String.valueOf("(" + tax + "%)");
                temp[7] = mProductIdsList.get(k).getmProductFromDate();
                temp[8] = mProductIdsList.get(k).getmProductToDate();*/
-                            selectedList.add(temp);
-                            Log.i("takeordertemp", temp + "");
-                            takeOrderPreviewBeanArrayList.add(topBean);
+                                selectedList.add(temp);
+                                Log.i("takeordertemp", temp + "");
+                                takeOrderPreviewBeanArrayList.add(topBean);
+                            }
                         }
                     }
                 }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         tv_companyName = (TextView) findViewById(R.id.tv_companyName);

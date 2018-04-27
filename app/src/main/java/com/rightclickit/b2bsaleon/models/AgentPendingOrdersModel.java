@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -35,11 +36,12 @@ public class AgentPendingOrdersModel implements OnAsyncRequestCompleteListener {
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private String type = "";
+    private SimpleDateFormat df;
     private ArrayList<String> regionIdsList = new ArrayList<String>();
     private JSONArray routesArray;
     private ArrayList<TakeOrderBean> mTakeOrderProductsBeansList = new ArrayList<TakeOrderBean>();
     private String mStock = "", mAgentPrice = "", mRetailerPrice = "", mConsumerPrice = "";
-    private String currentDate = "", fromDate = "";
+    private String currentDate = "", fromDate = "", mTodaysDate = "";
     private ArrayList<String> enqIdsList = new ArrayList<String>();
     private ArrayList<String> userIdsList = new ArrayList<String>();
     private ArrayList<String> userCodesList = new ArrayList<String>();
@@ -54,6 +56,7 @@ public class AgentPendingOrdersModel implements OnAsyncRequestCompleteListener {
     private HashMap<String, JSONArray> productsArray = new HashMap<String, JSONArray>();
     private HashMap<String, JSONArray> unitPriceArray = new HashMap<String, JSONArray>();
     private HashMap<String, JSONArray> spPriceArray = new HashMap<String, JSONArray>();
+    private HashMap<String, String> prodCodesNamesMapList = new HashMap<String, String>();
 
     public AgentPendingOrdersModel(Context context, AgentTakeOrderScreen activity) {
         this.context = context;
@@ -62,9 +65,11 @@ public class AgentPendingOrdersModel implements OnAsyncRequestCompleteListener {
         this.mDBHelper = new DBHelper(context);
 
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        cal.add(Calendar.DAY_OF_YEAR,1);
+        df = new SimpleDateFormat("yyyy-MM-dd");
+        cal.add(Calendar.DAY_OF_YEAR, 1);
         currentDate = df.format(cal.getTime());
+
+        mTodaysDate = df.format(new Date());
 
         cal.add(Calendar.DATE, -30);
         fromDate = df.format(cal.getTime());
@@ -124,7 +129,6 @@ public class AgentPendingOrdersModel implements OnAsyncRequestCompleteListener {
                 params.put("user_id", s);
                 params.put("from_date", fromDate);
                 params.put("to_date", currentDate);
-
                 AsyncRequest routeidRequest = new AsyncRequest(context, this, ordersURL, AsyncRequest.MethodType.POST, params);
                 routeidRequest.execute();
             }
@@ -138,8 +142,6 @@ public class AgentPendingOrdersModel implements OnAsyncRequestCompleteListener {
     public void asyncResponse(String response, Constants.RequestCode requestCode) {
         try {
             CustomProgressDialog.hideProgressDialog();
-
-            //System.out.println("ORDERS RESPONSE::::::::: " + response);
 
             JSONArray respArray = new JSONArray(response);
             int resLength = respArray.length();
@@ -214,18 +216,6 @@ public class AgentPendingOrdersModel implements OnAsyncRequestCompleteListener {
 
                 }
 
-//                System.out.println("ENQ :: " + enqIdsList.size());
-//                System.out.println("UID :: " + userIdsList.size());
-//                System.out.println("UCODE :: " + userCodesList.size());
-//                System.out.println("RID :: " + routeIdsList.size());
-//                System.out.println("RCODE :: " + routeCodesList.size());
-//                System.out.println("PID :: " + productIdsList.size());
-//                System.out.println("PCODE :: " + productCodesList.size());
-//                System.out.println("QQQ :: " + quantitysList.size());
-//                System.out.println("FDL :: " + fromDatesList.size());
-//                System.out.println("TDL :: " + toDatesList.size());
-//                System.out.println("PARR :: " + productsArray.size());
-
                 for (int d = 0; d < productsArray.size(); d++) {
                     // Special prices
                     /*ArrayList<String> spPriceList = new ArrayList<String>();
@@ -260,33 +250,101 @@ public class AgentPendingOrdersModel implements OnAsyncRequestCompleteListener {
                     for (int z2 = 0; z2 < qAr.length(); z2++) {
                         qList.add(qAr.get(z2).toString());
                     }
-                    JSONArray aaa = productsArray.get(String.valueOf(d));
-                    for (int s = 0; s < aaa.length(); s++) {
-                        TakeOrderBean takeOrderBean = new TakeOrderBean();
-                        JSONObject jj = aaa.getJSONObject(s);
-                        takeOrderBean.setmProductTitle(jj.getString("name"));
-                        takeOrderBean.setmProductId(jj.getString("_id"));
-                        takeOrderBean.setMtakeorderProductCode(jj.getString("code"));
-                        takeOrderBean.setmRouteId(routeIdsList.get(d).toString());
-                        takeOrderBean.setmProductFromDate(fDaList.get(s).toString());
-                        takeOrderBean.setmProductToDate(tDaList.get(s).toString());
-                        takeOrderBean.setmProductQuantity(qList.get(s).toString());
-                        takeOrderBean.setmAgentId(userIdsList.get(d).toString());
-                        takeOrderBean.setmTakeorderAgentCode(userCodesList.get(d).toString());
-                        takeOrderBean.setmEnquiryId(enqIdsList.get(d).toString());
-                        takeOrderBean.setmProductStatus("0");
-                        takeOrderBean.setmProductOrderType("");
-                        takeOrderBean.setmAgentTakeOrderDate(orderDateList.get(d).toString());
-                      //  if (!spPriceList.get(s).toString().equals("0")) {
-                      //      takeOrderBean.setmAgentPrice(spPriceList.get(s).toString());
-                      //  } else {
-                      //      takeOrderBean.setmAgentPrice(upPriceList.get(s).toString());
-                      //  }
+//                    JSONArray aaa = productsArray.get(String.valueOf(d));
+//                    for (int s = 0; s < aaa.length(); s++) {
+//                        TakeOrderBean takeOrderBean = new TakeOrderBean();
+//                        JSONObject jj = aaa.getJSONObject(s);
+//                        takeOrderBean.setmProductTitle(jj.getString("name"));
+//                        takeOrderBean.setmProductId(jj.getString("_id"));
+//                        takeOrderBean.setMtakeorderProductCode(jj.getString("code"));
+//                        takeOrderBean.setmRouteId(routeIdsList.get(d).toString());
+//                        // >0 == d1 is greater than d2
+//                        // 0 == d1 is equal to d2
+//                        // <0 == d1 is lesser than d2
+//                        Date d1 = df.parse(mTodaysDate);
+//                        Date d2 = df.parse(fDaList.get(s).toString());
+//                        Date d3 = df.parse(tDaList.get(s).toString());
+//                        if (d1.compareTo(d2) > 0) {
+//                            takeOrderBean.setmProductFromDate(currentDate);
+//                        } else {
+//                            takeOrderBean.setmProductFromDate(fDaList.get(s).toString());
+//                        }
+//                        if (d1.compareTo(d3) > 0) {
+//                            takeOrderBean.setmProductToDate(currentDate);
+//                        } else {
+//                            takeOrderBean.setmProductToDate(tDaList.get(s).toString());
+//                        }
+//                        takeOrderBean.setmProductQuantity(qList.get(s).toString());
+//                        takeOrderBean.setmAgentId(userIdsList.get(d).toString());
+//                        takeOrderBean.setmTakeorderAgentCode(userCodesList.get(d).toString());
+//                        takeOrderBean.setmEnquiryId(enqIdsList.get(d).toString());
+//                        takeOrderBean.setmProductStatus("0");
+//                        takeOrderBean.setmProductOrderType("");
+//                        takeOrderBean.setmAgentTakeOrderDate(orderDateList.get(d).toString());
+//                        //  if (!spPriceList.get(s).toString().equals("0")) {
+//                        //      takeOrderBean.setmAgentPrice(spPriceList.get(s).toString());
+//                        //  } else {
+//                        //      takeOrderBean.setmAgentPrice(upPriceList.get(s).toString());
+//                        //  }
+//
+//                        mTakeOrderProductsBeansList.add(takeOrderBean);
+//                    }
 
-                        mTakeOrderProductsBeansList.add(takeOrderBean);
+                    // Code added by Sekhar Kuppa
+                    synchronized (this) {
+                        JSONArray a1 = productsArray.get(String.valueOf(d));
+                        for (int u = 0; u < a1.length(); u++) {
+                            JSONObject j1 = a1.getJSONObject(u);
+
+                            prodCodesNamesMapList.put(j1.getString("_id"), j1.getString("name"));
+                        }
+                    }
+                    synchronized (this) {
+                        JSONArray aaa = productIdsList.get(String.valueOf(d));
+                        JSONArray bbb = productCodesList.get(String.valueOf(d));
+                        int size = aaa.length();
+                        if (size > 0) {
+                            for (int h = 0; h < size; h++) {
+                                String ptitle = prodCodesNamesMapList.get(aaa.get(h).toString());
+                                TakeOrderBean takeOrderBean = new TakeOrderBean();
+                                takeOrderBean.setmProductTitle(ptitle);
+                                takeOrderBean.setmProductId(aaa.get(h).toString());
+                                takeOrderBean.setMtakeorderProductCode(bbb.get(h).toString());
+                                takeOrderBean.setmRouteId(routeIdsList.get(d).toString());
+                                // >0 == d1 is greater than d2
+                                // 0 == d1 is equal to d2
+                                // <0 == d1 is lesser than d2
+                                Date d1 = df.parse(mTodaysDate);
+                                Date d2 = df.parse(fDaList.get(h).toString());
+                                Date d3 = df.parse(tDaList.get(h).toString());
+                                if (d1.compareTo(d2) > 0) {
+                                    takeOrderBean.setmProductFromDate(currentDate);
+                                } else {
+                                    takeOrderBean.setmProductFromDate(fDaList.get(h).toString());
+                                }
+                                if (d1.compareTo(d3) > 0) {
+                                    takeOrderBean.setmProductToDate(currentDate);
+                                } else {
+                                    takeOrderBean.setmProductToDate(tDaList.get(h).toString());
+                                }
+                                takeOrderBean.setmProductQuantity(qList.get(h).toString());
+                                takeOrderBean.setmAgentId(userIdsList.get(d).toString());
+                                takeOrderBean.setmTakeorderAgentCode(userCodesList.get(d).toString());
+                                takeOrderBean.setmEnquiryId(enqIdsList.get(d).toString());
+                                takeOrderBean.setmProductStatus("0");
+                                takeOrderBean.setmProductOrderType("");
+                                takeOrderBean.setmAgentTakeOrderDate(orderDateList.get(d).toString());
+                                //  if (!spPriceList.get(s).toString().equals("0")) {
+                                //      takeOrderBean.setmAgentPrice(spPriceList.get(s).toString());
+                                //  } else {
+                                //      takeOrderBean.setmAgentPrice(upPriceList.get(s).toString());
+                                //  }
+
+                                mTakeOrderProductsBeansList.add(takeOrderBean);
+                            }
+                        }
                     }
                 }
-
 
                 synchronized (this) {
                     if (mTakeOrderProductsBeansList.size() > 0) {

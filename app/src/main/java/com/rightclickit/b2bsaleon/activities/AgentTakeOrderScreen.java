@@ -2,6 +2,7 @@ package com.rightclickit.b2bsaleon.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -61,7 +62,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
 
     private ArrayList<ProductsBean> productsList, productsListSort;
 
-    public String Agents;
+    public String Agents, mAgentID = "";
     public String TroipsTakeorder = "", tripSheetId = "";
 
     public static boolean isCloseClicked;
@@ -93,7 +94,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
-        pendingOrdersModel=new AgentPendingOrdersModel(this,AgentTakeOrderScreen.this);
+        pendingOrdersModel = new AgentPendingOrdersModel(this, AgentTakeOrderScreen.this);
 
 
         Bundle bundle = this.getIntent().getExtras();
@@ -251,7 +252,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
 
         if (productsList.size() > 0) {
             mTakeOrderAdapter = new TakeOrdersAdapter(this, this, productsList, mTakeOrderListView, mPreference.getString("agentId"), mTakeOrderBeansList,
-                    selectedTakeOrderQuantityListMap, selectedTakeOrderFromDatesListMap, selectedTakeOrderToDatesListMap,TroipsTakeorder,tripSheetId);
+                    selectedTakeOrderQuantityListMap, selectedTakeOrderFromDatesListMap, selectedTakeOrderToDatesListMap, TroipsTakeorder, tripSheetId);
             mTakeOrderListView.setAdapter(mTakeOrderAdapter);
         }
     }
@@ -316,7 +317,8 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
 
         if (id == R.id.autorenew) {
             if (new NetworkConnectionDetector(AgentTakeOrderScreen.this).isNetworkConnected()) {
-                pendingOrdersModel.getOrdersList(mPreference.getString("agentId"));
+                //pendingOrdersModel.getOrdersList(mPreference.getString("agentId"));
+                showAlertDialog(AgentTakeOrderScreen.this, "Sync process", "Are you sure, you want start the sync process?");
             } else {
                 new NetworkConnectionDetector(AgentTakeOrderScreen.this).displayNoNetworkError(AgentTakeOrderScreen.this);
             }
@@ -395,7 +397,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
                         mTakeOrderAdapter = null;
                     }
                     mTakeOrderAdapter = new TakeOrdersAdapter(this, this, productsListSort, mTakeOrderListView, mPreference.getString("agentId"), mTakeOrderBeansList,
-                            selectedTakeOrderQuantityListMap, selectedTakeOrderFromDatesListMap, selectedTakeOrderToDatesListMap,TroipsTakeorder,tripSheetId);
+                            selectedTakeOrderQuantityListMap, selectedTakeOrderFromDatesListMap, selectedTakeOrderToDatesListMap, TroipsTakeorder, tripSheetId);
                     mTakeOrderListView.setAdapter(mTakeOrderAdapter);
                     mTakeOrderAdapter.notifyDataSetChanged();
                 }
@@ -485,6 +487,37 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
         this.selectedTakeOrderQuantityListMap = productsList;
         this.selectedTakeOrderFromDatesListMap = fromDatesList;
         this.selectedTakeOrderToDatesListMap = toDatesList;
+    }
+
+    private void showAlertDialog(Context context, String title, String message) {
+        try {
+            android.support.v7.app.AlertDialog alertDialog = null;
+            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.AppCompatAlertDialogStyle);
+            alertDialogBuilder.setTitle(title);
+            alertDialogBuilder.setMessage(message);
+            alertDialogBuilder.setCancelable(false);
+
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    pendingOrdersModel.getOrdersList(mPreference.getString("agentId"));
+                }
+            });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+            alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
