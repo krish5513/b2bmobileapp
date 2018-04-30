@@ -112,27 +112,35 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                     if (productsList.size() > 0) {
                         for (int i = 0; i < productsList.size(); i++) {
                             if (mProductIdsList.get(k).getmProductId().toString().equals(productsList.get(i).getProductId())) {
-                                System.out.println("P TITLE IS::: " + productsList.get(i).getProductTitle());
+                                //System.out.println("P TITLE IS::: " + productsList.get(i).getProductTitle());
 
                                 TakeOrderPreviewBean topBean = new TakeOrderPreviewBean();
 
                                 topBean.setpName(mProductIdsList.get(k).getmProductTitle());
                                 topBean.setpQuantity(mProductIdsList.get(k).getmProductQuantity());
-                                if (specialPriceBeanArrayList.size() >0) {
-                                    for (int l = 0; l < specialPriceBeanArrayList.size(); l++) {
-                                        if (specialPriceBeanArrayList.get(l).getSpecialProductId().equals(productsList.get(i).getProductId())
-                                                && specialPriceBeanArrayList.get(i).getSpecialUserId().equals(sharedPreferences.getString("agentId"))) {
-                                            if (!specialPriceBeanArrayList.get(l).getSpecialPrice().equals("")) {
-                                                topBean.setpPrice(specialPriceBeanArrayList.get(l).getSpecialPrice());
-                                            } else {
-                                                topBean.setpPrice(productsList.get(i).getProductAgentPrice());
-                                            }
-                                        } else {
-                                            topBean.setpPrice(productsList.get(i).getProductAgentPrice());
-                                        }
-                                    }
-                                }else {
+
+//                                if (specialPriceBeanArrayList.size() >0) {
+//                                    for (int l = 0; l < specialPriceBeanArrayList.size(); l++) {
+//                                        //System.out.println("PROD ID::: "+specialPriceBeanArrayList.get(l).getSpecialProductId());
+//                                        //System.out.println("PROD ID MNew::: "+productsList.get(i).getProductId());
+//                                        if (specialPriceBeanArrayList.get(l).getSpecialProductId().equals(productsList.get(i).getProductId())
+//                                                && specialPriceBeanArrayList.get(i).getSpecialUserId().equals(sharedPreferences.getString("agentId"))) {
+//                                            if (!specialPriceBeanArrayList.get(l).getSpecialPrice().equals("")) {
+//                                                topBean.setpPrice(specialPriceBeanArrayList.get(l).getSpecialPrice());
+//                                            } else {
+//                                                topBean.setpPrice(productsList.get(i).getProductAgentPrice());
+//                                            }
+//                                        } else {
+//                                            topBean.setpPrice(productsList.get(i).getProductAgentPrice());
+//                                        }
+//                                    }
+//                                }else {
+//                                    topBean.setpPrice(productsList.get(i).getProductAgentPrice());
+//                                }
+                                if(productsList.get(i).getProductAgentPrice()!=null){
                                     topBean.setpPrice(productsList.get(i).getProductAgentPrice());
+                                }else {
+                                    topBean.setpPrice("0.0");
                                 }
                                 topBean.setmProductTaxGST(productsList.get(i).getProductgst());
                                 topBean.setmProductTaxVAT(productsList.get(i).getProductvat());
@@ -174,12 +182,12 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
 
                                 mProductsPriceAmountSum = (mProductsPriceAmountSum + (amount
                                         * Double.parseDouble(mProductIdsList.get(k).getmProductQuantity())));
-                                System.out.println("P PRICE IS::: " + mProductsPriceAmountSum);
+                                //System.out.println("P PRICE IS::: " + mProductsPriceAmountSum);
 
                                 mTotalProductsTax = (mTotalProductsTax + taxAmount);
 
                                 mTotalProductsPriceAmountSum = (mProductsPriceAmountSum + mTotalProductsTax);
-                                System.out.println("FINAL AMOUNT PRICE IS::: " + mTotalProductsPriceAmountSum);
+                                //System.out.println("FINAL AMOUNT PRICE IS::: " + mTotalProductsPriceAmountSum);
                                 String[] temp = new String[6];
                                 temp[0] = name;
                                 temp[1] = p_code;
@@ -193,7 +201,7 @@ public class AgentTakeOrderPreview extends AppCompatActivity {
                temp[7] = mProductIdsList.get(k).getmProductFromDate();
                temp[8] = mProductIdsList.get(k).getmProductToDate();*/
                                 selectedList.add(temp);
-                                Log.i("takeordertemp", temp + "");
+                                //Log.i("takeordertemp", temp + "");
                                 takeOrderPreviewBeanArrayList.add(topBean);
                             }
                         }
