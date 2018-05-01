@@ -105,6 +105,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
     private AlertDialog alertDialog1 = null;
     public static final String TAG = DashboardActivity.class.getSimpleName();
     TextView tv;
+    Button moreInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -266,6 +267,20 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
                 }
             }
         }
+
+
+
+        moreInfo = (Button) findViewById(R.id.moreinfo);
+
+        moreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DashboardActivity.this, NextIndent_Moreinfo.class);
+                startActivity(i);
+                finish();
+            }
+        });
+
 
 
         mDashBoardLayout = (LinearLayout) findViewById(R.id.DashboardLayout);

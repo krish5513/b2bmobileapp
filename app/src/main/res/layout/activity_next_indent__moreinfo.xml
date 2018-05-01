@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.NextIndent_Moreinfo">
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@color/light_gray"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/greydark"
+                android:textSize="12sp"
+                android:layout_weight="0.1"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Milk(01)"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/greydark"
+                android:textSize="12sp"
+                android:layout_weight="0.1"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Curd(02)"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/greydark"
+                android:textSize="12sp"
+                android:layout_weight="0.1"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Others(03)"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/greydark"
+                android:textSize="12sp"
+                android:layout_weight="0.1"/>
+
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_above="@id/tpsBottomOptionsLayout">
+
+            <ListView
+                android:id="@+id/nextday_indent_moreinfoList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@android:color/transparent"
+                android:smoothScrollbar="true"
+                />
+        </LinearLayout>
+
+
+
+
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

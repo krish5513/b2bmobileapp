@@ -9,6 +9,7 @@ import com.rightclickit.b2bsaleon.activities.AgentsActivity;
 import com.rightclickit.b2bsaleon.activities.AgentsInfoActivity;
 import com.rightclickit.b2bsaleon.activities.Agents_AddActivity;
 import com.rightclickit.b2bsaleon.activities.LoginActivity;
+import com.rightclickit.b2bsaleon.activities.NextIndent_Moreinfo;
 import com.rightclickit.b2bsaleon.activities.SettingsActivity;
 import com.rightclickit.b2bsaleon.beanclass.AgentsBean;
 import com.rightclickit.b2bsaleon.constants.Constants;
@@ -38,6 +39,8 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
     SettingsActivity settingsActivity;
     private Agents_AddActivity activity1;
     private AgentsInfoActivity activity2;
+    private NextIndent_Moreinfo activity3;
+
     private MMSharedPreferences mPreferences;
     private DBHelper mDBHelper;
     private String type = "", UserCode = "";
@@ -77,6 +80,13 @@ public class AgentsModel implements OnAsyncRequestCompleteListener {
         this.activity2 = activity;
         this.mPreferences = new MMSharedPreferences(context);
         this.mDBHelper = new DBHelper(context);
+    }
+
+    public AgentsModel(Context activityContext, NextIndent_Moreinfo nextIndent_moreinfo) {
+        this.context = activityContext;
+        this.activity3 = nextIndent_moreinfo;
+        this.mPreferences = new MMSharedPreferences(activityContext);
+        this.mDBHelper = new DBHelper(activityContext);
     }
 
   /*  public void getStakeHoldersList(String s) {

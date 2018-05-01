@@ -52,37 +52,37 @@
                 android:textColor="@color/greydark"
                 android:textSize="16sp" />
 
-<!--
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:gravity="end"
-                android:orientation="horizontal"
-                android:padding="10dp">
+            <!--
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:gravity="end"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
 
-                <Button
-                    android:id="@+id/btn_navigation"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:background="@drawable/border_btn"
+                            <Button
+                                android:id="@+id/btn_navigation"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:background="@drawable/border_btn"
 
-                    android:drawableLeft="@drawable/ic_near_me_black_24dp"
-                    android:textColor="@color/darkgrey"
-                    android:textSize="10sp" />
+                                android:drawableLeft="@drawable/ic_near_me_black_24dp"
+                                android:textColor="@color/darkgrey"
+                                android:textSize="10sp" />
 
-                <Button
-                    android:id="@+id/btn_dialer"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/border_btn"
-                    android:drawableLeft="@drawable/ic_call_black_24dp"
-                    android:textColor="@color/darkgrey"
-                    android:textSize="10sp" />
+                            <Button
+                                android:id="@+id/btn_dialer"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/border_btn"
+                                android:drawableLeft="@drawable/ic_call_black_24dp"
+                                android:textColor="@color/darkgrey"
+                                android:textSize="10sp" />
 
-            </LinearLayout>
--->
+                        </LinearLayout>
+            -->
 
         </LinearLayout>
 
@@ -91,21 +91,7 @@
             android:layout_height="1dp"
             android:background="@color/view_line" />
 
-
-
-        <ListView
-            android:id="@+id/ordered_products_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@android:color/transparent"
-            android:smoothScrollbar="true"
-            android:layout_marginBottom="97dp"
-            android:nestedScrollingEnabled="true"
-            android:background="@color/white"/>
-
-
-     <!--   <ScrollView
-            android:visibility="gone"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="100dp">
@@ -167,7 +153,7 @@
 
             </LinearLayout>
 
-        </ScrollView>-->
+        </ScrollView>
 
 
 
@@ -335,7 +321,7 @@
                 android:layout_weight="0.25"
                 android:gravity="center"
                 android:onClick="openTripSheetReturns"
-               >
+                >
 
                 <TextView
                     android:layout_width="wrap_content"

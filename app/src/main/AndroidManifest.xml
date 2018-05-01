@@ -12,14 +12,13 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.rightclickit.b2bsaleon.permisssion.MAPS_RECEIVE" />
-
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INSTALL_LOCATION_PROVIDER"
+    <uses-permission
+        android:name="android.permission.INSTALL_LOCATION_PROVIDER"
         tools:ignore="ProtectedPermissions" />
 
     <application
@@ -109,7 +108,7 @@
         <activity
             android:name=".activities.AgentTakeOrderScreen"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.AgentViewActivity"
             android:screenOrientation="portrait"
@@ -252,11 +251,9 @@
             android:name=".activities.RouteStock"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".activities.AgentMapFullScreen"
-            android:screenOrientation="portrait"></activity>
-
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".services.SyncSpecialPriceService"
@@ -330,22 +327,20 @@
         <activity
             android:name=".activities.AgentStockActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activities.AgentStockDeliveryActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
 
         <service
             android:name=".services.SyncAgentStockDeliveriesService"
             android:enabled="true"
             android:exported="true" />
-
         <service
             android:name=".services.SyncCloseTripSheetsStockService"
             android:enabled="true"
             android:exported="true" />
-
         <service
             android:name=".services.DeviceLocationService"
             android:enabled="true"
@@ -354,11 +349,12 @@
             android:name=".services.SyncDeviceLocationDetailsService"
             android:enabled="true"
             android:exported="true" />
-
         <service
             android:name=".services.SyncAgentsService"
             android:enabled="true"
             android:exported="true" />
+
+        <activity android:name=".activities.NextIndent_Moreinfo"></activity>
     </application>
 
 </manifest>
