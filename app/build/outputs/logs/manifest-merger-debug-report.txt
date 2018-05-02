@@ -9,6 +9,7 @@ MERGED from [com.github.scottyab:showhidepasswordedittext:0.6] C:\Users\RCITS\.g
 MERGED from [com.yayandroid:LocationManager:2.0.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\LocationManager-2.0.1.aar\c0f0ebba12be06517fffc1c8b4a47045\AndroidManifest.xml:2:1-12:12
 MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\calligraphy-2.2.0.aar\66fbfeee883893f77b8fbf83ddcf5ad9\AndroidManifest.xml:2:1-13:12
 MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:2:1-19:12
+MERGED from [io.apptik.widget:multiselectspinner:1.0.12] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\multiselectspinner-1.0.12.aar\275eb5a55e7dd2a639521231d6833afd\AndroidManifest.xml:2:1-12:12
 MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\25da492c11ee723699aa42c0c3fe6842\AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\6ba3110d000649643f549472dc4be7e3\AndroidManifest.xml:2:1-11:12
 MERGED from [com.android.volley:volley:1.0.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\volley-1.0.0.aar\35e9abc6d4d1cb8b57e616cafb61fb05\AndroidManifest.xml:2:1-11:12
@@ -114,6 +115,8 @@ MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.gradle\caches\tr
 MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\calligraphy-2.2.0.aar\66fbfeee883893f77b8fbf83ddcf5ad9\AndroidManifest.xml:11:5-20
 MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:11:5-17:19
 MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:11:5-17:19
+MERGED from [io.apptik.widget:multiselectspinner:1.0.12] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\multiselectspinner-1.0.12.aar\275eb5a55e7dd2a639521231d6833afd\AndroidManifest.xml:9:5-10:19
+MERGED from [io.apptik.widget:multiselectspinner:1.0.12] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\multiselectspinner-1.0.12.aar\275eb5a55e7dd2a639521231d6833afd\AndroidManifest.xml:9:5-10:19
 MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\25da492c11ee723699aa42c0c3fe6842\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\25da492c11ee723699aa42c0c3fe6842\AndroidManifest.xml:29:5-20
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\6ba3110d000649643f549472dc4be7e3\AndroidManifest.xml:9:5-20
@@ -786,6 +789,8 @@ MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.gradle\caches\tr
 MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\calligraphy-2.2.0.aar\66fbfeee883893f77b8fbf83ddcf5ad9\AndroidManifest.xml:7:5-9:41
 MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:7:5-9:41
 MERGED from [pub.devrel:easypermissions:0.4.0] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\easypermissions-0.4.0.aar\db42b4061c9fa1a061ac27a77b0d11a3\AndroidManifest.xml:7:5-9:41
+MERGED from [io.apptik.widget:multiselectspinner:1.0.12] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\multiselectspinner-1.0.12.aar\275eb5a55e7dd2a639521231d6833afd\AndroidManifest.xml:5:5-7:41
+MERGED from [io.apptik.widget:multiselectspinner:1.0.12] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\multiselectspinner-1.0.12.aar\275eb5a55e7dd2a639521231d6833afd\AndroidManifest.xml:5:5-7:41
 MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\25da492c11ee723699aa42c0c3fe6842\AndroidManifest.xml:21:5-23:78
 MERGED from [com.android.support:appcompat-v7:25.3.1] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\appcompat-v7-25.3.1.aar\25da492c11ee723699aa42c0c3fe6842\AndroidManifest.xml:21:5-23:78
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\RCITS\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\6ba3110d000649643f549472dc4be7e3\AndroidManifest.xml:5:5-7:41

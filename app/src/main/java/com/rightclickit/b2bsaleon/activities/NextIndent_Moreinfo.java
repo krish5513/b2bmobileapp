@@ -38,10 +38,10 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class NextIndent_Moreinfo extends AppCompatActivity {
+public class NextIndent_Moreinfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 
 
-    Spinner moreinfo_menubarSpinner;
+    Spinner moreinfo_menubarSpinner,multispinner;
     DBHelper db;
     AgentsModel agentsmodel;
     private MMSharedPreferences mmSharedPreferences;
@@ -88,6 +88,9 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
         View v=getLayoutInflater().inflate(R.layout.moreinfo_menubar,null);
         moreinfo_menubarSpinner = (Spinner) v.findViewById(R.id.moreinfo_menubarSpinner);
         this.getSupportActionBar().setCustomView(v);
+
+
+        multispinner = (Spinner) findViewById(R.id.multiSpinner);
 
 
         db = new DBHelper(getApplicationContext());
@@ -139,6 +142,8 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
         //paymentTypeSpinner.setPrompt("Select routecode");
         moreinfo_menubarSpinner.setAdapter(spinnerArrayAdapter);
 
+        multispinner.setAdapter(spinnerArrayAdapter);
+
         moreinfo_menubarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -172,6 +177,7 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
         Nextdayindent_MoreinfoAdapter adapter = new Nextdayindent_MoreinfoAdapter(this, nextdayIndentMoreInfo);
         moreinfo_listView.setAdapter(adapter);
         //moreinfo_listView.setOnItemClickListener(this);
+
 
     }
 
@@ -221,5 +227,22 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (position == 0) {
+
+        } else {
+            selected_val = idsArray.get(position - 1).toString();
+            //selectedroute=routesDataList.get(i - 1).toString();
+
+            mmSharedPreferences.putString("routename", selected_val);
+            System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
 
