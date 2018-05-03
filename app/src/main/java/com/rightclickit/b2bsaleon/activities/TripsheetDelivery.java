@@ -114,36 +114,6 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
             mDBHelper = new DBHelper(activityContext);
             mPreferences = new MMSharedPreferences(activityContext);
 
-            /*TripsheetSOList currentSaleOrder = (TripsheetSOList) this.getIntent().getSerializableExtra("currentSaleOrder");
-
-            ArrayList<String> productCodesList = new ArrayList<String>();
-            String s = currentSaleOrder.getmTripshetSOProductCode();
-            try {
-                JSONArray prodJsonArray = new JSONArray(s);
-                for (int j = 0; j < prodJsonArray.length(); j++) {
-                    if (!prodJsonArray.get(j).toString().equals("null")) {
-                        productCodesList.add(prodJsonArray.get(j).toString());
-                    }
-                }
-                Log.i("productCodesList...",productCodesList+"");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            ArrayList<String> productItemList = new ArrayList<String>();
-            String s2 = currentSaleOrder.getmTripsheetSOitemType();
-            try {
-                JSONArray typeJsonArray = new JSONArray(s2);
-                for (int j = 0; j < typeJsonArray.length(); j++) {
-                    if (!typeJsonArray.get(j).toString().equals("null")) {
-                        productItemList.add(typeJsonArray.get(j).toString());
-                    }
-                }
-                Log.i("productItemList...",productItemList+"");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }*/
-
 
             status = this.getIntent().getStringExtra("status");
             mTripSheetId = this.getIntent().getStringExtra("tripsheetId");
@@ -158,21 +128,11 @@ public class TripsheetDelivery extends AppCompatActivity implements TripSheetDel
 
 
 
-           /* Intent intent = getIntent();
-            Bundle args = intent.getBundleExtra("BUNDLE");
-            mProductTypeList = (ArrayList<TripsheetSOList>) args.getSerializable("productTypeList");
-*/
+
             soCode.setText(mAgentSoCode);
             agentcode.setText("(" + mAgentCode + ")");
 
-//            if (mAgentId != null && mAgentId != "") {
-//                List<String> agentRouteIds = mDBHelper.getAgentRouteId(mAgentId);
-//                if (mAgentRouteId != null && agentRouteIds.size() > 0) {
-//                    mAgentRouteId = agentRouteIds.get(0);
-//                    mAgentRouteCode = mDBHelper.getRouteCodeByRouteId(mAgentRouteId);
-//                }
-//            }
-            // Added by Sekhar
+      // Added by Sekhar
             mAgentRouteId = mPreferences.getString("tripsheetTripRouteId");
             mAgentRouteCode = mPreferences.getString("tripsheetTripRouteCode");
             companyName.setText(mAgentName);

@@ -37,11 +37,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import io.apptik.widget.multiselectspinner.MultiSelectSpinner;
 
-public class NextIndent_Moreinfo extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+
+public class NextIndent_Moreinfo extends AppCompatActivity {
 
 
-    Spinner moreinfo_menubarSpinner,multispinner;
+    Spinner moreinfo_menubarSpinner;
+    MultiSelectSpinner multispinner;
     DBHelper db;
     AgentsModel agentsmodel;
     private MMSharedPreferences mmSharedPreferences;
@@ -83,14 +86,14 @@ public class NextIndent_Moreinfo extends AppCompatActivity implements AdapterVie
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
 
-        this.getSupportActionBar().setDisplayShowCustomEnabled(true);
+       /* this.getSupportActionBar().setDisplayShowCustomEnabled(true);
         this.getSupportActionBar().setDisplayShowTitleEnabled(false);
         View v=getLayoutInflater().inflate(R.layout.moreinfo_menubar,null);
         moreinfo_menubarSpinner = (Spinner) v.findViewById(R.id.moreinfo_menubarSpinner);
-        this.getSupportActionBar().setCustomView(v);
+        this.getSupportActionBar().setCustomView(v);*/
 
 
-        multispinner = (Spinner) findViewById(R.id.multiSpinner);
+        multispinner = (MultiSelectSpinner ) findViewById(R.id.multiSpinner);
 
 
         db = new DBHelper(getApplicationContext());
@@ -114,8 +117,8 @@ public class NextIndent_Moreinfo extends AppCompatActivity implements AdapterVie
         ArrayList<String> stringArray = new ArrayList<String>();
         final HashMap<Integer, String> map = new HashMap<>();
         final HashMap<Integer, String> idMap = new HashMap<>();
-        stringArray.add("All Routes");
-        map.put(0, "All Routes");
+        //stringArray.add("All Routes");
+        //map.put(0, "All Routes");
         for (int i = 1, count = routeCodesArray.length(); i <= count; i++) {
 
             try {
@@ -135,16 +138,32 @@ public class NextIndent_Moreinfo extends AppCompatActivity implements AdapterVie
 
 
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_spinner_item,
-                        stringArray); //selected item will look like a spinner set from XML
-        spinnerArrayAdapter.setDropDownViewResource(android.R.layout
-                .simple_spinner_dropdown_item);
+                (this,android.R.layout.simple_list_item_multiple_choice , stringArray); //selected item will look like a spinner set from XML
+        //spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //paymentTypeSpinner.setPrompt("Select routecode");
-        moreinfo_menubarSpinner.setAdapter(spinnerArrayAdapter);
+      //  moreinfo_menubarSpinner.setAdapter(spinnerArrayAdapter);
 
-        multispinner.setAdapter(spinnerArrayAdapter);
+      //  multispinner.setAdapter(spinnerArrayAdapter);
+        multispinner.setItems(stringArray)
 
-        moreinfo_menubarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
+                    @Override
+                    public void onItemsSelected(boolean[] selected) {
+
+                    }
+                })
+                .setAllCheckedText("All Routes")
+                .setAllUncheckedText("none selected")
+                .setSelectAll(true)
+
+                /*.selectItem(0, true)
+                .selectItem(1, true)
+                .selectItem(2, true)*/
+        ;
+
+
+
+        multispinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -166,6 +185,7 @@ public class NextIndent_Moreinfo extends AppCompatActivity implements AdapterVie
                 return;
             }
         });
+
 
 
         for (int i = 0; i < dates.length; i++) {
@@ -227,22 +247,6 @@ public class NextIndent_Moreinfo extends AppCompatActivity implements AdapterVie
     }
 
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (position == 0) {
 
-        } else {
-            selected_val = idsArray.get(position - 1).toString();
-            //selectedroute=routesDataList.get(i - 1).toString();
-
-            mmSharedPreferences.putString("routename", selected_val);
-            System.out.println("ROUTE JSON OBJ 22:: " + selected_val.toString());
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 }
 
