@@ -418,7 +418,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                         if (currentDeliveryBean.getProductType().equals("F")) {
                             EditText quantityEditText = (EditText) view;
                             Double enteredQuantity = Double.parseDouble(quantityEditText.getText().toString());
-                            if (enteredQuantity > 0) {
+                            if (enteredQuantity >= 0) {
                                 double amount = currentDeliveryBean.getProductRatePerUnit() * enteredQuantity;
                                 double taxAmount = (amount * currentDeliveryBean.getProductTaxPerUnit()) / 100;
 
@@ -483,7 +483,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                                             .setIcon(android.R.drawable.ic_dialog_alert)
                                             .show();
                                 } else {
-                                    if (enteredQuantity > 0) {
+                                    if (enteredQuantity >= 0) {
                                         double amount = currentDeliveryBean.getProductRatePerUnit() * enteredQuantity;
                                         double taxAmount = (amount * currentDeliveryBean.getProductTaxPerUnit()) / 100;
 
@@ -551,7 +551,7 @@ public class TripSheetDeliveriesAdapter extends BaseAdapter {
                                         .setIcon(android.R.drawable.ic_dialog_alert)
                                         .show();
                             } else {
-                                if (enteredQuantity > 0) {
+                                if (enteredQuantity >= 0) {
                                     double amount = currentDeliveryBean.getProductRatePerUnit() * enteredQuantity;
                                     double taxAmount = (amount * currentDeliveryBean.getProductTaxPerUnit()) / 100;
 

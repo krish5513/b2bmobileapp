@@ -16,8 +16,8 @@ android {
         applicationId "com.rightclickit.b2bsaleon"
         minSdkVersion 18
         targetSdkVersion 25
-        versionCode 25
-        versionName "1.4.1"
+        versionCode 26
+        versionName "1.4.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true

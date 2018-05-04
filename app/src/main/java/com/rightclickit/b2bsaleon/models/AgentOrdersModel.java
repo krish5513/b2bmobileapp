@@ -123,7 +123,8 @@ public class AgentOrdersModel implements OnAsyncRequestCompleteListener {
                 params.put("user_id", s);
                 params.put("from_date", fromDate);
                 params.put("to_date", currentDate);
-
+                System.out.println("THE ORDERS URL IS::: " + ordersURL);
+                System.out.println("THE ORDERS DATA IS::: " + params.toString());
                 AsyncRequest routeidRequest = new AsyncRequest(context, this, ordersURL, AsyncRequest.MethodType.POST, params);
                 routeidRequest.execute();
             }
