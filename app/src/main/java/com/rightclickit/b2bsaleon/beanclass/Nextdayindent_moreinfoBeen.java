@@ -3,19 +3,7 @@ package com.rightclickit.b2bsaleon.beanclass;
 public class Nextdayindent_moreinfoBeen {
 
     private String id;
-    private String date;
-    private String milk;
-    private String curd;
-    private String other;
-
-    public Nextdayindent_moreinfoBeen(String date, String milk, String curd, String other) {
-        this.date = date;
-        this.milk = milk;
-        this.curd = curd;
-        this.other = other;
-
-    }
-
+    private String milkDate;
 
     public String getId() {
         return id;
@@ -25,36 +13,60 @@ public class Nextdayindent_moreinfoBeen {
         this.id = id;
     }
 
-    public String getDate() {
-        return date;
+    public String getMilkDate() {
+        return milkDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setMilkDate(String milkDate) {
+        this.milkDate = milkDate;
     }
 
-    public String getMilk() {
-        return milk;
+    public String getMilkVol() {
+        return milkVol;
     }
 
-    public void setMilk(String milk) {
-        this.milk = milk;
+    public void setMilkVol(String milkVol) {
+        this.milkVol = milkVol;
     }
 
-    public String getCurd() {
-        return curd;
+    public String getCurdDate() {
+        return curdDate;
     }
 
-    public void setCurd(String curd) {
-        this.curd = curd;
+    public void setCurdDate(String curdDate) {
+        this.curdDate = curdDate;
     }
 
-    public String getOther() {
-        return other;
+    public String getCurdVol() {
+        return curdVol;
     }
 
-    public void setOther(String other) {
-        this.other = other;
+    public void setCurdVol(String curdVol) {
+        this.curdVol = curdVol;
     }
+
+    public String getOtherDate() {
+        return otherDate;
+    }
+
+    public void setOtherDate(String otherDate) {
+        this.otherDate = otherDate;
+    }
+
+    public String getOtherVol() {
+        return otherVol;
+    }
+
+    public void setOtherVol(String otherVol) {
+        this.otherVol = otherVol;
+    }
+
+    private String milkVol;
+    private String curdDate;
+    private String curdVol;
+    private String otherDate;
+    private String otherVol;
+
+
 
 }

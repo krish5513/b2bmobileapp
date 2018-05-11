@@ -22,10 +22,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rightclickit.b2bsaleon.R;
+import com.rightclickit.b2bsaleon.adapters.MultiSelectionSpinner;
 import com.rightclickit.b2bsaleon.adapters.Nextdayindent_MoreinfoAdapter;
 import com.rightclickit.b2bsaleon.beanclass.Nextdayindent_moreinfoBeen;
 import com.rightclickit.b2bsaleon.database.DBHelper;
 import com.rightclickit.b2bsaleon.models.AgentsModel;
+import com.rightclickit.b2bsaleon.models.NextIndentMoreInfoModel;
+import com.rightclickit.b2bsaleon.models.ProductsModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
@@ -39,20 +42,29 @@ import java.util.List;
 
 import io.apptik.widget.multiselectspinner.MultiSelectSpinner;
 
+import static com.rightclickit.b2bsaleon.customviews.CustomAlertDialog.showAlertDialog;
+
 
 public class NextIndent_Moreinfo extends AppCompatActivity {
 
 
-    Spinner moreinfo_menubarSpinner;
-    MultiSelectSpinner multispinner;
+    MultiSelectionSpinner multispinner;
     DBHelper db;
     AgentsModel agentsmodel;
     private MMSharedPreferences mmSharedPreferences;
     private JSONArray routeCodesArray;
-    String selected_val, selectedroute;
+    String selected_val, selecteddate;
     ArrayList<String> idsArray = new ArrayList<String>();
     List<String> routesDataList = null;
+    JSONArray idsArraySpinner;
+    ArrayList<Integer> al;
     private Context applicationContext, activityContext;
+    NextIndentMoreInfoModel moreinfomodel;
+    ArrayList<String> stringArray=null,stringArraySpinner=null;
+
+
+
+    ArrayList<String> moreInfoList=new ArrayList<>();
 
 
     public static final String[] dates = new String[] { "02/05/2018",
@@ -72,7 +84,7 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
         setContentView(R.layout.activity_next_indent__moreinfo);
         activityContext = NextIndent_Moreinfo.this;
 
-        this.getSupportActionBar().setTitle("MORE INFO");
+        this.getSupportActionBar().setTitle("NEXT INDENT");
         this.getSupportActionBar().setSubtitle(null);
         //this.getSupportActionBar().setLogo(R.drawable.customers_white_24);
         // this.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
@@ -85,6 +97,8 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
 
+        moreinfomodel=new NextIndentMoreInfoModel(activityContext,this);
+
 
        /* this.getSupportActionBar().setDisplayShowCustomEnabled(true);
         this.getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -93,9 +107,16 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
         this.getSupportActionBar().setCustomView(v);*/
 
 
-        multispinner = (MultiSelectSpinner ) findViewById(R.id.multiSpinner);
+        multispinner = (MultiSelectionSpinner ) findViewById(R.id.multiSpinner);
 
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            selecteddate = bundle.getString("fromdate");
+
+
+
+        }
         db = new DBHelper(getApplicationContext());
         agentsmodel = new AgentsModel(activityContext, this);
         mmSharedPreferences = new MMSharedPreferences(NextIndent_Moreinfo.this);
@@ -114,7 +135,7 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        ArrayList<String> stringArray = new ArrayList<String>();
+        stringArray = new ArrayList<String>();
         final HashMap<Integer, String> map = new HashMap<>();
         final HashMap<Integer, String> idMap = new HashMap<>();
         //stringArray.add("All Routes");
@@ -137,33 +158,50 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
 
 
 
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
+        final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
                 (this,android.R.layout.simple_list_item_multiple_choice , stringArray); //selected item will look like a spinner set from XML
         //spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //paymentTypeSpinner.setPrompt("Select routecode");
       //  moreinfo_menubarSpinner.setAdapter(spinnerArrayAdapter);
 
       //  multispinner.setAdapter(spinnerArrayAdapter);
-        multispinner.setItems(stringArray)
+        stringArraySpinner=new ArrayList<>();
+        idsArraySpinner=new JSONArray();
+        idsArraySpinner=routeCodesArray;
+        stringArraySpinner=stringArray;
 
-                .setListener(new MultiSelectSpinner.MultiSpinnerListener() {
-                    @Override
-                    public void onItemsSelected(boolean[] selected) {
 
+        multispinner.setItems(stringArray);
+        multispinner.setListener(new MultiSelectionSpinner.OnMultipleItemsSelectedListener() {
+            @Override
+            public void selectedIndices(List<Integer> indices) {
+                al=null;
+                al=new ArrayList<>();
+                al.addAll(indices);
+                idsArraySpinner=null;
+                idsArraySpinner=new JSONArray();
+                for (int i=0;i<al.size();i++){
+                    Integer i1=al.get(i);
+                    try {
+                        idsArraySpinner.put(routeCodesArray.getString(i1));
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                })
-                .setAllCheckedText("All Routes")
-                .setAllUncheckedText("none selected")
-                .setSelectAll(true)
+                }
+            }
 
-                /*.selectItem(0, true)
-                .selectItem(1, true)
-                .selectItem(2, true)*/
-        ;
+            @Override
+            public void selectedStrings(List<String> strings) {
+                stringArraySpinner.clear();
+                stringArraySpinner.addAll(strings);
+                Toast.makeText(NextIndent_Moreinfo.this, ""+stringArraySpinner, Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 
-        multispinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*multispinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -184,14 +222,14 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
                 return;
             }
-        });
+        });*/
 
 
 
-        for (int i = 0; i < dates.length; i++) {
+      /*  for (int i = 0; i < dates.length; i++) {
             Nextdayindent_moreinfoBeen MoreInfobeen = new Nextdayindent_moreinfoBeen(dates[i], milk[i], curd[i],other[i]);
             nextdayIndentMoreInfo.add(MoreInfobeen);
-        }
+        }*/
 
         moreinfo_listView = (ListView) findViewById(R.id.nextday_indent_moreinfoList);
         Nextdayindent_MoreinfoAdapter adapter = new Nextdayindent_MoreinfoAdapter(this, nextdayIndentMoreInfo);
@@ -213,7 +251,20 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        if (id == R.id.autorenew) {
 
+            if (new NetworkConnectionDetector(NextIndent_Moreinfo.this).isNetworkConnected()) {
+                moreinfomodel.getReportsData(selecteddate,idsArraySpinner);
+            } else {
+                new NetworkConnectionDetector(NextIndent_Moreinfo.this).displayNoNetworkError(NextIndent_Moreinfo.this);
+            }
+            return true;
+           /* if (new NetworkConnectionDetector(DashboardActivity.this).isNetworkConnected()) {
+                mReportsModel.getReportsData(mReportSelectedDateStr);
+            } else {
+                new NetworkConnectionDetector(DashboardActivity.this).displayNoNetworkError(DashboardActivity.this);
+            }*/
+        }
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();

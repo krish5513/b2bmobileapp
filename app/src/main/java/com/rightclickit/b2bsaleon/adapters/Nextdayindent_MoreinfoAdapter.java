@@ -69,10 +69,10 @@ public class Nextdayindent_MoreinfoAdapter extends BaseAdapter {
 
         Nextdayindent_moreinfoBeen nextdayIndentMoreInfo = (Nextdayindent_moreinfoBeen) getItem(position);
 
-        holder.date.setText(nextdayIndentMoreInfo.getDate());
-        holder.milk.setText(nextdayIndentMoreInfo.getMilk());
-        holder.curd.setText(nextdayIndentMoreInfo.getCurd());
-        holder.other.setText(nextdayIndentMoreInfo.getOther());
+       // holder.date.setText(nextdayIndentMoreInfo.getDate());
+       // holder.milk.setText(nextdayIndentMoreInfo.getMilk());
+      //  holder.curd.setText(nextdayIndentMoreInfo.getCurd());
+      //  holder.other.setText(nextdayIndentMoreInfo.getOther());
 
         return convertView;
 

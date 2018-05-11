@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <io.apptik.widget.multiselectspinner.MultiSelectSpinner
+        <com.rightclickit.b2bsaleon.adapters.MultiSelectionSpinner
             android:visibility="visible"
             android:padding="10dp"
             android:layout_marginTop="10dp"

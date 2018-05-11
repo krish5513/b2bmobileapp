@@ -1,6 +1,7 @@
 package com.rightclickit.b2bsaleon.models;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.rightclickit.b2bsaleon.activities.AgentTDC_Order;
 import com.rightclickit.b2bsaleon.activities.AgentTakeOrderScreen;
@@ -317,14 +318,17 @@ public class AgentPendingOrdersModel implements OnAsyncRequestCompleteListener {
                                 // 0 == d1 is equal to d2
                                 // <0 == d1 is lesser than d2
                                 Date d1 = df.parse(mTodaysDate);
+                                Log.i("d1",d1+"");
                                 Date d2 = df.parse(fDaList.get(h).toString());
+                                Log.i("d2",d2+"");
                                 Date d3 = df.parse(tDaList.get(h).toString());
+                                Log.i("d3",d3+"");
                                 if (d1.compareTo(d2) > 0) {
                                     takeOrderBean.setmProductFromDate(currentDate);
                                 } else {
                                     takeOrderBean.setmProductFromDate(fDaList.get(h).toString());
                                 }
-                                if (d1.compareTo(d3) > 0) {
+                                if (d1.compareTo(d3) >= 0) {
                                     takeOrderBean.setmProductToDate(currentDate);
                                 } else {
                                     takeOrderBean.setmProductToDate(tDaList.get(h).toString());

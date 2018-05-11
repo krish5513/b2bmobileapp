@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,9 +32,13 @@ import com.rightclickit.b2bsaleon.models.AgentPendingOrdersModel;
 import com.rightclickit.b2bsaleon.util.MMSharedPreferences;
 import com.rightclickit.b2bsaleon.util.NetworkConnectionDetector;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +48,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
     private TakeOrdersAdapter mTakeOrderAdapter;
     private ArrayList<TakeOrderBean> mTakeOrderBeansList = new ArrayList<TakeOrderBean>();
     private DBHelper mDBHelper;
-
+    private SimpleDateFormat df;
     private LinearLayout mTakeOrdersLayout;
     private LinearLayout mDeliveriesLayout;
     private LinearLayout mReturnsLayout;
@@ -51,7 +56,7 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
 
     AgentPendingOrdersModel pendingOrdersModel;
 
-
+    private String currentDate = "", fromDate = "", mTodaysDate = "";
     private LinearLayout tpsBottomOptionsLayout;
 
 
@@ -352,6 +357,49 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
                             pB.setProductgst(productsList.get(y).getProductgst());
                             pB.setProductvat(productsList.get(y).getProductvat());
 
+
+                            Calendar cal = Calendar.getInstance();
+                            df = new SimpleDateFormat("yyyy-MM-dd");
+                            cal.add(Calendar.DAY_OF_YEAR, 1);
+                            currentDate = df.format(cal.getTime());
+
+                            mTodaysDate = df.format(new Date());
+
+
+
+                            Date d1 = null;
+                            Date d2 = null;
+                            try {
+                                d1 = df.parse(mTodaysDate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            Log.i("d1",d1+"");
+
+                            if (selectedTakeOrderToDatesListMap.get(productsList.get(y).getProductId()) != null) {
+                                try {
+                                     d2= df.parse(selectedTakeOrderToDatesListMap.get(productsList.get(y).getProductId()));
+                                    Log.i("ifd2",d2+"");
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if(productsList.get(y).getmTakeOrderToDate()!=null){
+                                try {
+                                     d2= df.parse(productsList.get(y).getmTakeOrderToDate());
+                                    Log.i("elsed2",d2+"");
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+
+                           if (d2!=null && d1.compareTo(d2) >= 0) {
+                                pB.setmTakeOrderToDate(currentDate);
+                            } else if(selectedTakeOrderToDatesListMap.get(productsList.get(y).getProductId()) != null){
+                                pB.setmTakeOrderToDate(selectedTakeOrderToDatesListMap.get(productsList.get(y).getProductId()));
+                            }else {
+                                pB.setmTakeOrderToDate(productsList.get(y).getmTakeOrderToDate());
+                            }
                             if (selectedTakeOrderQuantityListMap.get(productsList.get(y).getProductId()) != null) {
                                 toq = Double.parseDouble(selectedTakeOrderQuantityListMap.get(productsList.get(y).getProductId()));
                                 pB.setmTakeOrderQuantity(String.valueOf(toq));
@@ -367,11 +415,11 @@ public class AgentTakeOrderScreen extends AppCompatActivity implements AgentTake
                             } else {
                                 pB.setmTakeOrderFromDate(productsList.get(y).getmTakeOrderFromDate());
                             }
-                            if (selectedTakeOrderToDatesListMap.get(productsList.get(y).getProductId()) != null) {
+                          /* if (selectedTakeOrderToDatesListMap.get(productsList.get(y).getProductId()) != null) {
                                 pB.setmTakeOrderToDate(selectedTakeOrderToDatesListMap.get(productsList.get(y).getProductId()));
                             } else {
                                 pB.setmTakeOrderToDate(productsList.get(y).getmTakeOrderToDate());
-                            }
+                            }*/
 
                             productsListSort.add(pB);
                         }

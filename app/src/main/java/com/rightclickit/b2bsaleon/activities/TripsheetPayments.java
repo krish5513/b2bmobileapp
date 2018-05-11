@@ -233,10 +233,10 @@ public class TripsheetPayments extends AppCompatActivity {
             tps_received_amount.setText(Utility.getFormattedCurrency(receivedAmount));
             tps_due_amount.setText(Utility.getFormattedCurrency(dueAmount));
 
-            if (dueAmount > 0)
+          /*  if (dueAmount > 0)
                 mAmountText.setText(String.format("%.2f", dueAmount));
-            else
-                mAmountText.setText("0.00");
+            else*/
+                mAmountText.setText("");
             //mAmountText.setText(currentDeliveriesBean.getmTripsheetDelivery_SaleValue());
 
         } catch (Exception e) {

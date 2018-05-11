@@ -141,52 +141,25 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
-        /*if((month<=10)&&(day<10)) {
-            //tv.setText("0" + day + "/0" + (month+1) + "/" + year);
 
-            tv.setText(Html.fromHtml("<u> " + String.format("%02d", day)+"-"+String.format("%02d", (month + 1)) +"-"+year + "</u>"));
-        }else if (month<=10){
-            //tv.setText("" + day + "/0" + (month+1) + "/" + year);
-            tv.setText(Html.fromHtml("<u>  " + day + "-0" + (month+1) + "-" + year+ "</u>"));
-
-        }else if (day<10){
-            //tv.setText("0" + day + "/" + (month+1) + "/" + year);
-            tv.setText(Html.fromHtml("<u>  0" + day + "-" + (month+1) + "-" + year+ "</u>"));
-
-        }else {
-            //tv.setText("" + day + "/" + (month+1) + "/" + year);
-            tv.setText(Html.fromHtml("<u>  " + day + "-" + (month+1) + "-" + year+ "</u>"));
-
-        }
-*/
         tv.setText(Html.fromHtml("<u> " + String.format("%02d", day)+"-"+String.format("%02d", (month + 1)) +"-"+year + "</u>"));
 
 
-/*
-        if ((month <= 10) && (day < 10)) {
-            //tv.setText("0" + day + "/0" + (month+1) + "/" + year);
-            selectedDate = ("        0" + year + "-0" + (month + 1) + "-" + day);
-            mReportSelectedDateStr =  year + "-" +String.format("%02d", (month + 1))  + "-" + String.format("%02d", day);
 
-        } else if (month <= 10) {
-            //tv.setText("" + day + "/0" + (month+1) + "/" + year);
-
-            selectedDate = ("        " + year + "-0" + (month + 1) + "-" + day);
-            mReportSelectedDateStr = year + "-0" + (month + 1) + "-" + day;
-        } else if (day < 10) {
-            //tv.setText("0" + day + "/" + (month+1) + "/" + year);
-
-            selectedDate = ("        0" + year + "-" + (month + 1) + "-" + day);
-            mReportSelectedDateStr = "0" + year + "-0" + (month + 1) + "-" + day;
-        } else {
-            //tv.setText("" + day + "/" + (month+1) + "/" + year);
-
-            selectedDate = ("        " + year + "-" + (month + 1) + "-" + day);
-            mReportSelectedDateStr = year + (month + 1) + "-" + day;
-        }*/
 
         selectedDate = year + "-" +String.format("%02d", (month + 1))  + "-" + String.format("%02d", day);
         mReportSelectedDateStr =  year + "-" +String.format("%02d", (month + 1))  + "-" + String.format("%02d", day);
+        moreInfo = (Button) findViewById(R.id.moreinfo);
+        moreInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(DashboardActivity.this, NextIndent_Moreinfo.class);
+                i.putExtra("fromdate",mReportSelectedDateStr);
+                startActivity(i);
+                finish();
+            }
+        });
+
 
 
 
@@ -276,16 +249,7 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
 
 
 
-        moreInfo = (Button) findViewById(R.id.moreinfo);
 
-        moreInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(DashboardActivity.this, NextIndent_Moreinfo.class);
-                startActivity(i);
-                finish();
-            }
-        });
 
 
 
@@ -503,46 +467,10 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
         @SuppressLint("SetTextI18n")
         public void onDateSet(DatePicker view, int year, int month, int day) {
 
-          /*  if ((month <= 10) && (day < 10)) {
-                //tv.setText("0" + day + "/0" + (month + 1) + "/" + year);
-                tv.setText(Html.fromHtml("<u>  0"  + day + "-0" + (month + 1) + "-" + year+ "</u>"));
 
-            } else if (month <= 10) {
-                //tv.setText("" + day + "/0" + (month + 1) + "/" + year);
-                tv.setText(Html.fromHtml("<u>  " + day + "-0" + (month + 1) + "-" + year+ "</u>"));
-
-            } else if (day < 10) {
-                //tv.setText("0" + day + "/" + (month + 1) + "/" + year);
-                tv.setText(Html.fromHtml("<u>  0"  + day + "-" + (month + 1) + "-" + year+ "</u>"));
-
-            } else {
-                //tv.setText("" + day + "/" + (month + 1) + "/" + year);
-                tv.setText(Html.fromHtml("<u>  "  + day + "-" + (month + 1) + "-" + year+ "</u>"));
-
-            }*/
             tv.setText(Html.fromHtml("<u> " + String.format("%02d", day)+"-"+String.format("%02d", (month + 1)) +"-"+year + "</u>"));
 
-            /*if ((month <= 10) && (day < 10)) {
-                //tv.setText("0" + day + "/0" + (month + 1) + "/" + year);
 
-                selectedDate = ("        0" + year + "-0" + (month + 1) + "-" + day);
-                mReportSelectedDateStr = "0" + year + "-0" + (month + 1) + "-" + day;
-            } else if (month <= 10) {
-                //tv.setText("" + day + "/0" + (month + 1) + "/" + year);
-
-                selectedDate = ("        " + year + "-0" + (month + 1) + "-" + day);
-                mReportSelectedDateStr = year + "-0" + (month + 1) + "-" + day;
-            } else if (day < 10) {
-                //tv.setText("0" + day + "/" + (month + 1) + "/" + year);
-
-                selectedDate = ("        0" + year + "-" + (month + 1) + "-" + day);
-                mReportSelectedDateStr = "0" + year + "-0" + (month + 1) + "-" + day;
-            } else {
-                //tv.setText("" + day + "/" + (month + 1) + "/" + year);
-
-                selectedDate = ("        " + year + "-" + (month + 1) + "-" + day);
-                mReportSelectedDateStr = year + (month + 1) + "-" + day;
-            }*/
 
 
             selectedDate = year + "-" +String.format("%02d", (month + 1))  + "-" + String.format("%02d", day);

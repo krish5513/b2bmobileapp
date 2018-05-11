@@ -136,6 +136,11 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String TABLE_DASHBOARD_PAYMENTLIST  = "dashboard_payments";
 
 
+    // This table contains nextindent moreinfo details
+    private final String TABLE_NEXTINDENT_MOREINFO  = "nextindent_moreinfo";
+
+
+
     // Column names for DashboardPendingIndent Table
     private final String KEY_ID = "increment_id";
     private final String KEY_DATE = "date";
@@ -165,6 +170,22 @@ public class DBHelper extends SQLiteOpenHelper {
     private final String KEY_DASHBOARD_PAYMENTS_DELIVERYVALUE= "payment_deliveryvalue";
     private final String KEY_DASHBOARD_PAYMENTS_RECEIVEDVALUE = "payment_receivedvalue";
     private final String KEY_DASHBOARD_PAYMENTS_DUEVALUE= "payment_duevalue";
+
+
+
+    // Column names for NextindentMoreInfo Table
+    private final String KEY_NEXTINDENT_MOREINFO_ID = "moreinfo_id";
+    private final String KEY_NEXTINDENT_MOREINFO_MILKDATE= "milk_date";
+    private final String KEY_NEXTINDENT_MOREINFO_MILKVOL = "milk_vol";
+    private final String KEY_NEXTINDENT_MOREINFO_CURDDATE = "curd_date";
+    private final String KEY_NEXTINDENT_MOREINFO_CURDVOL = "curd_vol";
+    private final String KEY_NEXTINDENT_MOREINFO_OTHRESDATE= "others_date";
+    private final String KEY_NEXTINDENT_MOREINFO_OTHERSVOL= "others_vol";
+    private final String KEY_NEXTINDENT_MOREINFO_SELDATE= "sel_date";
+    private final String KEY_NEXTINDENT_MOREINFO_BACKDATE= "back_date";
+
+
+
 
 
 
@@ -602,6 +623,17 @@ public class DBHelper extends SQLiteOpenHelper {
             + KEY_DASHBOARD_PAYMENTS_DUEVALUE + " VARCHAR)";
 
 
+    // Dashboard Next Indent MOREINFO Table Create Statements
+    private final String CREATE_TABLE_NEXTINDENT_MOREINFO = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_NEXTINDENT_MOREINFO + "(" + KEY_NEXTINDENT_MOREINFO_ID + "  INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_NEXTINDENT_MOREINFO_MILKDATE + " VARCHAR,"
+            + KEY_NEXTINDENT_MOREINFO_MILKVOL + " VARCHAR,"
+            + KEY_NEXTINDENT_MOREINFO_CURDDATE + " VARCHAR,"
+            + KEY_NEXTINDENT_MOREINFO_CURDVOL + " VARCHAR,"
+            + KEY_NEXTINDENT_MOREINFO_OTHRESDATE + " VARCHAR,"
+            + KEY_NEXTINDENT_MOREINFO_SELDATE + " VARCHAR,"
+            + KEY_NEXTINDENT_MOREINFO_BACKDATE+ " VARCHAR,"
+            + KEY_NEXTINDENT_MOREINFO_OTHERSVOL + " VARCHAR)";
+
 
     // Agents Table Create Statements
     private final String CREATE_TABLE_AGENTS = "CREATE TABLE IF NOT EXISTS "
@@ -971,6 +1003,7 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_TABLE_DASHBOARD_PENDINGINDENT);
             db.execSQL(CREATE_TABLE_DASHBOARD_DELIVERIES);
             db.execSQL(CREATE_TABLE_DASHBOARD_PAYMENTS);
+            db.execSQL(CREATE_TABLE_NEXTINDENT_MOREINFO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -8387,6 +8420,97 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
+    public void insertPendingIndentMoreInfoDetails(String milkdate, String milkvol, String curddate, String curdvol, String othersdate, String othersvol,String selectedDate,String backDate) {
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_NEXTINDENT_MOREINFO_MILKDATE, milkdate);
+            values.put(KEY_NEXTINDENT_MOREINFO_MILKVOL, milkvol);
+            values.put(KEY_NEXTINDENT_MOREINFO_CURDDATE, curddate);
+            values.put(KEY_NEXTINDENT_MOREINFO_CURDVOL, curdvol);
+            values.put(KEY_NEXTINDENT_MOREINFO_OTHRESDATE, othersdate);
+            values.put(KEY_NEXTINDENT_MOREINFO_OTHERSVOL, othersvol);
+            values.put(KEY_NEXTINDENT_MOREINFO_SELDATE, selectedDate);
+            values.put(KEY_NEXTINDENT_MOREINFO_BACKDATE, backDate);
+            long rec = checkmoreinfoIndentExistsOrNot(selectedDate,backDate);
+            SQLiteDatabase db = this.getWritableDatabase();
+            if (rec == 0) {
+                long l = db.insert(TABLE_NEXTINDENT_MOREINFO, null, values);
+            }
+                else
+                {
+                    long l = db.update(TABLE_NEXTINDENT_MOREINFO, values, KEY_NEXTINDENT_MOREINFO_SELDATE + " = ?",
+                            new String[]{selectedDate});
+                }
+                //System.out.println("DASHBOARD DATA INSERTED....." + l);
+            values.clear();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public int checkmoreinfoIndentExistsOrNot(String sdate,String backDate) {
+        int noOfRecords = 0;
+
+        try {
+
+            Cursor c = null;
+            SQLiteDatabase db = this.getReadableDatabase();
+
+                c = db.rawQuery("SELECT * FROM " + TABLE_NEXTINDENT_MOREINFO + " WHERE " + KEY_NEXTINDENT_MOREINFO_SELDATE + " BETWEEN ? AND ?", new String[]{sdate, backDate});
 
 
+            //String selectQuery = ("SELECT * FROM " + TABLE_NEXTINDENT_MOREINFO + " WHERE " + KEY_NEXTINDENT_MOREINFO_SELDATE + " BETWEEN ? AND ?",new String[]{sdate, backDate};
+
+
+
+
+            if (c != null) {
+                c.moveToFirst();
+                noOfRecords = c.getCount();
+                c.close();
+            }
+
+            db.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return noOfRecords;
+    }
+
+
+
+
+    public ArrayList<String> fetchPendingIndentMoreInfoDetails(String curDate) {
+        ArrayList<String> moreInfoList = new ArrayList<String>();
+
+        try {
+
+           // c = db.rawQuery("SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_DATE + " BETWEEN ? AND ?", new String[]{startDate, endDate});
+            String selectQuery = "SELECT * FROM " + TABLE_NEXTINDENT_MOREINFO + " WHERE " + KEY_NEXTINDENT_MOREINFO_MILKDATE
+                    + "='" + curDate + "'";
+
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor c = db.rawQuery(selectQuery, null);
+
+            if (c.moveToFirst()) {
+                do {
+                    moreInfoList.add(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_MILKDATE)));//0 milkdate
+                    moreInfoList.add(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_MILKVOL)));//1 milkvol
+                    moreInfoList.add(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_CURDDATE)));//2 curddate
+                    moreInfoList.add(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_CURDVOL)));//3 curdvol
+                    moreInfoList.add(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_OTHRESDATE)));//4 othrsdate
+                    moreInfoList.add(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_OTHERSVOL)));//5 otherdvol
+
+                } while (c.moveToNext());
+            }
+
+            c.close();
+            db.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return moreInfoList;
+    }
 }
