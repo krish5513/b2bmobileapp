@@ -2,6 +2,7 @@ package com.rightclickit.b2bsaleon.models;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.rightclickit.b2bsaleon.activities.AgentTDC_Order;
 import com.rightclickit.b2bsaleon.activities.DashboardActivity;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by PPS on 10/10/2017.
@@ -132,46 +134,118 @@ public class NextIndentMoreInfoModel implements OnAsyncRequestCompleteListener {
 
             JSONArray milkDateArray = null, milkVolArray = null,curdDateArray=null,curdVolArray=null,othersDateArray=null,othersVolArray=null;
             CustomProgressDialog.hideProgressDialog();
+            HashMap<String, NextIndentMoreInfoModel> map = new HashMap<>();
+            HashMap<String, Double> mapMilk = new HashMap<>();
+            HashMap<String, Double> mapCurd = new HashMap<>();
+            HashMap<String, Double> mapOthers = new HashMap<>();
 
             JSONArray responseObj = new JSONArray(response);
             int lengthh = responseObj.length();
-                JSONObject milkjob = responseObj.getJSONObject(0);
-                JSONObject curdjob = responseObj.getJSONObject(1);
-                JSONObject othersjob = responseObj.getJSONObject(2);
-                if( milkjob.getJSONArray("date")!=null ) {
-                    milkDateArray = milkjob.getJSONArray("date");
+            JSONObject milkjob = responseObj.getJSONObject(0);
+            JSONObject curdjob = responseObj.getJSONObject(1);
+            JSONObject othersjob = responseObj.getJSONObject(2);
 
+            Nextdayindent_moreinfoBeen moreinfoBeen = new Nextdayindent_moreinfoBeen();
+            ArrayList<Nextdayindent_moreinfoBeen> moreinfoBeenList = new ArrayList<>();
+
+            if(!milkjob.get("date").equals(null) && !milkjob.get("vol").equals(null)){
+                milkDateArray = milkjob.getJSONArray("date");
+                milkVolArray = milkjob.getJSONArray("vol");
+
+                for(int i=0; i<milkDateArray.length(); i++){
+                    String str = (String) milkDateArray.opt(i);
+                    double doubleVal = (double) milkVolArray.opt(i);
+                   // mapMilk.put(str,doubleVal);
+
+                    moreinfoBeen = new Nextdayindent_moreinfoBeen();
+                    moreinfoBeen.setDate(str);
+                    moreinfoBeen.setMilkVol(doubleVal+"");
+                    moreinfoBeen.setCurdVol(0+"");
+                    moreinfoBeen.setOtherVol(0+"");
+                    moreinfoBeenList.add(moreinfoBeen);
                 }
-                if(milkjob.getJSONArray("vol")!=null ){
-
-                    milkVolArray = milkjob.getJSONArray("vol");
-
-                }
-                 if(curdjob.getJSONArray("date")!=null) {
-
-                    curdDateArray = curdjob.getJSONArray("date");
-                      }else {
-                    curdDateArray=curdjob.getJSONArray("0");
-                 }
-                   if(curdjob.getJSONArray("vol")!=null){
-
-                    curdVolArray = curdjob.getJSONArray("vol");
-                }else {
-                       curdVolArray=curdjob.getJSONArray("0");
-                   }
-
-            if(othersjob.getJSONArray("date")!=null) {
-
-                    othersDateArray = othersjob.getJSONArray("date");
-                }else {
-                othersDateArray=othersjob.getJSONArray("0");
             }
-                if(othersjob.getJSONArray("vol")!=null) {
 
-                    othersDateArray = othersjob.getJSONArray("vol");
-                }else {
-                    othersDateArray=othersjob.getJSONArray("0");
+            if(!curdjob.get("date").equals(null) && !curdjob.get("vol").equals(null)){
+                curdDateArray = curdjob.getJSONArray("date");
+                curdVolArray = curdjob.getJSONArray("vol");
+
+                for(int i=0; i<curdDateArray.length(); i++){
+                    String str = (String) curdDateArray.opt(i);
+                    double doubleVal = (double) curdVolArray.opt(i);
+                    if(moreinfoBeenList.size()>0){
+                        for(int j=0; j<moreinfoBeenList.size(); j++){
+                            if(moreinfoBeenList.get(j).getDate().equals(str)){
+                                moreinfoBeenList.get(j).setCurdVol(doubleVal+"");
+                                /*moreinfoBeenList.get(j).setMilkVol(doubleVal+"");
+                                moreinfoBeenList.get(j).setOtherVol(doubleVal+"");*/
+                            }else{
+                                moreinfoBeen = new Nextdayindent_moreinfoBeen();
+                                moreinfoBeen.setDate(str);
+                                moreinfoBeen.setCurdVol(doubleVal+"");
+                                moreinfoBeen.setMilkVol(0+"");
+                                moreinfoBeen.setOtherVol(0+"");
+                                moreinfoBeenList.add(moreinfoBeen);
+                            }
+                        }
+                    }else{
+                        moreinfoBeen = new Nextdayindent_moreinfoBeen();
+                        moreinfoBeen.setDate(str);
+                        moreinfoBeen.setCurdVol(doubleVal+"");
+                        moreinfoBeen.setMilkVol(0+"");
+                        moreinfoBeen.setOtherVol(0+"");
+                        moreinfoBeenList.add(moreinfoBeen);
+                    }
                 }
+            }/*else{
+                for(int j=0; j<moreinfoBeenList.size(); j++){
+                        moreinfoBeenList.get(j).setCurdVol(0+"");
+                }
+            }*/
+
+            if(!othersjob.get("date").equals(null) && !othersjob.get("vol").equals(null)){
+                othersDateArray = othersjob.getJSONArray("date");
+                othersVolArray = othersjob.getJSONArray("vol");
+
+                for(int i=0; i<othersDateArray.length(); i++){
+                    String str = (String) othersDateArray.opt(i);
+                    double doubleVal = (double) othersVolArray.opt(i);
+                    if(moreinfoBeenList.size()>0){
+                        for(int j=0; j<moreinfoBeenList.size(); j++){
+                            if(moreinfoBeenList.get(j).getDate().equals(str)){
+                                moreinfoBeenList.get(j).setOtherVol(doubleVal+"");
+                            }else{
+                                moreinfoBeen = new Nextdayindent_moreinfoBeen();
+                                moreinfoBeen.setDate(str);
+                                moreinfoBeen.setOtherVol(doubleVal+"");
+                                moreinfoBeen.setMilkVol(0+"");
+                                moreinfoBeen.setCurdVol(0+"");
+                                moreinfoBeenList.add(moreinfoBeen);
+                            }
+                        }
+                    }else{
+                        moreinfoBeen = new Nextdayindent_moreinfoBeen();
+                        moreinfoBeen.setDate(str);
+                        moreinfoBeen.setOtherVol(doubleVal+"");
+                        moreinfoBeen.setMilkVol(0+"");
+                        moreinfoBeen.setCurdVol(0+"");
+                        moreinfoBeenList.add(moreinfoBeen);
+                    }
+
+                }
+            }/*else{
+                for(int j=0; j<moreinfoBeenList.size(); j++){
+                    moreinfoBeenList.get(j).setOtherVol(0+"");
+                }
+            }*/
+
+            for(int i=0; i<moreinfoBeenList.size(); i++){
+                Log.i(moreinfoBeenList.get(i).getDate()+"",moreinfoBeenList.get(i).getMilkVol()+"");
+                Log.i(moreinfoBeenList.get(i).getDate()+"",moreinfoBeenList.get(i).getCurdVol()+"");
+                Log.i(moreinfoBeenList.get(i).getDate()+"",moreinfoBeenList.get(i).getOtherVol()+"");
+            }
+
+
 
 
 
@@ -181,11 +255,17 @@ public class NextIndentMoreInfoModel implements OnAsyncRequestCompleteListener {
                 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
                 String currentDateandTime = sdf.format(new Date());
                 String currentDate = sdf1.format(new Date());
-                mDBHelper.insertPendingIndentMoreInfoDetails(milkDateArray.toString(), milkVolArray.toString(), curdDateArray.toString(),curdVolArray.toString(),othersDateArray.toString(),othersVolArray.toString(),selecteddate,backDate);
+
+
+                for(int i=0; i<moreinfoBeenList.size(); i++){
+                    mDBHelper.insertPendingIndentMoreInfoDetails(moreinfoBeenList.get(i),moreinfoBeenList.get(i).getDate());
+                }
+
+
             }
 
             synchronized (this) {
-              //  activity.nextDayIndents();
+                activity.loadmoreInfo(moreinfoBeenList);
             }
 
 

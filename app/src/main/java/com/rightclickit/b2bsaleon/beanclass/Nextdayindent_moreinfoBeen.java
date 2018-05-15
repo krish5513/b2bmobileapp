@@ -3,7 +3,10 @@ package com.rightclickit.b2bsaleon.beanclass;
 public class Nextdayindent_moreinfoBeen {
 
     private String id;
-    private String milkDate;
+    private String date;
+    private String milkVol;
+    private String curdVol;
+    private String otherVol;
 
     public String getId() {
         return id;
@@ -13,12 +16,12 @@ public class Nextdayindent_moreinfoBeen {
         this.id = id;
     }
 
-    public String getMilkDate() {
-        return milkDate;
+    public String getDate() {
+        return date;
     }
 
-    public void setMilkDate(String milkDate) {
-        this.milkDate = milkDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getMilkVol() {
@@ -29,28 +32,12 @@ public class Nextdayindent_moreinfoBeen {
         this.milkVol = milkVol;
     }
 
-    public String getCurdDate() {
-        return curdDate;
-    }
-
-    public void setCurdDate(String curdDate) {
-        this.curdDate = curdDate;
-    }
-
     public String getCurdVol() {
         return curdVol;
     }
 
     public void setCurdVol(String curdVol) {
         this.curdVol = curdVol;
-    }
-
-    public String getOtherDate() {
-        return otherDate;
-    }
-
-    public void setOtherDate(String otherDate) {
-        this.otherDate = otherDate;
     }
 
     public String getOtherVol() {
@@ -60,13 +47,4 @@ public class Nextdayindent_moreinfoBeen {
     public void setOtherVol(String otherVol) {
         this.otherVol = otherVol;
     }
-
-    private String milkVol;
-    private String curdDate;
-    private String curdVol;
-    private String otherDate;
-    private String otherVol;
-
-
-
 }

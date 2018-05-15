@@ -16,6 +16,7 @@ import com.rightclickit.b2bsaleon.beanclass.DashboardPendingIndentBean;
 import com.rightclickit.b2bsaleon.beanclass.DeliverysBean;
 
 import com.rightclickit.b2bsaleon.beanclass.DeviceDetails;
+import com.rightclickit.b2bsaleon.beanclass.Nextdayindent_moreinfoBeen;
 import com.rightclickit.b2bsaleon.beanclass.NotificationBean;
 import com.rightclickit.b2bsaleon.beanclass.PaymentsBean;
 import com.rightclickit.b2bsaleon.beanclass.ProductsBean;
@@ -7054,7 +7055,7 @@ public class DBHelper extends SQLiteOpenHelper {
     /**
      * Method to get the name by id
      *
-     * @param productId
+     * @param
      * @param selectedCustomerType
      * @return HSSN NUMBER
      */
@@ -8420,51 +8421,41 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertPendingIndentMoreInfoDetails(String milkdate, String milkvol, String curddate, String curdvol, String othersdate, String othersvol,String selectedDate,String backDate) {
+
+    public void insertPendingIndentMoreInfoDetails(Nextdayindent_moreinfoBeen moreinfoBeen, String date){
         try {
             ContentValues values = new ContentValues();
-            values.put(KEY_NEXTINDENT_MOREINFO_MILKDATE, milkdate);
-            values.put(KEY_NEXTINDENT_MOREINFO_MILKVOL, milkvol);
-            values.put(KEY_NEXTINDENT_MOREINFO_CURDDATE, curddate);
-            values.put(KEY_NEXTINDENT_MOREINFO_CURDVOL, curdvol);
-            values.put(KEY_NEXTINDENT_MOREINFO_OTHRESDATE, othersdate);
-            values.put(KEY_NEXTINDENT_MOREINFO_OTHERSVOL, othersvol);
-            values.put(KEY_NEXTINDENT_MOREINFO_SELDATE, selectedDate);
-            values.put(KEY_NEXTINDENT_MOREINFO_BACKDATE, backDate);
-            long rec = checkmoreinfoIndentExistsOrNot(selectedDate,backDate);
+            values.put(KEY_NEXTINDENT_MOREINFO_MILKVOL, moreinfoBeen.getMilkVol());
+            values.put(KEY_NEXTINDENT_MOREINFO_CURDVOL, moreinfoBeen.getCurdVol());
+            values.put(KEY_NEXTINDENT_MOREINFO_OTHERSVOL, moreinfoBeen.getOtherVol());
+            values.put(KEY_NEXTINDENT_MOREINFO_SELDATE, moreinfoBeen.getDate());
+            long rec = checkmoreinfoIndentExistsOrNot(moreinfoBeen.getDate());
             SQLiteDatabase db = this.getWritableDatabase();
+            long long_response=0;
             if (rec == 0) {
-                long l = db.insert(TABLE_NEXTINDENT_MOREINFO, null, values);
+                long_response = db.insert(TABLE_NEXTINDENT_MOREINFO, null, values);
             }
-                else
-                {
-                    long l = db.update(TABLE_NEXTINDENT_MOREINFO, values, KEY_NEXTINDENT_MOREINFO_SELDATE + " = ?",
-                            new String[]{selectedDate});
-                }
-                //System.out.println("DASHBOARD DATA INSERTED....." + l);
+            else
+            {
+                long_response = db.update(TABLE_NEXTINDENT_MOREINFO, values, KEY_NEXTINDENT_MOREINFO_SELDATE + " = ?",
+                        new String[]{moreinfoBeen.getDate()});
+            }
+            System.out.println("TABLE_NEXTINDENT_MOREINFO DATA INSERTED....."+long_response);
             values.clear();
             db.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public int checkmoreinfoIndentExistsOrNot(String sdate,String backDate) {
+
+    public int checkmoreinfoIndentExistsOrNot(String sdate) {
         int noOfRecords = 0;
 
         try {
-
             Cursor c = null;
             SQLiteDatabase db = this.getReadableDatabase();
-
-                c = db.rawQuery("SELECT * FROM " + TABLE_NEXTINDENT_MOREINFO + " WHERE " + KEY_NEXTINDENT_MOREINFO_SELDATE + " BETWEEN ? AND ?", new String[]{sdate, backDate});
-
-
-            //String selectQuery = ("SELECT * FROM " + TABLE_NEXTINDENT_MOREINFO + " WHERE " + KEY_NEXTINDENT_MOREINFO_SELDATE + " BETWEEN ? AND ?",new String[]{sdate, backDate};
-
-
-
-
-            if (c != null) {
+            c = db.rawQuery("SELECT * FROM " + TABLE_NEXTINDENT_MOREINFO + " WHERE " + KEY_NEXTINDENT_MOREINFO_SELDATE   + "='" + sdate + "'", null);
+           if (c != null) {
                 c.moveToFirst();
                 noOfRecords = c.getCount();
                 c.close();
@@ -8477,30 +8468,25 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return noOfRecords;
     }
-
-
-
-
-    public ArrayList<String> fetchPendingIndentMoreInfoDetails(String curDate) {
-        ArrayList<String> moreInfoList = new ArrayList<String>();
+    public ArrayList<Nextdayindent_moreinfoBeen> fetchPendingIndentMoreInfoDetails() {
+        ArrayList<Nextdayindent_moreinfoBeen> moreInfoList = new ArrayList<>();
 
         try {
 
-           // c = db.rawQuery("SELECT * FROM " + TABLE_TDC_SALES_ORDERS + " WHERE " + KEY_TDC_SALES_ORDER_DATE + " BETWEEN ? AND ?", new String[]{startDate, endDate});
-            String selectQuery = "SELECT * FROM " + TABLE_NEXTINDENT_MOREINFO + " WHERE " + KEY_NEXTINDENT_MOREINFO_MILKDATE
-                    + "='" + curDate + "'";
+            String selectQuery = "SELECT * FROM " + TABLE_NEXTINDENT_MOREINFO ;
 
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor c = db.rawQuery(selectQuery, null);
 
             if (c.moveToFirst()) {
                 do {
-                    moreInfoList.add(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_MILKDATE)));//0 milkdate
-                    moreInfoList.add(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_MILKVOL)));//1 milkvol
-                    moreInfoList.add(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_CURDDATE)));//2 curddate
-                    moreInfoList.add(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_CURDVOL)));//3 curdvol
-                    moreInfoList.add(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_OTHRESDATE)));//4 othrsdate
-                    moreInfoList.add(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_OTHERSVOL)));//5 otherdvol
+                    Nextdayindent_moreinfoBeen moreinfoBeen = new Nextdayindent_moreinfoBeen();
+                    moreinfoBeen.setDate(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_SELDATE)));
+                    moreinfoBeen.setMilkVol(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_MILKVOL)));
+                    moreinfoBeen.setCurdVol(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_CURDVOL)));
+                    moreinfoBeen.setOtherVol(c.getString(c.getColumnIndex(KEY_NEXTINDENT_MOREINFO_OTHERSVOL)));
+
+                    moreInfoList.add(moreinfoBeen);
 
                 } while (c.moveToNext());
             }

@@ -63,20 +63,13 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
     ArrayList<String> stringArray=null,stringArraySpinner=null;
 
 
-
+    Nextdayindent_MoreinfoAdapter adapter;
     ArrayList<String> moreInfoList=new ArrayList<>();
 
 
-    public static final String[] dates = new String[] { "02/05/2018",
-            "01/05/2018", "30/04/2018", "29/04/2018" };
-    public static final String[] milk = new String[] { "500.000",
-            "400.000", "500.000", "300.000" };
-    public static final String[] curd = new String[] { "500",
-            "600", "200", "400" };
-    public static final String[] other = new String[] { "600",
-            "700", "400", "600" };
+
     ListView moreinfo_listView;
-    List<Nextdayindent_moreinfoBeen> nextdayIndentMoreInfo;
+    ArrayList<Nextdayindent_moreinfoBeen> nextdayIndentMoreInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,15 +223,25 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
             Nextdayindent_moreinfoBeen MoreInfobeen = new Nextdayindent_moreinfoBeen(dates[i], milk[i], curd[i],other[i]);
             nextdayIndentMoreInfo.add(MoreInfobeen);
         }*/
-
         moreinfo_listView = (ListView) findViewById(R.id.nextday_indent_moreinfoList);
-        Nextdayindent_MoreinfoAdapter adapter = new Nextdayindent_MoreinfoAdapter(this, nextdayIndentMoreInfo);
-        moreinfo_listView.setAdapter(adapter);
-        //moreinfo_listView.setOnItemClickListener(this);
+        nextdayIndentMoreInfo=db.fetchPendingIndentMoreInfoDetails();
+
+        loadmoreInfo(nextdayIndentMoreInfo);
+
+
 
 
     }
 
+    public void loadmoreInfo(ArrayList<Nextdayindent_moreinfoBeen> nextdayIndentMoreInfo) {
+
+        if(nextdayIndentMoreInfo.size()>0){
+            adapter=new Nextdayindent_MoreinfoAdapter(this,nextdayIndentMoreInfo);
+            moreinfo_listView.setAdapter(adapter);
+        }
+
+
+    }
 
 
     @Override
@@ -259,11 +262,7 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
                 new NetworkConnectionDetector(NextIndent_Moreinfo.this).displayNoNetworkError(NextIndent_Moreinfo.this);
             }
             return true;
-           /* if (new NetworkConnectionDetector(DashboardActivity.this).isNetworkConnected()) {
-                mReportsModel.getReportsData(mReportSelectedDateStr);
-            } else {
-                new NetworkConnectionDetector(DashboardActivity.this).displayNoNetworkError(DashboardActivity.this);
-            }*/
+
         }
         switch (item.getItemId()) {
             case android.R.id.home:

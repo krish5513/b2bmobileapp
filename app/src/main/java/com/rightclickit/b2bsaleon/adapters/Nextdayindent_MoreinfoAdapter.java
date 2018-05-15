@@ -11,14 +11,15 @@ import android.widget.TextView;
 import com.rightclickit.b2bsaleon.R;
 import com.rightclickit.b2bsaleon.beanclass.Nextdayindent_moreinfoBeen;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Nextdayindent_MoreinfoAdapter extends BaseAdapter {
 
     Context context;
-    List<Nextdayindent_moreinfoBeen> nextdayIndentMoreInfo;
+    ArrayList<Nextdayindent_moreinfoBeen> nextdayIndentMoreInfo;
 
-    public Nextdayindent_MoreinfoAdapter(Context context, List<Nextdayindent_moreinfoBeen> nextdayIndentMoreInfo) {
+    public Nextdayindent_MoreinfoAdapter(Context context, ArrayList<Nextdayindent_moreinfoBeen> nextdayIndentMoreInfo) {
         this.context = context;
         this.nextdayIndentMoreInfo = nextdayIndentMoreInfo;
     }
@@ -69,10 +70,10 @@ public class Nextdayindent_MoreinfoAdapter extends BaseAdapter {
 
         Nextdayindent_moreinfoBeen nextdayIndentMoreInfo = (Nextdayindent_moreinfoBeen) getItem(position);
 
-       // holder.date.setText(nextdayIndentMoreInfo.getDate());
-       // holder.milk.setText(nextdayIndentMoreInfo.getMilk());
-      //  holder.curd.setText(nextdayIndentMoreInfo.getCurd());
-      //  holder.other.setText(nextdayIndentMoreInfo.getOther());
+       holder.date.setText(nextdayIndentMoreInfo.getDate());
+        holder.milk.setText(nextdayIndentMoreInfo.getMilkVol());
+       holder.curd.setText(nextdayIndentMoreInfo.getCurdVol());
+        holder.other.setText(nextdayIndentMoreInfo.getOtherVol());
 
         return convertView;
 

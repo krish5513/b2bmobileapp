@@ -340,6 +340,11 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
 
     @Override
     public void updateSelectedProductsList(Map<String, DeliverysBean> productsList) {
+
+        for (Map.Entry<String, DeliverysBean> deliverysBeanEntry : productsList.entrySet()) {
+                   DeliverysBean deliverysBean = deliverysBeanEntry.getValue();
+        android.util.Log.i("getSelectedQuantity",""+String.valueOf(deliverysBean.getSelectedQuantity()));
+                }
         selectedProductsHashMap = productsList;
         isReturnsDataSaved = false;
     }
@@ -374,11 +379,13 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
                 }
 
                 ArrayList<TripSheetReturnsBean> mTripsheetsReturnsList = new ArrayList<>();
+                DeliverysBean deliverysBean=null ;
 
+                    TripSheetReturnsBean tripSheetReturnsBean=null;
                 for (Map.Entry<String, DeliverysBean> deliverysBeanEntry : selectedProductsHashMap.entrySet()) {
-                    DeliverysBean deliverysBean = deliverysBeanEntry.getValue();
+                     deliverysBean = deliverysBeanEntry.getValue();
 
-                    TripSheetReturnsBean tripSheetReturnsBean = new TripSheetReturnsBean();
+                     tripSheetReturnsBean = new TripSheetReturnsBean();
                     tripSheetReturnsBean.setmTripshhetReturnsReturn_no("");
                     tripSheetReturnsBean.setmTripshhetReturnsReturn_number(returnNumber);
                     tripSheetReturnsBean.setmTripshhetReturnsTrip_id(mTripSheetId);
@@ -390,6 +397,7 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
                     tripSheetReturnsBean.setmTripshhetReturnsRoute_codes(mAgentRouteCode);
                     tripSheetReturnsBean.setmTripshhetReturnsProduct_ids(deliverysBean.getProductId());
                     tripSheetReturnsBean.setmTripshhetReturnsProduct_codes(deliverysBean.getProductCode());
+                   android.util.Log.i("bhagya",String.valueOf(deliverysBean.getSelectedQuantity()));
                     tripSheetReturnsBean.setmTripshhetReturnsQuantity(String.valueOf(deliverysBean.getSelectedQuantity()));
                     tripSheetReturnsBean.setmTripshhetReturnsType("R");
                     tripSheetReturnsBean.setmTripshhetReturnsStatus("A");
@@ -401,6 +409,10 @@ public class TripsheetReturns extends AppCompatActivity implements TripSheetRetu
 
                     mTripsheetsReturnsList.add(tripSheetReturnsBean);
                 }
+              for(int i=0; i<mTripsheetsReturnsList.size(); i++){
+                   android.util.Log.i(i+"...","bhagya"+mTripsheetsReturnsList.get(i).getmTripshhetReturnsQuantity());
+
+}
 
                 mDBHelper.insertTripsheetsReturnsListData(mTripsheetsReturnsList);
                 isReturnsDataSaved = true;
