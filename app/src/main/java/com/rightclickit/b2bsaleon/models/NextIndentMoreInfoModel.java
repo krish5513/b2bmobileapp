@@ -24,9 +24,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -231,7 +234,6 @@ public class NextIndentMoreInfoModel implements OnAsyncRequestCompleteListener {
                         moreinfoBeen.setCurdVol(0+"");
                         moreinfoBeenList.add(moreinfoBeen);
                     }
-
                 }
             }/*else{
                 for(int j=0; j<moreinfoBeenList.size(); j++){
@@ -239,36 +241,69 @@ public class NextIndentMoreInfoModel implements OnAsyncRequestCompleteListener {
                 }
             }*/
 
-            for(int i=0; i<moreinfoBeenList.size(); i++){
-                Log.i(moreinfoBeenList.get(i).getDate()+"",moreinfoBeenList.get(i).getMilkVol()+"");
-                Log.i(moreinfoBeenList.get(i).getDate()+"",moreinfoBeenList.get(i).getCurdVol()+"");
-                Log.i(moreinfoBeenList.get(i).getDate()+"",moreinfoBeenList.get(i).getOtherVol()+"");
+            Log.i("size****",moreinfoBeenList.size()+"");
+            ArrayList<String> dateArray = new ArrayList<>();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            //Date toDate = sdf.parse(selecteddate);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(sdf.parse(selecteddate));
+            cal.add(Calendar.DATE, +2);
+            String twoPlusDate = sdf.format(cal.getTime());
+            Log.i("twoPlusDate...",twoPlusDate+"");
+            for(int i=0; i<20; i++){
+                cal.add(Calendar.DATE, -1);
+                String formattedDate = sdf.format(cal.getTime());
+
+                Log.i("formattedDate...",formattedDate+"");
+                dateArray.add(formattedDate);
             }
 
+            for(int i=0; i<dateArray.size(); i++){
+                boolean bool =true;
+                for(int j=0; j<moreinfoBeenList.size(); j++){
+                    if(moreinfoBeenList.get(j).getDate().equalsIgnoreCase(dateArray.get(i))){
+                        bool =false;
+                        break;
+                    }
+                }
 
+                if(bool){
+                    moreinfoBeen = new Nextdayindent_moreinfoBeen();
+                    moreinfoBeen.setDate(dateArray.get(i));
+                    moreinfoBeen.setOtherVol(0+"");
+                    moreinfoBeen.setMilkVol(0+"");
+                    moreinfoBeen.setCurdVol(0+"");
+                    moreinfoBeenList.add(moreinfoBeen);
+                }
+            }
 
+            Log.i("moreinfoBeenList size",moreinfoBeenList.size()+"");
+            for(int i=0; i<moreinfoBeenList.size(); i++){
+                Log.i(moreinfoBeenList.get(i).getDate()+"",moreinfoBeenList.get(i).getMilkVol()+"");
+            }
 
+            Collections.sort(moreinfoBeenList, new Comparator<Nextdayindent_moreinfoBeen>() {
+                @Override
+                public int compare(Nextdayindent_moreinfoBeen o1, Nextdayindent_moreinfoBeen o2) {
+                    return o2.getDate().compareTo(o1.getDate());
+                }
+            });
 
             synchronized (this) {
-
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-                String currentDateandTime = sdf.format(new Date());
+                SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
+                String currentDateandTime = sdf2.format(new Date());
                 String currentDate = sdf1.format(new Date());
-
 
                 for(int i=0; i<moreinfoBeenList.size(); i++){
                     mDBHelper.insertPendingIndentMoreInfoDetails(moreinfoBeenList.get(i),moreinfoBeenList.get(i).getDate());
                 }
-
-
             }
 
             synchronized (this) {
                 activity.loadmoreInfo(moreinfoBeenList);
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
