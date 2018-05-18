@@ -148,7 +148,9 @@ public class DashboardActivity extends AppCompatActivity implements OnMapReadyCa
 
 
         selectedDate = year + "-" +String.format("%02d", (month + 1))  + "-" + String.format("%02d", day);
+
         mReportSelectedDateStr =  year + "-" +String.format("%02d", (month + 1))  + "-" + String.format("%02d", day);
+
         moreInfo = (Button) findViewById(R.id.moreinfo);
         moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override

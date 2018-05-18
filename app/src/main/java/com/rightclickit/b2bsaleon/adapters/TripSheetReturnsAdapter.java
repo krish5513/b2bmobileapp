@@ -40,7 +40,7 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
     private Map<String, String> deliveredProductsHashMap;
     private boolean isReturnsInEditingMode = false;
     private final String zero_cost = "0.000";
-    DeliverysBean currentDeliveryBean;
+    //DeliverysBean currentDeliveryBean;
 
     public TripSheetReturnsAdapter(Context ctxt, TripsheetReturns returnsActivity, TripSheetReturnsListener tripSheetReturnsListener, ArrayList<DeliverysBean> mdeliveriesBeanList, Map<String, String> previouslyProducts, Map<String, String> productsDeliveryDetails) {
         this.ctxt = ctxt;
@@ -117,7 +117,7 @@ public class TripSheetReturnsAdapter extends BaseAdapter {
         final TripSheetReturnsViewHolder currentTripSheetReturnsViewHolder = tripSheetReturnsViewHolder;
      /* if(filteredProductsList.get(position).getProductReturnableUnit().equals("Y"))
        {*/
-        currentDeliveryBean = getItem(position);
+        final DeliverysBean currentDeliveryBean = getItem(position);
 
         tripSheetReturnsViewHolder.productName.setText(String.format("%s", currentDeliveryBean.getProductTitle()));
 

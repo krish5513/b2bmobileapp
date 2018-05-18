@@ -497,6 +497,7 @@ public class TripsheetsModel implements OnAsyncRequestCompleteListener {
 
 
                                     // Added by Sekhar for close trip functionality
+
                                     //tripStockBean.setmDeliveryQuantity("");
                                     //tripStockBean.setmReturnQuantity("");
                                     //tripStockBean.setmCBQuantity("");

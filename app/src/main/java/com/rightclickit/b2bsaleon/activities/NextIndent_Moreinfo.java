@@ -188,7 +188,7 @@ public class NextIndent_Moreinfo extends AppCompatActivity {
             public void selectedStrings(List<String> strings) {
                 stringArraySpinner.clear();
                 stringArraySpinner.addAll(strings);
-                Toast.makeText(NextIndent_Moreinfo.this, ""+stringArraySpinner, Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(NextIndent_Moreinfo.this, ""+stringArraySpinner, Toast.LENGTH_SHORT).show();
             }
         });
 
